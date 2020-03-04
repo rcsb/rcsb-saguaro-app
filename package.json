@@ -1,0 +1,31 @@
+{
+  "name": "rcsb-saguaro-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/RcsbFvWebApp.js",
+  "scripts": {
+    "build": "npm run generate && webpack --config ./webpack.config.js",
+    "generate": "graphql-codegen --config codegen.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7",
+    "@graphql-codegen/typescript": "1.12.1",
+    "@graphql-codegen/cli": "^1.12.1"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.4.4",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.1"
+  }
+}
