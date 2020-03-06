@@ -6,7 +6,6 @@ export interface RequestAnnotationsInterface {
     queryId: string;
     reference: string;
     source: Array<string>;
-    callBack: (n: Array<AnnotationFeatures>)=>void;
 }
 
 interface AnnotationsResultInterface {
@@ -14,9 +13,8 @@ interface AnnotationsResultInterface {
 }
 
 export default class RcsbQueryAnnotations extends RcsbQuery{
-
-    public request(requestConfig: RequestAnnotationsInterface): void{
-        this.borregoClient.query<AnnotationsResultInterface>({
+    public request(requestConfig: RequestAnnotationsInterface): Promise<Array<AnnotationFeatures>>{
+        return this.borregoClient.query<AnnotationsResultInterface>({
             query:query,
             variables:{
                 queryId:requestConfig.queryId,
@@ -24,7 +22,10 @@ export default class RcsbQueryAnnotations extends RcsbQuery{
                 source:requestConfig.source
             }
         }).then(result=>{
-            requestConfig.callBack(result.data.annotations);
-        }).catch(error => console.error(error));
+            return result.data.annotations;
+        }).catch(error => {
+            console.error(error);
+            return error;
+        });
     }
 }
