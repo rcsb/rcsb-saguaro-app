@@ -5,14 +5,12 @@ import {
     RcsbFvTrackDataElementInterface
 } from 'rcsb-saguaro';
 
-import {AnnotationFeatures} from "../../RcsbGraphQL/Types/GqlTypes";
+import {AnnotationFeatures, QueryAnnotationsArgs, Source} from "../../RcsbGraphQL/Types/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationMap";
 
-interface CollectAnnotationsInterface{
-    queryId: string;
-    reference: string;
-    source: Array<string>;
+interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
+    addTargetInTitle?: Set<Source>;
 }
 
 export class AnnotationCollector {
@@ -25,13 +23,19 @@ export class AnnotationCollector {
         return this.rcsbFvQuery.requestAnnotations({
             queryId: requestConfig.queryId,
             reference: requestConfig.reference,
-            source: requestConfig.source
+            sources: requestConfig.sources,
+            filters: requestConfig.filters
         }).then(result => {
             const data: Array<AnnotationFeatures> = result;
             const annotations: Map<string, Array<RcsbFvTrackDataElementInterface>> = new Map();
             data.forEach(ann => {
                 ann.features.forEach(d => {
-                    const type = this.rcsbAnnotationMap.setAnnotationKey(d);
+                    let type: string;
+                    if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source))
+                        type = this.rcsbAnnotationMap.setAnnotationKey(d, ann.target_id);
+                    else
+                        type = this.rcsbAnnotationMap.setAnnotationKey(d);
+
                     if (!annotations.has(type)) {
                         annotations.set(type, new Array<RcsbFvTrackDataElementInterface>());
                     }

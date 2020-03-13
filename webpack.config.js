@@ -2,7 +2,9 @@ const path = require('path');
 
 module.exports = {
     mode: "development",
-    entry: './src/RcsbFvWeb/RcsbFvWebApp.ts',
+    entry: {
+        'rcsb-saguaro-app':'./src/RcsbFvWeb/RcsbFvWebApp.ts'
+    },
     module: {
       rules: [
         {

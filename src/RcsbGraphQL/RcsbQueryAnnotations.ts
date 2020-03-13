@@ -1,5 +1,5 @@
 import RcsbQuery from "./RcsbQuery";
-import {AnnotationFeatures} from "./Types/GqlTypes";
+import {AnnotationFeatures, QueryAnnotationsArgs} from "./Types/GqlTypes";
 import * as query from "./Queries/QueryAnnotations.graphql";
 
 export interface RequestAnnotationsInterface {
@@ -13,13 +13,14 @@ interface AnnotationsResultInterface {
 }
 
 export default class RcsbQueryAnnotations extends RcsbQuery{
-    public request(requestConfig: RequestAnnotationsInterface): Promise<Array<AnnotationFeatures>>{
+    public request(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return this.borregoClient.query<AnnotationsResultInterface>({
             query:query,
             variables:{
                 queryId:requestConfig.queryId,
                 reference:requestConfig.reference,
-                source:requestConfig.source
+                sources:requestConfig.sources,
+                filters:requestConfig.filters
             }
         }).then(result=>{
             return result.data.annotations;

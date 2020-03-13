@@ -59,10 +59,27 @@ export interface FeaturePosition {
   value?: Maybe<Scalars['Float']>,
 }
 
+export enum FieldName {
+  TargetId = 'target_id',
+  Type = 'type'
+}
+
+export interface FilterInput {
+  operation?: Maybe<OperationType>,
+  source?: Maybe<Source>,
+  field?: Maybe<FieldName>,
+  values?: Maybe<Array<Maybe<Scalars['String']>>>,
+}
+
 export interface Gap {
    __typename?: 'Gap',
   begin?: Maybe<Scalars['Int']>,
   end?: Maybe<Scalars['Int']>,
+}
+
+export enum OperationType {
+  Contains = 'contains',
+  Equals = 'equals'
 }
 
 export interface Query {
@@ -76,6 +93,7 @@ export interface QueryAnnotationsArgs {
   reference?: Maybe<SequenceReference>,
   sources?: Maybe<Array<Maybe<Source>>>,
   range?: Maybe<Scalars['String']>,
+  filters?: Maybe<Array<Maybe<FilterInput>>>,
   queryId: Scalars['String']
 }
 

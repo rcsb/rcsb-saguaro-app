@@ -2,21 +2,27 @@ import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGra
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
-export class RcsbFvEntity extends RcsbFvCore implements RcsbFvModuleInterface{
+export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInterface{
 
-    public build(entityId: string, updateFlag: boolean): void {
+    public build(upAcc: string, entityId: string, updateFlag: boolean): void {
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
+        const pdbId:string = entityId.split("\.")[0];
         this.sequenceCollector.collect({
-            queryId: entityId,
-            from: SequenceReference.PdbEntity,
-            to: SequenceReference.Uniprot
+            queryId: upAcc,
+            from: SequenceReference.Uniprot,
+            to: SequenceReference.PdbEntity,
+            filterByTargetContains: pdbId
         }).then(seqResult=>{
             this.annotationCollector.collect({
-                queryId: entityId,
-                reference: SequenceReference.PdbEntity,
+                queryId: upAcc,
+                reference: SequenceReference.Uniprot,
                 sources:source,
                 addTargetInTitle:new Set([Source.PdbInstance]),
                 filters:[{
+                    field:FieldName.TargetId,
+                    operation:OperationType.Contains,
+                    values:[pdbId]
+                },{
                     field: FieldName.Type,
                     operation:OperationType.Equals,
                     source:Source.PdbInstance,

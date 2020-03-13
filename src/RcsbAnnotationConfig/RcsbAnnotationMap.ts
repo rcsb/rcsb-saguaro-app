@@ -53,17 +53,30 @@ export class RcsbAnnotationMap {
         return this.entityAnnotationsOrder;
     }
 
-    setAnnotationKey(d: Feature): string{
+    setAnnotationKey(d: Feature, targetId?: string): string{
         const type: string = d.type;
         const a: DynamicKeyAnnotationInterface = d;
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
-            const newType: string = type+":"+a[this.annotationMap.get(type).key];
+            let newType: string = type+":"+a[this.annotationMap.get(type).key];
+            if(targetId !=null)
+                newType += "."+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.randomRgba(),
                     title: this.annotationMap.get(type).title+" "+a[this.annotationMap.get(type).key]
+                } as RcsbAnnotationMapInterface);
+            }
+            return newType;
+        }else if(targetId !=  null){
+            const newType = type+"."+targetId;
+            if(!this.annotationMap.has(newType)) {
+                this.annotationMap.set(newType, {
+                    type: newType,
+                    display: this.annotationMap.get(type).display,
+                    color: this.annotationMap.get(type).color,
+                    title: this.annotationMap.get(type).title+" ("+targetId+")"
                 } as RcsbAnnotationMapInterface);
             }
             return newType;

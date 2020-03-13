@@ -4,14 +4,14 @@ import RcsbQueryAnnotations, {
 import RcsbQueryAlignment, {
     RequestAlignmentInterface,
 } from "../RcsbGraphQL/RcsbQueryAlignment";
-import {AlignmentResponse, AnnotationFeatures} from "./Types/GqlTypes";
+import {AlignmentResponse, AnnotationFeatures, QueryAnnotationsArgs} from "./Types/GqlTypes";
 
 export class RcsbFvQuery {
 
     private rcsbFvQueryAnnotations:RcsbQueryAnnotations = new RcsbQueryAnnotations();
     private rcsbFvQueryAlignment:RcsbQueryAlignment = new RcsbQueryAlignment();
 
-    public requestAnnotations(requestConfig: RequestAnnotationsInterface): Promise<Array<AnnotationFeatures>>{
+    public requestAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return this.rcsbFvQueryAnnotations.request(requestConfig);
     }
 

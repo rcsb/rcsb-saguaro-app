@@ -21,11 +21,16 @@
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7",
     "@graphql-codegen/typescript": "1.12.1",
-    "@graphql-codegen/cli": "^1.12.1"
+    "@graphql-codegen/cli": "^1.12.1",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "dependencies": {
     "apollo-boost": "^0.4.4",
     "graphql": "^14.6.0",
-    "graphql-tag": "^2.10.1"
+    "graphql-tag": "^2.10.1",
+    "rcsb-saguaro": "^1.0.0"
   }
 }

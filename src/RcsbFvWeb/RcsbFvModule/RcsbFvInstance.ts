@@ -1,24 +1,29 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
+import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
-export class RcsbFvInstance extends RcsbFvCore {
+export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
 
-    public build(upAcc: string): void {
+    public build(instanceId: string, updateFlag: boolean): void {
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
         this.sequenceCollector.collect({
-            queryId: upAcc,
-            from: SequenceReference.Uniprot,
-            to: SequenceReference.PdbEntity
+            queryId: instanceId,
+            from: SequenceReference.PdbInstance,
+            to: SequenceReference.Uniprot
         }).then(seqResult=>{
             this.annotationCollector.collect({
-                queryId: upAcc,
-                reference: SequenceReference.Uniprot,
-                source:source
+                queryId: instanceId,
+                reference: SequenceReference.PdbInstance,
+                sources:source
             }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = seqResult.sequence.concat(annResult).concat(seqResult.alignment);
-                this.display();
+                if(updateFlag){
+                    this.update();
+                }else {
+                    this.display();
+                }
             }).catch(error=>{
                 console.error(error);
             });
