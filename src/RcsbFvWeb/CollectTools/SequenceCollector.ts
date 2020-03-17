@@ -82,6 +82,8 @@ export class SequenceCollector {
         alignmentData.targetAlignmentList.forEach(targetAlignment => {
             if(alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
                 return;
+            if(targetAlignment.target_sequence == null)
+                return;
             this.targets.push(targetAlignment.target_id);
             const targetSequence = targetAlignment.target_sequence;
             const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
