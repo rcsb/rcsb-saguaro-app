@@ -34,7 +34,6 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     render() {
         return (
             <label>
-                Reference &nbsp;
                 <select value={this.state.value} onChange={this.change.bind(this)}>
                     {
                         this.state.options.map((opt, index) => {
