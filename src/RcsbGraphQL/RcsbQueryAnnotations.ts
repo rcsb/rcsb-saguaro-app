@@ -1,18 +1,12 @@
-import RcsbQuery from "./RcsbQuery";
-import {AnnotationFeatures, QueryAnnotationsArgs} from "./Types/GqlTypes";
-import * as query from "./Queries/QueryAnnotations.graphql";
-
-export interface RequestAnnotationsInterface {
-    queryId: string;
-    reference: string;
-    source: Array<string>;
-}
+import {RcsbQuery} from "./RcsbQuery";
+import {AnnotationFeatures, QueryAnnotationsArgs} from "./Types/Borrego/GqlTypes";
+import * as query from "./Queries/Borrego/QueryAnnotations.graphql";
 
 interface AnnotationsResultInterface {
     annotations: Array<AnnotationFeatures>;
 }
 
-export default class RcsbQueryAnnotations extends RcsbQuery{
+export class RcsbQueryAnnotations extends RcsbQuery{
     public request(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return this.borregoClient.query<AnnotationsResultInterface>({
             query:query,

@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/RcsbFvWebApp.js",
   "scripts": {
-    "build": "npm run generate && webpack --config ./webpack.config.js",
-    "generate": "graphql-codegen --config codegen.json",
+    "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
+    "generateBorrego": "graphql-codegen --config codegen.borrego.json",
+    "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -24,13 +25,19 @@
     "@graphql-codegen/cli": "^1.12.1",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
+    "@types/react-select": "^3.0.11",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "css-loader": "^3.2.0",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^1.0.0",
+    "node-sass": "^4.12.0"
   },
   "dependencies": {
     "apollo-boost": "^0.4.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.1",
-    "rcsb-saguaro": "^1.0.0"
+    "rcsb-saguaro": "^1.0.0",
+    "react-select": "^3.0.8"
   }
 }

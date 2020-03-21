@@ -5,7 +5,7 @@ import {
     RcsbFvTrackDataElementInterface
 } from 'rcsb-saguaro';
 
-import {AnnotationFeatures, QueryAnnotationsArgs, Source} from "../../RcsbGraphQL/Types/GqlTypes";
+import {AnnotationFeatures, QueryAnnotationsArgs, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationMap";
 

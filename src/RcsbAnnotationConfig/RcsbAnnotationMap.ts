@@ -1,5 +1,5 @@
 import * as annotationMap from "./RcsbAnnotationMap.json";
-import {Feature} from "../RcsbGraphQL/Types/GqlTypes";
+import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export interface RcsbAnnotationMapInterface {
     type: string;

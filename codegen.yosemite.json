@@ -1,0 +1,15 @@
+{
+  "overwrite": true,
+  "schema": "http://data-beta.rcsb.org/graphql",
+  "documents": "src/RcsbGraphQL/Queries/Yosemite/*.graphql",
+  "config":{
+    "declarationKind":"interface"
+  },
+  "generates": {
+    "./src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts": {
+      "plugins": [
+        "typescript"
+      ]
+    }
+  }
+}

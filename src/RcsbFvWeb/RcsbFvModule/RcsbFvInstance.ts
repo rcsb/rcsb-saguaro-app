@@ -1,4 +1,4 @@
-import {SequenceReference, Source} from "../../RcsbGraphQL/Types/GqlTypes";
+import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 

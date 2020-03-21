@@ -1,22 +1,30 @@
-import RcsbQueryAnnotations, {
-    RequestAnnotationsInterface
-} from "../RcsbGraphQL/RcsbQueryAnnotations";
-import RcsbQueryAlignment, {
-    RequestAlignmentInterface,
-} from "../RcsbGraphQL/RcsbQueryAlignment";
-import {AlignmentResponse, AnnotationFeatures, QueryAnnotationsArgs} from "./Types/GqlTypes";
+import {RcsbQueryAnnotations} from "./RcsbQueryAnnotations";
+import {RcsbQueryAlignment} from "./RcsbQueryAlignment";
+import {
+    AlignmentResponse,
+    AnnotationFeatures,
+    QueryAlignmentArgs,
+    QueryAnnotationsArgs
+} from "./Types/Borrego/GqlTypes";
+import {CoreEntry, QueryEntryArgs} from "./Types/Yosemite/GqlTypes";
+import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 
 export class RcsbFvQuery {
 
     private rcsbFvQueryAnnotations:RcsbQueryAnnotations = new RcsbQueryAnnotations();
     private rcsbFvQueryAlignment:RcsbQueryAlignment = new RcsbQueryAlignment();
+    private rcsbFvQueryEntityInstances: RcsbQueryEntryInstances = new RcsbQueryEntryInstances();
 
     public requestAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return this.rcsbFvQueryAnnotations.request(requestConfig);
     }
 
-    public requestAlignment(requestConfig: RequestAlignmentInterface): Promise<AlignmentResponse>{
+    public requestAlignment(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse>{
         return this.rcsbFvQueryAlignment.request(requestConfig);
+    }
+
+    public requestEntityInstances(requestConfig: QueryEntryArgs): Promise<CoreEntry>{
+        return this.rcsbFvQueryEntityInstances.request(requestConfig);
     }
 
 }

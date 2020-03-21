@@ -1,0 +1,11 @@
+query QueryEntryInstance($queryId: String!){
+    entry(
+        entry_id:$queryId
+    ){
+        polymer_entities {
+            polymer_entity_instances{
+                rcsb_id
+            }
+        }
+    }
+}

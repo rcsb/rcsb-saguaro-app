@@ -6,6 +6,7 @@ import {RcsbFvUniprot} from "./RcsbFvModule/RcsbFvUniprot";
 import {RcsbFvModuleInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {WebToolsManager} from "./WebTools/WebToolsManager";
 import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
+import {EntitySequenceCollector} from "./CollectTools/EntryInstancesCollector";
 
 interface RcsbFvSingleViewerInterface {
     queryId: string;
@@ -87,6 +88,23 @@ export class RcsbFvWebApp {
 
     }
 
+    public static buildInstanceSequenceFv(elementId:string, elementSelectID:string, entryID: string): void {
+        const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
+        instanceCollector.collect({entry_id:entryID}).then(result=>{
+            RcsbFvWebApp.buildInstanceFv(elementId,result[0]);
+            WebToolsManager.buildSelectButton(elementSelectID,result.map(instanceId=>{
+                return{
+                    label: instanceId,
+                    onChange:()=>{
+                        RcsbFvWebApp.buildInstanceFv(elementId,instanceId);
+                    }
+                }
+            }));
+        }).catch(error=>{
+            console.error(error);
+        });
+    }
+
     public static buildInstanceFv(elementId: string, instanceId: string): void {
         if(RcsbFvWebApp.rcsbFvManager.has(elementId)){
             const rcsbFvInstance:RcsbFvInstance = new RcsbFvInstance(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
@@ -110,12 +128,12 @@ export class RcsbFvWebApp {
         }
     }
 
-    public static buildSelectButton(elementId: string, elementFvId: string){
+    public static buildEntityFvSelectButton(elementId: string, elementFvId: string){
         if(RcsbFvWebApp.rcsbFvManager.has(elementFvId)){
             RcsbFvWebApp.rcsbFvManager.get(elementFvId).rcsbFvModule.getTargets().then(targets=>{
                 WebToolsManager.buildSelectButton(elementId,[RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId].concat(targets).map(t=>{
                     return {
-                        text: t,
+                        label: t,
                         onChange:()=>{
                             if(t===RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId){
                                 RcsbFvWebApp.buildEntityFv(elementFvId,RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId);

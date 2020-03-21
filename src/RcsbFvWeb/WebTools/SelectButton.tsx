@@ -1,7 +1,9 @@
 import * as React from "react";
+import {CSSProperties} from "react";
+import Select, {Styles} from 'react-select';
 
 export interface SelectOptionInterface {
-    text: string;
+    label: string;
     onChange: ()=>void;
 }
 
@@ -10,38 +12,56 @@ interface SelectButtonInterface {
 }
 
 interface SelectButtonState {
-    options: Array<SelectOptionInterface>;
     value: number;
+}
+
+interface OptionInterface {
+    value:number;
+    label:string;
 }
 
 export class SelectButton extends React.Component <SelectButtonInterface, SelectButtonState> {
 
-    private mounted: boolean = false;
-
     readonly state: SelectButtonState = {
-        options: this.props.options,
         value: 0
     };
 
-    change(event: any):void {
-        this.setState({value: event.target.value});
+    change(option: OptionInterface):void {
+        this.setState({value: option.value});
     }
 
     componentDidUpdate(prevProps: Readonly<SelectButtonInterface>, prevState: Readonly<SelectButtonState>): void {
-        this.state.options[this.state.value].onChange();
+        this.props.options[this.state.value].onChange();
     }
 
     render() {
         return (
-            <label>
-                <select value={this.state.value} onChange={this.change.bind(this)}>
-                    {
-                        this.state.options.map((opt, index) => {
-                            return <option value={index}>{opt.text}</option>
-                        })
-                    }
-                </select>
-            </label>
+            <Select
+                options={
+                    this.props.options.map((opt, index) => {
+                        return {value:index, label:opt.label};
+                    })
+                }
+                isSearchable={false}
+                onChange={this.change.bind(this)}
+                defaultValue={{value:0, label:this.props.options[0].label}}
+                styles={SelectButton.configStyle()}
+            />
         );
+    }
+
+    private static configStyle(): Styles{
+        return {
+            control: (base: CSSProperties, state) => ({
+                ...base,
+                width:120,
+                border: '1px solid #ddd',
+                boxShadow: 'none',
+                '&:hover': {
+                    border: '1px solid #ddd',
+                }
+
+            })
+        };
     }
 }

@@ -1,20 +1,14 @@
-import RcsbQuery from "./RcsbQuery";
-import {AlignmentResponse} from "./Types/GqlTypes";
-import * as query from "./Queries/QueryAlignments.graphql";
-
-export interface RequestAlignmentInterface {
-    queryId: string;
-    from: string;
-    to: string;
-}
+import {RcsbQuery} from "./RcsbQuery";
+import {AlignmentResponse, QueryAlignmentArgs} from "./Types/Borrego/GqlTypes";
+import * as query from "./Queries/Borrego/QueryAlignments.graphql";
 
 interface AlignmentResponseInterface{
     alignment: AlignmentResponse;
 }
 
-export default class RcsbQueryAlignment extends RcsbQuery{
+export class RcsbQueryAlignment extends RcsbQuery{
 
-    public request(requestConfig: RequestAlignmentInterface): Promise<AlignmentResponse>{
+    public request(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse>{
         return this.borregoClient.query<AlignmentResponseInterface>({
             query:query,
             variables:{

@@ -1,4 +1,4 @@
-import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGraphQL/Types/GqlTypes";
+import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
@@ -11,7 +11,7 @@ export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInter
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
-            filterByTargetContains: pdbId
+            filterByTargetContains: entityId
         }).then(seqResult=>{
             this.annotationCollector.collect({
                 queryId: upAcc,

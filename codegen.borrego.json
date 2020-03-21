@@ -1,12 +1,12 @@
 {
   "overwrite": true,
   "schema": "http://1d-coordinates.rcsb.org/graphql",
-  "documents": "src/RcsbGraphQL/Queries/*.graphql",
+  "documents": "src/RcsbGraphQL/Queries/Borrego/*.graphql",
   "config":{
     "declarationKind":"interface"
   },
   "generates": {
-    "./src/RcsbGraphQL/Types/GqlTypes.ts": {
+    "./src/RcsbGraphQL/Types/Borrego/GqlTypes.ts": {
       "plugins": [
         "typescript"
       ]

@@ -19,7 +19,18 @@ module.exports = {
               test: /\.(graphql|gql)$/,
               exclude: /node_modules/,
               loader: 'graphql-tag/loader'
-        }
+        },{
+              test: /\.scss$/,
+              use: ['style-loader', {
+                  loader: 'css-loader',
+                  options: {
+                      modules: {
+                          localIdentName:'[local]'
+                      }
+                  }
+              }, 'sass-loader'],
+              exclude: /node_modules/
+          }
       ]
     },
     resolve: {

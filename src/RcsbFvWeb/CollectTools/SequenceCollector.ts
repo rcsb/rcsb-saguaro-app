@@ -5,8 +5,7 @@ import {
     RcsbFvTrackDataElementInterface
 } from 'rcsb-saguaro';
 
-import {AlignedRegion, AlignmentResponse, QueryAlignmentArgs, TargetAlignment} from "../../RcsbGraphQL/Types/GqlTypes";
-import {RequestAlignmentInterface} from "../../RcsbGraphQL/RcsbQueryAlignment";
+import {AlignedRegion, AlignmentResponse, QueryAlignmentArgs, TargetAlignment} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
@@ -42,7 +41,7 @@ export class SequenceCollector {
            queryId: requestConfig.queryId,
            from: requestConfig.from,
            to: requestConfig.to
-        } as RequestAlignmentInterface).then(result => {
+        } as QueryAlignmentArgs).then(result => {
             this.sequenceLength = result.query_sequence.length;
             const data: AlignmentResponse = result;
             const querySequence: string = data.query_sequence;
