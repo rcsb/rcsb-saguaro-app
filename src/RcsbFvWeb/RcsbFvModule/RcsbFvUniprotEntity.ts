@@ -20,7 +20,13 @@ export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInter
                 addTargetInTitle:new Set([Source.PdbInstance]),
                 filters:[{
                     field:FieldName.TargetId,
+                    operation:OperationType.Equals,
+                    source: Source.PdbEntity,
+                    values:[entityId]
+                },{
+                    field:FieldName.TargetId,
                     operation:OperationType.Contains,
+                    source:Source.PdbInstance,
                     values:[pdbId]
                 },{
                     field: FieldName.Type,
