@@ -1,6 +1,6 @@
 {
   "overwrite": true,
-  "schema": "http://data-beta.rcsb.org/graphql",
+  "schema": "http://data.rcsb.org/graphql",
   "documents": "src/RcsbGraphQL/Queries/Yosemite/*.graphql",
   "config":{
     "declarationKind":"interface"

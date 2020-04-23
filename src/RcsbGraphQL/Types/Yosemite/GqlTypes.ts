@@ -128,6 +128,7 @@ export interface CoreChemComp {
   pdbx_reference_molecule_related_structures?: Maybe<Array<Maybe<PdbxReferenceMoleculeRelatedStructures>>>,
   pdbx_reference_molecule_synonyms?: Maybe<Array<Maybe<PdbxReferenceMoleculeSynonyms>>>,
   rcsb_bird_citation?: Maybe<Array<Maybe<RcsbBirdCitation>>>,
+  rcsb_chem_comp_annotation?: Maybe<Array<Maybe<RcsbChemCompAnnotation>>>,
   rcsb_chem_comp_container_identifiers?: Maybe<RcsbChemCompContainerIdentifiers>,
   rcsb_chem_comp_descriptor?: Maybe<RcsbChemCompDescriptor>,
   rcsb_chem_comp_info?: Maybe<RcsbChemCompInfo>,
@@ -143,6 +144,27 @@ export interface CoreDrugbank {
   drugbank_container_identifiers?: Maybe<DrugbankContainerIdentifiers>,
   drugbank_info?: Maybe<DrugbankInfo>,
   drugbank_target?: Maybe<Array<Maybe<DrugbankTarget>>>,
+}
+
+export interface CoreEntityAlignmentsAlignedRegions {
+   __typename?: 'CoreEntityAlignmentsAlignedRegions',
+  length: Scalars['Int'],
+  query_begin: Scalars['Int'],
+  target_begin: Scalars['Int'],
+}
+
+export interface CoreEntityAlignmentsCoreEntityIdentifiers {
+   __typename?: 'CoreEntityAlignmentsCoreEntityIdentifiers',
+  entity_id: Scalars['String'],
+  entry_id: Scalars['String'],
+}
+
+export interface CoreEntityAlignmentsScores {
+   __typename?: 'CoreEntityAlignmentsScores',
+  query_coverage: Scalars['Int'],
+  query_length: Scalars['Int'],
+  target_coverage: Scalars['Int'],
+  target_length: Scalars['Int'],
 }
 
 export interface CoreEntry {
@@ -219,6 +241,7 @@ export interface CoreEntry {
   rcsb_entry_info: RcsbEntryInfo,
   rcsb_external_references?: Maybe<Array<Maybe<RcsbExternalReferences>>>,
   rcsb_id: Scalars['String'],
+  rcsb_primary_citation?: Maybe<RcsbPrimaryCitation>,
   refine?: Maybe<Array<Maybe<Refine>>>,
   refine_analyze?: Maybe<Array<Maybe<RefineAnalyze>>>,
   refine_hist?: Maybe<Array<Maybe<RefineHist>>>,
@@ -337,6 +360,7 @@ export interface CoreUniprot {
    __typename?: 'CoreUniprot',
   rcsb_id?: Maybe<Scalars['String']>,
   rcsb_uniprot_accession?: Maybe<Array<Maybe<Scalars['String']>>>,
+  rcsb_uniprot_alignments?: Maybe<RcsbUniprotAlignments>,
   rcsb_uniprot_annotation?: Maybe<Array<Maybe<RcsbUniprotAnnotation>>>,
   rcsb_uniprot_container_identifiers: RcsbUniprotContainerIdentifiers,
   rcsb_uniprot_entry_name?: Maybe<Array<Maybe<Scalars['String']>>>,
@@ -849,6 +873,8 @@ export interface PdbxAuditRevisionCategory {
 export interface PdbxAuditRevisionDetails {
    __typename?: 'PdbxAuditRevisionDetails',
   data_content_type: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  details?: Maybe<Scalars['String']>,
   ordinal: Scalars['Int'],
   provider?: Maybe<Scalars['String']>,
   revision_ordinal: Scalars['Int'],
@@ -1662,6 +1688,7 @@ export interface QueryNonpolymer_EntityArgs {
 export interface RcsbAccessionInfo {
    __typename?: 'RcsbAccessionInfo',
   deposit_date?: Maybe<Scalars['Date']>,
+  has_released_experimental_data?: Maybe<Scalars['String']>,
   initial_release_date?: Maybe<Scalars['Date']>,
   major_revision?: Maybe<Scalars['Int']>,
   minor_revision?: Maybe<Scalars['Int']>,
@@ -1737,6 +1764,24 @@ export interface RcsbBirdCitation {
   rcsb_authors?: Maybe<Array<Maybe<Scalars['String']>>>,
   title?: Maybe<Scalars['String']>,
   year?: Maybe<Scalars['Int']>,
+}
+
+export interface RcsbChemCompAnnotation {
+   __typename?: 'RcsbChemCompAnnotation',
+  annotation_id?: Maybe<Scalars['String']>,
+  annotation_lineage?: Maybe<Array<Maybe<RcsbChemCompAnnotationAnnotationLineage>>>,
+  assignment_version?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  name?: Maybe<Scalars['String']>,
+  provenance_source?: Maybe<Scalars['String']>,
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbChemCompAnnotationAnnotationLineage {
+   __typename?: 'RcsbChemCompAnnotationAnnotationLineage',
+  depth?: Maybe<Scalars['Int']>,
+  id?: Maybe<Scalars['String']>,
+  name?: Maybe<Scalars['String']>,
 }
 
 export interface RcsbChemCompContainerIdentifiers {
@@ -1819,8 +1864,8 @@ export interface RcsbClusterFlexibility {
 
 export interface RcsbClusterMembership {
    __typename?: 'RcsbClusterMembership',
-  cluster_id: Scalars['Int'],
-  identity: Scalars['Int'],
+  cluster_id?: Maybe<Scalars['Int']>,
+  identity?: Maybe<Scalars['Int']>,
 }
 
 export interface RcsbEntityHostOrganism {
@@ -1905,6 +1950,8 @@ export interface RcsbEntryInfo {
   deposited_polymer_entity_instance_count?: Maybe<Scalars['Int']>,
   deposited_polymer_monomer_count?: Maybe<Scalars['Int']>,
   deposited_unmodeled_polymer_monomer_count?: Maybe<Scalars['Int']>,
+  diffrn_radiation_wavelength_maximum?: Maybe<Scalars['Float']>,
+  diffrn_radiation_wavelength_minimum?: Maybe<Scalars['Float']>,
   disulfide_bond_count?: Maybe<Scalars['Int']>,
   entity_count?: Maybe<Scalars['Int']>,
   experimental_method?: Maybe<Scalars['String']>,
@@ -2376,6 +2423,32 @@ export interface RcsbPolymerStructConnConnectTarget {
   symmetry?: Maybe<Scalars['String']>,
 }
 
+export interface RcsbPrimaryCitation {
+   __typename?: 'RcsbPrimaryCitation',
+  book_id_ISBN?: Maybe<Scalars['String']>,
+  book_publisher?: Maybe<Scalars['String']>,
+  book_publisher_city?: Maybe<Scalars['String']>,
+  book_title?: Maybe<Scalars['String']>,
+  coordinate_linkage?: Maybe<Scalars['String']>,
+  country?: Maybe<Scalars['String']>,
+  id: Scalars['String'],
+  journal_abbrev?: Maybe<Scalars['String']>,
+  journal_id_ASTM?: Maybe<Scalars['String']>,
+  journal_id_CSD?: Maybe<Scalars['String']>,
+  journal_id_ISSN?: Maybe<Scalars['String']>,
+  journal_issue?: Maybe<Scalars['String']>,
+  journal_volume?: Maybe<Scalars['String']>,
+  language?: Maybe<Scalars['String']>,
+  page_first?: Maybe<Scalars['String']>,
+  page_last?: Maybe<Scalars['String']>,
+  pdbx_database_id_DOI?: Maybe<Scalars['String']>,
+  pdbx_database_id_PubMed?: Maybe<Scalars['Int']>,
+  rcsb_authors?: Maybe<Array<Maybe<Scalars['String']>>>,
+  rcsb_journal_abbrev?: Maybe<Scalars['String']>,
+  title?: Maybe<Scalars['String']>,
+  year?: Maybe<Scalars['Int']>,
+}
+
 export interface RcsbPubmedContainerIdentifiers {
    __typename?: 'RcsbPubmedContainerIdentifiers',
   pubmed_id?: Maybe<Scalars['Int']>,
@@ -2437,6 +2510,18 @@ export interface RcsbStructSymmetryRotationAxes {
   end: Array<Maybe<Scalars['Float']>>,
   order?: Maybe<Scalars['Int']>,
   start: Array<Maybe<Scalars['Float']>>,
+}
+
+export interface RcsbUniprotAlignments {
+   __typename?: 'RcsbUniprotAlignments',
+  core_entity_alignments?: Maybe<Array<Maybe<RcsbUniprotAlignmentsCoreEntityAlignments>>>,
+}
+
+export interface RcsbUniprotAlignmentsCoreEntityAlignments {
+   __typename?: 'RcsbUniprotAlignmentsCoreEntityAlignments',
+  aligned_regions?: Maybe<Array<Maybe<CoreEntityAlignmentsAlignedRegions>>>,
+  core_entity_identifiers?: Maybe<CoreEntityAlignmentsCoreEntityIdentifiers>,
+  scores?: Maybe<CoreEntityAlignmentsScores>,
 }
 
 export interface RcsbUniprotAnnotation {
