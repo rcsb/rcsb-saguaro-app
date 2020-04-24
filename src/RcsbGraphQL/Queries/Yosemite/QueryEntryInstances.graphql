@@ -5,6 +5,11 @@ query QueryEntryInstance($queryId: String!){
         polymer_entities {
             polymer_entity_instances{
                 rcsb_id
+                polymer_entity{
+                    entity_poly{
+                        rcsb_entity_polymer_type
+                    }
+                }
             }
         }
     }

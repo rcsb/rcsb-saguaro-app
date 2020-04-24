@@ -20,7 +20,9 @@ export class EntitySequenceCollector {
             entry.polymer_entities.forEach(entity=>{
                 if(entity.polymer_entity_instances!=null){
                     entity.polymer_entity_instances.forEach(instance=>{
-                        out.add(instance.rcsb_id);
+                        if(instance.polymer_entity.entity_poly.rcsb_entity_polymer_type == "Protein") {
+                            out.add(instance.rcsb_id);
+                        }
                     })
                 }
             })
