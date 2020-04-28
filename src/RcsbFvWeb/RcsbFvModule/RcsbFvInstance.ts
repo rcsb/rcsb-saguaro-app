@@ -1,8 +1,18 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvTrackDataElementInterface} from 'rcsb-saguaro';
+
 
 export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
+
+    private elementEnterCallBack: ((d?:RcsbFvTrackDataElementInterface)=>void) = (d?:RcsbFvTrackDataElementInterface)=>{
+        console.log(d);
+    };
+
+    private elementClickCallBack: ((d?:RcsbFvTrackDataElementInterface)=>void) = function(d?:RcsbFvTrackDataElementInterface){
+        console.log(d);
+    };
 
     public build(instanceId: string, updateFlag: boolean): void {
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
@@ -30,6 +40,14 @@ export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
         }).catch(error=>{
             console.error(error);
         });
+    }
+
+    private setElementEnterCallBack(f:(d?:RcsbFvTrackDataElementInterface)=>void): void{
+        this.boardConfigData.elementEnterCallBack = f;
+    }
+
+    private setElementClickCallBack(f:(d?:RcsbFvTrackDataElementInterface)=>void): void{
+        this.boardConfigData.elementClickCallBack = f;
     }
 
 }

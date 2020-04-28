@@ -121,18 +121,21 @@ export class SequenceCollector {
                             openBegin:openBegin,
                             openEnd:openEnd,
                             gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
-                            type: "ALIGNED_BLOCK"
+                            type: "ALIGNED_BLOCK",
+                            title: "ALIGNED REGION"
                         } as RcsbFvTrackDataElementInterface);
                         findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
                             mismatchData.push({
                                 begin: (m + region.query_begin),
-                                type: "MISMATCH"
+                                type: "MISMATCH",
+                                label: "MISMATCH"
                             } as RcsbFvTrackDataElementInterface);
                         });
                         findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
                             mismatchData.push({
                                 begin: (m + nextRegion.query_begin),
-                                type: "MISMATCH"
+                                type: "MISMATCH",
+                                label: "MISMATCH"
                             } as RcsbFvTrackDataElementInterface);
                         });
                         skipRegion = true;
@@ -154,12 +157,14 @@ export class SequenceCollector {
                     end: region.query_end,
                     openBegin:openBegin,
                     openEnd:openEnd,
-                    type: "ALIGNED_BLOCK"
+                    type: "ALIGNED_BLOCK",
+                    title: "ALIGNED REGION"
                 } as RcsbFvTrackDataElementInterface);
                 findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
                     mismatchData.push({
                         begin: (m + region.query_begin),
-                        type: "MISMATCH"
+                        type: "MISMATCH",
+                        title: "MISMATCH"
                     } as RcsbFvTrackDataElementInterface);
                 });
             });
