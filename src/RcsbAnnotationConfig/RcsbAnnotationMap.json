@@ -220,7 +220,7 @@
     "type": "mutation",
     "display": "pin",
     "color": "#ebae56",
-    "title": "mutation"
+    "title": "MUTATION"
   },{
     "type": "HELIX_P",
     "display": "block",

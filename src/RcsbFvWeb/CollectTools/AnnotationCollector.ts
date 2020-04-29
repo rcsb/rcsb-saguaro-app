@@ -48,6 +48,7 @@ export class AnnotationCollector {
                                 featureId: d.feature_id,
                                 type: type,
                                 title:this.rcsbAnnotationMap.getConfig(type).title,
+                                name: d.name,
                                 value: p.value,
                                 gValue: d.value,
                                 gaps: p.gaps,

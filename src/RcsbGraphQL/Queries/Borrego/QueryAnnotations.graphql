@@ -11,6 +11,7 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
             type
             description
             feature_id
+            name
             feature_positions {
                 beg_seq_id
                 end_seq_id

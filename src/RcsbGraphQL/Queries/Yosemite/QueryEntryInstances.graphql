@@ -10,6 +10,11 @@ query QueryEntryInstance($queryId: String!){
                         rcsb_entity_polymer_type
                     }
                 }
+                rcsb_polymer_entity_instance_container_identifiers{
+                    asym_id
+                    auth_asym_id
+                    entry_id
+                }
             }
         }
     }

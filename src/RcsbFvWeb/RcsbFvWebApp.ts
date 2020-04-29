@@ -6,7 +6,7 @@ import {RcsbFvUniprot} from "./RcsbFvModule/RcsbFvUniprot";
 import {RcsbFvModuleInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {WebToolsManager} from "./WebTools/WebToolsManager";
 import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
-import {EntitySequenceCollector} from "./CollectTools/EntryInstancesCollector";
+import {EntitySequenceCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
 
 interface RcsbFvSingleViewerInterface {
     queryId: string;
@@ -91,12 +91,12 @@ export class RcsbFvWebApp {
     public static buildInstanceSequenceFv(elementId:string, elementSelectID:string, entryID: string): void {
         const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
         instanceCollector.collect({entry_id:entryID}).then(result=>{
-            RcsbFvWebApp.buildInstanceFv(elementId,result[0]);
-            WebToolsManager.buildSelectButton(elementSelectID,result.map(instanceId=>{
+            RcsbFvWebApp.buildInstanceFv(elementId,result[0].rcsbId);
+            WebToolsManager.buildSelectButton(elementSelectID,result.map(instance=>{
                 return{
-                    label: instanceId,
+                    label: instance.entryId+"."+instance.authId,
                     onChange:()=>{
-                        RcsbFvWebApp.buildInstanceFv(elementId,instanceId);
+                        RcsbFvWebApp.buildInstanceFv(elementId,instance.rcsbId);
                     }
                 }
             }));
