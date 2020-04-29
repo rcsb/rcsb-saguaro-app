@@ -118,6 +118,9 @@ export class SequenceCollector {
                         alignedBlocks.push({
                             begin: region.query_begin,
                             end: nextRegion.query_end,
+                            ori_begin: region.target_begin,
+                            ori_end: nextRegion.target_end,
+                            source:targetAlignment.target_id,
                             openBegin:openBegin,
                             openEnd:openEnd,
                             gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
@@ -155,6 +158,9 @@ export class SequenceCollector {
                 alignedBlocks.push({
                     begin: region.query_begin,
                     end: region.query_end,
+                    ori_begin: region.target_begin,
+                    ori_end: region.target_end,
+                    source:targetAlignment.target_id,
                     openBegin:openBegin,
                     openEnd:openEnd,
                     type: "ALIGNED_BLOCK",

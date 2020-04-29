@@ -26,6 +26,7 @@
     "COMPOSITIONALLY_BIASED_REGION",
     "SPLICE_VARIANT",
     "SEQUENCE_CONFLICT",
+    "NON_TERMINAL_RESIDUE",
     "HELIX",
     "STRAND",
     "TURN"
@@ -306,6 +307,11 @@
     "display": "pin",
     "color": "#6af34a",
     "title": "GLYCOSYLATION"
+  },{
+    "type": "NON_TERMINAL_RESIDUE",
+    "display": "pin",
+    "color": "#6af3fa",
+    "title": "NON-TERMINAL RESIDUE"
   },{
     "type": "MODIFIED_MONOMER",
     "display": "composite",

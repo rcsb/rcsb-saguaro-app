@@ -39,6 +39,9 @@ export class AnnotationCollector {
                     if (!annotations.has(type)) {
                         annotations.set(type, new Array<RcsbFvTrackDataElementInterface>());
                     }
+                    let title:string = type;
+                    if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
+                        title = this.rcsbAnnotationMap.getConfig(type).title;
                     d.feature_positions.forEach(p => {
                         if(p.beg_seq_id != null)
                             annotations.get(type).push({
@@ -49,12 +52,12 @@ export class AnnotationCollector {
                                 description: d.description,
                                 featureId: d.feature_id,
                                 type: type,
-                                title:this.rcsbAnnotationMap.getConfig(type).title,
+                                title:title,
                                 name: d.name,
                                 value: p.value,
                                 gValue: d.value,
                                 gaps: p.gaps,
-                                source:ann.source.toString(),
+                                source:ann.target_id,
                                 openBegin: p.open_begin,
                                 openEnd: p.open_end
                             } as RcsbFvTrackDataElementInterface);

@@ -38,7 +38,6 @@ export class EntitySequenceCollector {
                 }
             })
         }
-        console.log(out);
         return Array.from<PolymerEntityInstanceInterface>(out);
     }
 
