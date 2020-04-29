@@ -44,6 +44,8 @@ export class AnnotationCollector {
                             annotations.get(type).push({
                                 begin: p.beg_seq_id,
                                 end: p.end_seq_id,
+                                ori_begin: p.beg_ori_id,
+                                ori_end: p.end_ori_id,
                                 description: d.description,
                                 featureId: d.feature_id,
                                 type: type,
@@ -52,6 +54,7 @@ export class AnnotationCollector {
                                 value: p.value,
                                 gValue: d.value,
                                 gaps: p.gaps,
+                                source:ann.source.toString(),
                                 openBegin: p.open_begin,
                                 openEnd: p.open_end
                             } as RcsbFvTrackDataElementInterface);

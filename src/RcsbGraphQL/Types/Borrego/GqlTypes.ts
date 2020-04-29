@@ -51,7 +51,9 @@ export interface Feature {
 
 export interface FeaturePosition {
    __typename?: 'FeaturePosition',
+  beg_ori_id?: Maybe<Scalars['Int']>,
   beg_seq_id?: Maybe<Scalars['Int']>,
+  end_ori_id?: Maybe<Scalars['Int']>,
   end_seq_id?: Maybe<Scalars['Int']>,
   gaps?: Maybe<Array<Maybe<Gap>>>,
   open_begin?: Maybe<Scalars['Boolean']>,
@@ -65,10 +67,10 @@ export enum FieldName {
 }
 
 export interface FilterInput {
-  operation?: Maybe<OperationType>,
   field?: Maybe<FieldName>,
   values?: Maybe<Array<Maybe<Scalars['String']>>>,
   source?: Maybe<Source>,
+  operation?: Maybe<OperationType>,
 }
 
 export interface Gap {

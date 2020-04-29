@@ -15,6 +15,8 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
             feature_positions {
                 beg_seq_id
                 end_seq_id
+                beg_ori_id
+                end_ori_id
                 gaps{
                     begin
                     end
