@@ -27,7 +27,7 @@ export class AnnotationCollector {
             filters: requestConfig.filters
         }).then(result => {
             const data: Array<AnnotationFeatures> = result;
-            const annotations: Map<string, Array<RcsbFvTrackDataElementInterface>> = new Map();
+            const annotations: Map<string, Map<number,RcsbFvTrackDataElementInterface>> = new Map();
             data.forEach(ann => {
                 ann.features.forEach(d => {
                     let type: string;
@@ -37,48 +37,54 @@ export class AnnotationCollector {
                         type = this.rcsbAnnotationMap.setAnnotationKey(d);
 
                     if (!annotations.has(type)) {
-                        annotations.set(type, new Array<RcsbFvTrackDataElementInterface>());
+
+                        annotations.set(type, new Map<number,RcsbFvTrackDataElementInterface>());
                     }
                     let title:string = type;
                     if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
                         title = this.rcsbAnnotationMap.getConfig(type).title;
                     d.feature_positions.forEach(p => {
-                        if(p.beg_seq_id != null)
-                            annotations.get(type).push({
-                                begin: p.beg_seq_id,
-                                end: p.end_seq_id,
-                                ori_begin: p.beg_ori_id,
-                                ori_end: p.end_ori_id,
-                                description: d.description,
-                                featureId: d.feature_id,
-                                type: type,
-                                title:title,
-                                name: d.name,
-                                value: p.value,
-                                gValue: d.value,
-                                gaps: p.gaps,
-                                source:ann.target_id,
-                                openBegin: p.open_begin,
-                                openEnd: p.open_end
-                            } as RcsbFvTrackDataElementInterface);
+                        if(p.beg_seq_id != null) {
+                            if (!annotations.get(type).has(p.beg_seq_id)) {
+                                annotations.get(type).set(p.beg_seq_id,{
+                                    begin: p.beg_seq_id,
+                                    end: p.end_seq_id,
+                                    ori_begin: p.beg_ori_id,
+                                    ori_end: p.end_ori_id,
+                                    description: new Array<string>(),
+                                    featureId: d.feature_id,
+                                    type: type,
+                                    title: title,
+                                    name: d.name,
+                                    value: p.value,
+                                    gValue: d.value,
+                                    gaps: p.gaps,
+                                    source: ann.target_id,
+                                    openBegin: p.open_begin,
+                                    openEnd: p.open_end
+                                } as RcsbFvTrackDataElementInterface);
+                            }
+                            if(typeof d.description === "string")
+                                annotations.get(type).get(p.beg_seq_id).description.push(d.description);
+                        }
                     })
                 });
             });
             this.rcsbAnnotationMap.instanceOrder().forEach(type => {
-                if (annotations.has(type) && annotations.get(type).length > 0)
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(annotations.get(type), type));
+                if (annotations.has(type) && annotations.get(type).size > 0)
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type));
             });
             this.rcsbAnnotationMap.entityOrder().forEach(type => {
-                if (annotations.has(type) && annotations.get(type).length > 0)
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(annotations.get(type), type));
+                if (annotations.has(type) && annotations.get(type).size > 0)
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type));
             });
             this.rcsbAnnotationMap.uniprotOrder().forEach(type => {
-                if (annotations.has(type) && annotations.get(type).length > 0)
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(annotations.get(type), type));
+                if (annotations.has(type) && annotations.get(type).size > 0)
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type));
             });
             annotations.forEach((data, type) => {
                 if (!this.rcsbAnnotationMap.allTypes().has(type))
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(data, type));
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(data.values()), type));
             });
             return this.annotationsConfigData;
         }).catch(error=>{
