@@ -28,7 +28,7 @@ export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
             }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
-                this.rowConfigData = seqResult.sequence.concat(annResult).concat(seqResult.alignment);
+                this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
                 if(updateFlag){
                     this.update();
                 }else {
@@ -36,9 +36,11 @@ export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
                 }
             }).catch(error=>{
                 console.error(error);
+                throw error;
             });
         }).catch(error=>{
             console.error(error);
+            throw error;
         });
     }
 

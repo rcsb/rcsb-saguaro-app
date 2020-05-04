@@ -5,8 +5,15 @@ import {
     RcsbFvTrackDataElementInterface
 } from 'rcsb-saguaro';
 
-import {AlignedRegion, AlignmentResponse, QueryAlignmentArgs, TargetAlignment} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    AlignedRegion,
+    AlignmentResponse,
+    QueryAlignmentArgs,
+    SequenceReference,
+    TargetAlignment
+} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
+import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
@@ -54,6 +61,11 @@ export class SequenceCollector {
                 rowTitle: requestConfig.queryId,
                 trackData: [{begin: 1, value: result.query_sequence}]
             };
+            if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
+                track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
+            }else{
+                track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.external;
+            }
             this.seqeunceConfigData.push(track);
             return this.buildAlignments({targetAlignmentList: alignmentData, querySequence: querySequence, filterByTargetContains:requestConfig.filterByTargetContains});
          }).catch(error=>{
@@ -195,6 +207,7 @@ export class SequenceCollector {
                 displayType: RcsbFvDisplayTypes.COMPOSITE,
                 trackColor: "#F9F9F9",
                 rowTitle: targetAlignment.target_id,
+                titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
             };
             this.alignmentsConfigData.push(track);

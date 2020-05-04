@@ -6,6 +6,7 @@ export interface RcsbAnnotationMapInterface {
     display: string;
     color: string;
     title: string;
+    height?:number;
     key?: string;
 }
 
@@ -15,7 +16,7 @@ interface DynamicKeyAnnotationInterface extends Feature{
 
 export class RcsbAnnotationMap {
     private annotationMap: Map<string,RcsbAnnotationMapInterface> = new Map<string, RcsbAnnotationMapInterface>();
-    private readonly uniprotAnnotationsOrder: Array<string> = new Array<string>();
+    private readonly externalAnnotationsOrder: Array<string> = new Array<string>();
     private readonly instanceAnnotationsOrder: Array<string> = new Array<string>();
     private readonly entityAnnotationsOrder: Array<string> = new Array<string>();
 
@@ -24,7 +25,7 @@ export class RcsbAnnotationMap {
         config.forEach(m=>{
             this.annotationMap.set(m.type,m);
         });
-        this.uniprotAnnotationsOrder = (<any>annotationMap).uniprot_order;
+        this.externalAnnotationsOrder = (<any>annotationMap).external_data_order;
         this.instanceAnnotationsOrder = (<any>annotationMap).instance_order;
         this.entityAnnotationsOrder = (<any>annotationMap).entity_order;
     }
@@ -37,12 +38,12 @@ export class RcsbAnnotationMap {
     }
 
     allTypes(): Set<string>{
-        const concat: Array<string> = this.uniprotAnnotationsOrder.concat(this.instanceAnnotationsOrder).concat(this.entityAnnotationsOrder);
+        const concat: Array<string> = this.externalAnnotationsOrder.concat(this.instanceAnnotationsOrder).concat(this.entityAnnotationsOrder);
         return new Set(concat);
     }
 
     uniprotOrder(): Array<string>{
-        return this.uniprotAnnotationsOrder;
+        return this.externalAnnotationsOrder;
     }
 
     instanceOrder(): Array<string>{
@@ -68,6 +69,7 @@ export class RcsbAnnotationMap {
                     title: this.annotationMap.get(type).title+" "+a[this.annotationMap.get(type).key]
                 } as RcsbAnnotationMapInterface);
             }
+            this.checkAndIncludeNewType(newType, type);
             return newType;
         }else if(targetId !=  null){
             const newType = type+"."+targetId;
@@ -79,9 +81,19 @@ export class RcsbAnnotationMap {
                     title: this.annotationMap.get(type).title+" ("+targetId+")"
                 } as RcsbAnnotationMapInterface);
             }
+            this.checkAndIncludeNewType(newType, type);
             return newType;
         }
         return type;
+    }
+
+    checkAndIncludeNewType(newType: string, type: string){
+        if(this.instanceAnnotationsOrder.includes(type) && !this.instanceAnnotationsOrder.includes(newType))
+            this.instanceAnnotationsOrder.push(newType);
+        else if(this.entityAnnotationsOrder.includes(type) && !this.entityAnnotationsOrder.includes(newType))
+            this.entityAnnotationsOrder.push(newType);
+        else if(this.externalAnnotationsOrder.includes(type) && !this.externalAnnotationsOrder.includes(newType))
+            this.externalAnnotationsOrder.push(newType);
     }
 
     randomRgba(): string{

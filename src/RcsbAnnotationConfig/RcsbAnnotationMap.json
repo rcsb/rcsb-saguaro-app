@@ -1,5 +1,11 @@
 {
-  "uniprot_order": [
+  "provenance_code": {
+    "external": "#DB9128",
+    "rcsb_pdb": "#5e94c3"
+  },
+  "external_data_order": [
+    "CATH",
+    "SCOP",
     "CHAIN",
     "INITIATOR_METHIONINE",
     "SEQUENCE_VARIANT",
@@ -47,9 +53,7 @@
     "RSRCC_OUTLIER",
     "MOGUL_ANGLE_OUTLIER",
     "MOGUL_BOND_OUTLIER",
-    "CIS-PEPTIDE",
-    "CATH",
-    "SCOP"
+    "CIS-PEPTIDE"
   ],
   "entity_order": [
     "artifact",
@@ -58,7 +62,7 @@
   ],
   "config": [{
     "type": "SEQUENCE_VARIANT",
-    "display": "pin",
+    "display": "composite",
     "color": "#ff6666",
     "title": "GENOME VARIANT"
   },{
@@ -179,8 +183,9 @@
     "title": "UNOBSERVED RESIDUE"
   },{
     "type": "ANGLE_OUTLIER",
-    "display": "pin",
+    "display": "area",
     "color": "#aa33aa",
+    "height": 40,
     "title": "ANGLE OUTLIER"
   },{
     "type": "ROTAMER_OUTLIER",
@@ -199,8 +204,9 @@
     "title": "RSRCC OUTLIER"
   },{
     "type": "BOND_OUTLIER",
-    "display": "pin",
+    "display": "area",
     "color": "#33aa33",
+    "height": 40,
     "title": "BOND OUTLIER"
   },{
     "type": "MOGUL_BOND_OUTLIER",
