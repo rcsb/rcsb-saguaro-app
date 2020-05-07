@@ -3,26 +3,25 @@ import {RcsbFv} from 'rcsb-saguaro';
 import {RcsbFvEntity} from "./RcsbFvModule/RcsbFvEntity";
 import {RcsbFvInstance} from "./RcsbFvModule/RcsbFvInstance";
 import {RcsbFvUniprot} from "./RcsbFvModule/RcsbFvUniprot";
-import {RcsbFvModuleInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {WebToolsManager} from "./WebTools/WebToolsManager";
 import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
 import {EntitySequenceCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
+import {PolymerEntityInstance} from "./Utils/PolymerEntityInstance";
 
 interface RcsbFvSingleViewerInterface {
     queryId: string;
     elementId: string;
     rcsbFv: RcsbFv;
-    rcsbFvModule: RcsbFvModuleInterface;
 }
 
 export class RcsbFvWebApp {
     private static rcsbFvManager: Map<string, RcsbFvSingleViewerInterface> = new Map<string, RcsbFvSingleViewerInterface>();
+    private static polymerEntityInstanceMap: Map<string,PolymerEntityInstance> = new Map<string, PolymerEntityInstance>();
 
     public static buildUniprotFv(elementId: string, upAcc: string): void {
         if(RcsbFvWebApp.rcsbFvManager.has(elementId)){
             const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
             rcsbFvUniprot.build(upAcc, true);
-            RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFvModule = rcsbFvUniprot;
         } else {
             const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
                 rcsbFv: new RcsbFv({
@@ -30,13 +29,11 @@ export class RcsbFvWebApp {
                     boardConfigData: null,
                     elementId: elementId
                 }),
-                rcsbFvModule: null,
                 elementId: elementId,
                 queryId: upAcc
             };
             const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementId, rcsbFvSingleViewer.rcsbFv);
             rcsbFvUniprot.build(upAcc, false);
-            rcsbFvSingleViewer.rcsbFvModule = rcsbFvUniprot;
             RcsbFvWebApp.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
         }
     }
@@ -45,7 +42,6 @@ export class RcsbFvWebApp {
         if(RcsbFvWebApp.rcsbFvManager.has(elementId)){
             const rcsbFvUniprot:RcsbFvUniprotEntity = new RcsbFvUniprotEntity(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
             rcsbFvUniprot.build(upAcc, entityId, true);
-            RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFvModule = rcsbFvUniprot;
         } else {
             const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
                 rcsbFv: new RcsbFv({
@@ -53,46 +49,100 @@ export class RcsbFvWebApp {
                     boardConfigData: null,
                     elementId: elementId
                 }),
-                rcsbFvModule:null,
                 elementId: elementId,
                 queryId: entityId
             };
             const rcsbFvUniprot:RcsbFvUniprotEntity = new RcsbFvUniprotEntity(elementId, rcsbFvSingleViewer.rcsbFv);
             rcsbFvUniprot.build(upAcc, entityId, false);
-            rcsbFvSingleViewer.rcsbFvModule = rcsbFvUniprot;
             RcsbFvWebApp.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
         }
     }
 
-    public static buildEntityFv(elementId: string, entityId: string): void {
-        if(RcsbFvWebApp.rcsbFvManager.has(elementId)){
-            const rcsbFvEntity:RcsbFvEntity = new RcsbFvEntity(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
-            rcsbFvEntity.build(entityId, true);
-            RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFvModule = rcsbFvEntity;
-        } else {
-            const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
-                rcsbFv: new RcsbFv({
-                    rowConfigData: null,
-                    boardConfigData: null,
-                    elementId: elementId
-                }),
-                rcsbFvModule:null,
-                elementId: elementId,
-                queryId: entityId
-            };
-            const rcsbFvEntity:RcsbFvEntity = new RcsbFvEntity(elementId, rcsbFvSingleViewer.rcsbFv);
+    public static buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
+        const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
+            rcsbFv: new RcsbFv({
+                rowConfigData: null,
+                boardConfigData: null,
+                elementId: elementFvId
+            }),
+            elementId: elementFvId,
+            queryId: entityId
+        };
+        const buildSelectAndFv: (p: PolymerEntityInstance)=>void = (p: PolymerEntityInstance)=>{
+            const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer.rcsbFv);
+            rcsbFvEntity.setPolymerEntityInstance(p);
             rcsbFvEntity.build(entityId, false);
-            rcsbFvSingleViewer.rcsbFvModule = rcsbFvEntity;
-            RcsbFvWebApp.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
+            RcsbFvWebApp.rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
+            rcsbFvEntity.getTargets().then(targets => {
+                WebToolsManager.buildSelectButton(elementSelectId, [entityId].concat(targets).map(t => {
+                    return {
+                        label: t,
+                        onChange: () => {
+                            if (t === entityId) {
+                                RcsbFvWebApp.buildEntityFv(elementFvId, entityId);
+                            } else {
+                                RcsbFvWebApp.buildUniprotEntityFv(elementFvId, t, entityId);
+                            }
+                        }
+                    }
+                }))
+            });
+        };
+
+        const entryId:string = entityId.split(".")[0];
+        if(this.polymerEntityInstanceMap.has(entryId)) {
+            buildSelectAndFv(this.polymerEntityInstanceMap.get(entryId));
+        }else{
+            const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
+            instanceCollector.collect({entry_id:entryId}).then(result=> {
+                this.polymerEntityInstanceMap.set(entryId,new PolymerEntityInstance(result));
+                buildSelectAndFv(new PolymerEntityInstance(result));
+            });
         }
 
     }
 
-    public static buildInstanceSequenceFv(elementId:string, elementSelectID:string, entryID: string): void {
+    private static buildEntityFv(elementId: string, entityId: string): void {
+
+        const buildSelectAndFv: (p: PolymerEntityInstance)=>void = (p: PolymerEntityInstance)=> {
+            if (RcsbFvWebApp.rcsbFvManager.has(elementId)) {
+                const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
+                rcsbFvEntity.setPolymerEntityInstance(p);
+                rcsbFvEntity.build(entityId, true);
+            } else {
+                const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
+                    rcsbFv: new RcsbFv({
+                        rowConfigData: null,
+                        boardConfigData: null,
+                        elementId: elementId
+                    }),
+                    elementId: elementId,
+                    queryId: entityId
+                };
+                const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementId, rcsbFvSingleViewer.rcsbFv);
+                rcsbFvEntity.setPolymerEntityInstance(p);
+                rcsbFvEntity.build(entityId, false);
+                RcsbFvWebApp.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
+            }
+        };
+
+        const entryId:string = entityId.split(".")[0];
+        if(this.polymerEntityInstanceMap.has(entryId)) {
+            buildSelectAndFv(this.polymerEntityInstanceMap.get(entryId));
+        }else{
+            const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
+            instanceCollector.collect({entry_id:entryId}).then(result=> {
+                this.polymerEntityInstanceMap.set(entryId,new PolymerEntityInstance(result));
+                buildSelectAndFv(new PolymerEntityInstance(result));
+            });
+        }
+    }
+
+    public static buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string): void {
         const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
-        instanceCollector.collect({entry_id:entryID}).then(result=>{
+        instanceCollector.collect({entry_id:entryId}).then(result=>{
             RcsbFvWebApp.buildInstanceFv(elementId,result[0].rcsbId);
-            WebToolsManager.buildSelectButton(elementSelectID,result.map(instance=>{
+            WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
                 return{
                     label: instance.entryId+"."+instance.authId,
                     onChange:()=>{
@@ -105,11 +155,10 @@ export class RcsbFvWebApp {
         });
     }
 
-    public static buildInstanceFv(elementId: string, instanceId: string): void {
+    private static buildInstanceFv(elementId: string, instanceId: string): void {
         if(RcsbFvWebApp.rcsbFvManager.has(elementId)){
             const rcsbFvInstance:RcsbFvInstance = new RcsbFvInstance(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
             rcsbFvInstance.build(instanceId, true);
-            RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFvModule = rcsbFvInstance;
         } else {
             const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
                 rcsbFv: new RcsbFv({
@@ -117,33 +166,12 @@ export class RcsbFvWebApp {
                     boardConfigData: null,
                     elementId: elementId
                 }),
-                rcsbFvModule: null,
                 elementId: elementId,
                 queryId: instanceId
             };
             const rcsbFvInstance:RcsbFvInstance = new RcsbFvInstance(elementId, rcsbFvSingleViewer.rcsbFv);
             rcsbFvInstance.build(instanceId, false);
-            rcsbFvSingleViewer.rcsbFvModule = rcsbFvInstance;
             RcsbFvWebApp.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
-        }
-    }
-
-    public static buildEntityFvSelectButton(elementId: string, elementFvId: string){
-        if(RcsbFvWebApp.rcsbFvManager.has(elementFvId)){
-            RcsbFvWebApp.rcsbFvManager.get(elementFvId).rcsbFvModule.getTargets().then(targets=>{
-                WebToolsManager.buildSelectButton(elementId,[RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId].concat(targets).map(t=>{
-                    return {
-                        label: t,
-                        onChange:()=>{
-                            if(t===RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId){
-                                RcsbFvWebApp.buildEntityFv(elementFvId,RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId);
-                            }else{
-                                RcsbFvWebApp.buildUniprotEntityFv(elementFvId,t,RcsbFvWebApp.rcsbFvManager.get(elementFvId).queryId);
-                            }
-                        }
-                    }
-                }))
-            })
         }
     }
 

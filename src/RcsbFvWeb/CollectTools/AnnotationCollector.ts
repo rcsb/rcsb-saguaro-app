@@ -1,12 +1,8 @@
-import {
-    RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes,
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackDataElementInterface
-} from 'rcsb-saguaro';
+import {RcsbFvDisplayConfigInterface, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from 'rcsb-saguaro';
 
 import {
-    AnnotationFeatures, Feature,
+    AnnotationFeatures,
+    Feature,
     FeaturePosition,
     QueryAnnotationsArgs,
     Source
@@ -15,8 +11,9 @@ import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationMap";
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {InterpolationTypes} from "rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {InterpolationTypes, RcsbFvDisplayTypes} from "rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {RcsbFvTrackDataElementGapInterface} from "rcsb-saguaro/dist/RcsbFv/RcsbFvDataManager/RcsbFvDataManager";
+import {PolymerEntityInstance} from "../Utils/PolymerEntityInstance";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;
@@ -30,7 +27,7 @@ export class AnnotationCollector {
     private maxValue: Map<string,number> = new Map<string, number>();
 
 
-    public collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
+    public collect(requestConfig: CollectAnnotationsInterface, polymerEntityInstance?: PolymerEntityInstance): Promise<Array<RcsbFvRowConfigInterface>> {
         return this.rcsbFvQuery.requestAnnotations({
             queryId: requestConfig.queryId,
             reference: requestConfig.reference,
@@ -42,11 +39,16 @@ export class AnnotationCollector {
             data.forEach(ann => {
                 ann.features.forEach(d => {
                     let type: string;
-                    if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source))
-                        type = this.rcsbAnnotationMap.setAnnotationKey(d, ann.target_id);
-                    else
+                    if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
+                        let targetId: string = ann.target_id;
+                        if( polymerEntityInstance != null){
+                            const authId: string = polymerEntityInstance.translateAsymToAuth(ann.target_id.split(".")[1]);
+                            targetId = ann.target_id.split(".")[0]+"."+authId;
+                        }
+                        type = this.rcsbAnnotationMap.setAnnotationKey(d, targetId);
+                    }else{
                         type = this.rcsbAnnotationMap.setAnnotationKey(d);
-
+                    }
                     if (!annotations.has(type)) {
                         annotations.set(type, new Map<string,RcsbFvTrackDataElementInterface>());
                         this.maxValue.set(type,1)

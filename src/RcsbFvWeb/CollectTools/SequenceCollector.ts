@@ -40,8 +40,10 @@ export class SequenceCollector {
     private targets: Array<string> = new Array<string>();
     private finished: boolean = false;
     private dynamicDisplay: boolean = false;
+    private to: string;
 
     public collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
+        this.to = requestConfig.to.replace("_"," ");
         if(requestConfig.dynamicDisplay)
             this.dynamicDisplay = true;
         return this.rcsbFvQuery.requestAlignment({
@@ -58,7 +60,7 @@ export class SequenceCollector {
                 displayType: RcsbFvDisplayTypes.SEQUENCE,
                 trackColor: "#F9F9F9",
                 displayColor: "#000000",
-                rowTitle: requestConfig.queryId,
+                rowTitle: requestConfig.from.replace("_"," ")+" SEQ - "+requestConfig.queryId,
                 trackData: [{begin: 1, value: result.query_sequence}]
             };
             if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
@@ -206,7 +208,7 @@ export class SequenceCollector {
                 trackId: "targetSequenceTrack_",
                 displayType: RcsbFvDisplayTypes.COMPOSITE,
                 trackColor: "#F9F9F9",
-                rowTitle: targetAlignment.target_id,
+                rowTitle: this.to+" ALIGN - "+targetAlignment.target_id,
                 titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
             };

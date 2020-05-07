@@ -1,8 +1,15 @@
 import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {PolymerEntityInstance} from "../Utils/PolymerEntityInstance";
 
 export class RcsbFvEntity extends RcsbFvCore implements RcsbFvModuleInterface{
+
+    private polymerEntityInstance: PolymerEntityInstance = null;
+
+    public setPolymerEntityInstance(polymerEntityInstance: PolymerEntityInstance){
+        this.polymerEntityInstance = polymerEntityInstance;
+    }
 
     public build(entityId: string, updateFlag: boolean): void {
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
@@ -22,7 +29,7 @@ export class RcsbFvEntity extends RcsbFvCore implements RcsbFvModuleInterface{
                     source:Source.PdbInstance,
                     values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
                 }]
-            }).then(annResult=>{
+            }, this.polymerEntityInstance).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);

@@ -7,7 +7,8 @@
     {
       "merged_types": ["UNOBSERVED_RESIDUE_XYZ", "UNOBSERVED_ATOM_XYZ"],
       "type": "UNOBSERVED",
-      "title": "UNOBSERVED ELEMENT"
+      "title": "UNOBSERVED ELEMENT",
+      "display": "block"
     }
   ],
   "external_data_order": [
@@ -61,7 +62,10 @@
     "RSRCC_OUTLIER",
     "MOGUL_ANGLE_OUTLIER",
     "MOGUL_BOND_OUTLIER",
-    "CIS-PEPTIDE"
+    "CIS-PEPTIDE",
+    "disulfide bridge",
+    "covalent bond",
+    "metal coordination"
   ],
   "entity_order": [
     "artifact",
@@ -82,7 +86,7 @@
     "type": "NUCLEOTIDE_PHOSPHATE_BINDING_REGION",
     "display": "block",
     "color": "#ffcc00",
-    "title": "NUCLEOTIDE BS"
+    "title": "NUCLEOTIDE BINDING"
   },{
     "type": "ACTIVE_SITE",
     "display": "pin",
@@ -113,7 +117,7 @@
     "type": "METAL_ION_BINDING_SITE",
     "display": "pin",
     "color": "#41a754",
-    "title": "METAL BS"
+    "title": "METAL BINDING"
   },{
     "type": "CROSS_LINK",
     "display": "pin",
@@ -186,7 +190,7 @@
     "title": "PROPEPTIDE"
   },{
     "type": "UNOBSERVED_RESIDUE_XYZ",
-    "display": "composite",
+    "display": "block",
     "color": "#ff3333",
     "title": "UNOBSERVED RESIDUE"
   },{
@@ -263,7 +267,7 @@
     "title": "RSRZ OUTLIER"
   },{
     "type": "UNOBSERVED_ATOM_XYZ",
-    "display": "composite",
+    "display": "block",
     "color": "#3333ff",
     "title": "UNOBSERVED ATOM"
   },{
@@ -312,10 +316,10 @@
     "color": "#a2ac85",
     "title": "COILED COIL REGION"
   },{
-    "type": "DISULFIDE_BOND",
+    "type": "disulfide bridge",
     "display": "bond",
     "color": "#6a534a",
-    "title": "DISULFIDE BOND"
+    "title": "DISULFIDE BRIDGE"
   },{
     "type": "GLYCOSYLATION_SITE",
     "display": "pin",
@@ -341,5 +345,15 @@
     "display": "composite",
     "color": "#fca86a",
     "title": "ZERO OCCUPANCY RESIDUE"
+  },{
+    "type": "metal coordination",
+    "display": "bond",
+    "color": "#aaaada",
+    "title": "METAL COORDINATION"
+  },{
+    "type": "covalent bond",
+    "display": "bond",
+    "color": "#aadaaa",
+    "title": "covalent bond"
   }]
 }

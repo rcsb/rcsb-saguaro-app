@@ -15,7 +15,7 @@ export interface RcsbMergedTypesInterface {
     merged_types: Array<string>;
     title: string;
     type: string;
-    key?: string;
+    display: string;
 }
 
 interface DynamicKeyAnnotationInterface extends Feature{
@@ -89,15 +89,16 @@ export class RcsbAnnotationMap {
             return newType;
         }else if(targetId !=  null){
             const newType = type+"."+targetId;
+            const suffix = " - "+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.annotationMap.get(type).color,
-                    title: this.annotationMap.get(type).title+" ("+targetId+")"
+                    title: this.annotationMap.get(type).title+suffix
                 } as RcsbAnnotationMapInterface);
             }
-            this.addNewType(newType, type, " ("+targetId+")");
+            this.addNewType(newType, type, suffix);
             return newType;
         }else{
             this.addNewType(type,type);
@@ -115,12 +116,13 @@ export class RcsbAnnotationMap {
             }
             this.mergedTypes.set(newType, {
                 merged_types:this.mergedTypes.get(type).merged_types,
+                display: this.mergedTypes.get(type).display,
                 type: mergedType,
                 title: title,
             });
             this.annotationMap.set(mergedType, {
                 type: mergedType,
-                display: RcsbFvDisplayTypes.BLOCK,
+                display: this.mergedTypes.get(type).display,
                 color: null,
                 title: title
             });

@@ -67,9 +67,9 @@ export enum FieldName {
 }
 
 export interface FilterInput {
+  values?: Maybe<Array<Maybe<Scalars['String']>>>,
   operation?: Maybe<OperationType>,
   source?: Maybe<Source>,
-  values?: Maybe<Array<Maybe<Scalars['String']>>>,
   field?: Maybe<FieldName>,
 }
 
