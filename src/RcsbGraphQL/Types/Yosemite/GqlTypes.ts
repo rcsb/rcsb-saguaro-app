@@ -1741,8 +1741,6 @@ export interface RcsbAssemblyInfo {
 export interface RcsbBindingAffinity {
    __typename?: 'RcsbBindingAffinity',
   comp_id: Scalars['String'],
-  display_order: Scalars['Int'],
-  display_value: Scalars['String'],
   link: Scalars['String'],
   provenance_code: Scalars['String'],
   reference_sequence_identity?: Maybe<Scalars['Int']>,
@@ -2158,6 +2156,7 @@ export interface RcsbNonpolymerStructConn {
   dist_value?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['String']>,
   ordinal_id: Scalars['Int'],
+  role?: Maybe<Scalars['String']>,
   value_order?: Maybe<Scalars['String']>,
 }
 
@@ -2398,6 +2397,7 @@ export interface RcsbPolymerStructConn {
   dist_value?: Maybe<Scalars['Float']>,
   id?: Maybe<Scalars['String']>,
   ordinal_id: Scalars['Int'],
+  role?: Maybe<Scalars['String']>,
   value_order?: Maybe<Scalars['String']>,
 }
 

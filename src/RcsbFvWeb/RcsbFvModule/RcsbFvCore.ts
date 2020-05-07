@@ -1,7 +1,6 @@
 import {
     RcsbFv,
     RcsbFvBoardConfigInterface,
-    RcsbFvInterface,
     RcsbFvRowConfigInterface
 } from 'rcsb-saguaro';
 

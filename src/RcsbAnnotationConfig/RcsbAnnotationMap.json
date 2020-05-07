@@ -3,6 +3,13 @@
     "external": "#DB9128",
     "rcsb_pdb": "#5e94c3"
   },
+  "merge": [
+    {
+      "merged_types": ["UNOBSERVED_RESIDUE_XYZ", "UNOBSERVED_ATOM_XYZ"],
+      "type": "UNOBSERVED",
+      "title": "UNOBSERVED ELEMENT"
+    }
+  ],
   "external_data_order": [
     "CATH",
     "SCOP",
@@ -41,6 +48,7 @@
     "HELIX_P",
     "SHEET",
     "BINDING_SITE",
+    "UNOBSERVED",
     "UNOBSERVED_RESIDUE_XYZ",
     "UNOBSERVED_ATOM_XYZ",
     "ZERO_OCCUPANCY_RESIDUE_XYZ",

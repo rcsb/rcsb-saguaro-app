@@ -53,9 +53,9 @@ export class AnnotationCollector {
                     }
                     d.feature_positions.forEach(p => {
                         if(p.beg_seq_id != null) {
-                            const key:string = p.beg_seq_id.toString();
+                            let key:string = p.beg_seq_id.toString();
                             if(p.end_seq_id)
-                                key.concat(":"+p.end_seq_id.toString());
+                                key += ":"+p.end_seq_id.toString();
                             if (!annotations.get(type).has(key)) {
                                 annotations.get(type).set(key, this.buildRcsbFvTrackDataElement(p,d,ann.target_id,type) );
                             }else if(this.isNumericalDisplay(type)){
@@ -69,6 +69,7 @@ export class AnnotationCollector {
                     });
                 });
             });
+            this.mergeTypes(annotations);
             this.rcsbAnnotationMap.instanceOrder().forEach(type => {
                 if (annotations.has(type) && annotations.get(type).size > 0)
                     this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type, true));
@@ -243,6 +244,22 @@ export class AnnotationCollector {
             openBegin: p.open_begin,
             openEnd: p.open_end
         };
+    }
+
+    private mergeTypes(annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>>): void{
+        annotations.forEach((locationAnn,type)=>{
+            if(this.rcsbAnnotationMap.isMergedType(type)) {
+                const newType: string = this.rcsbAnnotationMap.getMergedType(type);
+                const color: string = this.rcsbAnnotationMap.getConfig(type).color;
+                if(!annotations.has(newType))
+                    annotations.set(newType, new Map<string, RcsbFvTrackDataElementInterface>());
+                annotations.get(type).forEach((ann,loc)=>{
+                    ann.color = color;
+                    annotations.get(newType).set(loc,ann);
+                });
+                annotations.delete(type);
+            }
+        });
     }
 
     private isNumericalDisplay(type: string): boolean {
