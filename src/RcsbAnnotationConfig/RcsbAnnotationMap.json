@@ -7,7 +7,7 @@
     {
       "merged_types": ["UNOBSERVED_RESIDUE_XYZ", "UNOBSERVED_ATOM_XYZ"],
       "type": "UNOBSERVED",
-      "title": "UNOBSERVED ELEMENT",
+      "title": "UNOBSERVED",
       "display": "block"
     }
   ],
