@@ -72,7 +72,7 @@ export class SequenceCollector {
             return this.buildAlignments({targetAlignmentList: alignmentData, querySequence: querySequence, filterByTargetContains:requestConfig.filterByTargetContains});
          }).catch(error=>{
              console.log(error);
-             return error;
+             throw error;
          });
     }
 

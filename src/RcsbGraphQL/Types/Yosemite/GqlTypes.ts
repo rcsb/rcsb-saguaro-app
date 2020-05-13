@@ -1820,15 +1820,7 @@ export interface RcsbChemCompRelated {
   ordinal: Scalars['Int'],
   related_mapping_method?: Maybe<Scalars['String']>,
   resource_accession_code?: Maybe<Scalars['String']>,
-  resource_lineage?: Maybe<Array<Maybe<RcsbChemCompRelatedResourceLineage>>>,
   resource_name?: Maybe<Scalars['String']>,
-}
-
-export interface RcsbChemCompRelatedResourceLineage {
-   __typename?: 'RcsbChemCompRelatedResourceLineage',
-  depth?: Maybe<Scalars['Int']>,
-  id?: Maybe<Scalars['String']>,
-  name?: Maybe<Scalars['String']>,
 }
 
 export interface RcsbChemCompSynonyms {

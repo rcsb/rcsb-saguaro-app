@@ -16,7 +16,7 @@ export class EntitySequenceCollector {
             return EntitySequenceCollector.getEntryInstances(result);
         }).catch(error=>{
             console.log(error);
-            return error;
+            throw error;
         });
     }
 

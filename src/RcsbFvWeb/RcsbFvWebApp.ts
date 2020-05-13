@@ -7,6 +7,7 @@ import {WebToolsManager} from "./WebTools/WebToolsManager";
 import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
 import {EntitySequenceCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstance} from "./Utils/PolymerEntityInstance";
+import {TagDelimiter} from "./Utils/TagDelimiter";
 
 interface RcsbFvSingleViewerInterface {
     queryId: string;
@@ -89,7 +90,7 @@ export class RcsbFvWebApp {
             });
         };
 
-        const entryId:string = entityId.split(".")[0];
+        const entryId:string = entityId.split(TagDelimiter.entity)[0];
         if(this.polymerEntityInstanceMap.has(entryId)) {
             buildSelectAndFv(this.polymerEntityInstanceMap.get(entryId));
         }else{
@@ -126,7 +127,7 @@ export class RcsbFvWebApp {
             }
         };
 
-        const entryId:string = entityId.split(".")[0];
+        const entryId:string = entityId.split(TagDelimiter.entity)[0];
         if(this.polymerEntityInstanceMap.has(entryId)) {
             buildSelectAndFv(this.polymerEntityInstanceMap.get(entryId));
         }else{

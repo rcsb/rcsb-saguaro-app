@@ -17,7 +17,7 @@ export class RcsbQueryEntryInstances extends RcsbQuery{
             return result.data.entry;
         }).catch(error => {
             console.error(error);
-            return error;
+            throw error;
         });
     }
 }
