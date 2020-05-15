@@ -34,9 +34,9 @@ export class EntryInstancesCollector {
                                 names.push(macromolName.name);
                             });
 
-                            const taxIds: Array<string> = new Array<string>();
+                            const taxIds: Set<string> = new Set<string>();
                             instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
-                                taxIds.push(sO.ncbi_scientific_name);
+                                taxIds.add(sO.ncbi_scientific_name);
                             });
                             out.add({
                                 rcsbId: instance.rcsb_id,
@@ -44,7 +44,7 @@ export class EntryInstancesCollector {
                                 asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
                                 authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
                                 names: names,
-                                taxIds:taxIds
+                                taxIds:Array.from(taxIds)
                             });
                         }
                     })
