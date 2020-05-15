@@ -1,12 +1,13 @@
 import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {TagDelimiter} from "../Utils/TagDelimiter";
 
 export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInterface{
 
     public build(upAcc: string, entityId: string, updateFlag: boolean): void {
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
-        const pdbId:string = entityId.split("\.")[0];
+        const pdbId:string = entityId.split(TagDelimiter.entity)[0];
         this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,

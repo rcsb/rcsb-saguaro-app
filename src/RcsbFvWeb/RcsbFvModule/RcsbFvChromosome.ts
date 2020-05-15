@@ -12,8 +12,8 @@ export class RcsbFvChromosome extends RcsbFvCore {
                     Http.send();
                     Http.onloadend = (e) => {
                         const sequence: string = Http.responseText.split("\n").slice(1).join("");
-                        const data: RcsbFvTrackData = [{begin: where.from, value: sequence}];
-                        resolve(data);
+                        const selectedOption: RcsbFvTrackData = [{begin: where.from, value: sequence}];
+                        resolve(selectedOption);
                     };
                     Http.onerror = (e) => {
                         reject("HTTP error while access URL: " + url);

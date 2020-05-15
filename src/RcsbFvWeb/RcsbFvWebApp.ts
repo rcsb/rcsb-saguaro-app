@@ -8,6 +8,7 @@ import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
 import {EntitySequenceCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstance} from "./Utils/PolymerEntityInstance";
 import {TagDelimiter} from "./Utils/TagDelimiter";
+import {SequenceReference} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 interface RcsbFvSingleViewerInterface {
     queryId: string;
@@ -142,24 +143,32 @@ export class RcsbFvWebApp {
     public static buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string): void {
         const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
         instanceCollector.collect({entry_id:entryId}).then(result=>{
-            RcsbFvWebApp.buildInstanceFv(elementId,result[0].rcsbId);
+            const authId: string = SequenceReference.PdbInstance.replace("_"," ")+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance+result[0].authId;
+            RcsbFvWebApp.buildInstanceFv(elementId,result[0].rcsbId,authId);
             WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
                 return{
-                    label: instance.entryId+"."+instance.authId,
+                    name: instance.names[0],
+                    label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names[0],
+                    shortLabel: instance.entryId+TagDelimiter.instance+instance.authId,
                     onChange:()=>{
-                        RcsbFvWebApp.buildInstanceFv(elementId,instance.rcsbId);
+                        RcsbFvWebApp.buildInstanceFv(
+                            elementId,
+                            instance.rcsbId,
+                            SequenceReference.PdbInstance.replace("_"," ")+" "+TagDelimiter.sequenceTitle+instance.entryId+TagDelimiter.instance+instance.authId
+                        );
                     }
                 }
-            }));
+            }),true);
         }).catch(error=>{
             console.error(error);
+            throw error;
         });
     }
 
-    private static buildInstanceFv(elementId: string, instanceId: string): void {
+    private static buildInstanceFv(elementId: string, instanceId: string, sequenceTrackTitle: string): void {
         if(RcsbFvWebApp.rcsbFvManager.has(elementId)){
             const rcsbFvInstance:RcsbFvInstance = new RcsbFvInstance(elementId, RcsbFvWebApp.rcsbFvManager.get(elementId).rcsbFv);
-            rcsbFvInstance.build(instanceId, true);
+            rcsbFvInstance.build(instanceId, sequenceTrackTitle,true);
         } else {
             const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = {
                 rcsbFv: new RcsbFv({
@@ -171,8 +180,15 @@ export class RcsbFvWebApp {
                 queryId: instanceId
             };
             const rcsbFvInstance:RcsbFvInstance = new RcsbFvInstance(elementId, rcsbFvSingleViewer.rcsbFv);
-            rcsbFvInstance.build(instanceId, false);
+            rcsbFvInstance.build(instanceId, sequenceTrackTitle,false);
             RcsbFvWebApp.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
+        }
+
+
+        const entryId:string = instanceId.split(TagDelimiter.instance)[0];
+        if(this.polymerEntityInstanceMap.has(entryId)) {
+        }else{
+
         }
     }
 

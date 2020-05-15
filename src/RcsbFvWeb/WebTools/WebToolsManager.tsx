@@ -4,9 +4,9 @@ import {SelectButton, SelectOptionInterface} from "./SelectButton";
 
 export class WebToolsManager {
 
-    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>){
+    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>, addTitle?: boolean){
         ReactDom.render(
-            <SelectButton options={options}/>,
+            <SelectButton options={options} addTitle={addTitle}/>,
             document.getElementById(elementId)
         );
     }

@@ -6,6 +6,7 @@ export interface PolymerEntityInstanceInterface {
     entryId: string;
     asymId: string;
     authId: string;
+    names: Array<string>;
 }
 export class EntitySequenceCollector {
 
@@ -27,11 +28,16 @@ export class EntitySequenceCollector {
                 if(entity.polymer_entity_instances!=null){
                     entity.polymer_entity_instances.forEach(instance=>{
                         if(instance.polymer_entity.entity_poly.rcsb_entity_polymer_type == "Protein") {
+                            const names: Array<string> = new Array<string>();
+                            instance.polymer_entity.rcsb_polymer_entity.rcsb_macromolecular_names_combined.forEach(macromolName=>{
+                                names.push(macromolName.name);
+                            });
                             out.add({
                                 rcsbId: instance.rcsb_id,
                                 entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
                                 asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
-                                authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id
+                                authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
+                                names: names
                             });
                         }
                     })

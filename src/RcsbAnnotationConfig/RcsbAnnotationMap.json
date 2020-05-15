@@ -160,7 +160,7 @@
     "title": "DOMAIN"
   },{
     "type": "SITE",
-    "display": "pin",
+    "display": "composite",
     "color": "#b5748d",
     "title": "SITE"
   },{
@@ -354,6 +354,6 @@
     "type": "covalent bond",
     "display": "bond",
     "color": "#aadaaa",
-    "title": "covalent bond"
+    "title": "COVALENT BOND"
   }]
 }

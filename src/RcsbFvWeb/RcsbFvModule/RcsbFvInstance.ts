@@ -14,12 +14,13 @@ export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
         console.log(d);
     };
 
-    public build(instanceId: string, updateFlag: boolean): void {
+    public build(instanceId: string, sequenceTrackTitle: string, updateFlag: boolean): void {
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
         this.sequenceCollector.collect({
             queryId: instanceId,
             from: SequenceReference.PdbInstance,
-            to: SequenceReference.Uniprot
+            to: SequenceReference.Uniprot,
+            sequenceTrackTitle:sequenceTrackTitle
         }).then(seqResult=>{
             this.annotationCollector.collect({
                 queryId: instanceId,

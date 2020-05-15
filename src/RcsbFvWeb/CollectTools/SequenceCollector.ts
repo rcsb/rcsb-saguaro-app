@@ -14,10 +14,12 @@ import {
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {TagDelimiter} from "../Utils/TagDelimiter";
 
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
     dynamicDisplay?: boolean;
+    sequenceTrackTitle?:string;
 }
 
 export interface SequenceCollectorDataInterface {
@@ -60,7 +62,8 @@ export class SequenceCollector {
                 displayType: RcsbFvDisplayTypes.SEQUENCE,
                 trackColor: "#F9F9F9",
                 displayColor: "#000000",
-                rowTitle: requestConfig.from.replace("_"," ")+" SEQ - "+requestConfig.queryId,
+                rowTitle: typeof requestConfig.sequenceTrackTitle === "string" ?
+                    requestConfig.sequenceTrackTitle : requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle+requestConfig.queryId,
                 trackData: [{begin: 1, value: result.query_sequence}]
             };
             if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
@@ -208,7 +211,7 @@ export class SequenceCollector {
                 trackId: "targetSequenceTrack_",
                 displayType: RcsbFvDisplayTypes.COMPOSITE,
                 trackColor: "#F9F9F9",
-                rowTitle: this.to+" ALIGN - "+targetAlignment.target_id,
+                rowTitle: this.to+" "+TagDelimiter.alignmentTitle+targetAlignment.target_id,
                 titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
             };
