@@ -59,7 +59,7 @@ export class AnnotationCollector {
                             if(p.end_seq_id)
                                 key += ":"+p.end_seq_id.toString();
                             if (!annotations.get(type).has(key)) {
-                                annotations.get(type).set(key, this.buildRcsbFvTrackDataElement(p,d,ann.target_id,type) );
+                                annotations.get(type).set(key, this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type) );
                             }else if(this.isNumericalDisplay(type)){
                                 (annotations.get(type).get(key).value as number) += 1;
                                 if(annotations.get(type).get(key).value > this.maxValue.get(type))
@@ -222,7 +222,7 @@ export class AnnotationCollector {
         return out;
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, type: string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, provenance:string, type: string): RcsbFvTrackDataElementInterface{
         let title:string = type;
         if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
             title = this.rcsbAnnotationMap.getConfig(type).title;
@@ -242,7 +242,8 @@ export class AnnotationCollector {
             value: value,
             gValue: d.value,
             gaps: (p.gaps as Array<RcsbFvTrackDataElementGapInterface>),
-            source: target_id,
+            sourceId: target_id,
+            provenance: provenance,
             openBegin: p.open_begin,
             openEnd: p.open_end
         };

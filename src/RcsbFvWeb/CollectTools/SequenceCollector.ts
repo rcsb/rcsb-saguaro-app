@@ -31,6 +31,7 @@ interface BuildAlignementsInterface {
     targetAlignmentList: Array<TargetAlignment>;
     querySequence: string;
     filterByTargetContains?:string;
+    provenance:string;
 }
 
 export class SequenceCollector {
@@ -72,7 +73,12 @@ export class SequenceCollector {
                 track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.external;
             }
             this.seqeunceConfigData.push(track);
-            return this.buildAlignments({targetAlignmentList: alignmentData, querySequence: querySequence, filterByTargetContains:requestConfig.filterByTargetContains});
+            return this.buildAlignments({
+                targetAlignmentList: alignmentData,
+                querySequence: querySequence,
+                filterByTargetContains:requestConfig.filterByTargetContains,
+                provenance:requestConfig.to
+            });
          }).catch(error=>{
              console.log(error);
              throw error;
@@ -120,14 +126,16 @@ export class SequenceCollector {
                         sequenceData.push({
                             begin: region.query_begin,
                             ori_begin: region.target_begin,
-                            source:targetAlignment.target_id,
+                            sourceId:targetAlignment.target_id,
+                            provenance:alignmentData.provenance,
                             value: regionSequence
                         } as RcsbFvTrackDataElementInterface);
                         const nextRegionSequence = targetSequence.substring(nextRegion.target_begin - 1, nextRegion.target_end);
                         sequenceData.push({
                             begin: nextRegion.query_begin,
                             ori_begin: nextRegion.target_begin,
-                            source:targetAlignment.target_id,
+                            sourceId:targetAlignment.target_id,
+                            provenance:alignmentData.provenance,
                             value: nextRegionSequence
                         } as RcsbFvTrackDataElementInterface);
                         let openBegin = false;
@@ -141,7 +149,8 @@ export class SequenceCollector {
                             end: nextRegion.query_end,
                             ori_begin: region.target_begin,
                             ori_end: nextRegion.target_end,
-                            source:targetAlignment.target_id,
+                            sourceId:targetAlignment.target_id,
+                            provenance:alignmentData.provenance,
                             openBegin:openBegin,
                             openEnd:openEnd,
                             gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
@@ -151,6 +160,9 @@ export class SequenceCollector {
                         findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
                             mismatchData.push({
                                 begin: (m + region.query_begin),
+                                ori_begin: (m + region.target_begin),
+                                sourceId:targetAlignment.target_id,
+                                provenance:alignmentData.provenance,
                                 type: "MISMATCH",
                                 label: "MISMATCH"
                             } as RcsbFvTrackDataElementInterface);
@@ -158,6 +170,9 @@ export class SequenceCollector {
                         findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
                             mismatchData.push({
                                 begin: (m + nextRegion.query_begin),
+                                ori_begin: (m + nextRegion.target_begin),
+                                sourceId:targetAlignment.target_id,
+                                provenance:alignmentData.provenance,
                                 type: "MISMATCH",
                                 label: "MISMATCH"
                             } as RcsbFvTrackDataElementInterface);
@@ -169,7 +184,8 @@ export class SequenceCollector {
                 sequenceData.push({
                     begin: region.query_begin,
                     ori_begin: region.target_begin,
-                    source:targetAlignment.target_id,
+                    sourceId:targetAlignment.target_id,
+                    provenance:alignmentData.provenance,
                     value: regionSequence
                 } as RcsbFvTrackDataElementInterface);
                 let openBegin = false;
@@ -183,7 +199,8 @@ export class SequenceCollector {
                     end: region.query_end,
                     ori_begin: region.target_begin,
                     ori_end: region.target_end,
-                    source:targetAlignment.target_id,
+                    sourceId:targetAlignment.target_id,
+                    provenance:alignmentData.provenance,
                     openBegin:openBegin,
                     openEnd:openEnd,
                     type: "ALIGNED_BLOCK",
@@ -192,6 +209,9 @@ export class SequenceCollector {
                 findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
                     mismatchData.push({
                         begin: (m + region.query_begin),
+                        ori_begin: (m+region.target_begin),
+                        sourceId:targetAlignment.target_id,
+                        provenance:alignmentData.provenance,
                         type: "MISMATCH",
                         title: "MISMATCH"
                     } as RcsbFvTrackDataElementInterface);
