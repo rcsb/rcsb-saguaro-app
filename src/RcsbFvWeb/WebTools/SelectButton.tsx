@@ -46,7 +46,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
 
     titleRender():JSX.Element{
         return(<div>
-            <div style={{display:"inline-block"}}>{this.selectRender()}</div><div style={{display:"inline-block"}}>&nbsp;{this.state.selectedOption.name}</div>
+            <div style={{display:"inline-block"}}>{this.selectRender()}</div><div style={{display:"inline-block", marginLeft:"20px"}}>{this.state.selectedOption.name}</div>
         </div>);
     }
 

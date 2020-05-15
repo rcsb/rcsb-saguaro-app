@@ -5,7 +5,7 @@ import {RcsbFvInstance} from "./RcsbFvModule/RcsbFvInstance";
 import {RcsbFvUniprot} from "./RcsbFvModule/RcsbFvUniprot";
 import {WebToolsManager} from "./WebTools/WebToolsManager";
 import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
-import {EntitySequenceCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
+import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstance} from "./Utils/PolymerEntityInstance";
 import {TagDelimiter} from "./Utils/TagDelimiter";
 import {SequenceReference} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
@@ -95,7 +95,7 @@ export class RcsbFvWebApp {
         if(this.polymerEntityInstanceMap.has(entryId)) {
             buildSelectAndFv(this.polymerEntityInstanceMap.get(entryId));
         }else{
-            const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
+            const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
             instanceCollector.collect({entry_id:entryId}).then(result=> {
                 this.polymerEntityInstanceMap.set(entryId,new PolymerEntityInstance(result));
                 buildSelectAndFv(new PolymerEntityInstance(result));
@@ -132,7 +132,7 @@ export class RcsbFvWebApp {
         if(this.polymerEntityInstanceMap.has(entryId)) {
             buildSelectAndFv(this.polymerEntityInstanceMap.get(entryId));
         }else{
-            const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
+            const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
             instanceCollector.collect({entry_id:entryId}).then(result=> {
                 this.polymerEntityInstanceMap.set(entryId,new PolymerEntityInstance(result));
                 buildSelectAndFv(new PolymerEntityInstance(result));
@@ -141,13 +141,13 @@ export class RcsbFvWebApp {
     }
 
     public static buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string): void {
-        const instanceCollector: EntitySequenceCollector = new EntitySequenceCollector();
+        const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
         instanceCollector.collect({entry_id:entryId}).then(result=>{
             const authId: string = SequenceReference.PdbInstance.replace("_"," ")+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance+result[0].authId;
             RcsbFvWebApp.buildInstanceFv(elementId,result[0].rcsbId,authId);
             WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
                 return{
-                    name: instance.names[0],
+                    name: instance.names[0]+" - "+instance.taxIds.join(", "),
                     label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names[0],
                     shortLabel: instance.entryId+TagDelimiter.instance+instance.authId,
                     onChange:()=>{

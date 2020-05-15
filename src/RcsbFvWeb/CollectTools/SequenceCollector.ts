@@ -119,11 +119,15 @@ export class SequenceCollector {
                     if(nextRegion.target_begin === region.target_end+1){
                         sequenceData.push({
                             begin: region.query_begin,
+                            ori_begin: region.target_begin,
+                            source:targetAlignment.target_id,
                             value: regionSequence
                         } as RcsbFvTrackDataElementInterface);
                         const nextRegionSequence = targetSequence.substring(nextRegion.target_begin - 1, nextRegion.target_end);
                         sequenceData.push({
                             begin: nextRegion.query_begin,
+                            ori_begin: nextRegion.target_begin,
+                            source:targetAlignment.target_id,
                             value: nextRegionSequence
                         } as RcsbFvTrackDataElementInterface);
                         let openBegin = false;
@@ -164,6 +168,8 @@ export class SequenceCollector {
                 }
                 sequenceData.push({
                     begin: region.query_begin,
+                    ori_begin: region.target_begin,
+                    source:targetAlignment.target_id,
                     value: regionSequence
                 } as RcsbFvTrackDataElementInterface);
                 let openBegin = false;
