@@ -1,6 +1,6 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "1.0.0",
+  "version": "0.0.1-SNAPSHOT",
   "description": "",
   "main": "dist/RcsbFvWebApp.js",
   "scripts": {
@@ -9,9 +9,12 @@
     "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "publishConfig": {
+    "registry": "http://nexus3.rcsb.org/repository/npm-rcsb/"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -37,7 +40,7 @@
     "apollo-boost": "^0.4.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.1",
-    "rcsb-saguaro": "^1.0.0",
+    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb/rcsb-saguaro%2F-%2Frcsb-saguaro-0.0.1-SNAPSHOT.tgz",
     "react-select": "^3.0.8"
   }
 }
