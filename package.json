@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "publishConfig": {
-    "registry": "http://nexus3.rcsb.org/repository/npm-rcsb/"
+    "registry": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/"
   },
   "keywords": [],
   "author": "",
@@ -40,7 +40,7 @@
     "apollo-boost": "^0.4.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.1",
-    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb/rcsb-saguaro%2F-%2Frcsb-saguaro-0.0.1-SNAPSHOT.tgz",
+    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro%2F-%2Frcsb-saguaro-0.0.1-SNAPSHOT.tgz",
     "react-select": "^3.0.8"
   }
 }
