@@ -250,13 +250,15 @@ export class SequenceCollector {
     public getTargets():Promise<Array<string>> {
 
         return new Promise<Array<string>>((resolve,reject)=>{
-            const recursive = ()=>{
+            const recursive:()=>void = ()=>{
                 if(this.finished){
                     resolve(this.targets);
                 }else{
-                    window.setTimeout(()=>{
-                        recursive();
-                    },1000);
+                    if(typeof window!== "undefined") {
+                        window.setTimeout(() => {
+                            recursive();
+                        }, 1000);
+                    }
                 }
             };
             recursive();
