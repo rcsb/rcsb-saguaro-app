@@ -5,7 +5,7 @@ import {RcsbFvInstance} from "./RcsbFvModule/RcsbFvInstance";
 import {RcsbFvUniprot} from "./RcsbFvModule/RcsbFvUniprot";
 import {WebToolsManager} from "./WebTools/WebToolsManager";
 import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
-import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
+import {EntryInstancesCollector} from "./CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstance} from "./Utils/PolymerEntityInstance";
 import {TagDelimiter} from "./Utils/TagDelimiter";
 import {SequenceReference} from "../RcsbGraphQL/Types/Borrego/GqlTypes";

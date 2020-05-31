@@ -1,12 +1,16 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "0.0.2-SNAPSHOT",
   "description": "",
-  "main": "dist/RcsbFvWebApp.js",
+  "main": "build/dist/config.js",
   "scripts": {
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
     "generateBorrego": "graphql-codegen --config codegen.borrego.json",
     "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
+    "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
+    "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
+    "tsc": "tsc",
+    "clean": "del-cli build/*json build/src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "publishConfig": {
@@ -19,28 +23,30 @@
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "babel-loader": "^8.0.6",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
-    "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.7",
-    "@graphql-codegen/typescript": "1.12.1",
     "@graphql-codegen/cli": "^1.12.1",
+    "@graphql-codegen/typescript": "1.12.1",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/react-select": "^3.0.11",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "css-loader": "^3.2.0",
-    "sass-loader": "^7.3.1",
-    "style-loader": "^1.0.0",
-    "node-sass": "^4.12.0"
-  },
-  "dependencies": {
     "apollo-boost": "^0.4.4",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.2.0",
+    "del-cli": "^3.0.1",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.1",
-    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro%2F-%2Frcsb-saguaro-0.0.1-SNAPSHOT.tgz",
-    "react-select": "^3.0.8"
+    "ncp": "^2.0.0",
+    "node-sass": "^4.12.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-select": "^3.0.8",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
+  },
+  "dependencies": {
+    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro%2F-%2Frcsb-saguaro-0.0.1-SNAPSHOT.tgz"
   }
 }
