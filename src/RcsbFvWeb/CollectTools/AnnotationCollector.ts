@@ -1,18 +1,23 @@
-import {RcsbFvDisplayConfigInterface, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from 'rcsb-saguaro';
+import {
+    RcsbFvDisplayConfigInterface,
+    RcsbFvRowConfigInterface,
+    RcsbFvTrackDataElementInterface,
+    RcsbFvTrackDataElementGapInterface,
+    InterpolationTypes,
+    RcsbFvDisplayTypes
+} from 'rcsb-saguaro';
 
 import {
     AnnotationFeatures,
     Feature,
     FeaturePosition,
-    QueryAnnotationsArgs,
+    QueryAnnotationsArgs, SequenceReference,
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationMap";
-
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {InterpolationTypes, RcsbFvDisplayTypes} from "rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {RcsbFvTrackDataElementGapInterface} from "rcsb-saguaro/dist/RcsbFv/RcsbFvDataManager/RcsbFvDataManager";
 import {PolymerEntityInstance} from "../Utils/PolymerEntityInstance";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
@@ -59,7 +64,7 @@ export class AnnotationCollector {
                             if(p.end_seq_id)
                                 key += ":"+p.end_seq_id.toString();
                             if (!annotations.get(type).has(key)) {
-                                annotations.get(type).set(key, this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type) );
+                                annotations.get(type).set(key, this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,requestConfig.reference,type) );
                             }else if(this.isNumericalDisplay(type)){
                                 (annotations.get(type).get(key).value as number) += 1;
                                 if(annotations.get(type).get(key).value > this.maxValue.get(type))
@@ -222,18 +227,19 @@ export class AnnotationCollector {
         return out;
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, provenance:string, type: string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, provenance:string, reference:string, type: string): RcsbFvTrackDataElementInterface{
         let title:string = type;
         if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
             title = this.rcsbAnnotationMap.getConfig(type).title;
         let value: number|string = p.value;
         if(this.isNumericalDisplay(type))
             value = 1;
-        return {
+
+        const out:RcsbFvTrackDataElementInterface = {
             begin: p.beg_seq_id,
             end: p.end_seq_id,
-            ori_begin: p.beg_ori_id,
-            ori_end: p.end_ori_id,
+            oriBegin: p.beg_ori_id,
+            oriEnd: p.end_ori_id,
             description: new Array<string>(),
             featureId: d.feature_id,
             type: type,
@@ -247,6 +253,23 @@ export class AnnotationCollector {
             openBegin: p.open_begin,
             openEnd: p.open_end
         };
+        return AnnotationCollector.addAuthorIds(out,provenance,reference);
+    }
+
+    static addAuthorIds(e: RcsbFvTrackDataElementInterface, provenance:string, reference:string):RcsbFvTrackDataElementInterface{
+        if(reference === SequenceReference.PdbEntity || reference === SequenceReference.PdbInstance || provenance === Source.PdbEntity || provenance === Source.PdbInstance) {
+            let authProvenance: boolean = true;
+            if (reference === SequenceReference.PdbEntity || reference === SequenceReference.PdbInstance)
+                authProvenance = false;
+            return {
+                ...e,
+                authBegin: e.begin,
+                authEnd: e.end,
+                authProvenance: authProvenance,
+            };
+        }else{
+            return e;
+        }
     }
 
     private mergeTypes(annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>>): void{

@@ -15,6 +15,7 @@ import {
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {TagDelimiter} from "../Utils/TagDelimiter";
+import {AnnotationCollector} from "./AnnotationCollector";
 
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
@@ -31,7 +32,8 @@ interface BuildAlignementsInterface {
     targetAlignmentList: Array<TargetAlignment>;
     querySequence: string;
     filterByTargetContains?:string;
-    provenance:string;
+    to:string;
+    from:string;
 }
 
 export class SequenceCollector {
@@ -77,7 +79,8 @@ export class SequenceCollector {
                 targetAlignmentList: alignmentData,
                 querySequence: querySequence,
                 filterByTargetContains:requestConfig.filterByTargetContains,
-                provenance:requestConfig.to
+                to:requestConfig.to,
+                from:requestConfig.from
             });
          }).catch(error=>{
              console.log(error);
@@ -123,98 +126,98 @@ export class SequenceCollector {
                 if(targetAlignment.aligned_regions[next]!=null){
                     const nextRegion: AlignedRegion = targetAlignment.aligned_regions[next];
                     if(nextRegion.target_begin === region.target_end+1){
-                        sequenceData.push({
+                        sequenceData.push(AnnotationCollector.addAuthorIds({
                             begin: region.query_begin,
-                            ori_begin: region.target_begin,
+                            oriBegin: region.target_begin,
                             sourceId:targetAlignment.target_id,
-                            provenance:alignmentData.provenance,
+                            provenance:alignmentData.to,
                             value: regionSequence
-                        } as RcsbFvTrackDataElementInterface);
+                        },alignmentData.to,alignmentData.from));
                         const nextRegionSequence = targetSequence.substring(nextRegion.target_begin - 1, nextRegion.target_end);
-                        sequenceData.push({
+                        sequenceData.push(AnnotationCollector.addAuthorIds({
                             begin: nextRegion.query_begin,
-                            ori_begin: nextRegion.target_begin,
+                            oriBegin: nextRegion.target_begin,
                             sourceId:targetAlignment.target_id,
-                            provenance:alignmentData.provenance,
+                            provenance:alignmentData.to,
                             value: nextRegionSequence
-                        } as RcsbFvTrackDataElementInterface);
+                        },alignmentData.to,alignmentData.from));
                         let openBegin = false;
                         if(region.target_begin != 1)
                             openBegin = true;
                         let openEnd = false;
                         if(nextRegion.target_end!=targetSequence.length)
                             openEnd = true;
-                        alignedBlocks.push({
+                        alignedBlocks.push(AnnotationCollector.addAuthorIds({
                             begin: region.query_begin,
                             end: nextRegion.query_end,
-                            ori_begin: region.target_begin,
-                            ori_end: nextRegion.target_end,
+                            oriBegin: region.target_begin,
+                            oriEnd: nextRegion.target_end,
                             sourceId:targetAlignment.target_id,
-                            provenance:alignmentData.provenance,
+                            provenance:alignmentData.to,
                             openBegin:openBegin,
                             openEnd:openEnd,
                             gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
                             type: "ALIGNED_BLOCK",
                             title: "ALIGNED REGION"
-                        } as RcsbFvTrackDataElementInterface);
+                        },alignmentData.to,alignmentData.from));
                         findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                            mismatchData.push({
+                            mismatchData.push(AnnotationCollector.addAuthorIds({
                                 begin: (m + region.query_begin),
-                                ori_begin: (m + region.target_begin),
+                                oriBegin: (m + region.target_begin),
                                 sourceId:targetAlignment.target_id,
-                                provenance:alignmentData.provenance,
+                                provenance:alignmentData.to,
                                 type: "MISMATCH",
                                 label: "MISMATCH"
-                            } as RcsbFvTrackDataElementInterface);
+                            },alignmentData.to,alignmentData.from));
                         });
                         findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
-                            mismatchData.push({
+                            mismatchData.push(AnnotationCollector.addAuthorIds({
                                 begin: (m + nextRegion.query_begin),
-                                ori_begin: (m + nextRegion.target_begin),
+                                oriBegin: (m + nextRegion.target_begin),
                                 sourceId:targetAlignment.target_id,
-                                provenance:alignmentData.provenance,
+                                provenance:alignmentData.to,
                                 type: "MISMATCH",
                                 label: "MISMATCH"
-                            } as RcsbFvTrackDataElementInterface);
+                            },alignmentData.to,alignmentData.from));
                         });
                         skipRegion = true;
                         return;
                     }
                 }
-                sequenceData.push({
+                sequenceData.push(AnnotationCollector.addAuthorIds({
                     begin: region.query_begin,
-                    ori_begin: region.target_begin,
+                    oriBegin: region.target_begin,
                     sourceId:targetAlignment.target_id,
-                    provenance:alignmentData.provenance,
+                    provenance:alignmentData.to,
                     value: regionSequence
-                } as RcsbFvTrackDataElementInterface);
+                },alignmentData.to,alignmentData.from));
                 let openBegin = false;
                 if(region.target_begin != 1)
                     openBegin = true;
                 let openEnd = false;
                 if(region.target_end!=targetSequence.length)
                     openEnd = true;
-                alignedBlocks.push({
+                alignedBlocks.push(AnnotationCollector.addAuthorIds({
                     begin: region.query_begin,
                     end: region.query_end,
-                    ori_begin: region.target_begin,
-                    ori_end: region.target_end,
+                    oriBegin: region.target_begin,
+                    oriEnd: region.target_end,
                     sourceId:targetAlignment.target_id,
-                    provenance:alignmentData.provenance,
+                    provenance:alignmentData.to,
                     openBegin:openBegin,
                     openEnd:openEnd,
                     type: "ALIGNED_BLOCK",
                     title: "ALIGNED REGION"
-                } as RcsbFvTrackDataElementInterface);
+                },alignmentData.to,alignmentData.from));
                 findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                    mismatchData.push({
+                    mismatchData.push(AnnotationCollector.addAuthorIds({
                         begin: (m + region.query_begin),
-                        ori_begin: (m+region.target_begin),
+                        oriBegin: (m+region.target_begin),
                         sourceId:targetAlignment.target_id,
-                        provenance:alignmentData.provenance,
+                        provenance:alignmentData.to,
                         type: "MISMATCH",
                         title: "MISMATCH"
-                    } as RcsbFvTrackDataElementInterface);
+                    },alignmentData.to,alignmentData.from));
                 });
             });
             const sequenceDisplay: RcsbFvDisplayConfigInterface = {

@@ -1,9 +1,10 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.0.2-SNAPSHOT",
+  "version": "0.0.3-SNAPSHOT",
   "description": "",
   "main": "build/dist/config.js",
   "scripts": {
+    "buildAll": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
     "generateBorrego": "graphql-codegen --config codegen.borrego.json",
     "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
@@ -11,13 +12,18 @@
     "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
+    "cleanAll": "npm run clean && del-cli build/dist",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rcsb/rcsb-saguaro-app.git"
   },
   "publishConfig": {
     "registry": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/"
   },
   "keywords": [],
-  "author": "",
+  "author": "Joan Segura",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -47,6 +53,6 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro%2F-%2Frcsb-saguaro-0.0.1-SNAPSHOT.tgz"
+    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro/-/rcsb-saguaro-0.0.3-SNAPSHOT.tgz"
   }
 }
