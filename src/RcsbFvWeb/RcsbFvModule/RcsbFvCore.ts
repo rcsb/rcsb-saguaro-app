@@ -6,6 +6,7 @@ import {
 
 import {SequenceCollector} from "../CollectTools/SequenceCollector";
 import {AnnotationCollector} from "../CollectTools/AnnotationCollector";
+import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 
 export abstract class RcsbFvCore {
 
@@ -24,6 +25,11 @@ export abstract class RcsbFvCore {
             trackWidth: 900,
             length: null
         };
+    }
+
+    public setPolymerEntityInstance(polymerEntityInstance: PolymerEntityInstanceTranslate){
+        this.annotationCollector.setPolymerEntityInstance(polymerEntityInstance);
+        this.sequenceCollector.setPolymerEntityInstance(polymerEntityInstance)
     }
 
     display(): void{

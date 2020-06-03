@@ -18,13 +18,14 @@ import {
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationMap";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {PolymerEntityInstance} from "../Utils/PolymerEntityInstance";
+import {CoreCollector} from "./CoreCollector";
+import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;
 }
 
-export class AnnotationCollector {
+export class AnnotationCollector extends CoreCollector{
 
     private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
     private rcsbAnnotationMap: RcsbAnnotationMap = new RcsbAnnotationMap();
@@ -32,7 +33,7 @@ export class AnnotationCollector {
     private maxValue: Map<string,number> = new Map<string, number>();
 
 
-    public collect(requestConfig: CollectAnnotationsInterface, polymerEntityInstance?: PolymerEntityInstance): Promise<Array<RcsbFvRowConfigInterface>> {
+    public collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
         return this.rcsbFvQuery.requestAnnotations({
             queryId: requestConfig.queryId,
             reference: requestConfig.reference,
@@ -46,8 +47,8 @@ export class AnnotationCollector {
                     let type: string;
                     if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
                         let targetId: string = ann.target_id;
-                        if( polymerEntityInstance != null){
-                            const authId: string = polymerEntityInstance.translateAsymToAuth(ann.target_id.split(".")[1]);
+                        if( this.getPolymerEntityInstance() != null){
+                            const authId: string = this.getPolymerEntityInstance().translateAsymToAuth(ann.target_id.split(".")[1]);
                             targetId = ann.target_id.split(".")[0]+"."+authId;
                         }
                         type = this.rcsbAnnotationMap.setAnnotationKey(d, targetId);
@@ -64,7 +65,14 @@ export class AnnotationCollector {
                             if(p.end_seq_id)
                                 key += ":"+p.end_seq_id.toString();
                             if (!annotations.get(type).has(key)) {
-                                annotations.get(type).set(key, this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,requestConfig.reference,type) );
+                                const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type);
+                                this.addAuthorResIds(a,{
+                                    from:requestConfig.reference,
+                                    to:ann.source,
+                                    queryId:requestConfig.queryId,
+                                    targetId:ann.target_id
+                                });
+                                annotations.get(type).set(key,a);
                             }else if(this.isNumericalDisplay(type)){
                                 (annotations.get(type).get(key).value as number) += 1;
                                 if(annotations.get(type).get(key).value > this.maxValue.get(type))
@@ -227,7 +235,7 @@ export class AnnotationCollector {
         return out;
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, provenance:string, reference:string, type: string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, provenance:string, type: string): RcsbFvTrackDataElementInterface{
         let title:string = type;
         if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
             title = this.rcsbAnnotationMap.getConfig(type).title;
@@ -235,7 +243,7 @@ export class AnnotationCollector {
         if(this.isNumericalDisplay(type))
             value = 1;
 
-        const out:RcsbFvTrackDataElementInterface = {
+        return {
             begin: p.beg_seq_id,
             end: p.end_seq_id,
             oriBegin: p.beg_ori_id,
@@ -253,23 +261,14 @@ export class AnnotationCollector {
             openBegin: p.open_begin,
             openEnd: p.open_end
         };
-        return AnnotationCollector.addAuthorIds(out,provenance,reference);
     }
 
-    static addAuthorIds(e: RcsbFvTrackDataElementInterface, provenance:string, reference:string):RcsbFvTrackDataElementInterface{
-        if(reference === SequenceReference.PdbEntity || reference === SequenceReference.PdbInstance || provenance === Source.PdbEntity || provenance === Source.PdbInstance) {
-            let authProvenance: boolean = true;
-            if (reference === SequenceReference.PdbEntity || reference === SequenceReference.PdbInstance)
-                authProvenance = false;
-            return {
-                ...e,
-                authBegin: e.begin,
-                authEnd: e.end,
-                authProvenance: authProvenance,
-            };
-        }else{
-            return e;
+    private addAuthorResIds(e:RcsbFvTrackDataElementInterface, annotationContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+        let o:RcsbFvTrackDataElementInterface = e;
+        if(this.getPolymerEntityInstance()!=null){
+            this.getPolymerEntityInstance().addAuthorResIds(o,annotationContext);
         }
+        return o;
     }
 
     private mergeTypes(annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>>): void{

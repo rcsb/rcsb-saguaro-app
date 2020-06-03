@@ -6,6 +6,7 @@ export interface PolymerEntityInstanceInterface {
     entryId: string;
     asymId: string;
     authId: string;
+    authResId: Array<string>;
     names: Array<string>;
     taxIds: Array<string>;
 }
@@ -43,6 +44,7 @@ export class EntryInstancesCollector {
                                 entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
                                 asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
                                 authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
+                                authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
                                 names: names,
                                 taxIds:Array.from(taxIds)
                             });

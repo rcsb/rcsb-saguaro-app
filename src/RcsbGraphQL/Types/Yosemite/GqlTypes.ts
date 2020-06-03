@@ -2287,6 +2287,7 @@ export interface RcsbPolymerEntityInstanceContainerIdentifiers {
    __typename?: 'RcsbPolymerEntityInstanceContainerIdentifiers',
   asym_id: Scalars['String'],
   auth_asym_id?: Maybe<Scalars['String']>,
+  auth_to_entity_poly_seq_mapping?: Maybe<Array<Maybe<Scalars['String']>>>,
   entity_id?: Maybe<Scalars['String']>,
   entry_id: Scalars['String'],
   rcsb_id?: Maybe<Scalars['String']>,

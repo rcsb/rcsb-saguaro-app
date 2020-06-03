@@ -15,7 +15,8 @@ import {
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {TagDelimiter} from "../Utils/TagDelimiter";
-import {AnnotationCollector} from "./AnnotationCollector";
+import {CoreCollector} from "./CoreCollector";
+import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
@@ -30,13 +31,21 @@ export interface SequenceCollectorDataInterface {
 
 interface BuildAlignementsInterface {
     targetAlignmentList: Array<TargetAlignment>;
+    queryId: string;
     querySequence: string;
     filterByTargetContains?:string;
-    to:string;
-    from:string;
+    to:SequenceReference;
+    from:SequenceReference;
 }
 
-export class SequenceCollector {
+interface BuildSequenceDataInterface extends TranslateContextInterface{
+    sequenceData: Array<RcsbFvTrackDataElementInterface>;
+    sequence: string;
+    begin: number;
+    oriBegin: number;
+}
+
+export class SequenceCollector extends CoreCollector{
 
     private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
     private seqeunceConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
@@ -67,7 +76,15 @@ export class SequenceCollector {
                 displayColor: "#000000",
                 rowTitle: typeof requestConfig.sequenceTrackTitle === "string" ?
                     requestConfig.sequenceTrackTitle : requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle+requestConfig.queryId,
-                trackData: [{begin: 1, value: result.query_sequence}]
+                trackData: this.buildSequenceData({
+                    sequenceData:[],
+                    sequence:result.query_sequence,
+                    begin:1,
+                    oriBegin:null,
+                    queryId:requestConfig.queryId,
+                    targetId:null,
+                    from:requestConfig.from,
+                    to:null})
             };
             if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
                 track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
@@ -77,6 +94,7 @@ export class SequenceCollector {
             this.seqeunceConfigData.push(track);
             return this.buildAlignments({
                 targetAlignmentList: alignmentData,
+                queryId:requestConfig.queryId,
                 querySequence: querySequence,
                 filterByTargetContains:requestConfig.filterByTargetContains,
                 to:requestConfig.to,
@@ -93,6 +111,7 @@ export class SequenceCollector {
     }
 
     private buildAlignments(alignmentData: BuildAlignementsInterface): SequenceCollectorDataInterface {
+
         const findMismatch = (seqA: string, seqB: string) => {
             const out = [];
             if (seqA.length === seqB.length) {
@@ -104,11 +123,20 @@ export class SequenceCollector {
             }
             return out;
         };
+
+
         alignmentData.targetAlignmentList.forEach(targetAlignment => {
             if(alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
                 return;
             if(targetAlignment.target_sequence == null)
                 return;
+            const commonContext: TranslateContextInterface = {
+                queryId:alignmentData.queryId,
+                targetId:targetAlignment.target_id,
+                from:alignmentData.from,
+                to:alignmentData.to
+            };
+
             this.targets.push(targetAlignment.target_id);
             const targetSequence = targetAlignment.target_sequence;
             const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
@@ -124,30 +152,33 @@ export class SequenceCollector {
                 }
                 const regionSequence = targetSequence.substring(region.target_begin - 1, region.target_end);
                 if(targetAlignment.aligned_regions[next]!=null){
+
+
                     const nextRegion: AlignedRegion = targetAlignment.aligned_regions[next];
                     if(nextRegion.target_begin === region.target_end+1){
-                        sequenceData.push(AnnotationCollector.addAuthorIds({
-                            begin: region.query_begin,
-                            oriBegin: region.target_begin,
-                            sourceId:targetAlignment.target_id,
-                            provenance:alignmentData.to,
-                            value: regionSequence
-                        },alignmentData.to,alignmentData.from));
+                        this.buildSequenceData({
+                            ...commonContext,
+                            sequenceData:sequenceData,
+                            sequence:regionSequence,
+                            begin:region.query_begin,
+                            oriBegin:region.target_begin
+                        });
                         const nextRegionSequence = targetSequence.substring(nextRegion.target_begin - 1, nextRegion.target_end);
-                        sequenceData.push(AnnotationCollector.addAuthorIds({
-                            begin: nextRegion.query_begin,
-                            oriBegin: nextRegion.target_begin,
-                            sourceId:targetAlignment.target_id,
-                            provenance:alignmentData.to,
-                            value: nextRegionSequence
-                        },alignmentData.to,alignmentData.from));
+                        this.buildSequenceData({
+                            ...commonContext,
+                            sequenceData:sequenceData,
+                            sequence:nextRegionSequence,
+                            begin:nextRegion.query_begin,
+                            oriBegin:nextRegion.target_begin
+                        });
+
                         let openBegin = false;
                         if(region.target_begin != 1)
                             openBegin = true;
                         let openEnd = false;
                         if(nextRegion.target_end!=targetSequence.length)
                             openEnd = true;
-                        alignedBlocks.push(AnnotationCollector.addAuthorIds({
+                        alignedBlocks.push(this.addAuthorResIds({
                             begin: region.query_begin,
                             end: nextRegion.query_end,
                             oriBegin: region.target_begin,
@@ -159,45 +190,45 @@ export class SequenceCollector {
                             gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
                             type: "ALIGNED_BLOCK",
                             title: "ALIGNED REGION"
-                        },alignmentData.to,alignmentData.from));
+                        },commonContext));
                         findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                            mismatchData.push(AnnotationCollector.addAuthorIds({
+                            mismatchData.push(this.addAuthorResIds({
                                 begin: (m + region.query_begin),
                                 oriBegin: (m + region.target_begin),
                                 sourceId:targetAlignment.target_id,
                                 provenance:alignmentData.to,
                                 type: "MISMATCH",
                                 label: "MISMATCH"
-                            },alignmentData.to,alignmentData.from));
+                            },commonContext));
                         });
                         findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
-                            mismatchData.push(AnnotationCollector.addAuthorIds({
+                            mismatchData.push(this.addAuthorResIds({
                                 begin: (m + nextRegion.query_begin),
                                 oriBegin: (m + nextRegion.target_begin),
                                 sourceId:targetAlignment.target_id,
                                 provenance:alignmentData.to,
                                 type: "MISMATCH",
                                 label: "MISMATCH"
-                            },alignmentData.to,alignmentData.from));
+                            },commonContext));
                         });
                         skipRegion = true;
                         return;
                     }
                 }
-                sequenceData.push(AnnotationCollector.addAuthorIds({
-                    begin: region.query_begin,
-                    oriBegin: region.target_begin,
-                    sourceId:targetAlignment.target_id,
-                    provenance:alignmentData.to,
-                    value: regionSequence
-                },alignmentData.to,alignmentData.from));
+                this.buildSequenceData({
+                    ...commonContext,
+                    sequenceData:sequenceData,
+                    sequence:regionSequence,
+                    begin:region.query_begin,
+                    oriBegin:region.target_begin
+                });
                 let openBegin = false;
                 if(region.target_begin != 1)
                     openBegin = true;
                 let openEnd = false;
                 if(region.target_end!=targetSequence.length)
                     openEnd = true;
-                alignedBlocks.push(AnnotationCollector.addAuthorIds({
+                alignedBlocks.push(this.addAuthorResIds({
                     begin: region.query_begin,
                     end: region.query_end,
                     oriBegin: region.target_begin,
@@ -208,16 +239,16 @@ export class SequenceCollector {
                     openEnd:openEnd,
                     type: "ALIGNED_BLOCK",
                     title: "ALIGNED REGION"
-                },alignmentData.to,alignmentData.from));
+                },commonContext));
                 findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                    mismatchData.push(AnnotationCollector.addAuthorIds({
+                    mismatchData.push(this.addAuthorResIds({
                         begin: (m + region.query_begin),
                         oriBegin: (m+region.target_begin),
                         sourceId:targetAlignment.target_id,
                         provenance:alignmentData.to,
                         type: "MISMATCH",
                         title: "MISMATCH"
-                    },alignmentData.to,alignmentData.from));
+                    },commonContext));
                 });
             });
             const sequenceDisplay: RcsbFvDisplayConfigInterface = {
@@ -248,6 +279,38 @@ export class SequenceCollector {
         });
         this.finished = true;
         return { sequence: this.seqeunceConfigData, alignment:this.alignmentsConfigData};
+    }
+
+    private buildSequenceData(config: BuildSequenceDataInterface):Array<RcsbFvTrackDataElementInterface> {
+        config.sequence.split("").forEach((s, i) => {
+            const o: RcsbFvTrackDataElementInterface = {
+                begin: (config.begin + i),
+                sourceId: config.targetId,
+                provenance: config.to,
+                value: s
+            };
+            if (typeof config.targetId === "string")
+                o.sourceId = config.targetId;
+            if (typeof config.oriBegin === "number")
+                o.oriBegin = config.oriBegin + i;
+
+            config.sequenceData.push(this.addAuthorResIds(o, {
+                from:config.from,
+                to:config.to,
+                queryId:config.queryId,
+                targetId:config.targetId
+            }));
+
+        });
+        return config.sequenceData;
+    }
+
+    private addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+        let o:RcsbFvTrackDataElementInterface = e;
+        if(this.getPolymerEntityInstance()!=null){
+            this.getPolymerEntityInstance().addAuthorResIds(o,alignmentContext);
+        }
+        return o;
     }
 
     public getTargets():Promise<Array<string>> {
