@@ -7,6 +7,9 @@ import {
 import {SequenceCollector} from "../CollectTools/SequenceCollector";
 import {AnnotationCollector} from "../CollectTools/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+
+
 
 export abstract class RcsbFvCore {
 

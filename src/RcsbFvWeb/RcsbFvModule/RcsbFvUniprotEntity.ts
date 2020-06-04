@@ -1,13 +1,39 @@
-import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    FieldName,
+    FilterInput,
+    OperationType,
+    SequenceReference,
+    Source
+} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvModuleInterface, RcsbFvAdditionalConfig} from "./RcsbFvModuleInterface";
 import {TagDelimiter} from "../Utils/TagDelimiter";
 
 export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInterface{
 
-    public build(upAcc: string, entityId: string, updateFlag: boolean): void {
-        const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
+    public build(upAcc: string, entityId: string, updateFlag: boolean, additionalConfig?:RcsbFvAdditionalConfig): void {
+        let sources: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
+        if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
+            sources = additionalConfig.sources;
         const pdbId:string = entityId.split(TagDelimiter.entity)[0];
+        let filters:Array<FilterInput> = [{
+            field:FieldName.TargetId,
+            operation:OperationType.Equals,
+            source: Source.PdbEntity,
+            values:[entityId]
+        },{
+            field:FieldName.TargetId,
+            operation:OperationType.Contains,
+            source:Source.PdbInstance,
+            values:[pdbId]
+        },{
+            field: FieldName.Type,
+            operation:OperationType.Equals,
+            source:Source.PdbInstance,
+            values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+        }];
+        if(additionalConfig != null && additionalConfig.filters!=null && additionalConfig.filters.length>0)
+            filters = additionalConfig.filters;
         this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,
@@ -17,24 +43,9 @@ export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInter
             this.annotationCollector.collect({
                 queryId: upAcc,
                 reference: SequenceReference.Uniprot,
-                sources:source,
+                sources:sources,
                 addTargetInTitle:new Set([Source.PdbInstance]),
-                filters:[{
-                    field:FieldName.TargetId,
-                    operation:OperationType.Equals,
-                    source: Source.PdbEntity,
-                    values:[entityId]
-                },{
-                    field:FieldName.TargetId,
-                    operation:OperationType.Contains,
-                    source:Source.PdbInstance,
-                    values:[pdbId]
-                },{
-                    field: FieldName.Type,
-                    operation:OperationType.Equals,
-                    source:Source.PdbInstance,
-                    values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
-                }]
+                filters:filters
             }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
