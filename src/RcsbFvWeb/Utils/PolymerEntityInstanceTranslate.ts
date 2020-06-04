@@ -14,7 +14,7 @@ export class PolymerEntityInstanceTranslate{
     private instanceAsymToAuth: Map<string,string> = new Map<string, string>();
     private instanceAuthToAsym: Map<string,string> = new Map<string, string>();
     private instanceAuthResIds: Map<string,Array<string>> = new Map<string, Array<string>>();
-    private readonly INDEX_NAME: string = "aux";
+    private readonly INDEX_NAME: string = "auth";
 
     constructor(data: Array<PolymerEntityInstanceInterface>) {
         data.forEach(d=>{
