@@ -22,6 +22,7 @@ query QueryEntryInstance($queryId: String!){
                     asym_id
                     auth_asym_id
                     entry_id
+                    entity_id
                     auth_to_entity_poly_seq_mapping
                 }
             }

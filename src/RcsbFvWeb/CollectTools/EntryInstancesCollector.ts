@@ -3,6 +3,7 @@ import {CoreEntry, QueryEntryArgs} from "../../RcsbGraphQL/Types/Yosemite/GqlTyp
 
 export interface PolymerEntityInstanceInterface {
     rcsbId: string;
+    entityId: string;
     entryId: string;
     asymId: string;
     authId: string;
@@ -42,6 +43,7 @@ export class EntryInstancesCollector {
                             out.add({
                                 rcsbId: instance.rcsb_id,
                                 entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
+                                entityId: instance.rcsb_polymer_entity_instance_container_identifiers.entity_id,
                                 asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
                                 authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
                                 authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,

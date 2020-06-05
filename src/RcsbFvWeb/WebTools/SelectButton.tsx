@@ -12,6 +12,7 @@ export interface SelectOptionInterface {
 
 interface SelectButtonInterface {
     options: Array<SelectOptionInterface>;
+    additionalOptions?: Array<SelectOptionInterface>;
     addTitle: boolean;
 }
 

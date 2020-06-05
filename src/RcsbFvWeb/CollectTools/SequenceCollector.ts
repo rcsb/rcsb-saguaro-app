@@ -21,7 +21,6 @@ import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
     dynamicDisplay?: boolean;
-    sequenceTrackTitle?:string;
 }
 
 export interface SequenceCollectorDataInterface {
@@ -54,10 +53,8 @@ export class SequenceCollector extends CoreCollector{
     private targets: Array<string> = new Array<string>();
     private finished: boolean = false;
     private dynamicDisplay: boolean = false;
-    private to: string;
 
     public collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
-        this.to = requestConfig.to.replace("_"," ");
         if(requestConfig.dynamicDisplay)
             this.dynamicDisplay = true;
         return this.rcsbFvQuery.requestAlignment({
@@ -69,13 +66,17 @@ export class SequenceCollector extends CoreCollector{
             const data: AlignmentResponse = result;
             const querySequence: string = data.query_sequence;
             const alignmentData: Array<TargetAlignment> = data.target_alignment;
+            let rowTitle:string = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
+            if( requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null)
+                rowTitle += " "+requestConfig.queryId.split(TagDelimiter.instance)[0]+TagDelimiter.instance+this.getPolymerEntityInstance().translateAsymToAuth(requestConfig.queryId.split(TagDelimiter.instance)[1]);
+            else
+                rowTitle += " "+requestConfig.queryId;
             const track: RcsbFvRowConfigInterface = {
                 trackId: "mainSequenceTrack_" + requestConfig.queryId,
                 displayType: RcsbFvDisplayTypes.SEQUENCE,
                 trackColor: "#F9F9F9",
                 displayColor: "#000000",
-                rowTitle: typeof requestConfig.sequenceTrackTitle === "string" ?
-                    requestConfig.sequenceTrackTitle : requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle+requestConfig.queryId,
+                rowTitle: rowTitle,
                 trackData: this.buildSequenceData({
                     sequenceData:[],
                     sequence:result.query_sequence,
@@ -125,7 +126,9 @@ export class SequenceCollector extends CoreCollector{
         };
 
 
-        alignmentData.targetAlignmentList.forEach(targetAlignment => {
+        alignmentData.targetAlignmentList.sort((a:TargetAlignment,b:TargetAlignment)=>{
+            return a.target_id.localeCompare(b.target_id);
+        }).forEach(targetAlignment => {
             if(alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
                 return;
             if(targetAlignment.target_sequence == null)
@@ -267,11 +270,18 @@ export class SequenceCollector extends CoreCollector{
                 displayColor: "#9999FF",
                 displayData: alignedBlocks
             };
+            let rowPrefix: string = alignmentData.to.replace("_"," ")+" "+TagDelimiter.alignmentTitle;
+            let rowTitle: string;
+            if( alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null)
+                rowTitle = targetAlignment.target_id.split(TagDelimiter.instance)[0]+TagDelimiter.instance+this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
+            else
+                rowTitle = targetAlignment.target_id;
             const track: RcsbFvRowConfigInterface = {
                 trackId: "targetSequenceTrack_",
                 displayType: RcsbFvDisplayTypes.COMPOSITE,
                 trackColor: "#F9F9F9",
-                rowTitle: this.to+" "+TagDelimiter.alignmentTitle+targetAlignment.target_id,
+                rowPrefix: rowPrefix,
+                rowTitle: rowTitle,
                 titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
             };

@@ -34,7 +34,7 @@ const webApp = {
     ...commonConfig,
     mode: "development",
     entry: {
-        'rcsb-saguaro-app':'./build/src/RcsbFvWeb/RcsbFvWebApp.js'
+        'rcsb-saguaro-app':'./build/src/RcsbFvWeb/RcsbFvBuilder.js'
     },
     output: {
         filename: 'app.js',
