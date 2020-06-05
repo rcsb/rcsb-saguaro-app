@@ -201,7 +201,7 @@ export class SequenceCollector extends CoreCollector{
                                 sourceId:targetAlignment.target_id,
                                 provenance:alignmentData.to,
                                 type: "MISMATCH",
-                                label: "MISMATCH"
+                                title: "MISMATCH"
                             },commonContext));
                         });
                         findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
@@ -211,7 +211,7 @@ export class SequenceCollector extends CoreCollector{
                                 sourceId:targetAlignment.target_id,
                                 provenance:alignmentData.to,
                                 type: "MISMATCH",
-                                label: "MISMATCH"
+                                title: "MISMATCH"
                             },commonContext));
                         });
                         skipRegion = true;

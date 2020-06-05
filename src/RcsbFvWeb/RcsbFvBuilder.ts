@@ -8,7 +8,7 @@ import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
 import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstanceTranslate} from "./Utils/PolymerEntityInstanceTranslate";
 import {TagDelimiter} from "./Utils/TagDelimiter";
-import { SequenceReference, Source} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
+import { SequenceReference} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAdditionalConfig} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotInstance} from "./RcsbFvModule/RcsbFvUniprotInstance";
 
