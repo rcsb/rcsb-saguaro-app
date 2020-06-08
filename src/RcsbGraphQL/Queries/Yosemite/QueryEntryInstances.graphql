@@ -7,9 +7,7 @@ query QueryEntryInstance($queryId: String!){
                 rcsb_id
                 polymer_entity{
                     rcsb_polymer_entity{
-                        rcsb_macromolecular_names_combined{
-                            name
-                        }
+                        pdbx_description
                     }
                     entity_poly{
                         rcsb_entity_polymer_type

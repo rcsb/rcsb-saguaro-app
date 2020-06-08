@@ -64,8 +64,8 @@ export class RcsbFvBuilder {
                                 );
                                 WebToolsManager.additionalSelectButton(elementSelectId,result.map(instance=>{
                                     return{
-                                        name: instance.names[0]+" - "+instance.taxIds.join(", "),
-                                        label: labelPrefix+" - "+instance.names[0],
+                                        name: instance.names+" - "+instance.taxIds.join(", "),
+                                        label: labelPrefix+" - "+instance.names,
                                         shortLabel: instance.authId,
                                         onChange:()=>{
                                             RcsbFvBuilder.buildUniprotInstanceFv(
@@ -229,8 +229,8 @@ export class RcsbFvBuilder {
             RcsbFvBuilder.buildInstanceFv(elementId,result[0].rcsbId);
             WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
                 return{
-                    name: instance.names[0]+" - "+instance.taxIds.join(", "),
-                    label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names[0],
+                    name: instance.names+" - "+instance.taxIds.join(", "),
+                    label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names,
                     shortLabel: instance.entryId+TagDelimiter.instance+instance.authId,
                     onChange:()=>{
                         RcsbFvBuilder.buildInstanceFv(

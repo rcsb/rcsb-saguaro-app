@@ -8,7 +8,7 @@ export interface PolymerEntityInstanceInterface {
     asymId: string;
     authId: string;
     authResId: Array<string>;
-    names: Array<string>;
+    names: string;
     taxIds: Array<string>;
 }
 export class EntryInstancesCollector {
@@ -31,11 +31,7 @@ export class EntryInstancesCollector {
                 if(entity.polymer_entity_instances!=null){
                     entity.polymer_entity_instances.forEach(instance=>{
                         if(instance.polymer_entity.entity_poly.rcsb_entity_polymer_type == "Protein") {
-                            const names: Array<string> = new Array<string>();
-                            instance.polymer_entity.rcsb_polymer_entity.rcsb_macromolecular_names_combined.forEach(macromolName=>{
-                                names.push(macromolName.name);
-                            });
-
+                            const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;
                             const taxIds: Set<string> = new Set<string>();
                             instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
                                 taxIds.add(sO.ncbi_scientific_name);
@@ -47,7 +43,7 @@ export class EntryInstancesCollector {
                                 asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
                                 authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
                                 authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
-                                names: names,
+                                names: name,
                                 taxIds:Array.from(taxIds)
                             });
                         }
