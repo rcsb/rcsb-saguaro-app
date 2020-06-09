@@ -41,8 +41,6 @@
     "SPLICE_VARIANT",
     "SEQUENCE_CONFLICT",
     "NON_TERMINAL_RESIDUE",
-    "HELIX",
-    "STRAND",
     "TURN"
   ],
   "instance_order": [
@@ -128,16 +126,6 @@
     "display": "pin",
     "color": "#a2916d",
     "title": "INITIATOR METHIONINE"
-  },{
-    "type": "HELIX",
-    "display": "block",
-    "color": "#e43372",
-    "title": "HELIX"
-  },{
-    "type": "STRAND",
-    "display": "block",
-    "color": "#f1d23b",
-    "title": "STRAND"
   },{
     "type": "MODIFIED_RESIDUE",
     "display": "pin",
@@ -249,7 +237,7 @@
     "type": "SHEET",
     "display": "block",
     "color": "#f1d23b",
-    "title": "STRAND"
+    "title": "BETA STRAND"
   },{
     "type": "CATH",
     "display": "block",
