@@ -77,6 +77,7 @@ export class SequenceCollector extends CoreCollector{
                 trackColor: "#F9F9F9",
                 displayColor: "#000000",
                 rowTitle: rowTitle,
+                nonEmptyDisplay: true,
                 trackData: this.buildSequenceData({
                     sequenceData:[],
                     sequence:result.query_sequence,
