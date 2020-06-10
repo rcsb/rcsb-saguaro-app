@@ -27,6 +27,7 @@ export class RcsbAnnotationMap {
     private readonly instanceAnnotationsOrder: Array<string> = new Array<string>();
     private readonly entityAnnotationsOrder: Array<string> = new Array<string>();
     private readonly mergedTypes: Map<string,RcsbMergedTypesInterface> = new Map<string,RcsbMergedTypesInterface>();
+    private readonly addedTypes: Map<string,Array<string>> = new Map<string,Array<string>>();
 
     constructor() {
         const config: Array<RcsbAnnotationMapInterface> = (<any>annotationMap).config;
@@ -127,8 +128,19 @@ export class RcsbAnnotationMap {
             });
             this.checkAndIncludeNewType(mergedType, type);
         }else{
-            this.checkAndIncludeNewType(newType, type);
+            if(!this.addedTypes.has(type))
+                this.addedTypes.set(type, new Array<string>());
+            this.addedTypes.get(type).push(newType);
+            //this.checkAndIncludeNewType(newType, type);
         }
+    }
+
+    sortAndIncludeNewTypes(): void{
+        this.addedTypes.forEach((newTypes,type)=> {
+            newTypes.sort((a,b)=>a.localeCompare(b)).forEach(newT=>{
+                this.checkAndIncludeNewType(newT,type);
+            });
+        })
     }
 
     private checkAndIncludeNewType(newType: string, type: string){

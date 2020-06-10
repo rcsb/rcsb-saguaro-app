@@ -85,6 +85,7 @@ export class AnnotationCollector extends CoreCollector{
                 });
             });
             this.mergeTypes(annotations);
+            this.rcsbAnnotationMap.sortAndIncludeNewTypes();
             this.rcsbAnnotationMap.instanceOrder().forEach(type => {
                 if (annotations.has(type) && annotations.get(type).size > 0)
                     this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type, true));
