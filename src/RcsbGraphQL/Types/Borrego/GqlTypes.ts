@@ -45,6 +45,7 @@ export interface Feature {
   feature_id?: Maybe<Scalars['String']>,
   feature_positions?: Maybe<Array<Maybe<FeaturePosition>>>,
   name?: Maybe<Scalars['String']>,
+  provenance_source?: Maybe<Scalars['String']>,
   type?: Maybe<Scalars['String']>,
   value?: Maybe<Scalars['Float']>,
 }
@@ -67,10 +68,10 @@ export enum FieldName {
 }
 
 export interface FilterInput {
-  field?: Maybe<FieldName>,
-  source?: Maybe<Source>,
   operation?: Maybe<OperationType>,
   values?: Maybe<Array<Maybe<Scalars['String']>>>,
+  field?: Maybe<FieldName>,
+  source?: Maybe<Source>,
 }
 
 export interface Gap {

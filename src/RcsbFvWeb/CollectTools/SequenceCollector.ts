@@ -9,7 +9,7 @@ import {
     AlignedRegion,
     AlignmentResponse,
     QueryAlignmentArgs,
-    SequenceReference,
+    SequenceReference, Source,
     TargetAlignment
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
@@ -86,7 +86,7 @@ export class SequenceCollector extends CoreCollector{
                     queryId:requestConfig.queryId,
                     targetId:null,
                     from:requestConfig.from,
-                    to:null})
+                    to:null},true)
             };
             if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
                 track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
@@ -188,7 +188,9 @@ export class SequenceCollector extends CoreCollector{
                             oriBegin: region.target_begin,
                             oriEnd: nextRegion.target_end,
                             sourceId:targetAlignment.target_id,
-                            provenance:alignmentData.to,
+                            source:alignmentData.to,
+                            provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
+                            provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                             openBegin:openBegin,
                             openEnd:openEnd,
                             gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
@@ -200,7 +202,9 @@ export class SequenceCollector extends CoreCollector{
                                 begin: (m + region.query_begin),
                                 oriBegin: (m + region.target_begin),
                                 sourceId:targetAlignment.target_id,
-                                provenance:alignmentData.to,
+                                source:alignmentData.to,
+                                provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
+                                provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                                 type: "MISMATCH",
                                 title: "MISMATCH"
                             },commonContext));
@@ -210,7 +214,9 @@ export class SequenceCollector extends CoreCollector{
                                 begin: (m + nextRegion.query_begin),
                                 oriBegin: (m + nextRegion.target_begin),
                                 sourceId:targetAlignment.target_id,
-                                provenance:alignmentData.to,
+                                source:alignmentData.to,
+                                provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
+                                provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                                 type: "MISMATCH",
                                 title: "MISMATCH"
                             },commonContext));
@@ -238,7 +244,9 @@ export class SequenceCollector extends CoreCollector{
                     oriBegin: region.target_begin,
                     oriEnd: region.target_end,
                     sourceId:targetAlignment.target_id,
-                    provenance:alignmentData.to,
+                    source:alignmentData.to,
+                    provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
+                    provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                     openBegin:openBegin,
                     openEnd:openEnd,
                     type: "ALIGNED_BLOCK",
@@ -249,7 +257,9 @@ export class SequenceCollector extends CoreCollector{
                         begin: (m + region.query_begin),
                         oriBegin: (m+region.target_begin),
                         sourceId:targetAlignment.target_id,
-                        provenance:alignmentData.to,
+                        source:alignmentData.to,
+                        provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
+                        provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                         type: "MISMATCH",
                         title: "MISMATCH"
                     },commonContext));
@@ -292,12 +302,22 @@ export class SequenceCollector extends CoreCollector{
         return { sequence: this.seqeunceConfigData, alignment:this.alignmentsConfigData};
     }
 
-    private buildSequenceData(config: BuildSequenceDataInterface):Array<RcsbFvTrackDataElementInterface> {
+    private buildSequenceData(config: BuildSequenceDataInterface, isQuerySequence?: boolean):Array<RcsbFvTrackDataElementInterface> {
+        let provenanceName: string = config.to;
+        if(isQuerySequence === true)
+            provenanceName = config.from;
+        let provenanceColor: string = RcsbAnnotationConstants.provenanceColorCode.external;
+        if(provenanceName == Source.PdbInstance || provenanceName == Source.PdbEntity) {
+            provenanceName = RcsbAnnotationConstants.provenanceName.pdb;
+            provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
+        }
         config.sequence.split("").forEach((s, i) => {
             const o: RcsbFvTrackDataElementInterface = {
                 begin: (config.begin + i),
                 sourceId: config.targetId,
-                provenance: config.to,
+                source: config.to,
+                provenanceName: provenanceName,
+                provenanceColor: provenanceColor,
                 value: s
             };
             if (typeof config.targetId === "string")

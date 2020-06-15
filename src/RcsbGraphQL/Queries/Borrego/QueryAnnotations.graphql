@@ -9,6 +9,7 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
         target_id
         features {
             type
+            provenance_source
             description
             feature_id
             name

@@ -6,6 +6,7 @@ export interface RcsbAnnotationMapInterface {
     display: string;
     color: string;
     title: string;
+    provenanceList: Set<string>;
     height?:number;
     key?: string;
 }
@@ -32,6 +33,7 @@ export class RcsbAnnotationMap {
     constructor() {
         const config: Array<RcsbAnnotationMapInterface> = (<any>annotationMap).config;
         config.forEach(m=>{
+            m.provenanceList = new Set<string>();
             this.annotationMap.set(m.type,m);
         });
         this.externalAnnotationsOrder = (<any>annotationMap).external_data_order;
@@ -82,7 +84,8 @@ export class RcsbAnnotationMap {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.randomRgba(),
-                    title: this.annotationMap.get(type).title+" "+a[this.annotationMap.get(type).key]
+                    title: this.annotationMap.get(type).title+" "+a[this.annotationMap.get(type).key],
+                    provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }
             this.addNewType(newType, type, " "+a[this.annotationMap.get(type).key]);
@@ -95,7 +98,8 @@ export class RcsbAnnotationMap {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.annotationMap.get(type).color,
-                    title: this.annotationMap.get(type).title+suffix
+                    title: this.annotationMap.get(type).title+suffix,
+                    provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }
             this.addNewType(newType, type, suffix);
@@ -124,7 +128,8 @@ export class RcsbAnnotationMap {
                 type: mergedType,
                 display: this.mergedTypes.get(type).display,
                 color: null,
-                title: title
+                title: title,
+                provenanceList: new Set<string>()
             });
             this.checkAndIncludeNewType(mergedType, type);
         }else{
@@ -167,5 +172,16 @@ export class RcsbAnnotationMap {
     randomRgba(): string{
         var o = Math.round, r = Math.random, s = 255;
         return 'rgb(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ')';
+    }
+
+    addProvenance(type:string, provenanceName: string): void {
+        if(this.annotationMap.has(type))
+            this.annotationMap.get(type).provenanceList.add(provenanceName);
+    }
+
+    getProvenanceList(type: string): Array<string>{
+        if(this.annotationMap.has(type))
+            return Array.from(this.annotationMap.get(type).provenanceList);
+        return null;
     }
 }
