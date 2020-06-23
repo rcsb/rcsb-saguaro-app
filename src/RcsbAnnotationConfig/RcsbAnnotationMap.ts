@@ -49,11 +49,9 @@ export class RcsbAnnotationMap {
         });
     }
 
-    getConfig(type: string): RcsbAnnotationMapInterface{
-        if(this.annotationMap.has(type)){
-            return this.annotationMap.get(type);
-        }
-        return null;
+    getConfig(type: string): RcsbAnnotationMapInterface | null{
+        const out: RcsbAnnotationMapInterface | undefined = this.annotationMap.get(type);
+        return out != undefined ? out : null;
     }
 
     allTypes(): Set<string>{
@@ -74,32 +72,34 @@ export class RcsbAnnotationMap {
     }
 
     setAnnotationKey(d: Feature, targetId?: string): string{
-        const type: string = d.type;
+        const type: string = typeof d.type === "string" ? d.type : "?";
         const a: DynamicKeyAnnotationInterface = d;
-        if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
-            let newType: string = type+":"+a[this.annotationMap.get(type).key];
+
+        const aMap: RcsbAnnotationMapInterface | undefined = this.annotationMap.get(type);
+        if(aMap != undefined && aMap.key!=null && a[aMap.key]){
+            let newType: string = type+":"+a[aMap.key];
             if(targetId !=null)
                 newType += "."+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
-                    display: this.annotationMap.get(type).display,
+                    display: aMap.display,
                     color: this.randomRgba(),
-                    title: this.annotationMap.get(type).title+" "+a[this.annotationMap.get(type).key],
+                    title: aMap.title+" "+a[aMap.key],
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }
-            this.addNewType(newType, type, " "+a[this.annotationMap.get(type).key]);
+            this.addNewType(newType, type, " "+a[aMap.key]);
             return newType;
-        }else if(targetId !=  null){
+        }else if(aMap != undefined && targetId !=  null){
             const newType = type+"."+targetId;
             const suffix = " - "+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
-                    display: this.annotationMap.get(type).display,
-                    color: this.annotationMap.get(type).color,
-                    title: this.annotationMap.get(type).title+suffix,
+                    display: aMap.display,
+                    color: aMap.color,
+                    title: aMap.title+suffix,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }
@@ -112,32 +112,33 @@ export class RcsbAnnotationMap {
     }
 
     private addNewType(newType: string, type: string, suffix?: string){
-        if(this.mergedTypes.has(type)) {
-            let mergedType: string = this.mergedTypes.get(type).type;
-            let title: string = this.mergedTypes.get(type).title;
+        const mT: RcsbMergedTypesInterface | undefined = this.mergedTypes.get(type);
+        if(mT != undefined) {
+            let mergedType: string = mT.type;
+            let title: string = mT.title;
             if(typeof suffix === "string") {
                 mergedType += suffix;
                 title += suffix;
             }
             this.mergedTypes.set(newType, {
-                merged_types:this.mergedTypes.get(type).merged_types,
-                display: this.mergedTypes.get(type).display,
+                merged_types:mT.merged_types,
+                display: mT.display,
                 type: mergedType,
                 title: title,
             });
             this.annotationMap.set(mergedType, {
                 type: mergedType,
-                display: this.mergedTypes.get(type).display,
-                color: null,
+                display: mT.display,
+                color: "",
                 title: title,
                 provenanceList: new Set<string>()
             });
             this.checkAndIncludeNewType(mergedType, type);
         }else{
-            if(!this.addedTypes.has(type))
-                this.addedTypes.set(type, new Array<string>());
-            this.addedTypes.get(type).push(newType);
-            //this.checkAndIncludeNewType(newType, type);
+            let aT: Array<string> | undefined = this.addedTypes.get(type);
+            if(aT == undefined)
+                aT = new Array<string>();
+            aT.push(newType);
         }
     }
 
@@ -164,10 +165,9 @@ export class RcsbAnnotationMap {
         return this.mergedTypes.has(type);
     }
 
-    getMergedType(type: string): string {
-        if(this.mergedTypes.has(type))
-            return this.mergedTypes.get(type).type;
-        return null;
+    getMergedType(type: string): string | null {
+        const mT: RcsbMergedTypesInterface | undefined = this.mergedTypes.get(type);
+        return mT != undefined ? mT.type : null;
     }
 
     randomRgba(): string{
@@ -176,18 +176,20 @@ export class RcsbAnnotationMap {
     }
 
     addProvenance(type:string, provenanceName: string): void {
-        if(this.annotationMap.has(type))
-            this.annotationMap.get(type).provenanceList.add(provenanceName);
+        const aMap: RcsbAnnotationMapInterface | undefined = this.annotationMap.get(type);
+        if(aMap != undefined)
+            aMap.provenanceList.add(provenanceName);
     }
 
-    getProvenanceList(type: string): Array<string>{
-        if(this.annotationMap.has(type))
-            return Array.from(this.annotationMap.get(type).provenanceList);
+    getProvenanceList(type: string): Array<string> | null {
+        const aMap: RcsbAnnotationMapInterface | undefined = this.annotationMap.get(type);
+        if(aMap != undefined)
+            return Array.from(aMap.provenanceList);
         return null;
     }
 
-    isTransformedToNumerical(type: string): boolean{
-        return this.annotationMap.get(type).transform_to_numerical === true;
-
+    isTransformedToNumerical(type: string): boolean {
+        const aMap: RcsbAnnotationMapInterface | undefined = this.annotationMap.get(type);
+        return aMap != undefined ? aMap.transform_to_numerical === true : false;
     }
 }

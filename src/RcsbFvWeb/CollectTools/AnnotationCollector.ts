@@ -44,67 +44,78 @@ export class AnnotationCollector extends CoreCollector{
             const data: Array<AnnotationFeatures> = result;
             const annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>> = new Map();
             data.forEach(ann => {
-                ann.features.forEach(d => {
-                    let type: string;
-                    if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
-                        let targetId: string = ann.target_id;
-                        if( this.getPolymerEntityInstance() != null){
-                            const authId: string = this.getPolymerEntityInstance().translateAsymToAuth(ann.target_id.split(".")[1]);
-                            targetId = ann.target_id.split(".")[0]+"."+authId;
-                        }
-                        type = this.rcsbAnnotationMap.setAnnotationKey(d, targetId);
-                    }else{
-                        type = this.rcsbAnnotationMap.setAnnotationKey(d);
-                    }
-                    if (!annotations.has(type)) {
-                        annotations.set(type, new Map<string,RcsbFvTrackDataElementInterface>());
-                        this.maxValue.set(type,Number.MIN_SAFE_INTEGER);
-                        this.minValue.set(type,Number.MAX_SAFE_INTEGER);
-                    }
-                    d.feature_positions.forEach(p => {
-                        if(p.beg_seq_id != null) {
-                            let key:string = p.beg_seq_id.toString();
-                            if(p.end_seq_id)
-                                key += ":"+p.end_seq_id.toString();
-                            if (!annotations.get(type).has(key)) {
-                                const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type,d.provenance_source);
-                                this.addAuthorResIds(a,{
-                                    from:requestConfig.reference,
-                                    to:ann.source,
-                                    queryId:requestConfig.queryId,
-                                    targetId:ann.target_id
-                                });
-                                annotations.get(type).set(key,a);
-                            }else if(this.isNumericalDisplay(type) && this.rcsbAnnotationMap.isTransformedToNumerical(type)){
-                                (annotations.get(type).get(key).value as number) += 1;
-                                if(annotations.get(type).get(key).value > this.maxValue.get(type))
-                                    this.maxValue.set(type, annotations.get(type).get(key).value as number);
-                                if(annotations.get(type).get(key).value < this.minValue.get(type))
-                                    this.minValue.set(type, annotations.get(type).get(key).value as number);
+                if( ann.features != null )
+                    ann.features.forEach(d => {
+                        let type: string = "?";
+                        let targetId: string = ann.target_id != null ? ann.target_id : "?";
+                        if (requestConfig.addTargetInTitle != null && ann.source != null && requestConfig.addTargetInTitle.has(ann.source)) {
+                            if( this.getPolymerEntityInstance() != null){
+                                const authId: string = this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(".")[1]);
+                                targetId = targetId.split(".")[0]+"."+authId;
                             }
-                            if(typeof d.description === "string")
-                                annotations.get(type).get(key).description.push(d.description);
+                            if(d!=null) type = this.rcsbAnnotationMap.setAnnotationKey(d, targetId);
+                        }else if(d!=null){
+                            type = this.rcsbAnnotationMap.setAnnotationKey(d);
                         }
-                    });
-                    if(type === "ANGLE_OUTLIER"){
-                        console.log(annotations.get(type));
-                    }
+                        if (!annotations.has(type)) {
+                            annotations.set(type, new Map<string,RcsbFvTrackDataElementInterface>());
+                            this.maxValue.set(type,Number.MIN_SAFE_INTEGER);
+                            this.minValue.set(type,Number.MAX_SAFE_INTEGER);
+                        }
+                        if(d!=null && d.feature_positions != null)
+                            d.feature_positions.forEach(p => {
+                                if(p!= null && p.beg_seq_id != null) {
+                                    let key:string = p.beg_seq_id.toString();
+                                    if(p.end_seq_id)
+                                        key += ":"+p.end_seq_id.toString();
+                                    const aT: Map<string,RcsbFvTrackDataElementInterface> | undefined = annotations.get(type);
+                                    if(aT != undefined) {
+                                        const aE: RcsbFvTrackDataElementInterface | undefined = aT.get(key);
+                                        if (!aT.has(key)) {
+                                            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p, d, targetId, ann.source, type, d.provenance_source);
+                                            this.addAuthorResIds(a, {
+                                                from: (requestConfig.reference as SequenceReference),
+                                                to: (ann.source as Source),
+                                                queryId: requestConfig.queryId,
+                                                targetId: (ann.target_id as string)
+                                            });
+                                            aT.set(key, a);
+                                        } else if (this.isNumericalDisplay(type) && this.rcsbAnnotationMap.isTransformedToNumerical(type)) {
+                                            if(aE != undefined) {
+                                                (aE.value as number) += 1;
+                                                if ((aE.value as number) > (this.maxValue.get(type) as number))
+                                                    this.maxValue.set(type, aE.value as number);
+                                                if ((aE.value as number) < (this.minValue.get(type) as number))
+                                                    this.minValue.set(type, aE.value as number);
+                                            }
+                                        }
+                                        if (typeof d.description === "string" && aE != undefined && aE.description instanceof Array)
+                                            aE.description.push(d.description);
+                                    }
+                                }
+                            });
+                        if(type === "ANGLE_OUTLIER"){
+                            console.log(annotations.get(type));
+                        }
 
-                });
+                    });
             });
             this.mergeTypes(annotations);
             this.rcsbAnnotationMap.sortAndIncludeNewTypes();
             this.rcsbAnnotationMap.instanceOrder().forEach(type => {
-                if (annotations.has(type) && annotations.get(type).size > 0)
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type));
+                const aT: NonNullable<Map<string,RcsbFvTrackDataElementInterface>> = annotations.get(type);
+                if (aT != undefined && aT.size > 0)
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(aT.values()), type));
             });
             this.rcsbAnnotationMap.entityOrder().forEach(type => {
-                if (annotations.has(type) && annotations.get(type).size > 0)
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type));
+                const aT: Map<string,RcsbFvTrackDataElementInterface> | undefined = annotations.get(type);
+                if (aT != undefined && aT.size > 0)
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(aT.values()), type));
             });
             this.rcsbAnnotationMap.uniprotOrder().forEach(type => {
-                if (annotations.has(type) && annotations.get(type).size > 0)
-                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(annotations.get(type).values()), type));
+                const aT: Map<string,RcsbFvTrackDataElementInterface> | undefined = annotations.get(type);
+                if (aT != undefined && aT.size > 0)
+                    this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(aT.values()), type));
             });
             annotations.forEach((data, type) => {
                 if (!this.rcsbAnnotationMap.allTypes().has(type))
@@ -138,7 +149,7 @@ export class AnnotationCollector extends CoreCollector{
         if(
             this.rcsbAnnotationMap.getProvenanceList(type) instanceof Array
             &&
-            this.rcsbAnnotationMap.getProvenanceList(type).length == 1
+            (this.rcsbAnnotationMap.getProvenanceList(type) as Array<string>).length == 1
             &&
             (this.rcsbAnnotationMap.getProvenanceList(type)[0] === RcsbAnnotationConstants.provenanceName.pdb || this.rcsbAnnotationMap.getProvenanceList(type)[0] === RcsbAnnotationConstants.provenanceName.promotif)
         ){
