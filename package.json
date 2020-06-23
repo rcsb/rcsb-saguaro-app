@@ -1,6 +1,6 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.1.9-SNAPSHOT",
+  "version": "0.2.0-dev-SNAPSHOT",
   "description": "",
   "main": "build/dist/config.js",
   "scripts": {
@@ -54,6 +54,6 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro/-/rcsb-saguaro-0.1.4-SNAPSHOT.tgz"
+    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro/-/rcsb-saguaro-0.1.5-SNAPSHOT.tgz"
   }
 }

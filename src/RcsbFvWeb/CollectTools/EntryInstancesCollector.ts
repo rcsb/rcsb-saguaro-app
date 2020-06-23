@@ -33,9 +33,10 @@ export class EntryInstancesCollector {
                         if(instance.polymer_entity.entity_poly.rcsb_entity_polymer_type == "Protein") {
                             const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;
                             const taxIds: Set<string> = new Set<string>();
-                            instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
-                                taxIds.add(sO.ncbi_scientific_name);
-                            });
+                            if(instance.polymer_entity.rcsb_entity_source_organism instanceof Array)
+                                instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
+                                    taxIds.add(sO.ncbi_scientific_name);
+                                });
                             out.add({
                                 rcsbId: instance.rcsb_id,
                                 entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
