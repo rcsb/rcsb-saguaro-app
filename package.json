@@ -1,6 +1,6 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.1.6-SNAPSHOT",
+  "version": "0.1.9-SNAPSHOT",
   "description": "",
   "main": "build/dist/config.js",
   "scripts": {
@@ -34,6 +34,7 @@
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/react-select": "^3.0.11",
+    "ajv": "^6.12.2",
     "apollo-boost": "^0.4.4",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
@@ -53,6 +54,6 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro/-/rcsb-saguaro-0.1.3-SNAPSHOT.tgz"
+    "rcsb-saguaro": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/rcsb-saguaro/-/rcsb-saguaro-0.1.4-SNAPSHOT.tgz"
   }
 }

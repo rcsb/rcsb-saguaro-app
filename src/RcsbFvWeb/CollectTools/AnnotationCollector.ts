@@ -31,6 +31,7 @@ export class AnnotationCollector extends CoreCollector{
     private rcsbAnnotationMap: RcsbAnnotationMap = new RcsbAnnotationMap();
     private annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
     private maxValue: Map<string,number> = new Map<string, number>();
+    private minValue: Map<string,number> = new Map<string, number>();
 
 
     public collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
@@ -57,7 +58,8 @@ export class AnnotationCollector extends CoreCollector{
                     }
                     if (!annotations.has(type)) {
                         annotations.set(type, new Map<string,RcsbFvTrackDataElementInterface>());
-                        this.maxValue.set(type,1)
+                        this.maxValue.set(type,Number.MIN_SAFE_INTEGER);
+                        this.minValue.set(type,Number.MAX_SAFE_INTEGER);
                     }
                     d.feature_positions.forEach(p => {
                         if(p.beg_seq_id != null) {
@@ -73,15 +75,21 @@ export class AnnotationCollector extends CoreCollector{
                                     targetId:ann.target_id
                                 });
                                 annotations.get(type).set(key,a);
-                            }else if(this.isNumericalDisplay(type)){
+                            }else if(this.isNumericalDisplay(type) && this.rcsbAnnotationMap.isTransformedToNumerical(type)){
                                 (annotations.get(type).get(key).value as number) += 1;
                                 if(annotations.get(type).get(key).value > this.maxValue.get(type))
                                     this.maxValue.set(type, annotations.get(type).get(key).value as number);
+                                if(annotations.get(type).get(key).value < this.minValue.get(type))
+                                    this.minValue.set(type, annotations.get(type).get(key).value as number);
                             }
                             if(typeof d.description === "string")
                                 annotations.get(type).get(key).description.push(d.description);
                         }
                     });
+                    if(type === "ANGLE_OUTLIER"){
+                        console.log(annotations.get(type));
+                    }
+
                 });
             });
             this.mergeTypes(annotations);
@@ -128,6 +136,8 @@ export class AnnotationCollector extends CoreCollector{
             out.trackHeight = annConfig.height;
         }
         if(
+            this.rcsbAnnotationMap.getProvenanceList(type) instanceof Array
+            &&
             this.rcsbAnnotationMap.getProvenanceList(type).length == 1
             &&
             (this.rcsbAnnotationMap.getProvenanceList(type)[0] === RcsbAnnotationConstants.provenanceName.pdb || this.rcsbAnnotationMap.getProvenanceList(type)[0] === RcsbAnnotationConstants.provenanceName.promotif)
@@ -173,13 +183,16 @@ export class AnnotationCollector extends CoreCollector{
         const displayColor:string = annConfig.color;
         const rowTitle:string = annConfig.title;
 
+        let min: number = this.minValue.get(type);
+        if(min>0)
+            min=0;
         return {
             trackId: "annotationTrack_" + type,
             displayType: displayType,
             trackColor: "#F9F9F9",
             displayColor: displayColor,
             rowTitle: rowTitle,
-            displayDomain:[0,this.maxValue.get(type)],
+            displayDomain:[min,this.maxValue.get(type)],
             interpolationType: InterpolationTypes.STEP,
             trackData: data
         };
@@ -245,13 +258,24 @@ export class AnnotationCollector extends CoreCollector{
         if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
             title = this.rcsbAnnotationMap.getConfig(type).title;
         let value: number|string = p.value;
-        if(this.isNumericalDisplay(type))
-            value = 1;
+        if(this.isNumericalDisplay(type) && typeof p.value != "number") {
+            if(this.rcsbAnnotationMap.isTransformedToNumerical(type)){
+                value = 1;
+            }else{
+                value = 0;
+            }
+        }
+
+        if(value > this.maxValue.get(type))
+            this.maxValue.set(type, value);
+
+        if(value < this.minValue.get(type))
+            this.minValue.set(type, value);
 
         this.rcsbAnnotationMap.addProvenance(type,provenance);
         let provenanceColor: string = RcsbAnnotationConstants.provenanceColorCode.external;
         if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
-            provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+            provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
         return {
             begin: p.beg_seq_id,
             end: p.end_seq_id,

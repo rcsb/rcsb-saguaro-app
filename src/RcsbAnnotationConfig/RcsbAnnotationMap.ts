@@ -9,6 +9,7 @@ export interface RcsbAnnotationMapInterface {
     provenanceList: Set<string>;
     height?:number;
     key?: string;
+    transform_to_numerical?: boolean;
 }
 
 export interface RcsbMergedTypesInterface {
@@ -183,5 +184,10 @@ export class RcsbAnnotationMap {
         if(this.annotationMap.has(type))
             return Array.from(this.annotationMap.get(type).provenanceList);
         return null;
+    }
+
+    isTransformedToNumerical(type: string): boolean{
+        return this.annotationMap.get(type).transform_to_numerical === true;
+
     }
 }

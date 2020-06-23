@@ -68,9 +68,23 @@
   "entity_order": [
     "artifact",
     "mutation",
-    "modified_monomer"
+    "modified_monomer",
+    "hydropathy",
+    "disorder"
   ],
   "config": [{
+    "type": "hydropathy",
+    "display": "area",
+    "color": "#93d5e0",
+    "height": 40,
+    "title": "HYDROPATHY"
+  },{
+    "type": "disorder",
+    "display": "area",
+    "color": "#aa93d5",
+    "height": 40,
+    "title": "DISORDER"
+  },{
     "type": "SEQUENCE_VARIANT",
     "display": "composite",
     "color": "#ff6666",
@@ -186,7 +200,8 @@
     "display": "area",
     "color": "#aa33aa",
     "height": 40,
-    "title": "ANGLE OUTLIER"
+    "title": "ANGLE OUTLIER",
+    "transform_to_numerical": true
   },{
     "type": "ROTAMER_OUTLIER",
     "display": "pin",
@@ -207,7 +222,8 @@
     "display": "area",
     "color": "#33aa33",
     "height": 40,
-    "title": "BOND OUTLIER"
+    "title": "BOND OUTLIER",
+    "transform_to_numerical": true
   },{
     "type": "MOGUL_BOND_OUTLIER",
     "display": "pin",
