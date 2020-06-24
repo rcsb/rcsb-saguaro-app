@@ -1,6 +1,6 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.2.0-dev-SNAPSHOT",
+  "version": "0.2.0-SNAPSHOT",
   "description": "",
   "main": "build/dist/config.js",
   "scripts": {

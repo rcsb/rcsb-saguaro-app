@@ -2211,6 +2211,7 @@ export interface RcsbPolymerEntity {
   rcsb_macromolecular_names_combined?: Maybe<Array<Maybe<RcsbPolymerEntityRcsbMacromolecularNamesCombined>>>,
   rcsb_multiple_source_flag?: Maybe<Scalars['String']>,
   rcsb_source_part_count?: Maybe<Scalars['Int']>,
+  rcsb_source_taxonomy_count?: Maybe<Scalars['Int']>,
   src_method?: Maybe<Scalars['String']>,
 }
 
