@@ -62,11 +62,11 @@ export class SequenceCollector extends CoreCollector{
            from: requestConfig.from,
            to: requestConfig.to
         } as QueryAlignmentArgs).then(result => {
-            this.sequenceLength = result.query_sequence.length;
+            this.sequenceLength = result.query_sequence != null ? result.query_sequence.length : 0;
             const data: AlignmentResponse = result;
-            const querySequence: string = data.query_sequence;
-            const alignmentData: Array<TargetAlignment> = data.target_alignment;
-            let rowTitle:string = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
+            const querySequence: string = (data.query_sequence as string);
+            const alignmentData: Array<TargetAlignment> = (data.target_alignment as Array<TargetAlignment>);
+            let rowTitle:string = (requestConfig.from as SequenceReference).replace("_"," ")+" "+TagDelimiter.sequenceTitle;
             if( requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null)
                 rowTitle += " "+requestConfig.queryId.split(TagDelimiter.instance)[0]+TagDelimiter.instance+this.getPolymerEntityInstance().translateAsymToAuth(requestConfig.queryId.split(TagDelimiter.instance)[1]);
             else
@@ -80,7 +80,7 @@ export class SequenceCollector extends CoreCollector{
                 nonEmptyDisplay: true,
                 trackData: this.buildSequenceData({
                     sequenceData:[],
-                    sequence:result.query_sequence,
+                    sequence:(result.query_sequence as string),
                     begin:1,
                     oriBegin:null,
                     queryId:requestConfig.queryId,

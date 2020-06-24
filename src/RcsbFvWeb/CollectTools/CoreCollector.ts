@@ -2,7 +2,7 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 
 export class CoreCollector {
 
-    private polymerEntityInstance:PolymerEntityInstanceTranslate = null;
+    private polymerEntityInstance:PolymerEntityInstanceTranslate;
     setPolymerEntityInstance(p: PolymerEntityInstanceTranslate){
         this.polymerEntityInstance = p;
     }

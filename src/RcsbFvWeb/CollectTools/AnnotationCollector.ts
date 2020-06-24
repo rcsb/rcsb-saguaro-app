@@ -72,7 +72,7 @@ export class AnnotationCollector extends CoreCollector{
                                     if(aT != undefined) {
                                         const aE: RcsbFvTrackDataElementInterface | undefined = aT.get(key);
                                         if (!aT.has(key)) {
-                                            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p, d, targetId, ann.source, type, d.provenance_source);
+                                            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p, d, targetId, (ann.source as Source), type, (d.provenance_source as string));
                                             this.addAuthorResIds(a, {
                                                 from: (requestConfig.reference as SequenceReference),
                                                 to: (ann.source as Source),
@@ -103,7 +103,7 @@ export class AnnotationCollector extends CoreCollector{
             this.mergeTypes(annotations);
             this.rcsbAnnotationMap.sortAndIncludeNewTypes();
             this.rcsbAnnotationMap.instanceOrder().forEach(type => {
-                const aT: NonNullable<Map<string,RcsbFvTrackDataElementInterface>> = annotations.get(type);
+                const aT: Map<string,RcsbFvTrackDataElementInterface> | undefined = annotations.get(type);
                 if (aT != undefined && aT.size > 0)
                     this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(aT.values()), type));
             });
@@ -131,8 +131,8 @@ export class AnnotationCollector extends CoreCollector{
     //TODO PLEASE CHECK THIS METHOD!!!
     private buildAnnotationTrack(data: Array<RcsbFvTrackDataElementInterface>, type: string): RcsbFvRowConfigInterface {
         let out: RcsbFvRowConfigInterface;
-        let displayType: string;
-        const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
+        let displayType: string = "?";
+        const annConfig: RcsbAnnotationMapInterface | null = this.rcsbAnnotationMap.getConfig(type);
         if (annConfig !== null) {
             displayType = annConfig.display;
         }
@@ -151,7 +151,7 @@ export class AnnotationCollector extends CoreCollector{
             &&
             (this.rcsbAnnotationMap.getProvenanceList(type) as Array<string>).length == 1
             &&
-            (this.rcsbAnnotationMap.getProvenanceList(type)[0] === RcsbAnnotationConstants.provenanceName.pdb || this.rcsbAnnotationMap.getProvenanceList(type)[0] === RcsbAnnotationConstants.provenanceName.promotif)
+            ((this.rcsbAnnotationMap.getProvenanceList(type) as Array<string>)[0] === RcsbAnnotationConstants.provenanceName.pdb || (this.rcsbAnnotationMap.getProvenanceList(type) as Array<string>)[0] === RcsbAnnotationConstants.provenanceName.promotif)
         ){
             out.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
         }else{
@@ -168,7 +168,7 @@ export class AnnotationCollector extends CoreCollector{
         let displayColor: string = this.rcsbAnnotationMap.randomRgba();
         let rowTitle: string = type;
 
-        const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
+        const annConfig: RcsbAnnotationMapInterface | null = this.rcsbAnnotationMap.getConfig(type);
         if (annConfig !== null) {
             displayType = annConfig.display;
             rowTitle = annConfig.title;
@@ -188,31 +188,31 @@ export class AnnotationCollector extends CoreCollector{
 
     private buildRcsbFvRowConfigArea(data: Array<RcsbFvTrackDataElementInterface>, type: string):RcsbFvRowConfigInterface{
 
-        const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
+        const annConfig: RcsbAnnotationMapInterface | null = this.rcsbAnnotationMap.getConfig(type);
 
-        const displayType: string = annConfig.display;
-        const displayColor:string = annConfig.color;
-        const rowTitle:string = annConfig.title;
+        const displayType: string = (annConfig as RcsbAnnotationMapInterface).display;
+        const displayColor: string = (annConfig as RcsbAnnotationMapInterface).color;
+        const rowTitle: string = (annConfig as RcsbAnnotationMapInterface).title;
 
-        let min: number = this.minValue.get(type);
-        if(min>0)
-            min=0;
+        let min: number = (this.minValue.get(type) as number);
+        if (min > 0)
+            min = 0;
         return {
             trackId: "annotationTrack_" + type,
             displayType: displayType,
             trackColor: "#F9F9F9",
             displayColor: displayColor,
             rowTitle: rowTitle,
-            displayDomain:[min,this.maxValue.get(type)],
+            displayDomain: [min, (this.maxValue.get(type) as number)],
             interpolationType: InterpolationTypes.STEP,
             trackData: data
         };
     }
 
     private buildRcsbFvRowConfigComposite(data: Array<RcsbFvTrackDataElementInterface>, type: string):RcsbFvRowConfigInterface{
-        let out: RcsbFvRowConfigInterface;
+        let out: RcsbFvRowConfigInterface | undefined = undefined;
 
-        const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
+        const annConfig: RcsbAnnotationMapInterface = (this.rcsbAnnotationMap.getConfig(type) as RcsbAnnotationMapInterface);
         let altDisplayType = RcsbFvDisplayTypes.BLOCK;
         if(annConfig.display === RcsbFvDisplayTypes.BOND.toString())
             altDisplayType = RcsbFvDisplayTypes.BOND;
@@ -266,9 +266,10 @@ export class AnnotationCollector extends CoreCollector{
 
     private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, source:string, type: string, provenance:string): RcsbFvTrackDataElementInterface{
         let title:string = type;
-        if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
-            title = this.rcsbAnnotationMap.getConfig(type).title;
-        let value: number|string = p.value;
+        const cT: RcsbAnnotationMapInterface | null =  this.rcsbAnnotationMap.getConfig(type);
+        if( cT != null && typeof cT.title === "string")
+            title = cT.title;
+        let value: number = p.value as number;
         if(this.isNumericalDisplay(type) && typeof p.value != "number") {
             if(this.rcsbAnnotationMap.isTransformedToNumerical(type)){
                 value = 1;
@@ -277,10 +278,10 @@ export class AnnotationCollector extends CoreCollector{
             }
         }
 
-        if(value > this.maxValue.get(type))
+        if(value > (this.maxValue.get(type) as number))
             this.maxValue.set(type, value);
 
-        if(value < this.minValue.get(type))
+        if(value < (this.minValue.get(type) as number))
             this.minValue.set(type, value);
 
         this.rcsbAnnotationMap.addProvenance(type,provenance);
@@ -288,24 +289,24 @@ export class AnnotationCollector extends CoreCollector{
         if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
             provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
         return {
-            begin: p.beg_seq_id,
-            end: p.end_seq_id,
-            oriBegin: p.beg_ori_id,
-            oriEnd: p.end_ori_id,
+            begin: (p.beg_seq_id as number),
+            end: (p.end_seq_id as number),
+            oriBegin: (p.beg_ori_id as number),
+            oriEnd: (p.end_ori_id as number),
             description: new Array<string>(),
-            featureId: d.feature_id,
+            featureId: (d.feature_id as string),
             type: type,
             title: title,
-            name: d.name,
+            name: (d.name as string),
             value: value,
-            gValue: d.value,
+            gValue: (d.value as number | string),
             gaps: (p.gaps as Array<RcsbFvTrackDataElementGapInterface>),
             sourceId: target_id,
             source: source,
             provenanceName: provenance,
             provenanceColor: provenanceColor,
-            openBegin: p.open_begin,
-            openEnd: p.open_end
+            openBegin: (p.open_begin as boolean),
+            openEnd: (p.open_end as boolean)
         };
     }
 
@@ -320,22 +321,25 @@ export class AnnotationCollector extends CoreCollector{
     private mergeTypes(annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>>): void{
         annotations.forEach((locationAnn,type)=>{
             if(this.rcsbAnnotationMap.isMergedType(type)) {
-                const newType: string = this.rcsbAnnotationMap.getMergedType(type);
-                const color: string = this.rcsbAnnotationMap.getConfig(type).color;
+                const newType: string = (this.rcsbAnnotationMap.getMergedType(type) as string);
+                const color: string = ((this.rcsbAnnotationMap.getConfig(type) as RcsbAnnotationMapInterface).color as string);
                 if(!annotations.has(newType))
                     annotations.set(newType, new Map<string, RcsbFvTrackDataElementInterface>());
 
-                annotations.get(type).forEach((ann,loc)=>{
-                    ann.color = color;
-                    annotations.get(newType).set(loc,ann);
-                    this.rcsbAnnotationMap.addProvenance(newType,ann.provenanceName);
-                });
-                annotations.delete(type);
+                const aT: Map<string,RcsbFvTrackDataElementInterface> | undefined = annotations.get(type);
+                if(aT != undefined) {
+                    aT.forEach((ann, loc) => {
+                        ann.color = color;
+                        (annotations.get(newType) as Map<string,RcsbFvTrackDataElementInterface>).set(loc, ann);
+                        this.rcsbAnnotationMap.addProvenance(newType, (ann.provenanceName as string));
+                    });
+                    annotations.delete(type);
+                }
             }
         });
     }
 
     private isNumericalDisplay(type: string): boolean {
-        return (this.rcsbAnnotationMap.getConfig(type)!=null && (this.rcsbAnnotationMap.getConfig(type).display === RcsbFvDisplayTypes.AREA || this.rcsbAnnotationMap.getConfig(type).display === RcsbFvDisplayTypes.LINE));
+        return (this.rcsbAnnotationMap.getConfig(type)!=null && ((this.rcsbAnnotationMap.getConfig(type) as RcsbAnnotationMapInterface).display === RcsbFvDisplayTypes.AREA || (this.rcsbAnnotationMap.getConfig(type) as RcsbAnnotationMapInterface).display === RcsbFvDisplayTypes.LINE));
     }
 }

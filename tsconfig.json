@@ -11,7 +11,7 @@
     "lib": [ "dom", "es2017" ],
     "allowJs": true,
     "sourceMap": false,
-    "noUnusedLocals": true,
+    //"noUnusedLocals": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true
   },
