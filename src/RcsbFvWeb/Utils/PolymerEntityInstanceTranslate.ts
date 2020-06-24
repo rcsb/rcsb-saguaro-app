@@ -5,9 +5,9 @@ import {TagDelimiter} from "./TagDelimiter";
 
 export interface TranslateContextInterface {
     queryId: string;
-    targetId: string;
+    targetId: string | null;
     from: SequenceReference;
-    to: SequenceReference|Source;
+    to: SequenceReference |Source | null;
 }
 
 export class PolymerEntityInstanceTranslate{

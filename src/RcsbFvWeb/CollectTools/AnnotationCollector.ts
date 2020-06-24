@@ -267,7 +267,7 @@ export class AnnotationCollector extends CoreCollector{
     private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, source:string, type: string, provenance:string): RcsbFvTrackDataElementInterface{
         let title:string = type;
         const cT: RcsbAnnotationMapInterface | null =  this.rcsbAnnotationMap.getConfig(type);
-        if( cT != null && typeof cT.title === "string")
+        if( cT != null )
             title = cT.title;
         let value: number = p.value as number;
         if(this.isNumericalDisplay(type) && typeof p.value != "number") {

@@ -37,11 +37,11 @@ interface BuildAlignementsInterface {
     from:SequenceReference;
 }
 
-interface BuildSequenceDataInterface extends TranslateContextInterface{
+interface BuildSequenceDataInterface extends TranslateContextInterface {
     sequenceData: Array<RcsbFvTrackDataElementInterface>;
     sequence: string;
     begin: number;
-    oriBegin: number;
+    oriBegin: number | null;
 }
 
 export class SequenceCollector extends CoreCollector{
@@ -85,7 +85,7 @@ export class SequenceCollector extends CoreCollector{
                     oriBegin:null,
                     queryId:requestConfig.queryId,
                     targetId:null,
-                    from:requestConfig.from,
+                    from:(requestConfig.from as SequenceReference),
                     to:null},true)
             };
             if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
@@ -99,8 +99,8 @@ export class SequenceCollector extends CoreCollector{
                 queryId:requestConfig.queryId,
                 querySequence: querySequence,
                 filterByTargetContains:requestConfig.filterByTargetContains,
-                to:requestConfig.to,
-                from:requestConfig.from
+                to:(requestConfig.to as SequenceReference),
+                from:(requestConfig.from as SequenceReference)
             });
          }).catch(error=>{
              console.log(error);
@@ -128,7 +128,8 @@ export class SequenceCollector extends CoreCollector{
 
 
         alignmentData.targetAlignmentList.sort((a:TargetAlignment,b:TargetAlignment)=>{
-            return a.target_id.localeCompare(b.target_id);
+            if(a.target_id != null && b.target_id != null)
+                return a.target_id.localeCompare(b.target_id);
         }).forEach(targetAlignment => {
             if(alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
                 return;
