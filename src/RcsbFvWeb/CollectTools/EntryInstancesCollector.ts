@@ -26,14 +26,14 @@ export class EntryInstancesCollector {
 
     private static getEntryInstances(entry: CoreEntry ): Array<PolymerEntityInstanceInterface>{
         const out: Set<PolymerEntityInstanceInterface> = new Set<PolymerEntityInstanceInterface>();
-        if(entry.polymer_entities != null){
+        if(entry.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
-                if(entity.polymer_entity_instances!=null){
+                if(entity.polymer_entity_instances instanceof Array){
                     entity.polymer_entity_instances.forEach(instance=>{
-                        if(instance.polymer_entity.entity_poly.rcsb_entity_polymer_type == "Protein") {
+                        if(instance.polymer_entity?.entity_poly?.rcsb_entity_polymer_type == "Protein") {
                             const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;
                             const taxIds: Set<string> = new Set<string>();
-                            if(instance.polymer_entity.rcsb_entity_source_organism instanceof Array)
+                            if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
                                 instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
                                     taxIds.add(sO.ncbi_scientific_name);
                                 });
