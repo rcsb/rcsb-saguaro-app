@@ -86,10 +86,6 @@ export class AnnotationCollector extends CoreCollector{
                                 annotations.get(type).get(key).description.push(d.description);
                         }
                     });
-                    if(type === "ANGLE_OUTLIER"){
-                        console.log(annotations.get(type));
-                    }
-
                 });
             });
             this.mergeTypes(annotations);
@@ -117,7 +113,6 @@ export class AnnotationCollector extends CoreCollector{
         });
     }
 
-    //TODO PLEASE CHECK THIS METHOD!!!
     private buildAnnotationTrack(data: Array<RcsbFvTrackDataElementInterface>, type: string): RcsbFvRowConfigInterface {
         let out: RcsbFvRowConfigInterface;
         let displayType: string;
