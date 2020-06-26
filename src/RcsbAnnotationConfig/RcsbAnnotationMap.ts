@@ -1,9 +1,10 @@
 import * as annotationMap from "./RcsbAnnotationMap.json";
 import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbFvDisplayTypes} from "rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 export interface RcsbAnnotationMapInterface {
     type: string;
-    display: string;
+    display: RcsbFvDisplayTypes;
     color: string;
     title: string;
     provenanceList: Set<string>;
@@ -16,7 +17,7 @@ export interface RcsbMergedTypesInterface {
     merged_types: Array<string>;
     title: string;
     type: string;
-    display: string;
+    display: RcsbFvDisplayTypes;
 }
 
 interface DynamicKeyAnnotationInterface extends Feature{
@@ -85,7 +86,7 @@ export class RcsbAnnotationMap {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.randomRgba(),
-                    title: this.annotationMap.get(type).title+" "+a[this.annotationMap.get(type).key],
+                    title: this.annotationMap.get(type).title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }

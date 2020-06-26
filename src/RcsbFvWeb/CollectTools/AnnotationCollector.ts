@@ -145,7 +145,7 @@ export class AnnotationCollector extends CoreCollector{
     }
 
     private buildRcsbFvRowConfigTrack(data: Array<RcsbFvTrackDataElementInterface>, type: string):RcsbFvRowConfigInterface{
-        let displayType: string = RcsbFvDisplayTypes.BLOCK;
+        let displayType: RcsbFvDisplayTypes = RcsbFvDisplayTypes.BLOCK;
         if (data.length > 0 && data[0].end == null) {
             displayType = RcsbFvDisplayTypes.PIN;
         }
@@ -174,7 +174,7 @@ export class AnnotationCollector extends CoreCollector{
 
         const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
 
-        const displayType: string = annConfig.display;
+        const displayType: RcsbFvDisplayTypes = annConfig.display;
         const displayColor:string = annConfig.color;
         const rowTitle:string = annConfig.title;
 

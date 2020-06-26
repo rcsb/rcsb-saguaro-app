@@ -7,7 +7,6 @@ import {
 import {SequenceCollector} from "../CollectTools/SequenceCollector";
 import {AnnotationCollector} from "../CollectTools/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 
 
@@ -23,7 +22,6 @@ export abstract class RcsbFvCore {
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
         this.boardConfigData = {
-            elementId: elementId,
             rowTitleWidth: 190,
             trackWidth: 900,
             length: null
@@ -42,7 +40,7 @@ export abstract class RcsbFvCore {
     }
 
     update(): void {
-        this.rcsbFv.updateBoardConfig(this.boardConfigData, this.rowConfigData);
+        this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
     }
 
     getTargets(): Promise<Array<string>>{
