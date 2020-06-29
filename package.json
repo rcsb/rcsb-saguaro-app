@@ -1,6 +1,6 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.2.1-SNAPSHOT",
+  "version": "0.2.2-SNAPSHOT",
   "description": "",
   "main": "build/dist/config.js",
   "scripts": {
@@ -54,6 +54,6 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.2.1"
+    "@bioinsilico/rcsb-saguaro": "^0.2.4"
   }
 }
