@@ -3,7 +3,7 @@ import {
     RcsbFvDisplayTypes,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
-} from 'rcsb-saguaro';
+} from '@bioinsilico/rcsb-saguaro';
 
 import {
     AlignedRegion,

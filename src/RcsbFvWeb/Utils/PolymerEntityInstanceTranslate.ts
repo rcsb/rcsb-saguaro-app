@@ -1,5 +1,5 @@
 import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
-import {RcsbFvTrackDataElementInterface} from "rcsb-saguaro";
+import {RcsbFvTrackDataElementInterface} from '@bioinsilico/rcsb-saguaro';
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "./TagDelimiter";
 

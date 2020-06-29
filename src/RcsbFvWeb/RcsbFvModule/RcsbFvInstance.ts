@@ -1,7 +1,7 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {RcsbFvTrackDataElementInterface} from 'rcsb-saguaro';
+import {RcsbFvTrackDataElementInterface} from '@bioinsilico/rcsb-saguaro';
 
 
 export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{

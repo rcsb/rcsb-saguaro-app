@@ -1,4 +1,4 @@
-import {RcsbFv} from 'rcsb-saguaro';
+import {RcsbFv} from '@bioinsilico/rcsb-saguaro';
 
 import {RcsbFvEntity} from "./RcsbFvModule/RcsbFvEntity";
 import {RcsbFvInstance} from "./RcsbFvModule/RcsbFvInstance";

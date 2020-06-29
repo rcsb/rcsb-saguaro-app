@@ -1,6 +1,6 @@
 import * as annotationMap from "./RcsbAnnotationMap.json";
 import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvDisplayTypes} from "rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvDisplayTypes} from '@bioinsilico/rcsb-saguaro';
 
 export interface RcsbAnnotationMapInterface {
     type: string;

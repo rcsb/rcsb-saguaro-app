@@ -5,13 +5,13 @@ import {
     RcsbFvTrackDataElementGapInterface,
     InterpolationTypes,
     RcsbFvDisplayTypes
-} from 'rcsb-saguaro';
+} from '@bioinsilico/rcsb-saguaro';
 
 import {
     AnnotationFeatures,
     Feature,
     FeaturePosition,
-    QueryAnnotationsArgs, SequenceReference,
+    QueryAnnotationsArgs,
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
