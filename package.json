@@ -54,6 +54,6 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.2.4"
+    "@bioinsilico/rcsb-saguaro": "file:../rcsb-saguaro"
   }
 }

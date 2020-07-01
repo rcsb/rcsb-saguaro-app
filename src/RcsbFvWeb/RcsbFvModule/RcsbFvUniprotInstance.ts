@@ -7,7 +7,6 @@ import {
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleInterface, RcsbFvAdditionalConfig} from "./RcsbFvModuleInterface";
-import {TagDelimiter} from "../Utils/TagDelimiter";
 
 export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInterface{
 
