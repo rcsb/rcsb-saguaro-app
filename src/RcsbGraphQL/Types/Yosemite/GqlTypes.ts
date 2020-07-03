@@ -666,7 +666,7 @@ export interface EmParticleSelection {
 
 export interface EmSingleParticleEntity {
    __typename?: 'EmSingleParticleEntity',
-  id: Scalars['String'],
+  id: Scalars['Int'],
   image_processing_id: Scalars['String'],
   point_symmetry?: Maybe<Scalars['String']>,
 }
