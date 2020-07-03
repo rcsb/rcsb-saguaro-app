@@ -1,16 +1,17 @@
 import * as annotationMap from "./RcsbAnnotationMap.json";
 import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvDisplayTypes} from '@bioinsilico/rcsb-saguaro';
+import {RcsbFvDisplayTypes, RcsbFvColorGradient} from '@bioinsilico/rcsb-saguaro';
 
 export interface RcsbAnnotationMapInterface {
     type: string;
     display: RcsbFvDisplayTypes;
-    color: string;
+    color: string | RcsbFvColorGradient;
     title: string;
     provenanceList: Set<string>;
     height?:number;
     key?: string;
     transform_to_numerical?: boolean;
+    domain?: [number,number];
 }
 
 export interface RcsbMergedTypesInterface {

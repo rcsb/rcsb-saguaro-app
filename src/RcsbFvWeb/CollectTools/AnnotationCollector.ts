@@ -20,6 +20,7 @@ import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotatio
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {CoreCollector} from "./CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
+import {RcsbFvColorGradient} from "@bioinsilico/rcsb-saguaro/dist/RcsbDataManager/RcsbDataManager";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;
@@ -149,7 +150,7 @@ export class AnnotationCollector extends CoreCollector{
         if (data.length > 0 && data[0].end == null) {
             displayType = RcsbFvDisplayTypes.PIN;
         }
-        let displayColor: string = this.rcsbAnnotationMap.randomRgba();
+        let displayColor: string|RcsbFvColorGradient = this.rcsbAnnotationMap.randomRgba();
         let rowTitle: string = type;
 
         const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
@@ -175,19 +176,27 @@ export class AnnotationCollector extends CoreCollector{
         const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
 
         const displayType: RcsbFvDisplayTypes = annConfig.display;
-        const displayColor:string = annConfig.color;
+        const displayColor:string|RcsbFvColorGradient = annConfig.color;
         const rowTitle:string = annConfig.title;
 
         let min: number = this.minValue.get(type);
-        if(min>0)
+        let max: number = this.maxValue.get(type);
+
+        if(min>=0)
             min=0;
+        else if(Math.abs(min)>Math.abs(max))
+            max = -min;
+        else
+            min = -max;
+        const domain:[number,number] = annConfig.domain != null? annConfig.domain : [min,max];
+
         return {
             trackId: "annotationTrack_" + type,
             displayType: displayType,
             trackColor: "#F9F9F9",
             displayColor: displayColor,
             rowTitle: rowTitle,
-            displayDomain:[min,this.maxValue.get(type)],
+            displayDomain:domain,
             interpolationType: InterpolationTypes.STEP,
             trackData: data
         };
@@ -305,10 +314,9 @@ export class AnnotationCollector extends CoreCollector{
         annotations.forEach((locationAnn,type)=>{
             if(this.rcsbAnnotationMap.isMergedType(type)) {
                 const newType: string = this.rcsbAnnotationMap.getMergedType(type);
-                const color: string = this.rcsbAnnotationMap.getConfig(type).color;
+                const color: string  | RcsbFvColorGradient = this.rcsbAnnotationMap.getConfig(type).color as string;
                 if(!annotations.has(newType))
                     annotations.set(newType, new Map<string, RcsbFvTrackDataElementInterface>());
-
                 annotations.get(type).forEach((ann,loc)=>{
                     ann.color = color;
                     annotations.get(newType).set(loc,ann);

@@ -75,15 +75,22 @@
   "config": [{
     "type": "hydropathy",
     "display": "area",
-    "color": "#93d5e0",
+    "color": {
+      "thresholds":[0],
+      "colors":["#0000FF","#FF0000"]
+    },
     "height": 40,
     "title": "HYDROPATHY"
   },{
     "type": "disorder",
     "display": "area",
-    "color": "#aa93d5",
+    "color": {
+      "thresholds":[0.5],
+      "colors":["#0000FF","#FF0000"]
+    },
     "height": 40,
-    "title": "DISORDER"
+    "title": "DISORDER",
+    "domain": [0,1]
   },{
     "type": "SEQUENCE_VARIANT",
     "display": "composite",
