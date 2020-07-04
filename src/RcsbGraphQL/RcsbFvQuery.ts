@@ -15,7 +15,7 @@ export class RcsbFvQuery {
     private rcsbFvQueryAlignment:RcsbQueryAlignment = new RcsbQueryAlignment();
     private rcsbFvQueryEntityInstances: RcsbQueryEntryInstances = new RcsbQueryEntryInstances();
 
-    public requestAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
+    public requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return this.rcsbFvQueryAnnotations.request(requestConfig);
     }
 

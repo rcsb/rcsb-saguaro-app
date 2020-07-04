@@ -1,0 +1,6 @@
+{
+  "swiss_model": {
+    "url": "https://swissmodel.expasy.org/repository/uniprot/",
+    "url_suffix": ".json?provider=swissmodel"
+  }
+}

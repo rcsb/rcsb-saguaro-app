@@ -15,7 +15,8 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
             this.annotationCollector.collect({
                 queryId: upAcc,
                 reference: SequenceReference.Uniprot,
-                sources:source
+                sources:source,
+                collectSwissModel:true
             }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;

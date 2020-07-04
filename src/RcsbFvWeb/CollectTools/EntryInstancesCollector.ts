@@ -35,7 +35,8 @@ export class EntryInstancesCollector {
                             const taxIds: Set<string> = new Set<string>();
                             if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
                                 instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
-                                    taxIds.add(sO.ncbi_scientific_name);
+                                    if(typeof sO.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
+                                        taxIds.add(sO.ncbi_scientific_name);
                                 });
                             out.add({
                                 rcsbId: instance.rcsb_id,

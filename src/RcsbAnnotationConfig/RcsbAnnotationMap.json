@@ -73,6 +73,11 @@
     "disorder"
   ],
   "config": [{
+    "type": "HOMOLOGY MODELLING",
+    "color": "#2fcc5d",
+    "display": "block",
+    "title": "HOMOLOGY MODELS"
+  },{
     "type": "hydropathy",
     "display": "area",
     "color": {

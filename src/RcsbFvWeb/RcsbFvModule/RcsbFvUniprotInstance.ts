@@ -37,7 +37,8 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
                 queryId: upAcc,
                 reference: SequenceReference.Uniprot,
                 sources:sources,
-                filters:filters
+                filters:filters,
+                collectSwissModel:true
             }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;

@@ -55,7 +55,7 @@ export class RcsbFvBuilder {
                                     return r.entityId === t.split(TagDelimiter.entity)[1];
                                 });
                                 const refName:string = SequenceReference.PdbInstance.replace("_"," ");
-                                const labelPrefix: string = refName+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance+result[0].authId;
+                                const labelPrefix: string = refName+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance;
                                 RcsbFvBuilder.buildUniprotInstanceFv(
                                     elementFvId,
                                     upAcc,
@@ -64,8 +64,8 @@ export class RcsbFvBuilder {
                                 );
                                 WebToolsManager.additionalSelectButton(elementSelectId,result.map(instance=>{
                                     return{
-                                        name: instance.names+" - "+instance.taxIds.join(", "),
-                                        label: labelPrefix+" - "+instance.names,
+                                        name: instance.taxIds.length > 0 ? instance.names+" - "+instance.taxIds.join(", ") : instance.names,
+                                        label: labelPrefix+instance.authId+" - "+instance.names,
                                         shortLabel: instance.authId,
                                         onChange:()=>{
                                             RcsbFvBuilder.buildUniprotInstanceFv(

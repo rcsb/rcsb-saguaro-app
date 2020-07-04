@@ -6,6 +6,7 @@ export interface Scalars {
   Boolean: boolean,
   Int: number,
   Float: number,
+  /** Unrepresentable type */
   UNREPRESENTABLE: any,
 }
 
@@ -68,10 +69,10 @@ export enum FieldName {
 }
 
 export interface FilterInput {
-  field?: Maybe<FieldName>,
-  values?: Maybe<Array<Maybe<Scalars['String']>>>,
   operation?: Maybe<OperationType>,
+  field?: Maybe<FieldName>,
   source?: Maybe<Source>,
+  values?: Maybe<Array<Maybe<Scalars['String']>>>,
 }
 
 export interface Gap {
@@ -85,13 +86,17 @@ export enum OperationType {
   Equals = 'equals'
 }
 
+/** Query root */
 export interface Query {
    __typename?: 'Query',
+  /** Get annotations. */
   annotations?: Maybe<Array<Maybe<AnnotationFeatures>>>,
+  /** Get NCBI entry given the NCBI protein accession. */
   alignment?: Maybe<AlignmentResponse>,
 }
 
 
+/** Query root */
 export interface QueryAnnotationsArgs {
   reference?: Maybe<SequenceReference>,
   sources?: Maybe<Array<Maybe<Source>>>,
@@ -101,6 +106,7 @@ export interface QueryAnnotationsArgs {
 }
 
 
+/** Query root */
 export interface QueryAlignmentArgs {
   range?: Maybe<Scalars['String']>,
   from?: Maybe<SequenceReference>,
