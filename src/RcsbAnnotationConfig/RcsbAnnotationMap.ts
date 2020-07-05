@@ -87,7 +87,7 @@ export class RcsbAnnotationMap {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.randomRgba(),
-                    title: this.annotationMap.get(type).title,
+                    title: a[this.annotationMap.get(type).key]!=null?this.annotationMap.get(type).title+" "+(a[this.annotationMap.get(type).key] as string).toUpperCase() : this.annotationMap.get(type).title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }

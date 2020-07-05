@@ -126,7 +126,7 @@
     "display": "pin",
     "color": "#984657",
     "title": "BINDING SITE",
-    "key": "feature_id"
+    "key": "name"
   },{
     "type": "MUTAGENESIS_SITE",
     "display": "composite",
