@@ -62,6 +62,10 @@ export class SequenceCollector extends CoreCollector{
            from: requestConfig.from,
            to: requestConfig.to
         } as QueryAlignmentArgs).then(result => {
+            if(result.query_sequence == null || result.query_sequence.length == 0) {
+                console.log(result);
+                throw "Alignment not found from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;
+            }
             this.sequenceLength = result.query_sequence.length;
             const data: AlignmentResponse = result;
             const querySequence: string = data.query_sequence;
@@ -127,177 +131,179 @@ export class SequenceCollector extends CoreCollector{
         };
 
 
-        alignmentData.targetAlignmentList.sort((a:TargetAlignment,b:TargetAlignment)=>{
-            return a.target_id.localeCompare(b.target_id);
-        }).forEach(targetAlignment => {
-            if(alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
-                return;
-            if(targetAlignment.target_sequence == null)
-                return;
-            const commonContext: TranslateContextInterface = {
-                queryId:alignmentData.queryId,
-                targetId:targetAlignment.target_id,
-                from:alignmentData.from,
-                to:alignmentData.to
-            };
-
-            this.targets.push(targetAlignment.target_id);
-            const targetSequence = targetAlignment.target_sequence;
-            const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
-            const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-            const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
-            let next: number = 0;
-            let skipRegion: boolean = false;
-            targetAlignment.aligned_regions.forEach(region => {
-                next++;
-                if(skipRegion){
-                    skipRegion = false;
+        if(alignmentData.targetAlignmentList instanceof Array) {
+            alignmentData.targetAlignmentList.sort((a: TargetAlignment, b: TargetAlignment) => {
+                return a.target_id.localeCompare(b.target_id);
+            }).forEach(targetAlignment => {
+                if (alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
                     return;
-                }
-                const regionSequence = targetSequence.substring(region.target_begin - 1, region.target_end);
-                if(targetAlignment.aligned_regions[next]!=null){
+                if (targetAlignment.target_sequence == null)
+                    return;
+                const commonContext: TranslateContextInterface = {
+                    queryId: alignmentData.queryId,
+                    targetId: targetAlignment.target_id,
+                    from: alignmentData.from,
+                    to: alignmentData.to
+                };
 
-
-                    const nextRegion: AlignedRegion = targetAlignment.aligned_regions[next];
-                    if(nextRegion.target_begin === region.target_end+1){
-                        this.buildSequenceData({
-                            ...commonContext,
-                            sequenceData:sequenceData,
-                            sequence:regionSequence,
-                            begin:region.query_begin,
-                            oriBegin:region.target_begin
-                        });
-                        const nextRegionSequence = targetSequence.substring(nextRegion.target_begin - 1, nextRegion.target_end);
-                        this.buildSequenceData({
-                            ...commonContext,
-                            sequenceData:sequenceData,
-                            sequence:nextRegionSequence,
-                            begin:nextRegion.query_begin,
-                            oriBegin:nextRegion.target_begin
-                        });
-
-                        let openBegin = false;
-                        if(region.target_begin != 1)
-                            openBegin = true;
-                        let openEnd = false;
-                        if(nextRegion.target_end!=targetSequence.length)
-                            openEnd = true;
-                        alignedBlocks.push(this.addAuthorResIds({
-                            begin: region.query_begin,
-                            end: nextRegion.query_end,
-                            oriBegin: region.target_begin,
-                            oriEnd: nextRegion.target_end,
-                            sourceId:targetAlignment.target_id,
-                            source:alignmentData.to,
-                            provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
-                            provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                            openBegin:openBegin,
-                            openEnd:openEnd,
-                            gaps:[{begin:region.query_end, end:nextRegion.query_begin}],
-                            type: "ALIGNED_BLOCK",
-                            title: "ALIGNED REGION"
-                        },commonContext));
-                        findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                            mismatchData.push(this.addAuthorResIds({
-                                begin: (m + region.query_begin),
-                                oriBegin: (m + region.target_begin),
-                                sourceId:targetAlignment.target_id,
-                                source:alignmentData.to,
-                                provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
-                                provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                                type: "MISMATCH",
-                                title: "MISMATCH"
-                            },commonContext));
-                        });
-                        findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
-                            mismatchData.push(this.addAuthorResIds({
-                                begin: (m + nextRegion.query_begin),
-                                oriBegin: (m + nextRegion.target_begin),
-                                sourceId:targetAlignment.target_id,
-                                source:alignmentData.to,
-                                provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
-                                provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                                type: "MISMATCH",
-                                title: "MISMATCH"
-                            },commonContext));
-                        });
-                        skipRegion = true;
+                this.targets.push(targetAlignment.target_id);
+                const targetSequence = targetAlignment.target_sequence;
+                const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
+                const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
+                const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
+                let next: number = 0;
+                let skipRegion: boolean = false;
+                targetAlignment.aligned_regions.forEach(region => {
+                    next++;
+                    if (skipRegion) {
+                        skipRegion = false;
                         return;
                     }
-                }
-                this.buildSequenceData({
-                    ...commonContext,
-                    sequenceData:sequenceData,
-                    sequence:regionSequence,
-                    begin:region.query_begin,
-                    oriBegin:region.target_begin
+                    const regionSequence = targetSequence.substring(region.target_begin - 1, region.target_end);
+                    if (targetAlignment.aligned_regions[next] != null) {
+
+
+                        const nextRegion: AlignedRegion = targetAlignment.aligned_regions[next];
+                        if (nextRegion.target_begin === region.target_end + 1) {
+                            this.buildSequenceData({
+                                ...commonContext,
+                                sequenceData: sequenceData,
+                                sequence: regionSequence,
+                                begin: region.query_begin,
+                                oriBegin: region.target_begin
+                            });
+                            const nextRegionSequence = targetSequence.substring(nextRegion.target_begin - 1, nextRegion.target_end);
+                            this.buildSequenceData({
+                                ...commonContext,
+                                sequenceData: sequenceData,
+                                sequence: nextRegionSequence,
+                                begin: nextRegion.query_begin,
+                                oriBegin: nextRegion.target_begin
+                            });
+
+                            let openBegin = false;
+                            if (region.target_begin != 1)
+                                openBegin = true;
+                            let openEnd = false;
+                            if (nextRegion.target_end != targetSequence.length)
+                                openEnd = true;
+                            alignedBlocks.push(this.addAuthorResIds({
+                                begin: region.query_begin,
+                                end: nextRegion.query_end,
+                                oriBegin: region.target_begin,
+                                oriEnd: nextRegion.target_end,
+                                sourceId: targetAlignment.target_id,
+                                source: alignmentData.to,
+                                provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
+                                provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                                openBegin: openBegin,
+                                openEnd: openEnd,
+                                gaps: [{begin: region.query_end, end: nextRegion.query_begin}],
+                                type: "ALIGNED_BLOCK",
+                                title: "ALIGNED REGION"
+                            }, commonContext));
+                            findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
+                                mismatchData.push(this.addAuthorResIds({
+                                    begin: (m + region.query_begin),
+                                    oriBegin: (m + region.target_begin),
+                                    sourceId: targetAlignment.target_id,
+                                    source: alignmentData.to,
+                                    provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
+                                    provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                                    type: "MISMATCH",
+                                    title: "MISMATCH"
+                                }, commonContext));
+                            });
+                            findMismatch(nextRegionSequence, alignmentData.querySequence.substring(nextRegion.query_begin - 1, nextRegion.query_end),).forEach(m => {
+                                mismatchData.push(this.addAuthorResIds({
+                                    begin: (m + nextRegion.query_begin),
+                                    oriBegin: (m + nextRegion.target_begin),
+                                    sourceId: targetAlignment.target_id,
+                                    source: alignmentData.to,
+                                    provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
+                                    provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                                    type: "MISMATCH",
+                                    title: "MISMATCH"
+                                }, commonContext));
+                            });
+                            skipRegion = true;
+                            return;
+                        }
+                    }
+                    this.buildSequenceData({
+                        ...commonContext,
+                        sequenceData: sequenceData,
+                        sequence: regionSequence,
+                        begin: region.query_begin,
+                        oriBegin: region.target_begin
+                    });
+                    let openBegin = false;
+                    if (region.target_begin != 1)
+                        openBegin = true;
+                    let openEnd = false;
+                    if (region.target_end != targetSequence.length)
+                        openEnd = true;
+                    alignedBlocks.push(this.addAuthorResIds({
+                        begin: region.query_begin,
+                        end: region.query_end,
+                        oriBegin: region.target_begin,
+                        oriEnd: region.target_end,
+                        sourceId: targetAlignment.target_id,
+                        source: alignmentData.to,
+                        provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
+                        provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                        openBegin: openBegin,
+                        openEnd: openEnd,
+                        type: "ALIGNED_BLOCK",
+                        title: "ALIGNED REGION"
+                    }, commonContext));
+                    findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
+                        mismatchData.push(this.addAuthorResIds({
+                            begin: (m + region.query_begin),
+                            oriBegin: (m + region.target_begin),
+                            sourceId: targetAlignment.target_id,
+                            source: alignmentData.to,
+                            provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
+                            provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                            type: "MISMATCH",
+                            title: "MISMATCH"
+                        }, commonContext));
+                    });
                 });
-                let openBegin = false;
-                if(region.target_begin != 1)
-                    openBegin = true;
-                let openEnd = false;
-                if(region.target_end!=targetSequence.length)
-                    openEnd = true;
-                alignedBlocks.push(this.addAuthorResIds({
-                    begin: region.query_begin,
-                    end: region.query_end,
-                    oriBegin: region.target_begin,
-                    oriEnd: region.target_end,
-                    sourceId:targetAlignment.target_id,
-                    source:alignmentData.to,
-                    provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
-                    provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                    openBegin:openBegin,
-                    openEnd:openEnd,
-                    type: "ALIGNED_BLOCK",
-                    title: "ALIGNED REGION"
-                },commonContext));
-                findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                    mismatchData.push(this.addAuthorResIds({
-                        begin: (m + region.query_begin),
-                        oriBegin: (m+region.target_begin),
-                        sourceId:targetAlignment.target_id,
-                        source:alignmentData.to,
-                        provenanceName:RcsbAnnotationConstants.provenanceName.pdb,
-                        provenanceColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                        type: "MISMATCH",
-                        title: "MISMATCH"
-                    },commonContext));
-                });
+                const sequenceDisplay: RcsbFvDisplayConfigInterface = {
+                    displayType: RcsbFvDisplayTypes.SEQUENCE,
+                    displayColor: "#000000",
+                    displayData: sequenceData,
+                    dynamicDisplay: this.dynamicDisplay
+                };
+                const mismatchDisplay: RcsbFvDisplayConfigInterface = {
+                    displayType: RcsbFvDisplayTypes.PIN,
+                    displayColor: "#FF9999",
+                    displayData: mismatchData
+                };
+                const alignmentDisplay: RcsbFvDisplayConfigInterface = {
+                    displayType: RcsbFvDisplayTypes.BLOCK,
+                    displayColor: "#9999FF",
+                    displayData: alignedBlocks
+                };
+                let rowPrefix: string = alignmentData.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle;
+                let rowTitle: string;
+                if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null)
+                    rowTitle = targetAlignment.target_id.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
+                else
+                    rowTitle = targetAlignment.target_id;
+                const track: RcsbFvRowConfigInterface = {
+                    trackId: "targetSequenceTrack_",
+                    displayType: RcsbFvDisplayTypes.COMPOSITE,
+                    trackColor: "#F9F9F9",
+                    rowPrefix: rowPrefix,
+                    rowTitle: rowTitle,
+                    titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
+                };
+                this.alignmentsConfigData.push(track);
             });
-            const sequenceDisplay: RcsbFvDisplayConfigInterface = {
-                displayType: RcsbFvDisplayTypes.SEQUENCE,
-                displayColor: "#000000",
-                displayData: sequenceData,
-                dynamicDisplay: this.dynamicDisplay
-            };
-            const mismatchDisplay: RcsbFvDisplayConfigInterface = {
-                displayType: RcsbFvDisplayTypes.PIN,
-                displayColor: "#FF9999",
-                displayData: mismatchData
-            };
-            const alignmentDisplay: RcsbFvDisplayConfigInterface = {
-                displayType: RcsbFvDisplayTypes.BLOCK,
-                displayColor: "#9999FF",
-                displayData: alignedBlocks
-            };
-            let rowPrefix: string = alignmentData.to.replace("_"," ")+" "+TagDelimiter.alignmentTitle;
-            let rowTitle: string;
-            if( alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null)
-                rowTitle = targetAlignment.target_id.split(TagDelimiter.instance)[0]+TagDelimiter.instance+this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
-            else
-                rowTitle = targetAlignment.target_id;
-            const track: RcsbFvRowConfigInterface = {
-                trackId: "targetSequenceTrack_",
-                displayType: RcsbFvDisplayTypes.COMPOSITE,
-                trackColor: "#F9F9F9",
-                rowPrefix: rowPrefix,
-                rowTitle: rowTitle,
-                titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
-            };
-            this.alignmentsConfigData.push(track);
-        });
+        }
         this.finished = true;
         return { sequence: this.seqeunceConfigData, alignment:this.alignmentsConfigData};
     }
