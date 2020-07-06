@@ -4,14 +4,15 @@ import {
     RcsbFvTrackDataElementInterface,
     RcsbFvTrackDataElementGapInterface,
     InterpolationTypes,
-    RcsbFvDisplayTypes
+    RcsbFvDisplayTypes,
+    RcsbFvColorGradient
 } from '@bioinsilico/rcsb-saguaro';
 
 import {
     AnnotationFeatures,
     Feature,
     FeaturePosition,
-    QueryAnnotationsArgs, SequenceReference,
+    QueryAnnotationsArgs,
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
@@ -20,7 +21,6 @@ import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotatio
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {CoreCollector} from "./CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
-import {RcsbFvColorGradient} from "@bioinsilico/rcsb-saguaro";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
