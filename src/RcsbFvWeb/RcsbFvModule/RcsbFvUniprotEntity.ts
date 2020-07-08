@@ -6,12 +6,16 @@ import {
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface, RcsbFvAdditionalConfig} from "./RcsbFvModuleInterface";
+import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {TagDelimiter} from "../Utils/TagDelimiter";
 
 export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInterface{
 
-    public build(upAcc: string, entityId: string, updateFlag: boolean, additionalConfig?:RcsbFvAdditionalConfig): void {
+    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+        const upAcc: string = buildConfig.upAcc;
+        const updateFlag: boolean = buildConfig.updateFlag;
+        const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig
+        const entityId: string = buildConfig.entityId;
         let sources: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
             sources = additionalConfig.sources;

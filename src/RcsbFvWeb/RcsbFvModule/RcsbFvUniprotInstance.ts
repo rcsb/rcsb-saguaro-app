@@ -6,11 +6,17 @@ import {
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface, RcsbFvAdditionalConfig} from "./RcsbFvModuleInterface";
+import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 
 export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInterface{
 
-    public build(upAcc: string, entityId:string, instanceId: string, updateFlag: boolean, additionalConfig?:RcsbFvAdditionalConfig): void {
+    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+        const upAcc: string = buildConfig.upAcc;
+        const entityId:string = buildConfig.entityId;
+        const instanceId: string = buildConfig.instanceId;
+        const updateFlag: boolean = buildConfig.updateFlag;
+        const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig;
+
         let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
             sources = additionalConfig.sources;

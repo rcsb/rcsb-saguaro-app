@@ -1,13 +1,12 @@
 import {FieldName, OperationType, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
 export class RcsbFvEntity extends RcsbFvCore implements RcsbFvModuleInterface{
 
-
-
-    public build(entityId: string, updateFlag: boolean): void {
+    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+        const entityId: string = buildConfig.entityId;
+        const updateFlag: boolean = buildConfig.updateFlag;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance];
         this.sequenceCollector.collect({
             queryId: entityId,

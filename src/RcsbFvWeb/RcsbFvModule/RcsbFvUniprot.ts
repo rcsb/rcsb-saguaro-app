@@ -1,10 +1,12 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
 export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
 
-    public build(upAcc: string, updateFlag: boolean): void {
+    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+        const upAcc: string = buildConfig.upAcc;
+        const updateFlag: boolean = buildConfig.updateFlag;
         const source: Array<Source> = [Source.Uniprot];
         this.sequenceCollector.collect({
             queryId: upAcc,
