@@ -83,22 +83,6 @@ export class RcsbFvBuilder {
         });
     }
 
-    public static buildUniprotInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
-        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvUniprotInstance,{upAcc:upAcc,entityId:entityId,instanceId:instanceId,additionalConfig:additionalConfig});
-        const entryId:string = entityId.split(TagDelimiter.entity)[0];
-        RcsbFvBuilder.buildFv(entryId,buildFv);
-    }
-
-    public static buildUniprotFv(elementId: string, upAcc: string): void {
-        RcsbFvBuilder.createFv(elementId, RcsbFvUniprot, {upAcc:upAcc});
-    }
-
-    public static buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
-        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvUniprotEntity,{upAcc:upAcc,entityId:entityId,additionalConfig:additionalConfig});
-        const entryId:string = entityId.split(TagDelimiter.entity)[0];
-        RcsbFvBuilder.buildFv(entryId,buildFv);
-    }
-
     public static buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
         const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = this.buildRcsbFvSingleViewer(elementFvId);
         const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>void = (p: PolymerEntityInstanceTranslate)=>{
@@ -122,13 +106,7 @@ export class RcsbFvBuilder {
             });
         };
         const entryId:string = entityId.split(TagDelimiter.entity)[0];
-        RcsbFvBuilder.buildFv(entryId,buildSelectAndFv);
-    }
-
-    private static buildEntityFv(elementId: string, entityId: string): void {
-        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvEntity,{entityId:entityId});
-        const entryId:string = entityId.split(TagDelimiter.entity)[0];
-        RcsbFvBuilder.buildFv(entryId,buildFv);
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildSelectAndFv);
     }
 
     public static buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string): void {
@@ -155,6 +133,28 @@ export class RcsbFvBuilder {
         });
     }
 
+    public static buildUniprotInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvUniprotInstance,{upAcc:upAcc,entityId:entityId,instanceId:instanceId,additionalConfig:additionalConfig});
+        const entryId:string = entityId.split(TagDelimiter.entity)[0];
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
+    }
+
+    public static buildUniprotFv(elementId: string, upAcc: string): void {
+        RcsbFvBuilder.createFv(elementId, RcsbFvUniprot, {upAcc:upAcc});
+    }
+
+    public static buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvUniprotEntity,{upAcc:upAcc,entityId:entityId,additionalConfig:additionalConfig});
+        const entryId:string = entityId.split(TagDelimiter.entity)[0];
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
+    }
+
+    private static buildEntityFv(elementId: string, entityId: string): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvEntity,{entityId:entityId});
+        const entryId:string = entityId.split(TagDelimiter.entity)[0];
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
+    }
+
     private static buildRcsbFvSingleViewer(elementId: string): RcsbFvSingleViewerInterface{
         return{
             rcsbFv: new RcsbFv({
@@ -169,10 +169,10 @@ export class RcsbFvBuilder {
     private static buildInstanceFv(elementId: string, instanceId: string): void {
         const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvInstance,{instanceId:instanceId});
         const entryId:string = instanceId.split(TagDelimiter.instance)[0];
-        RcsbFvBuilder.buildFv(entryId,buildFv);
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
     }
 
-    private static buildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void){
+    private static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void){
         if(this.polymerEntityInstanceMap.has(entryId)) {
             f(this.polymerEntityInstanceMap.get(entryId));
         }else{
