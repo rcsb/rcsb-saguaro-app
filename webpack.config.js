@@ -32,7 +32,8 @@ const commonConfig = {
 
 const webApp = {
     ...commonConfig,
-    mode: "development",
+    //mode: "development",
+    mode:"production",
     entry: {
         'rcsb-saguaro-app':'./build/src/RcsbFvWeb/RcsbFvBuilder.js'
     },

@@ -1,7 +1,7 @@
 {
-  "name": "rcsb-saguaro-app",
+  "name": "@bioinsilico/rcsb-saguaro-app",
   "version": "0.3.0",
-  "description": "RCSB PDB Saguaro Web Application",
+  "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/config.js",
   "scripts": {
     "buildAll": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
@@ -13,14 +13,27 @@
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
+    "buildDoc": "npx typedoc --mode file --out docs src --theme ./typedoc_theme",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/rcsb/rcsb-saguaro-app.git"
   },
-  "keywords": [],
-  "author": "Joan Segura",
+  "keywords": [
+    "1D",
+    "sequence",
+    "annotations",
+    "gene",
+    "protein",
+    "PDB",
+    "RCSB",
+    "UniProt"
+  ],
+  "author": "Joan Segura Mora <joan.segura@rcsb.org>",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -45,6 +58,7 @@
     "sass-loader": "^7.3.1",
     "style-loader": "^1.0.0",
     "ts-loader": "^6.0.4",
+    "typedoc": "^0.17.8",
     "typescript": "^3.9.5",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"
@@ -52,5 +66,13 @@
   "dependencies": {
     "@bioinsilico/rcsb-saguaro": "^0.3.3",
     "@graphql-codegen/cli": "^1.16.0"
+  },
+  "bugs": {
+    "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"
+  },
+  "homepage": "https://github.com/rcsb/rcsb-saguaro-app#readme",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
   }
 }
