@@ -1,4 +1,4 @@
-import {RcsbFv} from '@bioinsilico/rcsb-saguaro';
+import {RcsbFv, RcsbFvBoardConfigInterface} from '@bioinsilico/rcsb-saguaro';
 
 import {RcsbFvEntity} from "./RcsbFvModule/RcsbFvEntity";
 import {RcsbFvInstance} from "./RcsbFvModule/RcsbFvInstance";
@@ -8,7 +8,7 @@ import {RcsbFvUniprotEntity} from "./RcsbFvModule/RcsbFvUniprotEntity";
 import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "./CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstanceTranslate} from "./Utils/PolymerEntityInstanceTranslate";
 import {TagDelimiter} from "./Utils/TagDelimiter";
-import { SequenceReference} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {FieldName, OperationType, SequenceReference, Source} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     RcsbFvAdditionalConfig,
     RcsbFvModuleBuildInterface,
@@ -24,16 +24,21 @@ interface RcsbFvSingleViewerInterface {
 export class RcsbFvBuilder {
     private static readonly rcsbFvManager: Map<string, RcsbFvSingleViewerInterface> = new Map<string, RcsbFvSingleViewerInterface>();
     private static readonly polymerEntityInstanceMap: Map<string,PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
+    private static boardConfig: RcsbFvBoardConfigInterface;
 
     public static getRcsbFv(elementFvId: string): RcsbFv{
         return this.rcsbFvManager.get(elementFvId).rcsbFv;
+    }
+
+    public static setBoardConfig(boardConfigData: RcsbFvBoardConfigInterface){
+        this.boardConfig = boardConfigData;
     }
 
     public static buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): void {
         const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = this.buildRcsbFvSingleViewer(elementFvId);
         const ALL:string = "ALL";
         const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer.rcsbFv);
-        rcsbFvUniprot.build({upAcc:upAcc,updateFlag:false});
+        rcsbFvUniprot.build({upAcc:upAcc});
         RcsbFvBuilder.rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
         rcsbFvUniprot.getTargets().then(targets => {
             WebToolsManager.buildSelectButton(elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
@@ -54,7 +59,7 @@ export class RcsbFvBuilder {
                                 });
                                 const refName:string = SequenceReference.PdbInstance.replace("_"," ");
                                 const labelPrefix: string = refName+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance;
-                                RcsbFvBuilder.buildUniprotInstanceFv(
+                                RcsbFvBuilder.buildUniprotEntityInstanceFv(
                                     elementFvId,
                                     upAcc,
                                     result[0].entryId+TagDelimiter.entity+result[0].entityId,
@@ -66,7 +71,7 @@ export class RcsbFvBuilder {
                                         label: labelPrefix+instance.authId+" - "+instance.names,
                                         shortLabel: instance.authId,
                                         onChange:()=>{
-                                            RcsbFvBuilder.buildUniprotInstanceFv(
+                                            RcsbFvBuilder.buildUniprotEntityInstanceFv(
                                                 elementFvId,
                                                 upAcc,
                                                 instance.entryId+TagDelimiter.entity+instance.entityId,
@@ -85,10 +90,18 @@ export class RcsbFvBuilder {
 
     public static buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
         const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = this.buildRcsbFvSingleViewer(elementFvId);
+        const pdbId:string = entityId.split(TagDelimiter.entity)[0];
         const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>void = (p: PolymerEntityInstanceTranslate)=>{
             const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer.rcsbFv);
             rcsbFvEntity.setPolymerEntityInstance(p);
-            rcsbFvEntity.build({entityId:entityId,updateFlag:false});
+            rcsbFvEntity.build({entityId:entityId,additionalConfig:{
+                    sources:[Source.PdbEntity,Source.PdbInstance],
+                    filters:[{
+                        field: FieldName.Type,
+                        operation:OperationType.Equals,
+                        source:Source.PdbInstance,
+                        values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                    }]}});
             RcsbFvBuilder.rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
             rcsbFvEntity.getTargets().then(targets => {
                 WebToolsManager.buildSelectButton(elementSelectId, [entityId].concat(targets).map(t => {
@@ -96,9 +109,22 @@ export class RcsbFvBuilder {
                         label: t,
                         onChange: () => {
                             if (t === entityId) {
-                                RcsbFvBuilder.buildEntityFv(elementFvId, entityId);
+                                RcsbFvBuilder.buildSingleEntitySummaryFv(elementFvId, entityId);
                             } else {
-                                RcsbFvBuilder.buildUniprotEntityFv(elementFvId, t, entityId);
+                                RcsbFvBuilder.buildUniprotEntityFv(elementFvId, t, entityId, {
+                                    sources:[Source.PdbEntity, Source.PdbInstance],
+                                    filters:[{
+                                        field:FieldName.TargetId,
+                                        operation:OperationType.Contains,
+                                        source:Source.PdbInstance,
+                                        values:[pdbId]
+                                    },{
+                                        field: FieldName.Type,
+                                        operation:OperationType.Equals,
+                                        source:Source.PdbInstance,
+                                        values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                                    }]
+                                });
                             }
                         }
                     }
@@ -107,6 +133,19 @@ export class RcsbFvBuilder {
         };
         const entryId:string = entityId.split(TagDelimiter.entity)[0];
         RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildSelectAndFv);
+    }
+
+    private static buildSingleEntitySummaryFv(elementId: string, entityId: string): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvEntity,{entityId:entityId,additionalConfig:{
+                sources:[Source.PdbEntity,Source.PdbInstance],
+                filters:[{
+                    field: FieldName.Type,
+                    operation:OperationType.Equals,
+                    source:Source.PdbInstance,
+                    values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                }]}});
+        const entryId:string = entityId.split(TagDelimiter.entity)[0];
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
     }
 
     public static buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string): void {
@@ -133,14 +172,22 @@ export class RcsbFvBuilder {
         });
     }
 
-    public static buildUniprotInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
-        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvUniprotInstance,{upAcc:upAcc,entityId:entityId,instanceId:instanceId,additionalConfig:additionalConfig});
+    /*Single Feature Views*/
+
+    public static buildUniprotFv(elementId: string, upAcc: string): void {
+        RcsbFvBuilder.createFv(elementId, RcsbFvUniprot, {upAcc:upAcc});
+    }
+
+    public static buildEntityFv(elementId: string, entityId: string): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvEntity,{entityId:entityId});
         const entryId:string = entityId.split(TagDelimiter.entity)[0];
         RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
     }
 
-    public static buildUniprotFv(elementId: string, upAcc: string): void {
-        RcsbFvBuilder.createFv(elementId, RcsbFvUniprot, {upAcc:upAcc});
+    public static buildInstanceFv(elementId: string, instanceId: string): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvInstance,{instanceId:instanceId});
+        const entryId:string = instanceId.split(TagDelimiter.instance)[0];
+        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
     }
 
     public static buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
@@ -149,28 +196,13 @@ export class RcsbFvBuilder {
         RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
     }
 
-    private static buildEntityFv(elementId: string, entityId: string): void {
-        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvEntity,{entityId:entityId});
+    public static buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): void {
+        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvUniprotInstance,{upAcc:upAcc,entityId:entityId,instanceId:instanceId,additionalConfig:additionalConfig});
         const entryId:string = entityId.split(TagDelimiter.entity)[0];
         RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
     }
 
-    private static buildRcsbFvSingleViewer(elementId: string): RcsbFvSingleViewerInterface{
-        return{
-            rcsbFv: new RcsbFv({
-                rowConfigData: null,
-                boardConfigData: null,
-                elementId: elementId
-            }),
-            elementId: elementId
-        };
-    }
-
-    private static buildInstanceFv(elementId: string, instanceId: string): void {
-        const buildFv: (p: PolymerEntityInstanceTranslate)=>void = RcsbFvBuilder.createFvBuilder(elementId,RcsbFvInstance,{instanceId:instanceId});
-        const entryId:string = instanceId.split(TagDelimiter.instance)[0];
-        RcsbFvBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildFv);
-    }
+    /*Class Inner Methods*/
 
     private static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void){
         if(this.polymerEntityInstanceMap.has(entryId)) {
@@ -187,7 +219,7 @@ export class RcsbFvBuilder {
     private static createFvBuilder(
         elementId: string,
         fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
-        config: Omit<RcsbFvModuleBuildInterface, 'updateFlag'>
+        config: RcsbFvModuleBuildInterface,
     ): ((p: PolymerEntityInstanceTranslate)=>void) {
         return (p: PolymerEntityInstanceTranslate)=>{
             RcsbFvBuilder.createFv(elementId,fvModuleI,config,p);
@@ -197,20 +229,36 @@ export class RcsbFvBuilder {
     private static createFv(
         elementId: string,
         fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
-        config: Omit<RcsbFvModuleBuildInterface, 'updateFlag'>,
+        config: RcsbFvModuleBuildInterface,
         p?: PolymerEntityInstanceTranslate
     ): void {
         if (RcsbFvBuilder.rcsbFvManager.has(elementId)) {
             const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, RcsbFvBuilder.rcsbFvManager.get(elementId).rcsbFv);
             if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
-            rcsbFvInstance.build({...config,updateFlag:true});
+            rcsbFvInstance.build(config);
         } else {
             const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = this.buildRcsbFvSingleViewer(elementId);
             const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvSingleViewer.rcsbFv);
             if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
-            rcsbFvInstance.build({...config,updateFlag:false});
+            rcsbFvInstance.build(config);
             RcsbFvBuilder.rcsbFvManager.set(elementId, rcsbFvSingleViewer);
         }
+    }
+
+    private static buildRcsbFvSingleViewer(elementId: string): RcsbFvSingleViewerInterface{
+        const boardConfig: RcsbFvBoardConfigInterface = this.boardConfig ?? {
+            rowTitleWidth: 190,
+            trackWidth: 900,
+            length: 0
+        };
+        return{
+            rcsbFv: new RcsbFv({
+                rowConfigData: null,
+                boardConfigData: boardConfig,
+                elementId: elementId
+            }),
+            elementId: elementId
+        };
     }
 }
 

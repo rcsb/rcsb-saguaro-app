@@ -293,7 +293,7 @@ export class SequenceCollector extends CoreCollector{
                 else
                     rowTitle = targetAlignment.target_id;
                 const track: RcsbFvRowConfigInterface = {
-                    trackId: "targetSequenceTrack_",
+                    trackId: "targetSequenceTrack_"+targetAlignment.target_id,
                     displayType: RcsbFvDisplayTypes.COMPOSITE,
                     trackColor: "#F9F9F9",
                     rowPrefix: rowPrefix,

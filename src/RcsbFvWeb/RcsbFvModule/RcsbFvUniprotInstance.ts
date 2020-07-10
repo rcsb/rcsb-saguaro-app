@@ -14,7 +14,6 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
         const upAcc: string = buildConfig.upAcc;
         const entityId:string = buildConfig.entityId;
         const instanceId: string = buildConfig.instanceId;
-        const updateFlag: boolean = buildConfig.updateFlag;
         const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig;
 
         let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
@@ -49,11 +48,7 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
-                if(updateFlag){
-                    this.update();
-                }else {
-                    this.display();
-                }
+                this.display();
             }).catch(error=>{
                 console.error(error);
             });

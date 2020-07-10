@@ -6,7 +6,6 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
         const upAcc: string = buildConfig.upAcc;
-        const updateFlag: boolean = buildConfig.updateFlag;
         const source: Array<Source> = [Source.Uniprot];
         this.sequenceCollector.collect({
             queryId: upAcc,
@@ -22,12 +21,8 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
             }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
-                this.rowConfigData = seqResult.sequence.concat(annResult).concat(seqResult.alignment);
-                if(updateFlag){
-                    this.update();
-                }else {
-                    this.display();
-                }
+                this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(annResult).concat(seqResult.alignment) : seqResult.sequence.concat(annResult);
+                this.display();
             }).catch(error=>{
                 console.error(error);
             });

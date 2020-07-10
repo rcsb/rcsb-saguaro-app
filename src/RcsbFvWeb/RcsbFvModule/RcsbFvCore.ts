@@ -12,20 +12,17 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 
 export abstract class RcsbFvCore {
 
-    rcsbFv: RcsbFv;
-    boardConfigData: RcsbFvBoardConfigInterface;
-    rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    protected rcsbFv: RcsbFv;
+    protected boardConfigData: RcsbFvBoardConfigInterface = {
+        length:0
+    };
+    protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
-    sequenceCollector: SequenceCollector = new SequenceCollector();
-    annotationCollector: AnnotationCollector = new AnnotationCollector();
+    protected sequenceCollector: SequenceCollector = new SequenceCollector();
+    protected annotationCollector: AnnotationCollector = new AnnotationCollector();
 
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
-        this.boardConfigData = {
-            rowTitleWidth: 190,
-            trackWidth: 900,
-            length: null
-        };
     }
 
     public setPolymerEntityInstance(polymerEntityInstance: PolymerEntityInstanceTranslate){
@@ -34,12 +31,6 @@ export abstract class RcsbFvCore {
     }
 
     display(): void{
-        this.rcsbFv.setBoardConfig(this.boardConfigData);
-        this.rcsbFv.setBoardData(this.rowConfigData);
-        this.rcsbFv.init();
-    }
-
-    update(): void {
         this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
     }
 
