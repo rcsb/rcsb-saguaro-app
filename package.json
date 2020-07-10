@@ -4,7 +4,7 @@
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/config.js",
   "scripts": {
-    "buildAll": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
+    "buildAll": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean && npm run buildDoc",
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
     "generateBorrego": "graphql-codegen --config codegen.borrego.json",
     "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
