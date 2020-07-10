@@ -61,7 +61,7 @@ export class SequenceCollector extends CoreCollector{
            queryId: requestConfig.queryId,
            from: requestConfig.from,
            to: requestConfig.to
-        } as QueryAlignmentArgs).then(result => {
+        }).then(result => {
             if(result.query_sequence == null || result.query_sequence.length == 0) {
                 console.log(result);
                 throw "Alignment not found from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;

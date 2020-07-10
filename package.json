@@ -1,7 +1,7 @@
 {
   "name": "rcsb-saguaro-app",
-  "version": "0.3.0-SNAPSHOT",
-  "description": "",
+  "version": "0.3.0",
+  "description": "RCSB PDB Saguaro Web Application",
   "main": "build/dist/config.js",
   "scripts": {
     "buildAll": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
@@ -18,9 +18,6 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/rcsb/rcsb-saguaro-app.git"
-  },
-  "publishConfig": {
-    "registry": "http://nexus3.rcsb.org/repository/npm-rcsb-snapshots/"
   },
   "keywords": [],
   "author": "Joan Segura",
@@ -53,7 +50,7 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "file:../rcsb-saguaro",
+    "@bioinsilico/rcsb-saguaro": "^0.3.3",
     "@graphql-codegen/cli": "^1.16.0"
   }
 }
