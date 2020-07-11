@@ -21,6 +21,7 @@ export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(seqResult.alignment).concat(annResult) : seqResult.sequence.concat(annResult);
                 this.display();
+                if(buildConfig.resolve!=null)buildConfig.resolve();
             }).catch(error=>{
                 console.error(error);
                 throw error;

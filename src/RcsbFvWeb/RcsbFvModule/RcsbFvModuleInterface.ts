@@ -12,6 +12,7 @@ export interface RcsbFvModuleBuildInterface {
     instanceId?: string;
     upAcc?:string;
     additionalConfig?:RcsbFvAdditionalConfig;
+    resolve?:()=>void;
 }
 
 export interface RcsbFvModuleInterface {

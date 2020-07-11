@@ -72,7 +72,7 @@
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"
   },
-  "homepage": "https://github.com/rcsb/rcsb-saguaro-app#readme",
+  "homepage": "https://rcsb.github.io/rcsb-saguaro-app",
   "directories": {
     "doc": "docs",
     "example": "examples"

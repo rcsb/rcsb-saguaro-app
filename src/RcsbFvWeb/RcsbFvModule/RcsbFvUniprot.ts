@@ -23,6 +23,7 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(annResult).concat(seqResult.alignment) : seqResult.sequence.concat(annResult);
                 this.display();
+                if(buildConfig.resolve!=null)buildConfig.resolve();
             }).catch(error=>{
                 console.error(error);
             });

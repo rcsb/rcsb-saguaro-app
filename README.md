@@ -1,8 +1,9 @@
 # rcsb-saguaro-app
 
 RCSB Saguaro Web Application is an open-source library built on the top of the [RCSB Saguaro 1D Feature Viewer](https://rcsb.github.io/rcsb-saguaro)
-designed to display protein features at the [RCSB Web Site](https://www.rcsb.org). The package collects protein annotations from the 
-[1D Coordinate Server](https://1d-coordinates.rcsb.org) and the main [RCSB Data API](https://data.rcsb.org).
+and designed to display protein features at the [RCSB Web Site](https://www.rcsb.org). The package collects protein annotations from the 
+[1D Coordinate Server](https://1d-coordinates.rcsb.org) and the main [RCSB Data API](https://data.rcsb.org) and generates preconfigures Protein 
+Feature Summaries. The package allows access to RCSB Saguaro methods to add or change displayed data. 
 
 <!---
 <div id="pfvSelect" ></div>  
@@ -24,3 +25,11 @@ The full collection of examples can be edit and modified at [CODEPEN](https://co
 
 ### Library Documentation
 TypeScript classes documentation can be found [here](https://rcsb.github.io/rcsb-saguaro-app/globals.html).
+
+### Main Class and Methods
+
+- **RcsbFvWebApp.getRcsbFv**(elementId: string)
+- **RcsbFvWebApp.buildUniprotFv**(elementId: string, upAcc: string)
+
+- **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/rcsbfvboardconfiginterface.html))
+- **RcsbFvWebApp.getRcsbFv**(elementId: string)
