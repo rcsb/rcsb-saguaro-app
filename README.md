@@ -16,10 +16,12 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 `npm install @bioinsilico/rcsb-saguaro-app`
 
 ### CDN JavaScript
-`<script src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.3.1/build/dist/app.js" type="text/javascript"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.3.2/build/dist/app.js" type="text/javascript"></script>`
 
 ### JavaScript Examples
 * [PDB Instance Chain View](https://rcsb.github.io/rcsb-saguaro-app/examples/instance.html)
+* [Include Custom Tracks](https://rcsb.github.io/rcsb-saguaro-app/examples/add_new_tracks.html)
+* [Board Configuration](https://rcsb.github.io/rcsb-saguaro-app/examples/board_configuration.html)
 
 The full collection of examples can be edit and modified at [CODEPEN](https://codepen.io/collection/XjrBRP?grid_type=list)
 
