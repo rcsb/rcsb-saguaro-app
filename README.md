@@ -27,9 +27,15 @@ The full collection of examples can be edit and modified at [CODEPEN](https://co
 TypeScript classes documentation can be found [here](https://rcsb.github.io/rcsb-saguaro-app/globals.html).
 
 ### Main Class and Methods
+**RcsbFvWebApp** calss provides a collection of methods to display preconfigured features over PDB and UniProt sequences 
+as displayed at [RCSB PDB](https://www.rcsb.org) web site. Additionally, it allows to configure board size and set up feature 
+click events. 
 
-- **RcsbFvWebApp.getRcsbFv**(elementId: string)
 - **RcsbFvWebApp.buildUniprotFv**(elementId: string, upAcc: string)
+- **RcsbFvWebApp.buildEntityFv**(elementId: string, entityId: string)
+- **RcsbFvWebApp.buildInstanceFv**(elementId: string, instanceId: string)
+- **RcsbFvWebApp.buildUniprotEntityFv**(elementId: string, upAcc: string, entityId: string)
+- **RcsbFvWebApp.buildUniprotEntityInstanceFv**(elementId: string, upAcc: string, entityId: string, instanceId: string)
 
 - **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/rcsbfvboardconfiginterface.html))
 - **RcsbFvWebApp.getRcsbFv**(elementId: string)
