@@ -16,6 +16,7 @@ import {
 } from "./RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotInstance} from "./RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvProteinSequence} from "./RcsbFvModule/RcsbFvProteinSequence";
+import {PairwiseAlignmentBuilder} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 
 interface RcsbFvSingleViewerInterface {
     elementId: string;
@@ -305,6 +306,17 @@ export function buildPfv(elementId: string, config: PfvBuilderInterface): Promis
             reject(e);
         }
     });
+}
+
+export function buildPairwiseAlignment(elementId:string, querySequence: string, targetSequence: string): void {
+    const pab: PairwiseAlignmentBuilder = new PairwiseAlignmentBuilder(querySequence,targetSequence);
+    new RcsbFv({
+        rowConfigData: pab.build(),
+        boardConfigData: {
+            length: pab.getLength()
+        },
+        elementId: elementId
+    })
 }
 
 
