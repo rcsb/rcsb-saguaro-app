@@ -8359,7 +8359,7 @@ export interface RcsbPolymerEntity {
    *  may come from the same organism (taxonomy).
  */
   rcsb_source_part_count?: Maybe<Scalars['Int']>,
-  /** The number of distinct source taxonomies for the polymer entity. */
+  /** The number of distinct source taxonomies for the polymer entity. Commonly used to identify chimeric polymers. */
   rcsb_source_taxonomy_count?: Maybe<Scalars['Int']>,
   /** 
  * The method by which the sample for the polymer entity was produced.

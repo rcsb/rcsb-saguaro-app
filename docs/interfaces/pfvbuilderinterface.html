@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CoreEntityAlignmentsCoreEntityIdentifiers | @bioinsilico/rcsb-saguaro-app</title>
+	<title>PfvBuilderInterface | @bioinsilico/rcsb-saguaro-app</title>
 	<meta name="description" content="Documentation for @bioinsilico/rcsb-saguaro-app">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="coreentityalignmentscoreentityidentifiers.html">CoreEntityAlignmentsCoreEntityIdentifiers</a>
+					<a href="pfvbuilderinterface.html">PfvBuilderInterface</a>
 				</li>
 			</ul>
-			<h1>Interface CoreEntityAlignmentsCoreEntityIdentifiers</h1>
+			<h1>Interface PfvBuilderInterface</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CoreEntityAlignmentsCoreEntityIdentifiers</span>
+						<span class="target">PfvBuilderInterface</span>
 					</li>
 				</ul>
 			</section>
@@ -81,9 +81,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="coreentityalignmentscoreentityidentifiers.html#__typename" class="tsd-kind-icon">__typename</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="coreentityalignmentscoreentityidentifiers.html#entity_id" class="tsd-kind-icon">entity_<wbr>id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="coreentityalignmentscoreentityidentifiers.html#entry_id" class="tsd-kind-icon">entry_<wbr>id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pfvbuilderinterface.html#alignmentsource" class="tsd-kind-icon">alignment<wbr>Source</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pfvbuilderinterface.html#bottomalignments" class="tsd-kind-icon">bottom<wbr>Alignments</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pfvbuilderinterface.html#hidealignments" class="tsd-kind-icon">hide<wbr>Alignments</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pfvbuilderinterface.html#queryid" class="tsd-kind-icon">query<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="pfvbuilderinterface.html#reference" class="tsd-kind-icon">reference</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,32 +94,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="__typename" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> __typename</h3>
-					<div class="tsd-signature tsd-kind-icon">__typename<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"CoreEntityAlignmentsCoreEntityIdentifiers"</span></div>
+					<a name="alignmentsource" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> alignment<wbr>Source</h3>
+					<div class="tsd-signature tsd-kind-icon">alignment<wbr>Source<span class="tsd-signature-symbol">:</span> <a href="../enums/sequencereference.html" class="tsd-signature-type">SequenceReference</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L539">rcsb-saguaro-app/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:539</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbFvWeb/RcsbFvBuilder.ts#L35">rcsb-saguaro-app/src/RcsbFvWeb/RcsbFvBuilder.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="entity_id" class="tsd-anchor"></a>
-					<h3>entity_<wbr>id</h3>
-					<div class="tsd-signature tsd-kind-icon">entity_<wbr>id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"String"</span><span class="tsd-signature-symbol">]</span></div>
+					<a name="bottomalignments" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> bottom<wbr>Alignments</h3>
+					<div class="tsd-signature tsd-kind-icon">bottom<wbr>Alignments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L540">rcsb-saguaro-app/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:540</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbFvWeb/RcsbFvBuilder.ts#L37">rcsb-saguaro-app/src/RcsbFvWeb/RcsbFvBuilder.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="entry_id" class="tsd-anchor"></a>
-					<h3>entry_<wbr>id</h3>
-					<div class="tsd-signature tsd-kind-icon">entry_<wbr>id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"String"</span><span class="tsd-signature-symbol">]</span></div>
+					<a name="hidealignments" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> hide<wbr>Alignments</h3>
+					<div class="tsd-signature tsd-kind-icon">hide<wbr>Alignments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L541">rcsb-saguaro-app/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:541</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbFvWeb/RcsbFvBuilder.ts#L36">rcsb-saguaro-app/src/RcsbFvWeb/RcsbFvBuilder.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="queryid" class="tsd-anchor"></a>
+					<h3>query<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbFvWeb/RcsbFvBuilder.ts#L33">rcsb-saguaro-app/src/RcsbFvWeb/RcsbFvBuilder.ts:33</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="reference" class="tsd-anchor"></a>
+					<h3>reference</h3>
+					<div class="tsd-signature tsd-kind-icon">reference<span class="tsd-signature-symbol">:</span> <a href="../enums/sequencereference.html" class="tsd-signature-type">SequenceReference</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b3be1bc/src/RcsbFvWeb/RcsbFvBuilder.ts#L34">rcsb-saguaro-app/src/RcsbFvWeb/RcsbFvBuilder.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -136,16 +158,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="coreentityalignmentscoreentityidentifiers.html" class="tsd-kind-icon">Core<wbr>Entity<wbr>Alignments<wbr>Core<wbr>Entity<wbr>Identifiers</a>
+						<a href="pfvbuilderinterface.html" class="tsd-kind-icon">Pfv<wbr>Builder<wbr>Interface</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="coreentityalignmentscoreentityidentifiers.html#__typename" class="tsd-kind-icon">__typename</a>
+								<a href="pfvbuilderinterface.html#alignmentsource" class="tsd-kind-icon">alignment<wbr>Source</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="coreentityalignmentscoreentityidentifiers.html#entity_id" class="tsd-kind-icon">entity_<wbr>id</a>
+								<a href="pfvbuilderinterface.html#bottomalignments" class="tsd-kind-icon">bottom<wbr>Alignments</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="coreentityalignmentscoreentityidentifiers.html#entry_id" class="tsd-kind-icon">entry_<wbr>id</a>
+								<a href="pfvbuilderinterface.html#hidealignments" class="tsd-kind-icon">hide<wbr>Alignments</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pfvbuilderinterface.html#queryid" class="tsd-kind-icon">query<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="pfvbuilderinterface.html#reference" class="tsd-kind-icon">reference</a>
 							</li>
 						</ul>
 					</li>

@@ -26,7 +26,7 @@ export class EntryInstancesCollector {
 
     private static getEntryInstances(entry: CoreEntry ): Array<PolymerEntityInstanceInterface>{
         const out: Set<PolymerEntityInstanceInterface> = new Set<PolymerEntityInstanceInterface>();
-        if(entry.polymer_entities instanceof Array){
+        if(entry?.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
                 if(entity.polymer_entity_instances instanceof Array){
                     entity.polymer_entity_instances.forEach(instance=>{

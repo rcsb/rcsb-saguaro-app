@@ -15,6 +15,7 @@ import {
     RcsbFvModuleInterface
 } from "./RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotInstance} from "./RcsbFvModule/RcsbFvUniprotInstance";
+import {RcsbFvProteinSequence} from "./RcsbFvModule/RcsbFvProteinSequence";
 
 interface RcsbFvSingleViewerInterface {
     elementId: string;
@@ -28,323 +29,352 @@ interface CreateFvInterface {
     p?: PolymerEntityInstanceTranslate;
 }
 
-    const rcsbFvManager: Map<string, RcsbFvSingleViewerInterface> = new Map<string, RcsbFvSingleViewerInterface>();
-    const polymerEntityInstanceMap: Map<string,PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
-    let boardConfig: RcsbFvBoardConfigInterface;
+interface PfvBuilderInterface {
+    queryId:string;
+    reference:SequenceReference;
+    alignmentSource?:SequenceReference;
+    hideAlignments?: boolean;
+    bottomAlignments?: boolean;
+}
 
-    export function getRcsbFv(elementFvId: string): RcsbFv{
-        return rcsbFvManager.get(elementFvId).rcsbFv;
-    }
+const rcsbFvManager: Map<string, RcsbFvSingleViewerInterface> = new Map<string, RcsbFvSingleViewerInterface>();
+const polymerEntityInstanceMap: Map<string,PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
+let boardConfig: RcsbFvBoardConfigInterface;
 
-    export function setBoardConfig(boardConfigData: RcsbFvBoardConfigInterface){
-        boardConfig = boardConfigData;
-    }
+export function getRcsbFv(elementFvId: string): RcsbFv{
+    return rcsbFvManager.get(elementFvId).rcsbFv;
+}
 
-    export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): void {
-        const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementFvId);
-        const ALL:string = "ALL";
-        const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer.rcsbFv);
-        rcsbFvUniprot.build({upAcc:upAcc});
+export function setBoardConfig(boardConfigData: RcsbFvBoardConfigInterface){
+    boardConfig = boardConfigData;
+}
+
+export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): void {
+    const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementFvId);
+    const ALL:string = "ALL";
+    const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer.rcsbFv);
+    rcsbFvUniprot.build({upAcc:upAcc});
+    rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
+    rcsbFvUniprot.getTargets().then(targets => {
+        WebToolsManager.buildSelectButton(elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
+            return a.localeCompare(b);
+        })).map(t => {
+            return {
+                label: t,
+                onChange: () => {
+                    if (t === ALL) {
+                        WebToolsManager.clearAdditionalSelectButton();
+                        buildUniprotFv(elementFvId, upAcc);
+                    } else {
+                        const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
+                        instanceCollector.collect({entry_id:t.split(TagDelimiter.entity)[0]}).then(rawResult=>{
+                            polymerEntityInstanceMap.set(t.split(TagDelimiter.entity)[0],new PolymerEntityInstanceTranslate(rawResult));
+                            const result:Array<PolymerEntityInstanceInterface> = rawResult.filter(r=>{
+                                return r.entityId === t.split(TagDelimiter.entity)[1];
+                            });
+                            const refName:string = SequenceReference.PdbInstance.replace("_"," ");
+                            const labelPrefix: string = refName+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance;
+                            buildUniprotEntityInstanceFv(
+                                elementFvId,
+                                upAcc,
+                                result[0].entryId+TagDelimiter.entity+result[0].entityId,
+                                result[0].entryId+TagDelimiter.instance+result[0].asymId
+                            );
+                            WebToolsManager.additionalSelectButton(elementSelectId,result.map(instance=>{
+                                return{
+                                    name: instance.taxIds.length > 0 ? instance.names+" - "+instance.taxIds.join(", ") : instance.names,
+                                    label: labelPrefix+instance.authId+" - "+instance.names,
+                                    shortLabel: instance.authId,
+                                    onChange:()=>{
+                                        buildUniprotEntityInstanceFv(
+                                            elementFvId,
+                                            upAcc,
+                                            instance.entryId+TagDelimiter.entity+instance.entityId,
+                                            instance.entryId+TagDelimiter.instance+instance.asymId
+                                        );
+                                    }
+                                }
+                            }),true);
+                        });
+                    }
+                }
+            }
+        }))
+    });
+}
+
+export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
+    const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementFvId);
+    const pdbId:string = entityId.split(TagDelimiter.entity)[0];
+    const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>void = (p: PolymerEntityInstanceTranslate)=>{
+        const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer.rcsbFv);
+        rcsbFvEntity.setPolymerEntityInstance(p);
+        rcsbFvEntity.build({entityId:entityId,additionalConfig:{
+                sources:[Source.PdbEntity,Source.PdbInstance],
+                filters:[{
+                    field: FieldName.Type,
+                    operation:OperationType.Equals,
+                    source:Source.PdbInstance,
+                    values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                }]}});
         rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
-        rcsbFvUniprot.getTargets().then(targets => {
-            WebToolsManager.buildSelectButton(elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
-                return a.localeCompare(b);
-            })).map(t => {
+        rcsbFvEntity.getTargets().then(targets => {
+            WebToolsManager.buildSelectButton(elementSelectId, [entityId].concat(targets).map(t => {
                 return {
                     label: t,
                     onChange: () => {
-                        if (t === ALL) {
-                            WebToolsManager.clearAdditionalSelectButton();
-                            buildUniprotFv(elementFvId, upAcc);
+                        if (t === entityId) {
+                            buildSingleEntitySummaryFv(elementFvId, entityId);
                         } else {
-                            const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-                            instanceCollector.collect({entry_id:t.split(TagDelimiter.entity)[0]}).then(rawResult=>{
-                                polymerEntityInstanceMap.set(t.split(TagDelimiter.entity)[0],new PolymerEntityInstanceTranslate(rawResult));
-                                const result:Array<PolymerEntityInstanceInterface> = rawResult.filter(r=>{
-                                    return r.entityId === t.split(TagDelimiter.entity)[1];
-                                });
-                                const refName:string = SequenceReference.PdbInstance.replace("_"," ");
-                                const labelPrefix: string = refName+" "+TagDelimiter.sequenceTitle+result[0].entryId+TagDelimiter.instance;
-                                buildUniprotEntityInstanceFv(
-                                    elementFvId,
-                                    upAcc,
-                                    result[0].entryId+TagDelimiter.entity+result[0].entityId,
-                                    result[0].entryId+TagDelimiter.instance+result[0].asymId
-                                );
-                                WebToolsManager.additionalSelectButton(elementSelectId,result.map(instance=>{
-                                    return{
-                                        name: instance.taxIds.length > 0 ? instance.names+" - "+instance.taxIds.join(", ") : instance.names,
-                                        label: labelPrefix+instance.authId+" - "+instance.names,
-                                        shortLabel: instance.authId,
-                                        onChange:()=>{
-                                            buildUniprotEntityInstanceFv(
-                                                elementFvId,
-                                                upAcc,
-                                                instance.entryId+TagDelimiter.entity+instance.entityId,
-                                                instance.entryId+TagDelimiter.instance+instance.asymId
-                                            );
-                                        }
-                                    }
-                                }),true);
+                            buildUniprotEntityFv(elementFvId, t, entityId, {
+                                sources:[Source.PdbEntity, Source.PdbInstance],
+                                filters:[{
+                                    field:FieldName.TargetId,
+                                    operation:OperationType.Contains,
+                                    source:Source.PdbInstance,
+                                    values:[pdbId]
+                                },{
+                                    field: FieldName.Type,
+                                    operation:OperationType.Equals,
+                                    source:Source.PdbInstance,
+                                    values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                                }]
                             });
                         }
                     }
                 }
             }))
         });
-    }
+    };
+    const entryId:string = entityId.split(TagDelimiter.entity)[0];
+    getPolymerEntityInstanceMapAndBuildFv(entryId,buildSelectAndFv);
+}
 
-    export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
-        const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementFvId);
-        const pdbId:string = entityId.split(TagDelimiter.entity)[0];
-        const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>void = (p: PolymerEntityInstanceTranslate)=>{
-            const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer.rcsbFv);
-            rcsbFvEntity.setPolymerEntityInstance(p);
-            rcsbFvEntity.build({entityId:entityId,additionalConfig:{
-                    sources:[Source.PdbEntity,Source.PdbInstance],
-                    filters:[{
-                        field: FieldName.Type,
-                        operation:OperationType.Equals,
-                        source:Source.PdbInstance,
-                        values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
-                    }]}});
-            rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
-            rcsbFvEntity.getTargets().then(targets => {
-                WebToolsManager.buildSelectButton(elementSelectId, [entityId].concat(targets).map(t => {
-                    return {
-                        label: t,
-                        onChange: () => {
-                            if (t === entityId) {
-                                buildSingleEntitySummaryFv(elementFvId, entityId);
-                            } else {
-                                buildUniprotEntityFv(elementFvId, t, entityId, {
-                                    sources:[Source.PdbEntity, Source.PdbInstance],
-                                    filters:[{
-                                        field:FieldName.TargetId,
-                                        operation:OperationType.Contains,
-                                        source:Source.PdbInstance,
-                                        values:[pdbId]
-                                    },{
-                                        field: FieldName.Type,
-                                        operation:OperationType.Equals,
-                                        source:Source.PdbInstance,
-                                        values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
-                                    }]
-                                });
-                            }
-                        }
-                    }
-                }))
+function buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<null> {
+    return new Promise<null>((resolve,reject)=> {
+        const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvEntity, {
+            entityId: entityId,
+            additionalConfig: {
+                sources: [Source.PdbEntity, Source.PdbInstance],
+                filters: [{
+                    field: FieldName.Type,
+                    operation: OperationType.Equals,
+                    source: Source.PdbInstance,
+                    values: ["UNOBSERVED_RESIDUE_XYZ", "UNOBSERVED_ATOM_XYZ"]
+                }]
+            },
+            resolve:resolve
+        });
+        const entryId: string = entityId.split(TagDelimiter.entity)[0];
+        getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
+    });
+}
+
+interface InstanceSequenceOnchangeInterface {
+    pdbId: string;
+    authId: string;
+    asymId: string;
+}
+
+export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, onChange?:(x: InstanceSequenceOnchangeInterface)=>void): void {
+    const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
+    instanceCollector.collect({entry_id:entryId}).then(result=>{
+        polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
+        WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
+            return{
+                name: instance.names+" - "+instance.taxIds.join(", "),
+                label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names,
+                shortLabel: instance.entryId+TagDelimiter.instance+instance.authId,
+                onChange:()=>{
+                    buildInstanceFv(
+                        elementId,
+                        instance.rcsbId
+                    ).then(()=>{
+                        onChange({pdbId:instance.entryId, authId: instance.authId, asymId: instance.asymId} );
+                    });
+                }
+            }
+        }),true);
+        buildInstanceFv(elementId,result[0].rcsbId).then(()=>{
+            onChange({pdbId:result[0].entryId, authId: result[0].authId, asymId: result[0].asymId} );
+        });
+    }).catch(error=>{
+        console.error(error);
+        throw error;
+    });
+}
+
+/*Single Feature Views*/
+export function buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+    return new Promise<null>((resolve,reject)=> {
+        try {
+            createFv({
+                elementId: elementId,
+                fvModuleI: RcsbFvUniprot,
+                config: {upAcc: upAcc, additionalConfig: additionalConfig, resolve: resolve}
             });
-        };
-        const entryId:string = entityId.split(TagDelimiter.entity)[0];
-        getPolymerEntityInstanceMapAndBuildFv(entryId,buildSelectAndFv);
-    }
+        }catch(e) {
+            reject(e);
+        }
+    });
+}
 
-    function buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<null> {
-        return new Promise<null>((resolve,reject)=> {
+export function buildEntityFv(elementId: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+    return new Promise<null>((resolve,reject)=> {
+        try {
             const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvEntity, {
                 entityId: entityId,
-                additionalConfig: {
-                    sources: [Source.PdbEntity, Source.PdbInstance],
-                    filters: [{
-                        field: FieldName.Type,
-                        operation: OperationType.Equals,
-                        source: Source.PdbInstance,
-                        values: ["UNOBSERVED_RESIDUE_XYZ", "UNOBSERVED_ATOM_XYZ"]
-                    }]
-                },
-                resolve:resolve
+                additionalConfig: additionalConfig,
+                resolve: resolve
             });
             const entryId: string = entityId.split(TagDelimiter.entity)[0];
             getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
-        });
-    }
+        }catch (e) {
+            reject(e);
+        }
+    });
+}
 
-    interface InstanceSequenceOnchangeInterface {
-        pdbId: string;
-        authId: string;
-        asymId: string;
-    }
-
-    export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, onChange?:(x: InstanceSequenceOnchangeInterface)=>void): void {
-        const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-        instanceCollector.collect({entry_id:entryId}).then(result=>{
-            polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
-            WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
-                return{
-                    name: instance.names+" - "+instance.taxIds.join(", "),
-                    label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names,
-                    shortLabel: instance.entryId+TagDelimiter.instance+instance.authId,
-                    onChange:()=>{
-                        buildInstanceFv(
-                            elementId,
-                            instance.rcsbId
-                        ).then(()=>{
-                            onChange({pdbId:instance.entryId, authId: instance.authId, asymId: instance.asymId} );
-                        });
-                    }
-                }
-            }),true);
-            buildInstanceFv(elementId,result[0].rcsbId).then(()=>{
-                onChange({pdbId:result[0].entryId, authId: result[0].authId, asymId: result[0].asymId} );
+export function buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+    return new Promise<null>((resolve,reject)=>{
+        try {
+            const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvInstance, {
+                instanceId: instanceId,
+                additionalConfig: additionalConfig,
+                resolve: resolve
             });
-        }).catch(error=>{
-            console.error(error);
-            throw error;
-        });
-    }
+            const entryId: string = instanceId.split(TagDelimiter.instance)[0];
+            getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
+        }catch (e) {
+           reject(e);
+        }
+    });
 
-    /*Single Feature Views*/
-    export function buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
-        return new Promise<null>((resolve,reject)=> {
-            try {
-                createFv({
-                    elementId: elementId,
-                    fvModuleI: RcsbFvUniprot,
-                    config: {upAcc: upAcc, additionalConfig: additionalConfig, resolve: resolve}
-                });
-            }catch(e) {
-                reject(e);
-            }
-        });
-    }
+}
 
-    export function buildEntityFv(elementId: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
-        return new Promise<null>((resolve,reject)=> {
-            try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvEntity, {
-                    entityId: entityId,
-                    additionalConfig: additionalConfig,
-                    resolve: resolve
-                });
-                const entryId: string = entityId.split(TagDelimiter.entity)[0];
-                getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
-            }catch (e) {
-                reject(e);
-            }
-        });
-    }
+export function buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+    return new Promise<null>((resolve,reject)=> {
+        try {
+            const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvUniprotEntity, {
+                upAcc: upAcc,
+                entityId: entityId,
+                additionalConfig: additionalConfig,
+                resolve: resolve
+            });
+            const entryId: string = entityId.split(TagDelimiter.entity)[0];
+            getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
+        }catch (e) {
+            reject(e);
+        }
+    });
+}
 
-    export function buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
-        return new Promise<null>((resolve,reject)=>{
-            try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvInstance, {
-                    instanceId: instanceId,
-                    additionalConfig: additionalConfig,
-                    resolve: resolve
-                });
-                const entryId: string = instanceId.split(TagDelimiter.instance)[0];
-                getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
-            }catch (e) {
-               reject(e);
-            }
-        });
+export function buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+    return new Promise<null>((resolve,reject)=> {
+        try {
+            const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvUniprotInstance, {
+                upAcc: upAcc,
+                entityId: entityId,
+                instanceId: instanceId,
+                additionalConfig: additionalConfig,
+                resolve: resolve
+            });
+            const entryId: string = entityId.split(TagDelimiter.entity)[0];
+            getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
+        }catch (e) {
+            reject(e);
+        }
+    });
+}
 
-    }
+export function buildPfv(elementId: string, config: PfvBuilderInterface): Promise<null> {
+    const alignmentSource: SequenceReference = config.alignmentSource ?? config.reference;
+    const sources = [Source.Uniprot];
+    if(config.reference == SequenceReference.PdbEntity)
+        sources.unshift(Source.PdbEntity);
+    if(config.reference == SequenceReference.PdbInstance)
+        sources.unshift(Source.PdbInstance);
+    return new Promise<null>((resolve,reject)=> {
+        try {
+            createFv({
+                elementId: elementId,
+                fvModuleI: RcsbFvProteinSequence,
+                config: {queryId:config.queryId, from:config.reference, to:alignmentSource, sources:sources, additionalConfig:{hideAlignments:config.hideAlignments,bottomAlignments:config.bottomAlignments}, resolve:resolve}
+            });
+        }catch(e) {
+            reject(e);
+        }
+    });
+}
 
-    export function buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
-        return new Promise<null>((resolve,reject)=> {
-            try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvUniprotEntity, {
-                    upAcc: upAcc,
-                    entityId: entityId,
-                    additionalConfig: additionalConfig,
-                    resolve: resolve
-                });
-                const entryId: string = entityId.split(TagDelimiter.entity)[0];
-                getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
-            }catch (e) {
-                reject(e);
-            }
-        });
-    }
 
-    export function buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
-        return new Promise<null>((resolve,reject)=> {
-            try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => void = createFvBuilder(elementId, RcsbFvUniprotInstance, {
-                    upAcc: upAcc,
-                    entityId: entityId,
-                    instanceId: instanceId,
-                    additionalConfig: additionalConfig,
-                    resolve: resolve
-                });
-                const entryId: string = entityId.split(TagDelimiter.entity)[0];
-                getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
-            }catch (e) {
-                reject(e);
-            }
-        });
-    }
 
-    /*Class Inner Methods*/
-
-    function getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>void){
-        if(polymerEntityInstanceMap.has(entryId)) {
+/*Class Inner Methods*/
+function getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>void){
+    if(polymerEntityInstanceMap.has(entryId)) {
+        f(polymerEntityInstanceMap.get(entryId));
+        if(resolve!=undefined)resolve()
+    }else{
+        const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
+        instanceCollector.collect({entry_id:entryId}).then(result=> {
+            polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
             f(polymerEntityInstanceMap.get(entryId));
             if(resolve!=undefined)resolve()
-        }else{
-            const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-            instanceCollector.collect({entry_id:entryId}).then(result=> {
-                polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
-                f(polymerEntityInstanceMap.get(entryId));
-                if(resolve!=undefined)resolve()
-            });
-        }
+        });
     }
+}
 
-    function createFvBuilder(
-        elementId: string,
-        fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
-        config: RcsbFvModuleBuildInterface
-    ): ((p: PolymerEntityInstanceTranslate)=>void) {
-        return (p: PolymerEntityInstanceTranslate)=>{
-            createFv({
-                elementId:elementId,
-                fvModuleI:fvModuleI,
-                config:config,
-                p:p
-            });
-        }
+function createFvBuilder(
+    elementId: string,
+    fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
+    config: RcsbFvModuleBuildInterface
+): ((p: PolymerEntityInstanceTranslate)=>void) {
+    return (p: PolymerEntityInstanceTranslate)=>{
+        createFv({
+            elementId:elementId,
+            fvModuleI:fvModuleI,
+            config:config,
+            p:p
+        });
     }
+}
 
-    function createFv (
-        createFvI: CreateFvInterface
-    ): void {
-        const elementId: string = createFvI.elementId;
-        const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
-        const config: RcsbFvModuleBuildInterface = createFvI.config;
-        const p: PolymerEntityInstanceTranslate = createFvI.p;
-        if (rcsbFvManager.has(elementId)) {
-            const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvManager.get(elementId).rcsbFv);
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
-            rcsbFvInstance.build(config);
-        } else {
-            const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementId);
-            const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvSingleViewer.rcsbFv);
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
-            rcsbFvInstance.build(config);
-            rcsbFvManager.set(elementId, rcsbFvSingleViewer);
-        }
+function createFv (
+    createFvI: CreateFvInterface
+): void {
+    const elementId: string = createFvI.elementId;
+    const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
+    const config: RcsbFvModuleBuildInterface = createFvI.config;
+    const p: PolymerEntityInstanceTranslate = createFvI.p;
+    if (rcsbFvManager.has(elementId)) {
+        const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvManager.get(elementId).rcsbFv);
+        if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
+        rcsbFvInstance.build(config);
+    } else {
+        const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementId);
+        const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvSingleViewer.rcsbFv);
+        if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
+        rcsbFvInstance.build(config);
+        rcsbFvManager.set(elementId, rcsbFvSingleViewer);
     }
+}
 
-    function buildRcsbFvSingleViewer(elementId: string): RcsbFvSingleViewerInterface{
-        const config: RcsbFvBoardConfigInterface = boardConfig ? {
-            rowTitleWidth: 190,
-            trackWidth: 900,
-            ...boardConfig
-        } : {
-            rowTitleWidth: 190,
-            trackWidth: 900
-        };
-        return{
-            rcsbFv: new RcsbFv({
-                rowConfigData: null,
-                boardConfigData: config,
-                elementId: elementId
-            }),
+function buildRcsbFvSingleViewer(elementId: string): RcsbFvSingleViewerInterface{
+    const config: RcsbFvBoardConfigInterface = boardConfig ? {
+        rowTitleWidth: 190,
+        trackWidth: 900,
+        ...boardConfig
+    } : {
+        rowTitleWidth: 190,
+        trackWidth: 900
+    };
+    return{
+        rcsbFv: new RcsbFv({
+            rowConfigData: null,
+            boardConfigData: config,
             elementId: elementId
-        };
-    }
+        }),
+        elementId: elementId
+    };
+}
 
