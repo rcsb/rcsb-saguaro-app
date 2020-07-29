@@ -1,0 +1,27 @@
+<html lang="en" class=""><head>
+    <meta charset="UTF-8">
+    <title>CodePen Demo</title>
+</head>
+<body>
+
+
+<script src="../build/dist/app.js" type="text/javascript"></script>
+
+<br/>
+<br/>
+<br/>
+<div id="pfv" ></div>
+<div id="pfv2" ></div>
+
+<script>
+    const seq1 = "QEEYSAMRDAAAAAQYMRTGEGF-------NTKSFEDIHQYREAAAAAAQIKRVKDSDDVPMVLVGNKCDL";
+    const seq2 = "QEEYSAMRD-----QYMRTGEGFLCVFAINNTKSFEDIHQYRE------QIKRVKDSDDVPMVLVGNKCDL";
+    RcsbFvWebApp.setBoardConfig({rowTitleWidth:220});
+    //RcsbFvWebApp.buildPfv("pfv", {queryId:"4Z35.A",reference:"PDB_INSTANCE",alignmentSource:"UNIPROT"});
+    //RcsbFvWebApp.buildPfv("pfv", {queryId:"NP_002515",reference:"NCBI_PROTEIN",alignmentSource:"PDB_INSTANCE", bottomAlignments:true});
+    RcsbFvWebApp.buildPairwiseAlignment("pfv", seq1, seq2);
+</script>
+
+
+
+</body></html>
