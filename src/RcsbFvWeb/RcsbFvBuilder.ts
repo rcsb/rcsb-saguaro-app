@@ -16,7 +16,7 @@ import {
 } from "./RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotInstance} from "./RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvProteinSequence} from "./RcsbFvModule/RcsbFvProteinSequence";
-import {PairwiseAlignmentBuilder} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
+import {PairwiseAlignmentBuilder, PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 
 interface RcsbFvSingleViewerInterface {
     elementId: string;
@@ -177,7 +177,7 @@ interface InstanceSequenceOnchangeInterface {
     asymId: string;
 }
 
-export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, onChange?:(x: InstanceSequenceOnchangeInterface)=>void): void {
+export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
     const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
     instanceCollector.collect({entry_id:entryId}).then(result=>{
         polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
@@ -191,13 +191,15 @@ export function buildInstanceSequenceFv(elementId:string, elementSelectId:string
                         elementId,
                         instance.rcsbId
                     ).then(()=>{
-                        onChange({pdbId:instance.entryId, authId: instance.authId, asymId: instance.asymId} );
+                        if(typeof onChangeCallback === "function")
+                            onChangeCallback({pdbId:instance.entryId, authId: instance.authId, asymId: instance.asymId} );
                     });
                 }
             }
         }),true);
         buildInstanceFv(elementId,result[0].rcsbId).then(()=>{
-            onChange({pdbId:result[0].entryId, authId: result[0].authId, asymId: result[0].asymId} );
+            if(typeof onChangeCallback === "function")
+                onChangeCallback({pdbId:result[0].entryId, authId: result[0].authId, asymId: result[0].asymId} );
         });
     }).catch(error=>{
         console.error(error);
@@ -308,15 +310,43 @@ export function buildPfv(elementId: string, config: PfvBuilderInterface): Promis
     });
 }
 
-export function buildPairwiseAlignment(elementId:string, querySequence: string, targetSequence: string): void {
-    const pab: PairwiseAlignmentBuilder = new PairwiseAlignmentBuilder(querySequence,targetSequence);
-    new RcsbFv({
-        rowConfigData: pab.build(),
-        boardConfigData: {
-            length: pab.getLength()
-        },
-        elementId: elementId
-    })
+export function buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): void {
+    if(elementId == null)
+        throw ("DOM elementId is null");
+
+    const pab: PairwiseAlignmentBuilder = new PairwiseAlignmentBuilder(psa);
+    const config: RcsbFvBoardConfigInterface = boardConfig ? {
+        rowTitleWidth: 120,
+        trackWidth: 800,
+        ...boardConfig,
+        length: pab.getLength(),
+        includeAxis: !psa.pairwiseView
+    } : {
+        rowTitleWidth: 120,
+        trackWidth: 800,
+        length: pab.getLength(),
+        includeAxis: !psa.pairwiseView
+    };
+    if(rcsbFvManager.has(elementId)) {
+        rcsbFvManager.get(elementId).rcsbFv.updateBoardConfig({
+            boardConfigData:config,
+            rowConfigData:psa.pairwiseView ? pab.buildPairwiseAlignment() : pab.buildReferenceAlignment()
+        });
+    }else{
+        const rcsbFV: RcsbFv = new RcsbFv({
+            rowConfigData: psa.pairwiseView ? pab.buildPairwiseAlignment() : pab.buildReferenceAlignment(),
+            boardConfigData: config,
+            elementId: elementId
+        })
+        rcsbFvManager.set(elementId,{elementId:elementId,rcsbFv:rcsbFV});
+    }
+}
+
+export function unmount(elementId:string): void{
+    if (rcsbFvManager.has(elementId)) {
+        rcsbFvManager.get(elementId).rcsbFv.unmount();
+        rcsbFvManager.delete(elementId);
+    }
 }
 
 

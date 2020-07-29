@@ -480,6 +480,52 @@ export interface CoreAssembly {
   rcsb_struct_symmetry_provenance_code?: Maybe<Scalars['String']>,
 }
 
+export interface CoreBranchedEntity {
+   __typename?: 'CoreBranchedEntity',
+  /** Get all unique branched instances (chains) for this molecular entity. */
+  branched_entity_instances?: Maybe<Array<Maybe<CoreBranchedEntityInstance>>>,
+  /** Get all unique monomers described in this branched entity. */
+  chem_comp_monomers?: Maybe<Array<Maybe<CoreChemComp>>>,
+  /** Get PDB entry that contains this branched entity. */
+  entry?: Maybe<CoreEntry>,
+  pdbx_entity_branch?: Maybe<PdbxEntityBranch>,
+  pdbx_entity_branch_descriptor?: Maybe<Array<Maybe<PdbxEntityBranchDescriptor>>>,
+  /** Get a BIRD chemical components described in this branched entity. */
+  prd?: Maybe<CoreChemComp>,
+  rcsb_branched_entity?: Maybe<RcsbBranchedEntity>,
+  rcsb_branched_entity_annotation?: Maybe<Array<Maybe<RcsbBranchedEntityAnnotation>>>,
+  rcsb_branched_entity_container_identifiers?: Maybe<RcsbBranchedEntityContainerIdentifiers>,
+  rcsb_branched_entity_feature?: Maybe<Array<Maybe<RcsbBranchedEntityFeature>>>,
+  rcsb_branched_entity_feature_summary?: Maybe<Array<Maybe<RcsbBranchedEntityFeatureSummary>>>,
+  rcsb_branched_entity_keywords?: Maybe<RcsbBranchedEntityKeywords>,
+  rcsb_branched_entity_name_com?: Maybe<RcsbBranchedEntityNameCom>,
+  rcsb_branched_entity_name_sys?: Maybe<Array<Maybe<RcsbBranchedEntityNameSys>>>,
+  /** 
+ * A unique identifier for each object in this entity container formed by
+   *  an underscore separated concatenation of entry and entity identifiers.
+ */
+  rcsb_id: Scalars['String'],
+  rcsb_latest_revision?: Maybe<RcsbLatestRevision>,
+}
+
+export interface CoreBranchedEntityInstance {
+   __typename?: 'CoreBranchedEntityInstance',
+  /** Get branched entity for this branched entity instance. */
+  branched_entity?: Maybe<CoreBranchedEntity>,
+  pdbx_struct_special_symmetry?: Maybe<Array<Maybe<PdbxStructSpecialSymmetry>>>,
+  rcsb_branched_entity_instance_container_identifiers?: Maybe<RcsbBranchedEntityInstanceContainerIdentifiers>,
+  rcsb_branched_instance_annotation?: Maybe<Array<Maybe<RcsbBranchedInstanceAnnotation>>>,
+  rcsb_branched_instance_feature?: Maybe<Array<Maybe<RcsbBranchedInstanceFeature>>>,
+  rcsb_branched_instance_feature_summary?: Maybe<Array<Maybe<RcsbBranchedInstanceFeatureSummary>>>,
+  rcsb_branched_struct_conn?: Maybe<Array<Maybe<RcsbBranchedStructConn>>>,
+  /** 
+ * A unique identifier for each object in this entity instance container formed by
+   *  an 'dot' (.) separated concatenation of entry and entity instance identifiers.
+ */
+  rcsb_id: Scalars['String'],
+  rcsb_latest_revision?: Maybe<RcsbLatestRevision>,
+}
+
 export interface CoreChemComp {
    __typename?: 'CoreChemComp',
   chem_comp?: Maybe<ChemComp>,
@@ -554,6 +600,8 @@ export interface CoreEntry {
   /** Get all assemblies for this PDB entry. */
   assemblies?: Maybe<Array<Maybe<CoreAssembly>>>,
   audit_author?: Maybe<Array<Maybe<AuditAuthor>>>,
+  /** Get all branched entities for this PDB entry. */
+  branched_entities?: Maybe<Array<Maybe<CoreBranchedEntity>>>,
   cell?: Maybe<Cell>,
   citation?: Maybe<Array<Maybe<Citation>>>,
   diffrn?: Maybe<Array<Maybe<Diffrn>>>,
@@ -644,11 +692,11 @@ export interface CoreEntry {
 
 export interface CoreNonpolymerEntity {
    __typename?: 'CoreNonpolymerEntity',
-  /** Get PDB entry that contains this molecular entity. */
+  /** Get PDB entry that contains this non-polymer entity. */
   entry?: Maybe<CoreEntry>,
   /** Get a non-polymer chemical components described in this molecular entity. */
   nonpolymer_comp?: Maybe<CoreChemComp>,
-  /** Get all unique non-polymer instances (chains) for this molecular entity. */
+  /** Get all unique non-polymer instances (chains) for this non-polymer entity. */
   nonpolymer_entity_instances?: Maybe<Array<Maybe<CoreNonpolymerEntityInstance>>>,
   pdbx_entity_nonpoly?: Maybe<PdbxEntityNonpoly>,
   /** Get a BIRD chemical components described in this molecular entity. */
@@ -3576,6 +3624,48 @@ export interface PdbxDepositGroup {
   group_type?: Maybe<Scalars['String']>,
 }
 
+export interface PdbxEntityBranch {
+   __typename?: 'PdbxEntityBranch',
+  /** Number of constituent chemical components in the branched entity. */
+  rcsb_branched_component_count?: Maybe<Scalars['Int']>,
+  /** 
+ * The type of this branched oligosaccharide.
+   * 
+   * Allowable values:
+   * oligosaccharide
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface PdbxEntityBranchDescriptor {
+   __typename?: 'PdbxEntityBranchDescriptor',
+  /** 
+ * This data item contains the descriptor value for this 
+   *  entity.
+ */
+  descriptor?: Maybe<Scalars['String']>,
+  /** 
+ * This data item contains the name of the program
+   *  or library used to compute the descriptor.
+   * 
+   * Examples:
+   * PDB-CARE, OTHER, GEMS
+ */
+  program?: Maybe<Scalars['String']>,
+  /** 
+ * This data item contains the version of the program
+   *  or library used to compute the descriptor.
+ */
+  program_version?: Maybe<Scalars['String']>,
+  /** 
+ * This data item contains the descriptor type.
+   * 
+   * Allowable values:
+   * Glycam Condensed Core Sequence, Glycam Condensed Sequence, LINUCS, WURCS
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
 export interface PdbxEntityNonpoly {
    __typename?: 'PdbxEntityNonpoly',
   /** This data item is a pointer to _chem_comp.id in the CHEM_COMP category. */
@@ -3712,8 +3802,9 @@ export interface PdbxMoleculeFeatures {
    * Chaperone binding, Drug delivery, Enzyme inhibitor, Glycan component, Growth
    * factor, Immunosuppressant, Inducer, Inhibitor, Lantibiotic, Metabolism, Metal
    * transport, Nutrient, Oxidation-reduction, Protein binding, Receptor, Substrate
-   * analog, Thrombin inhibitor, Thrombin inhibitor, Trypsin inhibitor, Toxin,
-   * Transport activator, Trypsin inhibitor, Unknown, Water retention
+   * analog, Synthetic opioid, Thrombin inhibitor, Thrombin inhibitor, Trypsin
+   * inhibitor, Toxin, Transition state mimetic, Transport activator, Trypsin
+   * inhibitor, Unknown, Water retention
  */
   class?: Maybe<Scalars['String']>,
   /** Additional details describing the molecule. */
@@ -4513,15 +4604,20 @@ export interface PdbxReferenceMolecule {
  * Broadly defines the function of the entity.
    * 
    * Allowable values:
-   * Antagonist, Anthelmintic, Antibiotic, Anticancer, Anticoagulant, Antifungal,
-   * Antiinflammatory, Antimicrobial, Antineoplastic, Antiparasitic,
+   * Antagonist, Anthelmintic, Antibiotic, Antibiotic, Anthelmintic, Antibiotic,
+   * Antimicrobial, Antibiotic, Antineoplastic, Anticancer, Anticoagulant,
+   * Anticoagulant, Antithrombotic, Antifungal, Antigen, Antiinflammatory,
+   * Antimicrobial, Antimicrobial, Antiparasitic, Antibiotic, Antimicrobial,
+   * Antiretroviral, Antimicrobial, Antitumor, Antineoplastic, Antiparasitic,
    * Antiretroviral, Antithrombotic, Antitumor, Antiviral, CASPASE inhibitor,
-   * Chaperone binding, Enzyme inhibitor, Growth factor, Immunosuppressant,
-   * Inhibitor, Lantibiotic, Metabolism, Metal transport, Oxidation-reduction, RNA
-   * synthesis Inhibitor, Receptor, Synthetic opioid, Thrombin inhibitor, Toxin,
-   * Transition state mimetic, Transport activator, Trypsin inhibitor, Unknown
+   * Chaperone binding, Drug delivery, Enzyme inhibitor, Glycan component, Growth
+   * factor, Immunosuppressant, Inducer, Inhibitor, Lantibiotic, Metabolism, Metal
+   * transport, Nutrient, Oxidation-reduction, Protein binding, Receptor, Substrate
+   * analog, Synthetic opioid, Thrombin inhibitor, Thrombin inhibitor, Trypsin
+   * inhibitor, Toxin, Transition state mimetic, Transport activator, Trypsin
+   * inhibitor, Unknown, Water retention
  */
-  class?: Maybe<Array<Maybe<Scalars['String']>>>,
+  class?: Maybe<Scalars['String']>,
   /** Evidence for the assignment of _pdbx_reference_molecule.class */
   class_evidence_code?: Maybe<Scalars['String']>,
   /** Special details about this molecule. */
@@ -4603,10 +4699,9 @@ export interface PdbxReferenceMolecule {
    * Cyclic lipopeptide, Cyclic peptide, Glycopeptide, Heterocyclic, Imino sugar,
    * Keto acid, Lipoglycopeptide, Lipopeptide, Macrolide, Non-polymer, Nucleoside,
    * Oligopeptide, Oligosaccharide, Peptaibol, Peptide-like, Polycyclic,
-   * Polypeptide, Polysaccharide, Quinolone, Siderophore, Thiolactone, Thiopeptide,
-   * Tricyclic pentaglycosidic antineoplastic antibiotic, Unknown
+   * Polypeptide, Polysaccharide, Quinolone, Siderophore, Thiolactone, Thiopeptide, Unknown
  */
-  type?: Maybe<Array<Maybe<Scalars['String']>>>,
+  type?: Maybe<Scalars['String']>,
   /** Evidence for the assignment of _pdbx_reference_molecule.type */
   type_evidence_code?: Maybe<Scalars['String']>,
 }
@@ -6651,23 +6746,11 @@ export interface Query {
  */
   polymer_entity_instance?: Maybe<CorePolymerEntityInstance>,
   /** 
- * Get a list of assemblies given the list of ASSEMBLY IDs. Here an ASSEMBLY ID
-   * is a compound identifier that includes entry_id and assembly_id separated by
-   * '-', e.g. 1XXX-1.
- */
-  assemblies?: Maybe<Array<Maybe<CoreAssembly>>>,
-  /** 
  * Get a list of PDB non-polymer entities given a list of ENTITY IDs. Here ENTITY
    * ID is a compound identifier that includes entry_id and entity_id separated by
    * '_', e.g. 1XXX_1.
  */
   nonpolymer_entities?: Maybe<Array<Maybe<CoreNonpolymerEntity>>>,
-  /** 
- * Get a PDB non-polymer entity instance (chain), given the PDB ID and ENTITY
-   * INSTANCE ID. Here ENTITY INSTANCE ID identifies structural element in the
-   * asymmetric unit, e.g. 'A', 'B', etc.
- */
-  nonpolymer_entity_instance?: Maybe<CoreNonpolymerEntityInstance>,
   /** 
  * Get a list of PDB polymer entities given a list of ENTITY IDs. Here ENTITY ID
    * is a compound identifier that includes entry_id and entity_id separated by
@@ -6676,6 +6759,45 @@ export interface Query {
   polymer_entities?: Maybe<Array<Maybe<CorePolymerEntity>>>,
   /** Get a PDB polymer entity, given the PDB ID and ENTITY ID. Here ENTITY ID is a '1', '2', '3', etc. */
   polymer_entity?: Maybe<CorePolymerEntity>,
+  /** Get literature information from PubMed database given the PubMed identifier. */
+  pubmed?: Maybe<CorePubmed>,
+  /** 
+ * Get an assembly given the PDB ID and ASSEMBLY ID. Here ASSEMBLY ID is '1',
+   * '2', '3', etc. or 'deposited' for deposited coordinates.
+ */
+  assembly?: Maybe<CoreAssembly>,
+  /** 
+ * Get a list of PDB branched entity instances (chains), given the list of ENTITY
+   * INSTANCE IDs. Here ENTITY INSTANCE ID identifies structural element in the
+   * asymmetric unit, e.g. 'A', 'B', etc.
+ */
+  branched_entity_instances?: Maybe<Array<Maybe<CoreBranchedEntityInstance>>>,
+  /** 
+ * Get a list of PDB polymer entity instances (chains), given the list of ENTITY
+   * INSTANCE IDs. Here ENTITY INSTANCE ID identifies structural element in the
+   * asymmetric unit, e.g. 'A', 'B', etc.
+ */
+  polymer_entity_instances?: Maybe<Array<Maybe<CorePolymerEntityInstance>>>,
+  /** 
+ * Get a list of assemblies given the list of ASSEMBLY IDs. Here an ASSEMBLY ID
+   * is a compound identifier that includes entry_id and assembly_id separated by
+   * '-', e.g. 1XXX-1.
+ */
+  assemblies?: Maybe<Array<Maybe<CoreAssembly>>>,
+  /** Get a PDB branched entity, given the PDB ID and ENTITY ID. Here ENTITY ID is a '1', '2', '3', etc. */
+  branched_entity?: Maybe<CoreBranchedEntity>,
+  /** 
+ * Get a PDB branched entity instance (chain), given the PDB ID and ENTITY
+   * INSTANCE ID. Here ENTITY INSTANCE ID identifies structural element in the
+   * asymmetric unit, e.g. 'A', 'B', etc.
+ */
+  branched_entity_instance?: Maybe<CoreBranchedEntityInstance>,
+  /** 
+ * Get a PDB non-polymer entity instance (chain), given the PDB ID and ENTITY
+   * INSTANCE ID. Here ENTITY INSTANCE ID identifies structural element in the
+   * asymmetric unit, e.g. 'A', 'B', etc.
+ */
+  nonpolymer_entity_instance?: Maybe<CoreNonpolymerEntityInstance>,
   /** 
  * Get a chemical component given the CHEMICAL COMPONENT ID, e.g. 'CFF', 'HEM',
    * 'FE'.For nucleic acid polymer entities, use the one-letter code for the base.
@@ -6685,13 +6807,12 @@ export interface Query {
   entry?: Maybe<CoreEntry>,
   /** Get a list of PDB entries given a list of PDB IDs. */
   entries?: Maybe<Array<Maybe<CoreEntry>>>,
-  /** Get literature information from PubMed database given the PubMed identifier. */
-  pubmed?: Maybe<CorePubmed>,
   /** 
- * Get an assembly given the PDB ID and ASSEMBLY ID. Here ASSEMBLY ID is '1',
-   * '2', '3', etc. or 'deposited' for deposited coordinates.
+ * Get a list of PDB branched entities given a list of ENTITY IDs. Here ENTITY ID
+   * is a compound identifier that includes entry_id and entity_id separated by
+   * '_', e.g. 1XXX_1.
  */
-  assembly?: Maybe<CoreAssembly>,
+  branched_entities?: Maybe<Array<Maybe<CoreBranchedEntity>>>,
   /** Get UniProt KB entry given the UniProt primary accession. */
   uniprot?: Maybe<CoreUniprot>,
   /** 
@@ -6700,12 +6821,6 @@ export interface Query {
    * the asymmetric unit, e.g. 'A', 'B', etc.
  */
   nonpolymer_entity_instances?: Maybe<Array<Maybe<CoreNonpolymerEntityInstance>>>,
-  /** 
- * Get a list of PDB polymer entity instances (chains), given the list of ENTITY
-   * INSTANCE IDs. Here ENTITY INSTANCE ID identifies structural element in the
-   * asymmetric unit, e.g. 'A', 'B', etc.
- */
-  polymer_entity_instances?: Maybe<Array<Maybe<CorePolymerEntityInstance>>>,
   /** Get a PDB non-polymer entity, given the PDB ID and ENTITY ID. Here ENTITY ID is a '1', '2', '3', etc. */
   nonpolymer_entity?: Maybe<CoreNonpolymerEntity>,
 }
@@ -6719,21 +6834,8 @@ export interface QueryPolymer_Entity_InstanceArgs {
 
 
 /** Query root */
-export interface QueryAssembliesArgs {
-  assembly_ids: Array<Maybe<Scalars['String']>>
-}
-
-
-/** Query root */
 export interface QueryNonpolymer_EntitiesArgs {
   entity_ids: Array<Scalars['String']>
-}
-
-
-/** Query root */
-export interface QueryNonpolymer_Entity_InstanceArgs {
-  asym_id: Scalars['String'],
-  entry_id: Scalars['String']
 }
 
 
@@ -6746,6 +6848,58 @@ export interface QueryPolymer_EntitiesArgs {
 /** Query root */
 export interface QueryPolymer_EntityArgs {
   entity_id: Scalars['String'],
+  entry_id: Scalars['String']
+}
+
+
+/** Query root */
+export interface QueryPubmedArgs {
+  pubmed_id: Scalars['Int']
+}
+
+
+/** Query root */
+export interface QueryAssemblyArgs {
+  assembly_id: Scalars['String'],
+  entry_id: Scalars['String']
+}
+
+
+/** Query root */
+export interface QueryBranched_Entity_InstancesArgs {
+  instance_ids: Array<Maybe<Scalars['String']>>
+}
+
+
+/** Query root */
+export interface QueryPolymer_Entity_InstancesArgs {
+  instance_ids: Array<Maybe<Scalars['String']>>
+}
+
+
+/** Query root */
+export interface QueryAssembliesArgs {
+  assembly_ids: Array<Maybe<Scalars['String']>>
+}
+
+
+/** Query root */
+export interface QueryBranched_EntityArgs {
+  entity_id: Scalars['String'],
+  entry_id: Scalars['String']
+}
+
+
+/** Query root */
+export interface QueryBranched_Entity_InstanceArgs {
+  asym_id: Scalars['String'],
+  entry_id: Scalars['String']
+}
+
+
+/** Query root */
+export interface QueryNonpolymer_Entity_InstanceArgs {
+  asym_id: Scalars['String'],
   entry_id: Scalars['String']
 }
 
@@ -6769,15 +6923,8 @@ export interface QueryEntriesArgs {
 
 
 /** Query root */
-export interface QueryPubmedArgs {
-  pubmed_id: Scalars['Int']
-}
-
-
-/** Query root */
-export interface QueryAssemblyArgs {
-  assembly_id: Scalars['String'],
-  entry_id: Scalars['String']
+export interface QueryBranched_EntitiesArgs {
+  entity_ids: Array<Scalars['String']>
 }
 
 
@@ -6789,12 +6936,6 @@ export interface QueryUniprotArgs {
 
 /** Query root */
 export interface QueryNonpolymer_Entity_InstancesArgs {
-  instance_ids: Array<Maybe<Scalars['String']>>
-}
-
-
-/** Query root */
-export interface QueryPolymer_Entity_InstancesArgs {
   instance_ids: Array<Maybe<Scalars['String']>>
 }
 
@@ -6850,9 +6991,9 @@ export interface RcsbAssemblyInfo {
    __typename?: 'RcsbAssemblyInfo',
   /** Entity identifier for the container. */
   assembly_id?: Maybe<Scalars['String']>,
-  /** The assembly atomic coordinate count. */
+  /** The assembly non-hydrogen atomic coordinate count. */
   atom_count?: Maybe<Scalars['Int']>,
-  /** The assembly branched entity atomic coordinate count. */
+  /** The assembly non-hydrogen branched entity atomic coordinate count. */
   branched_atom_count?: Maybe<Scalars['Int']>,
   /** The number of distinct branched entities in the generated assembly. */
   branched_entity_count?: Maybe<Scalars['Int']>,
@@ -6876,7 +7017,7 @@ export interface RcsbAssemblyInfo {
    * DNA (only), DNA/RNA (only), NA-hybrid (only), Other, RNA (only)
  */
   na_polymer_entity_types?: Maybe<Scalars['String']>,
-  /** The assembly non-polymer entity atomic coordinate count. */
+  /** The assembly non-hydrogen non-polymer entity atomic coordinate count. */
   nonpolymer_atom_count?: Maybe<Scalars['Int']>,
   /** The number of distinct non-polymer entities in the generated assembly exclusive of solvent. */
   nonpolymer_entity_count?: Maybe<Scalars['Int']>,
@@ -6885,7 +7026,7 @@ export interface RcsbAssemblyInfo {
    *  This is the total count of non-polymer entity instances generated in the assembly coordinate data.
  */
   nonpolymer_entity_instance_count?: Maybe<Scalars['Int']>,
-  /** The assembly polymer entity atomic coordinate count. */
+  /** The assembly non-hydrogen polymer entity atomic coordinate count. */
   polymer_atom_count?: Maybe<Scalars['Int']>,
   /** 
  * Categories describing the polymer entity composition for the generated assembly.
@@ -6951,7 +7092,7 @@ export interface RcsbAssemblyInfo {
    * Nucleic acid (only), Other, Protein (only), Protein/NA
  */
   selected_polymer_entity_types?: Maybe<Scalars['String']>,
-  /** The assembly solvent atomic coordinate count. */
+  /** The assembly non-hydrogen solvent atomic coordinate count. */
   solvent_atom_count?: Maybe<Scalars['Int']>,
   /** The number of distinct solvent entities in the generated assembly. */
   solvent_entity_count?: Maybe<Scalars['Int']>,
@@ -7104,6 +7245,478 @@ export interface RcsbBirdCitation {
    * 1984
  */
   year?: Maybe<Scalars['Int']>,
+}
+
+export interface RcsbBranchedEntity {
+   __typename?: 'RcsbBranchedEntity',
+  /** A description of special aspects of the branched entity. */
+  details?: Maybe<Scalars['String']>,
+  /** Formula mass (KDa) of the branched entity. */
+  formula_weight?: Maybe<Scalars['Float']>,
+  /** A description of the branched entity. */
+  pdbx_description?: Maybe<Scalars['String']>,
+  /** 
+ * The number of molecules of the branched entity in the entry.
+   * 
+   * Examples:
+   * 1, 2, 3
+ */
+  pdbx_number_of_molecules?: Maybe<Scalars['Int']>,
+}
+
+export interface RcsbBranchedEntityAnnotation {
+   __typename?: 'RcsbBranchedEntityAnnotation',
+  /** An identifier for the annotation. */
+  annotation_id?: Maybe<Scalars['String']>,
+  annotation_lineage?: Maybe<Array<Maybe<RcsbBranchedEntityAnnotationAnnotationLineage>>>,
+  /** Identifies the version of the annotation assignment. */
+  assignment_version?: Maybe<Scalars['String']>,
+  /** A description for the annotation. */
+  description?: Maybe<Scalars['String']>,
+  /** A name for the annotation. */
+  name?: Maybe<Scalars['String']>,
+  /** 
+ * Code identifying the individual, organization or program that
+   *  assigned the annotation.
+ */
+  provenance_source?: Maybe<Scalars['String']>,
+  /** A type or category of the annotation. */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityAnnotationAnnotationLineage {
+   __typename?: 'RcsbBranchedEntityAnnotationAnnotationLineage',
+  /** Members of the annotation lineage as parent lineage depth (1-N) */
+  depth?: Maybe<Scalars['Int']>,
+  /** Members of the annotation lineage as parent class identifiers. */
+  id?: Maybe<Scalars['String']>,
+  /** Members of the annotation lineage as parent class names. */
+  name?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityContainerIdentifiers {
+   __typename?: 'RcsbBranchedEntityContainerIdentifiers',
+  /** Instance identifiers corresponding to copies of the entity in this container. */
+  asym_ids?: Maybe<Array<Maybe<Scalars['String']>>>,
+  /** Author instance identifiers corresponding to copies of the entity in this container. */
+  auth_asym_ids?: Maybe<Array<Maybe<Scalars['String']>>>,
+  /** Unique list of monomer chemical component identifiers in the entity in this container. */
+  chem_comp_monomers?: Maybe<Array<Maybe<Scalars['String']>>>,
+  /** Entity identifier for the container. */
+  entity_id: Scalars['String'],
+  /** Entry identifier for the container. */
+  entry_id: Scalars['String'],
+  /** The BIRD identifier for the entity in this container. */
+  prd_id?: Maybe<Scalars['String']>,
+  /** 
+ * A unique identifier for each object in this entity container formed by
+   *  an underscore separated concatenation of entry and entity identifiers.
+ */
+  rcsb_id?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityFeature {
+   __typename?: 'RcsbBranchedEntityFeature',
+  /** Identifies the version of the feature assignment. */
+  assignment_version?: Maybe<Scalars['String']>,
+  /** A description for the feature. */
+  description?: Maybe<Scalars['String']>,
+  /** An identifier for the feature. */
+  feature_id?: Maybe<Scalars['String']>,
+  feature_positions?: Maybe<Array<Maybe<RcsbBranchedEntityFeatureFeaturePositions>>>,
+  /** A name for the feature. */
+  name?: Maybe<Scalars['String']>,
+  /** 
+ * Code identifying the individual, organization or program that
+   *  assigned the feature.
+ */
+  provenance_source?: Maybe<Scalars['String']>,
+  /** 
+ * Code residue coordinate system for the assigned feature.
+   * 
+   * Allowable values:
+   * PDB entity
+ */
+  reference_scheme?: Maybe<Scalars['String']>,
+  /** 
+ * A type or category of the feature.
+   * 
+   * Allowable values:
+   * mutation
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityFeatureFeaturePositions {
+   __typename?: 'RcsbBranchedEntityFeatureFeaturePositions',
+  /** An identifier for the leading monomer corresponding to the feature assignment. */
+  beg_comp_id?: Maybe<Scalars['String']>,
+  /** An identifier for the leading monomer position of the feature. */
+  beg_seq_id: Scalars['Int'],
+  /** An identifier for the leading monomer position of the feature. */
+  end_seq_id?: Maybe<Scalars['Int']>,
+  /** The value for the feature at this monomer. */
+  value?: Maybe<Scalars['Float']>,
+}
+
+export interface RcsbBranchedEntityFeatureSummary {
+   __typename?: 'RcsbBranchedEntityFeatureSummary',
+  /** The feature count. */
+  count?: Maybe<Scalars['Int']>,
+  /** The fractional feature coverage relative to the full branched entity. */
+  coverage?: Maybe<Scalars['Float']>,
+  /** The maximum feature length. */
+  maximum_length?: Maybe<Scalars['Int']>,
+  /** The maximum feature value. */
+  maximum_value?: Maybe<Scalars['Float']>,
+  /** The minimum feature length. */
+  minimum_length?: Maybe<Scalars['Int']>,
+  /** The minimum feature value. */
+  minimum_value?: Maybe<Scalars['Float']>,
+  /** 
+ * Type or category of the feature.
+   * 
+   * Allowable values:
+   * mutation
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityInstanceContainerIdentifiers {
+   __typename?: 'RcsbBranchedEntityInstanceContainerIdentifiers',
+  /** Instance identifier for this container. */
+  asym_id: Scalars['String'],
+  /** Author instance identifier for this container. */
+  auth_asym_id?: Maybe<Scalars['String']>,
+  /** Entity identifier for the container. */
+  entity_id?: Maybe<Scalars['String']>,
+  /** Entry identifier for the container. */
+  entry_id: Scalars['String'],
+  /** 
+ * A unique identifier for each object in this entity instance container formed by
+   *  an 'dot' (.) separated concatenation of entry and entity instance identifiers.
+ */
+  rcsb_id?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityKeywords {
+   __typename?: 'RcsbBranchedEntityKeywords',
+  /** Keywords describing this branched entity. */
+  text?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityNameCom {
+   __typename?: 'RcsbBranchedEntityNameCom',
+  /** 
+ * A common name for the branched entity.
+   * 
+   * Examples:
+   * HIV protease monomer, hemoglobin alpha chain
+ */
+  name?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedEntityNameSys {
+   __typename?: 'RcsbBranchedEntityNameSys',
+  /** The systematic name for the branched entity. */
+  name: Scalars['String'],
+  /** The system used to generate the systematic name of the branched entity. */
+  system?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedInstanceAnnotation {
+   __typename?: 'RcsbBranchedInstanceAnnotation',
+  /** An identifier for the annotation. */
+  annotation_id?: Maybe<Scalars['String']>,
+  annotation_lineage?: Maybe<Array<Maybe<RcsbBranchedInstanceAnnotationAnnotationLineage>>>,
+  /** Identifies the version of the annotation assignment. */
+  assignment_version?: Maybe<Scalars['String']>,
+  /** Chemical component identifier. */
+  comp_id?: Maybe<Scalars['String']>,
+  /** A description for the annotation. */
+  description?: Maybe<Scalars['String']>,
+  /** A name for the annotation. */
+  name?: Maybe<Scalars['String']>,
+  /** Ordinal identifier for this category */
+  ordinal: Scalars['Int'],
+  /** 
+ * Code identifying the individual, organization or program that
+   *  assigned the annotation.
+ */
+  provenance_source?: Maybe<Scalars['String']>,
+  /** 
+ * A type or category of the annotation.
+   * 
+   * Allowable values:
+   * CATH, SCOP
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedInstanceAnnotationAnnotationLineage {
+   __typename?: 'RcsbBranchedInstanceAnnotationAnnotationLineage',
+  /** Members of the annotation lineage as parent lineage depth (1-N) */
+  depth?: Maybe<Scalars['Int']>,
+  /** Members of the annotation lineage as parent class identifiers. */
+  id?: Maybe<Scalars['String']>,
+  /** Members of the annotation lineage as parent class names. */
+  name?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedInstanceFeature {
+   __typename?: 'RcsbBranchedInstanceFeature',
+  /** Identifies the version of the feature assignment. */
+  assignment_version?: Maybe<Scalars['String']>,
+  /** A description for the feature. */
+  description?: Maybe<Scalars['String']>,
+  /** An identifier for the feature. */
+  feature_id?: Maybe<Scalars['String']>,
+  feature_positions?: Maybe<Array<Maybe<RcsbBranchedInstanceFeatureFeaturePositions>>>,
+  feature_value?: Maybe<Array<Maybe<RcsbBranchedInstanceFeatureFeatureValue>>>,
+  /** A name for the feature. */
+  name?: Maybe<Scalars['String']>,
+  /** Ordinal identifier for this category */
+  ordinal: Scalars['Int'],
+  /** 
+ * Code identifying the individual, organization or program that
+   *  assigned the feature.
+ */
+  provenance_source?: Maybe<Scalars['String']>,
+  /** 
+ * Code residue coordinate system for the assigned feature.
+   * 
+   * Allowable values:
+   * PDB entity, PDB entry
+ */
+  reference_scheme?: Maybe<Scalars['String']>,
+  /** 
+ * A type or category of the feature.
+   * 
+   * Allowable values:
+   * BINDING_SITE, CATH, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RSRCC_OUTLIER,
+   * RSRZ_OUTLIER, SCOP, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
+   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedInstanceFeatureFeaturePositions {
+   __typename?: 'RcsbBranchedInstanceFeatureFeaturePositions',
+  /** An identifier for the monomer(s) corresponding to the feature assignment. */
+  beg_comp_id?: Maybe<Scalars['String']>,
+  /** An identifier for the leading monomer feature position. */
+  beg_seq_id: Scalars['Int'],
+  /** An identifier for the terminal monomer feature position. */
+  end_seq_id?: Maybe<Scalars['Int']>,
+  /** The value of the feature at the monomer position. */
+  value?: Maybe<Scalars['Float']>,
+}
+
+export interface RcsbBranchedInstanceFeatureFeatureValue {
+   __typename?: 'RcsbBranchedInstanceFeatureFeatureValue',
+  /** The chemical component identifier for the instance of the feature value. */
+  comp_id?: Maybe<Scalars['String']>,
+  /** Specific details about the feature. */
+  details?: Maybe<Scalars['String']>,
+  /** The reference value of the feature. */
+  reference?: Maybe<Scalars['Float']>,
+  /** The reported value of the feature. */
+  reported?: Maybe<Scalars['Float']>,
+  /** The estimated uncertainty of the reported feature value. */
+  uncertainty_estimate?: Maybe<Scalars['Float']>,
+  /** 
+ * The type of estimated uncertainty for the reported feature value.
+   * 
+   * Allowable values:
+   * Z-Score
+ */
+  uncertainty_estimate_type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedInstanceFeatureSummary {
+   __typename?: 'RcsbBranchedInstanceFeatureSummary',
+  /** The feature count. */
+  count?: Maybe<Scalars['Int']>,
+  /** The fractional feature coverage relative to the full branched entity. */
+  coverage?: Maybe<Scalars['Float']>,
+  /** The maximum feature length. */
+  maximum_length?: Maybe<Scalars['Int']>,
+  /** The maximum feature value. */
+  maximum_value?: Maybe<Scalars['Float']>,
+  /** The minimum feature length. */
+  minimum_length?: Maybe<Scalars['Int']>,
+  /** The minimum feature value. */
+  minimum_value?: Maybe<Scalars['Float']>,
+  /** 
+ * Type or category of the feature.
+   * 
+   * Allowable values:
+   * BINDING_SITE, CATH, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RSRCC_OUTLIER,
+   * RSRZ_OUTLIER, SCOP, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
+   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+ */
+  type?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedStructConn {
+   __typename?: 'RcsbBranchedStructConn',
+  connect_partner?: Maybe<RcsbBranchedStructConnConnectPartner>,
+  connect_target?: Maybe<RcsbBranchedStructConnConnectTarget>,
+  /** 
+ * The connection type.
+   * 
+   * Allowable values:
+   * covalent bond, hydrogen bond, ionic interaction, metal coordination, mismatched base pairs
+ */
+  connect_type?: Maybe<Scalars['String']>,
+  /** A description of special details of the connection. */
+  description?: Maybe<Scalars['String']>,
+  /** Distance value for this contact. */
+  dist_value?: Maybe<Scalars['Float']>,
+  /** The value of _rcsb_branched_struct_conn.id is an identifier for connection. */
+  id?: Maybe<Scalars['String']>,
+  /** 
+ * The value of _rcsb_branched_struct_conn.id must uniquely identify a record in
+   *  the rcsb_branched_struct_conn list.
+ */
+  ordinal_id: Scalars['Int'],
+  /** 
+ * The chemical or structural role of the interaction
+   * 
+   * Allowable values:
+   * C-Mannosylation, N-Glycosylation, O-Glycosylation
+ */
+  role?: Maybe<Scalars['String']>,
+  /** 
+ * The chemical bond order associated with the specified atoms in
+   *  this contact.
+   * 
+   * Allowable values:
+   * doub, quad, sing, trip
+ */
+  value_order?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedStructConnConnectPartner {
+   __typename?: 'RcsbBranchedStructConnConnectPartner',
+  /** 
+ * A component of the identifier for the partner in the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_alt_id in the
+   *  ATOM_SITE category.
+ */
+  label_alt_id?: Maybe<Scalars['String']>,
+  /** 
+ * A component of the identifier for the partner in the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_asym_id in the
+   *  ATOM_SITE category.
+ */
+  label_asym_id: Scalars['String'],
+  /** 
+ * A component of the identifier for the partner in the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _chem_comp_atom.atom_id in the
+   *  CHEM_COMP_ATOM category.
+ */
+  label_atom_id?: Maybe<Scalars['String']>,
+  /** 
+ * A component of the identifier for the partner in the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_comp_id in the
+   *  ATOM_SITE category.
+ */
+  label_comp_id: Scalars['String'],
+  /** 
+ * A component of the identifier for the partner in the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_seq_id in the
+   *  ATOM_SITE category.
+ */
+  label_seq_id?: Maybe<Scalars['Int']>,
+  /** 
+ * Describes the symmetry operation that should be applied to the
+   *  atom set specified by _rcsb_branched_struct_conn.connect_partner_label* to generate the
+   *  partner in the structure connection.
+   * 
+   * Examples:
+   * 1_555, 7_645
+ */
+  symmetry?: Maybe<Scalars['String']>,
+}
+
+export interface RcsbBranchedStructConnConnectTarget {
+   __typename?: 'RcsbBranchedStructConnConnectTarget',
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.auth_asym_id in the
+   *  ATOM_SITE category.
+ */
+  auth_asym_id?: Maybe<Scalars['String']>,
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.auth_seq_id in the
+   *  ATOM_SITE category.
+ */
+  auth_seq_id?: Maybe<Scalars['String']>,
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_alt_id in the
+   *  ATOM_SITE category.
+ */
+  label_alt_id?: Maybe<Scalars['String']>,
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_asym_id in the
+   *  ATOM_SITE category.
+ */
+  label_asym_id: Scalars['String'],
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_atom_id in the
+   *  ATOM_SITE category.
+ */
+  label_atom_id?: Maybe<Scalars['String']>,
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.label_comp_id in the
+   *  ATOM_SITE category.
+ */
+  label_comp_id: Scalars['String'],
+  /** 
+ * A component of the identifier for the target of the structure
+   *  connection.
+   * 
+   *  This data item is a pointer to _atom_site.connect_target_label_seq_id in the
+   *  ATOM_SITE category.
+ */
+  label_seq_id?: Maybe<Scalars['Int']>,
+  /** 
+ * Describes the symmetry operation that should be applied to the
+   *  atom set specified by _rcsb_branched_struct_conn.label* to generate the
+   *  target of the structure connection.
+   * 
+   * Examples:
+   * 1_555, 7_645
+ */
+  symmetry?: Maybe<Scalars['String']>,
 }
 
 export interface RcsbChemCompAnnotation {
@@ -7698,6 +8311,8 @@ export interface RcsbEntryInfo {
    *  per deposited structure model.
  */
   deposited_polymer_monomer_count?: Maybe<Scalars['Int']>,
+  /** The number of heavy solvent atom coordinates records per deposited structure model. */
+  deposited_solvent_atom_count?: Maybe<Scalars['Int']>,
   /** 
  * The number of unmodeled polymer monomers in the deposited coordinate data. This is
    *  the total count of monomers with unreported coordinate data for all polymer
@@ -8161,7 +8776,7 @@ export interface RcsbNonpolymerStructConn {
  * The chemical or structural role of the interaction
    * 
    * Allowable values:
-   * C-Mannosylation, N-Glycosylation, O-Glycosylation
+   * C-Mannosylation, N-Glycosylation, O-Glycosylation, S-Glycosylation
  */
   role?: Maybe<Scalars['String']>,
   /** 
@@ -8802,7 +9417,7 @@ export interface RcsbPolymerStructConn {
  * The chemical or structural role of the interaction
    * 
    * Allowable values:
-   * C-Mannosylation, N-Glycosylation, O-Glycosylation
+   * C-Mannosylation, N-Glycosylation, O-Glycosylation, S-Glycosylation
  */
   role?: Maybe<Scalars['String']>,
   /** 

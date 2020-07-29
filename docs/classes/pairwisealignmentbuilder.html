@@ -88,14 +88,28 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#alignmentlength" class="tsd-kind-icon">alignment<wbr>Length</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#queryseqeunce" class="tsd-kind-icon">query<wbr>Seqeunce</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#targetseqeunce" class="tsd-kind-icon">target<wbr>Seqeunce</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#isqueryexternal" class="tsd-kind-icon">is<wbr>Query<wbr>External</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#istargetexternal" class="tsd-kind-icon">is<wbr>Target<wbr>External</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#pairwiseview" class="tsd-kind-icon">pairwise<wbr>View</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#queryalignment" class="tsd-kind-icon">query<wbr>Alignment</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#querybegin" class="tsd-kind-icon">query<wbr>Begin</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#queryend" class="tsd-kind-icon">query<wbr>End</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#queryid" class="tsd-kind-icon">query<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#querysequence" class="tsd-kind-icon">query<wbr>Sequence</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#sequenceid" class="tsd-kind-icon">sequence<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#targetalignment" class="tsd-kind-icon">target<wbr>Alignment</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#targetbegin" class="tsd-kind-icon">target<wbr>Begin</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#targetend" class="tsd-kind-icon">target<wbr>End</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#targetid" class="tsd-kind-icon">target<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#targetsequence" class="tsd-kind-icon">target<wbr>Sequence</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pairwisealignmentbuilder.html#build" class="tsd-kind-icon">build</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="pairwisealignmentbuilder.html#addblockterminaltags" class="tsd-kind-icon">add<wbr>Block<wbr>Terminal<wbr>Tags</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pairwisealignmentbuilder.html#buildpairwisealignment" class="tsd-kind-icon">build<wbr>Pairwise<wbr>Alignment</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pairwisealignmentbuilder.html#buildreferencealignment" class="tsd-kind-icon">build<wbr>Reference<wbr>Alignment</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="pairwisealignmentbuilder.html#getlength" class="tsd-kind-icon">get<wbr>Length</a></li>
 							</ul>
 						</section>
@@ -108,22 +122,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Pairwise<wbr>Alignment<wbr>Builder<span class="tsd-signature-symbol">(</span>qSeq<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, tSeq<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="pairwisealignmentbuilder.html" class="tsd-signature-type">PairwiseAlignmentBuilder</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Pairwise<wbr>Alignment<wbr>Builder<span class="tsd-signature-symbol">(</span>paI<span class="tsd-signature-symbol">: </span><a href="../interfaces/pairwisealignmentinterface.html" class="tsd-signature-type">PairwiseAlignmentInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="pairwisealignmentbuilder.html" class="tsd-signature-type">PairwiseAlignmentBuilder</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb04a09/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L11">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L41">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>qSeq: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>tSeq: <span class="tsd-signature-type">string</span></h5>
+									<h5>paI: <a href="../interfaces/pairwisealignmentinterface.html" class="tsd-signature-type">PairwiseAlignmentInterface</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="pairwisealignmentbuilder.html" class="tsd-signature-type">PairwiseAlignmentBuilder</a></h4>
@@ -139,44 +150,204 @@
 					<div class="tsd-signature tsd-kind-icon">alignment<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb04a09/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L11">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L35">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="queryseqeunce" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> query<wbr>Seqeunce</h3>
-					<div class="tsd-signature tsd-kind-icon">query<wbr>Seqeunce<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="isqueryexternal" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Query<wbr>External</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Query<wbr>External<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb04a09/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L9">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L39">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:39</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="targetseqeunce" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target<wbr>Seqeunce</h3>
-					<div class="tsd-signature tsd-kind-icon">target<wbr>Seqeunce<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="istargetexternal" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> is<wbr>Target<wbr>External</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Target<wbr>External<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb04a09/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L10">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L40">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="pairwiseview" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> pairwise<wbr>View</h3>
+					<div class="tsd-signature tsd-kind-icon">pairwise<wbr>View<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L41">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:41</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="queryalignment" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> query<wbr>Alignment</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Alignment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L29">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="querybegin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> query<wbr>Begin</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Begin<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L31">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:31</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="queryend" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> query<wbr>End</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>End<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L32">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:32</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="queryid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> query<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L37">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:37</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="querysequence" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> query<wbr>Sequence</h3>
+					<div class="tsd-signature tsd-kind-icon">query<wbr>Sequence<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L27">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="sequenceid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> sequence<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">sequence<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L38">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:38</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="targetalignment" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target<wbr>Alignment</h3>
+					<div class="tsd-signature tsd-kind-icon">target<wbr>Alignment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L30">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:30</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="targetbegin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target<wbr>Begin</h3>
+					<div class="tsd-signature tsd-kind-icon">target<wbr>Begin<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L33">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:33</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="targetend" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target<wbr>End</h3>
+					<div class="tsd-signature tsd-kind-icon">target<wbr>End<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L34">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:34</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="targetid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">target<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L36">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="targetsequence" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> target<wbr>Sequence</h3>
+					<div class="tsd-signature tsd-kind-icon">target<wbr>Sequence<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L28">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="build" class="tsd-anchor"></a>
-					<h3>build</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">build<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="addblockterminaltags" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> add<wbr>Block<wbr>Terminal<wbr>Tags</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Block<wbr>Terminal<wbr>Tags<span class="tsd-signature-symbol">(</span>alignedBlocks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvTrackDataElementInterface</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb04a09/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L25">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L294">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:294</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alignedBlocks: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvTrackDataElementInterface</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="buildpairwisealignment" class="tsd-anchor"></a>
+					<h3>build<wbr>Pairwise<wbr>Alignment</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Pairwise<wbr>Alignment<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L202">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:202</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="buildreferencealignment" class="tsd-anchor"></a>
+					<h3>build<wbr>Reference<wbr>Alignment</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Reference<wbr>Alignment<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L71">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -193,7 +364,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb04a09/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L21">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0389ed7/src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts#L67">src/RcsbFvWeb/PairwiseAlignmentTools/PairwiseAlignmentBuilder.ts:67</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -224,13 +395,55 @@
 								<a href="pairwisealignmentbuilder.html#alignmentlength" class="tsd-kind-icon">alignment<wbr>Length</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="pairwisealignmentbuilder.html#queryseqeunce" class="tsd-kind-icon">query<wbr>Seqeunce</a>
+								<a href="pairwisealignmentbuilder.html#isqueryexternal" class="tsd-kind-icon">is<wbr>Query<wbr>External</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="pairwisealignmentbuilder.html#targetseqeunce" class="tsd-kind-icon">target<wbr>Seqeunce</a>
+								<a href="pairwisealignmentbuilder.html#istargetexternal" class="tsd-kind-icon">is<wbr>Target<wbr>External</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#pairwiseview" class="tsd-kind-icon">pairwise<wbr>View</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#queryalignment" class="tsd-kind-icon">query<wbr>Alignment</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#querybegin" class="tsd-kind-icon">query<wbr>Begin</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#queryend" class="tsd-kind-icon">query<wbr>End</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#queryid" class="tsd-kind-icon">query<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#querysequence" class="tsd-kind-icon">query<wbr>Sequence</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#sequenceid" class="tsd-kind-icon">sequence<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#targetalignment" class="tsd-kind-icon">target<wbr>Alignment</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#targetbegin" class="tsd-kind-icon">target<wbr>Begin</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#targetend" class="tsd-kind-icon">target<wbr>End</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#targetid" class="tsd-kind-icon">target<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#targetsequence" class="tsd-kind-icon">target<wbr>Sequence</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="pairwisealignmentbuilder.html#addblockterminaltags" class="tsd-kind-icon">add<wbr>Block<wbr>Terminal<wbr>Tags</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="pairwisealignmentbuilder.html#build" class="tsd-kind-icon">build</a>
+								<a href="pairwisealignmentbuilder.html#buildpairwisealignment" class="tsd-kind-icon">build<wbr>Pairwise<wbr>Alignment</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="pairwisealignmentbuilder.html#buildreferencealignment" class="tsd-kind-icon">build<wbr>Reference<wbr>Alignment</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="pairwisealignmentbuilder.html#getlength" class="tsd-kind-icon">get<wbr>Length</a>

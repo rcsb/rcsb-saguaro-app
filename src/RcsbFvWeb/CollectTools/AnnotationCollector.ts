@@ -71,9 +71,6 @@ export class AnnotationCollector extends CoreCollector{
                 throw error;
             });
         }
-
-
-
     }
 
     private processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
