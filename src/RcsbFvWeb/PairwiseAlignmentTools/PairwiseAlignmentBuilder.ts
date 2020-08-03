@@ -23,6 +23,14 @@ export interface PairwiseAlignmentInterface{
     pairwiseView?: boolean;
 }
 
+const gradient: (x: number[], y: number[], z: number) => number[] = (color1, color2, weight)=>{
+    const w1: number = weight;
+    const w2: number = 1 - w1;
+    return [Math.round(color1[0] * w1 + color2[0] * w2),
+        Math.round(color1[1] * w1 + color2[1] * w2),
+        Math.round(color1[2] * w1 + color2[2] * w2)];
+};
+
 export class PairwiseAlignmentBuilder {
     private querySequence: string;
     private targetSequence: string;
@@ -82,7 +90,7 @@ export class PairwiseAlignmentBuilder {
 
         qA.forEach((q,i)=> {
             const t: string = tA[i];
-            if(t === "-"  && blockQueryStart > 0){
+            if( (t === "-" || q === "-")  && blockQueryStart > 0){
                 alignedBlocks.push({
                     begin: blockQueryStart,
                     end: (currentQueryIndex-1),
@@ -122,7 +130,7 @@ export class PairwiseAlignmentBuilder {
                     });
                 }
             }
-            if(t != "-" && blockQueryStart == 0){
+            if(t != "-" && q != "-" && blockQueryStart == 0){
                 blockQueryStart = currentQueryIndex;
                 blockTargetStart = currentTargetIndex;
             }
@@ -175,13 +183,7 @@ export class PairwiseAlignmentBuilder {
             minRatio: 5
         };
 
-        const gradient: (x: number[], y: number[], z: number) => number[] = (color1, color2, weight)=>{
-            const w1: number = weight;
-            const w2: number = 1 - w1;
-            return [Math.round(color1[0] * w1 + color2[0] * w2),
-                Math.round(color1[1] * w1 + color2[1] * w2),
-                Math.round(color1[2] * w1 + color2[2] * w2)];
-        };
+
         const blockColor: string = "rgb("+gradient([153,153,255],[50,50,50],this.sequenceId).join(",")+")";
         const alignmentDisplay: RcsbFvDisplayConfigInterface = {
             displayType: RcsbFvDisplayTypes.BLOCK,
@@ -273,11 +275,13 @@ export class PairwiseAlignmentBuilder {
         const mismatchDisplay: RcsbFvDisplayConfigInterface = {
             displayType: RcsbFvDisplayTypes.PIN,
             displayColor: "#FF9999",
-            displayData: mismatchData
+            displayData: mismatchData,
+            minRatio: 5
         };
+        const blockColor: string = "rgb("+gradient([153,153,255],[50,50,50],this.sequenceId).join(",")+")";
         const alignmentDisplay: RcsbFvDisplayConfigInterface = {
             displayType: RcsbFvDisplayTypes.BLOCK,
-            displayColor: "#9999FF",
+            displayColor: blockColor,
             displayData: alignedBlocks
         };
 
@@ -305,5 +309,21 @@ export class PairwiseAlignmentBuilder {
         if(alignedBlocks[alignedBlocks.length-1].oriEnd < this.targetSequence.length){
             alignedBlocks[alignedBlocks.length-1].openEnd = true;
         }
+        let merged = false;
+        do{
+            merged = false;
+            for(let n=0; n<(alignedBlocks.length-1); n++){
+                if(alignedBlocks[n].oriEnd+1 == alignedBlocks[n+1].oriBegin){
+                    if(alignedBlocks[n].gaps == null)
+                        alignedBlocks[n].gaps = []
+                    alignedBlocks[n].gaps.push({begin:alignedBlocks[n].end,end:alignedBlocks[n+1].begin});
+                    alignedBlocks[n].end = alignedBlocks[n+1].end;
+                    alignedBlocks[n].oriEnd = alignedBlocks[n+1].oriEnd;
+                    alignedBlocks.splice((n+1),1);
+                    merged = true;
+                    break;
+                }
+            }
+        }while(merged);
     }
 }
