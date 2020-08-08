@@ -207,6 +207,11 @@ export class PairwiseAlignmentBuilder {
 
         const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
         const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
+        const querySeq: Array<RcsbFvTrackDataElementInterface> = [];
+        const targetSeq: Array<RcsbFvTrackDataElementInterface> = [];
+        let currentQueryIndex: number = this.queryBegin;
+        let currentTargetIndex: number = this.targetBegin;
+
         let start: number = 1;
         qA.forEach((q,i)=>{
             const t: string = tA[i];
@@ -234,6 +239,32 @@ export class PairwiseAlignmentBuilder {
                     title: "MISMATCH"
                 });
             }
+            querySeq.push({
+                begin:i+1,
+                value:q,
+                source:RcsbAnnotationConstants.provenanceName.userInput,
+                sourceId:"QUERY SEQUENCE",
+                provenanceName: RcsbAnnotationConstants.provenanceName.userInput,
+                provenanceColor: RcsbAnnotationConstants.provenanceColorCode.external,
+                oriBegin: q != "-" ? currentQueryIndex : undefined
+
+            });
+            if(q!="-"){
+                currentQueryIndex++;
+            }
+            targetSeq.push({
+                begin:i+1,
+                value:t,
+                source:SequenceReference.PdbEntity,
+                sourceId:this.targetId,
+                provenanceName: SequenceReference.PdbEntity,
+                provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                oriBegin: t != "-" ? currentTargetIndex : undefined
+
+            });
+            if(t!="-"){
+                currentTargetIndex++;
+            }
         });
         if(start>0){
             alignedBlocks.push({
@@ -253,10 +284,7 @@ export class PairwiseAlignmentBuilder {
             displayColor: "#000000",
             rowTitle: "QUERY",
             nonEmptyDisplay: true,
-            trackData: [{
-                value:this.queryAlignment,
-                begin:1,
-            }]
+            trackData: querySeq
         };
 
         const targetTrack: RcsbFvRowConfigInterface = {
@@ -266,10 +294,7 @@ export class PairwiseAlignmentBuilder {
             displayColor: "#000000",
             rowTitle: this.targetId,
             nonEmptyDisplay: true,
-            trackData: [{
-                value:this.targetAlignment,
-                begin:1,
-            }]
+            trackData: targetSeq
         };
 
         const mismatchDisplay: RcsbFvDisplayConfigInterface = {
@@ -316,7 +341,7 @@ export class PairwiseAlignmentBuilder {
                 if(alignedBlocks[n].oriEnd+1 == alignedBlocks[n+1].oriBegin){
                     if(alignedBlocks[n].gaps == null)
                         alignedBlocks[n].gaps = []
-                    alignedBlocks[n].gaps.push({begin:alignedBlocks[n].end,end:alignedBlocks[n+1].begin});
+                    alignedBlocks[n].gaps.push({begin:alignedBlocks[n].end,end:alignedBlocks[n+1].begin, isConnected:true});
                     alignedBlocks[n].end = alignedBlocks[n+1].end;
                     alignedBlocks[n].oriEnd = alignedBlocks[n+1].oriEnd;
                     alignedBlocks.splice((n+1),1);

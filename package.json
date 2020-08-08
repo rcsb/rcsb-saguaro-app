@@ -1,10 +1,11 @@
 {
   "name": "@bioinsilico/rcsb-saguaro-app",
-  "version": "0.3.8",
+  "version": "0.5.0",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/config.js",
   "scripts": {
-    "buildAll": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean && npm run buildAllDoc",
+    "buildAll": "npm run buildApp && npm run buildAllDoc",
+    "buildApp": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
     "generateBorrego": "graphql-codegen --config codegen.borrego.json",
     "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
@@ -24,6 +25,7 @@
   },
   "keywords": [
     "1D",
+    "viewer",
     "sequence",
     "annotations",
     "gene",
@@ -41,7 +43,7 @@
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@graphql-codegen/typescript": "1.12.1",
+    "@graphql-codegen/typescript": "^1.17.7",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.0",
     "@types/react-select": "^3.0.11",
@@ -66,7 +68,7 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.4.2",
+    "@bioinsilico/rcsb-saguaro": "^0.5.0",
     "@graphql-codegen/cli": "^1.16.0"
   },
   "bugs": {

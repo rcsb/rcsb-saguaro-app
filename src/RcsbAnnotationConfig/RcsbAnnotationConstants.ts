@@ -8,6 +8,7 @@ export const RcsbAnnotationConstants = {
     provenanceName: {
         pdb: "PDB",
         mmseqs: "MMseqs",
-        promotif: "PROMOTIF"
+        promotif: "PROMOTIF",
+        userInput: "USER INPUT"
     }
 };

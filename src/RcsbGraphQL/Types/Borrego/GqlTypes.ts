@@ -1,66 +1,67 @@
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
-  ID: string,
-  String: string,
-  Boolean: boolean,
-  Int: number,
-  Float: number,
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
   /** Unrepresentable type */
-  UNREPRESENTABLE: any,
+  UNREPRESENTABLE: any;
 }
 
 export interface AlignedRegion {
-   __typename?: 'AlignedRegion',
-  exon_shift?: Maybe<Array<Maybe<Scalars['Int']>>>,
-  query_begin?: Maybe<Scalars['Int']>,
-  query_end?: Maybe<Scalars['Int']>,
-  target_begin?: Maybe<Scalars['Int']>,
-  target_end?: Maybe<Scalars['Int']>,
+  __typename?: 'AlignedRegion';
+  exon_shift?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  query_begin?: Maybe<Scalars['Int']>;
+  query_end?: Maybe<Scalars['Int']>;
+  target_begin?: Maybe<Scalars['Int']>;
+  target_end?: Maybe<Scalars['Int']>;
 }
 
 export interface AlignmentResponse {
-   __typename?: 'AlignmentResponse',
-  query_sequence?: Maybe<Scalars['String']>,
-  target_alignment?: Maybe<Array<Maybe<TargetAlignment>>>,
+  __typename?: 'AlignmentResponse';
+  query_sequence?: Maybe<Scalars['String']>;
+  target_alignment?: Maybe<Array<Maybe<TargetAlignment>>>;
 }
 
 export interface AnnotationFeatures {
-   __typename?: 'AnnotationFeatures',
-  features?: Maybe<Array<Maybe<Feature>>>,
-  source?: Maybe<Source>,
-  target_id?: Maybe<Scalars['String']>,
+  __typename?: 'AnnotationFeatures';
+  features?: Maybe<Array<Maybe<Feature>>>;
+  source?: Maybe<Source>;
+  target_id?: Maybe<Scalars['String']>;
 }
 
 export interface Coverage {
-   __typename?: 'Coverage',
-  query_coverage?: Maybe<Scalars['Int']>,
-  query_length?: Maybe<Scalars['Int']>,
-  target_coverage?: Maybe<Scalars['Int']>,
-  target_length?: Maybe<Scalars['Int']>,
+  __typename?: 'Coverage';
+  query_coverage?: Maybe<Scalars['Int']>;
+  query_length?: Maybe<Scalars['Int']>;
+  target_coverage?: Maybe<Scalars['Int']>;
+  target_length?: Maybe<Scalars['Int']>;
 }
 
 export interface Feature {
-   __typename?: 'Feature',
-  description?: Maybe<Scalars['String']>,
-  feature_id?: Maybe<Scalars['String']>,
-  feature_positions?: Maybe<Array<Maybe<FeaturePosition>>>,
-  name?: Maybe<Scalars['String']>,
-  provenance_source?: Maybe<Scalars['String']>,
-  type?: Maybe<Scalars['String']>,
-  value?: Maybe<Scalars['Float']>,
+  __typename?: 'Feature';
+  description?: Maybe<Scalars['String']>;
+  feature_id?: Maybe<Scalars['String']>;
+  feature_positions?: Maybe<Array<Maybe<FeaturePosition>>>;
+  name?: Maybe<Scalars['String']>;
+  provenance_source?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  value?: Maybe<Scalars['Float']>;
 }
 
 export interface FeaturePosition {
-   __typename?: 'FeaturePosition',
-  beg_ori_id?: Maybe<Scalars['Int']>,
-  beg_seq_id?: Maybe<Scalars['Int']>,
-  end_ori_id?: Maybe<Scalars['Int']>,
-  end_seq_id?: Maybe<Scalars['Int']>,
-  gaps?: Maybe<Array<Maybe<Gap>>>,
-  open_begin?: Maybe<Scalars['Boolean']>,
-  open_end?: Maybe<Scalars['Boolean']>,
-  value?: Maybe<Scalars['Float']>,
+  __typename?: 'FeaturePosition';
+  beg_ori_id?: Maybe<Scalars['Int']>;
+  beg_seq_id?: Maybe<Scalars['Int']>;
+  end_ori_id?: Maybe<Scalars['Int']>;
+  end_seq_id?: Maybe<Scalars['Int']>;
+  gaps?: Maybe<Array<Maybe<Gap>>>;
+  open_begin?: Maybe<Scalars['Boolean']>;
+  open_end?: Maybe<Scalars['Boolean']>;
+  value?: Maybe<Scalars['Float']>;
 }
 
 export enum FieldName {
@@ -69,16 +70,17 @@ export enum FieldName {
 }
 
 export interface FilterInput {
-  field?: Maybe<FieldName>,
-  operation?: Maybe<OperationType>,
-  values?: Maybe<Array<Maybe<Scalars['String']>>>,
-  source?: Maybe<Source>,
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
+  field?: Maybe<FieldName>;
+  source?: Maybe<Source>;
+  operation?: Maybe<OperationType>;
 }
 
 export interface Gap {
-   __typename?: 'Gap',
-  begin?: Maybe<Scalars['Int']>,
-  end?: Maybe<Scalars['Int']>,
+  __typename?: 'Gap';
+  begin?: Maybe<Scalars['Int']>;
+  end?: Maybe<Scalars['Int']>;
+  isConnected?: Maybe<Scalars['Boolean']>;
 }
 
 export enum OperationType {
@@ -88,30 +90,30 @@ export enum OperationType {
 
 /** Query root */
 export interface Query {
-   __typename?: 'Query',
+  __typename?: 'Query';
   /** Get annotations. */
-  annotations?: Maybe<Array<Maybe<AnnotationFeatures>>>,
+  annotations?: Maybe<Array<Maybe<AnnotationFeatures>>>;
   /** Get NCBI entry given the NCBI protein accession. */
-  alignment?: Maybe<AlignmentResponse>,
+  alignment?: Maybe<AlignmentResponse>;
 }
 
 
 /** Query root */
 export interface QueryAnnotationsArgs {
-  reference?: Maybe<SequenceReference>,
-  sources?: Maybe<Array<Maybe<Source>>>,
-  range?: Maybe<Scalars['String']>,
-  filters?: Maybe<Array<Maybe<FilterInput>>>,
-  queryId: Scalars['String']
+  reference?: Maybe<SequenceReference>;
+  sources?: Maybe<Array<Maybe<Source>>>;
+  range?: Maybe<Scalars['String']>;
+  filters?: Maybe<Array<Maybe<FilterInput>>>;
+  queryId: Scalars['String'];
 }
 
 
 /** Query root */
 export interface QueryAlignmentArgs {
-  range?: Maybe<Scalars['String']>,
-  from?: Maybe<SequenceReference>,
-  to?: Maybe<SequenceReference>,
-  queryId: Scalars['String']
+  range?: Maybe<Scalars['String']>;
+  from?: Maybe<SequenceReference>;
+  to?: Maybe<SequenceReference>;
+  queryId: Scalars['String'];
 }
 
 export enum SequenceReference {
@@ -129,11 +131,11 @@ export enum Source {
 }
 
 export interface TargetAlignment {
-   __typename?: 'TargetAlignment',
-  aligned_regions?: Maybe<Array<Maybe<AlignedRegion>>>,
-  coverage?: Maybe<Coverage>,
-  orientation?: Maybe<Scalars['Int']>,
-  target_id?: Maybe<Scalars['String']>,
-  target_sequence?: Maybe<Scalars['String']>,
+  __typename?: 'TargetAlignment';
+  aligned_regions?: Maybe<Array<Maybe<AlignedRegion>>>;
+  coverage?: Maybe<Coverage>;
+  orientation?: Maybe<Scalars['Int']>;
+  target_id?: Maybe<Scalars['String']>;
+  target_sequence?: Maybe<Scalars['String']>;
 }
 

@@ -198,7 +198,7 @@ export class SequenceCollector extends CoreCollector{
                                 provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                                 openBegin: openBegin,
                                 openEnd: openEnd,
-                                gaps: [{begin: region.query_end, end: nextRegion.query_begin}],
+                                gaps: [{begin: region.query_end, end: nextRegion.query_begin, isConnected:true}],
                                 type: "ALIGNED_BLOCK",
                                 title: "ALIGNED REGION"
                             }, commonContext));

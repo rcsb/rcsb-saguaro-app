@@ -21,6 +21,7 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
                 gaps{
                     begin
                     end
+                    isConnected
                 }
                 open_begin
                 open_end
