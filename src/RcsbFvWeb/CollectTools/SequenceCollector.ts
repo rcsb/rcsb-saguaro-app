@@ -1,6 +1,7 @@
 import {
     RcsbFvDisplayConfigInterface,
     RcsbFvDisplayTypes,
+    RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from '@bioinsilico/rcsb-saguaro';
@@ -9,7 +10,8 @@ import {
     AlignedRegion,
     AlignmentResponse,
     QueryAlignmentArgs,
-    SequenceReference, Source,
+    SequenceReference,
+    Source,
     TargetAlignment
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
@@ -18,9 +20,13 @@ import {TagDelimiter} from "../Utils/TagDelimiter";
 import {CoreCollector} from "./CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 
+import * as resource from "../../../web.resources.json";
+
 interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
     dynamicDisplay?: boolean;
+    excludeAlignmentLinks?: boolean;
+    fitTitleWidth?:boolean;
 }
 
 export interface SequenceCollectorDataInterface {
@@ -35,6 +41,8 @@ interface BuildAlignementsInterface {
     filterByTargetContains?:string;
     to:SequenceReference;
     from:SequenceReference;
+    excludeAlignmentLinks?: boolean;
+    fitTitleWidth?:boolean;
 }
 
 interface BuildSequenceDataInterface extends TranslateContextInterface{
@@ -70,17 +78,29 @@ export class SequenceCollector extends CoreCollector{
             const data: AlignmentResponse = result;
             const querySequence: string = data.query_sequence;
             const alignmentData: Array<TargetAlignment> = data.target_alignment;
-            let rowTitle:string = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
-            if( requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null)
-                rowTitle += " "+requestConfig.queryId.split(TagDelimiter.instance)[0]+TagDelimiter.instance+this.getPolymerEntityInstance().translateAsymToAuth(requestConfig.queryId.split(TagDelimiter.instance)[1]);
-            else
-                rowTitle += " "+requestConfig.queryId;
+            let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
+            let rowTitle:string|RcsbFvLink;
+            if(requestConfig.from === SequenceReference.Uniprot){
+                rowTitle = {
+                    visibleTex: requestConfig.queryId,
+                    url: (resource as any).uniprot.url+requestConfig.queryId,
+                    style: {
+                        color:RcsbAnnotationConstants.provenanceColorCode.external
+                    },
+                    isThirdParty:true
+                };
+            } else if( requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null) {
+                rowTitle = requestConfig.queryId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(requestConfig.queryId.split(TagDelimiter.instance)[1]);
+            } else {
+                rowTitle = requestConfig.queryId;
+            }
             const track: RcsbFvRowConfigInterface = {
                 trackId: "mainSequenceTrack_" + requestConfig.queryId,
                 displayType: RcsbFvDisplayTypes.SEQUENCE,
                 trackColor: "#F9F9F9",
                 displayColor: "#000000",
                 rowTitle: rowTitle,
+                rowPrefix: rowPrefix,
                 nonEmptyDisplay: true,
                 trackData: this.buildSequenceData({
                     sequenceData:[],
@@ -104,7 +124,9 @@ export class SequenceCollector extends CoreCollector{
                 querySequence: querySequence,
                 filterByTargetContains:requestConfig.filterByTargetContains,
                 to:requestConfig.to,
-                from:requestConfig.from
+                from:requestConfig.from,
+                excludeAlignmentLinks: requestConfig.excludeAlignmentLinks,
+                fitTitleWidth: requestConfig.fitTitleWidth
             });
          }).catch(error=>{
              console.log(error);
@@ -287,17 +309,42 @@ export class SequenceCollector extends CoreCollector{
                     displayData: alignedBlocks
                 };
                 let rowPrefix: string = alignmentData.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle;
-                let rowTitle: string;
-                if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null)
-                    rowTitle = targetAlignment.target_id.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
-                else
+                let rowTitle: string | RcsbFvLink;
+                if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null) {
+                    rowTitle = {
+                        visibleTex:targetAlignment.target_id.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
+                        url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0],
+                        style: {
+                            color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                        }
+                    };
+                } else if (alignmentData.to === SequenceReference.PdbEntity && !alignmentData.excludeAlignmentLinks ) {
+                    rowTitle = {
+                        visibleTex:targetAlignment.target_id,
+                        url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.entity)[0],
+                        style: {
+                            color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                        }
+                    };
+                } else if( alignmentData.to === SequenceReference.Uniprot ){
+                    rowTitle = {
+                        visibleTex: targetAlignment.target_id,
+                        url: (resource as any).uniprot.url+targetAlignment.target_id,
+                        style: {
+                            color:RcsbAnnotationConstants.provenanceColorCode.external
+                        },
+                        isThirdParty:true
+                    };
+                } else {
                     rowTitle = targetAlignment.target_id;
+                }
                 const track: RcsbFvRowConfigInterface = {
                     trackId: "targetSequenceTrack_"+targetAlignment.target_id,
                     displayType: RcsbFvDisplayTypes.COMPOSITE,
                     trackColor: "#F9F9F9",
                     rowPrefix: rowPrefix,
                     rowTitle: rowTitle,
+                    fitTitleWidth: alignmentData.fitTitleWidth,
                     titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                     displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
                 };

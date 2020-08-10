@@ -8,7 +8,7 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 <!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.5.0/build/dist/app.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.5.1/build/dist/app.js"></script>
 <script type="text/javascript">RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");</script>
 --->
 

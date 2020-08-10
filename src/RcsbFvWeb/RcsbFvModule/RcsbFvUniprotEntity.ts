@@ -24,7 +24,8 @@ export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInter
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
-            filterByTargetContains: entityId
+            filterByTargetContains: entityId,
+            excludeAlignmentLinks: true
         }).then(seqResult=>{
             this.annotationCollector.collect({
                 queryId: upAcc,

@@ -1,10 +1,10 @@
 import {AnnotationFeatures, Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Structure, SwissModelResultInterface} from "./SwissModelDataInterface";
-import * as external from "../../../external.resources.json";
+import * as resource from "../../../web.resources.json";
 
 export class SwissModelQueryAnnotations {
-    private static readonly url:string  = (external as any).swiss_model.url;
-    private static readonly urlSuffix: string = (external as any).swiss_model.url_suffix;
+    private static readonly url:string  = (resource as any).swiss_model.url;
+    private static readonly urlSuffix: string = (resource as any).swiss_model.url_suffix;
 
     public static request(uniprotAcc: string): Promise<Array<AnnotationFeatures>>{
         return new Promise<Array<AnnotationFeatures>>((resolve, reject)=>{
