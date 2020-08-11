@@ -5,6 +5,7 @@ import {RcsbFvDisplayConfigInterface} from '@bioinsilico/rcsb-saguaro';
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {FeatureTools} from "../FeatureTools/FeatureTools";
 
 export interface PairwiseAlignmentInterface{
     querySequence: string;
@@ -334,21 +335,6 @@ export class PairwiseAlignmentBuilder {
         if(alignedBlocks[alignedBlocks.length-1].oriEnd < this.targetSequence.length){
             alignedBlocks[alignedBlocks.length-1].openEnd = true;
         }
-        let merged = false;
-        do{
-            merged = false;
-            for(let n=0; n<(alignedBlocks.length-1); n++){
-                if(alignedBlocks[n].oriEnd+1 == alignedBlocks[n+1].oriBegin){
-                    if(alignedBlocks[n].gaps == null)
-                        alignedBlocks[n].gaps = []
-                    alignedBlocks[n].gaps.push({begin:alignedBlocks[n].end,end:alignedBlocks[n+1].begin, isConnected:true});
-                    alignedBlocks[n].end = alignedBlocks[n+1].end;
-                    alignedBlocks[n].oriEnd = alignedBlocks[n+1].oriEnd;
-                    alignedBlocks.splice((n+1),1);
-                    merged = true;
-                    break;
-                }
-            }
-        }while(merged);
+        FeatureTools.mergeBlocks(alignedBlocks);
     }
 }

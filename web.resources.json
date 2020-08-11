@@ -6,6 +6,12 @@
   "rcsb_entry": {
     "url": "/structure/"
   },
+  "rcsb_ligand": {
+    "url": "/ligand/"
+  },
+  "rcsb_uniprot": {
+    "url": "/uniprot/"
+  },
   "uniprot": {
     "url": "https://www.uniprot.org/uniprot/"
   }

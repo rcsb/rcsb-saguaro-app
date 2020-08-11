@@ -7,6 +7,7 @@ export interface RcsbAnnotationMapInterface {
     display: RcsbFvDisplayTypes;
     color: string | RcsbFvColorGradient;
     title: string;
+    prefix?: string;
     provenanceList: Set<string>;
     height?:number;
     key?: string;
@@ -87,25 +88,26 @@ export class RcsbAnnotationMap {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.randomRgba(),
-                    title: a[this.annotationMap.get(type).key]!=null?this.annotationMap.get(type).title+" "+(a[this.annotationMap.get(type).key] as string).toUpperCase() : this.annotationMap.get(type).title,
+                    prefix: this.annotationMap.get(type).title,
+                    title: a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "",
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }
-            this.addNewType(newType, type, " "+a[this.annotationMap.get(type).key]);
+            this.addNewType(newType, type);
             return newType;
         }else if(targetId !=  null){
             const newType = type+"."+targetId;
-            const suffix = " - "+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
                     display: this.annotationMap.get(type).display,
                     color: this.annotationMap.get(type).color,
-                    title: this.annotationMap.get(type).title+suffix,
+                    title: targetId,
+                    prefix: this.annotationMap.get(type).title,
                     provenanceList: new Set<string>()
-                } as RcsbAnnotationMapInterface);
+                });
             }
-            this.addNewType(newType, type, suffix);
+            this.addNewType(newType, type, targetId);
             return newType;
         }else{
             this.addNewType(type,type);
@@ -113,25 +115,22 @@ export class RcsbAnnotationMap {
         return type;
     }
 
-    private addNewType(newType: string, type: string, suffix?: string){
+    private addNewType(newType: string, type: string, targetId?: string){
         if(this.mergedTypes.has(type)) {
-            let mergedType: string = this.mergedTypes.get(type).type;
-            let title: string = this.mergedTypes.get(type).title;
-            if(typeof suffix === "string") {
-                mergedType += suffix;
-                title += suffix;
-            }
-            this.mergedTypes.set(newType, {
-                merged_types:this.mergedTypes.get(type).merged_types,
-                display: this.mergedTypes.get(type).display,
-                type: mergedType,
-                title: title,
-            });
+            const mergedType: string = targetId ? this.mergedTypes.get(type).type+"."+targetId : this.mergedTypes.get(type).type;
+            if(newType!=type)
+                this.mergedTypes.set(newType, {
+                    merged_types:this.mergedTypes.get(type).merged_types,
+                    display: this.mergedTypes.get(type).display,
+                    type: mergedType,
+                    title: this.mergedTypes.get(type).title,
+                });
             this.annotationMap.set(mergedType, {
                 type: mergedType,
                 display: this.mergedTypes.get(type).display,
                 color: null,
-                title: title,
+                title: newType != type ? this.annotationMap.get(newType).title : this.mergedTypes.get(type).title,
+                prefix: newType != type ? this.mergedTypes.get(type).title : undefined,
                 provenanceList: new Set<string>()
             });
             this.checkAndIncludeNewType(mergedType, type);

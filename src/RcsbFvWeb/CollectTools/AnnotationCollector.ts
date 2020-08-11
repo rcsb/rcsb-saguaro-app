@@ -5,7 +5,8 @@ import {
     RcsbFvTrackDataElementGapInterface,
     InterpolationTypes,
     RcsbFvDisplayTypes,
-    RcsbFvColorGradient
+    RcsbFvColorGradient,
+    RcsbFvLink
 } from '@bioinsilico/rcsb-saguaro';
 
 import {
@@ -22,6 +23,7 @@ import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotation
 import {CoreCollector} from "./CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
+import {ParseLink} from "./ParseLink";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;
@@ -177,13 +179,15 @@ export class AnnotationCollector extends CoreCollector{
             displayType = RcsbFvDisplayTypes.PIN;
         }
         let displayColor: string|RcsbFvColorGradient = this.rcsbAnnotationMap.randomRgba();
-        let rowTitle: string = type;
+        let rowTitle: RcsbFvLink | string = type;
+        let rowPrefix: string|undefined = undefined;
 
         const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
         if (annConfig !== null) {
             displayType = annConfig.display;
-            rowTitle = annConfig.title;
+            rowTitle = AnnotationCollector.buildRowTitle(annConfig);
             displayColor = annConfig.color;
+            rowPrefix = annConfig.prefix
         } else {
             console.warn("Annotation config type " + type + " not found. Using random config");
         }
@@ -193,6 +197,7 @@ export class AnnotationCollector extends CoreCollector{
             trackColor: "#F9F9F9",
             displayColor: displayColor,
             rowTitle: rowTitle,
+            rowPrefix: rowPrefix,
             trackData: data
         };
     }
@@ -204,6 +209,7 @@ export class AnnotationCollector extends CoreCollector{
         const displayType: RcsbFvDisplayTypes = annConfig.display;
         const displayColor:string|RcsbFvColorGradient = annConfig.color;
         const rowTitle:string = annConfig.title;
+        const rowPrefix:string = annConfig.prefix;
 
         let min: number = this.minValue.get(type);
         let max: number = this.maxValue.get(type);
@@ -222,6 +228,7 @@ export class AnnotationCollector extends CoreCollector{
             trackColor: "#F9F9F9",
             displayColor: displayColor,
             rowTitle: rowTitle,
+            rowPrefix: rowPrefix,
             displayDomain:domain,
             interpolationType: InterpolationTypes.STEP,
             trackData: data
@@ -236,6 +243,7 @@ export class AnnotationCollector extends CoreCollector{
         if(annConfig.display === RcsbFvDisplayTypes.BOND.toString())
             altDisplayType = RcsbFvDisplayTypes.BOND;
         const rowTitle = annConfig.title;
+        const rowPrefix = annConfig.prefix;
         const displayColor = annConfig.color;
 
         const pin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
@@ -265,6 +273,7 @@ export class AnnotationCollector extends CoreCollector{
                 trackColor: "#F9F9F9",
                 trackId: "annotationTrack_" + type,
                 rowTitle: rowTitle,
+                rowPrefix: rowPrefix,
                 displayConfig: displayConfig
             };
         } else if (pin.length > 0) {
@@ -277,6 +286,7 @@ export class AnnotationCollector extends CoreCollector{
                 trackColor: "#F9F9F9",
                 displayColor: displayColor,
                 rowTitle: rowTitle,
+                rowPrefix: rowPrefix,
                 trackData: data
             };
         }
@@ -355,5 +365,9 @@ export class AnnotationCollector extends CoreCollector{
 
     private isNumericalDisplay(type: string): boolean {
         return (this.rcsbAnnotationMap.getConfig(type)!=null && (this.rcsbAnnotationMap.getConfig(type).display === RcsbFvDisplayTypes.AREA || this.rcsbAnnotationMap.getConfig(type).display === RcsbFvDisplayTypes.LINE));
+    }
+
+    private static buildRowTitle(annConfig: RcsbAnnotationMapInterface): string|RcsbFvLink {
+       return annConfig.prefix ? ParseLink.build(annConfig.title) : annConfig.title
     }
 }
