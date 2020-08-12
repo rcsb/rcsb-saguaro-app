@@ -12,7 +12,8 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
             dynamicDisplay:false,
-            fitTitleWidth:true
+            fitTitleWidth:true,
+            excludeFirstRowLink: true
         }).then(seqResult=>{
             this.annotationCollector.collect({
                 queryId: upAcc,

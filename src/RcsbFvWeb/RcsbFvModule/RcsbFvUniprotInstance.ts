@@ -36,7 +36,8 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbInstance,
-            filterByTargetContains: instanceId
+            filterByTargetContains: instanceId,
+            excludeFirstRowLink: true
         }).then(seqResult=>{
             this.annotationCollector.collect({
                 queryId: upAcc,

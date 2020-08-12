@@ -28,6 +28,7 @@ interface CollectAlignmentInterface extends QueryAlignmentArgs {
     dynamicDisplay?: boolean;
     excludeAlignmentLinks?: boolean;
     fitTitleWidth?:boolean;
+    excludeFirstRowLink?:boolean;
 }
 
 export interface SequenceCollectorDataInterface {
@@ -81,7 +82,7 @@ export class SequenceCollector extends CoreCollector{
             const alignmentData: Array<TargetAlignment> = data.target_alignment;
             let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
             let rowTitle:string|RcsbFvLink;
-            if(requestConfig.from === SequenceReference.Uniprot && requestConfig.to === SequenceReference.PdbEntity){
+            if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.Uniprot){
                 rowTitle = {
                     visibleTex: requestConfig.queryId,
                     url: (resource as any).rcsb_uniprot.url+requestConfig.queryId,
@@ -90,14 +91,14 @@ export class SequenceCollector extends CoreCollector{
                         color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
                     }
                 };
-            } else if( requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null) {
+            }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null) {
                 rowTitle = {
                     visibleTex: requestConfig.queryId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(requestConfig.queryId.split(TagDelimiter.instance)[1]),
                     style: {
                         fontWeight:"bold",
                     }
                 };
-            } else {
+            }else{
                 rowTitle = {
                     visibleTex: requestConfig.queryId,
                     style: {
