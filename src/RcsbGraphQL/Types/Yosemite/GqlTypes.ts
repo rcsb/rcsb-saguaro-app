@@ -7740,7 +7740,8 @@ export interface RcsbChemCompAnnotation {
    * A type or category of the annotation.
    * 
    * Allowable values:
-   * ATC, Generating Enzyme, Modification Type, PSI-MOD
+   * ATC, Carbohydrate Anomer, Carbohydrate Isomer, Carbohydrate Primary Carbonyl
+   * Group, Carbohydrate Ring, Generating Enzyme, Modification Type, PSI-MOD
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -7901,9 +7902,19 @@ export interface RcsbChemCompSynonyms {
    * 
    * Allowable values:
    * ACDLabs, Author, ChEBI, ChEMBL, DrugBank, GMML, Lexichem, OpenEye OEToolkits,
-   * OpenEye/Lexichem, PDB Reference Data, PDB-CARE, PubChem, RESID
+   * OpenEye/Lexichem, PDB Reference Data, PDB Reference Data (Preferred),
+   * PDB-CARE, PubChem, RESID
    */
   provenance_source?: Maybe<Scalars['String']>;
+  /**
+   * This data item contains the synonym type.
+   * 
+   * Allowable values:
+   * Common Name, Condensed IUPAC Carbohydrate Symbol, IUPAC Carbohydrate Symbol,
+   * Preferred Common Name, Preferred Name, Preferred Synonym, SNFG Carbohydrate
+   * Symbol, Synonym, Systematic Name
+   */
+  type?: Maybe<Scalars['String']>;
 }
 
 export interface RcsbChemCompTarget {

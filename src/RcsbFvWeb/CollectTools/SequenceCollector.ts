@@ -81,7 +81,7 @@ export class SequenceCollector extends CoreCollector{
             const alignmentData: Array<TargetAlignment> = data.target_alignment;
             let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
             let rowTitle:string|RcsbFvLink;
-            if(requestConfig.from === SequenceReference.Uniprot){
+            if(requestConfig.from === SequenceReference.Uniprot && requestConfig.to === SequenceReference.PdbEntity){
                 rowTitle = {
                     visibleTex: requestConfig.queryId,
                     url: (resource as any).rcsb_uniprot.url+requestConfig.queryId,
