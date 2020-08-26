@@ -8,7 +8,7 @@
     "target": "es6",
     "module": "commonjs",
     "jsx": "react",
-    "lib": [ "dom", "es2017" ],
+    "lib": [ "dom", "es2020" ],
     "allowJs": true,
     "sourceMap": false,
     //"noUnusedLocals": true,

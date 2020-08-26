@@ -20,7 +20,7 @@ export class RcsbQueryAnnotations extends RcsbQuery{
             return result.data.annotations;
         }).catch(error => {
             console.error(error);
-            return error;
+            throw error;
         });
     }
 }

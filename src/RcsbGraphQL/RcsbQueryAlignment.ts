@@ -14,13 +14,14 @@ export class RcsbQueryAlignment extends RcsbQuery{
             variables:{
                 queryId:requestConfig.queryId,
                 from:requestConfig.from,
-                to:requestConfig.to
+                to:requestConfig.to,
+                range: requestConfig.range
             }
         }).then(result=> {
             return result.data.alignment;
         }).catch(error => {
             console.error(error);
-            return error;
+            throw error;
         });
     }
 

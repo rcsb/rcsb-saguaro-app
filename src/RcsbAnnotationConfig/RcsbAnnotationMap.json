@@ -70,13 +70,24 @@
     "mutation",
     "modified_monomer",
     "hydropathy",
-    "disorder"
+    "disorder",
+    "disorder_binding"
   ],
   "config": [{
     "type": "HOMOLOGY MODELLING",
     "color": "#2fcc5d",
     "display": "block",
     "title": "HOMOLOGY MODELS"
+  },{
+    "type": "disorder_binding",
+    "display": "area",
+    "color": {
+      "thresholds":[0.5],
+      "colors":["#0000FF","#FF0000"]
+    },
+    "height": 40,
+    "title": "DISORDER BINDING",
+    "domain": [0,1]
   },{
     "type": "hydropathy",
     "display": "area",

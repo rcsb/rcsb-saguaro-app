@@ -17,6 +17,7 @@ import {
 import {RcsbFvUniprotInstance} from "./RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvProteinSequence} from "./RcsbFvModule/RcsbFvProteinSequence";
 import {PairwiseAlignmentBuilder, PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
+import {RcsbFvChromosome} from "./RcsbFvModule/RcsbFvChromosome";
 
 interface RcsbFvSingleViewerInterface {
     elementId: string;
@@ -349,6 +350,15 @@ export function unmount(elementId:string): void{
     }
 }
 
+export function buildChromosome(elementId:string, ncbiId: string){
+    const rcsbFV: RcsbFv = new RcsbFv({
+        rowConfigData: null,
+        boardConfigData: null,
+        elementId: elementId
+    })
+    const module: RcsbFvChromosome = new RcsbFvChromosome(elementId, rcsbFV);
+    module.buildChromosomeFv(ncbiId);
+}
 
 
 /*Class Inner Methods*/
