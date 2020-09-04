@@ -65,10 +65,11 @@
     "typedoc": "^0.17.8",
     "typescript": "^3.9.5",
     "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.7"
+    "webpack-cli": "^3.3.7",
+    "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.6.0",
+    "@bioinsilico/rcsb-saguaro": "file:../rcsb-saguaro",
     "@graphql-codegen/cli": "^1.16.0"
   },
   "bugs": {

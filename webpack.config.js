@@ -29,23 +29,35 @@ const commonConfig = {
         extensions: ['.js', 'jsx' ]
     }
 };
-
+const webWorker = {
+    ...commonConfig,
+    mode: "development",
+    //mode:"production",
+    entry: {
+        'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
+    },
+    output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'build/dist')
+    },
+    devtool: 'source-map'
+};
 const webApp = {
     ...commonConfig,
     //mode: "development",
     mode:"production",
     entry: {
-        'rcsb-saguaro-app':'./build/src/RcsbFvWeb/RcsbFvBuilder.js'
+        'app':'./build/src/RcsbFvWeb/RcsbFvBuilder.js'
     },
     output: {
-        filename: 'app.js',
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'build/dist'),
         library: 'RcsbFvWebApp',
         libraryTarget: 'umd',
-        umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
+        umdNamedDefine: true
     },
     devtool: 'source-map'
 };
 
-module.exports =[webApp];
+module.exports =[webApp, webWorker];
 

@@ -351,13 +351,17 @@ export function unmount(elementId:string): void{
 }
 
 export function buildChromosome(elementId:string, ncbiId: string){
-    const rcsbFV: RcsbFv = new RcsbFv({
-        rowConfigData: null,
-        boardConfigData: null,
-        elementId: elementId
-    })
-    const module: RcsbFvChromosome = new RcsbFvChromosome(elementId, rcsbFV);
-    module.buildChromosomeFv(ncbiId);
+    return new Promise<null>((resolve,reject)=> {
+        try {
+            createFv({
+                elementId: elementId,
+                fvModuleI: RcsbFvChromosome,
+                config: {queryId: ncbiId}
+            });
+        }catch(e) {
+            reject(e);
+        }
+    });
 }
 
 

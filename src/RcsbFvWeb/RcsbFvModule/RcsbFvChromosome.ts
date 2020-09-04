@@ -6,23 +6,37 @@ import {
     TargetAlignment
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
-
-import {RcsbFvLocationViewInterface, RcsbFvTrackData, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface, RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from '@bioinsilico/rcsb-saguaro';
-import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
+import {
+    RcsbFvDisplayTypes,
+    RcsbFvLocationViewInterface,
+    RcsbFvRowConfigInterface,
+    RcsbFvTrackData,
+    RcsbFvTrackDataElementInterface
+} from '@bioinsilico/rcsb-saguaro';
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvAlignmentCollectorQueue} from "../RcsbFvWorkers/RcsbFvAlignmentCollectorQueue";
 
-export class RcsbFvChromosome extends RcsbFvCore {
-    private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
-    private readonly MAX_REQUESTS: number = 50;
-    private readonly targetAlignmentList: Array<Array<TargetAlignment>> = new Array<Array<TargetAlignment>>();
+interface AlignmentPromideInterface {
+    index: number;
+    reference: SequenceReference;
+    promise:Promise<AlignmentResponse>
+}
+
+export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterface {
+    private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
+        [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
+        [SequenceReference.PdbEntity, new Array<Array<TargetAlignment>>()]
+    ]);
     private maxRange: number = 0;
-    private trackWidth: number = 2000;
+    private alignmentCollectorQueue: RcsbFvAlignmentCollectorQueue = new RcsbFvAlignmentCollectorQueue();
+    private nTasks: number = 0;
 
-    public buildChromosomeFv(ncbiId: string): void {
+    private buildChromosomeFv(ncbiId: string): void {
 
         const updateData: (where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData> = (where: RcsbFvLocationViewInterface) => {
             return new Promise<RcsbFvTrackData>((resolve, reject) => {
-                const delta: number = this.trackWidth/(where.to - where.from);
+                const delta: number = this.rcsbFv?.getBoardConfig().trackWidth ? this.rcsbFv.getBoardConfig().trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
                 if (delta > 4) {
                     const Http = new XMLHttpRequest();
                     const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=1&rettype=fasta&retmode=text';
@@ -50,72 +64,44 @@ export class RcsbFvChromosome extends RcsbFvCore {
             titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.external,
             updateDataOnMove: updateData
         });
-        this.collectChromosomeAlignments({
-            queryId: ncbiId,
-            from: SequenceReference.NcbiGenome,
-            to: SequenceReference.PdbEntity
-        });
+        this.collectChromosomeAlignments(ncbiId);
     }
 
-    private collectChromosomeAlignments(requestConfig: QueryAlignmentArgs) {
-        const promiseList: Array<{index: number; promise:Promise<AlignmentResponse>}> = new Array<{index: number; promise:Promise<AlignmentResponse>}>();
+    private collectChromosomeAlignments(chrId: string) {
         for(let i=0;i<30;i++){
-            promiseList.push({index: i, promise: this.rcsbFvQuery.requestAlignment({
-                queryId: requestConfig.queryId,
-                from: requestConfig.from,
-                to: requestConfig.to,
+            this.nTasks++;
+            this.alignmentCollectorQueue.sendTask({
+                queryId: chrId,
+                from: SequenceReference.NcbiGenome,
+                to: SequenceReference.NcbiProtein,
                 range: i*10000000+"-"+(i+1)*10000000
-            })});
+            }, (e)=>{
+                const ar: AlignmentResponse = e as AlignmentResponse
+                this.collectWorkerResults(i,SequenceReference.NcbiProtein,ar);
+            });
+            this.nTasks++;
+            this.alignmentCollectorQueue.sendTask({
+                queryId: chrId,
+                from: SequenceReference.NcbiGenome,
+                to: SequenceReference.PdbEntity,
+                range: i*10000000+"-"+(i+1)*10000000
+            }, (e)=>{
+                const ar: AlignmentResponse = e as AlignmentResponse
+                this.collectWorkerResults(i,SequenceReference.PdbEntity,ar);
+            });
         }
-        this.collectPromisedRanges(requestConfig, promiseList);
     }
 
-    private collectPromisedRanges(requestConfig: QueryAlignmentArgs, promiseList: Array<{index: number; promise:Promise<AlignmentResponse>}>, exit?: number){
-        console.log("Requesting "+promiseList.length+" ranges");
-        if(exit && exit > this.MAX_REQUESTS)
-            throw "1D COORDINATE SERVER ERROR: max requested limit";
-        if(exit) exit++;
-        if(promiseList.length > 0){
-            const failed: Array<{index: number; promise:Promise<AlignmentResponse>}> = new Array<{index: number; promise:Promise<AlignmentResponse>}>();
-            Promise.allSettled(promiseList.map(r=>r.promise)).then((result)=> {
-                result.forEach((x: PromiseSettledResult<AlignmentResponse>, n: number) => {
-                    if(x.status === "fulfilled"){
-                        this.targetAlignmentList[promiseList[n].index] = (x as PromiseFulfilledResult<AlignmentResponse>).value.target_alignment ;
-                    }else{
-                        console.warn("Failed range index "+promiseList[n].index);
-                        const i: number = promiseList[n].index;
-                        failed.push({index: i, promise: this.rcsbFvQuery.requestAlignment({
-                                queryId: requestConfig.queryId,
-                                from: requestConfig.from,
-                                to: requestConfig.to,
-                                range: i*10000000+"-"+(i+1)*10000000
-                            })});
-                    }
-                });
-                this.collectPromisedRanges(requestConfig, failed, exit ?? 1 );
-            });
-        }else{
+    private collectWorkerResults(index: number, reference: SequenceReference, alignment: AlignmentResponse): void{
+        this.nTasks--;
+        this.targetAlignmentList.get(reference)[index] = alignment.target_alignment;
+        if(this.nTasks == 0){
+            console.log("All Tasks Finished. Starting Rendering");
             this.plot();
         }
     }
 
-    private collectRange(requestConfig: QueryAlignmentArgs, index:number){
-        this.rcsbFvQuery.requestAlignment({
-            queryId: requestConfig.queryId,
-            from: requestConfig.from,
-            to: requestConfig.to,
-            range: index*10000000+"-"+(index+1)*10000000
-        }).then(alignment=>{
-            if(index<30) {
-                this.collectExons(alignment.target_alignment);
-                this.collectRange(requestConfig, index+1);
-            }else{
-                this.plot();
-            }
-        })
-    }
-
-    private collectExons(targetAlignmentList: Array<TargetAlignment>): Promise<Array<RcsbFvRowConfigInterface>> {
+    private collectExons(targetAlignmentList: Array<TargetAlignment>, blockColor: string, flagTitleColor: string): Promise<Array<RcsbFvRowConfigInterface>> {
         return new Promise<Array<RcsbFvRowConfigInterface>>((resolve,reject) => {
             const entities: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
             targetAlignmentList.forEach((targetAlignment,i) => {
@@ -162,10 +148,11 @@ export class RcsbFvChromosome extends RcsbFvCore {
                     rowTitle: "",
                     selectDataInRangeFlag: true,
                     hideEmptyTrackFlag: true,
-                    titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    titleFlagColor:flagTitleColor,
                     trackData: alignedBlocks,
                     minRatio:1/10000,
-                    displayColor: "#65a0ff"
+                    displayColor: blockColor,
+                    overlap: true
                 });
             });
             resolve(
@@ -228,9 +215,11 @@ export class RcsbFvChromosome extends RcsbFvCore {
 
     private plot(): void{
         const promiseList: Array<Promise<Array<RcsbFvRowConfigInterface>>> = new Array<Promise<Array<RcsbFvRowConfigInterface>>>();
-        this.targetAlignmentList.forEach(tA=>{
-            promiseList.push(this.collectExons(tA));
+        console.log("PRE-PROCESSING");
+        this.targetAlignmentList.get(SequenceReference.NcbiProtein).forEach(tA=>{
+            promiseList.push(this.collectExons(tA,RcsbAnnotationConstants.provenanceColorCode.external,RcsbAnnotationConstants.provenanceColorCode.external));
         });
+        console.log("PROCESSING");
         Promise.allSettled(promiseList).then(results=>{
             let tracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
             results.forEach(r=>{
@@ -238,16 +227,31 @@ export class RcsbFvChromosome extends RcsbFvCore {
                      tracks = tracks.concat((r as PromiseFulfilledResult<Array<RcsbFvRowConfigInterface>>).value);
 
                 }
-            })
+            });
             this.rowConfigData = this.rowConfigData.concat(this.mergeExonTracks(tracks));
-            console.log("RENDERING");
-            const boardConfig: RcsbFvBoardConfigInterface = {...this.boardConfigData,trackWidth:this.trackWidth,borderColor:"#F9F9F9"};
-            boardConfig.length = Math.floor(this.maxRange + 0.01*this.maxRange);
-            boardConfig.includeAxis = true;
-            this.rcsbFv.setBoardConfig(boardConfig);
-            this.rcsbFv.setBoardData(this.rowConfigData);
-            this.rcsbFv.init();
-        })
+            const promiseList: Array<Promise<Array<RcsbFvRowConfigInterface>>> = new Array<Promise<Array<RcsbFvRowConfigInterface>>>();
+            this.targetAlignmentList.get(SequenceReference.PdbEntity).forEach(tA=>{
+                promiseList.push(this.collectExons(tA,RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, RcsbAnnotationConstants.provenanceColorCode.rcsbPdb));
+            });
+            Promise.allSettled(promiseList).then(results=> {
+                let tracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+                results.forEach(r=>{
+                    if(r.status === "fulfilled") {
+                        tracks = tracks.concat((r as PromiseFulfilledResult<Array<RcsbFvRowConfigInterface>>).value);
+
+                    }
+                });
+                this.rowConfigData = this.rowConfigData.concat(this.mergeExonTracks(tracks));
+                console.log("RENDERING");
+                this.boardConfigData.borderColor = "#F9F9F9";
+                this.boardConfigData.length = Math.floor(this.maxRange + 0.01*this.maxRange);
+                this.boardConfigData.includeAxis = true;
+                this.display();
+            });
+        });
     }
 
+    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+        this.buildChromosomeFv(buildConfig.queryId);
+    }
 }
