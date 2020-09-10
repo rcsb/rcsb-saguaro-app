@@ -252,15 +252,13 @@ export interface ChemComp {
    * Allowable values:
    * D-beta-peptide, C-gamma linking, D-gamma-peptide, C-delta linking, D-peptide
    * COOH carboxy terminus, D-peptide NH3 amino terminus, D-peptide linking,
-   * D-saccharide, D-saccharide 1,4 and 1,4 linking, D-saccharide 1,4 and 1,6
-   * linking, D-saccharide, alpha linking, D-saccharide, beta linking, DNA OH 3
-   * prime terminus, DNA OH 5 prime terminus, DNA linking, L-DNA linking, L-RNA
+   * D-saccharide, D-saccharide, alpha linking, D-saccharide, beta linking, DNA OH
+   * 3 prime terminus, DNA OH 5 prime terminus, DNA linking, L-DNA linking, L-RNA
    * linking, L-beta-peptide, C-gamma linking, L-gamma-peptide, C-delta linking,
    * L-peptide COOH carboxy terminus, L-peptide NH3 amino terminus, L-peptide
-   * linking, L-saccharide, L-saccharide 1,4 and 1,4 linking, L-saccharide 1,4 and
-   * 1,6 linking, L-saccharide, alpha linking, L-saccharide, beta linking, RNA OH 3
-   * prime terminus, RNA OH 5 prime terminus, RNA linking, non-polymer, other,
-   * peptide linking, peptide-like, saccharide
+   * linking, L-saccharide, L-saccharide, alpha linking, L-saccharide, beta
+   * linking, RNA OH 3 prime terminus, RNA OH 5 prime terminus, RNA linking,
+   * non-polymer, other, peptide linking, peptide-like, saccharide
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -3407,8 +3405,8 @@ export interface PdbxChemCompFeature {
   /**
    * The component feature type.
    * 
-   * Examples:
-   * FUNCTION, ENZYME INHIBITED, STRUCTURE IMAGE URL, CARBOHYDRATE ANOMER, CARBOHYDRATE ISOMER, CARBOHYDRATE RING
+   * Allowable values:
+   * CARBOHYDRATE ANOMER, CARBOHYDRATE ISOMER, CARBOHYDRATE PRIMARY CARBONYL GROUP, CARBOHYDRATE RING
    */
   type: Scalars['String'];
   /** The component feature value. */
@@ -5797,11 +5795,11 @@ export interface PdbxStructAssemblyAuthEvidence {
    * Provides the experimental method to determine the state of this assembly
    * 
    * Allowable values:
-   * SAXS, assay for oligomerization, cross-linking, equilibrium centrifugation,
-   * fluorescence resonance energy transfer, gel filtration, homology,
-   * immunoprecipitation, isothermal titration calorimetry, light scattering, mass
-   * spectrometry, microscopy, native gel electrophoresis, none, scanning
-   * transmission electron microscopy, surface plasmon resonance
+   * NMR relaxation study, SAXS, assay for oligomerization, cross-linking,
+   * equilibrium centrifugation, fluorescence resonance energy transfer, gel
+   * filtration, homology, immunoprecipitation, isothermal titration calorimetry,
+   * light scattering, mass spectrometry, microscopy, native gel electrophoresis,
+   * none, scanning transmission electron microscopy, surface plasmon resonance
    */
   experimental_support?: Maybe<Scalars['String']>;
   /** Identifies a unique record in pdbx_struct_assembly_auth_evidence. */
@@ -8336,6 +8334,7 @@ export interface RcsbEntryInfo {
   diffrn_radiation_wavelength_maximum?: Maybe<Scalars['Float']>;
   /** The minimum radiation wavelength in angstroms. */
   diffrn_radiation_wavelength_minimum?: Maybe<Scalars['Float']>;
+  diffrn_resolution_high?: Maybe<RcsbEntryInfoDiffrnResolutionHigh>;
   /** The number of disulfide bonds per deposited structure model. */
   disulfide_bond_count?: Maybe<Scalars['Int']>;
   /** The number of distinct polymer, non-polymer, branched molecular, and solvent entities per deposited structure model. */
@@ -8401,7 +8400,7 @@ export interface RcsbEntryInfo {
   polymer_monomer_count_maximum?: Maybe<Scalars['Int']>;
   /** The minimum monomer count of a polymer entity per deposited structure model. */
   polymer_monomer_count_minimum?: Maybe<Scalars['Int']>;
-  /** Combined estimates of experimental resolution. */
+  /** Combined estimates of experimental resolution contributing to the refined structural model. */
   resolution_combined?: Maybe<Array<Maybe<Scalars['Float']>>>;
   /**
    * Selected polymer entity type categories describing the entry.
@@ -8414,6 +8413,19 @@ export interface RcsbEntryInfo {
   software_programs_combined?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** The number of distinct solvent entities per deposited structure model. */
   solvent_entity_count?: Maybe<Scalars['Int']>;
+}
+
+export interface RcsbEntryInfoDiffrnResolutionHigh {
+  __typename?: 'RcsbEntryInfoDiffrnResolutionHigh';
+  /**
+   * The provenence source for the high resolution limit of data collection.
+   * 
+   * Allowable values:
+   * Depositor assigned, From refinement resolution cutoff, From the high resolution shell
+   */
+  provenance_source?: Maybe<Scalars['String']>;
+  /** The high resolution limit of data collection. */
+  value?: Maybe<Scalars['Float']>;
 }
 
 export interface RcsbExternalReferences {

@@ -73,4 +73,10 @@ export class RcsbFvAlignmentCollectorQueue {
         }
     }
 
+    public terminateWorkers(): void {
+        this.workerList.forEach(w=>{
+            w.worker.terminate();
+        })
+    }
+
 }
