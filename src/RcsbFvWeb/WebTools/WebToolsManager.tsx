@@ -6,12 +6,12 @@ export class WebToolsManager {
 
     private static additionalDivButton: HTMLDivElement = null;
 
-    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>, addTitle?: boolean){
+    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>, addTitle?: boolean, defaultValue?: string|undefined|null){
         const div: HTMLDivElement = document.createElement<"div">("div");
         div.style.display = "inline-block";
         document.getElementById(elementId).append(div);
         ReactDom.render(
-            <SelectButton options={options} addTitle={addTitle}/>,
+            <SelectButton options={options} addTitle={addTitle} defaultValue={defaultValue}/>,
             div
         );
     }

@@ -2,6 +2,7 @@ import * as React from "react";
 import {CSSProperties} from "react";
 import Select, {Styles, components, OptionProps, ValueType} from 'react-select';
 import {SingleValueProps} from "react-select/src/components/SingleValue";
+import {assertEnumType} from "graphql";
 
 export interface SelectOptionInterface {
     label: string;
@@ -14,6 +15,7 @@ interface SelectButtonInterface {
     options: Array<SelectOptionInterface>;
     additionalOptions?: Array<SelectOptionInterface>;
     addTitle: boolean;
+    defaultValue?: string|undefined|null;
 }
 
 interface OptionPropsInterface extends SelectOptionInterface{
@@ -30,7 +32,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
         selectedOption: {...(this.props.options[0]), value:0}
     };
 
-    change(option: OptionPropsInterface):void {
+    private change(option: OptionPropsInterface):void {
         this.setState({selectedOption: option});
     }
 
@@ -45,13 +47,13 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             return this.selectRender();
     }
 
-    titleRender():JSX.Element{
+    private titleRender():JSX.Element{
         return(<div>
             <div style={{display:"inline-block"}}>{this.selectRender()}</div><div style={{display:"inline-block", marginLeft:"20px"}}>{this.state.selectedOption.name}</div>
         </div>);
     }
 
-    selectRender():JSX.Element {
+    private selectRender():JSX.Element {
         const SingleValue:(n:SingleValueProps<OptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
@@ -59,7 +61,12 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                     {label}
                 </components.SingleValue>
             )};
-        return (
+        let index: number = 0;
+        if(this.props.defaultValue!=null){
+            const n: number = this.props.options.findIndex(a=>{return a.shortLabel === this.props.defaultValue});
+            if(n>=0) index=n;
+        }
+        return(
             <Select
                 options={
                     this.props.options.map((opt,index)=>{
@@ -71,7 +78,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 onChange={this.change.bind(this)}
                 styles={SelectButton.configStyle()}
                 components={{ SingleValue }}
-                defaultValue={{...(this.props.options[0]),value:0}}
+                defaultValue={{...(this.props.options[index]),value:index}}
             />
         );
     }

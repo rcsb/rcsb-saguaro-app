@@ -134,7 +134,7 @@ export class ObservedSequenceCollector extends SequenceCollector{
             const authId:string  = this.entityInstanceMap.get(targetAlignment.target_id).translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
                 visibleTex:pdbId + TagDelimiter.entity + entityId + TagDelimiter.instance + authId,
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0],
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb

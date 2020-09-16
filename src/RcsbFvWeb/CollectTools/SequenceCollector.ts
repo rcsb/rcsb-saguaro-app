@@ -335,27 +335,30 @@ export class SequenceCollector extends CoreCollector{
     protected buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
         let rowTitle: string | RcsbFvLink;
         if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null) {
+            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
                 visibleTex:targetAlignment.target_id.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0],
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
                 }
             };
         } else if (alignmentData.to === SequenceReference.PdbEntity && !alignmentData.excludeAlignmentLinks ) {
+            const entityId: string = targetAlignment.target_id.split(TagDelimiter.entity)[1];
             rowTitle = {
                 visibleTex:targetAlignment.target_id,
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.entity)[0],
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.entity)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
                 }
             };
         } else if ( alignmentData.to === SequenceReference.PdbInstance && !alignmentData.excludeAlignmentLinks ) {
+            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
                 visibleTex:targetAlignment.target_id,
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0],
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb

@@ -179,7 +179,7 @@ interface InstanceSequenceOnchangeInterface {
     asymId: string;
 }
 
-export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
+export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
     const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
     instanceCollector.collect({entry_id:entryId}).then(result=>{
         polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
@@ -198,10 +198,15 @@ export function buildInstanceSequenceFv(elementId:string, elementSelectId:string
                     });
                 }
             }
-        }),true);
-        buildInstanceFv(elementId,result[0].rcsbId).then(()=>{
+        }),true, defaultValue);
+        let index: number = 0;
+        if(defaultValue!=null){
+            const n: number= result.findIndex(a=>{ return a.authId === defaultValue.split(TagDelimiter.instance)[1] && a.entryId === defaultValue.split(TagDelimiter.instance)[0]});
+            if(n>=0) index = n;
+        }
+        buildInstanceFv(elementId,result[index].rcsbId).then(()=>{
             if(typeof onChangeCallback === "function")
-                onChangeCallback({pdbId:result[0].entryId, authId: result[0].authId, asymId: result[0].asymId} );
+                onChangeCallback({pdbId:result[index].entryId, authId: result[index].authId, asymId: result[index].asymId} );
         });
     }).catch(error=>{
         console.error(error);
