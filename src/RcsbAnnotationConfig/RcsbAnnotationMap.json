@@ -216,7 +216,7 @@
   },{
     "type": "UNOBSERVED_RESIDUE_XYZ",
     "display": "block",
-    "color": "#ff3333",
+    "color": "#cccccc",
     "title": "UNOBSERVED RESIDUE"
   },{
     "type": "ANGLE_OUTLIER",
@@ -295,7 +295,7 @@
   },{
     "type": "UNOBSERVED_ATOM_XYZ",
     "display": "block",
-    "color": "#3333ff",
+    "color": "#b2997f",
     "title": "UNOBSERVED ATOM"
   },{
     "type": "ZERO_OCCUPANCY_ATOM_XYZ",

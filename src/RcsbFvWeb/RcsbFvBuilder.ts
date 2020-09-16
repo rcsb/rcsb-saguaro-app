@@ -52,6 +52,7 @@ export function setBoardConfig(boardConfigData: RcsbFvBoardConfigInterface){
 }
 
 export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): void {
+    boardConfig = {rowTitleWidth:210};
     const rcsbFvSingleViewer: RcsbFvSingleViewerInterface = buildRcsbFvSingleViewer(elementFvId);
     const ALL:string = "ALL";
     const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer.rcsbFv);

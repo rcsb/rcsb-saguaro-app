@@ -1,12 +1,12 @@
 import {
-    RcsbFvDisplayConfigInterface,
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackDataElementInterface,
-    RcsbFvTrackDataElementGapInterface,
     InterpolationTypes,
-    RcsbFvDisplayTypes,
     RcsbFvColorGradient,
-    RcsbFvLink
+    RcsbFvDisplayConfigInterface,
+    RcsbFvDisplayTypes,
+    RcsbFvLink,
+    RcsbFvRowConfigInterface,
+    RcsbFvTrackDataElementGapInterface,
+    RcsbFvTrackDataElementInterface
 } from '@bioinsilico/rcsb-saguaro';
 
 import {
@@ -16,14 +16,13 @@ import {
     QueryAnnotationsArgs,
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-
-import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
 import {RcsbAnnotationMap, RcsbAnnotationMapInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationMap";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {CoreCollector} from "./CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {ParseLink} from "./ParseLink";
+import {TagDelimiter} from "../Utils/TagDelimiter";
 
 interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;
@@ -32,7 +31,6 @@ interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
 
 export class AnnotationCollector extends CoreCollector{
 
-    private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
     private rcsbAnnotationMap: RcsbAnnotationMap = new RcsbAnnotationMap();
     private annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
     private maxValue: Map<string,number> = new Map<string, number>();
@@ -293,7 +291,7 @@ export class AnnotationCollector extends CoreCollector{
         return out;
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, target_id: string, source:string, type: string, provenance:string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, targetId: string, source:Source, type: string, provenance:string): RcsbFvTrackDataElementInterface{
         let title:string = type;
         if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
             title = this.rcsbAnnotationMap.getConfig(type).title;
@@ -316,6 +314,8 @@ export class AnnotationCollector extends CoreCollector{
         let provenanceColor: string = RcsbAnnotationConstants.provenanceColorCode.external;
         if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
             provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
+        const sourceId: string = source == Source.PdbInstance ? targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(TagDelimiter.instance)[1])
+            : targetId;
         return {
             begin: p.beg_seq_id,
             end: p.end_seq_id,
@@ -329,7 +329,7 @@ export class AnnotationCollector extends CoreCollector{
             value: value,
             gValue: d.value,
             gaps: (p.gaps as Array<RcsbFvTrackDataElementGapInterface>),
-            sourceId: target_id,
+            sourceId: sourceId,
             source: source,
             provenanceName: provenance,
             provenanceColor: provenanceColor,

@@ -8,11 +8,13 @@ export interface TranslateContextInterface {
     targetId: string;
     from: SequenceReference;
     to: SequenceReference|Source;
+    targetSequenceLength?: number;
 }
 
 export class PolymerEntityInstanceTranslate{
     private instanceAsymToAuth: Map<string,string> = new Map<string, string>();
     private instanceAuthToAsym: Map<string,string> = new Map<string, string>();
+    private instanceAsymToEntity: Map<string,string> = new Map<string, string>();
     private instanceAuthResIds: Map<string,Array<string>> = new Map<string, Array<string>>();
     private readonly INDEX_NAME: string = "auth";
 
@@ -21,7 +23,14 @@ export class PolymerEntityInstanceTranslate{
             this.instanceAsymToAuth.set(d.asymId,d.authId);
             this.instanceAuthToAsym.set(d.authId,d.asymId);
             this.instanceAuthResIds.set(d.asymId,d.authResId);
+            this.instanceAsymToEntity.set(d.asymId,d.entityId);
         });
+    }
+
+    translateAsymToEntity(id: string): string{
+        if(this.instanceAsymToEntity.has(id))
+            return this.instanceAsymToEntity.get(id);
+        return null;
     }
 
     translateAsymToAuth(id: string): string{

@@ -1,8 +1,15 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {RcsbFv} from "@bioinsilico/rcsb-saguaro";
+import {ObservedSequenceCollector} from "../CollectTools/ObservedCollector";
 
 export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
+
+    constructor(elementId: string, rcsbFv: RcsbFv) {
+        super(elementId, rcsbFv);
+        this.sequenceCollector = new ObservedSequenceCollector();
+    }
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
         const upAcc: string = buildConfig.upAcc;
@@ -10,7 +17,7 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
         this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,
-            to: SequenceReference.PdbEntity,
+            to: SequenceReference.PdbInstance,
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true
