@@ -2,7 +2,6 @@ import * as React from "react";
 import {CSSProperties} from "react";
 import Select, {Styles, components, OptionProps, ValueType} from 'react-select';
 import {SingleValueProps} from "react-select/src/components/SingleValue";
-import {assertEnumType} from "graphql";
 
 export interface SelectOptionInterface {
     label: string;

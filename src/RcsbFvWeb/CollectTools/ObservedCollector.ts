@@ -39,12 +39,33 @@ export class ObservedSequenceCollector extends SequenceCollector{
             this.unObservedMap.set(ann.target_id, new Array<AlignedRegion>());
             ann.features.forEach(a=>{
                 a.feature_positions.forEach(p=>{
-                    this.unObservedMap.get(ann.target_id).push({
-                        query_begin:p.beg_seq_id,
-                        query_end:p.end_seq_id,
-                        target_begin:p.beg_ori_id,
-                        target_end:p.end_ori_id
-                    });
+                    if(p.gaps != null){
+                        let queryBegin: number = p.beg_seq_id;
+                        let targetBegin: number = p.beg_ori_id;
+                        p.gaps.forEach(g=>{
+                            this.unObservedMap.get(ann.target_id).push({
+                                query_begin: queryBegin,
+                                target_begin: targetBegin,
+                                query_end: g.begin,
+                                target_end: targetBegin+(g.begin-queryBegin)
+                            });
+                            queryBegin = g.end;
+                            targetBegin = g.end-g.begin;
+                        });
+                        this.unObservedMap.get(ann.target_id).push({
+                            query_begin: queryBegin,
+                            target_begin: targetBegin,
+                            query_end: p.end_seq_id,
+                            target_end: p.end_ori_id
+                        });
+                    }else{
+                        this.unObservedMap.get(ann.target_id).push({
+                            query_begin:p.beg_seq_id,
+                            query_end:p.end_seq_id,
+                            target_begin:p.beg_ori_id,
+                            target_end:p.end_ori_id
+                        });
+                    }
                 })
             });
         })
@@ -71,20 +92,23 @@ export class ObservedSequenceCollector extends SequenceCollector{
         const unobserved: Array<AlignedRegion> = this.unObservedMap.get(commonContext.targetId);
         const unobservedIntervalsHash: Array<string> = new Array<string>();
         const points: Array<{q:number; t:number;}> = new Array<{q: number; t: number;}>();
-        points.push({q:region.query_begin,t:region.target_begin});
         unobserved.sort((a,b)=>{return (a.query_begin-b.query_begin)}).forEach(u=>{
             if(!unobservedIntervalsHash.includes(u.query_begin+"."+u.query_end)) {
                 unobservedIntervalsHash.push(u.query_begin + "." + u.query_end);
-                if (points[points.length - 1].q != u.query_begin) {
+                if (u.query_begin >= region.query_begin && u.query_begin<= region.query_end)
                     points.push({q: u.query_begin, t: u.target_begin});
-                }
-                points.push({q: u.query_end, t: u.target_end});
+
+                if (u.query_end >= region.query_begin && u.query_end<= region.query_end)
+                    points.push({q: u.query_end, t: u.target_end});
             }
         });
         this.unobservedIntervalsHashMap.set(commonContext.targetId, unobservedIntervalsHash.join(":"));
-        if(points[points.length-1].q != region.query_end){
+
+        if(points.length == 0 || points[0].q != region.query_begin)
+            points.unshift({q:region.query_begin,t:region.target_begin});
+        if(points[points.length-1].q != region.query_end)
             points.push({q:region.query_end,t:region.target_end});
-        }
+
         const out: Array<AlignedObservedRegion> = new Array<AlignedObservedRegion>();
         for(let n=0;n<points.length-1;n++){
             if(unobservedIntervalsHash.includes(points[n].q+"."+points[n+1].q)){
@@ -120,7 +144,6 @@ export class ObservedSequenceCollector extends SequenceCollector{
         return entityInstanceCollector.collect({
             instance_ids:instanceIds
         }).then(result=>{
-            console.log(result);
             this.entityInstanceMap.add(result);
             return null;
         });
