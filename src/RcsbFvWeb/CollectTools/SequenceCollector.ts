@@ -285,7 +285,8 @@ export class SequenceCollector extends CoreCollector{
             });
         }
         this.finished = true;
-        return { sequence: this.seqeunceConfigData, alignment:this.filterAlignments()};
+        console.log("Alignment Processing Complete");
+        return { sequence: this.seqeunceConfigData, alignment:this.getAlignments()};
     }
 
     private buildSequenceData(config: BuildSequenceDataInterface, isQuerySequence?: boolean):Array<RcsbFvTrackDataElementInterface> {
@@ -383,7 +384,7 @@ export class SequenceCollector extends CoreCollector{
         return [{...region,unobserved:false}];
     }
 
-    protected filterAlignments(): Array<RcsbFvRowConfigInterface>{
+    protected getAlignments(): Array<RcsbFvRowConfigInterface>{
         return Array.from(this.alignmentsConfigData.values());
     }
 
@@ -402,5 +403,9 @@ export class SequenceCollector extends CoreCollector{
             };
             recursive();
         });
+    }
+
+    public getNumberAlignedSeqeunces(): number{
+        return this.targets.length;
     }
 }

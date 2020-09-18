@@ -7,7 +7,7 @@
     {
       "merged_types": ["UNOBSERVED_RESIDUE_XYZ", "UNOBSERVED_ATOM_XYZ"],
       "type": "UNOBSERVED",
-      "title": "UNOBSERVED",
+      "title": "UNMODELED",
       "display": "block"
     }
   ],
@@ -217,7 +217,7 @@
     "type": "UNOBSERVED_RESIDUE_XYZ",
     "display": "block",
     "color": "#cccccc",
-    "title": "UNOBSERVED RESIDUE"
+    "title": "UNMODELED RESIDUE"
   },{
     "type": "ANGLE_OUTLIER",
     "display": "area",
@@ -296,7 +296,7 @@
     "type": "UNOBSERVED_ATOM_XYZ",
     "display": "block",
     "color": "#b2997f",
-    "title": "UNOBSERVED ATOM"
+    "title": "UNMODELED ATOM"
   },{
     "type": "ZERO_OCCUPANCY_ATOM_XYZ",
     "display": "composite",

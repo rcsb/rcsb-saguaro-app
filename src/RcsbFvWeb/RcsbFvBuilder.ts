@@ -63,7 +63,7 @@ export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSel
             return a.localeCompare(b);
         })).map(t => {
             return {
-                label: t === ALL ? t+" ("+(targets.length-1)+")": t,
+                label: t === ALL ? t+" ("+rcsbFvUniprot.getNumberAlignedSeqeunces()+")": t,
                 onChange: () => {
                     if (t === ALL) {
                         WebToolsManager.clearAdditionalSelectButton();

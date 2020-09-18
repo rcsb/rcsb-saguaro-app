@@ -25,6 +25,7 @@ export class ObservedSequenceCollector extends SequenceCollector{
     private entityInstanceMap: MultipleEntityInstanceTranslate = new MultipleEntityInstanceTranslate();
     private unobservedIntervalsHashMap: Map<string,string> = new Map<string, string>();
     private entityTargets: Set<string> = new Set<string>();
+    private entityInstanceTargets: Set<string> = new Set<string>();
     private unObservedMap: Map<string,Array<AlignedRegion>> = new Map<string, Array<AlignedRegion>>();
 
     public collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
@@ -164,13 +165,14 @@ export class ObservedSequenceCollector extends SequenceCollector{
                 }
             };
             this.entityTargets.add(pdbId + TagDelimiter.entity + entityId);
+            this.entityInstanceTargets.add(pdbId + TagDelimiter.entity + entityId + TagDelimiter.instance + authId);
         } else {
             rowTitle = super.buildAlignmentRowTitle(targetAlignment, alignmentData);
         }
         return rowTitle;
     }
 
-    protected filterAlignments(): Array<RcsbFvRowConfigInterface>{
+    /*protected getAlignments(): Array<RcsbFvRowConfigInterface>{
         const trackMap: Map<string,Map<string,string>> = new Map<string, Map<string,string>>();
         const trackTragetIds: Array<string> = new Array<string>();
         this.alignmentsConfigData.forEach((track,targetId)=>{
@@ -187,7 +189,7 @@ export class ObservedSequenceCollector extends SequenceCollector{
         return Array.from(this.alignmentsConfigData.entries()).filter(a=>{return trackTragetIds.includes(a[0]);}).sort((a,b)=>{
             return a[0].localeCompare(b[0]);
         }).map(a=>{return a[1]});
-    }
+    }*/
 
     protected addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
@@ -216,5 +218,9 @@ export class ObservedSequenceCollector extends SequenceCollector{
             };
             recursive();
         });
+    }
+
+    public getNumberAlignedSeqeunces(): number{
+        return this.entityInstanceTargets.size;
     }
 }

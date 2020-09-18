@@ -31,10 +31,15 @@ export abstract class RcsbFvCore {
     }
 
     display(): void{
+        console.log("Starting display");
         this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
     }
 
-    getTargets(): Promise<Array<string>>{
+    public getTargets(): Promise<Array<string>>{
         return this.sequenceCollector.getTargets();
+    }
+
+    public getNumberAlignedSeqeunces(): number{
+        return this.sequenceCollector.getNumberAlignedSeqeunces();
     }
 }
