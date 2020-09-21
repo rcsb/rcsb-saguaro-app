@@ -39,7 +39,4 @@ export abstract class RcsbFvCore {
         return this.sequenceCollector.getTargets();
     }
 
-    public getNumberAlignedSeqeunces(): number{
-        return this.sequenceCollector.getNumberAlignedSeqeunces();
-    }
 }

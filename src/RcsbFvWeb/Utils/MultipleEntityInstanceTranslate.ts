@@ -1,21 +1,26 @@
 import {PolymerEntityInstanceTranslate} from "./PolymerEntityInstanceTranslate";
 import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
+import {TagDelimiter} from "./TagDelimiter";
 
 export class MultipleEntityInstanceTranslate {
 
     private entryEntityInstanceTranslateMap: Map<string, PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
 
     public add(data: Array<PolymerEntityInstanceInterface>) {
+        const entryEntityInstanceMapList: Map<string, Array<PolymerEntityInstanceInterface>> = new Map<string, Array<PolymerEntityInstanceInterface>>();
         data.forEach(d=>{
-            if(!this.entryEntityInstanceTranslateMap.has(d.rcsbId)) {
-                this.entryEntityInstanceTranslateMap.set(d.rcsbId, new PolymerEntityInstanceTranslate([d]) );
-            }
+            const entityId: string = d.entryId+TagDelimiter.entity+d.entityId;
+            if(!entryEntityInstanceMapList.has(entityId))
+                entryEntityInstanceMapList.set(entityId, new Array<PolymerEntityInstanceInterface>())
+            entryEntityInstanceMapList.get(entityId).push(d);
         });
-
+        entryEntityInstanceMapList.forEach((v,k)=>{
+            this.entryEntityInstanceTranslateMap.set(k, new PolymerEntityInstanceTranslate(v));
+        })
     }
 
-    public get(asymId: string): PolymerEntityInstanceTranslate{
-        return this.entryEntityInstanceTranslateMap.get(asymId);
+    public get(entityId: string): PolymerEntityInstanceTranslate{
+        return this.entryEntityInstanceTranslateMap.get(entityId);
     }
 
 }

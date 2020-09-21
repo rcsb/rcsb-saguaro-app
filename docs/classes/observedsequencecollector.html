@@ -86,8 +86,8 @@
 						<section class="tsd-index-section tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="observedsequencecollector.html#alignmentsconfigdata" class="tsd-kind-icon">alignments<wbr>Config<wbr>Data</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#entityinstancemap" class="tsd-kind-icon">entity<wbr>Instance<wbr>Map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#entityinstancetargets" class="tsd-kind-icon">entity<wbr>Instance<wbr>Targets</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#entitytargets" class="tsd-kind-icon">entity<wbr>Targets</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="observedsequencecollector.html#finished" class="tsd-kind-icon">finished</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="observedsequencecollector.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a></li>
@@ -98,15 +98,13 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="observedsequencecollector.html#addauthorresids" class="tsd-kind-icon">add<wbr>Author<wbr>Res<wbr>Ids</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="observedsequencecollector.html#buildalignmentrowtitle" class="tsd-kind-icon">build<wbr>Alignment<wbr>Row<wbr>Title</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#addunmodelled" class="tsd-kind-icon">add<wbr>Unmodelled</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="observedsequencecollector.html#collect" class="tsd-kind-icon">collect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#collectentityinstancemap" class="tsd-kind-icon">collect<wbr>Entity<wbr>Instance<wbr>Map</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#collectobservedregions" class="tsd-kind-icon">collect<wbr>Observed<wbr>Regions</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="observedsequencecollector.html#filteralignments" class="tsd-kind-icon">filter<wbr>Alignments</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#collectunmodeledregions" class="tsd-kind-icon">collect<wbr>Unmodeled<wbr>Regions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="observedsequencecollector.html#getlength" class="tsd-kind-icon">get<wbr>Length</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="observedsequencecollector.html#getpolymerentityinstance" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="observedsequencecollector.html#gettargets" class="tsd-kind-icon">get<wbr>Targets</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="observedsequencecollector.html#gettargets" class="tsd-kind-icon">get<wbr>Targets</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="observedsequencecollector.html#loadobservedregions" class="tsd-kind-icon">load<wbr>Observed<wbr>Regions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="observedsequencecollector.html#setpolymerentityinstance" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="observedsequencecollector.html#tagobservedregions" class="tsd-kind-icon">tag<wbr>Observed<wbr>Regions</a></li>
@@ -117,24 +115,23 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="alignmentsconfigdata" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> alignments<wbr>Config<wbr>Data</h3>
-					<div class="tsd-signature tsd-kind-icon">alignments<wbr>Config<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, RcsbFvRowConfigInterface&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#alignmentsconfigdata">alignmentsConfigData</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/SequenceCollector.ts#L65">src/RcsbFvWeb/CollectTools/SequenceCollector.ts:65</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="entityinstancemap" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> entity<wbr>Instance<wbr>Map</h3>
 					<div class="tsd-signature tsd-kind-icon">entity<wbr>Instance<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="multipleentityinstancetranslate.html" class="tsd-signature-type">MultipleEntityInstanceTranslate</a><span class="tsd-signature-symbol"> = new MultipleEntityInstanceTranslate()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L25">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L22">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="entityinstancetargets" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> entity<wbr>Instance<wbr>Targets</h3>
+					<div class="tsd-signature tsd-kind-icon">entity<wbr>Instance<wbr>Targets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Set&lt;string&gt;()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L25">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -144,7 +141,7 @@
 					<div class="tsd-signature tsd-kind-icon">entity<wbr>Targets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Set&lt;string&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L27">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L24">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -155,7 +152,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#finished">finished</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/SequenceCollector.ts#L68">src/RcsbFvWeb/CollectTools/SequenceCollector.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/SequenceCollector.ts#L67">src/RcsbFvWeb/CollectTools/SequenceCollector.ts:67</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -166,17 +163,17 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="corecollector.html">CoreCollector</a>.<a href="corecollector.html#rcsbfvquery">rcsbFvQuery</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L6">src/RcsbFvWeb/CollectTools/CoreCollector.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L6">src/RcsbFvWeb/CollectTools/CoreCollector.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="unobservedmap" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> un<wbr>Observed<wbr>Map</h3>
-					<div class="tsd-signature tsd-kind-icon">un<wbr>Observed<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/alignedregion.html" class="tsd-signature-type">AlignedRegion</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Array&lt;AlignedRegion&gt;&gt;()</span></div>
+					<div class="tsd-signature tsd-kind-icon">un<wbr>Observed<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Set&lt;number&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L28">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L26">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -186,64 +183,42 @@
 					<div class="tsd-signature tsd-kind-icon">unobserved<wbr>Intervals<wbr>Hash<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, string&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L26">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L23">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="addauthorresids" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> add<wbr>Author<wbr>Res<wbr>Ids</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Author<wbr>Res<wbr>Ids<span class="tsd-signature-symbol">(</span>e<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RcsbFvTrackDataElementInterface</span>, alignmentContext<span class="tsd-signature-symbol">: </span><a href="../interfaces/translatecontextinterface.html" class="tsd-signature-type">TranslateContextInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RcsbFvTrackDataElementInterface</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="addunmodelled" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> add<wbr>Unmodelled</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Unmodelled<span class="tsd-signature-symbol">(</span>targetId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, start<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, end<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, remove<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#addauthorresids">addAuthorResIds</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L192">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L50">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>e: <span class="tsd-signature-type">RcsbFvTrackDataElementInterface</span></h5>
+									<h5>targetId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>alignmentContext: <a href="../interfaces/translatecontextinterface.html" class="tsd-signature-type">TranslateContextInterface</a></h5>
+									<h5>start: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>end: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> remove: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">RcsbFvTrackDataElementInterface</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="buildalignmentrowtitle" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> build<wbr>Alignment<wbr>Row<wbr>Title</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Alignment<wbr>Row<wbr>Title<span class="tsd-signature-symbol">(</span>targetAlignment<span class="tsd-signature-symbol">: </span><a href="../interfaces/targetalignment.html" class="tsd-signature-type">TargetAlignment</a>, alignmentData<span class="tsd-signature-symbol">: </span><a href="../interfaces/buildalignementsinterface.html" class="tsd-signature-type">BuildAlignementsInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RcsbFvLink</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#buildalignmentrowtitle">buildAlignmentRowTitle</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L152">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:152</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>targetAlignment: <a href="../interfaces/targetalignment.html" class="tsd-signature-type">TargetAlignment</a></h5>
-								</li>
-								<li>
-									<h5>alignmentData: <a href="../interfaces/buildalignementsinterface.html" class="tsd-signature-type">BuildAlignementsInterface</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RcsbFvLink</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -258,7 +233,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#collect">collect</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L30">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L28">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -275,19 +250,19 @@
 					<a name="collectentityinstancemap" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> collect<wbr>Entity<wbr>Instance<wbr>Map</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">collect<wbr>Entity<wbr>Instance<wbr>Map<span class="tsd-signature-symbol">(</span>instanceIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">collect<wbr>Entity<wbr>Instance<wbr>Map<span class="tsd-signature-symbol">(</span>entityIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L142">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L181">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:181</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>instanceIds: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>entityIds: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -295,16 +270,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="collectobservedregions" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> collect<wbr>Observed<wbr>Regions</h3>
+					<a name="collectunmodeledregions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> collect<wbr>Unmodeled<wbr>Regions</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">collect<wbr>Observed<wbr>Regions<span class="tsd-signature-symbol">(</span>queryId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, reference<span class="tsd-signature-symbol">: </span><a href="../enums/sequencereference.html" class="tsd-signature-type">SequenceReference</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/annotationfeatures.html" class="tsd-signature-type">AnnotationFeatures</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">collect<wbr>Unmodeled<wbr>Regions<span class="tsd-signature-symbol">(</span>queryId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, reference<span class="tsd-signature-symbol">: </span><a href="../enums/sequencereference.html" class="tsd-signature-type">SequenceReference</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/annotationfeatures.html" class="tsd-signature-type">AnnotationFeatures</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L74">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L61">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -320,24 +295,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-					<a name="filteralignments" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> filter<wbr>Alignments</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">filter<wbr>Alignments<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#filteralignments">filterAlignments</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L173">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:173</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="getlength" class="tsd-anchor"></a>
 					<h3>get<wbr>Length</h3>
@@ -349,7 +306,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#getlength">getLength</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/SequenceCollector.ts#L169">src/RcsbFvWeb/CollectTools/SequenceCollector.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/SequenceCollector.ts#L168">src/RcsbFvWeb/CollectTools/SequenceCollector.ts:168</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -367,25 +324,25 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="corecollector.html">CoreCollector</a>.<a href="corecollector.html#getpolymerentityinstance">getPolymerEntityInstance</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L11">src/RcsbFvWeb/CollectTools/CoreCollector.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L11">src/RcsbFvWeb/CollectTools/CoreCollector.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="gettargets" class="tsd-anchor"></a>
 					<h3>get<wbr>Targets</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Targets<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#gettargets">getTargets</a></p>
+								<p>Inherited from <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#gettargets">getTargets</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L204">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/SequenceCollector.ts#L387">src/RcsbFvWeb/CollectTools/SequenceCollector.ts:387</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -402,7 +359,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L37">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L35">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -426,7 +383,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="corecollector.html">CoreCollector</a>.<a href="corecollector.html#setpolymerentityinstance">setPolymerEntityInstance</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L8">src/RcsbFvWeb/CollectTools/CoreCollector.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L8">src/RcsbFvWeb/CollectTools/CoreCollector.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -450,7 +407,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="sequencecollector.html">SequenceCollector</a>.<a href="sequencecollector.html#tagobservedregions">tagObservedRegions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02eb6b9/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L88">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/6232c31/src/RcsbFvWeb/CollectTools/ObservedCollector.ts#L75">src/RcsbFvWeb/CollectTools/ObservedCollector.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -483,11 +440,11 @@
 					<li class="current tsd-kind-class">
 						<a href="observedsequencecollector.html" class="tsd-kind-icon">Observed<wbr>Sequence<wbr>Collector</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="observedsequencecollector.html#alignmentsconfigdata" class="tsd-kind-icon">alignments<wbr>Config<wbr>Data</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="observedsequencecollector.html#entityinstancemap" class="tsd-kind-icon">entity<wbr>Instance<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="observedsequencecollector.html#entityinstancetargets" class="tsd-kind-icon">entity<wbr>Instance<wbr>Targets</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="observedsequencecollector.html#entitytargets" class="tsd-kind-icon">entity<wbr>Targets</a>
@@ -504,11 +461,8 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="observedsequencecollector.html#unobservedintervalshashmap" class="tsd-kind-icon">unobserved<wbr>Intervals<wbr>Hash<wbr>Map</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="observedsequencecollector.html#addauthorresids" class="tsd-kind-icon">add<wbr>Author<wbr>Res<wbr>Ids</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="observedsequencecollector.html#buildalignmentrowtitle" class="tsd-kind-icon">build<wbr>Alignment<wbr>Row<wbr>Title</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="observedsequencecollector.html#addunmodelled" class="tsd-kind-icon">add<wbr>Unmodelled</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 								<a href="observedsequencecollector.html#collect" class="tsd-kind-icon">collect</a>
@@ -517,10 +471,7 @@
 								<a href="observedsequencecollector.html#collectentityinstancemap" class="tsd-kind-icon">collect<wbr>Entity<wbr>Instance<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="observedsequencecollector.html#collectobservedregions" class="tsd-kind-icon">collect<wbr>Observed<wbr>Regions</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
-								<a href="observedsequencecollector.html#filteralignments" class="tsd-kind-icon">filter<wbr>Alignments</a>
+								<a href="observedsequencecollector.html#collectunmodeledregions" class="tsd-kind-icon">collect<wbr>Unmodeled<wbr>Regions</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="observedsequencecollector.html#getlength" class="tsd-kind-icon">get<wbr>Length</a>
@@ -528,7 +479,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="observedsequencecollector.html#getpolymerentityinstance" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="observedsequencecollector.html#gettargets" class="tsd-kind-icon">get<wbr>Targets</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">

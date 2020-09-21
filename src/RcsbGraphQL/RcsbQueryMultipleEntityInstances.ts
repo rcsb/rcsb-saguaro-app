@@ -1,20 +1,24 @@
 import {RcsbQuery} from "./RcsbQuery";
 import * as query from "./Queries/Yosemite/QueryMultipleEntityInstances.graphql";
-import {QueryPolymer_Entity_InstancesArgs,CorePolymerEntityInstance} from "./Types/Yosemite/GqlTypes";
+import {
+    CorePolymerEntity,
+    CorePolymerEntityInstance,
+    QueryPolymer_EntitiesArgs
+} from "./Types/Yosemite/GqlTypes";
 
 interface EntryInstancesResultInterface {
-    polymer_entity_instances: Array<CorePolymerEntityInstance>;
+    polymer_entities: Array<CorePolymerEntity>;
 }
 
 export class RcsbQueryMultipleEntityInstances extends RcsbQuery{
-    public request(requestConfig: QueryPolymer_Entity_InstancesArgs): Promise<Array<CorePolymerEntityInstance>>{
+    public request(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>>{
         return this.yosemiteClient.query<EntryInstancesResultInterface>({
             query:query,
             variables:{
-                instanceIds:requestConfig.instance_ids,
+                entityIds:requestConfig.entity_ids,
             }
         }).then(result=>{
-            return result.data.polymer_entity_instances;
+            return result.data.polymer_entities;
         }).catch(error => {
             console.error(error);
             throw error;

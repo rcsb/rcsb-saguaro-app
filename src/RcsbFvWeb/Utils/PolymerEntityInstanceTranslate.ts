@@ -15,6 +15,7 @@ export class PolymerEntityInstanceTranslate{
     private instanceAsymToAuth: Map<string,string> = new Map<string, string>();
     private instanceAuthToAsym: Map<string,string> = new Map<string, string>();
     private instanceAsymToEntity: Map<string,string> = new Map<string, string>();
+    private entityToAsym: Map<string,Set<string>> = new Map<string, Set<string>>();
     private instanceAuthResIds: Map<string,Array<string>> = new Map<string, Array<string>>();
     private readonly INDEX_NAME: string = "auth";
 
@@ -24,7 +25,16 @@ export class PolymerEntityInstanceTranslate{
             this.instanceAuthToAsym.set(d.authId,d.asymId);
             this.instanceAuthResIds.set(d.asymId,d.authResId);
             this.instanceAsymToEntity.set(d.asymId,d.entityId);
+            if(!this.entityToAsym.has(d.entityId))
+                this.entityToAsym.set(d.entityId, new Set<string>());
+            this.entityToAsym.get(d.entityId).add(d.asymId);
         });
+    }
+
+    translateEntityToAsym(id: string): Array<string>{
+        if(this.entityToAsym.has(id))
+            return Array.from( this.entityToAsym.get(id) );
+        return null;
     }
 
     translateAsymToEntity(id: string): string{

@@ -54,7 +54,7 @@ interface BuildSequenceDataInterface extends TranslateContextInterface{
 }
 
 export interface AlignedObservedRegion extends AlignedRegion {
-    unobserved?:boolean;
+    unModelled?:boolean;
     openBegin?:boolean;
     openEnd?:boolean;
 }
@@ -62,7 +62,6 @@ export interface AlignedObservedRegion extends AlignedRegion {
 export class SequenceCollector extends CoreCollector{
 
     private seqeunceConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
-    protected alignmentsConfigData: Map<string, RcsbFvRowConfigInterface> = new Map<string, RcsbFvRowConfigInterface>();
     private sequenceLength: number;
     private targets: Array<string> = new Array<string>();
     protected finished: boolean = false;
@@ -184,6 +183,7 @@ export class SequenceCollector extends CoreCollector{
             return out;
         };
 
+        const alignmentsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
         if(alignmentData.targetAlignmentList instanceof Array) {
             alignmentData.targetAlignmentList.sort((a: TargetAlignment, b: TargetAlignment) => {
                 return a.target_id.localeCompare(b.target_id);
@@ -235,8 +235,8 @@ export class SequenceCollector extends CoreCollector{
                             openBegin: r.openBegin ?? openBegin,
                             openEnd: r.openEnd ?? openEnd,
                             type: "ALIGNED_BLOCK",
-                            title: r.unobserved ? "ALIGNED REGION UNOBSERVED" : "ALIGNED REGION",
-                            color: r.unobserved ? "#AAAAAA": undefined
+                            title: r.unModelled ? "UNMODELLED REGION" : "ALIGNED REGION",
+                            color: r.unModelled ? "#AAAAAA": undefined
                         }, commonContext));
                     })
 
@@ -281,12 +281,12 @@ export class SequenceCollector extends CoreCollector{
                     titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                     displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
                 };
-                this.alignmentsConfigData.set(targetAlignment.target_id, track);
+                alignmentsConfigData.push(track);
             });
         }
         this.finished = true;
         console.log("Alignment Processing Complete");
-        return { sequence: this.seqeunceConfigData, alignment:this.getAlignments()};
+        return { sequence: this.seqeunceConfigData, alignment:alignmentsConfigData};
     }
 
     private buildSequenceData(config: BuildSequenceDataInterface, isQuerySequence?: boolean):Array<RcsbFvTrackDataElementInterface> {
@@ -323,7 +323,7 @@ export class SequenceCollector extends CoreCollector{
         return config.sequenceData;
     }
 
-    protected addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+    private addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
         if(this.getPolymerEntityInstance()!=null){
             this.getPolymerEntityInstance().addAuthorResIds(o,alignmentContext);
@@ -333,7 +333,7 @@ export class SequenceCollector extends CoreCollector{
         return o;
     }
 
-    protected buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
+    private buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
         let rowTitle: string | RcsbFvLink;
         if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null) {
             const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
@@ -381,11 +381,7 @@ export class SequenceCollector extends CoreCollector{
     }
 
     protected tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
-        return [{...region,unobserved:false}];
-    }
-
-    protected getAlignments(): Array<RcsbFvRowConfigInterface>{
-        return Array.from(this.alignmentsConfigData.values());
+        return [{...region,unModelled:false}];
     }
 
     public getTargets():Promise<Array<string>> {
@@ -405,7 +401,4 @@ export class SequenceCollector extends CoreCollector{
         });
     }
 
-    public getNumberAlignedSeqeunces(): number{
-        return this.targets.length;
-    }
 }

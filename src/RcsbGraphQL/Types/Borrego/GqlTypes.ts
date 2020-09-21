@@ -70,10 +70,10 @@ export enum FieldName {
 }
 
 export interface FilterInput {
-  source?: Maybe<Source>;
   operation?: Maybe<OperationType>;
-  values?: Maybe<Array<Maybe<Scalars['String']>>>;
+  source?: Maybe<Source>;
   field?: Maybe<FieldName>;
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
 }
 
 export interface Gap {

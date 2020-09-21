@@ -8,7 +8,7 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 <!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.2/build/dist/app.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.3/build/dist/app.js"></script>
 <script type="text/javascript">RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");</script>
 --->
 
@@ -16,7 +16,7 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 `npm install @bioinsilico/rcsb-saguaro-app`
 
 ### CDN JavaScript
-`<script src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.2/build/dist/app.js" type="text/javascript"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.3/build/dist/app.js" type="text/javascript"></script>`
 
 ### JavaScript Examples
 * [PDB Instance Chain View](https://rcsb.github.io/rcsb-saguaro-app/examples/instance.html)

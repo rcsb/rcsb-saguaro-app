@@ -7,9 +7,8 @@ import {
     QueryAnnotationsArgs
 } from "./Types/Borrego/GqlTypes";
 import {
-    CoreEntry,
-    CorePolymerEntityInstance,
-    QueryEntryArgs,
+    CoreEntry, CorePolymerEntity,
+    QueryEntryArgs, QueryPolymer_EntitiesArgs,
     QueryPolymer_Entity_InstancesArgs
 } from "./Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
@@ -34,7 +33,7 @@ export class RcsbFvQuery {
         return this.rcsbFvQueryEntityInstances.request(requestConfig);
     }
 
-    public requestMultipleEntityInstances(requestConfig: QueryPolymer_Entity_InstancesArgs): Promise<Array<CorePolymerEntityInstance>>{
+    public requestMultipleEntityInstances(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>>{
         return this.rcsbFvQueryMutipleEntityInstances.request(requestConfig);
     }
 }

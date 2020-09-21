@@ -13,12 +13,9 @@ import {
     SequenceCollectorDataInterface
 } from "./SequenceCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
-import {RcsbFvLink, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@bioinsilico/rcsb-saguaro";
-import {TagDelimiter} from "../Utils/TagDelimiter";
-import * as resource from "../../../web.resources.json";
-import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {MultipleEntityInstanceTranslate} from "../Utils/MultipleEntityInstanceTranslate";
 import {MultipleEntityInstancesCollector} from "./MultipleEntityInstancesCollector";
+import {TagDelimiter} from "../Utils/TagDelimiter";
 
 export class ObservedSequenceCollector extends SequenceCollector{
 
@@ -26,10 +23,10 @@ export class ObservedSequenceCollector extends SequenceCollector{
     private unobservedIntervalsHashMap: Map<string,string> = new Map<string, string>();
     private entityTargets: Set<string> = new Set<string>();
     private entityInstanceTargets: Set<string> = new Set<string>();
-    private unObservedMap: Map<string,Array<AlignedRegion>> = new Map<string, Array<AlignedRegion>>();
+    private unObservedMap: Map<string,Set<number>> = new Map<string, Set<number>>();
 
     public collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
-        return this.collectObservedRegions(requestConfig.queryId, requestConfig.from).then(result=> {
+        return this.collectUnmodeledRegions(requestConfig.queryId, requestConfig.from).then(result=> {
             this.loadObservedRegions(result);
             return super.collect(requestConfig, this.collectEntityInstanceMap.bind(this));
         });
@@ -37,34 +34,12 @@ export class ObservedSequenceCollector extends SequenceCollector{
 
     private loadObservedRegions(results : Array<AnnotationFeatures>){
         results.forEach(ann=>{
-            this.unObservedMap.set(ann.target_id, new Array<AlignedRegion>());
             ann.features.forEach(a=>{
                 a.feature_positions.forEach(p=>{
+                    this.addUnmodelled(ann.target_id,p.beg_seq_id,p.end_seq_id);
                     if(p.gaps != null){
-                        let queryBegin: number = p.beg_seq_id;
-                        let targetBegin: number = p.beg_ori_id;
                         p.gaps.forEach(g=>{
-                            this.unObservedMap.get(ann.target_id).push({
-                                query_begin: queryBegin,
-                                target_begin: targetBegin,
-                                query_end: g.begin,
-                                target_end: targetBegin+(g.begin-queryBegin)
-                            });
-                            queryBegin = g.end;
-                            targetBegin = g.end-g.begin;
-                        });
-                        this.unObservedMap.get(ann.target_id).push({
-                            query_begin: queryBegin,
-                            target_begin: targetBegin,
-                            query_end: p.end_seq_id,
-                            target_end: p.end_ori_id
-                        });
-                    }else{
-                        this.unObservedMap.get(ann.target_id).push({
-                            query_begin:p.beg_seq_id,
-                            query_end:p.end_seq_id,
-                            target_begin:p.beg_ori_id,
-                            target_end:p.end_ori_id
+                            this.addUnmodelled(ann.target_id,g.begin,g.end,true);
                         });
                     }
                 })
@@ -72,7 +47,18 @@ export class ObservedSequenceCollector extends SequenceCollector{
         })
     }
 
-    private collectObservedRegions(queryId: string, reference: SequenceReference): Promise<Array<AnnotationFeatures>>{
+    private addUnmodelled(targetId: string, start: number, end: number, remove?: boolean){
+        if(!this.unObservedMap.has(targetId))
+            this.unObservedMap.set(targetId, new Set<number>());
+        Array(end - start + 1).fill(0).map((n,i)=>{ return (start+i)}).forEach(n=>{
+            if(remove && this.unObservedMap.get(targetId).has(n))
+                this.unObservedMap.get(targetId).delete(n);
+            else
+                this.unObservedMap.get(targetId).add(n);
+        });
+    }
+
+    private collectUnmodeledRegions(queryId: string, reference: SequenceReference): Promise<Array<AnnotationFeatures>>{
         return this.rcsbFvQuery.requestRcsbPdbAnnotations({
             queryId: queryId,
             reference: reference,
@@ -87,140 +73,119 @@ export class ObservedSequenceCollector extends SequenceCollector{
     }
 
     protected tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
-        this.unobservedIntervalsHashMap.set(commonContext.targetId, "null");
-        if( !this.unObservedMap.has(commonContext.targetId) )
-            return [region];
-        const unobserved: Array<AlignedRegion> = this.unObservedMap.get(commonContext.targetId);
-        const unobservedIntervalsHash: Array<string> = new Array<string>();
-        const points: Array<{q:number; t:number;}> = new Array<{q: number; t: number;}>();
-        unobserved.sort((a,b)=>{return (a.query_begin-b.query_begin)}).forEach(u=>{
-            if(!unobservedIntervalsHash.includes(u.query_begin+"."+u.query_end)) {
-                unobservedIntervalsHash.push(u.query_begin + "." + u.query_end);
-                if (u.query_begin >= region.query_begin && u.query_begin<= region.query_end)
-                    points.push({q: u.query_begin, t: u.target_begin});
-
-                if (u.query_end >= region.query_begin && u.query_end<= region.query_end)
-                    points.push({q: u.query_end, t: u.target_end});
-            }
-        });
-        this.unobservedIntervalsHashMap.set(commonContext.targetId, unobservedIntervalsHash.join(":"));
-
-        if(points.length == 0 || points[0].q != region.query_begin)
-            points.unshift({q:region.query_begin,t:region.target_begin});
-        if(points[points.length-1].q != region.query_end)
-            points.push({q:region.query_end,t:region.target_end});
-
-        const out: Array<AlignedObservedRegion> = new Array<AlignedObservedRegion>();
-        for(let n=0;n<points.length-1;n++){
-            if(unobservedIntervalsHash.includes(points[n].q+"."+points[n+1].q)){
-                out.push({
-                    query_begin:points[n].q,
-                    target_begin:points[n].t,
-                    query_end:points[n+1].q ,
-                    target_end:points[n+1].t,
-                    unobserved: true,
-                    openBegin: false,
-                    openEnd: false
+        if(this.entityInstanceMap.get(commonContext.targetId)!=null){
+            const asymIds: Array<string> = this.entityInstanceMap.get(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
+            const entryId: string = commonContext.targetId.split(TagDelimiter.entity)[0];
+            const unModelled: Map<number,number> = new Map<number,number>();
+            asymIds.forEach(id=>{
+                if(this.unObservedMap.has(entryId+TagDelimiter.instance+id))
+                    this.unObservedMap.get(entryId+TagDelimiter.instance+id).forEach(n=>{
+                        if(n>=region.query_begin && n<=region.query_end)
+                            if(!unModelled.has(n))
+                                unModelled.set(n,1);
+                            else
+                                unModelled.set(n, unModelled.get(n)+1);
+                    })
+            });
+            const unModelledList: Array<number> =  Array.from(unModelled.entries()).filter(a=>a[1]==asymIds.length).map(a=>a[0]).sort((a,b)=>a-b);
+            if(unModelledList.length>0) {
+                let begin: number = unModelledList.shift();
+                let end: number = begin;
+                let delta: number = region.target_begin-region.query_begin;
+                const unModelledRegions: Array<AlignedObservedRegion> = new Array<AlignedObservedRegion>();
+                if(unModelledList.length == 0)
+                    unModelledRegions.push({
+                        query_begin: begin,
+                        query_end: end,
+                        target_begin: begin+delta,
+                        target_end: end+delta,
+                        unModelled: true
+                    });
+                unModelledList.forEach((n, i) => {
+                    if (n == end + 1) {
+                        end = n;
+                    } else {
+                        unModelledRegions.push({
+                            query_begin: begin,
+                            query_end: end,
+                            target_begin: begin+delta,
+                            target_end: end+delta,
+                            unModelled: true
+                        });
+                        begin = n;
+                        end = n;
+                        if(i==unModelledList.length-1)
+                            unModelledRegions.push({
+                                query_begin: begin,
+                                query_end: end,
+                                target_begin: begin+delta,
+                                target_end: end+delta,
+                                unModelled: true
+                            });
+                    }
                 });
-            }else{
-                out.push({
-                    query_begin: n == 0 ? points[n].q : points[n].q+1,
-                    target_begin: n == 0 ? points[n].t : points[n].t+1,
-                    query_end: n+1 == points.length-1 ? points[n+1].q : points[n+1].q-1,
-                    target_end: n+1 == points.length-1 ? points[n+1].t : points[n+1].t-1,
-                    unobserved: false,
-                    openBegin: false,
-                    openEnd: false
-                });
-            }
+                if(end>begin)
+                    unModelledRegions.push({
+                        query_begin: begin,
+                        query_end: end,
+                        target_begin: begin+delta,
+                        target_end: end+delta,
+                        unModelled: true
+                    });
 
+                const outRegions: Array<AlignedObservedRegion> = new Array<AlignedObservedRegion>();
+                if (region.query_begin < unModelledRegions[0].query_begin)
+                    outRegions.push({
+                        query_begin: region.query_begin,
+                        query_end: (unModelledRegions[0].query_begin - 1),
+                        target_begin: region.target_begin,
+                        target_end: (unModelledRegions[0].target_begin - 1),
+                        openBegin: false,
+                        openEnd: false,
+                        unModelled: false
+                    });
+                outRegions.push({...unModelledRegions.shift(), openBegin:false, openEnd:false});
+                unModelledRegions.forEach((ur, i) => {
+                    const n: number = outRegions.length - 1;
+                    outRegions.push({
+                        query_begin: outRegions[n].query_end + 1,
+                        query_end: ur.query_begin - 1,
+                        target_begin: outRegions[n].target_end + 1,
+                        target_end: ur.target_begin - 1,
+                        openBegin: false,
+                        openEnd: false,
+                        unModelled: false
+                    });
+                    outRegions.push({...ur, openBegin:false, openEnd:false});
+                });
+                const n: number = outRegions.length - 1;
+                if (outRegions[n].query_end < region.query_end) {
+                    outRegions.push({
+                        query_begin: outRegions[n].query_end + 1,
+                        query_end: region.query_end,
+                        target_begin: outRegions[n].target_end + 1,
+                        target_end: region.target_end,
+                        openBegin: false,
+                        openEnd: false,
+                        unModelled:false
+                    })
+                }
+                outRegions[0].openBegin = outRegions[0].target_begin != 1;
+                outRegions[outRegions.length-1].openEnd = outRegions[outRegions.length-1].target_end != commonContext.targetSequenceLength;
+                return outRegions;
+            }
         }
-        out[0].openBegin = out[0].target_begin != 1;
-        out[out.length-1].openEnd = out[out.length-1].target_end != commonContext.targetSequenceLength;
-        return out;
+        return [{...region,unModelled:false}];
     }
 
-    private collectEntityInstanceMap(instanceIds: Array<string>): Promise<null>{
+    private collectEntityInstanceMap(entityIds: Array<string>): Promise<null>{
         const entityInstanceCollector: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
         return entityInstanceCollector.collect({
-            instance_ids:instanceIds
+            entity_ids:entityIds
         }).then(result=>{
             this.entityInstanceMap.add(result);
             return null;
         });
     }
 
-    protected buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
-        let rowTitle: string | RcsbFvLink;
-        if (alignmentData.to === SequenceReference.PdbInstance && this.entityInstanceMap.get(targetAlignment.target_id) != null) {
-            const pdbId: string = targetAlignment.target_id.split(TagDelimiter.instance)[0];
-            const entityId: string = this.entityInstanceMap.get(targetAlignment.target_id).translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
-            const authId:string  = this.entityInstanceMap.get(targetAlignment.target_id).translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
-            rowTitle = {
-                visibleTex:pdbId + TagDelimiter.entity + entityId + TagDelimiter.instance + authId,
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
-                style: {
-                    fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
-                }
-            };
-            this.entityTargets.add(pdbId + TagDelimiter.entity + entityId);
-            this.entityInstanceTargets.add(pdbId + TagDelimiter.entity + entityId + TagDelimiter.instance + authId);
-        } else {
-            rowTitle = super.buildAlignmentRowTitle(targetAlignment, alignmentData);
-        }
-        return rowTitle;
-    }
-
-    /*protected getAlignments(): Array<RcsbFvRowConfigInterface>{
-        const trackMap: Map<string,Map<string,string>> = new Map<string, Map<string,string>>();
-        const trackTragetIds: Array<string> = new Array<string>();
-        this.alignmentsConfigData.forEach((track,targetId)=>{
-            const pdbId: string = targetId.split(TagDelimiter.instance)[0];
-            const entityId: string = this.entityInstanceMap.get(targetId).translateAsymToEntity(targetId.split(TagDelimiter.instance)[1]);
-            const unobservedHash: string = this.unobservedIntervalsHashMap.get(targetId);
-            if(!trackMap.has(pdbId + TagDelimiter.entity + entityId))
-                trackMap.set(pdbId + TagDelimiter.entity + entityId, new Map<string, string>());
-            if(!trackMap.get(pdbId + TagDelimiter.entity + entityId).has(unobservedHash)) {
-                trackMap.get(pdbId + TagDelimiter.entity + entityId).set(unobservedHash, targetId);
-                trackTragetIds.push(targetId);
-            }
-        })
-        return Array.from(this.alignmentsConfigData.entries()).filter(a=>{return trackTragetIds.includes(a[0]);}).sort((a,b)=>{
-            return a[0].localeCompare(b[0]);
-        }).map(a=>{return a[1]});
-    }*/
-
-    protected addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
-        let o:RcsbFvTrackDataElementInterface = e;
-        if(this.entityInstanceMap.get(alignmentContext.targetId)!=null){
-            this.entityInstanceMap.get(alignmentContext.targetId).addAuthorResIds(o,alignmentContext);
-            const pdbId: string = alignmentContext.targetId.split(TagDelimiter.instance)[0];
-            const entityId: string = this.entityInstanceMap.get(alignmentContext.targetId).translateAsymToEntity(alignmentContext.targetId.split(TagDelimiter.instance)[1]);
-            const authId:string  = this.entityInstanceMap.get(alignmentContext.targetId).translateAsymToAuth(alignmentContext.targetId.split(TagDelimiter.instance)[1]);
-            o.sourceId = pdbId + TagDelimiter.entity + entityId + TagDelimiter.instance + authId;
-        }
-        return o;
-    }
-
-    getTargets(): Promise<Array<string>>{
-        return new Promise<Array<string>>((resolve,reject)=>{
-            const recursive:()=>void = ()=>{
-                if(this.finished){
-                    resolve(Array.from(this.entityTargets));
-                }else{
-                    if(typeof window!== "undefined") {
-                        window.setTimeout(() => {
-                            recursive();
-                        }, 1000);
-                    }
-                }
-            };
-            recursive();
-        });
-    }
-
-    public getNumberAlignedSeqeunces(): number{
-        return this.entityInstanceTargets.size;
-    }
 }
