@@ -235,7 +235,7 @@ export class SequenceCollector extends CoreCollector{
                             openBegin: r.openBegin ?? openBegin,
                             openEnd: r.openEnd ?? openEnd,
                             type: "ALIGNED_BLOCK",
-                            title: r.unModelled ? "UNMODELLED REGION" : "ALIGNED REGION",
+                            title: r.unModelled ? "UNMODELED REGION" : "ALIGNED REGION",
                             color: r.unModelled ? "#AAAAAA": undefined
                         }, commonContext));
                     })
