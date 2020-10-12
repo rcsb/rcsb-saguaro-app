@@ -1,6 +1,6 @@
 {
   "name": "@bioinsilico/rcsb-saguaro-app",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/config.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
-    "buildDoc": "npx typedoc --mode file --out docs src --theme ./typedoc_theme",
+    "buildDoc": "npx typedoc --mode file --out docs src",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -69,7 +69,7 @@
     "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.6.2",
+    "@bioinsilico/rcsb-saguaro": "^0.7.1",
     "@graphql-codegen/cli": "^1.16.0"
   },
   "bugs": {

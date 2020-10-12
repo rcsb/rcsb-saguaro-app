@@ -14,53 +14,90 @@ export interface Scalars {
 export interface AlignedRegion {
   __typename?: 'AlignedRegion';
   exon_shift?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  query_begin?: Maybe<Scalars['Int']>;
-  query_end?: Maybe<Scalars['Int']>;
-  target_begin?: Maybe<Scalars['Int']>;
-  target_end?: Maybe<Scalars['Int']>;
+  /** Query sequence start position */
+  query_begin: Scalars['Int'];
+  /** Query sequence end position */
+  query_end: Scalars['Int'];
+  /** Target sequence start position */
+  target_begin: Scalars['Int'];
+  /** Target sequence start position */
+  target_end: Scalars['Int'];
 }
 
 export interface AlignmentResponse {
   __typename?: 'AlignmentResponse';
+  /** Full sequence of the query */
   query_sequence?: Maybe<Scalars['String']>;
+  /** JSON schema that describes the different alignments between the query sequence and targets */
   target_alignment?: Maybe<Array<Maybe<TargetAlignment>>>;
 }
 
 export interface AnnotationFeatures {
   __typename?: 'AnnotationFeatures';
+  /** List of positional features */
   features?: Maybe<Array<Maybe<Feature>>>;
+  /** Enumerated value that identifies the provenance type of the positional features */
   source?: Maybe<Source>;
+  /** Database source entry identifier associated to the positional features */
   target_id?: Maybe<Scalars['String']>;
 }
 
 export interface Coverage {
   __typename?: 'Coverage';
-  query_coverage?: Maybe<Scalars['Int']>;
-  query_length?: Maybe<Scalars['Int']>;
-  target_coverage?: Maybe<Scalars['Int']>;
-  target_length?: Maybe<Scalars['Int']>;
+  /** Percentage of the query sequence covered byt the alignment */
+  query_coverage: Scalars['Int'];
+  /** Length of the full query sequence */
+  query_length: Scalars['Int'];
+  /** Percentage of the target sequence covered byt the alignment */
+  target_coverage: Scalars['Int'];
+  /** Length of the full target sequence */
+  target_length: Scalars['Int'];
 }
 
 export interface Feature {
   __typename?: 'Feature';
+  /** Free-form text describing the feature */
   description?: Maybe<Scalars['String']>;
+  /** Identifier of the feature */
   feature_id?: Maybe<Scalars['String']>;
   feature_positions?: Maybe<Array<Maybe<FeaturePosition>>>;
+  /** Name associated to the feature */
   name?: Maybe<Scalars['String']>;
+  /** Original database or software name used to obtain the feature */
   provenance_source?: Maybe<Scalars['String']>;
+  /** A type or category of the feature */
   type?: Maybe<Scalars['String']>;
+  /** Numerical value associated with the feature */
   value?: Maybe<Scalars['Float']>;
 }
 
 export interface FeaturePosition {
   __typename?: 'FeaturePosition';
+  /**
+   * Index at which this segment of the feature begins on the original
+   * provenance_source. When reference and source point to the same reference
+   * system this file will be null
+   */
   beg_ori_id?: Maybe<Scalars['Int']>;
+  /** Index at which this segment of the feature begins */
   beg_seq_id?: Maybe<Scalars['Int']>;
+  /**
+   * Index at which this segment of the feature ends on the original
+   * provenance_source. If the positional feature maps to a single residue this
+   * field will be null. When reference and source point to the same reference
+   * system this file will be null
+   */
   end_ori_id?: Maybe<Scalars['Int']>;
+  /**
+   * Index at which this segment of the feature ends. If the positional feature
+   * maps to a single residue this field will be null
+   */
   end_seq_id?: Maybe<Scalars['Int']>;
-  gaps?: Maybe<Array<Maybe<Gap>>>;
+  /** Flag that indicates the feature begins before the feature index begin */
   open_begin?: Maybe<Scalars['Boolean']>;
+  /** Flag that indicates the feature end after the feature index end */
   open_end?: Maybe<Scalars['Boolean']>;
+  /** The value for the feature at this region */
   value?: Maybe<Scalars['Float']>;
 }
 
@@ -70,17 +107,10 @@ export enum FieldName {
 }
 
 export interface FilterInput {
+  field?: Maybe<FieldName>;
   operation?: Maybe<OperationType>;
   source?: Maybe<Source>;
-  field?: Maybe<FieldName>;
   values?: Maybe<Array<Maybe<Scalars['String']>>>;
-}
-
-export interface Gap {
-  __typename?: 'Gap';
-  begin?: Maybe<Scalars['Int']>;
-  end?: Maybe<Scalars['Int']>;
-  isConnected?: Maybe<Scalars['Boolean']>;
 }
 
 export enum OperationType {
@@ -91,9 +121,9 @@ export enum OperationType {
 /** Query root */
 export interface Query {
   __typename?: 'Query';
-  /** Get annotations. */
+  /** Get positional features */
   annotations?: Maybe<Array<Maybe<AnnotationFeatures>>>;
-  /** Get NCBI entry given the NCBI protein accession. */
+  /** Get sequence alignments */
   alignment?: Maybe<AlignmentResponse>;
 }
 
@@ -132,10 +162,15 @@ export enum Source {
 
 export interface TargetAlignment {
   __typename?: 'TargetAlignment';
+  /** Aligned region */
   aligned_regions?: Maybe<Array<Maybe<AlignedRegion>>>;
+  /** Alignment scores */
   coverage?: Maybe<Coverage>;
+  /** integer that identifies the DNA strand of genome alignments (1 positive strand / -1 negative strand) */
   orientation?: Maybe<Scalars['Int']>;
+  /** Database identifier of the target */
   target_id?: Maybe<Scalars['String']>;
+  /** Full sequence of the target */
   target_sequence?: Maybe<Scalars['String']>;
 }
 

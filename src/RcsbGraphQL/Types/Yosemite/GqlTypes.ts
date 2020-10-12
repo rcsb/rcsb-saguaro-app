@@ -6745,6 +6745,12 @@ export interface Query {
    */
   polymer_entity_instance?: Maybe<CorePolymerEntityInstance>;
   /**
+   * Get a list of chemical components given the list of CHEMICAL COMPONENT ID,
+   * e.g. 'CFF', 'HEM', 'FE'.For nucleic acid polymer entities, use the one-letter
+   * code for the base.
+   */
+  chem_comps?: Maybe<Array<Maybe<CoreChemComp>>>;
+  /**
    * Get a list of PDB non-polymer entities given a list of ENTITY IDs. Here ENTITY
    * ID is a compound identifier that includes entry_id and entity_id separated by
    * '_', e.g. 1XXX_1.
@@ -6829,6 +6835,12 @@ export interface Query {
 export interface QueryPolymer_Entity_InstanceArgs {
   asym_id: Scalars['String'];
   entry_id: Scalars['String'];
+}
+
+
+/** Query root */
+export interface QueryChem_CompsArgs {
+  comp_ids: Array<Maybe<Scalars['String']>>;
 }
 
 

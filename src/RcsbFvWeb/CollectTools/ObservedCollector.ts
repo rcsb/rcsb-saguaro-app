@@ -37,11 +37,6 @@ export class ObservedSequenceCollector extends SequenceCollector{
             ann.features.forEach(a=>{
                 a.feature_positions.forEach(p=>{
                     this.addUnmodelled(ann.target_id,p.beg_seq_id,p.end_seq_id);
-                    if(p.gaps != null){
-                        p.gaps.forEach(g=>{
-                            this.addUnmodelled(ann.target_id,g.begin,g.end,true);
-                        });
-                    }
                 })
             });
         })

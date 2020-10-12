@@ -29,6 +29,10 @@ interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     collectSwissModel?: boolean;
 }
 
+interface FeaturePositionGaps extends FeaturePosition {
+    gaps?: Array<RcsbFvTrackDataElementGapInterface>;
+}
+
 export class AnnotationCollector extends CoreCollector{
 
     private rcsbAnnotationMap: RcsbAnnotationMap = new RcsbAnnotationMap();
@@ -93,11 +97,9 @@ export class AnnotationCollector extends CoreCollector{
                     this.maxValue.set(type,Number.MIN_SAFE_INTEGER);
                     this.minValue.set(type,Number.MAX_SAFE_INTEGER);
                 }
-                d.feature_positions.forEach(p => {
+                this.computeFeatureGaps(d.feature_positions).forEach(p => {
                     if(p.beg_seq_id != null) {
-                        let key:string = p.beg_seq_id.toString();
-                        if(p.end_seq_id)
-                            key += ":"+p.end_seq_id.toString();
+                        const key:string = p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString();
                         if (!annotations.get(type).has(key)) {
                             const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type,d.provenance_source);
                             this.addAuthorResIds(a,{
@@ -138,6 +140,34 @@ export class AnnotationCollector extends CoreCollector{
             if (!this.rcsbAnnotationMap.allTypes().has(type))
                 this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(data.values()), type));
         });
+    }
+
+    private computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<FeaturePositionGaps>{
+        let ignoreGaps: boolean = false;
+        const sorted: Array<FeaturePosition> = featurePositions.sort((a,b)=>{
+            return a.beg_seq_id-b.beg_seq_id;
+        });
+        sorted.forEach((fp,n)=>{
+            if(fp.beg_ori_id == null || fp.end_ori_id == null || fp.beg_seq_id > sorted[n].beg_seq_id)
+                ignoreGaps = true;
+        });
+        if(sorted.length == 1 || ignoreGaps)
+            return featurePositions;
+
+        const gapedFeaturePosition: FeaturePositionGaps = {
+            ...sorted[0],
+            end_seq_id: sorted[ sorted.length-1 ].end_seq_id,
+            end_ori_id: sorted[ sorted.length-1 ].end_ori_id,
+            gaps: new Array<RcsbFvTrackDataElementGapInterface>()
+        };
+        for(let n=0;n<sorted.length-1;n++){
+            gapedFeaturePosition.gaps.push({
+                begin:sorted[n].end_seq_id,
+                end:sorted[n+1].beg_seq_id,
+                isConnected: (sorted[n].end_ori_id+1 == sorted[n+1].beg_ori_id)
+            });
+        }
+        return [gapedFeaturePosition];
     }
 
     private buildAnnotationTrack(data: Array<RcsbFvTrackDataElementInterface>, type: string): RcsbFvRowConfigInterface {
@@ -291,7 +321,7 @@ export class AnnotationCollector extends CoreCollector{
         return out;
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePosition, d: Feature, targetId: string, source:Source, type: string, provenance:string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, type: string, provenance:string): RcsbFvTrackDataElementInterface{
         let title:string = type;
         if( this.rcsbAnnotationMap.getConfig(type)!= null && typeof this.rcsbAnnotationMap.getConfig(type).title === "string")
             title = this.rcsbAnnotationMap.getConfig(type).title;

@@ -71,10 +71,17 @@
 					and designed to display protein features at the <a href="https://www.rcsb.org">RCSB Web Site</a>. The package collects protein annotations from the
 					<a href="https://1d-coordinates.rcsb.org">1D Coordinate Server</a> and the main <a href="https://data.rcsb.org">RCSB Data API</a> and generates preconfigures Protein
 				Feature Summaries. The package allows access to RCSB Saguaro methods to add or change displayed data. </p>
+				<!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.3/build/dist/app.js"></script>
-<script type="text/javascript">RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.4/build/dist/app.js"></script>
+<script type="text/javascript">
+RcsbFvWebApp.setBoardConfig({
+    trackWidth:640
+});
+RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
+</script>
+--->
 				<a href="#node-module-instalation" id="node-module-instalation" style="color: inherit; text-decoration: none;">
 					<h3>Node Module Instalation</h3>
 				</a>
@@ -82,7 +89,7 @@
 				<a href="#cdn-javascript" id="cdn-javascript" style="color: inherit; text-decoration: none;">
 					<h3>CDN JavaScript</h3>
 				</a>
-				<p><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.3/build/dist/app.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></p>
+				<p><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.4/build/dist/app.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></p>
 				<a href="#javascript-examples" id="javascript-examples" style="color: inherit; text-decoration: none;">
 					<h3>JavaScript Examples</h3>
 				</a>
@@ -461,10 +468,10 @@
 						<a href="interfaces/featureposition.html" class="tsd-kind-icon">Feature<wbr>Position</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/filterinput.html" class="tsd-kind-icon">Filter<wbr>Input</a>
+						<a href="interfaces/featurepositiongaps.html" class="tsd-kind-icon">Feature<wbr>Position<wbr>Gaps</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/gap.html" class="tsd-kind-icon">Gap</a>
+						<a href="interfaces/filterinput.html" class="tsd-kind-icon">Filter<wbr>Input</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/genename.html" class="tsd-kind-icon">Gene<wbr>Name</a>
@@ -696,6 +703,9 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/querychem_compargs.html" class="tsd-kind-icon">Query<wbr>Chem_<wbr><wbr>Comp<wbr>Args</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/querychem_compsargs.html" class="tsd-kind-icon">Query<wbr>Chem_<wbr><wbr>Comps<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/queryentriesargs.html" class="tsd-kind-icon">Query<wbr>Entries<wbr>Args</a>
