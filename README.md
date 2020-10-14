@@ -11,7 +11,8 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@bioinsilico/rcsb-saguaro-app@0.7.4/build/dist/app.js"></script>
 <script type="text/javascript">
 RcsbFvWebApp.setBoardConfig({
-    trackWidth:640
+    trackWidth:540,
+    rowTitleWidth:170
 });
 RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 </script>
