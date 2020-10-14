@@ -14,7 +14,8 @@ export class RcsbQueryAnnotations extends RcsbQuery{
                 queryId:requestConfig.queryId,
                 reference:requestConfig.reference,
                 sources:requestConfig.sources,
-                filters:requestConfig.filters
+                filters:requestConfig.filters,
+                range:requestConfig.range
             }
         }).then(result=>{
             return result.data.annotations;

@@ -47,7 +47,8 @@ export class AnnotationCollector extends CoreCollector{
                 queryId: requestConfig.queryId,
                 reference: requestConfig.reference,
                 sources: requestConfig.sources,
-                filters: requestConfig.filters
+                filters: requestConfig.filters,
+                range: requestConfig.range
             }).then(result => {
                 this.processRcsbPdbAnnotations(result,requestConfig);
                 return SwissModelQueryAnnotations.request(requestConfig.queryId).then(result=>{
@@ -344,8 +345,8 @@ export class AnnotationCollector extends CoreCollector{
         let provenanceColor: string = RcsbAnnotationConstants.provenanceColorCode.external;
         if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
             provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
-        const sourceId: string = source == Source.PdbInstance ? targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(TagDelimiter.instance)[1])
-            : targetId;
+        const sourceId: string = source == Source.PdbInstance && this.getPolymerEntityInstance() != null ?
+            targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(TagDelimiter.instance)[1]) : targetId;
         return {
             begin: p.beg_seq_id,
             end: p.end_seq_id,

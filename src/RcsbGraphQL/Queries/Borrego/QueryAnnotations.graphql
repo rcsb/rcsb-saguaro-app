@@ -1,8 +1,9 @@
-query QueryAnnotations($queryId: String!, $reference: SequenceReference, $sources:[Source], $filters: [FilterInput]){
+query QueryAnnotations($queryId: String!, $reference: SequenceReference, $sources:[Source], $range:[Int], $filters: [FilterInput]){
     annotations(
         queryId:$queryId
         reference:$reference
         sources:$sources
+        range:$range
         filters:$filters
     ){
         source

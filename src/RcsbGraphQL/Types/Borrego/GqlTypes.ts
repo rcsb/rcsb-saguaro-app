@@ -45,13 +45,13 @@ export interface AnnotationFeatures {
 export interface Coverage {
   __typename?: 'Coverage';
   /** Percentage of the query sequence covered byt the alignment */
-  query_coverage: Scalars['Int'];
+  query_coverage?: Maybe<Scalars['Int']>;
   /** Length of the full query sequence */
-  query_length: Scalars['Int'];
+  query_length?: Maybe<Scalars['Int']>;
   /** Percentage of the target sequence covered byt the alignment */
-  target_coverage: Scalars['Int'];
+  target_coverage?: Maybe<Scalars['Int']>;
   /** Length of the full target sequence */
-  target_length: Scalars['Int'];
+  target_length?: Maybe<Scalars['Int']>;
 }
 
 export interface Feature {
@@ -108,9 +108,9 @@ export enum FieldName {
 
 export interface FilterInput {
   field?: Maybe<FieldName>;
-  operation?: Maybe<OperationType>;
   source?: Maybe<Source>;
   values?: Maybe<Array<Maybe<Scalars['String']>>>;
+  operation?: Maybe<OperationType>;
 }
 
 export enum OperationType {
@@ -132,7 +132,7 @@ export interface Query {
 export interface QueryAnnotationsArgs {
   reference?: Maybe<SequenceReference>;
   sources?: Maybe<Array<Maybe<Source>>>;
-  range?: Maybe<Scalars['String']>;
+  range?: Maybe<Array<Maybe<Scalars['Int']>>>;
   filters?: Maybe<Array<Maybe<FilterInput>>>;
   queryId: Scalars['String'];
 }
@@ -140,7 +140,7 @@ export interface QueryAnnotationsArgs {
 
 /** Query root */
 export interface QueryAlignmentArgs {
-  range?: Maybe<Scalars['String']>;
+  range?: Maybe<Array<Maybe<Scalars['Int']>>>;
   from?: Maybe<SequenceReference>;
   to?: Maybe<SequenceReference>;
   queryId: Scalars['String'];

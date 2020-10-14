@@ -1,7 +1,7 @@
 import {RcsbFvCore} from "./RcsbFvCore";
 import {
-    AlignmentResponse,
-    SequenceReference,
+    AlignmentResponse, FieldName, FilterInput, OperationType,
+    SequenceReference, Source,
     TargetAlignment
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
@@ -56,32 +56,33 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private entityBegin: number = 0;
     private entityEnd: number = 0;
     private nonExonConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private featuresConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
-    private buildPdbGenomeFv(pdbEntityId: string){
+    private buildPdbGenomeFv(pdbInstanceId: string, pdbEntityId: string){
         this.alignmentCollectorQueue.sendTask({
-            queryId: pdbEntityId,
-            from: SequenceReference.PdbEntity,
+            queryId: pdbInstanceId,
+            from: SequenceReference.PdbInstance,
             to: SequenceReference.NcbiGenome,
         }, (e)=>{
             const ar: AlignmentResponse = e as AlignmentResponse
-            this.collectPdbWorkerResults(ar, pdbEntityId);
+            this.collectPdbWorkerResults(ar, pdbInstanceId, pdbEntityId);
         });
     }
 
-    private collectPdbWorkerResults(ar: AlignmentResponse, pdbEntityId: string){
+    private collectPdbWorkerResults(ar: AlignmentResponse, pdbInstanceId: string, pdbEntityId: string){
         this.pdbEntityTrack = this.collectExons(ar.target_alignment,"target",RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, "", 0)[0];
         this.pdbEntityTrack.rowPrefix = SequenceReference.PdbEntity.replace("_"," ");
         this.pdbEntityTrack.rowTitle = {
-            visibleTex: pdbEntityId,
+            visibleTex: pdbInstanceId,
             style: {
                 fontWeight:"bold"
             }
         };
         this.pdbEntityTrack.hideEmptyTrackFlag = false;
-        this.buildChromosomeFv(ar.target_alignment[0].target_id);
+        this.buildChromosomeFv(ar.target_alignment[0].target_id, pdbInstanceId, pdbEntityId);
     }
 
-    private buildChromosomeFv(ncbiId: string): void {
+    private buildChromosomeFv(ncbiId: string, pdbInstanceId: string, pdbEntityId: string): void {
         this.nonExonConfigData.push({
             trackId: "mainSequenceTrack_" + ncbiId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -115,30 +116,45 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
             updateDataOnMove: updateData(ncbiId, 2, true, this.rcsbFv?.getBoardConfig()?.trackWidth)
         });
         this.nonExonConfigData.push(this.pdbEntityTrack);
-        this.plot();
-        this.collectChromosomeAlignments(ncbiId);
+        //Collect positional features ?
+        this.collectFeatures(ncbiId, pdbInstanceId, pdbEntityId);
+    }
+
+    private collectFeatures(ncbiId: string, instanceId: string, entityId: string){
+        const sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
+        const filters:Array<FilterInput> = [{
+            field:FieldName.TargetId,
+            operation:OperationType.Equals,
+            source: Source.PdbEntity,
+            values:[entityId]
+        },{
+            field:FieldName.TargetId,
+            operation:OperationType.Contains,
+            source:Source.PdbInstance,
+            values:[instanceId]
+        }];
+        this.annotationCollector.collect({
+            queryId: ncbiId,
+            reference: SequenceReference.NcbiGenome,
+            sources:sources,
+            filters:filters,
+            collectSwissModel:true,
+            range:[ this.pdbEntityTrack.trackData[0].begin, this.pdbEntityTrack.trackData[0].end ]
+        }).then(annRes=>{
+            //this.featuresConfigData = annRes;
+            this.plot();
+            this.collectChromosomeAlignments(ncbiId);
+        });
     }
 
     private collectChromosomeAlignments(chrId: string) {
-        /*const mainIndex: number = Math.floor( this.entityBegin/this.batchSize );
-        this.nTasks++;
-        this.alignmentCollectorQueue.sendTask({
-            queryId: chrId,
-            from: SequenceReference.NcbiGenome,
-            to: SequenceReference.NcbiProtein,
-            range: mainIndex*this.batchSize+"-"+(mainIndex+1)*this.batchSize
-        }, (e)=>{
-            const ar: AlignmentResponse = e as AlignmentResponse
-            this.collectChromosomeWorkerResults(mainIndex,SequenceReference.NcbiProtein,ar,true);
-        });*/
-
         for(let i=0;i<30;i++){
             this.nTasks++;
             this.alignmentCollectorQueue.sendTask({
                 queryId: chrId,
                 from: SequenceReference.NcbiGenome,
                 to: SequenceReference.NcbiProtein,
-                range: i*this.batchSize+"-"+(i+1)*this.batchSize
+                range: [i*this.batchSize, (i+1)*this.batchSize]
             }, (e)=>{
                 const ar: AlignmentResponse = e as AlignmentResponse
                 this.collectChromosomeWorkerResults(i,SequenceReference.NcbiProtein,ar,false);
@@ -302,6 +318,8 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private plot(): void{
         console.log("PROCESSING");
         let tracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+        if(this.featuresConfigData != null && this.featuresConfigData.length > 0)
+            tracks = this.featuresConfigData;
         this.targetAlignmentList.get(SequenceReference.NcbiProtein).forEach((tA, index)=>{
             if(tA.length>0)
                 tracks = tracks.concat( this.collectExons(tA,"query", RcsbAnnotationConstants.provenanceColorCode.external,RcsbAnnotationConstants.provenanceColorCode.external, "NCBI PROTEINS", index) );
@@ -323,6 +341,6 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     }
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
-        this.buildPdbGenomeFv(buildConfig.queryId);
+        this.buildPdbGenomeFv(buildConfig.instanceId, buildConfig.entityId);
     }
 }

@@ -1,4 +1,4 @@
-query QueryAlignment($queryId: String!, $from: SequenceReference, $to:SequenceReference, $range:String){
+query QueryAlignment($queryId: String!, $from: SequenceReference, $to:SequenceReference, $range:[Int]){
     alignment(
         queryId:$queryId
         from:$from

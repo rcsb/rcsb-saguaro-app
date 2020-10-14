@@ -356,13 +356,18 @@ export function unmount(elementId:string): void{
     }
 }
 
-export function buildChromosome(elementId:string, ncbiId: string){
+export function buildChromosome(elementId:string, instanceId: string, entityId: string){
+    const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
+    instanceCollector.collect({entry_id:instanceId.split(TagDelimiter.instance)[0]})
     return new Promise<null>((resolve,reject)=> {
         try {
             createFv({
                 elementId: elementId,
                 fvModuleI: RcsbFvChromosome,
-                config: {queryId: ncbiId}
+                config: {
+                    instanceId: instanceId,
+                    entityId: entityId
+                }
             });
         }catch(e) {
             reject(e);
