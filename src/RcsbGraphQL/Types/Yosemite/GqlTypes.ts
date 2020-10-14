@@ -453,6 +453,12 @@ export interface ClustersMembers {
   __typename?: 'ClustersMembers';
   /** Internal chain ID used in mmCIF files to uniquely identify structural elements in the asymmetric unit. */
   asym_id: Scalars['String'];
+  /**
+   * Optional list of operator ids (pdbx_struct_oper_list.id) as appears in
+   * pdbx_struct_assembly_gen.oper_expression. One operator id per operand in the
+   * expression (most cases have only 1 operator). If it's not given then identity
+   * operator is assumed.
+   */
   pdbx_struct_oper_list_ids?: Maybe<Array<Maybe<Scalars['String']>>>;
 }
 
@@ -861,13 +867,19 @@ export interface CorePubmed {
   rcsb_id?: Maybe<Scalars['String']>;
   /** A concise, accurate and factual mini-version of the paper contents. */
   rcsb_pubmed_abstract_text?: Maybe<Scalars['String']>;
+  /** The institution(s) that the author is affiliated with. Multiple affiliations per author are allowed. */
   rcsb_pubmed_affiliation_info?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Unique integer value assigned to each PubMed Central record. */
   rcsb_pubmed_central_id?: Maybe<Scalars['String']>;
   rcsb_pubmed_container_identifiers: RcsbPubmedContainerIdentifiers;
   /** Persistent identifier used to provide a link to an article location on the Internet. */
   rcsb_pubmed_doi?: Maybe<Scalars['String']>;
+  /**
+   * NLM controlled vocabulary, Medical Subject Headings (MeSH), is used to
+   * characterize the content of the articles represented by MEDLINE citations.
+   */
   rcsb_pubmed_mesh_descriptors?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /** Members of the MeSH classification lineage. */
   rcsb_pubmed_mesh_descriptors_lineage?: Maybe<Array<Maybe<RcsbPubmedMeshDescriptorsLineage>>>;
 }
 
@@ -875,14 +887,17 @@ export interface CoreUniprot {
   __typename?: 'CoreUniprot';
   /** Primary accession number of a given UniProtKB entry. */
   rcsb_id?: Maybe<Scalars['String']>;
+  /** List of UniProtKB accession numbers where original accession numbers are retained as ‘secondary’ accession numbers. */
   rcsb_uniprot_accession?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** UniProt pairwise sequence alignments. */
   rcsb_uniprot_alignments?: Maybe<RcsbUniprotAlignments>;
   rcsb_uniprot_annotation?: Maybe<Array<Maybe<RcsbUniprotAnnotation>>>;
   rcsb_uniprot_container_identifiers: RcsbUniprotContainerIdentifiers;
+  /** A list of unique identifiers (former IDs), often containing biologically relevant information. */
   rcsb_uniprot_entry_name?: Maybe<Array<Maybe<Scalars['String']>>>;
   rcsb_uniprot_external_reference?: Maybe<Array<Maybe<RcsbUniprotExternalReference>>>;
   rcsb_uniprot_feature?: Maybe<Array<Maybe<RcsbUniprotFeature>>>;
+  /** Keywords constitute a controlled vocabulary that summarises the content of a UniProtKB entry. */
   rcsb_uniprot_keyword?: Maybe<Array<Maybe<RcsbUniprotKeyword>>>;
   rcsb_uniprot_protein?: Maybe<RcsbUniprotProtein>;
 }
@@ -3101,10 +3116,7 @@ export interface ExptlCrystalGrow {
 
 export interface GeneName {
   __typename?: 'GeneName';
-  /**
-   * Allowable values:
-   * PRIMARY, SYNONYM, ORDERED_LOCUS, ORF
-   */
+  /** Allowable values: PRIMARY, SYNONYM, ORDERED_LOCUS, ORF. */
   type?: Maybe<Scalars['String']>;
   value?: Maybe<Scalars['String']>;
 }
@@ -7986,10 +7998,7 @@ export interface RcsbClusterFlexibility {
    * a given entity belongs.
    */
   max_rmsd?: Maybe<Scalars['Float']>;
-  /**
-   * Allowable values:
-   * PDBFlex
-   */
+  /** Allowable values: PDBFlex. */
   provenance_code?: Maybe<Scalars['String']>;
 }
 
@@ -8460,7 +8469,7 @@ export interface RcsbGenomicLineage {
   /** Classification hierarchy depth. */
   depth?: Maybe<Scalars['Int']>;
   /**
-   * ID that identify taxonomy, chromosome or gene.
+   * Automatically assigned ID that uniquely identifies taxonomy, chromosome or gene in the Genome Location Browser.
    * 
    * Examples:
    * 9606, 568815441, 414325
@@ -8489,7 +8498,12 @@ export interface RcsbMembraneLineage {
   __typename?: 'RcsbMembraneLineage';
   /** Hierarchy depth. */
   depth?: Maybe<Scalars['Int']>;
-  /** Identifier for membrane classification term (system generated for internal purposes identifier). */
+  /**
+   * Automatically assigned ID for membrane classification term in the Membrane Protein Browser.
+   * 
+   * Examples:
+   * MONOTOPIC MEMBRANE PROTEINS.Oxidases.Monoamine Oxidase A
+   */
   id?: Maybe<Scalars['String']>;
   /** Membrane protein classification term. */
   name?: Maybe<Scalars['String']>;
@@ -9763,7 +9777,12 @@ export interface RcsbPrimaryCitation {
 
 export interface RcsbPubmedContainerIdentifiers {
   __typename?: 'RcsbPubmedContainerIdentifiers';
-  /** Unique integer value assigned to each PubMed record. */
+  /**
+   * UID assigned to each PubMed record.
+   * 
+   * Examples:
+   * null
+   */
   pubmed_id?: Maybe<Scalars['Int']>;
 }
 
@@ -9771,9 +9790,19 @@ export interface RcsbPubmedMeshDescriptorsLineage {
   __typename?: 'RcsbPubmedMeshDescriptorsLineage';
   /** Hierarchy depth. */
   depth?: Maybe<Scalars['Int']>;
-  /** Identifier for MeSH classification term. */
+  /**
+   * Identifier for MeSH classification term.
+   * 
+   * Examples:
+   * E01.370.225.500.388, H01.181
+   */
   id?: Maybe<Scalars['String']>;
-  /** MeSH classification term. */
+  /**
+   * MeSH classification term.
+   * 
+   * Examples:
+   * Chemistry, Mammals, Therapeutic Uses
+   */
   name?: Maybe<Scalars['String']>;
 }
 
@@ -9815,6 +9844,7 @@ export interface RcsbSchemaContainerIdentifiers {
 
 export interface RcsbStructSymmetry {
   __typename?: 'RcsbStructSymmetry';
+  /** Clusters describe grouping of 'identical' subunits. */
   clusters: Array<Maybe<RcsbStructSymmetryClusters>>;
   /**
    * The granularity at which the symmetry calculation is performed. In 'Global
@@ -9877,7 +9907,12 @@ export interface RcsbStructSymmetryLineage {
   __typename?: 'RcsbStructSymmetryLineage';
   /** Hierarchy depth. */
   depth?: Maybe<Scalars['Int']>;
-  /** A unique identifier automatically assigned to the symmetry term. */
+  /**
+   * Automatically assigned ID to uniquely identify the symmetry term in the Protein Symmetry Browser.
+   * 
+   * Examples:
+   * Global Symmetry.Cyclic.C2.Homo 2-mer
+   */
   id?: Maybe<Scalars['String']>;
   /**
    * A human-readable term describing protein symmetry.
@@ -9904,6 +9939,7 @@ export interface RcsbStructSymmetryRotationAxes {
 
 export interface RcsbUniprotAlignments {
   __typename?: 'RcsbUniprotAlignments';
+  /** List of alignments with core_entity canonical sequences */
   core_entity_alignments?: Maybe<Array<Maybe<RcsbUniprotAlignmentsCoreEntityAlignments>>>;
 }
 
@@ -9975,10 +10011,7 @@ export interface RcsbUniprotExternalReference {
   __typename?: 'RcsbUniprotExternalReference';
   provenance_source?: Maybe<Scalars['String']>;
   reference_id?: Maybe<Scalars['String']>;
-  /**
-   * Allowable values:
-   * IMPC, GTEX, PHAROS
-   */
+  /** Allowable values: IMPC, GTEX, PHAROS. */
   reference_name?: Maybe<Scalars['String']>;
 }
 
@@ -10086,7 +10119,12 @@ export interface RcsbUniprotProteinName {
   __typename?: 'RcsbUniprotProteinName';
   /** Historical record of the data attribute. */
   provenance_code: Scalars['String'];
-  /** Name that allows to unambiguously identify a protein. */
+  /**
+   * Name that allows to unambiguously identify a protein.
+   * 
+   * Examples:
+   * Hemoglobin alpha
+   */
   value: Scalars['String'];
 }
 
