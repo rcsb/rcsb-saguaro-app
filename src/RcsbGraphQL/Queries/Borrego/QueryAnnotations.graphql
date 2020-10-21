@@ -19,6 +19,7 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
                 end_seq_id
                 beg_ori_id
                 end_ori_id
+                range_id
                 open_begin
                 open_end
                 value

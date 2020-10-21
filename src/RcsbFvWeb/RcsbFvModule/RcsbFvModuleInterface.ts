@@ -18,6 +18,7 @@ export interface RcsbFvModuleBuildInterface {
     instanceId?: string;
     upAcc?:string;
     refSeqId?:string;
+    chrId?:string;
     additionalConfig?:RcsbFvAdditionalConfig;
     resolve?:()=>void;
 }

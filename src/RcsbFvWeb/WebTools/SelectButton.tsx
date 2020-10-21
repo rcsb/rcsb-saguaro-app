@@ -15,6 +15,7 @@ interface SelectButtonInterface {
     additionalOptions?: Array<SelectOptionInterface>;
     addTitle: boolean;
     defaultValue?: string|undefined|null;
+    width?:number;
 }
 
 interface OptionPropsInterface extends SelectOptionInterface{
@@ -75,18 +76,18 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }
                 isSearchable={false}
                 onChange={this.change.bind(this)}
-                styles={SelectButton.configStyle()}
+                styles={this.configStyle()}
                 components={{ SingleValue }}
                 defaultValue={{...(this.props.options[index]),value:index}}
             />
         );
     }
 
-    private static configStyle(): Styles{
+    private configStyle(): Styles{
         return {
             control: (base: CSSProperties, state:SelectButtonState) => ({
                 ...base,
-                width:120,
+                width: this.props.width ?? 120,
                 border: '1px solid #ddd',
                 boxShadow: 'none',
                 '&:hover': {

@@ -18,6 +18,7 @@ import {RcsbFvUniprotInstance} from "./RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvProteinSequence} from "./RcsbFvModule/RcsbFvProteinSequence";
 import {PairwiseAlignmentBuilder, PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvChromosome} from "./RcsbFvModule/RcsbFvChromosome";
+import {GenomeEntityTranslate} from "./Utils/GenomeEntityTranslate";
 
 interface RcsbFvSingleViewerInterface {
     elementId: string;
@@ -356,17 +357,75 @@ export function unmount(elementId:string): void{
     }
 }
 
-export function buildChromosome(elementId:string, instanceId: string, entityId: string){
+export function buildFullChromosome(elementFvId:string, chrId: string){
+    buildChromosome(elementFvId, null, chrId);
+}
+
+export function buildEntryChromosome(elementFvId:string, elementSelectId:string, entryId: string){
+
     const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-    instanceCollector.collect({entry_id:instanceId.split(TagDelimiter.instance)[0]})
+    instanceCollector.collect({entry_id:entryId}).then(result=> {
+        polymerEntityInstanceMap.set(entryId, new PolymerEntityInstanceTranslate(result));
+        const entitySet: Set<string> = new Set<string>();
+        result.sort((a,b)=>{
+            return parseInt(a.entityId)-parseInt(b.entityId);
+        }).forEach(r=>{
+            entitySet.add(r.entryId+TagDelimiter.entity+r.entityId);
+        });
+        const entityGenomeTranslate: GenomeEntityTranslate = new GenomeEntityTranslate(Array.from(entitySet));
+        entityGenomeTranslate.getChrMap().then(entityMap=>{
+            WebToolsManager.buildSelectButton(elementSelectId, Array.from(entityMap.keys()).map((entityId,n)=>{
+                if(n == 0)
+                    buildEntityChromosome(elementFvId,elementSelectId,  entityId);
+                return{
+                    label: entityId,
+                    name: entityId,
+                    onChange:()=>{
+                        buildEntityChromosome(elementFvId,elementSelectId,  entityId);
+                    }
+                }
+            }));
+        });
+    });
+
+}
+
+export function buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string) {
+    let rcsbFvSingleViewer: RcsbFvSingleViewerInterface;
+    if (rcsbFvManager.has(elementFvId)){
+        rcsbFvSingleViewer = rcsbFvManager.get(elementFvId);
+    }else{
+        rcsbFvSingleViewer = buildRcsbFvSingleViewer(elementFvId);
+        rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
+    }
+    const chrViewer: RcsbFvChromosome = new RcsbFvChromosome(elementFvId,rcsbFvSingleViewer.rcsbFv);
+    chrViewer.build({entityId: entityId});
+    chrViewer.getTargets().then(targets=>{
+        if(targets.length > 1){
+            WebToolsManager.buildSelectButton(elementSelectId, targets.sort((a: string,b: string)=>{
+                return a.localeCompare(b);
+            }).map(chrId=>{
+                return {
+                    label: chrId,
+                    name: chrId,
+                    onChange:()=>{
+                        buildChromosome(elementFvId, entityId, chrId);
+                    }
+                };
+            }),false, null, 190);
+        }
+    });
+}
+
+export function buildChromosome(elementFvId:string, entityId: string, chrId: string) {
     return new Promise<null>((resolve,reject)=> {
         try {
             createFv({
-                elementId: elementId,
+                elementId: elementFvId,
                 fvModuleI: RcsbFvChromosome,
                 config: {
-                    instanceId: instanceId,
-                    entityId: entityId
+                    entityId: entityId,
+                    chrId: chrId
                 }
             });
         }catch(e) {
@@ -374,7 +433,6 @@ export function buildChromosome(elementId:string, instanceId: string, entityId: 
         }
     });
 }
-
 
 /*Class Inner Methods*/
 function getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>void){

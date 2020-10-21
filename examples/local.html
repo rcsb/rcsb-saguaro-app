@@ -10,8 +10,8 @@
 <br/>
 <br/>
 <br/>
+<div id="select" ></div>
 <div id="pfv" ></div>
-<div id="pfv2" ></div>
 
 <script>
     function getJsonFromUrl(url) {
@@ -35,7 +35,7 @@
     RcsbFvWebApp.setBoardConfig({
         trackWidth: 1000
     });
-    RcsbFvWebApp.buildChromosome("pfv",args.instanceId, args.entityId);
+    RcsbFvWebApp.buildEntryChromosome("pfv","select",args.entryId);
     //RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A")
     //RcsbFvWebApp.buildUniprotFv("pfv","P01112")
 </script>

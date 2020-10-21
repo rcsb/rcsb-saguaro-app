@@ -1,7 +1,9 @@
 import {RcsbFvCore} from "./RcsbFvCore";
 import {
-    AlignmentResponse, FieldName, FilterInput, OperationType,
-    SequenceReference, Source,
+    AlignedRegion,
+    AlignmentResponse,
+    Coverage,
+    SequenceReference,
     TargetAlignment
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
@@ -15,36 +17,64 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvAlignmentCollectorQueue} from "../RcsbFvWorkers/RcsbFvAlignmentCollectorQueue";
+import {RcsbQueryAlignment} from "../../RcsbGraphQL/RcsbQueryAlignment";
+import {UpdateGenomeSequenceData} from "../Utils/UpdateGenomeSequenceData";
 
-function updateData(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
+function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>){
     return (where: RcsbFvLocationViewInterface) => {
-        return new Promise<RcsbFvTrackData>((resolve, reject) => {
-            const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
-            if (delta > 4) {
-                const Http = new XMLHttpRequest();
-                const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + '&rettype=fasta&retmode=text';
-                Http.open("GET", url);
-                Http.send();
-                Http.onloadend = (e) => {
-                    const sequence: string = Http.responseText.split("\n").slice(1).join("");
-                    const selectedOption: RcsbFvTrackData = [{begin: where.from, value: reverse ? sequence.split("").reverse().join("") : sequence}];
-                    resolve(selectedOption);
-                };
-                Http.onerror = (e) => {
-                    reject("HTTP error while access URL: " + url);
-                };
-            } else {
+        const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
+        if (delta > 4) {
+            const ids: Array<string> = new Array<string>();
+            ranges.forEach((id, r) => {
+                if (!(r[0] > where.to || r[1] < where.from))
+                    ids.push(id);
+            });
+            return Promise.all(ids.map(id => {
+                const queryAlignment: RcsbQueryAlignment = new RcsbQueryAlignment();
+                return queryAlignment.request({
+                    queryId: id,
+                    from: reference,
+                    to: SequenceReference.NcbiGenome
+                });
+            })).then(alignments => {
+                const out: RcsbFvTrackData = new RcsbFvTrackData();
+                alignments.forEach((a,n) => {
+                    const sequence: Array<string> = a.query_sequence.split("");
+                    a.target_alignment.forEach(ta => {
+                        const orientation = ta.orientation;
+                        ta.aligned_regions.forEach(r => {
+                            const targetIndex: number = r.target_begin
+                            const queryIndex: number = r.query_begin
+                            const length: number = r.query_end - r.query_begin + 1;
+                            for (let i = 0; i < length; i++) {
+                                out.push({
+                                    begin: targetIndex + orientation * (1+3*i),
+                                    value: sequence[queryIndex - 1 + i],
+                                    oriBegin: queryIndex + i,
+                                    source: reference.toString(),
+                                    sourceId: ids[n]
+                                });
+                            }
+                        });
+                    });
+                });
+                return out;
+            });
+        }else{
+            return new Promise<RcsbFvTrackData>((resolve,reject)=>{
                 resolve(null);
-            }
-        });
-    }
+            });
+        }
+    };
 }
 
 export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterface {
     private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
         [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
+        [SequenceReference.Uniprot, new Array<Array<TargetAlignment>>()],
         [SequenceReference.PdbEntity, new Array<Array<TargetAlignment>>()]
     ]);
+
     private maxRange: number = 0;
     private alignmentCollectorQueue: RcsbFvAlignmentCollectorQueue = new RcsbFvAlignmentCollectorQueue(12);
     private nTasks: number = 0;
@@ -57,39 +87,89 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private entityEnd: number = 0;
     private nonExonConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
     private featuresConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private targetCoverages: Map<String, Coverage> = new Map<String, Coverage>();
+    private chrSet: Map<string,{index:number;length:number;}> = new Map<string, {index: number; length: number}>();
+    private targetFilterFlag: boolean = true;
 
-    private buildPdbGenomeFv(pdbInstanceId: string, pdbEntityId: string){
-        this.alignmentCollectorQueue.sendTask({
-            queryId: pdbInstanceId,
-            from: SequenceReference.PdbInstance,
-            to: SequenceReference.NcbiGenome,
-        }, (e)=>{
-            const ar: AlignmentResponse = e as AlignmentResponse
-            this.collectPdbWorkerResults(ar, pdbInstanceId, pdbEntityId);
+    private buildPdbGenomeFv(pdbEntityId: string, chrId?: string){
+        const queryAlignment: RcsbQueryAlignment = new RcsbQueryAlignment();
+        Promise.all([SequenceReference.NcbiProtein, SequenceReference.Uniprot].map(to=>{
+            return queryAlignment.request({
+                queryId: pdbEntityId,
+                from: SequenceReference.PdbEntity,
+                to: to
+            });
+        })).then(result=>{
+            result.forEach(a=>{
+                a.target_alignment.forEach(ta=>{
+                    this.targetCoverages.set(ta.target_id, ta.coverage);
+                });
+            });
+            this.alignmentCollectorQueue.sendTask({
+                queryId: pdbEntityId,
+                from: SequenceReference.PdbEntity,
+                to: SequenceReference.NcbiGenome,
+            }, (e)=>{
+                const ar: AlignmentResponse = e as AlignmentResponse
+                this.collectPdbWorkerResults(ar, pdbEntityId, chrId);
+            });
         });
     }
 
-    private collectPdbWorkerResults(ar: AlignmentResponse, pdbInstanceId: string, pdbEntityId: string){
-        this.pdbEntityTrack = this.collectExons(ar.target_alignment,"target",RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, "", 0)[0];
+    private buildFullGenomeRangeFv(chrId: string){
+        this.targetFilterFlag = false;
+        this.genomeSequenceTracks(chrId);
+        this.collectChromosomeAlignments(chrId, SequenceReference.PdbEntity);
+        this.collectChromosomeAlignments(chrId, SequenceReference.Uniprot);
+        this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein);
+    }
+
+    private collectPdbWorkerResults(ar: AlignmentResponse, pdbEntityId: string, chrId?: string){
+         const exonTracks: Array<RcsbFvRowConfigInterface> = this.collectExons(
+            ar.target_alignment,
+            "target",
+            RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            "",
+            SequenceReference.PdbEntity,
+            chrId
+        );
+        const index:number = chrId != null ? 0 : Array.from(this.chrSet.entries()).sort((a,b)=>{
+            if(b[1].length>a[1].length)
+                return b[1].length-a[1].length;
+            else
+                return b[1].index-a[1].index;
+        })[0][1].index;
+        this.pdbEntityTrack = exonTracks[index];
+        this.pdbEntityTrack.displayConfig[0].displayData[0].description = [pdbEntityId];
+        this.addSequences([this.pdbEntityTrack],SequenceReference.PdbEntity);
         this.pdbEntityTrack.rowPrefix = SequenceReference.PdbEntity.replace("_"," ");
         this.pdbEntityTrack.rowTitle = {
-            visibleTex: pdbInstanceId,
+            visibleTex: pdbEntityId,
             style: {
                 fontWeight:"bold"
             }
         };
         this.pdbEntityTrack.hideEmptyTrackFlag = false;
-        this.buildChromosomeFv(ar.target_alignment[0].target_id, pdbInstanceId, pdbEntityId);
+        this.buildChromosomeFv(chrId ?? ar.target_alignment[index].target_id);
     }
 
-    private buildChromosomeFv(ncbiId: string, pdbInstanceId: string, pdbEntityId: string): void {
+    private buildChromosomeFv(chrId: string): void {
+        this.genomeSequenceTracks(chrId);
+        this.nonExonConfigData.push(this.pdbEntityTrack);
+        this.plot();
+        this.collectChromosomeEntityRegion(chrId);
+    }
+
+    private genomeSequenceTracks(chrId: string): void{
+        const updateGenomeSequence_5: UpdateGenomeSequenceData = new UpdateGenomeSequenceData();
         this.nonExonConfigData.push({
-            trackId: "mainSequenceTrack_" + ncbiId,
+            trackId: "mainSequenceTrack_5_" + chrId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             trackColor: "#F9F9F9",
             displayColor: "#000000",
             nonEmptyDisplay: true,
-            rowPrefix: "DNA",
+            rowPrefix: chrId+" ",
             rowTitle: {
                 visibleTex:"5'",
                 style:{
@@ -97,10 +177,12 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                 },
             },
             titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.external,
-            updateDataOnMove: updateData(ncbiId, 1, false, this.rcsbFv?.getBoardConfig()?.trackWidth)
+            updateDataOnMove: updateGenomeSequence_5.update(chrId, 1, false, this.rcsbFv?.getBoardConfig()?.trackWidth)
         });
+
+        const updateGenomeSequence_3: UpdateGenomeSequenceData = new UpdateGenomeSequenceData();
         this.nonExonConfigData.push({
-            trackId: "mainSequenceTrack_" + ncbiId,
+            trackId: "mainSequenceTrack_3_" + chrId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             trackColor: "#F9F9F9",
             displayColor: "#000000",
@@ -113,52 +195,45 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                 },
             },
             titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.external,
-            updateDataOnMove: updateData(ncbiId, 2, true, this.rcsbFv?.getBoardConfig()?.trackWidth)
-        });
-        this.nonExonConfigData.push(this.pdbEntityTrack);
-        //Collect positional features ?
-        this.collectFeatures(ncbiId, pdbInstanceId, pdbEntityId);
-    }
-
-    private collectFeatures(ncbiId: string, instanceId: string, entityId: string){
-        const sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
-        const filters:Array<FilterInput> = [{
-            field:FieldName.TargetId,
-            operation:OperationType.Equals,
-            source: Source.PdbEntity,
-            values:[entityId]
-        },{
-            field:FieldName.TargetId,
-            operation:OperationType.Contains,
-            source:Source.PdbInstance,
-            values:[instanceId]
-        }];
-        this.annotationCollector.collect({
-            queryId: ncbiId,
-            reference: SequenceReference.NcbiGenome,
-            sources:sources,
-            filters:filters,
-            collectSwissModel:true,
-            range:[ this.pdbEntityTrack.trackData[0].begin, this.pdbEntityTrack.trackData[0].end ]
-        }).then(annRes=>{
-            //this.featuresConfigData = annRes;
-            this.plot();
-            this.collectChromosomeAlignments(ncbiId);
+            updateDataOnMove: updateGenomeSequence_3.update(chrId, 2, true, this.rcsbFv?.getBoardConfig()?.trackWidth)
         });
     }
 
-    private collectChromosomeAlignments(chrId: string) {
-        for(let i=0;i<30;i++){
+
+    private collectChromosomeEntityRegion(chrId: string): void{
+        const begin: number = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
+        const end: number = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
+        const length = end - begin;
+        const range: [number,number] = [begin - Math.ceil(0.05*length), end + Math.ceil(+0.05*length)];
+        this.collectChromosomeAlignments(chrId, SequenceReference.Uniprot, range, 0);
+        this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein, range, 0);
+    }
+
+    private collectChromosomeAlignments(chrId: string, to: SequenceReference, range?:[number,number], index?: number) {
+        if(range != null){
             this.nTasks++;
             this.alignmentCollectorQueue.sendTask({
                 queryId: chrId,
                 from: SequenceReference.NcbiGenome,
-                to: SequenceReference.NcbiProtein,
-                range: [i*this.batchSize, (i+1)*this.batchSize]
+                to: to,
+                range: range
             }, (e)=>{
                 const ar: AlignmentResponse = e as AlignmentResponse
-                this.collectChromosomeWorkerResults(i,SequenceReference.NcbiProtein,ar,false);
+                this.collectChromosomeWorkerResults(index,to,ar,false);
             });
+        }else{
+            for(let i=0;i<30;i++){
+                this.nTasks++;
+                this.alignmentCollectorQueue.sendTask({
+                    queryId: chrId,
+                    from: SequenceReference.NcbiGenome,
+                    to: to,
+                    range: [i*this.batchSize, (i+1)*this.batchSize]
+                }, (e)=>{
+                    const ar: AlignmentResponse = e as AlignmentResponse
+                    this.collectChromosomeWorkerResults(i,to,ar,false);
+                });
+            }
         }
     }
 
@@ -175,75 +250,182 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
         }
     }
 
-    private collectExons(targetAlignmentList: Array<TargetAlignment>, member: "query"|"target", blockColor: string, flagTitleColor: string, title: string, index: number): Array<RcsbFvRowConfigInterface> {
-        const beginMember: "query_begin"|"target_begin" = member === "query" ? "query_begin" : "target_begin";
-        const endMember: "query_end"|"target_end" = member === "query" ? "query_end" : "target_end";
-        const entities: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private collectExons(targetAlignmentList: Array<TargetAlignment>, member: "query"|"target", blockColor: string, flagTitleColor: string, title: string, reference: SequenceReference, chrId?: string): Array<RcsbFvRowConfigInterface> {
+        const exonTrackList: Array<RcsbFvTrackData> = new Array<RcsbFvTrackData>();
         targetAlignmentList.forEach((targetAlignment,i) => {
-            if(targetAlignment.aligned_regions.length == 0 )
+            if(member == "target" && chrId == null)
+                this.chrSet.set(targetAlignment.target_id,{index:i,length:targetAlignment.aligned_regions.length});
+            if(targetAlignment.aligned_regions.length == 0 || (member == "query" && this.targetFilterFlag && !this.targetCoverages.has(targetAlignment.target_id)) || (member == "target" && chrId != null && chrId != targetAlignment.target_id))
                 return;
-            const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-            if(targetAlignment.orientation>0) {
-                alignedBlocks.push({
-                    begin: targetAlignment.aligned_regions[0][beginMember],
-                    end: targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember],
-                    gaps: [],
-                    description:[targetAlignment.target_id]
-                });
-                if(targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] > this.maxRange)
-                    this.maxRange = targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember];
-                targetAlignment.aligned_regions.forEach((region,n) => {
-                    if((n+1)<targetAlignment.aligned_regions.length)
-                        alignedBlocks[0].gaps.push({
-                            begin: region[endMember],
-                            end: targetAlignment.aligned_regions[n+1][beginMember],
-                            isConnected: true
-                        });
-                });
-            }else{
-                alignedBlocks.push({
-                    end: targetAlignment.aligned_regions[0][beginMember],
-                    begin: targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember],
-                    gaps: [],
-                    description:[targetAlignment.target_id]
-                });
-                if(targetAlignment.aligned_regions[0][beginMember]>this.maxRange)
-                    this.maxRange = targetAlignment.aligned_regions[0][beginMember];
-                targetAlignment.aligned_regions.reverse().forEach((region,n) => {
-                    if((n+1)<targetAlignment.aligned_regions.length)
-                        alignedBlocks[0].gaps.push({
-                            end: targetAlignment.aligned_regions[n+1][endMember],
-                            begin: region[beginMember],
-                            isConnected: true
-                        });
-                })
-            }
-            entities.push({
-                trackId: "pdbTracks_"+Math.random().toString(36).substr(2),
-                displayType: RcsbFvDisplayTypes.BLOCK,
-                trackColor: "#F9F9F9",
-                rowTitle: "",
-                selectDataInRangeFlag: true,
-                hideEmptyTrackFlag: true,
-                titleFlagColor:flagTitleColor,
-                trackData: alignedBlocks,
-                minRatio:1/10000,
-                displayColor: blockColor,
-                overlap: true
-            });
+            exonTrackList.push([this.normalizeTargetAlignment(targetAlignment, member)]);
         });
-        return this.simplifyExonTracks(entities.sort((a,b)=>{
-            if(a.trackData[0].begin != b.trackData[0].begin) return a.trackData[0].begin-b.trackData[0].begin;
-            if(b.trackData[0].end != a.trackData[0].end) return b.trackData[0].end-a.trackData[0].end;
-            return a.trackData[0].gaps.map(g=>g.end-g.begin).reduce((a,b)=>a+b,0)-b.trackData[0].gaps.map(g=>g.end-g.begin).reduce((a,b)=>a+b,0);
-        }), title, index);
+        const lightTracks: Array<RcsbFvTrackData> =  this.simplifyExonTracks(exonTrackList.sort((a,b)=>{
+            if(a[0].begin != b[0].begin) return a[0].begin-b[0].begin;
+            if(b[0].end != a[0].end) return b[0].end-a[0].end;
+            return a[0].gaps.map(g=>g.end-g.begin).reduce((a,b)=>a+b,0)-b[0].gaps.map(g=>g.end-g.begin).reduce((a,b)=>a+b,0);
+        }),member,reference);
+        return lightTracks.map((t,index)=>{
+            return {
+                trackId: "pdbTracks_" + Math.random().toString(36).substr(2),
+                displayType: RcsbFvDisplayTypes.COMPOSITE,
+                trackColor: "#F9F9F9",
+                rowTitle: index == 0 ? title : "",
+                titleFlagColor: flagTitleColor,
+                overlap: true,
+                displayConfig:[{
+                    displayType:RcsbFvDisplayTypes.BLOCK,
+                    displayData:t,
+                    displayColor:blockColor,
+                    selectDataInRangeFlag: true,
+                    hideEmptyTrackFlag: true,
+                    minRatio: 1 / 1000
+                }]
+            }
+        });
     }
 
-    private simplifyExonTracks(tracks: Array<RcsbFvRowConfigInterface>, title: string, index: number): Array<RcsbFvRowConfigInterface> {
-        const lightTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private normalizeTargetAlignment(targetAlignment: TargetAlignment, member: "query"|"target"): RcsbFvTrackDataElementInterface {
+        const beginMember: "query_begin"|"target_begin" = member === "query" ? "query_begin" : "target_begin";
+        const endMember: "query_end"|"target_end" = member === "query" ? "query_end" : "target_end";
+        const out: RcsbFvTrackDataElementInterface = {
+            begin: Math.min(targetAlignment.aligned_regions[0][beginMember],targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember]),
+            end: Math.max(targetAlignment.aligned_regions[0][beginMember],targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember]),
+            gaps: [],
+            description:[targetAlignment.target_id],
+            openBegin: targetAlignment.orientation < 0,
+            openEnd: targetAlignment.orientation > 0
+        };
+        if(targetAlignment.orientation>0) {
+            if(targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] > this.maxRange)
+                this.maxRange = targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember];
+            targetAlignment.aligned_regions.forEach((currentExon,n) => {
+                if((n+1)<targetAlignment.aligned_regions.length){
+                    const nextExon: AlignedRegion = targetAlignment.aligned_regions[n+1];
+                    let beginGap: number = currentExon[endMember];
+                    let endGap: number = nextExon[beginMember];
+                    const exonShift: Array<number> = currentExon.exon_shift;
+                    if(exonShift?.length == 1){
+                        if( Math.abs(exonShift[0]-endGap) == 1 ){
+                            endGap = exonShift[0];
+                        }else{
+                            out.gaps.push({
+                                end:exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            endGap = exonShift[0];
+                        }
+                    }else if(exonShift?.length == 2){
+                        if( Math.abs(exonShift[1]-endGap) == 1 && Math.abs(exonShift[1]-exonShift[0]) == 1){
+                            endGap = exonShift[0];
+                        }else if( Math.abs(exonShift[1]-endGap) == 1 ){
+                            out.gaps.push({
+                                end:exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[0];
+                            endGap = exonShift[1];
+                        }else if( Math.abs(exonShift[1]-exonShift[0]) == 1 ){
+                            out.gaps.push({
+                                end:exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[1];
+                        }else{
+                            out.gaps.push({
+                                end:exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[0];
+                            out.gaps.push({
+                                end:exonShift[1],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[1];
+                        }
+                    }
+                    out.gaps.push({
+                        begin: beginGap,
+                        end: endGap,
+                        isConnected: true
+                    });
+                }
+            });
+        }else{
+            if(targetAlignment.aligned_regions[0][beginMember]>this.maxRange)
+                this.maxRange = targetAlignment.aligned_regions[0][beginMember];
+            targetAlignment.aligned_regions.reverse().forEach((currentExon,n) => {
+                if((n+1)<targetAlignment.aligned_regions.length) {
+                    const nextExon: AlignedRegion = targetAlignment.aligned_regions[n + 1];
+                    let beginGap: number = currentExon[beginMember];
+                    let endGap: number = nextExon[endMember];
+                    const exonShift: Array<number> = nextExon.exon_shift;
+
+                    if(exonShift?.length == 1){
+                        if( Math.abs(exonShift[0]-beginGap) == 1 ){
+                            beginGap = exonShift[0];
+                        }else{
+                            out.gaps.push({
+                                end: exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[0];
+                        }
+                    }else if(exonShift?.length == 2){
+                        if( Math.abs(exonShift[1]-beginGap) == 1  && Math.abs(exonShift[1]-exonShift[0]) == 1 ){
+                            beginGap = exonShift[0];
+                        }else if( Math.abs(exonShift[1]-beginGap) == 1 ){
+                            beginGap = exonShift[1];
+                            out.gaps.push({
+                                end: exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[0];
+                        }else if( Math.abs(exonShift[1]-exonShift[0]) == 1 ){
+                            out.gaps.push({
+                                end: exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[1];
+                        }else{
+                            out.gaps.push({
+                                end: exonShift[0],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[0];
+                            out.gaps.push({
+                                end: exonShift[1],
+                                begin: beginGap,
+                                isConnected: true
+                            });
+                            beginGap = exonShift[1];
+                        }
+                    }
+                    out.gaps.push({
+                        end: endGap,
+                        begin: beginGap,
+                        isConnected: true
+                    });
+                }
+            });
+        }
+        return out;
+    }
+
+    private simplifyExonTracks(tracks: Array<RcsbFvTrackData>, member: "query"|"target", reference: SequenceReference): Array<RcsbFvTrackData> {
+        const lightTracks: Array<RcsbFvTrackData> = new Array<RcsbFvTrackData>();
         tracks.forEach(t=>{
-            const trackBegin: number = t.trackData[0].begin;
-            const trackEnd: number = t.trackData[0].end;
+            const trackBegin: number = t[0].begin;
+            const trackEnd: number = t[0].end;
+
             if(lightTracks.length == 0){
                 if( (this.entityBegin > 0 && this.entityEnd > 0) && !(trackBegin > this.entityEnd || trackEnd < this.entityBegin) ){
                     if(trackBegin<this.beginView)
@@ -253,12 +435,11 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                 }
                 lightTracks.push(t);
             }else{
-
                 const N: number = lightTracks.length-1;
-                const begin: number = lightTracks[N].trackData[0].begin;
-                const end: number = lightTracks[N].trackData[0].end;
-                const trackHash: string = trackBegin+"."+t.trackData[0].gaps.map((b)=>{return b.begin+"."+b.end}).join(".")+"."+trackEnd;
-                const ltHash: string = begin+"."+lightTracks[N].trackData[0].gaps.map((b)=>{return b.begin+"."+b.end}).join(".")+"."+end;
+                const begin: number = lightTracks[N][0].begin;
+                const end: number = lightTracks[N][0].end;
+                const trackHash: string = trackBegin+"."+t[0].gaps.map((b)=>{return b.begin+"."+b.end}).join(".")+"."+trackEnd;
+                const ltHash: string = begin+"."+lightTracks[N][0].gaps.map((b)=>{return b.begin+"."+b.end}).join(".")+"."+end;
                 if( trackHash != ltHash ){
                     if( (this.entityBegin > 0 && this.entityEnd > 0) && !(trackBegin > this.entityEnd || trackEnd < this.entityBegin) ){
                         if(trackBegin<this.beginView)
@@ -268,79 +449,141 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                     }
                     lightTracks.push(t);
                 }else{
-                    lightTracks[N].trackData[0].description.push(t.trackData[0].description[0]);
+                    lightTracks[N][0].description.push(t[0].description[0]);
                 }
             }
         });
-        if(index == 0) lightTracks[0].rowTitle = title;
         return lightTracks;
     }
 
-    private mergeExonTracks(tracks: Array<RcsbFvRowConfigInterface>): Array<RcsbFvRowConfigInterface> {
+    private mergeExonTracks(tracks: Array<RcsbFvRowConfigInterface>, reference: SequenceReference): Array<RcsbFvRowConfigInterface> {
         const lightTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
         tracks.forEach(t=>{
             if(lightTracks.length == 0){
                 lightTracks.push(t);
             }else{
-                const trackBegin: number = t.trackData[0].begin;
+                const trackBegin: number = t.displayConfig[0].displayData[0].begin;
                 let index: number = -1;
                 lightTracks.forEach((lT,n)=>{
-                    const N: number = lT.trackData.length-1;
-                    const begin: number = lT.trackData[N].begin;
-                    const end: number = lT.trackData[N].end;
+                    const N: number = lT.displayConfig[0].displayData.length-1;
+                    const end: number = lT.displayConfig[0].displayData[N].end;
                     if(trackBegin > end && index == -1){
                         index = n;
                     }
                 });
                 if(index>=0){
-                    lightTracks[index].trackData.push(t.trackData[0]);
+                    lightTracks[index].displayConfig[0].displayData.push(t.displayConfig[0].displayData[0]);
                 }else if(index == -1){
                     lightTracks.push(t);
                 }
             }
         });
+        this.addSequences(lightTracks, reference);
         return lightTracks;
     }
 
-    private setDomainView(): void{
-        if(this.entityBegin == 0 && this.entityEnd == 0){
-            this.entityBegin = this.pdbEntityTrack.trackData[0].begin;
-            this.entityEnd = this.pdbEntityTrack.trackData[0].end;
-            this.beginView = this.pdbEntityTrack.trackData[0].begin;
-            this.endView = this.pdbEntityTrack.trackData[0].end;
+    private addSequences(lightTracks: Array<RcsbFvRowConfigInterface>, reference: SequenceReference): void{
+        lightTracks.forEach(t=>{
+            const ids: Map<[number,number], string> = new Map<[number, number], string>();
+            t.displayConfig[0].displayData.forEach(d=>{
+                ids.set([d.begin,d.end],d.description[0]);
+            })
+            t.displayConfig.push({
+                displayType: RcsbFvDisplayTypes.SEQUENCE,
+                updateDataOnMove: sequenceDisplayDynamicUpdate(reference, ids, this.rcsbFv?.getBoardConfig()?.trackWidth),
+                displayData: [],
+                hideEmptyTrackFlag: true,
+                minRatio: 1 / 1000
+            });
+        });
+    }
+
+    private setDisplayView(): void{
+        if(this.entityBegin == 0 && this.entityEnd == 0 && this.pdbEntityTrack?.displayConfig?.length > 0 ){
+            this.entityBegin = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
+            this.entityEnd = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
+            this.beginView = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
+            this.endView = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
+            const begin: number = this.beginView;
+            const end: number = this.endView;
+            const length = end - begin;
+            this.boardConfigData.range = {
+                min:begin - Math.ceil(0.05*length),
+                max:end + Math.ceil(+0.05*length)
+            };
         }
-        const begin: number = this.beginView;
-        const end: number = this.endView;
-        const length = end - begin;
-        this.rcsbFv.setDomain([begin-Math.ceil(0.05*length),Math.ceil(end+0.05*length)]);
+        this.display();
     }
 
     private plot(): void{
         console.log("PROCESSING");
         let tracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
-        if(this.featuresConfigData != null && this.featuresConfigData.length > 0)
-            tracks = this.featuresConfigData;
+
+        let ncbiTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
         this.targetAlignmentList.get(SequenceReference.NcbiProtein).forEach((tA, index)=>{
             if(tA.length>0)
-                tracks = tracks.concat( this.collectExons(tA,"query", RcsbAnnotationConstants.provenanceColorCode.external,RcsbAnnotationConstants.provenanceColorCode.external, "NCBI PROTEINS", index) );
+                ncbiTracks = ncbiTracks.concat( this.collectExons(tA,"query", "#69b3a2","#69b3a2", "NCBI PROTEINS", SequenceReference.NcbiProtein) );
         });
+        ncbiTracks = this.mergeExonTracks(ncbiTracks, SequenceReference.NcbiProtein);
+
+        let uniprotTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+        this.targetAlignmentList.get(SequenceReference.Uniprot).forEach((tA, index)=>{
+            if(tA.length>0)
+                uniprotTracks = uniprotTracks.concat( this.collectExons(tA,"query", "#cc99ff","#cc99ff", "UNIPROT PROTEINS", SequenceReference.Uniprot) );
+        });
+        uniprotTracks = this.mergeExonTracks(uniprotTracks, SequenceReference.Uniprot);
+
+        let entityTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
         this.targetAlignmentList.get(SequenceReference.PdbEntity).forEach((tA, index)=>{
             if(tA.length>0)
-                tracks = tracks.concat( this.collectExons(tA,"query", RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, "PDB ENTITIES", index) );
+                entityTracks = entityTracks.concat( this.collectExons(tA,"query", RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, "PDB ENTITIES", SequenceReference.PdbEntity) );
         });
+        entityTracks = this.mergeExonTracks(entityTracks, SequenceReference.PdbEntity);
+
+        const headerTracks: Array<RcsbFvRowConfigInterface> = this.featuresConfigData?.length > 0 ? this.nonExonConfigData.concat(this.featuresConfigData) : this.nonExonConfigData;
+        if(ncbiTracks.length > 0)
+            tracks = tracks.concat(ncbiTracks);
+        if(uniprotTracks.length > 0)
+            tracks = tracks.concat(uniprotTracks);
+        if(entityTracks.length > 0)
+            tracks = tracks.concat(entityTracks)
+
         if(tracks.length > 0)
-            this.rowConfigData = this.nonExonConfigData.concat(this.mergeExonTracks(tracks));
+            this.rowConfigData = headerTracks.concat(tracks);
         else
-            this.rowConfigData = this.nonExonConfigData;
+            this.rowConfigData = headerTracks;
         console.log("RENDERING");
         this.boardConfigData.borderColor = "#F9F9F9";
         this.boardConfigData.length = Math.floor(this.maxRange + 0.01*this.maxRange);
         this.boardConfigData.includeAxis = true;
-        this.display();
-        this.setDomainView();
+        this.setDisplayView();
     }
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
-        this.buildPdbGenomeFv(buildConfig.instanceId, buildConfig.entityId);
+        if(buildConfig.entityId != null)
+            this.buildPdbGenomeFv(buildConfig.entityId, buildConfig.chrId);
+        else if(buildConfig.chrId != null)
+            this.buildFullGenomeRangeFv(buildConfig.chrId);
+    }
+
+    public getTargets(): Promise<Array<string>> {
+        return new Promise((resolve, reject)=>{
+            const recursive = ()=>{
+                if(this.chrSet.size > 0)
+                    resolve(Array.from(this.chrSet.entries()).sort((a,b)=>{
+                        if(b[1].length>a[1].length)
+                            return b[1].length-a[1].length;
+                        else
+                            return b[1].index-a[1].index;
+                    }).map(a=>{
+                        return a[0]
+                    }));
+                else
+                    window.setTimeout(()=>{
+                        recursive();
+                    },600);
+            };
+            recursive();
+        });
     }
 }

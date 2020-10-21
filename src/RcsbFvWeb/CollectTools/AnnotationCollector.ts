@@ -144,31 +144,49 @@ export class AnnotationCollector extends CoreCollector{
     }
 
     private computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<FeaturePositionGaps>{
-        let ignoreGaps: boolean = false;
-        const sorted: Array<FeaturePosition> = featurePositions.sort((a,b)=>{
-            return a.beg_seq_id-b.beg_seq_id;
+        const rangeIdMap: Map<String,Array<FeaturePosition>> = new Map<String, Array<FeaturePosition>>();
+        const out: Array<FeaturePositionGaps> = new Array<FeaturePositionGaps>();
+        featurePositions.forEach(fp=>{
+            if(fp.range_id != null){
+                if(!rangeIdMap.has(fp.range_id))
+                    rangeIdMap.set(fp.range_id, new Array<FeaturePosition>());
+                rangeIdMap.get(fp.range_id).push(fp);
+            }else{
+                out.push(fp)
+            }
         });
-        sorted.forEach((fp,n)=>{
-            if(fp.beg_ori_id == null || fp.end_ori_id == null || fp.beg_seq_id > sorted[n].beg_seq_id)
-                ignoreGaps = true;
+        rangeIdMap.forEach((fpList,rangeId)=>{
+            if(fpList.length ==1){
+                out.push(fpList[0])
+            }else{
+                const sorted: Array<FeaturePosition> = fpList.sort((a,b)=>{
+                    return a.beg_seq_id-b.beg_seq_id;
+                });
+                const gapedFeaturePosition: FeaturePositionGaps = {
+                    ...sorted[0],
+                    end_seq_id: sorted[ sorted.length-1 ].end_seq_id,
+                    end_ori_id: sorted[ sorted.length-1 ].end_ori_id,
+                    gaps: new Array<RcsbFvTrackDataElementGapInterface>()
+                };
+                for(let n=0;n<sorted.length-1;n++){
+                    gapedFeaturePosition.gaps.push({
+                        begin:sorted[n].end_seq_id,
+                        end:sorted[n+1].beg_seq_id,
+                        isConnected: (
+                            sorted[n].beg_ori_id == null ||
+                            sorted[n].end_ori_id == null ||
+                            sorted[n+1].beg_ori_id == null ||
+                            sorted[n+1].end_ori_id == null ||
+                            sorted[n].end_ori_id+1 == sorted[n+1].beg_ori_id ||
+                            sorted[n].end_ori_id == sorted[n+1].beg_ori_id+1 ||
+                            sorted[n].end_ori_id == sorted[n+1].beg_ori_id
+                        )
+                    });
+                }
+                out.push(gapedFeaturePosition);
+            }
         });
-        if(sorted.length == 1 || ignoreGaps)
-            return featurePositions;
-
-        const gapedFeaturePosition: FeaturePositionGaps = {
-            ...sorted[0],
-            end_seq_id: sorted[ sorted.length-1 ].end_seq_id,
-            end_ori_id: sorted[ sorted.length-1 ].end_ori_id,
-            gaps: new Array<RcsbFvTrackDataElementGapInterface>()
-        };
-        for(let n=0;n<sorted.length-1;n++){
-            gapedFeaturePosition.gaps.push({
-                begin:sorted[n].end_seq_id,
-                end:sorted[n+1].beg_seq_id,
-                isConnected: (sorted[n].end_ori_id+1 == sorted[n+1].beg_ori_id)
-            });
-        }
-        return [gapedFeaturePosition];
+        return out;
     }
 
     private buildAnnotationTrack(data: Array<RcsbFvTrackDataElementInterface>, type: string): RcsbFvRowConfigInterface {
@@ -178,7 +196,7 @@ export class AnnotationCollector extends CoreCollector{
         if (annConfig !== null) {
             displayType = annConfig.display;
         }
-        if (displayType === RcsbFvDisplayTypes.COMPOSITE || displayType === RcsbFvDisplayTypes.BOND) {
+        if (displayType === RcsbFvDisplayTypes.COMPOSITE || displayType === RcsbFvDisplayTypes.BOND || displayType === RcsbFvDisplayTypes.PIN) {
             out = this.buildRcsbFvRowConfigComposite(data,type);
         }else if(displayType === RcsbFvDisplayTypes.AREA || displayType === RcsbFvDisplayTypes.LINE){
             out = this.buildRcsbFvRowConfigArea(data,type);

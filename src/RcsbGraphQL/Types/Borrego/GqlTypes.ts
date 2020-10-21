@@ -97,6 +97,8 @@ export interface FeaturePosition {
   open_begin?: Maybe<Scalars['Boolean']>;
   /** Flag that indicates the feature end after the feature index end */
   open_end?: Maybe<Scalars['Boolean']>;
+  /** Fragment identifier that groups a set of ranges resulting from gaps */
+  range_id?: Maybe<Scalars['String']>;
   /** The value for the feature at this region */
   value?: Maybe<Scalars['Float']>;
 }
@@ -107,10 +109,10 @@ export enum FieldName {
 }
 
 export interface FilterInput {
+  operation?: Maybe<OperationType>;
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
   source?: Maybe<Source>;
   field?: Maybe<FieldName>;
-  values?: Maybe<Array<Maybe<Scalars['String']>>>;
-  operation?: Maybe<OperationType>;
 }
 
 export enum OperationType {

@@ -25,7 +25,7 @@ export class RcsbFvAlignmentCollectorQueue {
         for(let i=0; i<this.nWorkers; i++){
             this.workerList.push({
                 available: true,
-                worker: new Worker("../build/dist/worker.js")
+                worker: new Worker("/saguaro/worker.js")
             });
         }
     }
