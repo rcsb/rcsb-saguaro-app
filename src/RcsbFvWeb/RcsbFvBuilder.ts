@@ -180,35 +180,49 @@ interface InstanceSequenceOnchangeInterface {
     asymId: string;
 }
 
-export function buildInstanceSequenceFv(elementId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
+export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
     const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
     instanceCollector.collect({entry_id:entryId}).then(result=>{
-        polymerEntityInstanceMap.set(entryId,new PolymerEntityInstanceTranslate(result));
-        WebToolsManager.buildSelectButton(elementSelectId,result.map(instance=>{
-            return{
-                name: instance.names+" - "+instance.taxIds.join(", "),
-                label: instance.entryId+TagDelimiter.instance+instance.authId+" - "+instance.names,
-                shortLabel: instance.entryId+TagDelimiter.instance+instance.authId,
-                onChange:()=>{
-                    buildInstanceFv(
-                        elementId,
-                        instance.rcsbId
-                    ).then(()=>{
-                        if(typeof onChangeCallback === "function")
-                            onChangeCallback({pdbId:instance.entryId, authId: instance.authId, asymId: instance.asymId} );
-                    });
+        if(result.length == 0){
+            showMessage(elementFvId, "No sequence features are available");
+        }else{
+            polymerEntityInstanceMap.set(entryId, new PolymerEntityInstanceTranslate(result));
+            WebToolsManager.buildSelectButton(elementSelectId, result.map(instance => {
+                return {
+                    name: instance.names + " - " + instance.taxIds.join(", "),
+                    label: instance.entryId + TagDelimiter.instance + instance.authId + " - " + instance.names,
+                    shortLabel: instance.entryId + TagDelimiter.instance + instance.authId,
+                    onChange: () => {
+                        buildInstanceFv(
+                            elementFvId,
+                            instance.rcsbId
+                        ).then(() => {
+                            if (typeof onChangeCallback === "function")
+                                onChangeCallback({
+                                    pdbId: instance.entryId,
+                                    authId: instance.authId,
+                                    asymId: instance.asymId
+                                });
+                        });
+                    }
                 }
+            }), true, defaultValue);
+            let index: number = 0;
+            if (defaultValue != null) {
+                const n: number = result.findIndex(a => {
+                    return a.authId === defaultValue.split(TagDelimiter.instance)[1] && a.entryId === defaultValue.split(TagDelimiter.instance)[0]
+                });
+                if (n >= 0) index = n;
             }
-        }),true, defaultValue);
-        let index: number = 0;
-        if(defaultValue!=null){
-            const n: number= result.findIndex(a=>{ return a.authId === defaultValue.split(TagDelimiter.instance)[1] && a.entryId === defaultValue.split(TagDelimiter.instance)[0]});
-            if(n>=0) index = n;
+            buildInstanceFv(elementFvId, result[index].rcsbId).then(() => {
+                if (typeof onChangeCallback === "function")
+                    onChangeCallback({
+                        pdbId: result[index].entryId,
+                        authId: result[index].authId,
+                        asymId: result[index].asymId
+                    });
+            });
         }
-        buildInstanceFv(elementId,result[index].rcsbId).then(()=>{
-            if(typeof onChangeCallback === "function")
-                onChangeCallback({pdbId:result[index].entryId, authId: result[index].authId, asymId: result[index].asymId} );
-        });
     }).catch(error=>{
         console.error(error);
         throw error;
@@ -362,7 +376,7 @@ export function buildFullChromosome(elementFvId:string, chrId: string){
 }
 
 export function buildEntryChromosome(elementFvId:string, elementSelectId:string, entryId: string){
-
+    boardConfig = {rowTitleWidth:160};
     const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
     instanceCollector.collect({entry_id:entryId}).then(result=> {
         polymerEntityInstanceMap.set(entryId, new PolymerEntityInstanceTranslate(result));
@@ -374,20 +388,24 @@ export function buildEntryChromosome(elementFvId:string, elementSelectId:string,
         });
         const entityGenomeTranslate: GenomeEntityTranslate = new GenomeEntityTranslate(Array.from(entitySet));
         entityGenomeTranslate.getChrMap().then(entityMap=>{
-            WebToolsManager.buildSelectButton(elementSelectId, Array.from(entityMap.keys()).map((entityId,n)=>{
-                if(n == 0)
-                    buildEntityChromosome(elementFvId,elementSelectId,  entityId);
-                return{
-                    label: entityId,
-                    name: entityId,
-                    onChange:()=>{
-                        buildEntityChromosome(elementFvId,elementSelectId,  entityId);
+            if(entityMap.size == 0){
+                showMessage(elementFvId, "No genome alignments are available");
+            }else{
+                WebToolsManager.buildSelectButton(elementSelectId,Array.from(entityMap.keys()).map((entityId,n)=>{
+                    if(n == 0)
+                        buildEntityChromosome(elementFvId,elementSelectId,entityId);
+                    return{
+                        label: entityId,
+                        name: entityId,
+                        onChange:()=>{
+                            WebToolsManager.clearAdditionalSelectButton();
+                            buildEntityChromosome(elementFvId,elementSelectId,entityId);
+                        }
                     }
-                }
-            }));
+                }));
+            }
         });
     });
-
 }
 
 export function buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string) {
@@ -402,9 +420,7 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
     chrViewer.build({entityId: entityId});
     chrViewer.getTargets().then(targets=>{
         if(targets.length > 1){
-            WebToolsManager.buildSelectButton(elementSelectId, targets.sort((a: string,b: string)=>{
-                return a.localeCompare(b);
-            }).map(chrId=>{
+            WebToolsManager.additionalSelectButton(elementSelectId, targets.map((chrId,n)=>{
                 return {
                     label: chrId,
                     name: chrId,
@@ -412,7 +428,7 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
                         buildChromosome(elementFvId, entityId, chrId);
                     }
                 };
-            }),false, null, 190);
+            }),false, 190);
         }
     });
 }
@@ -503,3 +519,8 @@ function buildRcsbFvSingleViewer(elementId: string): RcsbFvSingleViewerInterface
     };
 }
 
+function showMessage(elementId: string, message: string){
+    const domElement: HTMLElement = document.createElement<"h4">("h4");
+    domElement.innerHTML = message;
+    document.getElementById(elementId).append(domElement);
+}

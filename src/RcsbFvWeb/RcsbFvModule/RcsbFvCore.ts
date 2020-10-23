@@ -13,6 +13,7 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 export abstract class RcsbFvCore {
 
     protected rcsbFv: RcsbFv;
+    protected elementId: string;
     protected boardConfigData: RcsbFvBoardConfigInterface = {
         length:0
     };
@@ -23,6 +24,7 @@ export abstract class RcsbFvCore {
 
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
+        this.elementId = elementId;
     }
 
     public setPolymerEntityInstance(polymerEntityInstance: PolymerEntityInstanceTranslate){

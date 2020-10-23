@@ -16,7 +16,7 @@ export class WebToolsManager {
         );
     }
 
-    static additionalSelectButton(elementId: string, options: Array<SelectOptionInterface>, addTitle?: boolean){
+    static additionalSelectButton(elementId: string, options: Array<SelectOptionInterface>, addTitle?: boolean, width?: number){
         if(WebToolsManager.additionalDivButton == null) {
             WebToolsManager.additionalDivButton = document.createElement<"div">("div");
             WebToolsManager.additionalDivButton.style.display = "inline-block";
@@ -26,7 +26,7 @@ export class WebToolsManager {
             WebToolsManager.clearAdditionalSelectButton();
         }
         ReactDom.render(
-            <SelectButton options={options} addTitle={addTitle}/>,
+            <SelectButton options={options} addTitle={addTitle} width={width}/>,
             WebToolsManager.additionalDivButton
         );
     }

@@ -67,7 +67,8 @@ export class AnnotationCollector extends CoreCollector{
                 queryId: requestConfig.queryId,
                 reference: requestConfig.reference,
                 sources: requestConfig.sources,
-                filters: requestConfig.filters
+                filters: requestConfig.filters,
+                range: requestConfig.range
             }).then(result => {
                 this.processRcsbPdbAnnotations(result,requestConfig);
                 return this.annotationsConfigData;

@@ -14,5 +14,9 @@
   },
   "uniprot": {
     "url": "https://www.uniprot.org/uniprot/"
+  },
+  "ncbi_summary": {
+    "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=nuccore&id=",
+    "url_suffix":"&retmode=json"
   }
 }

@@ -9,10 +9,10 @@ export class UpdateGenomeSequenceData {
                 const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
                 if (delta > 4) {
                     let N: number = 0;
-                    const timeout: number = 2000;
+                    const timeout: number = 3000;
                     const getGenomeSequence: ()=>void = ()=> {
                         const Http = new XMLHttpRequest();
-                        Http.timeout = timeout;
+                        Http.timeout = timeout*5;
                         const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + '&rettype=fasta&retmode=text';
                         Http.open("GET", url);
                         Http.send();
