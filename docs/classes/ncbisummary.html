@@ -82,14 +82,13 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="ncbisummary.html#timeout" class="tsd-kind-icon">timeout</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="ncbisummary.html#url" class="tsd-kind-icon">url</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="ncbisummary.html#urlsuffix" class="tsd-kind-icon">url<wbr>Suffix</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ncbisummary.html#requestchromosomedata" class="tsd-kind-icon">request<wbr>Chromosome<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="ncbisummary.html#requesttaxonomydata" class="tsd-kind-icon">request<wbr>Taxonomy<wbr>Data</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,27 +102,7 @@
 					<div class="tsd-signature tsd-kind-icon">timeout<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 3000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/87689dd/src/ExternalResources/NcbiData/NcbiSummary.ts#L24">src/ExternalResources/NcbiData/NcbiSummary.ts:24</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="url" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> url</h3>
-					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = (resource as any).ncbi_summary.url</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/87689dd/src/ExternalResources/NcbiData/NcbiSummary.ts#L22">src/ExternalResources/NcbiData/NcbiSummary.ts:22</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="urlsuffix" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> url<wbr>Suffix</h3>
-					<div class="tsd-signature tsd-kind-icon">url<wbr>Suffix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = (resource as any).ncbi_summary.url_suffix</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/87689dd/src/ExternalResources/NcbiData/NcbiSummary.ts#L23">src/ExternalResources/NcbiData/NcbiSummary.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5352c3b/src/ExternalResources/NcbiData/NcbiSummary.ts#L30">src/ExternalResources/NcbiData/NcbiSummary.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -140,7 +119,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/87689dd/src/ExternalResources/NcbiData/NcbiSummary.ts#L26">src/ExternalResources/NcbiData/NcbiSummary.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5352c3b/src/ExternalResources/NcbiData/NcbiSummary.ts#L32">src/ExternalResources/NcbiData/NcbiSummary.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -150,6 +129,29 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/chromosomemetadatainterface.html" class="tsd-signature-type">ChromosomeMetadataInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="requesttaxonomydata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> request<wbr>Taxonomy<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Taxonomy<wbr>Data<span class="tsd-signature-symbol">(</span>taxId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/taxonomymetadatainterface.html" class="tsd-signature-type">TaxonomyMetadataInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5352c3b/src/ExternalResources/NcbiData/NcbiSummary.ts#L63">src/ExternalResources/NcbiData/NcbiSummary.ts:63</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>taxId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/taxonomymetadatainterface.html" class="tsd-signature-type">TaxonomyMetadataInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -173,14 +175,11 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="ncbisummary.html#timeout" class="tsd-kind-icon">timeout</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="ncbisummary.html#url" class="tsd-kind-icon">url</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="ncbisummary.html#urlsuffix" class="tsd-kind-icon">url<wbr>Suffix</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="ncbisummary.html#requestchromosomedata" class="tsd-kind-icon">request<wbr>Chromosome<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="ncbisummary.html#requesttaxonomydata" class="tsd-kind-icon">request<wbr>Taxonomy<wbr>Data</a>
 							</li>
 						</ul>
 					</li>

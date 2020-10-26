@@ -78,6 +78,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     ]);
 
     private maxRange: number = 0;
+    private minRange: number = Number.MAX_SAFE_INTEGER;
     private alignmentCollectorQueue: RcsbFvAlignmentCollectorQueue = new RcsbFvAlignmentCollectorQueue(12);
     private nTasks: number = 0;
     private completeTasks: number = 0;
@@ -95,6 +96,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private entityId: string;
     private IDEOGRAM_DIV_ID:string = "chrIdeogramDiv";
     private TITLE_CHR_DIV_ID:string = "chrTitleDiv";
+    private TITLE_CHR_REGION_ID:string = "chrTitleRegion";
 
     private buildPdbGenomeFv(pdbEntityId: string, chrId?: string){
         this.entityId = pdbEntityId;
@@ -170,25 +172,40 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
             ideogramDiv.id = this.IDEOGRAM_DIV_ID;
             const titleDiv: HTMLDivElement = document.createElement<"h4">("h4");
             titleDiv.id = this.TITLE_CHR_DIV_ID;
-            titleDiv.innerHTML = ncbiChrResult.title+". Region: "+this.entityBegin+" - "+this.entityEnd;
+            const title: HTMLSpanElement = document.createElement<"span">("span");
+            title.innerHTML = ncbiChrResult.title;
+            titleDiv.append(title);
+            const region: HTMLSpanElement = document.createElement<"span">("span");
+            region.id = this.TITLE_CHR_REGION_ID;
+            region.innerHTML = " / Region: ["+this.entityBegin+" - "+this.entityEnd+"]";
+            region.style.color = "#666";
+            titleDiv.append(region);
             document.getElementById(this.elementId).insertAdjacentElement("beforebegin", titleDiv);
             document.getElementById(this.elementId).insertAdjacentElement("beforebegin", ideogramDiv);
             this.plotIdeogram(ncbiChrResult);
         });
     }
 
+    private updateChromosomeTitleRegion(): void{
+        const region: HTMLElement = document.getElementById(this.TITLE_CHR_REGION_ID);
+        if(region != null)
+            region.innerHTML = " / Region: ["+this.beginView+" - "+this.endView+"]";
+    }
+
     private plotIdeogram(ncbiChrResult: ChromosomeMetadataInterface): void{
+        NcbiSummary.requestTaxonomyData(ncbiChrResult.taxid.toString()).then(ncbiTaxResult=>{
+            const chrName: string = ncbiChrResult.extra.split("|")[4];
             const ideogram = new Ideogram({
                 chrHeight: 1040,
                 chrWidth: 20,
-                organism: ncbiChrResult.taxid,
-                chromosome: ncbiChrResult.subname,
+                organism: ncbiTaxResult.scientificname,
+                chromosome: chrName,
                 orientation: 'horizontal',
                 container: '#'+this.IDEOGRAM_DIV_ID,
-                annotationHeight: 5,
+                annotationHeight: 8,
                 annotations: [{
                     name: this.entityId,
-                    chr: ncbiChrResult.subname,
+                    chr: chrName,
                     start: this.entityBegin,
                     stop: this.entityEnd
                 }],
@@ -198,7 +215,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                     }
                 }
             });
-
+        });
     }
 
     private genomeSequenceTracks(chrId: string): void{
@@ -244,7 +261,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
         const begin: number = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
         const end: number = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
         const length = end - begin;
-        const range: [number,number] = [begin - Math.ceil(0.05*length), end + Math.ceil(+0.05*length)];
+        const range: [number,number] = [begin - 5000000, end + 5000000];
         this.collectChromosomeAlignments(chrId, SequenceReference.Uniprot, range, 0);
         this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein, range, 0);
     }
@@ -343,6 +360,8 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
         if(targetAlignment.orientation>0) {
             if(targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] > this.maxRange)
                 this.maxRange = targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember];
+            if(targetAlignment.aligned_regions[0][beginMember] < this.minRange)
+                this.minRange = targetAlignment.aligned_regions[0][beginMember];
             targetAlignment.aligned_regions.forEach((currentExon,n) => {
                 if((n+1)<targetAlignment.aligned_regions.length){
                     const nextExon: AlignedRegion = targetAlignment.aligned_regions[n+1];
@@ -403,6 +422,8 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
         }else{
             if(targetAlignment.aligned_regions[0][beginMember]>this.maxRange)
                 this.maxRange = targetAlignment.aligned_regions[0][beginMember];
+            if(targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] < this.minRange)
+                this.minRange = targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember];
             targetAlignment.aligned_regions.reverse().forEach((currentExon,n) => {
                 if((n+1)<targetAlignment.aligned_regions.length) {
                     const nextExon: AlignedRegion = targetAlignment.aligned_regions[n + 1];
@@ -556,6 +577,17 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                 min:begin - Math.ceil(0.05*length),
                 max:end + Math.ceil(+0.05*length)
             };
+        }else if(this.pdbEntityTrack?.displayConfig?.length > 0){
+            this.beginView = this.minRange;
+            this.endView = this.maxRange;
+            const begin: number = this.beginView;
+            const end: number = this.endView;
+            const length = end - begin;
+            this.boardConfigData.range = {
+                min:begin - Math.ceil(0.05*length),
+                max:end + Math.ceil(+0.05*length)
+            };
+            this.updateChromosomeTitleRegion();
         }
         this.display();
     }
