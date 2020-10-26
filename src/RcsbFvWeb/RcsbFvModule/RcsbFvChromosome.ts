@@ -261,7 +261,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
         const begin: number = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
         const end: number = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
         const length = end - begin;
-        const range: [number,number] = [begin - 5000000, end + 5000000];
+        const range: [number,number] = [Math.max(1, begin-5000000), end + 5000000];
         this.collectChromosomeAlignments(chrId, SequenceReference.Uniprot, range, 0);
         this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein, range, 0);
     }
