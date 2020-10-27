@@ -199,7 +199,9 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private plotIdeogram(ncbiChrResult: ChromosomeMetadataInterface): void{
         NcbiSummary.requestTaxonomyData(ncbiChrResult.taxid.toString()).then(ncbiTaxResult=>{
             if(ncbiChrResult.ncbiId == this.currentDisplayedChrId) {
-                const chrName: string = ncbiChrResult.subname.includes("|") ? ncbiChrResult.subname.split("|")[1] : ncbiChrResult.subname;
+                const chrName: string = ncbiChrResult.subname.includes("|") ? ncbiChrResult.subname.split("|").filter(n=>{
+                    return (n.match(/^([\dXYxy]+)$/) != null);
+                })[0] : ncbiChrResult.subname;
                 const ideogram = new Ideogram({
                     rotatable: false,
                     chrHeight: 1080,
@@ -216,7 +218,6 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                         stop: this.entityEnd
                     }],
                     onLoad: () => {
-                        console.log(ideogram);
                         if (!(ideogram.chromosomesArray?.length > 0)) {
                             document.getElementById(this.IDEOGRAM_DIV_ID)?.remove();
                         } else {
