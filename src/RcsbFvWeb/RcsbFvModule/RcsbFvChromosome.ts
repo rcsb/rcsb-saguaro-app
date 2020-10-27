@@ -194,12 +194,12 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
 
     private plotIdeogram(ncbiChrResult: ChromosomeMetadataInterface): void{
         NcbiSummary.requestTaxonomyData(ncbiChrResult.taxid.toString()).then(ncbiTaxResult=>{
-            const chrName: string = ncbiChrResult.extra.split("|")[4];
+            const chrName: string = ncbiChrResult.subname.includes("|") ? ncbiChrResult.subname.split("|")[1] : ncbiChrResult.subname;
             const ideogram = new Ideogram({
                 chrHeight: 1040,
                 chrWidth: 20,
                 organism: ncbiTaxResult.scientificname,
-                chromosome: chrName,
+                chromosomes: [chrName],
                 orientation: 'horizontal',
                 container: '#'+this.IDEOGRAM_DIV_ID,
                 annotationHeight: 8,
