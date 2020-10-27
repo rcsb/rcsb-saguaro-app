@@ -18,7 +18,7 @@ import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotation
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvAlignmentCollectorQueue} from "../RcsbFvWorkers/RcsbFvAlignmentCollectorQueue";
 import {RcsbQueryAlignment} from "../../RcsbGraphQL/RcsbQueryAlignment";
-import {UpdateGenomeSequenceData} from "../Utils/UpdateGenomeSequenceData";
+import {NcbiGenomeSequenceData} from "../../ExternalResources/NcbiData/NcbiGenomeSequenceData";
 import {ChromosomeMetadataInterface, NcbiSummary} from "../../ExternalResources/NcbiData/NcbiSummary";
 import Ideogram from 'ideogram';
 
@@ -97,6 +97,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private IDEOGRAM_DIV_ID:string = "chrIdeogramDiv";
     private TITLE_CHR_DIV_ID:string = "chrTitleDiv";
     private TITLE_CHR_REGION_ID:string = "chrTitleRegion";
+    private currentDisplayedChrId: string = "";
 
     private buildPdbGenomeFv(pdbEntityId: string, chrId?: string){
         this.entityId = pdbEntityId;
@@ -166,23 +167,26 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
 
     private plotChromosomeTitle(chrId: string): void{
         document.getElementById(this.IDEOGRAM_DIV_ID)?.remove();
-        document.getElementById("chrTitleDiv")?.remove();
+        document.getElementById(this.TITLE_CHR_DIV_ID)?.remove();
+        this.currentDisplayedChrId = chrId;
         NcbiSummary.requestChromosomeData(chrId).then(ncbiChrResult=>{
-            const ideogramDiv: HTMLDivElement = document.createElement<"div">("div");
-            ideogramDiv.id = this.IDEOGRAM_DIV_ID;
-            const titleDiv: HTMLDivElement = document.createElement<"h4">("h4");
-            titleDiv.id = this.TITLE_CHR_DIV_ID;
-            const title: HTMLSpanElement = document.createElement<"span">("span");
-            title.innerHTML = ncbiChrResult.title;
-            titleDiv.append(title);
-            const region: HTMLSpanElement = document.createElement<"span">("span");
-            region.id = this.TITLE_CHR_REGION_ID;
-            region.innerHTML = " / Region: ["+this.entityBegin+" - "+this.entityEnd+"]";
-            region.style.color = "#666";
-            titleDiv.append(region);
-            document.getElementById(this.elementId).insertAdjacentElement("beforebegin", titleDiv);
-            document.getElementById(this.elementId).insertAdjacentElement("beforebegin", ideogramDiv);
-            this.plotIdeogram(ncbiChrResult);
+            if(chrId == this.currentDisplayedChrId) {
+                const ideogramDiv: HTMLDivElement = document.createElement<"div">("div");
+                ideogramDiv.id = this.IDEOGRAM_DIV_ID;
+                const titleDiv: HTMLDivElement = document.createElement<"h4">("h4");
+                titleDiv.id = this.TITLE_CHR_DIV_ID;
+                const title: HTMLSpanElement = document.createElement<"span">("span");
+                title.innerHTML = ncbiChrResult.title;
+                titleDiv.append(title);
+                const region: HTMLSpanElement = document.createElement<"span">("span");
+                region.id = this.TITLE_CHR_REGION_ID;
+                region.innerHTML = " / Region: [" + this.entityBegin + " - " + this.entityEnd + "]";
+                region.style.color = "#666";
+                titleDiv.append(region);
+                document.getElementById(this.elementId).insertAdjacentElement("beforebegin", titleDiv);
+                document.getElementById(this.elementId).insertAdjacentElement("beforebegin", ideogramDiv);
+                this.plotIdeogram(ncbiChrResult);
+            }
         });
     }
 
@@ -194,32 +198,39 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
 
     private plotIdeogram(ncbiChrResult: ChromosomeMetadataInterface): void{
         NcbiSummary.requestTaxonomyData(ncbiChrResult.taxid.toString()).then(ncbiTaxResult=>{
-            const chrName: string = ncbiChrResult.subname.includes("|") ? ncbiChrResult.subname.split("|")[1] : ncbiChrResult.subname;
-            const ideogram = new Ideogram({
-                chrHeight: 1040,
-                chrWidth: 20,
-                organism: ncbiTaxResult.scientificname,
-                chromosomes: [chrName],
-                orientation: 'horizontal',
-                container: '#'+this.IDEOGRAM_DIV_ID,
-                annotationHeight: 8,
-                annotations: [{
-                    name: this.entityId,
-                    chr: chrName,
-                    start: this.entityBegin,
-                    stop: this.entityEnd
-                }],
-                onLoad:()=>{
-                    if(!(ideogram.chromosomesArray?.length > 0)){
-                        document.getElementById(this.IDEOGRAM_DIV_ID)?.remove();
+            if(ncbiChrResult.ncbiId == this.currentDisplayedChrId) {
+                const chrName: string = ncbiChrResult.subname.includes("|") ? ncbiChrResult.subname.split("|")[1] : ncbiChrResult.subname;
+                const ideogram = new Ideogram({
+                    rotatable: false,
+                    chrHeight: 1080,
+                    chrWidth: 20,
+                    organism: ncbiTaxResult.scientificname,
+                    chromosomes: [chrName],
+                    orientation: 'horizontal',
+                    container: '#' + this.IDEOGRAM_DIV_ID,
+                    annotationHeight: 8,
+                    annotations: [{
+                        name: this.entityId,
+                        chr: chrName,
+                        start: this.entityBegin,
+                        stop: this.entityEnd
+                    }],
+                    onLoad: () => {
+                        console.log(ideogram);
+                        if (!(ideogram.chromosomesArray?.length > 0)) {
+                            document.getElementById(this.IDEOGRAM_DIV_ID)?.remove();
+                        } else {
+                            if (document.getElementById("_ideogram") != null)
+                                document.getElementById("_ideogram").style.padding = "0 0 0 0";
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     }
 
     private genomeSequenceTracks(chrId: string): void{
-        const updateGenomeSequence_5: UpdateGenomeSequenceData = new UpdateGenomeSequenceData();
+        const updateGenomeSequence_5: NcbiGenomeSequenceData = new NcbiGenomeSequenceData();
         this.nonExonConfigData.push({
             trackId: "mainSequenceTrack_5_" + chrId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -237,7 +248,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
             updateDataOnMove: updateGenomeSequence_5.update(chrId, 1, false, this.rcsbFv?.getBoardConfig()?.trackWidth)
         });
 
-        const updateGenomeSequence_3: UpdateGenomeSequenceData = new UpdateGenomeSequenceData();
+        const updateGenomeSequence_3: NcbiGenomeSequenceData = new NcbiGenomeSequenceData();
         this.nonExonConfigData.push({
             trackId: "mainSequenceTrack_3_" + chrId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -358,9 +369,9 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
             openEnd: targetAlignment.orientation > 0
         };
         if(targetAlignment.orientation>0) {
-            if(targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] > this.maxRange)
+            if(member == "query" && targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] > this.maxRange)
                 this.maxRange = targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember];
-            if(targetAlignment.aligned_regions[0][beginMember] < this.minRange)
+            if(member == "query" && targetAlignment.aligned_regions[0][beginMember] < this.minRange)
                 this.minRange = targetAlignment.aligned_regions[0][beginMember];
             targetAlignment.aligned_regions.forEach((currentExon,n) => {
                 if((n+1)<targetAlignment.aligned_regions.length){
@@ -420,9 +431,9 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                 }
             });
         }else{
-            if(targetAlignment.aligned_regions[0][beginMember]>this.maxRange)
+            if(member == "query" && targetAlignment.aligned_regions[0][beginMember]>this.maxRange)
                 this.maxRange = targetAlignment.aligned_regions[0][beginMember];
-            if(targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] < this.minRange)
+            if(member == "query" && targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember] < this.minRange)
                 this.minRange = targetAlignment.aligned_regions[targetAlignment.aligned_regions.length-1][endMember];
             targetAlignment.aligned_regions.reverse().forEach((currentExon,n) => {
                 if((n+1)<targetAlignment.aligned_regions.length) {

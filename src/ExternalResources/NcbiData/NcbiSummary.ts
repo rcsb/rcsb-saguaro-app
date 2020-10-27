@@ -2,6 +2,7 @@
 import * as resource from "../../../web.resources.json";
 
 export interface ChromosomeMetadataInterface {
+    ncbiId: string;
     title: string;
     organism: string;
     extra: string;
@@ -28,30 +29,35 @@ interface NcbiSummaryInterface {
 export class NcbiSummary {
 
     private static timeout = 3000;
+    private static httpTimeout = 10000;
+    private static jobId: number = 0;
 
     public static requestChromosomeData(chrId: string): Promise<ChromosomeMetadataInterface>{
+        window.clearTimeout(NcbiSummary.jobId);
         const urlPrefix:string  = (resource as any).ncbi_summary_nuccore.url;
         const urlSuffix: string = (resource as any).ncbi_summary_nuccore.url_suffix;
         return new Promise<ChromosomeMetadataInterface>((resolve, reject)=>{
             const recursiveRequest = () =>{
                 const url: string = urlPrefix+chrId+urlSuffix;
                 const Http = new XMLHttpRequest();
-                Http.timeout = 3000;
+                Http.timeout = NcbiSummary.httpTimeout;
                 Http.open("GET", url);
                 Http.send();
                 Http.onloadend = (e) => {
                     if(Http.responseText.length == 0){
-                        window.setTimeout(()=>{
+                        NcbiSummary.jobId = window.setTimeout(()=>{
                             recursiveRequest();
                         },NcbiSummary.timeout);
                     }else {
                         const jsonResult: any = JSON.parse(Http.responseText);
                         const uid: string = (jsonResult as NcbiSummaryInterface)?.result?.uids[0];
-                        resolve(jsonResult.result[uid] as ChromosomeMetadataInterface);
+                        const out: ChromosomeMetadataInterface = jsonResult.result[uid] as ChromosomeMetadataInterface;
+                        out.ncbiId = chrId
+                        resolve(out);
                     }
                 };
                 Http.onerror = (e) => {
-                    window.setTimeout(()=>{
+                    NcbiSummary.jobId = window.setTimeout(()=>{
                         recursiveRequest();
                     },NcbiSummary.timeout);
                 };
@@ -61,18 +67,19 @@ export class NcbiSummary {
     }
 
     public static requestTaxonomyData(taxId: string): Promise<TaxonomyMetadataInterface>{
+        window.clearTimeout(NcbiSummary.jobId);
         const urlPrefix:string  = (resource as any).ncbi_summary_taxonomy.url;
         const urlSuffix: string = (resource as any).ncbi_summary_taxonomy.url_suffix;
         return new Promise<TaxonomyMetadataInterface>((resolve, reject)=>{
             const recursiveRequest = () =>{
                 const url: string = urlPrefix+taxId+urlSuffix;
                 const Http = new XMLHttpRequest();
-                Http.timeout = 3000;
+                Http.timeout = NcbiSummary.httpTimeout;
                 Http.open("GET", url);
                 Http.send();
                 Http.onloadend = (e) => {
                     if(Http.responseText.length == 0){
-                        window.setTimeout(()=>{
+                        NcbiSummary.jobId = window.setTimeout(()=>{
                             recursiveRequest();
                         },NcbiSummary.timeout);
                     }else {
@@ -82,7 +89,7 @@ export class NcbiSummary {
                     }
                 };
                 Http.onerror = (e) => {
-                    window.setTimeout(()=>{
+                    NcbiSummary.jobId = window.setTimeout(()=>{
                         recursiveRequest();
                     },NcbiSummary.timeout);
                 };

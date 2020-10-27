@@ -1,7 +1,10 @@
 import {RcsbFvLocationViewInterface, RcsbFvTrackData} from "@bioinsilico/rcsb-saguaro";
+import * as resource from "../../../web.resources.json";
 
-export class UpdateGenomeSequenceData {
-    process: number = 0
+export class NcbiGenomeSequenceData {
+    process: number = 0;
+    urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
+    urlSuffix: string = (resource as any).ncbi_genome_sequence.url_suffix;
     update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
         return (where: RcsbFvLocationViewInterface) => {
             window.clearTimeout(this.process);
@@ -9,11 +12,11 @@ export class UpdateGenomeSequenceData {
                 const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
                 if (delta > 4) {
                     let N: number = 0;
-                    const timeout: number = 3000;
+                    const timeout: number = 5000;
                     const getGenomeSequence: ()=>void = ()=> {
                         const Http = new XMLHttpRequest();
-                        Http.timeout = timeout*5;
-                        const url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + '&rettype=fasta&retmode=text';
+                        Http.timeout = timeout;
+                        const url = this.urlPrefix + 'id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + this.urlSuffix;
                         Http.open("GET", url);
                         Http.send();
                         Http.onloadend = (e) => {
@@ -54,6 +57,6 @@ export class UpdateGenomeSequenceData {
                     resolve(null);
                 }
             });
-        }
+        };
     }
 }
