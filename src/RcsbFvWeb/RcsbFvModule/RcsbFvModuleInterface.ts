@@ -21,6 +21,8 @@ export interface RcsbFvModuleBuildInterface {
     chrId?:string;
     additionalConfig?:RcsbFvAdditionalConfig;
     resolve?:()=>void;
+
+    elementSelectId?: string;
 }
 
 export interface RcsbFvModuleInterface {

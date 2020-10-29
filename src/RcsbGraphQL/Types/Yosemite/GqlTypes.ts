@@ -8027,9 +8027,9 @@ export interface RcsbChemCompSynonyms {
    * This data item contains the synonym type.
    * 
    * Allowable values:
-   * Common Name, Condensed IUPAC Carbohydrate Symbol, IUPAC Carbohydrate Symbol,
-   * Preferred Common Name, Preferred Name, Preferred Synonym, SNFG Carbohydrate
-   * Symbol, Synonym, Systematic Name
+   * Brand Name, Common Name, Condensed IUPAC Carbohydrate Symbol, IUPAC
+   * Carbohydrate Symbol, Preferred Common Name, Preferred Name, Preferred Synonym,
+   * SNFG Carbohydrate Symbol, Synonym, Systematic Name
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -8043,7 +8043,7 @@ export interface RcsbChemCompTarget {
   comp_id: Scalars['String'];
   /** The type of target interaction. */
   interaction_type?: Maybe<Scalars['String']>;
-  /** The target name. */
+  /** The chemical component target name. */
   name?: Maybe<Scalars['String']>;
   /**
    * The value of _rcsb_chem_comp_target.ordinal distinguishes
@@ -8071,7 +8071,7 @@ export interface RcsbChemCompTarget {
    * UniProt
    */
   reference_database_name?: Maybe<Scalars['String']>;
-  /** The actions of the target interaction. */
+  /** The mechanism of action of the chemical component - target interaction. */
   target_actions?: Maybe<Array<Maybe<Scalars['String']>>>;
 }
 

@@ -375,7 +375,7 @@ export function buildFullChromosome(elementFvId:string, chrId: string){
     buildChromosome(elementFvId, null, chrId);
 }
 
-export function buildEntryChromosome(elementFvId:string, elementSelectId:string, entryId: string){
+export function buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string){
     boardConfig = {rowTitleWidth:160};
     const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
     instanceCollector.collect({entry_id:entryId}).then(result=> {
@@ -389,20 +389,29 @@ export function buildEntryChromosome(elementFvId:string, elementSelectId:string,
         const entityGenomeTranslate: GenomeEntityTranslate = new GenomeEntityTranslate(Array.from(entitySet));
         entityGenomeTranslate.getChrMap().then(entityMap=>{
             if(entityMap.size == 0){
+                document.getElementById(entitySelectId)?.parentElement?.remove();
+                document.getElementById(chromosomeSelectId)?.parentElement?.remove();
                 showMessage(elementFvId, "No genome alignments are available");
             }else{
-                WebToolsManager.buildSelectButton(elementSelectId,Array.from(entityMap.keys()).map((entityId,n)=>{
+                const unique: Set<string> = new Set<string>();
+                WebToolsManager.buildSelectButton(entitySelectId,result.filter(r=>{
+                    const included: boolean = unique.has(r.entryId+TagDelimiter.entity+r.entityId);
+                    unique.add(r.entryId+TagDelimiter.entity+r.entityId);
+                    return entityMap.has(r.entryId+TagDelimiter.entity+r.entityId) && !included;
+                }).map((e,n)=>{
+                    const entityId: string = e.entryId+TagDelimiter.entity+e.entityId;
                     if(n == 0)
-                        buildEntityChromosome(elementFvId,elementSelectId,entityId);
+                        buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);
                     return{
-                        label: entityId,
-                        name: entityId,
+                        name: e.names + " - " + e.taxIds.join(", "),
+                        label: entityId + " - " + e.names,
+                        shortLabel: entityId,
                         onChange:()=>{
                             WebToolsManager.clearAdditionalSelectButton();
-                            buildEntityChromosome(elementFvId,elementSelectId,entityId);
+                            buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);
                         }
                     }
-                }));
+                }), true);
             }
         });
     });
@@ -417,23 +426,23 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
         rcsbFvManager.set(elementFvId, rcsbFvSingleViewer);
     }
     const chrViewer: RcsbFvChromosome = new RcsbFvChromosome(elementFvId,rcsbFvSingleViewer.rcsbFv);
-    chrViewer.build({entityId: entityId});
+    chrViewer.build({entityId: entityId, elementSelectId: elementSelectId});
     chrViewer.getTargets().then(targets=>{
-        if(targets.length > 1){
             WebToolsManager.additionalSelectButton(elementSelectId, targets.map((chrId,n)=>{
                 return {
                     label: chrId,
                     name: chrId,
+                    shortLabel: chrId,
                     onChange:()=>{
-                        buildChromosome(elementFvId, entityId, chrId);
+                        buildChromosome(elementFvId, entityId, chrId, elementSelectId);
                     }
                 };
             }),false, 190);
-        }
+
     });
 }
 
-export function buildChromosome(elementFvId:string, entityId: string, chrId: string) {
+export function buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string) {
     return new Promise<null>((resolve,reject)=> {
         try {
             createFv({
@@ -441,7 +450,8 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
                 fvModuleI: RcsbFvChromosome,
                 config: {
                     entityId: entityId,
-                    chrId: chrId
+                    chrId: chrId,
+                    elementSelectId: elementSelectId
                 }
             });
         }catch(e) {

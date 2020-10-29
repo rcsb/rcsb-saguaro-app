@@ -98,6 +98,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private TITLE_CHR_DIV_ID:string = "chrTitleDiv";
     private TITLE_CHR_REGION_ID:string = "chrTitleRegion";
     private currentDisplayedChrId: string = "";
+    private elementSelectId: string;
 
     private buildPdbGenomeFv(pdbEntityId: string, chrId?: string){
         this.entityId = pdbEntityId;
@@ -173,7 +174,9 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
             if(chrId == this.currentDisplayedChrId) {
                 const ideogramDiv: HTMLDivElement = document.createElement<"div">("div");
                 ideogramDiv.id = this.IDEOGRAM_DIV_ID;
-                const titleDiv: HTMLDivElement = document.createElement<"h4">("h4");
+                const titleDiv: HTMLDivElement = document.createElement<"div">("div");
+                titleDiv.style.display = "inline-block";
+                titleDiv.style.marginLeft = "20px";
                 titleDiv.id = this.TITLE_CHR_DIV_ID;
                 const title: HTMLSpanElement = document.createElement<"span">("span");
                 title.innerHTML = ncbiChrResult.title;
@@ -183,7 +186,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                 region.innerHTML = " / Region: [" + this.entityBegin + " - " + this.entityEnd + "]";
                 region.style.color = "#666";
                 titleDiv.append(region);
-                document.getElementById(this.elementId).insertAdjacentElement("beforebegin", titleDiv);
+                document.getElementById(this.elementSelectId).insertAdjacentElement("afterend", titleDiv);
                 document.getElementById(this.elementId).insertAdjacentElement("beforebegin", ideogramDiv);
                 this.plotIdeogram(ncbiChrResult);
             }
@@ -656,6 +659,8 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     }
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
+        if(buildConfig.elementSelectId)
+            this.elementSelectId = buildConfig.elementSelectId;
         if(buildConfig.entityId != null)
             this.buildPdbGenomeFv(buildConfig.entityId, buildConfig.chrId);
         else if(buildConfig.chrId != null)
