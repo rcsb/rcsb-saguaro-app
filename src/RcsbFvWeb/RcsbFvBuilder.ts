@@ -98,7 +98,7 @@ export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSel
                                         );
                                     }
                                 }
-                            }),true);
+                            }),{addTitle:true});
                         });
                     }
                 }
@@ -206,7 +206,7 @@ export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:stri
                         });
                     }
                 }
-            }), true, defaultValue);
+            }), {addTitle:true, defaultValue: defaultValue});
             let index: number = 0;
             if (defaultValue != null) {
                 const n: number = result.findIndex(a => {
@@ -389,8 +389,6 @@ export function buildEntryChromosome(elementFvId:string, entitySelectId:string, 
         const entityGenomeTranslate: GenomeEntityTranslate = new GenomeEntityTranslate(Array.from(entitySet));
         entityGenomeTranslate.getChrMap().then(entityMap=>{
             if(entityMap.size == 0){
-                document.getElementById(entitySelectId)?.parentElement?.remove();
-                document.getElementById(chromosomeSelectId)?.parentElement?.remove();
                 showMessage(elementFvId, "No genome alignments are available");
             }else{
                 const unique: Set<string> = new Set<string>();
@@ -411,7 +409,7 @@ export function buildEntryChromosome(elementFvId:string, entitySelectId:string, 
                             buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);
                         }
                     }
-                }), true);
+                }), {addTitle:true, dropdownTitle:"ENTITY"});
             }
         });
     });
@@ -437,7 +435,7 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
                         buildChromosome(elementFvId, entityId, chrId, elementSelectId);
                     }
                 };
-            }),false, 190);
+            }),{addTitle: false, width:190, dropdownTitle: "CHROMOSOME"});
 
     });
 }

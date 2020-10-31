@@ -16,6 +16,7 @@ interface SelectButtonInterface {
     addTitle: boolean;
     defaultValue?: string|undefined|null;
     width?:number;
+    dropdownTitle?:string;
 }
 
 interface OptionPropsInterface extends SelectOptionInterface{
@@ -41,19 +42,27 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     render():JSX.Element {
-        if(this.props.addTitle === true)
-            return this.titleRender();
-        else
-            return this.selectRender();
-    }
-
-    private titleRender():JSX.Element{
+        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
         return(<div>
-            <div style={{display:"inline-block"}}>{this.selectRender()}</div><div style={{display:"inline-block", marginLeft:"20px"}}>{this.state.selectedOption.name}</div>
+            {title}
+            {this.selectRender()}
         </div>);
     }
 
     private selectRender():JSX.Element {
+        if(this.props.addTitle === true)
+            return this.titleRender();
+        else
+            return this.selectButtonRender();
+    }
+
+    private titleRender():JSX.Element{
+        return(<div>
+            <div style={{display:"inline-block"}}>{this.selectButtonRender()}</div><div style={{display:"inline-block", marginLeft:"20px"}}>{this.state.selectedOption.name}</div>
+        </div>);
+    }
+
+    private selectButtonRender():JSX.Element {
         const SingleValue:(n:SingleValueProps<OptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
