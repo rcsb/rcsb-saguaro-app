@@ -290,7 +290,7 @@ export class AnnotationCollector extends CoreCollector{
         let altDisplayType = RcsbFvDisplayTypes.BLOCK;
         if(annConfig.display === RcsbFvDisplayTypes.BOND.toString())
             altDisplayType = RcsbFvDisplayTypes.BOND;
-        const rowTitle = annConfig.title;
+        const rowTitle = AnnotationCollector.buildRowTitle(annConfig);
         const rowPrefix = annConfig.prefix;
         const displayColor = annConfig.color;
 

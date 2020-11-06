@@ -144,8 +144,10 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
             SequenceReference.PdbEntity,
             chrId
         );
-        this.pdbEntityTrack = exonTracks[0];
-        this.pdbEntityTrack.displayConfig[0].displayData[0].description = [pdbEntityId];
+        this.pdbEntityTrack = this.mergeExonTracks(exonTracks, SequenceReference.PdbEntity)[0];
+        this.pdbEntityTrack.displayConfig[0].displayData.forEach(d=>{
+                d.description = [pdbEntityId];
+        });
         this.addSequences([this.pdbEntityTrack],SequenceReference.PdbEntity);
         this.pdbEntityTrack.rowPrefix = SequenceReference.PdbEntity.replace("_"," ");
         this.pdbEntityTrack.rowTitle = {
@@ -214,6 +216,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
                     orientation: 'horizontal',
                     container: '#' + this.IDEOGRAM_DIV_ID,
                     annotationHeight: 8,
+                    showBandLabels: true,
                     annotations: [{
                         name: this.entityId,
                         chr: chrName,
@@ -275,7 +278,6 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
     private collectChromosomeEntityRegion(chrId: string): void{
         const begin: number = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
         const end: number = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
-        const length = end - begin;
         const range: [number,number] = [Math.max(1, begin-5000000), end + 5000000];
         this.collectChromosomeAlignments(chrId, SequenceReference.Uniprot, range, 0);
         this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein, range, 0);
@@ -581,10 +583,11 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
 
     private setDisplayView(): void{
         if(this.entityBegin == 0 && this.entityEnd == 0 && this.pdbEntityTrack?.displayConfig?.length > 0 ){
+            const lastIndex: number = this.pdbEntityTrack.displayConfig[0].displayData.length-1;
             this.entityBegin = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
-            this.entityEnd = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
+            this.entityEnd = this.pdbEntityTrack.displayConfig[0].displayData[lastIndex].end;
             this.beginView = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
-            this.endView = this.pdbEntityTrack.displayConfig[0].displayData[0].end;
+            this.endView = this.pdbEntityTrack.displayConfig[0].displayData[lastIndex].end;
             const begin: number = this.beginView;
             const end: number = this.endView;
             const length = end - begin;

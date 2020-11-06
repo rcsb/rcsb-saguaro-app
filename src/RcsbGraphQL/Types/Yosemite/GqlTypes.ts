@@ -1682,7 +1682,7 @@ export interface EmEntityAssembly {
    * The assembly type.
    * 
    * Allowable values:
-   * MULTIPLE SOURCES, NATURAL, RECOMBINANT
+   * MULTIPLE SOURCES, NATURAL, RECOMBINANT, SYNTHETIC
    */
   source?: Maybe<Scalars['String']>;
   /**
@@ -2248,41 +2248,42 @@ export interface EntityPoly {
   nstd_monomer?: Maybe<Scalars['String']>;
   /**
    * Chemical sequence expressed as string of one-letter
-   *  amino acid codes. Modifications and non-standard
-   *  amino acids are coded as X.
+   *  amino acid codes. Non-standard amino acids and
+   *  nucleotides are coded in parenthesis.
    * 
    * Examples:
-   * HHHH(MSE)AKQRSG or AUCGGAAU, A  for alanine or adenine
-   * B  for ambiguous asparagine/aspartic-acid
-   * R  for arginine
-   * N  for asparagine
-   * D  for aspartic-acid
-   * C  for cysteine or cystine or cytosine
-   * Q  for glutamine
-   * E  for glutamic-acid
-   * Z  for ambiguous glutamine/glutamic acid
-   * G  for glycine or guanine
-   * H  for histidine
-   * I  for isoleucine
-   * L  for leucine
-   * K  for lysine
-   * M  for methionine
-   * F  for phenylalanine
-   * P  for proline
-   * S  for serine
-   * T  for threonine or thymine
-   * W  for tryptophan
-   * Y  for tyrosine
-   * V  for valine
-   * U  for uracil
-   * O  for water
-   * X  for other
+   * HHHH(MSE)AKQRSG or AUCGGAAU, A     for alanine or adenine
+   * B     for ambiguous asparagine/aspartic-acid
+   * R     for arginine
+   * N     for asparagine
+   * D     for aspartic-acid
+   * C     for cysteine or cystine or cytosine
+   * Q     for glutamine
+   * E     for glutamic-acid
+   * Z     for ambiguous glutamine/glutamic acid
+   * G     for glycine or guanine
+   * H     for histidine
+   * I     for isoleucine
+   * L     for leucine
+   * K     for lysine
+   * M     for methionine
+   * F     for phenylalanine
+   * P     for proline
+   * S     for serine
+   * T     for threonine or thymine
+   * W     for tryptophan
+   * Y     for tyrosine
+   * V     for valine
+   * U     for uracil
+   * O     for water
+   * X     for other
+   * (MSE) for selenomethionine
    */
   pdbx_seq_one_letter_code?: Maybe<Scalars['String']>;
   /**
    * Cannonical chemical sequence expressed as string of
    *                one-letter amino acid codes. Modifications are coded
-   *                as the parent amino acid where possible.
+   *                as the parent amino acid where possible or coded as X otherwise.
    * 
    * A  for alanine or adenine
    * B  for ambiguous asparagine/aspartic-acid
