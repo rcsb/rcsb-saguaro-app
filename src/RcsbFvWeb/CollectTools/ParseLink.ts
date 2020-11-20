@@ -1,5 +1,5 @@
 import {RcsbFvLink} from "@bioinsilico/rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import * as resource from "../../../web.resources.json";
+import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 
 export class ParseLink {

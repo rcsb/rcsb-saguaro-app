@@ -1,6 +1,6 @@
 import {AnnotationFeatures, Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Structure, SwissModelResultInterface} from "./SwissModelDataInterface";
-import * as resource from "../../../web.resources.json";
+import * as resource from "../../RcsbServerConfig/web.resources.json";
 
 export class SwissModelQueryAnnotations {
     private static readonly url:string  = (resource as any).swiss_model.url;

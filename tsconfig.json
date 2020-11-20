@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
     "resolveJsonModule": true,
-    "outDir": "./build/",
+    "outDir": "./dist/src",
     "noImplicitAny": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
@@ -13,9 +14,11 @@
     "sourceMap": false,
     //"noUnusedLocals": true,
     //"strictNullChecks": true,
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "declaration": true,
+    "declarationDir": "./dist/build"
   },
-  "include": [ "src/**/*", "src/**/**/*", "src/**/**/**/*" ],
+  "include": [ "src/*", "src/**/*", "src/**/**/*", "src/**/**/**/*" ],
   "exclude": [
     "node_modules"
   ]

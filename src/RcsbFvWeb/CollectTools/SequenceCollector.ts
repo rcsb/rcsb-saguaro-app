@@ -19,7 +19,7 @@ import {TagDelimiter} from "../Utils/TagDelimiter";
 import {CoreCollector} from "./CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 
-import * as resource from "../../../web.resources.json";
+import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {FeatureTools} from "../FeatureTools/FeatureTools";
 
 export interface CollectAlignmentInterface extends QueryAlignmentArgs {

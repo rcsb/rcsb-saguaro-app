@@ -1,5 +1,5 @@
 
-import * as resource from "../../../web.resources.json";
+import * as resource from "../../RcsbServerConfig/web.resources.json";
 
 export interface ChromosomeMetadataInterface {
     ncbiId: string;

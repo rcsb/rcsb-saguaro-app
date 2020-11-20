@@ -26,7 +26,7 @@ export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string
     RcsbFvEntityBuilder.buildEntitySummaryFv(elementFvId, elementSelectId, entityId);
 }
 
-function buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<null> {
+export function buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<null> {
     return RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementId, entityId);
 }
 
@@ -76,6 +76,7 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
 }
 
 export function buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string) {
+    RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
 }
 
 export function unmount(elementId:string): void{

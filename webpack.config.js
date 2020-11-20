@@ -31,14 +31,14 @@ const commonConfig = {
 };
 const webWorker = {
     ...commonConfig,
-    mode: "development",
-    //mode:"production",
+    //mode: "development",
+    mode:"production",
     entry: {
-        'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
+        'worker':'./dist/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist')
+        path: path.resolve(__dirname, 'dist/build')
     },
     devtool: 'source-map'
 };
@@ -47,17 +47,32 @@ const webApp = {
     //mode: "development",
     mode:"production",
     entry: {
-        'app':'./build/src/RcsbFvWeb/RcsbFvBuilder.js'
+        'app':'./dist/src/RcsbFvWeb/RcsbFvBuilder.js'
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist'),
+        path: path.resolve(__dirname, 'dist/build'),
         library: 'RcsbFvWebApp',
         libraryTarget: 'umd',
         umdNamedDefine: true
     },
     devtool: 'source-map'
 };
-
-module.exports =[webApp, webWorker];
+const webBuilder = {
+    ...commonConfig,
+    //mode: "development",
+    mode:"production",
+    entry: {
+        'builder':'./dist/src/builder.js'
+    },
+    output: {
+        filename: '[name].js',
+        library: 'builder',
+        libraryTarget: 'umd',
+        umdNamedDefine: true,
+        path: path.resolve(__dirname, 'dist/build')
+    },
+    devtool: 'source-map'
+};
+module.exports =[webApp, webWorker, webBuilder];
 

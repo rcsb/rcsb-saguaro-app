@@ -1,20 +1,26 @@
 {
   "name": "@bioinsilico/rcsb-saguaro-app",
-  "version": "0.9.10",
+  "version": "0.9.11",
   "description": "RCSB 1D Saguaro Web App",
-  "main": "build/dist/config.js",
+  "main": "dist/build/builder.js",
+  "files": [
+    "dist/build/builder.js",
+    "dist/build/**/*ts",
+    "dist/build/**/**/*ts",
+    "dist/build/**/**/**/*ts"
+  ],
   "scripts": {
     "buildAll": "npm run buildApp && npm run buildAllDoc",
     "buildApp": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
-    "generateBorrego": "graphql-codegen --config codegen.borrego.json",
-    "generateYosemite": "graphql-codegen --config codegen.yosemite.json",
-    "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
-    "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
+    "generateBorrego": "graphql-codegen --config src/RcsbServerConfig/codegen.borrego.json",
+    "generateYosemite": "graphql-codegen --config src/RcsbServerConfig/codegen.yosemite.json",
+    "copyQueries": "ncp src/RcsbGraphQL/Queries dist/src/RcsbGraphQL/Queries",
+    "copyConfig": "ncp dist/src/RcsbServerConfig/ServerConfig.js dist/build/config.js",
     "tsc": "tsc",
-    "clean": "del-cli build/*json build/src",
-    "cleanAll": "npm run clean && del-cli build/dist",
-    "buildDoc": "npx typedoc --mode file --out docs src",
+    "clean": "del-cli dist/*json dist/src",
+    "cleanAll": "npm run clean && del-cli dist/build",
+    "buildDoc": "typedoc --mode file --out docs src",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -69,7 +75,7 @@
     "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.9.9",
+    "@bioinsilico/rcsb-saguaro": "^0.9.10",
     "@graphql-codegen/cli": "^1.16.0",
     "ideogram": "^1.27.0"
   },

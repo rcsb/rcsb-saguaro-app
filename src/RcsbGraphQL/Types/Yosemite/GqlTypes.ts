@@ -2248,11 +2248,10 @@ export interface EntityPoly {
   nstd_monomer?: Maybe<Scalars['String']>;
   /**
    * Chemical sequence expressed as string of one-letter
-   *  amino acid codes. Non-standard amino acids and
-   *  nucleotides are coded in parenthesis.
+   *                amino acid codes. Non-standard amino acids and
+   *                nucleotides are coded in parenthesis.
    * 
-   * Examples:
-   * HHHH(MSE)AKQRSG or AUCGGAAU, A     for alanine or adenine
+   * A     for alanine or adenine
    * B     for ambiguous asparagine/aspartic-acid
    * R     for arginine
    * N     for asparagine
@@ -2278,6 +2277,9 @@ export interface EntityPoly {
    * O     for water
    * X     for other
    * (MSE) for selenomethionine
+   * 
+   * Examples:
+   * HHHH(MSE)AKQRSG or AUCGGAAU, (MSE)SHHWGYGKHNGPEHWHKDFPIAKGERQSPVDIDTHTAKYDPSLKPLSVSYDQATSLRILNNGAAFNVEFD
    */
   pdbx_seq_one_letter_code?: Maybe<Scalars['String']>;
   /**

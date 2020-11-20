@@ -1,5 +1,5 @@
 import {RcsbFvLocationViewInterface, RcsbFvTrackData} from "@bioinsilico/rcsb-saguaro";
-import * as resource from "../../../web.resources.json";
+import * as resource from "../../RcsbServerConfig/web.resources.json";
 
 export class NcbiGenomeSequenceData {
     process: number = 0;

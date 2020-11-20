@@ -1,6 +1,6 @@
 import ApolloClient from 'apollo-boost';
-import * as configBorregoGraphQL from "../../codegen.borrego.json";
-import * as configYosemiteGraphQL from "../../codegen.yosemite.json";
+import * as configBorregoGraphQL from "../RcsbServerConfig/codegen.borrego.json";
+import * as configYosemiteGraphQL from "../RcsbServerConfig/codegen.yosemite.json";
 
 export class RcsbQuery{
 
