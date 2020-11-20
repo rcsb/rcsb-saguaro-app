@@ -29,6 +29,7 @@ const commonConfig = {
         extensions: ['.js', 'jsx' ]
     }
 };
+
 const webWorker = {
     ...commonConfig,
     //mode: "development",
@@ -42,37 +43,23 @@ const webWorker = {
     },
     devtool: 'source-map'
 };
-const webApp = {
-    ...commonConfig,
-    //mode: "development",
-    mode:"production",
-    entry: {
-        'app':'./dist/src/RcsbFvWeb/RcsbFvBuilder.js'
-    },
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'dist/build'),
-        library: 'RcsbFvWebApp',
-        libraryTarget: 'umd',
-        umdNamedDefine: true
-    },
-    devtool: 'source-map'
-};
+
 const webBuilder = {
     ...commonConfig,
     //mode: "development",
     mode:"production",
     entry: {
-        'builder':'./dist/src/builder.js'
+        'app':'./dist/src/app.js'
     },
     output: {
         filename: '[name].js',
-        library: 'builder',
+        library: 'RcsbFvWebApp',
         libraryTarget: 'umd',
         umdNamedDefine: true,
         path: path.resolve(__dirname, 'dist/build')
     },
     devtool: 'source-map'
 };
-module.exports =[webApp, webWorker, webBuilder];
+
+module.exports =[webWorker, webBuilder];
 
