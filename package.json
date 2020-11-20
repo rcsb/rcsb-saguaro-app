@@ -1,10 +1,10 @@
 {
   "name": "@bioinsilico/rcsb-saguaro-app",
-  "version": "0.9.12",
+  "version": "0.9.13",
   "description": "RCSB 1D Saguaro Web App",
   "main": "dist/build/app.js",
   "files": [
-    "dist/build/app.js",
+    "dist/build/config.js",
     "dist/build/**/*ts",
     "dist/build/**/**/*ts",
     "dist/build/**/**/**/*ts"
