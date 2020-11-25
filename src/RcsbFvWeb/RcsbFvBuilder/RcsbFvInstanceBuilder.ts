@@ -51,7 +51,7 @@ export class RcsbFvInstanceBuilder {
                     });
                 }
             }
-        }), {addTitle:true, defaultValue: defaultValue});
+        }), {addTitle:true, defaultValue: defaultValue, dropdownTitle:"INSTANCE"});
         let index: number = 0;
         if (defaultValue != null) {
             const n: number = instanceList.findIndex(a => {

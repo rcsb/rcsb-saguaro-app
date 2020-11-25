@@ -25,7 +25,7 @@ export class RcsbFvAssemblyBuilder {
                                 onAsseblyChangeCallback(assemblyId);
                         }
                     }
-                }));
+                }), {dropdownTitle:"ASSEMBLY"});
                 RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, undefined, onInstanceChangeCallback);
                 if(typeof onAsseblyChangeCallback === "function")
                     onAsseblyChangeCallback(EntryAssembliesCollector.modelKey);
