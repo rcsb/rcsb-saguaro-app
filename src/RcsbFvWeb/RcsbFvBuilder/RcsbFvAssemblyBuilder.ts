@@ -14,12 +14,12 @@ export class RcsbFvAssemblyBuilder {
                 RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
             }else{
                 rcsbFvCtxManager.setEntityToInstance(entryId, new PolymerEntityInstanceTranslate(result.get(EntryAssembliesCollector.modelKey)));
-                WebToolsManager.buildSelectButton(elementSelectAssemblyId, Array.from(result.keys()).map(assemblyId=>{
+                rcsbFvCtxManager.setButton(elementFvId, elementSelectAssemblyId);
+                RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectAssemblyId, Array.from(result.keys()).map(assemblyId=>{
                     return {
                         name: assemblyId,
                         label: assemblyId,
                         onChange:()=>{
-                            WebToolsManager.clearSelectButton(elementSelectInstanceId);
                             RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(assemblyId), elementFvId, elementSelectInstanceId, entryId, undefined, onInstanceChangeCallback);
                             if(typeof onAsseblyChangeCallback === "function")
                                 onAsseblyChangeCallback(assemblyId);

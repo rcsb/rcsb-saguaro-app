@@ -5,6 +5,7 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 
 class RcsbFvContextManager {
     private rcsbFvManager: Map<string, RcsbFv> = new Map<string, RcsbFv>();
+    private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
     private boardConfig: RcsbFvBoardConfigInterface;
     private polymerEntityToInstanceMap: Map<string,PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
 
@@ -16,8 +17,20 @@ class RcsbFvContextManager {
         this.rcsbFvManager.set(elementFvId, rcsbFv);
     }
 
+    getButtonList(elementFvId: string): Set<string>{
+        return this.rcsbButtonManager.get(elementFvId);
+    }
+
+    setButton(elementFvId: string, buttonId: string): void{
+        if(this.rcsbButtonManager.get(elementFvId) == null)
+            this.rcsbButtonManager.set(elementFvId, new Set<string>());
+        this.rcsbButtonManager.get(elementFvId).add(buttonId);
+    }
+
     removeFv(elementFvId: string): void{
         this.rcsbFvManager.delete(elementFvId);
+        if(this.rcsbButtonManager.has(elementFvId))
+            this.rcsbButtonManager.delete(elementFvId);
     }
 
     setBoardConfig(boardConfig: RcsbFvBoardConfigInterface): void{

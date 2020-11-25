@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import {SelectButton, SelectOptionInterface} from "./SelectButton";
 
-interface SelectButtonConfigInterface {
+export interface SelectButtonConfigInterface {
     addTitle?: boolean;
     defaultValue?: string|undefined|null;
     width?: number;
@@ -10,12 +10,22 @@ interface SelectButtonConfigInterface {
 }
 export class WebToolsManager {
 
-    private static additionalDivButton: HTMLDivElement = null;
-    private static suffix: string = "buttonDiv_";
+    private static suffix: string = "_buttonDiv";
+    private static suffixAdditionalButton: string = "_additionalButton";
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+        WebToolsManager.clearSelectButton(elementId);
+        WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffix, options, config);
+    }
+
+    static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+        WebToolsManager.clearAdditionalSelectButton(elementId);
+        WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffixAdditionalButton, options, config);
+    }
+
+    private static innerBuildSelectButton(elementId: string, suffix: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
         const div: HTMLDivElement = document.createElement<"div">("div");
-        div.setAttribute("id", WebToolsManager.suffix+elementId);
+        div.setAttribute("id", elementId+suffix);
         div.style.display = "inline-block";
         document.getElementById(elementId).append(div);
         ReactDom.render(
@@ -24,40 +34,25 @@ export class WebToolsManager {
         );
     }
 
-    static additionalSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?: SelectButtonConfigInterface){
-        if(WebToolsManager.additionalDivButton == null) {
-            WebToolsManager.additionalDivButton = document.createElement<"div">("div");
-            WebToolsManager.additionalDivButton.style.display = "inline-block";
-            document.getElementById(elementId).append(WebToolsManager.additionalDivButton);
-        }else{
-            WebToolsManager.clearAdditionalSelectButton();
-        }
-        ReactDom.render(
-            this.jsxButton(options,config),
-            WebToolsManager.additionalDivButton
-        );
-    }
-
     private static jsxButton(options: Array<SelectOptionInterface>, config?: SelectButtonConfigInterface):JSX.Element{
         return (<SelectButton options={options} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle}/>);
     }
 
     static clearSelectButton(elementId: string){
-        if( document.getElementById(WebToolsManager.suffix+elementId) != null){
-            ReactDom.render(
-                null,
-                document.getElementById(WebToolsManager.suffix+elementId)
-            );
-            document.getElementById(WebToolsManager.suffix+elementId)?.remove();
+        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffix);
+        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffixAdditionalButton);
+    }
+
+    static clearAdditionalSelectButton(elementId: string){
+        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffixAdditionalButton);
+    }
+
+    static innerClearSelectButton(elementId: string, suffix: string){
+        const id: string = elementId+suffix;
+        if( document.getElementById(id) != null){
+            ReactDom.unmountComponentAtNode(document.getElementById(id));
+            document.getElementById(id)?.remove();
         }
     }
 
-    static clearAdditionalSelectButton(){
-        if( WebToolsManager.additionalDivButton != null){
-            ReactDom.render(
-                null,
-                WebToolsManager.additionalDivButton
-            );
-        }
-    }
 }

@@ -85,5 +85,5 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
 }
 
 export function unmount(elementId:string): void{
-    RcsbFvCoreBuilder.unmount(elementId)
+    RcsbFvCoreBuilder.unmount(elementId);
 }

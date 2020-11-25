@@ -31,7 +31,7 @@ export class RcsbFvChromosomeBuilder {
                     RcsbFvCoreBuilder.showMessage(elementFvId, "No genome alignments are available");
                 }else{
                     const unique: Set<string> = new Set<string>();
-                    WebToolsManager.buildSelectButton(entitySelectId,result.filter(r=>{
+                    RcsbFvCoreBuilder.buildSelectButton(elementFvId, entitySelectId,result.filter(r=>{
                         const included: boolean = unique.has(r.entryId+TagDelimiter.entity+r.entityId);
                         unique.add(r.entryId+TagDelimiter.entity+r.entityId);
                         return entityMap.has(r.entryId+TagDelimiter.entity+r.entityId) && !included;
@@ -44,7 +44,6 @@ export class RcsbFvChromosomeBuilder {
                             label: entityId + " - " + e.names,
                             shortLabel: entityId,
                             onChange:()=>{
-                                WebToolsManager.clearAdditionalSelectButton();
                                 RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);
                             }
                         }
@@ -62,7 +61,7 @@ export class RcsbFvChromosomeBuilder {
         const chrViewer: RcsbFvChromosome = new RcsbFvChromosome(elementFvId,rcsbFvSingleViewer);
         chrViewer.build({entityId: entityId, elementSelectId: elementSelectId});
         chrViewer.getTargets().then(targets=>{
-            WebToolsManager.additionalSelectButton(elementSelectId, targets.map((chrId,n)=>{
+            RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
                 return {
                     label: chrId,
                     name: chrId,

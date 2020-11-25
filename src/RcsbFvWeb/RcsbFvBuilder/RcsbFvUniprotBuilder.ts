@@ -22,14 +22,14 @@ export class RcsbFvUniprotBuilder {
         rcsbFvUniprot.build({upAcc:upAcc});
         rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
         rcsbFvUniprot.getTargets().then(targets => {
-            WebToolsManager.buildSelectButton(elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
+            RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
                 return a.localeCompare(b);
             })).map(t => {
                 return {
                     label: t === ALL ? t+" ("+targets.length+")": t,
                     onChange: () => {
                         if (t === ALL) {
-                            WebToolsManager.clearAdditionalSelectButton();
+                            RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                             buildUniprotFv(elementFvId, upAcc);
                         } else {
                             const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
@@ -46,7 +46,7 @@ export class RcsbFvUniprotBuilder {
                                     result[0].entryId+TagDelimiter.entity+result[0].entityId,
                                     result[0].entryId+TagDelimiter.instance+result[0].asymId
                                 );
-                                WebToolsManager.additionalSelectButton(elementSelectId,result.map(instance=>{
+                                RcsbFvCoreBuilder.addSelectButton(elementFvId, elementSelectId,result.map(instance=>{
                                     return{
                                         name: instance.taxIds.length > 0 ? instance.names+" - "+instance.taxIds.join(", ") : instance.names,
                                         label: labelPrefix+instance.authId+" - "+instance.names,

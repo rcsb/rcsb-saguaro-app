@@ -3,6 +3,8 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 import {EntryInstancesCollector} from "../CollectTools/EntryInstancesCollector";
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@bioinsilico/rcsb-saguaro";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
+import {SelectOptionInterface} from "../WebTools/SelectButton";
 
 export interface CreateFvInterface {
     elementId: string;
@@ -78,9 +80,31 @@ export class RcsbFvCoreBuilder {
 
     static unmount(elementId:string): void{
         if (rcsbFvCtxManager.getFv(elementId) != null) {
+            if(rcsbFvCtxManager.getButtonList(elementId)!=null){
+                rcsbFvCtxManager.getButtonList(elementId).forEach(buttonId=>{
+                    WebToolsManager.clearSelectButton(buttonId);
+                });
+            }
             rcsbFvCtxManager.getFv(elementId).unmount();
             rcsbFvCtxManager.removeFv(elementId);
         }
+    }
+
+    static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+        rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
+        WebToolsManager.buildSelectButton(selectButtonId, options, config);
+    }
+
+    static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string){
+        if(rcsbFvCtxManager.getButtonList(elementFvId)?.has(selectButtonId)){
+            rcsbFvCtxManager.getButtonList(elementFvId).delete(selectButtonId);
+        }
+        WebToolsManager.clearAdditionalSelectButton(selectButtonId);
+    }
+
+    static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+        rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
+        WebToolsManager.addSelectButton(selectButtonId, options);
     }
 
     static showMessage(elementId: string, message: string){

@@ -27,7 +27,7 @@ export class RcsbFvEntityBuilder {
                     }]}});
             rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
             rcsbFvEntity.getTargets().then(targets => {
-                WebToolsManager.buildSelectButton(elementSelectId, [entityId].concat(targets).map(t => {
+                RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [entityId].concat(targets).map(t => {
                     return {
                         label: t,
                         onChange: () => {

@@ -32,7 +32,7 @@ export class RcsbFvInstanceBuilder {
     }
 
     static buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void){
-        WebToolsManager.buildSelectButton(elementSelectId, instanceList.map(instance => {
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, instanceList.map(instance => {
             return {
                 name: instance.names + " - " + instance.taxIds.join(", "),
                 label: instance.entryId + TagDelimiter.instance + instance.authId + " - " + instance.names,
