@@ -9,6 +9,7 @@ import {RcsbFvEntityBuilder} from "./RcsbFvBuilder/RcsbFvEntityBuilder";
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvBuilder/RcsbFvContextManager";
 import {PfvBuilderInterface, RcsbFvGeneralBuilder} from "./RcsbFvBuilder/RcsbFvGeneralBuilder";
+import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 
 export function getRcsbFv(elementFvId: string): RcsbFv{
     return rcsbFvCtxManager.getFv(elementFvId);
@@ -32,6 +33,10 @@ export function buildSingleEntitySummaryFv(elementId: string, entityId: string):
 
 export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
     RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback);
+}
+
+export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
+    RcsbFvAssemblyBuilder.buildAssemblySequenceFv(elementFvId, elementSelectAssemblyId, elementSelectInstanceId, entryId, onAsseblyChangeCallback, onInstanceChangeCallback);
 }
 
 export function buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {

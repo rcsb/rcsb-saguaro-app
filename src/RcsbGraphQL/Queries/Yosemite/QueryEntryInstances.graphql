@@ -25,5 +25,14 @@ query QueryEntryInstance($queryId: String!){
                 }
             }
         }
+        assemblies {
+            rcsb_assembly_container_identifiers {
+                assembly_id
+            }
+            pdbx_struct_assembly_gen{
+                asym_id_list
+            }
+
+        }
     }
 }

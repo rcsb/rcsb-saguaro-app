@@ -2,7 +2,7 @@ import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFvInstance} from "../RcsbFvModule/RcsbFvInstance";
 import {TagDelimiter} from "../Utils/TagDelimiter";
-import {EntryInstancesCollector} from "../CollectTools/EntryInstancesCollector";
+import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
 import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {buildInstanceFv} from "../RcsbFvBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
@@ -23,45 +23,49 @@ export class RcsbFvInstanceBuilder {
                 RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
             }else{
                 rcsbFvCtxManager.setEntityToInstance(entryId, new PolymerEntityInstanceTranslate(result));
-                WebToolsManager.buildSelectButton(elementSelectId, result.map(instance => {
-                    return {
-                        name: instance.names + " - " + instance.taxIds.join(", "),
-                        label: instance.entryId + TagDelimiter.instance + instance.authId + " - " + instance.names,
-                        shortLabel: instance.entryId + TagDelimiter.instance + instance.authId,
-                        onChange: () => {
-                            buildInstanceFv(
-                                elementFvId,
-                                instance.rcsbId
-                            ).then(() => {
-                                if (typeof onChangeCallback === "function")
-                                    onChangeCallback({
-                                        pdbId: instance.entryId,
-                                        authId: instance.authId,
-                                        asymId: instance.asymId
-                                    });
-                            });
-                        }
-                    }
-                }), {addTitle:true, defaultValue: defaultValue});
-                let index: number = 0;
-                if (defaultValue != null) {
-                    const n: number = result.findIndex(a => {
-                        return a.authId === defaultValue.split(TagDelimiter.instance)[1] && a.entryId === defaultValue.split(TagDelimiter.instance)[0]
-                    });
-                    if (n >= 0) index = n;
-                }
-                buildInstanceFv(elementFvId, result[index].rcsbId).then(() => {
-                    if (typeof onChangeCallback === "function")
-                        onChangeCallback({
-                            pdbId: result[index].entryId,
-                            authId: result[index].authId,
-                            asymId: result[index].asymId
-                        });
-                });
+                RcsbFvInstanceBuilder.buildSelectorInstanceFv(result, elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback);
             }
         }).catch(error=>{
             console.error(error);
             throw error;
+        });
+    }
+
+    static buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void){
+        WebToolsManager.buildSelectButton(elementSelectId, instanceList.map(instance => {
+            return {
+                name: instance.names + " - " + instance.taxIds.join(", "),
+                label: instance.entryId + TagDelimiter.instance + instance.authId + " - " + instance.names,
+                shortLabel: instance.entryId + TagDelimiter.instance + instance.authId,
+                onChange: () => {
+                    buildInstanceFv(
+                        elementFvId,
+                        instance.rcsbId
+                    ).then(() => {
+                        if (typeof onChangeCallback === "function")
+                            onChangeCallback({
+                                pdbId: instance.entryId,
+                                authId: instance.authId,
+                                asymId: instance.asymId
+                            });
+                    });
+                }
+            }
+        }), {addTitle:true, defaultValue: defaultValue});
+        let index: number = 0;
+        if (defaultValue != null) {
+            const n: number = instanceList.findIndex(a => {
+                return a.authId === defaultValue.split(TagDelimiter.instance)[1] && a.entryId === defaultValue.split(TagDelimiter.instance)[0]
+            });
+            if (n >= 0) index = n;
+        }
+        buildInstanceFv(elementFvId, instanceList[index].rcsbId).then(() => {
+            if (typeof onChangeCallback === "function")
+                onChangeCallback({
+                    pdbId: instanceList[index].entryId,
+                    authId: instanceList[index].authId,
+                    asymId: instanceList[index].asymId
+                });
         });
     }
 

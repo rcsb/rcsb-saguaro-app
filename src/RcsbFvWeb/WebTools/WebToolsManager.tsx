@@ -11,9 +11,11 @@ interface SelectButtonConfigInterface {
 export class WebToolsManager {
 
     private static additionalDivButton: HTMLDivElement = null;
+    private static suffix: string = "buttonDiv_";
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
         const div: HTMLDivElement = document.createElement<"div">("div");
+        div.setAttribute("id", WebToolsManager.suffix+elementId);
         div.style.display = "inline-block";
         document.getElementById(elementId).append(div);
         ReactDom.render(
@@ -38,6 +40,16 @@ export class WebToolsManager {
 
     private static jsxButton(options: Array<SelectOptionInterface>, config?: SelectButtonConfigInterface):JSX.Element{
         return (<SelectButton options={options} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle}/>);
+    }
+
+    static clearSelectButton(elementId: string){
+        if( document.getElementById(WebToolsManager.suffix+elementId) != null){
+            ReactDom.render(
+                null,
+                document.getElementById(WebToolsManager.suffix+elementId)
+            );
+            document.getElementById(WebToolsManager.suffix+elementId)?.remove();
+        }
     }
 
     static clearAdditionalSelectButton(){
