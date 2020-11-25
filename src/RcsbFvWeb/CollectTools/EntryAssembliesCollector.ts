@@ -23,6 +23,7 @@ export class EntryAssembliesCollector {
 
     private static getEntryAssemblies(entry: CoreEntry ): Map<string,Array<PolymerEntityInstanceInterface>>{
         const out: Map<string,Array<PolymerEntityInstanceInterface>> = new Map<string,Array<PolymerEntityInstanceInterface>>();
+        out.set(EntryAssembliesCollector.modelKey, new Array<PolymerEntityInstanceInterface>());
         const asymInstanceMap: Map<string, PolymerEntityInstanceInterface> = new Map<string, PolymerEntityInstanceInterface>();
         if(entry?.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
@@ -40,7 +41,6 @@ export class EntryAssembliesCollector {
     }
 
     private static parsePolymerEntityInstances(polymerEntityInstances: Array<CorePolymerEntityInstance>, asymInstanceMap: Map<string, PolymerEntityInstanceInterface>, out: Map<string,Array<PolymerEntityInstanceInterface>>){
-        out.set(EntryAssembliesCollector.modelKey, new Array<PolymerEntityInstanceInterface>());
         polymerEntityInstances.forEach(instance=>{
             if(instance.polymer_entity?.entity_poly?.rcsb_entity_polymer_type == "Protein") {
                 const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;

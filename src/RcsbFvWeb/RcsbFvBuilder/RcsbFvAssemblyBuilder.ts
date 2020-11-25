@@ -1,5 +1,4 @@
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {EntryAssembliesCollector} from "../CollectTools/EntryAssembliesCollector";
