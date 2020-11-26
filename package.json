@@ -1,6 +1,6 @@
 {
   "name": "@bioinsilico/rcsb-saguaro-app",
-  "version": "0.9.20",
+  "version": "0.9.23",
   "description": "RCSB 1D Saguaro Web App",
   "main": "dist/build/app.js",
   "files": [
@@ -75,7 +75,7 @@
     "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@bioinsilico/rcsb-saguaro": "^0.9.10",
+    "@bioinsilico/rcsb-saguaro": "^0.9.12",
     "@graphql-codegen/cli": "^1.16.0",
     "ideogram": "^1.27.0"
   },
