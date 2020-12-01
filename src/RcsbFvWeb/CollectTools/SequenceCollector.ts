@@ -4,7 +4,7 @@ import {
     RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
-} from '@bioinsilico/rcsb-saguaro';
+} from '@rcsb/rcsb-saguaro';
 
 import {
     AlignedRegion,

@@ -1,4 +1,4 @@
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 
 

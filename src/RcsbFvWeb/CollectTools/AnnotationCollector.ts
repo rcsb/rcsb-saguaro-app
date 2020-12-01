@@ -7,7 +7,7 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementGapInterface,
     RcsbFvTrackDataElementInterface
-} from '@bioinsilico/rcsb-saguaro';
+} from '@rcsb/rcsb-saguaro';
 
 import {
     AnnotationFeatures,

@@ -1,5 +1,5 @@
 import {PairwiseAlignmentBuilder, PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 
 export class RcsbFvPairwiseAligmentBuilder {

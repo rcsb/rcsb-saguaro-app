@@ -6,7 +6,7 @@ import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {RcsbFv} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvChromosomeBuilder {
 

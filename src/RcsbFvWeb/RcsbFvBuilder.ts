@@ -1,4 +1,4 @@
-import {RcsbFv, RcsbFvBoardConfigInterface} from '@bioinsilico/rcsb-saguaro';
+import {RcsbFv, RcsbFvBoardConfigInterface} from '@rcsb/rcsb-saguaro';
 import {RcsbFvAdditionalConfig } from "./RcsbFvModule/RcsbFvModuleInterface";
 import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";

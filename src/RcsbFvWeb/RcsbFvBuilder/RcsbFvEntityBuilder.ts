@@ -3,11 +3,10 @@ import {TagDelimiter} from "../Utils/TagDelimiter";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFvEntity} from "../RcsbFvModule/RcsbFvEntity";
 import {FieldName, OperationType, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {buildUniprotEntityFv} from "../RcsbFvBuilder";
 import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
-import {RcsbFv} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvEntityBuilder {
 

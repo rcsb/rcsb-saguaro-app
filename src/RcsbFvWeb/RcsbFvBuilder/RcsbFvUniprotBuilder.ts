@@ -10,7 +10,7 @@ import {SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {buildUniprotEntityInstanceFv, buildUniprotFv} from "../RcsbFvBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {RcsbFv} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvUniprotBuilder {
 

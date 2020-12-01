@@ -1,7 +1,4 @@
-import {RcsbFvTrackDataElementInterface} from '@bioinsilico/rcsb-saguaro';
-import {RcsbFvDisplayTypes} from '@bioinsilico/rcsb-saguaro';
-import {RcsbFvRowConfigInterface} from '@bioinsilico/rcsb-saguaro';
-import {RcsbFvDisplayConfigInterface} from '@bioinsilico/rcsb-saguaro';
+import {RcsbFvTrackDataElementInterface, RcsbFvDisplayTypes, RcsbFvRowConfigInterface, RcsbFvDisplayConfigInterface} from '@rcsb/rcsb-saguaro';
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";

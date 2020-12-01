@@ -2,7 +2,7 @@ import {
     RcsbFv,
     RcsbFvBoardConfigInterface,
     RcsbFvRowConfigInterface
-} from '@bioinsilico/rcsb-saguaro';
+} from '@rcsb/rcsb-saguaro';
 
 import {SequenceCollector} from "../CollectTools/SequenceCollector";
 import {AnnotationCollector} from "../CollectTools/AnnotationCollector";

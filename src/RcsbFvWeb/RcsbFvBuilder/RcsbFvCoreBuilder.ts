@@ -1,7 +1,7 @@
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {EntryInstancesCollector} from "../CollectTools/EntryInstancesCollector";
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
 import {SelectOptionInterface} from "../WebTools/SelectButton";

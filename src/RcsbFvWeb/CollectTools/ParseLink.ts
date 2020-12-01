@@ -1,4 +1,4 @@
-import {RcsbFvLink} from "@bioinsilico/rcsb-saguaro/dist/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 

@@ -3,7 +3,6 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 import {RcsbFvInstance} from "../RcsbFvModule/RcsbFvInstance";
 import {TagDelimiter} from "../Utils/TagDelimiter";
 import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
-import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {buildInstanceFv} from "../RcsbFvBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";

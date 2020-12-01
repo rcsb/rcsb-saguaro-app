@@ -1,7 +1,7 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {RcsbFv} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFv} from "@rcsb/rcsb-saguaro";
 import {ObservedSequenceCollector} from "../CollectTools/ObservedCollector";
 
 export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{

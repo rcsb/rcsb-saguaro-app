@@ -13,7 +13,7 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackData,
     RcsbFvTrackDataElementInterface
-} from '@bioinsilico/rcsb-saguaro';
+} from '@rcsb/rcsb-saguaro';
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvAlignmentCollectorQueue} from "../RcsbFvWorkers/RcsbFvAlignmentCollectorQueue";

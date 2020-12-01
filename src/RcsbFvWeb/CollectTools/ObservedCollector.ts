@@ -4,7 +4,7 @@ import {
     FieldName,
     OperationType,
     SequenceReference,
-    Source, TargetAlignment
+    Source,
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion, BuildAlignementsInterface,

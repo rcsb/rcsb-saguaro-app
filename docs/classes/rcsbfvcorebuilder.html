@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RcsbFvCoreBuilder | @bioinsilico/rcsb-saguaro-app</title>
-	<meta name="description" content="Documentation for @bioinsilico/rcsb-saguaro-app">
+	<title>RcsbFvCoreBuilder | @rcsb/rcsb-saguaro-app</title>
+	<meta name="description" content="Documentation for @rcsb/rcsb-saguaro-app">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@bioinsilico/rcsb-saguaro-app</a>
+					<a href="../index.html" class="title">@rcsb/rcsb-saguaro-app</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -81,7 +81,10 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#addselectbutton" class="tsd-kind-icon">add<wbr>Select<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#buildrcsbfvsingleviewer" class="tsd-kind-icon">build<wbr>Rcsb<wbr>FvSingle<wbr>Viewer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#buildselectbutton" class="tsd-kind-icon">build<wbr>Select<wbr>Button</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#clearadditionalselectbutton" class="tsd-kind-icon">clear<wbr>Additional<wbr>Select<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#createfv" class="tsd-kind-icon">create<wbr>Fv</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#createfvbuilder" class="tsd-kind-icon">create<wbr>FvBuilder</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvcorebuilder.html#getpolymerentityinstancemapandbuildfv" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Map<wbr>And<wbr>Build<wbr>Fv</a></li>
@@ -95,6 +98,38 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="addselectbutton" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> add<wbr>Select<wbr>Button</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Select<wbr>Button<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectButtonId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L105">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:105</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementFvId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>selectButtonId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>options: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="buildrcsbfvsingleviewer" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Rcsb<wbr>FvSingle<wbr>Viewer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -104,7 +139,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/69cc6db/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L63">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L65">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -118,6 +153,64 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="buildselectbutton" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Select<wbr>Button</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Select<wbr>Button<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectButtonId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L93">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:93</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementFvId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>selectButtonId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>options: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="clearadditionalselectbutton" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> clear<wbr>Additional<wbr>Select<wbr>Button</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Additional<wbr>Select<wbr>Button<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectButtonId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L98">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:98</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementFvId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>selectButtonId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="createfv" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> create<wbr>Fv</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -127,7 +220,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/69cc6db/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L45">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L47">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -150,7 +243,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/69cc6db/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L30">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L32">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -199,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/69cc6db/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L16">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L18">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -258,7 +351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/69cc6db/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L86">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L110">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:110</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -284,7 +377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/69cc6db/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L79">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/7fabbff/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts#L81">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -315,7 +408,16 @@
 						<a href="rcsbfvcorebuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvCore<wbr>Builder</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="rcsbfvcorebuilder.html#addselectbutton" class="tsd-kind-icon">add<wbr>Select<wbr>Button</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="rcsbfvcorebuilder.html#buildrcsbfvsingleviewer" class="tsd-kind-icon">build<wbr>Rcsb<wbr>FvSingle<wbr>Viewer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="rcsbfvcorebuilder.html#buildselectbutton" class="tsd-kind-icon">build<wbr>Select<wbr>Button</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="rcsbfvcorebuilder.html#clearadditionalselectbutton" class="tsd-kind-icon">clear<wbr>Additional<wbr>Select<wbr>Button</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="rcsbfvcorebuilder.html#createfv" class="tsd-kind-icon">create<wbr>Fv</a>

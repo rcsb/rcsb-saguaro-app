@@ -1,4 +1,4 @@
-import {RcsbFvTrackDataElementInterface} from "@bioinsilico/rcsb-saguaro";
+import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 
 export class FeatureTools {
     static mergeBlocks(blocks: Array<RcsbFvTrackDataElementInterface>){
