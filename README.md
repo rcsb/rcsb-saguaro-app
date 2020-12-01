@@ -19,7 +19,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 --->
 
 ### Node Module Instalation
-`npm install @bioinsilico/rcsb-saguaro-app`
+`npm install @rcsb/rcsb-saguaro-app`
 
 ### CDN JavaScript
 `<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.0.0/dist/build/app.js" type="text/javascript"></script>`
