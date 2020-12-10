@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "resolveJsonModule": true,
-    "outDir": "./dist/src",
+    "outDir": "./build/src",
     "noImplicitAny": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
@@ -16,7 +16,7 @@
     //"strictNullChecks": true,
     "strictFunctionTypes": true,
     "declaration": true,
-    "declarationDir": "./dist/build"
+    "declarationDir": "./build/dist"
   },
   "include": [ "src/*", "src/**/*", "src/**/**/*", "src/**/**/**/*" ],
   "exclude": [

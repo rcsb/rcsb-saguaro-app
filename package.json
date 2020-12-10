@@ -1,14 +1,14 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "RCSB 1D Saguaro Web App",
-  "main": "dist/build/app.js",
+  "main": "build/dist/app.js",
   "files": [
-    "dist/build/worker.js",
-    "dist/build/config.js",
-    "dist/build/**/*ts",
-    "dist/build/**/**/*ts",
-    "dist/build/**/**/**/*ts"
+    "build/dist/worker.js",
+    "build/dist/config.js",
+    "build/dist/**/*ts",
+    "build/dist/**/**/*ts",
+    "build/dist/**/**/**/*ts"
   ],
   "scripts": {
     "buildAll": "npm run buildApp && npm run buildAllDoc",
@@ -16,11 +16,11 @@
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
     "generateBorrego": "graphql-codegen --config src/RcsbServerConfig/codegen.borrego.json",
     "generateYosemite": "graphql-codegen --config src/RcsbServerConfig/codegen.yosemite.json",
-    "copyQueries": "ncp src/RcsbGraphQL/Queries dist/src/RcsbGraphQL/Queries",
-    "copyConfig": "ncp dist/src/RcsbServerConfig/ServerConfig.js dist/build/config.js",
+    "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
+    "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
     "tsc": "tsc",
-    "clean": "del-cli dist/*json dist/src",
-    "cleanAll": "npm run clean && del-cli dist/build",
+    "clean": "del-cli build/*json build/src",
+    "cleanAll": "npm run clean && del-cli build/dist",
     "buildDoc": "typedoc --mode file --out docs src",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "@graphql-codegen/cli": "^1.16.0",
-    "@rcsb/rcsb-saguaro": "^1.0.0",
+    "@rcsb/rcsb-saguaro": "^1.0.1",
     "ideogram": "^1.27.0"
   },
   "bugs": {

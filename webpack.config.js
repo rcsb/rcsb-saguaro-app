@@ -35,11 +35,11 @@ const webWorker = {
     //mode: "development",
     mode:"production",
     entry: {
-        'worker':'./dist/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
+        'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'dist/build')
+        path: path.resolve(__dirname, 'build/dist')
     },
     devtool: 'source-map'
 };
@@ -49,14 +49,14 @@ const webBuilder = {
     //mode: "development",
     mode:"production",
     entry: {
-        'app':'./dist/src/app.js'
+        'app':'./build/src/app.js'
     },
     output: {
         filename: '[name].js',
         library: 'RcsbFvWebApp',
         libraryTarget: 'umd',
         umdNamedDefine: true,
-        path: path.resolve(__dirname, 'dist/build')
+        path: path.resolve(__dirname, 'build/dist')
     },
     devtool: 'source-map'
 };
