@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "@graphql-codegen/cli": "^1.16.0",
-    "@rcsb/rcsb-saguaro": "^1.0.1",
+    "@rcsb/rcsb-saguaro": "^1.0.2",
     "ideogram": "^1.27.0"
   },
   "bugs": {
