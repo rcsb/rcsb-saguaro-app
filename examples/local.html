@@ -5,7 +5,7 @@
 <body>
 
 
-<script src="../dist/build/app.js" type="text/javascript"></script>
+<script src="../build/dist/app.js" type="text/javascript"></script>
 
 <br/>
 <br/>
@@ -37,14 +37,19 @@
         trackWidth: 1000
     });
     RcsbFvWebApp.buildEntryChromosome("pfv","select",args.entryId);*/
-    RcsbFvWebApp.buildAssemblySequenceFv(
+    /*RcsbFvWebApp.buildAssemblySequenceFv(
         "pfv",
         "select",
         "selectBis",
         "2uzi"
-    );
+    );*/
     //RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A")
     //RcsbFvWebApp.buildUniprotFv("pfv","P01112")
+    RcsbFvWebApp.buildMultipleInstanceSequenceFv(
+        "pfv",
+        "select",
+        "selectBis",
+        ["2uzi","101m"])
 </script>
 
 

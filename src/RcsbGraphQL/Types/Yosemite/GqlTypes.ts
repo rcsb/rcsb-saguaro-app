@@ -6933,6 +6933,8 @@ export interface RcsbAssemblyInfo {
    * 1KIP
    */
   entry_id: Scalars['String'];
+  /** The assembly hydrogen atomic coordinate count. */
+  hydrogen_atom_count?: Maybe<Scalars['Int']>;
   /**
    * The number of modeled polymer monomers in the assembly coordinate data.
    *  This is the total count of monomers with reported coordinate data for all polymer
@@ -8460,6 +8462,8 @@ export interface RcsbEntryInfo {
   cis_peptide_count?: Maybe<Scalars['Int']>;
   /** The number of heavy atom coordinates records per deposited structure model. */
   deposited_atom_count?: Maybe<Scalars['Int']>;
+  /** The number of hydrogen atom coordinates records per deposited structure model. */
+  deposited_hydrogen_atom_count?: Maybe<Scalars['Int']>;
   /** The number of model structures deposited. */
   deposited_model_count?: Maybe<Scalars['Int']>;
   /**
@@ -10245,7 +10249,8 @@ export interface RcsbRepositoryHoldingsCurrent {
    * 2fo-fc Map, Combined NMR data (NEF), Combined NMR data (NMR-STAR), FASTA
    * sequence, Map Coefficients, NMR chemical shifts, NMR restraints V1, NMR
    * restraints V2, assembly PDB, assembly mmCIF, entry PDB, entry PDB bundle,
-   * entry PDBML, entry mmCIF, fo-fc Map, structure factors, validation report
+   * entry PDBML, entry mmCIF, fo-fc Map, structure factors, validation report,
+   * validation slider image
    */
   repository_content_types?: Maybe<Array<Maybe<Scalars['String']>>>;
 }

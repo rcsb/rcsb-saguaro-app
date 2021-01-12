@@ -31,8 +31,12 @@ export function buildSingleEntitySummaryFv(elementId: string, entityId: string):
     return RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementId, entityId);
 }
 
-export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
-    RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback);
+export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>): void {
+    RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback, filterInstances);
+}
+
+export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, defaultValue?: Map<string, string|undefined|null>, onChangeCallback?:Map<string,(x: InstanceSequenceOnchangeInterface)=>void>, filterInstances?: Map<string,Set<string>>): void {
+    RcsbFvInstanceBuilder.buildMultipleInstanceSequenceFv(elementFvId, elementEntrySelectId, elementInstanceSelectId, entryIdList, defaultValue, onChangeCallback, filterInstances);
 }
 
 export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
