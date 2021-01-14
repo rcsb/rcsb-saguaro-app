@@ -8599,7 +8599,7 @@ export interface RcsbEntryInfo {
    * Selected polymer entity type categories describing the entry.
    * 
    * Allowable values:
-   * Nucleic acid (only), Other, Protein (only), Protein/NA
+   * Nucleic acid (only), Oligosaccharide (only), Other, Protein (only), Protein/NA, Protein/Oligosaccharide
    */
   selected_polymer_entity_types?: Maybe<Scalars['String']>;
   /** Combined list of software programs names reported in connection with the production of this entry. */
