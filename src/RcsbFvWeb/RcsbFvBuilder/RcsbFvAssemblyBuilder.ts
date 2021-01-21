@@ -6,9 +6,9 @@ import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFv
 
 export class RcsbFvAssemblyBuilder {
 
-    static buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
+    static buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<void> {
         const assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
-        assemblyCollector.collect({entry_id:entryId}).then(result=>{
+        return assemblyCollector.collect({entry_id:entryId}).then(result=>{
             if(result.size == 0){
                 RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
             }else{
@@ -25,9 +25,10 @@ export class RcsbFvAssemblyBuilder {
                         }
                     }
                 }), {dropdownTitle:"ASSEMBLY"});
-                RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, undefined, onInstanceChangeCallback);
+                const out:Promise<void> = RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, undefined, onInstanceChangeCallback);
                 if(typeof onAsseblyChangeCallback === "function")
                     onAsseblyChangeCallback(EntryAssembliesCollector.modelKey);
+                return out;
             }
         }).catch(error=>{
             console.error(error);

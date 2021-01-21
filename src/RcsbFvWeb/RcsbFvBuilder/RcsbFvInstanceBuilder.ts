@@ -14,7 +14,7 @@ export interface InstanceSequenceOnchangeInterface {
 
 export class RcsbFvInstanceBuilder {
 
-    static buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, defaultValue?: Map<string, string|undefined|null>, onChangeCallback?:Map<string,(x: InstanceSequenceOnchangeInterface)=>void>, filterInstances?: Map<string,Set<string>>): void {
+    static buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, defaultValue?: Map<string, string|undefined|null>, onChangeCallback?:Map<string,(x: InstanceSequenceOnchangeInterface)=>void>, filterInstances?: Map<string,Set<string>>): Promise<void> {
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementEntrySelectId, entryIdList.map(entryId=>{
             return {
                 label:entryId,
@@ -25,17 +25,17 @@ export class RcsbFvInstanceBuilder {
             }
         }),{addTitle:true, dropdownTitle:"PDB"});
         const entryId: string = entryIdList[0];
-        RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementInstanceSelectId, entryId, defaultValue?.get(entryId), onChangeCallback?.get(entryId), filterInstances?.get(entryId), true);
+        return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementInstanceSelectId, entryId, defaultValue?.get(entryId), onChangeCallback?.get(entryId), filterInstances?.get(entryId), true);
     }
 
-    static buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>, displayAuthId?: boolean): void {
+    static buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>, displayAuthId?: boolean): Promise<void> {
         const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-        instanceCollector.collect({entry_id:entryId}).then(result=>{
+        return instanceCollector.collect({entry_id:entryId}).then(result=>{
             if(result.length == 0){
                 RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
             }else{
                 rcsbFvCtxManager.setEntityToInstance(entryId, new PolymerEntityInstanceTranslate(result));
-                RcsbFvInstanceBuilder.buildSelectorInstanceFv(result, elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback, filterInstances, displayAuthId);
+                return RcsbFvInstanceBuilder.buildSelectorInstanceFv(result, elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback, filterInstances, displayAuthId);
             }
         }).catch(error=>{
             console.error(error);
@@ -43,7 +43,7 @@ export class RcsbFvInstanceBuilder {
         });
     }
 
-    static buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>, displayAuthId?: boolean): void{
+    static buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>, displayAuthId?: boolean): Promise<void>{
         const filteredInstanceList: Array<PolymerEntityInstanceInterface> = instanceList.filter(i=>(filterInstances == null || filterInstances.has(i.asymId)));
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, filteredInstanceList.map(instance => {
             return {
@@ -72,7 +72,7 @@ export class RcsbFvInstanceBuilder {
             });
             if (n >= 0) index = n;
         }
-        RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId).then(() => {
+        return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId).then(() => {
             if (typeof onChangeCallback === "function")
                 onChangeCallback({
                     pdbId: filteredInstanceList[index].entryId,
@@ -82,8 +82,8 @@ export class RcsbFvInstanceBuilder {
         });
     }
 
-    static buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
-        return new Promise<null>((resolve,reject)=>{
+    static buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
+        return new Promise<void>((resolve,reject)=>{
             try {
                 const buildFv: (p: PolymerEntityInstanceTranslate) => void = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvInstance, {
                     instanceId: instanceId,

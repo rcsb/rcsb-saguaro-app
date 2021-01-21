@@ -19,75 +19,75 @@ export function setBoardConfig(boardConfigData: RcsbFvBoardConfigInterface): voi
     rcsbFvCtxManager.setBoardConfig(boardConfigData);
 }
 
-export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): void {
-    RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementFvId, elementSelectId, upAcc);
+export function unmount(elementId:string): void{
+    RcsbFvCoreBuilder.unmount(elementId);
 }
 
-export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
-    RcsbFvEntityBuilder.buildEntitySummaryFv(elementFvId, elementSelectId, entityId);
+export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): Promise<void> {
+    return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementFvId, elementSelectId, upAcc);
 }
 
-export function buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<null> {
+export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): Promise<void> {
+    return RcsbFvEntityBuilder.buildEntitySummaryFv(elementFvId, elementSelectId, entityId);
+}
+
+export function buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<void> {
     return RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementId, entityId);
 }
 
-export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>): void {
-    RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback, filterInstances);
+export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>): Promise<void> {
+    return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback, filterInstances);
 }
 
-export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, defaultValue?: Map<string, string|undefined|null>, onChangeCallback?:Map<string,(x: InstanceSequenceOnchangeInterface)=>void>, filterInstances?: Map<string,Set<string>>): void {
-    RcsbFvInstanceBuilder.buildMultipleInstanceSequenceFv(elementFvId, elementEntrySelectId, elementInstanceSelectId, entryIdList, defaultValue, onChangeCallback, filterInstances);
+export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, defaultValue?: Map<string, string|undefined|null>, onChangeCallback?:Map<string,(x: InstanceSequenceOnchangeInterface)=>void>, filterInstances?: Map<string,Set<string>>): Promise<void> {
+    return RcsbFvInstanceBuilder.buildMultipleInstanceSequenceFv(elementFvId, elementEntrySelectId, elementInstanceSelectId, entryIdList, defaultValue, onChangeCallback, filterInstances);
 }
 
-export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): void {
-    RcsbFvAssemblyBuilder.buildAssemblySequenceFv(elementFvId, elementSelectAssemblyId, elementSelectInstanceId, entryId, onAsseblyChangeCallback, onInstanceChangeCallback);
+export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<void> {
+    return RcsbFvAssemblyBuilder.buildAssemblySequenceFv(elementFvId, elementSelectAssemblyId, elementSelectInstanceId, entryId, onAsseblyChangeCallback, onInstanceChangeCallback);
 }
 
-export function buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+export function buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
     return RcsbFvUniprotBuilder.buildUniprotFv(elementId, upAcc, additionalConfig);
 }
 
-export function buildEntityFv(elementId: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+export function buildEntityFv(elementId: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
     return RcsbFvEntityBuilder.buildEntityFv(elementId, entityId, additionalConfig);
 }
 
-export function buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+export function buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
     return RcsbFvInstanceBuilder.buildInstanceFv(elementId, instanceId, additionalConfig);
 
 }
 
-export function buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+export function buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
     return RcsbFvUniprotBuilder.buildUniprotEntityFv(elementId, upAcc, entityId, additionalConfig);
 }
 
-export function buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<null> {
+export function buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
     return RcsbFvUniprotBuilder.buildUniprotEntityInstanceFv(elementId, upAcc, entityId, instanceId, additionalConfig);
 }
 
-export function buildPfv(elementId: string, config: PfvBuilderInterface): Promise<null> {
+export function buildPfv(elementId: string, config: PfvBuilderInterface): Promise<void> {
     return RcsbFvGeneralBuilder.buildPfv(elementId, config);
 }
 
-export function buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): void {
-    RcsbFvPairwiseAligmentBuilder.buildPairwiseAlignment(elementId, psa);
+export function buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): Promise<void> {
+    return RcsbFvPairwiseAligmentBuilder.buildPairwiseAlignment(elementId, psa);
 }
 
-export function buildFullChromosome(elementFvId:string, chrId: string){
-    RcsbFvChromosomeBuilder.buildFullChromosome(elementFvId, chrId);
+export function buildFullChromosome(elementFvId:string, chrId: string): Promise<void>{
+    return RcsbFvChromosomeBuilder.buildFullChromosome(elementFvId, chrId);
 }
 
-export function buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string){
-    RcsbFvChromosomeBuilder.buildEntryChromosome(elementFvId, entitySelectId, chromosomeSelectId, entryId);
+export function buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<void>{
+    return RcsbFvChromosomeBuilder.buildEntryChromosome(elementFvId, entitySelectId, chromosomeSelectId, entryId);
 }
 
-export function buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string) {
-    RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, elementSelectId, entityId);
+export function buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<void> {
+    return RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, elementSelectId, entityId);
 }
 
-export function buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string) {
-    RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
-}
-
-export function unmount(elementId:string): void{
-    RcsbFvCoreBuilder.unmount(elementId);
+export function buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<void> {
+    return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
 }

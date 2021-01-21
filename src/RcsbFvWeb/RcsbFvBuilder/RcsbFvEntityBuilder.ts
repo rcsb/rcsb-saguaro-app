@@ -10,51 +10,54 @@ import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvEntityBuilder {
 
-    static buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): void {
+    static buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): Promise<void> {
         const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementFvId);
         const pdbId:string = entityId.split(TagDelimiter.entity)[0];
-        const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>void = (p: PolymerEntityInstanceTranslate)=>{
-            const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer);
-            rcsbFvEntity.setPolymerEntityInstance(p);
-            rcsbFvEntity.build({entityId:entityId,additionalConfig:{
-                    sources:[Source.PdbEntity,Source.PdbInstance],
-                    filters:[{
-                        field: FieldName.Type,
-                        operation:OperationType.Equals,
-                        source:Source.PdbInstance,
-                        values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
-                    }]}});
-            rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
-            rcsbFvEntity.getTargets().then(targets => {
-                RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [entityId].concat(targets).map(t => {
-                    return {
-                        label: t,
-                        onChange: () => {
-                            if (t === entityId) {
-                                RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementFvId, entityId);
-                            } else {
-                                buildUniprotEntityFv(elementFvId, t, entityId, {
-                                    sources:[Source.PdbEntity, Source.PdbInstance],
-                                    filters:[{
-                                        field:FieldName.TargetId,
-                                        operation:OperationType.Contains,
-                                        source:Source.PdbInstance,
-                                        values:[pdbId]
-                                    },{
-                                        field: FieldName.Type,
-                                        operation:OperationType.Equals,
-                                        source:Source.PdbInstance,
-                                        values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
-                                    }]
-                                });
+        const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>Promise<void> = (p: PolymerEntityInstanceTranslate)=>{
+            return new Promise<void>((resolve, reject)=>{
+                const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer);
+                rcsbFvEntity.setPolymerEntityInstance(p);
+                rcsbFvEntity.build({entityId:entityId,additionalConfig:{
+                        sources:[Source.PdbEntity,Source.PdbInstance],
+                        filters:[{
+                            field: FieldName.Type,
+                            operation:OperationType.Equals,
+                            source:Source.PdbInstance,
+                            values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                        }]}});
+                rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
+                rcsbFvEntity.getTargets().then(targets => {
+                    RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [entityId].concat(targets).map(t => {
+                        return {
+                            label: t,
+                            onChange: () => {
+                                if (t === entityId) {
+                                    RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementFvId, entityId);
+                                } else {
+                                    buildUniprotEntityFv(elementFvId, t, entityId, {
+                                        sources:[Source.PdbEntity, Source.PdbInstance],
+                                        filters:[{
+                                            field:FieldName.TargetId,
+                                            operation:OperationType.Contains,
+                                            source:Source.PdbInstance,
+                                            values:[pdbId]
+                                        },{
+                                            field: FieldName.Type,
+                                            operation:OperationType.Equals,
+                                            source:Source.PdbInstance,
+                                            values:["UNOBSERVED_RESIDUE_XYZ","UNOBSERVED_ATOM_XYZ"]
+                                        }]
+                                    });
+                                }
                             }
                         }
-                    }
-                }))
+                    }))
+                    resolve();
+                });
             });
         };
         const entryId:string = entityId.split(TagDelimiter.entity)[0];
-        RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildSelectAndFv);
+        return RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,buildSelectAndFv);
     }
 
     static buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<null> {

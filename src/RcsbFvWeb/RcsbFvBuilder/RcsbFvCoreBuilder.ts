@@ -15,16 +15,20 @@ export interface CreateFvInterface {
 
 export class RcsbFvCoreBuilder {
 
-    static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>void){
+    static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>Promise<void>): Promise<void>{
         if(rcsbFvCtxManager.getEntityToInstance(entryId) != null) {
             f(rcsbFvCtxManager.getEntityToInstance(entryId));
-            if(resolve!=undefined)resolve()
+            if(resolve!=undefined){
+                return resolve()
+            }
         }else{
             const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
             instanceCollector.collect({entry_id:entryId}).then(result=> {
                 rcsbFvCtxManager.setEntityToInstance(entryId,new PolymerEntityInstanceTranslate(result));
                 f(rcsbFvCtxManager.getEntityToInstance(entryId));
-                if(resolve!=undefined)resolve()
+                if(resolve!=undefined){
+                    return resolve()
+                }
             });
         }
     }

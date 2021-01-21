@@ -10178,6 +10178,8 @@ export interface RcsbPrimaryCitation {
    *  bibliographic entry.
    */
   pdbx_database_id_PubMed?: Maybe<Scalars['Int']>;
+  /** The Open Researcher and Contributor ID (ORCID) identifiers for the citation authors. */
+  rcsb_ORCID_identifiers?: Maybe<Array<Maybe<Scalars['String']>>>;
   /**
    * Names of the authors of the citation; relevant for journal
    *  articles, books and book chapters.  Names are separated by vertical bars.
