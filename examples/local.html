@@ -46,19 +46,19 @@
     //RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A")
     //RcsbFvWebApp.buildUniprotFv("pfv","P01112")
     RcsbFvWebApp.setBoardConfig({
-        highlightHoverPosition:true,
-        highlightHoverCallback:(n)=>{
-            console.log(n);
+        elementClickCallBack:(e)=>{
+            console.log(e);
         }
     });
-    RcsbFvWebApp.buildMultipleInstanceSequenceFv(
+    /*RcsbFvWebApp.buildMultipleInstanceSequenceFv(
         "pfv",
         "select",
         "selectBis",
         ["2uzi","101m"]
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
-    })
+    })*/
+    RcsbFvWebApp.buildInstanceSequenceFv("pfv","select","2uzi");
 </script>
 
 

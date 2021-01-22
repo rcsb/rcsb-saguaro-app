@@ -288,8 +288,12 @@ export class AnnotationCollector extends CoreCollector{
 
         const annConfig: RcsbAnnotationMapInterface = this.rcsbAnnotationMap.getConfig(type);
         let altDisplayType = RcsbFvDisplayTypes.BLOCK;
-        if(annConfig.display === RcsbFvDisplayTypes.BOND.toString())
+        if(annConfig.display === RcsbFvDisplayTypes.BOND.toString()) {
             altDisplayType = RcsbFvDisplayTypes.BOND;
+            data.forEach(d=>{
+                d.isEmpty = true;
+            });
+        }
         const rowTitle = AnnotationCollector.buildRowTitle(annConfig);
         const rowPrefix = annConfig.prefix;
         const displayColor = annConfig.color;
