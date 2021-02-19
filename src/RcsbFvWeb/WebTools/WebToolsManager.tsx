@@ -1,19 +1,21 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import {SelectButton, SelectOptionInterface} from "./SelectButton";
+import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
+import {OptionProps} from "react-select/src/components/Option";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
     defaultValue?: string|undefined|null;
     width?: number;
     dropdownTitle?: string;
+    optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
 }
 export class WebToolsManager {
 
     private static suffix: string = "_buttonDiv";
     private static suffixAdditionalButton: string = "_additionalButton";
 
-    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         WebToolsManager.clearSelectButton(elementId);
         WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffix, options, config);
     }
@@ -23,7 +25,7 @@ export class WebToolsManager {
         WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffixAdditionalButton, options, config);
     }
 
-    private static innerBuildSelectButton(elementId: string, suffix: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+    private static innerBuildSelectButton(elementId: string, suffix: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         const div: HTMLDivElement = document.createElement<"div">("div");
         div.setAttribute("id", elementId+suffix);
         div.style.display = "inline-block";
@@ -34,8 +36,8 @@ export class WebToolsManager {
         );
     }
 
-    private static jsxButton(options: Array<SelectOptionInterface>, config?: SelectButtonConfigInterface):JSX.Element{
-        return (<SelectButton options={options} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle}/>);
+    private static jsxButton(options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?: SelectButtonConfigInterface):JSX.Element{
+        return (<SelectButton options={options} optionProps={config?.optionProps} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle}/>);
     }
 
     static clearSelectButton(elementId: string){

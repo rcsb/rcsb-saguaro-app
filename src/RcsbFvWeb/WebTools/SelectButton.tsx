@@ -1,25 +1,33 @@
 import * as React from "react";
 import {CSSProperties} from "react";
-import Select, {Styles, components, OptionProps, ValueType} from 'react-select';
+import Select, {Styles, components, ValueType, OptionsType, GroupedOptionsType} from 'react-select';
 import {SingleValueProps} from "react-select/src/components/SingleValue";
+import {OptionProps} from "react-select/src/components/Option";
+
+export interface GroupedOptionsInterface {
+    options: Array<SelectOptionInterface>;
+    label: string;
+}
 
 export interface SelectOptionInterface {
     label: string;
+    groupLabel?: string;
     name?: string;
     shortLabel?: string;
     onChange: ()=>void;
 }
 
 interface SelectButtonInterface {
-    options: Array<SelectOptionInterface>;
+    options?: Array<SelectOptionInterface> | Array<GroupedOptionsInterface>;
     additionalOptions?: Array<SelectOptionInterface>;
     addTitle: boolean;
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
+    optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
 }
 
-interface OptionPropsInterface extends SelectOptionInterface{
+export interface OptionPropsInterface extends SelectOptionInterface{
     value: number;
 }
 
@@ -30,7 +38,7 @@ interface SelectButtonState {
 export class SelectButton extends React.Component <SelectButtonInterface, SelectButtonState> {
 
     readonly state: SelectButtonState = {
-        selectedOption: {...(this.props.options[0]), value:0}
+        selectedOption: ((this.props.options as Array<GroupedOptionsInterface>)[0].options) == null ? {...((this.props.options as Array<SelectOptionInterface>)[0]), value:0} : {...((this.props.options as Array<GroupedOptionsInterface>)[0].options[0]), value: 0}
     };
 
     private change(option: OptionPropsInterface):void {
@@ -69,32 +77,76 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 <components.SingleValue {...props}>
                     {label}
                 </components.SingleValue>
-            )};
+            )
+        };
+        const Option = (props:OptionProps<OptionPropsInterface>)=>{
+            return (components.Option && <div style={{display:'flex'}}><input type={'checkbox'}/><components.Option {...props}/></div>);
+        };
         let index: number = 0;
+        let defaultValue: SelectOptionInterface;
         if(this.props.defaultValue!=null){
-            const n: number = this.props.options.findIndex(a=>{return a.shortLabel === this.props.defaultValue});
-            if(n>=0) index=n;
+            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
+                const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
+                    return a.shortLabel === this.props.defaultValue
+                });
+                if (n >= 0) {
+                    index = n;
+                    defaultValue = (this.props.options as Array<SelectOptionInterface>)[n];
+                }
+            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
+                let flag: boolean = false;
+                for(const group of (this.props.options as Array<GroupedOptionsInterface>)){
+                    for(const opt of group.options){
+                        if(opt.shortLabel === this.props.defaultValue){
+                            defaultValue = opt;
+                            flag = true;
+                            break;
+                        }
+                        index++;
+                    }
+                    if (flag){
+                        break;
+                    }
+                }
+            }
+        }else{
+            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
+                defaultValue = (this.props.options as Array<SelectOptionInterface>)[0];
+            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
+                defaultValue = (this.props.options as Array<GroupedOptionsInterface>)[0].options[0];
+            }
+        }
+        let options: OptionsType<OptionPropsInterface> | GroupedOptionsType<OptionPropsInterface>;
+        if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null){
+            options = (this.props.options as Array<SelectOptionInterface>).map((opt,index)=>{
+                const props: OptionPropsInterface = {...opt,value:index};
+                return props;
+            });
+        }else{
+            let i: number = 0;
+            options = (this.props.options as Array<GroupedOptionsInterface>).map(group=>({
+                label: group.label,
+                options: group.options.map(opt=>({
+                    ...opt,
+                    value:i++
+                }))
+            }))
         }
         return(
             <Select
-                options={
-                    this.props.options.map((opt,index)=>{
-                        const props: OptionPropsInterface = {...opt,value:index};
-                        return props;
-                    })
-                }
+                options={options}
                 isSearchable={false}
                 onChange={this.change.bind(this)}
                 styles={this.configStyle()}
-                components={{ SingleValue }}
-                defaultValue={{...(this.props.options[index]),value:index}}
+                components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props}/>)) }}
+                defaultValue={{...defaultValue,value:index}}
             />
         );
     }
 
     private configStyle(): Styles{
         return {
-            control: (base: CSSProperties, state:SelectButtonState) => ({
+            control: (base: CSSProperties) => ({
                 ...base,
                 width: this.props.width ?? 120,
                 border: '1px solid #ddd',
@@ -104,9 +156,12 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }
 
             }),
-            menu: (base: CSSProperties, state:SelectButtonState) => ({
+            menu: (base: CSSProperties) => ({
                 ...base,
                 width:500
+            }),
+            option: (base:CSSProperties)=>({
+                ...base
             })
         };
     }

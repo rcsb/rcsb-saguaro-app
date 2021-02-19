@@ -4,7 +4,7 @@ import {EntryInstancesCollector} from "../CollectTools/EntryInstancesCollector";
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
-import {SelectOptionInterface} from "../WebTools/SelectButton";
+import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 
 export interface CreateFvInterface {
     elementId: string;
@@ -94,7 +94,7 @@ export class RcsbFvCoreBuilder {
         }
     }
 
-    static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+    static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
         WebToolsManager.buildSelectButton(selectButtonId, options, config);
     }

@@ -6,7 +6,11 @@ import {RcsbFvChromosomeBuilder} from "./RcsbFvBuilder/RcsbFvChromosomeBuilder";
 import {RcsbFvPairwiseAligmentBuilder} from "./RcsbFvBuilder/RcsbFvPairwiseAligmentBuilder";
 import {RcsbFvUniprotBuilder} from "./RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {RcsbFvEntityBuilder} from "./RcsbFvBuilder/RcsbFvEntityBuilder";
-import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
+import {
+    InstanceSequenceConfig,
+    InstanceSequenceOnchangeInterface,
+    RcsbFvInstanceBuilder
+} from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvBuilder/RcsbFvContextManager";
 import {PfvBuilderInterface, RcsbFvGeneralBuilder} from "./RcsbFvBuilder/RcsbFvGeneralBuilder";
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
@@ -35,12 +39,12 @@ export function buildSingleEntitySummaryFv(elementId: string, entityId: string):
     return RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementId, entityId);
 }
 
-export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, defaultValue?: string|undefined|null, onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void, filterInstances?: Set<string>): Promise<void> {
-    return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, defaultValue, onChangeCallback, filterInstances);
+export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<void> {
+    return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, config);
 }
 
-export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, defaultValue?: Map<string, string|undefined|null>, onChangeCallback?:Map<string,(x: InstanceSequenceOnchangeInterface)=>void>, filterInstances?: Map<string,Set<string>>): Promise<void> {
-    return RcsbFvInstanceBuilder.buildMultipleInstanceSequenceFv(elementFvId, elementEntrySelectId, elementInstanceSelectId, entryIdList, defaultValue, onChangeCallback, filterInstances);
+export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig): Promise<void> {
+    return RcsbFvInstanceBuilder.buildMultipleInstanceSequenceFv(elementFvId, elementEntrySelectId, elementInstanceSelectId, entryIdList, config);
 }
 
 export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<void> {

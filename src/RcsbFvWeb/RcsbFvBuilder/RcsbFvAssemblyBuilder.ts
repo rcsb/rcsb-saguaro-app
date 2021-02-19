@@ -19,13 +19,13 @@ export class RcsbFvAssemblyBuilder {
                         name: assemblyId,
                         label: assemblyId,
                         onChange:()=>{
-                            RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(assemblyId), elementFvId, elementSelectInstanceId, entryId, undefined, onInstanceChangeCallback);
+                            RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(assemblyId), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
                             if(typeof onAsseblyChangeCallback === "function")
                                 onAsseblyChangeCallback(assemblyId);
                         }
                     }
                 }), {dropdownTitle:"ASSEMBLY"});
-                const out:Promise<void> = RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, undefined, onInstanceChangeCallback);
+                const out:Promise<void> = RcsbFvInstanceBuilder.buildSelectorInstanceFv(result.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
                 if(typeof onAsseblyChangeCallback === "function")
                     onAsseblyChangeCallback(EntryAssembliesCollector.modelKey);
                 return out;
