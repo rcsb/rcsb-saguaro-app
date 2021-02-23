@@ -59,11 +59,13 @@ export class RcsbFvInstanceBuilder {
         filteredInstanceList.forEach((instance)=>{
             if(!groupedInstances.has(instance.entityId))
                 groupedInstances.set(instance.entityId, new Array<SelectOptionInterface>());
+            const label: string = instance.asymId === instance.authId ? instance.asymId : `${instance.asymId} [auth ${instance.authId}]`;
             groupedInstances.get(instance.entityId).push({
                 name: instance.names + " - " + instance.taxIds.join(", "),
-                label: "chain " + instance.authId,
-                groupLabel: instance.names,
-                shortLabel: config.displayAuthId === true ? instance.authId : instance.entryId + TagDelimiter.instance + instance.authId,
+                label: label,
+                groupLabel: `ENTITY ${instance.entityId} - ${instance.names}`,
+                shortLabel: config.displayAuthId === true ? instance.authId : label,
+                optId: instance.authId,
                 onChange: () => {
                     RcsbFvInstanceBuilder.buildInstanceFv(
                         elementFvId,
@@ -86,7 +88,7 @@ export class RcsbFvInstanceBuilder {
         let index: number = 0;
         if (config.defaultValue != null) {
             const n: number = filteredInstanceList.findIndex(a => {
-                return a.authId === config.defaultValue.split(TagDelimiter.instance)[1] && a.entryId === config.defaultValue.split(TagDelimiter.instance)[0]
+                return a.authId === config.defaultValue
             });
             if (n >= 0) index = n;
         }

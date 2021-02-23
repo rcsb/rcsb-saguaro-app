@@ -49,8 +49,8 @@ export class RcsbFvUniprotBuilder {
                                     RcsbFvCoreBuilder.addSelectButton(elementFvId, elementSelectId,result.map(instance=>{
                                         return{
                                             name: instance.taxIds.length > 0 ? instance.names+" - "+instance.taxIds.join(", ") : instance.names,
-                                            label: labelPrefix+instance.authId+" - "+instance.names,
-                                            shortLabel: instance.authId,
+                                            label: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`)+" - "+instance.names,
+                                            shortLabel: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`),
                                             onChange:()=>{
                                                 buildUniprotEntityInstanceFv(
                                                     elementFvId,

@@ -10,6 +10,7 @@ export interface GroupedOptionsInterface {
 }
 
 export interface SelectOptionInterface {
+    optId?: string;
     label: string;
     groupLabel?: string;
     name?: string;
@@ -87,7 +88,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
         if(this.props.defaultValue!=null){
             if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
                 const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
-                    return a.shortLabel === this.props.defaultValue
+                    return a.optId === this.props.defaultValue
                 });
                 if (n >= 0) {
                     index = n;
@@ -97,7 +98,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 let flag: boolean = false;
                 for(const group of (this.props.options as Array<GroupedOptionsInterface>)){
                     for(const opt of group.options){
-                        if(opt.shortLabel === this.props.defaultValue){
+                        if(opt.optId === this.props.defaultValue){
                             defaultValue = opt;
                             flag = true;
                             break;

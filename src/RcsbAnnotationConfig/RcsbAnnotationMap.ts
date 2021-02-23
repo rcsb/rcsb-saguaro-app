@@ -11,6 +11,7 @@ export interface RcsbAnnotationMapInterface {
     provenanceList: Set<string>;
     height?:number;
     key?: string;
+    addToType?: string[];
     transform_to_numerical?: boolean;
     domain?: [number,number];
 }
@@ -78,25 +79,33 @@ export class RcsbAnnotationMap {
 
     setAnnotationKey(d: Feature, targetId?: string): string{
         const type: string = d.type;
+        let newType: string = type;
         const a: DynamicKeyAnnotationInterface = d;
+        if(this.annotationMap.has(type) && this.annotationMap.get(type).addToType instanceof Array){
+            (this.annotationMap.get(type).addToType as Array<string>).forEach(field=>{
+                if(a[field]!=null)
+                    newType += "."+a[field]
+            });
+        }
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
-            let newType: string = type+":"+a[this.annotationMap.get(type).key];
+            newType = newType+":"+a[this.annotationMap.get(type).key];
             if(targetId !=null)
                 newType += "."+targetId;
             if(!this.annotationMap.has(newType)) {
+                const title: string = a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "";
                 this.annotationMap.set(newType, {
                     type: newType,
                     display: this.annotationMap.get(type).display,
-                    color: this.randomRgba(),
+                    color: this.randomRgba(title),
                     prefix: this.annotationMap.get(type).title,
-                    title: a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "",
+                    title: title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationMapInterface);
             }
             this.addNewType(newType, type);
             return newType;
         }else if(targetId !=  null){
-            const newType = type+"."+targetId;
+            newType = newType+"."+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
@@ -171,9 +180,21 @@ export class RcsbAnnotationMap {
         return null;
     }
 
-    randomRgba(): string{
-        var o = Math.round, r = Math.random, s = 255;
-        return 'rgb(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ')';
+    randomRgba(str?: string): string{
+        if(typeof str === "string"){
+            let hash: number = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const rgb = [0, 0, 0];
+            for (let i = 0; i < 3; i++) {
+                rgb[i] = (hash >> (i * 8)) & 255;
+            }
+            return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+        }else{
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')';
+        }
     }
 
     addProvenance(type:string, provenanceName: string): void {
