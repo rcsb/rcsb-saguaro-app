@@ -57,6 +57,7 @@
     "BOND_OUTLIER",
     "ROTAMER_OUTLIER",
     "RSRZ_OUTLIER",
+    "RSCC_OUTLIER",
     "RSRCC_OUTLIER",
     "MOGUL_ANGLE_OUTLIER",
     "MOGUL_BOND_OUTLIER",
@@ -293,6 +294,11 @@
     "display": "pin",
     "color": "#3333aa",
     "title": "RSRZ OUTLIER"
+  },{
+    "type": "RSCC_OUTLIER",
+    "display": "pin",
+    "color": "#63339a",
+    "title": "RSCC OUTLIER"
   },{
     "type": "UNOBSERVED_ATOM_XYZ",
     "display": "block",

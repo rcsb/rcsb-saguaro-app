@@ -79,16 +79,17 @@ export class RcsbAnnotationMap {
 
     setAnnotationKey(d: Feature, targetId?: string): string{
         const type: string = d.type;
-        let newType: string = type;
         const a: DynamicKeyAnnotationInterface = d;
+        let prefix: string = '';
         if(this.annotationMap.has(type) && this.annotationMap.get(type).addToType instanceof Array){
             (this.annotationMap.get(type).addToType as Array<string>).forEach(field=>{
                 if(a[field]!=null)
-                    newType += "."+a[field]
+                    prefix += "."+a[field]
             });
         }
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
-            newType = newType+":"+a[this.annotationMap.get(type).key];
+            let newType: string = type;
+            newType = newType+":"+a[this.annotationMap.get(type).key]+":"+prefix;
             if(targetId !=null)
                 newType += "."+targetId;
             if(!this.annotationMap.has(newType)) {
@@ -105,7 +106,8 @@ export class RcsbAnnotationMap {
             this.addNewType(newType, type);
             return newType;
         }else if(targetId !=  null){
-            newType = newType+"."+targetId;
+            let newType: string = type;
+            newType = newType+":"+prefix+"."+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     type: newType,
