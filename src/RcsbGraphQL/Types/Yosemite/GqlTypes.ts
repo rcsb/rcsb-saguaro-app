@@ -9,7 +9,7 @@ export interface Scalars {
   Float: number;
   /** Built-in scalar representing an instant in time */
   Date: any;
-  /** Unrepresentable type */
+  /** Use SPQR's SchemaPrinter to remove this from SDL */
   UNREPRESENTABLE: any;
 }
 
@@ -534,6 +534,7 @@ export interface CoreBranchedEntityInstance {
    */
   rcsb_id: Scalars['String'];
   rcsb_latest_revision?: Maybe<RcsbLatestRevision>;
+  rcsb_ligand_neighbors?: Maybe<Array<Maybe<RcsbLigandNeighbors>>>;
 }
 
 export interface CoreChemComp {
@@ -671,6 +672,7 @@ export interface CoreEntry {
   pdbx_nmr_sample_details?: Maybe<Array<Maybe<PdbxNmrSampleDetails>>>;
   pdbx_nmr_software?: Maybe<Array<Maybe<PdbxNmrSoftware>>>;
   pdbx_nmr_spectrometer?: Maybe<Array<Maybe<PdbxNmrSpectrometer>>>;
+  pdbx_related_exp_data_set?: Maybe<Array<Maybe<PdbxRelatedExpDataSet>>>;
   pdbx_serial_crystallography_data_reduction?: Maybe<Array<Maybe<PdbxSerialCrystallographyDataReduction>>>;
   pdbx_serial_crystallography_measurement?: Maybe<Array<Maybe<PdbxSerialCrystallographyMeasurement>>>;
   pdbx_serial_crystallography_sample_delivery?: Maybe<Array<Maybe<PdbxSerialCrystallographySampleDelivery>>>;
@@ -757,7 +759,9 @@ export interface CoreNonpolymerEntityInstance {
   rcsb_nonpolymer_instance_annotation?: Maybe<Array<Maybe<RcsbNonpolymerInstanceAnnotation>>>;
   rcsb_nonpolymer_instance_feature?: Maybe<Array<Maybe<RcsbNonpolymerInstanceFeature>>>;
   rcsb_nonpolymer_instance_feature_summary?: Maybe<Array<Maybe<RcsbNonpolymerInstanceFeatureSummary>>>;
+  rcsb_nonpolymer_instance_validation_score?: Maybe<Array<Maybe<RcsbNonpolymerInstanceValidationScore>>>;
   rcsb_nonpolymer_struct_conn?: Maybe<Array<Maybe<RcsbNonpolymerStructConn>>>;
+  rcsb_target_neighbors?: Maybe<Array<Maybe<RcsbTargetNeighbors>>>;
 }
 
 export interface CorePfam {
@@ -881,6 +885,7 @@ export interface CorePolymerEntityInstance {
    */
   rcsb_id: Scalars['String'];
   rcsb_latest_revision?: Maybe<RcsbLatestRevision>;
+  rcsb_ligand_neighbors?: Maybe<Array<Maybe<RcsbLigandNeighbors>>>;
   rcsb_polymer_entity_instance_container_identifiers?: Maybe<RcsbPolymerEntityInstanceContainerIdentifiers>;
   rcsb_polymer_instance_annotation?: Maybe<Array<Maybe<RcsbPolymerInstanceAnnotation>>>;
   rcsb_polymer_instance_feature?: Maybe<Array<Maybe<RcsbPolymerInstanceFeature>>>;
@@ -4863,6 +4868,36 @@ export interface PdbxReferenceMoleculeSynonyms {
   source?: Maybe<Scalars['String']>;
 }
 
+export interface PdbxRelatedExpDataSet {
+  __typename?: 'PdbxRelatedExpDataSet';
+  /**
+   * A DOI reference to the related data set.
+   * 
+   * Examples:
+   * 10.000/10002/image_data/cif
+   */
+  data_reference?: Maybe<Scalars['String']>;
+  /**
+   * The type of the experimenatal data set.
+   * 
+   * Examples:
+   * diffraction image data, NMR free induction decay data
+   */
+  data_set_type?: Maybe<Scalars['String']>;
+  /**
+   * Additional details describing the content of the related data set and its application to
+   *  the current investigation.
+   */
+  details?: Maybe<Scalars['String']>;
+  /**
+   * A DOI reference to the metadata decribing the related data set.
+   * 
+   * Examples:
+   * 10.000/10002/image_data/txt
+   */
+  metadata_reference?: Maybe<Scalars['String']>;
+}
+
 export interface PdbxSerialCrystallographyDataReduction {
   __typename?: 'PdbxSerialCrystallographyDataReduction';
   /**
@@ -7507,8 +7542,8 @@ export interface RcsbBranchedInstanceFeature {
    * 
    * Allowable values:
    * BINDING_SITE, CATH, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RSCC_OUTLIER,
-   * RSRZ_OUTLIER, SCOP, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
-   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * RSRZ_OUTLIER, SCOP, STEREO_OUTLIER, UNOBSERVED_ATOM_XYZ,
+   * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -7615,8 +7650,8 @@ export interface RcsbBranchedInstanceFeatureSummary {
    * 
    * Allowable values:
    * BINDING_SITE, CATH, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RSCC_OUTLIER,
-   * RSRZ_OUTLIER, SCOP, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
-   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * RSRZ_OUTLIER, SCOP, STEREO_OUTLIER, UNOBSERVED_ATOM_XYZ,
+   * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -8666,6 +8701,66 @@ export interface RcsbLatestRevision {
   revision_date?: Maybe<Scalars['Date']>;
 }
 
+export interface RcsbLigandNeighbors {
+  __typename?: 'RcsbLigandNeighbors';
+  /** Alternate conformer identifier for the target instance. */
+  alt_id?: Maybe<Scalars['String']>;
+  /**
+   * The atom identifier for the target instance.
+   * 
+   * Examples:
+   * O1, N1, C1
+   */
+  atom_id?: Maybe<Scalars['String']>;
+  /** The author residue index for the target instance. */
+  auth_seq_id?: Maybe<Scalars['Int']>;
+  /** Component identifier for the target instance. */
+  comp_id?: Maybe<Scalars['String']>;
+  /** Distance value for this ligand interaction. */
+  distance?: Maybe<Scalars['Float']>;
+  /** Alternate conformer identifier for the ligand interaction. */
+  ligand_alt_id?: Maybe<Scalars['String']>;
+  /**
+   * The entity instance identifier for the ligand interaction.
+   * 
+   * Examples:
+   * A, B
+   */
+  ligand_asym_id?: Maybe<Scalars['String']>;
+  /**
+   * The atom identifier for the ligand interaction.
+   * 
+   * Examples:
+   * OG, OE1, CD1
+   */
+  ligand_atom_id?: Maybe<Scalars['String']>;
+  /**
+   * The chemical component identifier for the ligand interaction.
+   * 
+   * Examples:
+   * ASN, TRP, SER
+   */
+  ligand_comp_id?: Maybe<Scalars['String']>;
+  /**
+   * The entity identifier for the ligand of interaction.
+   * 
+   * Examples:
+   * 1, 2
+   */
+  ligand_entity_id?: Maybe<Scalars['String']>;
+  /**
+   * A flag to indicate the nature of the ligand interaction is covalent or metal-coordination.
+   * 
+   * Allowable values:
+   * N, Y
+   */
+  ligand_is_bound?: Maybe<Scalars['String']>;
+  /** Model identifier for the ligand interaction. */
+  ligand_model_id?: Maybe<Scalars['Int']>;
+  /** The sequence position for the target instance. */
+  seq_id?: Maybe<Scalars['Int']>;
+}
+
 export interface RcsbMembraneLineage {
   __typename?: 'RcsbMembraneLineage';
   /** Hierarchy depth. */
@@ -9002,7 +9097,8 @@ export interface RcsbNonpolymerInstanceFeature {
    * A type or category of the feature.
    * 
    * Allowable values:
-   * HAS_COVALENT_LINKAGE, HAS_METAL_COORDINATION_LINKAGE, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER
+   * HAS_COVALENT_LINKAGE, HAS_METAL_COORDINATION_LINKAGE, MOGUL_ANGLE_OUTLIER,
+   * MOGUL_BOND_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, STEREO_OUTLIER
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9081,7 +9177,116 @@ export interface RcsbNonpolymerInstanceFeatureSummary {
    * Type or category of the feature.
    * 
    * Allowable values:
-   * HAS_COVALENT_LINKAGE, HAS_METAL_COORDINATION_LINKAGE, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER
+   * HAS_COVALENT_LINKAGE, HAS_METAL_COORDINATION_LINKAGE, MOGUL_ANGLE_OUTLIER,
+   * MOGUL_BOND_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, STEREO_OUTLIER
+   */
+  type?: Maybe<Scalars['String']>;
+}
+
+export interface RcsbNonpolymerInstanceValidationScore {
+  __typename?: 'RcsbNonpolymerInstanceValidationScore';
+  /**
+   * The real space correlation coefficient (RSCC) for the non-polymer entity instance.
+   * 
+   * Examples:
+   * null, null
+   */
+  RSCC?: Maybe<Scalars['Float']>;
+  /**
+   * The real space R-value (RSR) for the non-polymer entity instance.
+   * 
+   * Examples:
+   * null, null
+   */
+  RSR?: Maybe<Scalars['Float']>;
+  /** Alternate conformer identifier for the non-polymer entity instance. */
+  alt_id?: Maybe<Scalars['String']>;
+  /**
+   * The reported fraction of atomic coordinate records for the non-polymer entity instance.
+   * 
+   * Examples:
+   * null, null
+   */
+  completeness?: Maybe<Scalars['Float']>;
+  /** The number of intermolecular MolProbity clashes cacluated for reported atomic coordinate records. */
+  intermolecular_clashes?: Maybe<Scalars['Int']>;
+  /**
+   * This molecular instance is ranked as the best quality instance of this nonpolymer entity.
+   * 
+   * Allowable values:
+   * N, Y
+   */
+  is_best_instance?: Maybe<Scalars['String']>;
+  /**
+   * This molecular entity is identified as the subject of the current study.
+   * 
+   * Allowable values:
+   * N, Y
+   */
+  is_subject_of_investigation?: Maybe<Scalars['String']>;
+  /**
+   * Number of bond angle outliers obtained from a CCDC Mogul survey of bond angles  in the CSD small
+   *    molecule crystal structure database. Outliers are defined as bond angles that have a Z-score
+   *    less than -2 or greater than 2.
+   */
+  mogul_angle_outliers?: Maybe<Scalars['Int']>;
+  /**
+   * The root-mean-square value of the Z-scores of bond angles for the residue in degrees
+   * obtained from a CCDC Mogul survey of bond angles in the CSD small molecule crystal structure database.
+   * 
+   * Examples:
+   * null, null
+   */
+  mogul_angles_RMSZ?: Maybe<Scalars['Float']>;
+  /**
+   * Number of bond distance outliers obtained from a CCDC Mogul survey of bond lengths in the CSD small
+   *    molecule crystal structure database.  Outliers are defined as bond distances that have a Z-score
+   *    less than -2 or greater than 2.
+   */
+  mogul_bond_outliers?: Maybe<Scalars['Int']>;
+  /**
+   * The root-mean-square value of the Z-scores of bond lengths for the residue in Angstroms
+   * obtained from a CCDC Mogul survey of bond lengths in the CSD small molecule crystal structure database.
+   * 
+   * Examples:
+   * null, null
+   */
+  mogul_bonds_RMSZ?: Maybe<Scalars['Float']>;
+  /**
+   * The ranking of the model fit score component.
+   * 
+   * Examples:
+   * null, null
+   */
+  ranking_model_fit?: Maybe<Scalars['Float']>;
+  /**
+   * The ranking of the model geometry score component.
+   * 
+   * Examples:
+   * null, null
+   */
+  ranking_model_geometry?: Maybe<Scalars['Float']>;
+  /**
+   * The value of the model fit score component.
+   * 
+   * Examples:
+   * null, null
+   */
+  score_model_fit?: Maybe<Scalars['Float']>;
+  /**
+   * The value of the model geometry score component.
+   * 
+   * Examples:
+   * null, null
+   */
+  score_model_geometry?: Maybe<Scalars['Float']>;
+  /** Number of stereochemical/chirality errors. */
+  stereo_outliers?: Maybe<Scalars['Int']>;
+  /**
+   * Score type.
+   * 
+   * Allowable values:
+   * RCSB_LIGAND_QUALITY_SCORE_2021
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9407,7 +9612,7 @@ export interface RcsbPolymerEntityAnnotation {
    * A type or category of the annotation.
    * 
    * Allowable values:
-   * GO, InterPro, Pfam
+   * GO, InterPro, MemProtMD, OPM, Pfam, mpstruc
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9798,7 +10003,7 @@ export interface RcsbPolymerInstanceFeature {
    * Allowable values:
    * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
    * MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RAMACHANDRAN_OUTLIER,
-   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET,
+   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET, STEREO_OUTLIER,
    * UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
    * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
@@ -9862,7 +10067,7 @@ export interface RcsbPolymerInstanceFeatureSummary {
    * Allowable values:
    * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
    * MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RAMACHANDRAN_OUTLIER,
-   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET,
+   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET, STEREO_OUTLIER,
    * UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
    * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
@@ -10387,6 +10592,64 @@ export interface RcsbStructSymmetryRotationAxes {
   order?: Maybe<Scalars['Int']>;
   /** coordinate */
   start: Array<Maybe<Scalars['Float']>>;
+}
+
+export interface RcsbTargetNeighbors {
+  __typename?: 'RcsbTargetNeighbors';
+  /** Alternate conformer identifier for the non-polymer entity instance. */
+  alt_id?: Maybe<Scalars['String']>;
+  /**
+   * The atom identifier for the non-polymer entity instance.
+   * 
+   * Examples:
+   * O1, N1, C1
+   */
+  atom_id?: Maybe<Scalars['String']>;
+  /** Component identifier for the non-polymer entity instance. */
+  comp_id?: Maybe<Scalars['String']>;
+  /** Distance value for this target interaction. */
+  distance?: Maybe<Scalars['Float']>;
+  /**
+   * The entity instance identifier for the target of interaction.
+   * 
+   * Examples:
+   * A, B
+   */
+  target_asym_id?: Maybe<Scalars['String']>;
+  /**
+   * The atom identifier for the target of interaction.
+   * 
+   * Examples:
+   * OG, OE1, CD1
+   */
+  target_atom_id?: Maybe<Scalars['String']>;
+  /** The author residue index for the target of interaction. */
+  target_auth_seq_id?: Maybe<Scalars['Int']>;
+  /**
+   * The chemical component identifier for the target of interaction.
+   * 
+   * Examples:
+   * ASN, TRP, SER
+   */
+  target_comp_id?: Maybe<Scalars['String']>;
+  /**
+   * The entity identifier for the target of interaction.
+   * 
+   * Examples:
+   * 1, 2
+   */
+  target_entity_id?: Maybe<Scalars['String']>;
+  /**
+   * A flag to indicate the nature of the target interaction is covalent or metal-coordination.
+   * 
+   * Allowable values:
+   * N, Y
+   */
+  target_is_bound?: Maybe<Scalars['String']>;
+  /** Model identifier for the target of interaction. */
+  target_model_id?: Maybe<Scalars['Int']>;
+  /** The sequence position for the target of interaction. */
+  target_seq_id?: Maybe<Scalars['Int']>;
 }
 
 export interface RcsbUniprotAlignments {

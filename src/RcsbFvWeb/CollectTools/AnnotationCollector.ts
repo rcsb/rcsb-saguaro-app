@@ -86,9 +86,10 @@ export class AnnotationCollector extends CoreCollector{
                 let type: string;
                 if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
                     let targetId: string = ann.target_id;
-                    if( this.getPolymerEntityInstance() != null){
-                        const authId: string = this.getPolymerEntityInstance().translateAsymToAuth(ann.target_id.split(".")[1]);
-                        targetId = ann.target_id.split(".")[0]+"."+authId;
+                    if( this.getPolymerEntityInstance() != null && ann.source === Source.PdbInstance){
+                        const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
+                        const authAsymId: string = this.getPolymerEntityInstance().translateAsymToAuth(labelAsymId);
+                        targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
                     }
                     type = this.rcsbAnnotationMap.setAnnotationKey(d, targetId);
                 }else{

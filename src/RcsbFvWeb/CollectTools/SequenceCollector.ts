@@ -96,7 +96,7 @@ export class SequenceCollector extends CoreCollector{
                 };
             }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null) {
                 rowTitle = {
-                    visibleTex: requestConfig.queryId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(requestConfig.queryId.split(TagDelimiter.instance)[1]),
+                    visibleTex: this.buildInstanceId(requestConfig.queryId.split(TagDelimiter.instance)[1]),
                     style: {
                         fontWeight:"bold",
                     }
@@ -338,7 +338,7 @@ export class SequenceCollector extends CoreCollector{
         if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null) {
             const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
-                visibleTex:targetAlignment.target_id.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
+                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
                 url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
@@ -358,7 +358,7 @@ export class SequenceCollector extends CoreCollector{
         } else if ( alignmentData.to === SequenceReference.PdbInstance && !alignmentData.excludeAlignmentLinks ) {
             const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
-                visibleTex:targetAlignment.target_id,
+                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
                 url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
@@ -378,6 +378,11 @@ export class SequenceCollector extends CoreCollector{
             rowTitle = targetAlignment.target_id;
         }
         return rowTitle;
+    }
+
+    private buildInstanceId(labelAsymId: string): string{
+        const authAsymId: string = this.getPolymerEntityInstance().translateAsymToAuth(labelAsymId);
+        return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
     }
 
     protected tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
