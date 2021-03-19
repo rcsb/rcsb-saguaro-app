@@ -41,6 +41,8 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
             })).then(alignments => {
                 const out: RcsbFvTrackData = new RcsbFvTrackData();
                 alignments.forEach((a,n) => {
+                    if(a.query_sequence == null)
+                        return;
                     const sequence: Array<string> = a.query_sequence.split("");
                     a.target_alignment.forEach(ta => {
                         const orientation = ta.orientation;
