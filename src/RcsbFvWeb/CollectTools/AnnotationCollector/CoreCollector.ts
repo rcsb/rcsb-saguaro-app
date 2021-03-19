@@ -1,5 +1,5 @@
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
+import {PolymerEntityInstanceTranslate} from "../../Utils/PolymerEntityInstanceTranslate";
+import {RcsbFvQuery} from "../../../RcsbGraphQL/RcsbFvQuery";
 
 export class CoreCollector {
 

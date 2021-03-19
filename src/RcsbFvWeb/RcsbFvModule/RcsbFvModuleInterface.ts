@@ -6,6 +6,7 @@ export interface RcsbFvAdditionalConfig{
     filters?:Array<FilterInput>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
+    collectorType?: "tcga"|"standard";
 }
 
 export interface RcsbFvModuleBuildInterface {

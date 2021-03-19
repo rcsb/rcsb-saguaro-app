@@ -24,6 +24,10 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
                 open_end
                 value
             }
+            additional_properties{
+                key
+                value
+            }
         }
     }
 }

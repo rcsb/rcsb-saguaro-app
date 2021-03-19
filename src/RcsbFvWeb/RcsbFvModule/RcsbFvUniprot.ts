@@ -13,7 +13,7 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
         const upAcc: string = buildConfig.upAcc;
-        const source: Array<Source> = [Source.Uniprot];
+        const source: Array<Source> = [Source.Uniprot, Source.NcbiGenome];
         this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,

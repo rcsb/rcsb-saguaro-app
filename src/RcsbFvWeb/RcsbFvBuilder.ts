@@ -95,3 +95,7 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
 export function buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<void> {
     return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
 }
+
+export function buildInstanceTcgaFv(elementFvId:string, elementSelectId:string, entryId: string, config?: InstanceSequenceConfig): Promise<void> {
+    return RcsbFvInstanceBuilder.buildInstanceTcgaFv(elementFvId, elementSelectId, entryId, config);
+}

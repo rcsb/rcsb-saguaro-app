@@ -61,26 +61,33 @@
     "RSRCC_OUTLIER",
     "MOGUL_ANGLE_OUTLIER",
     "MOGUL_BOND_OUTLIER",
-    "CIS-PEPTIDE",
-    "disulfide bridge",
-    "covalent bond",
-    "metal coordination"
+    "CIS_PEPTIDE",
+    "DISULFIDE_BRIDGE",
+    "COVALENT_BOND",
+    "METAL_COORDINATION"
   ],
   "entity_order": [
-    "artifact",
-    "mutation",
-    "modified_monomer",
-    "hydropathy",
-    "disorder",
-    "disorder_binding"
+    "ARTIFACT",
+    "MUTATION",
+    "MODIFIED_MONOMER",
+    "HYDROPATHY",
+    "DISORDER",
+    "DISORDER_BINDING"
   ],
   "config": [{
+    "type": "NUMBER_OF_CASES",
+    "display": "area",
+    "color": "#ba3356",
+    "height": 80,
+    "title": "TCGA CASES",
+    "transform_to_numerical": true
+  },{
     "type": "HOMOLOGY MODELLING",
     "color": "#2fcc5d",
     "display": "block",
     "title": "HOMOLOGY MODELS"
   },{
-    "type": "disorder_binding",
+    "type": "DISORDER_BINDING",
     "display": "area",
     "color": {
       "thresholds":[0.5],
@@ -90,7 +97,7 @@
     "title": "DISORDER BINDING",
     "domain": [0,1]
   },{
-    "type": "hydropathy",
+    "type": "HYDROPATHY",
     "display": "area",
     "color": {
       "thresholds":[0],
@@ -99,7 +106,7 @@
     "height": 40,
     "title": "HYDROPATHY"
   },{
-    "type": "disorder",
+    "type": "DISORDER",
     "display": "area",
     "color": {
       "thresholds":[0.5],
@@ -310,7 +317,7 @@
     "color": "#aca86a",
     "title": "ZERO OCCUPANCY ATOM"
   },{
-    "type": "CIS-PEPTIDE",
+    "type": "CIS_PEPTIDE",
     "display": "bond",
     "color": "#761e47",
     "title": "CIS-PEPTIDE"
@@ -350,7 +357,7 @@
     "color": "#a2ac85",
     "title": "COILED COIL REGION"
   },{
-    "type": "disulfide bridge",
+    "type": "DISULFIDE_BRIDGE",
     "display": "bond",
     "color": "#6a534a",
     "title": "DISULFIDE BRIDGE"
@@ -380,12 +387,12 @@
     "color": "#fca86a",
     "title": "ZERO OCCUPANCY RESIDUE"
   },{
-    "type": "metal coordination",
+    "type": "METAL_COORDINATION",
     "display": "bond",
     "color": "#aaaada",
     "title": "METAL COORDINATION"
   },{
-    "type": "covalent bond",
+    "type": "COVALENT_BOND",
     "display": "bond",
     "color": "#aadaaa",
     "title": "COVALENT BOND"

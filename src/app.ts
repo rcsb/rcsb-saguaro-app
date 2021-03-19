@@ -8,6 +8,7 @@ export {
     buildSingleEntitySummaryFv,
     buildInstanceFv,
     buildInstanceSequenceFv,
+    buildInstanceTcgaFv,
     buildMultipleInstanceSequenceFv,
     buildAssemblySequenceFv,
     buildPairwiseAlignment,

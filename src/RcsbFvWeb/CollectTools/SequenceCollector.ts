@@ -16,7 +16,7 @@ import {
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {TagDelimiter} from "../Utils/TagDelimiter";
-import {CoreCollector} from "./CoreCollector";
+import {CoreCollector} from "./AnnotationCollector/CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 
 import * as resource from "../../RcsbServerConfig/web.resources.json";

@@ -7,6 +7,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
+import {Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export interface InstanceSequenceOnchangeInterface {
     pdbId: string;
@@ -20,6 +21,7 @@ export interface InstanceSequenceConfig {
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
     selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    additionalConfig?:RcsbFvAdditionalConfig;
 }
 
 export class RcsbFvInstanceBuilder {
@@ -69,7 +71,8 @@ export class RcsbFvInstanceBuilder {
                 onChange: () => {
                     RcsbFvInstanceBuilder.buildInstanceFv(
                         elementFvId,
-                        instance.rcsbId
+                        instance.rcsbId,
+                        config.additionalConfig
                     ).then(() => {
                         if (typeof config.onChangeCallback === "function")
                             config.onChangeCallback({
@@ -92,7 +95,7 @@ export class RcsbFvInstanceBuilder {
             });
             if (n >= 0) index = n;
         }
-        return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId).then(() => {
+        return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, config.additionalConfig).then(() => {
             if (typeof config.onChangeCallback === "function")
                 config.onChangeCallback({
                     pdbId: filteredInstanceList[index].entryId,
@@ -116,7 +119,20 @@ export class RcsbFvInstanceBuilder {
                 reject(e);
             }
         });
+    }
 
+    static buildInstanceTcgaFv(elementFvId:string, elementSelectId:string, entryId: string, config?: InstanceSequenceConfig): Promise<void> {
+        return RcsbFvInstanceBuilder.buildInstanceSequenceFv(
+            elementFvId,
+            elementSelectId,
+            entryId,
+            {
+                ...config,
+                additionalConfig:{
+                    sources:[Source.NcbiGenome],
+                    collectorType:"tcga"
+                }
+            });
     }
 
 }
