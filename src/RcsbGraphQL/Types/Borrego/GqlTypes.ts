@@ -7,14 +7,22 @@ export interface Scalars {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** Built-in scalar for dynamic values */
+  ObjectScalar: any;
   /** Use SPQR's SchemaPrinter to remove this from SDL */
   UNREPRESENTABLE: any;
 }
 
 export interface AdditionalProperty {
   __typename?: 'AdditionalProperty';
-  key?: Maybe<Key>;
-  value?: Maybe<Scalars['String']>;
+  /**
+   * The additional property name.
+   * 
+   * Examples:
+   * PARENT_COMP_ID, CATH_NAME, PARTNER_BOND_DISTANCE
+   */
+  property_name?: Maybe<PropertyName>;
+  property_value?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface AlignedRegion {
@@ -129,16 +137,30 @@ export interface FilterInput {
   values?: Maybe<Array<Maybe<Scalars['String']>>>;
 }
 
-export enum Key {
-  AnatomicSite = 'ANATOMIC_SITE',
-  DiseaseType = 'DISEASE_TYPE',
-  ReferenceAllele = 'REFERENCE_ALLELE',
-  TumorAllele = 'TUMOR_ALLELE'
-}
 
 export enum OperationType {
   Contains = 'contains',
   Equals = 'equals'
+}
+
+export enum PropertyName {
+  AgeAtDiagnosis = 'AGE_AT_DIAGNOSIS',
+  CathDomainId = 'CATH_DOMAIN_ID',
+  CathName = 'CATH_NAME',
+  DiseaseType = 'DISEASE_TYPE',
+  OmegaAngle = 'OMEGA_ANGLE',
+  ParentCompId = 'PARENT_COMP_ID',
+  PartnerAsymId = 'PARTNER_ASYM_ID',
+  PartnerBondDistance = 'PARTNER_BOND_DISTANCE',
+  PartnerCompId = 'PARTNER_COMP_ID',
+  PrimarySite = 'PRIMARY_SITE',
+  ReferenceAllele = 'REFERENCE_ALLELE',
+  ScopDomainId = 'SCOP_DOMAIN_ID',
+  ScopName = 'SCOP_NAME',
+  ScopSunId = 'SCOP_SUN_ID',
+  SheetSense = 'SHEET_SENSE',
+  TumorAllele = 'TUMOR_ALLELE',
+  TumorStage = 'TUMOR_STAGE'
 }
 
 /** Query root */

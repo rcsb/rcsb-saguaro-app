@@ -1,5 +1,5 @@
 import {AbstractCollector, CollectAnnotationsInterface, FeaturePositionGaps} from "./AbstractCollector";
-import {AnnotationFeatures, Key, Source} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, PropertyName, Source} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 
 export class TcgaCollector extends AbstractCollector {
@@ -21,8 +21,8 @@ export class TcgaCollector extends AbstractCollector {
             ann.features.forEach(d=>{
                 let anatomicSite: string|null = null;
                 d.additional_properties?.forEach(p=>{
-                    if(p.key === Key.AnatomicSite){
-                        anatomicSite = p.value.toUpperCase();
+                    if(p.property_name === PropertyName.PrimarySite){
+                        anatomicSite = p.property_value[0].toUpperCase();
                     }
                 })
                 if (anatomicSite !== null && !annotations.has(anatomicSite)) {

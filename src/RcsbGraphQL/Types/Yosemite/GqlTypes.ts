@@ -9,6 +9,8 @@ export interface Scalars {
   Float: number;
   /** Built-in scalar representing an instant in time */
   Date: any;
+  /** Built-in scalar for dynamic values */
+  ObjectScalar: any;
   /** Use SPQR's SchemaPrinter to remove this from SDL */
   UNREPRESENTABLE: any;
 }
@@ -3104,6 +3106,7 @@ export interface GeneName {
   type?: Maybe<Scalars['String']>;
   value?: Maybe<Scalars['String']>;
 }
+
 
 export interface PdbxAuditRevisionCategory {
   __typename?: 'PdbxAuditRevisionCategory';
@@ -7308,6 +7311,7 @@ export interface RcsbBranchedEntityContainerIdentifiers {
 
 export interface RcsbBranchedEntityFeature {
   __typename?: 'RcsbBranchedEntityFeature';
+  additional_properties?: Maybe<Array<Maybe<RcsbBranchedEntityFeatureAdditionalProperties>>>;
   /**
    * Identifies the version of the feature assignment.
    * 
@@ -7344,6 +7348,14 @@ export interface RcsbBranchedEntityFeature {
    * mutation
    */
   type?: Maybe<Scalars['String']>;
+}
+
+export interface RcsbBranchedEntityFeatureAdditionalProperties {
+  __typename?: 'RcsbBranchedEntityFeatureAdditionalProperties';
+  /** The additional property name. */
+  name?: Maybe<Scalars['String']>;
+  /** 2.54, 300 */
+  values?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface RcsbBranchedEntityFeatureFeaturePositions {
@@ -7505,6 +7517,7 @@ export interface RcsbBranchedInstanceAnnotationAnnotationLineage {
 
 export interface RcsbBranchedInstanceFeature {
   __typename?: 'RcsbBranchedInstanceFeature';
+  additional_properties?: Maybe<Array<Maybe<RcsbBranchedInstanceFeatureAdditionalProperties>>>;
   /**
    * Identifies the version of the feature assignment.
    * 
@@ -7546,6 +7559,19 @@ export interface RcsbBranchedInstanceFeature {
    * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
+}
+
+export interface RcsbBranchedInstanceFeatureAdditionalProperties {
+  __typename?: 'RcsbBranchedInstanceFeatureAdditionalProperties';
+  /**
+   * The additional property name.
+   * 
+   * Examples:
+   * bond_distance, bond_angle
+   */
+  name?: Maybe<Scalars['String']>;
+  /** 2.54, 300 */
+  values?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface RcsbBranchedInstanceFeatureFeaturePositions {
@@ -8900,6 +8926,7 @@ export interface RcsbNonpolymerEntityContainerIdentifiers {
 
 export interface RcsbNonpolymerEntityFeature {
   __typename?: 'RcsbNonpolymerEntityFeature';
+  additional_properties?: Maybe<Array<Maybe<RcsbNonpolymerEntityFeatureAdditionalProperties>>>;
   /**
    * Identifies the version of the feature assignment.
    * 
@@ -8937,6 +8964,14 @@ export interface RcsbNonpolymerEntityFeature {
   type?: Maybe<Scalars['String']>;
   /** The feature value. */
   value?: Maybe<Scalars['Float']>;
+}
+
+export interface RcsbNonpolymerEntityFeatureAdditionalProperties {
+  __typename?: 'RcsbNonpolymerEntityFeatureAdditionalProperties';
+  /** The additional property name. */
+  name?: Maybe<Scalars['String']>;
+  /** 2.54, 300 */
+  values?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface RcsbNonpolymerEntityFeatureSummary {
@@ -9067,6 +9102,7 @@ export interface RcsbNonpolymerInstanceAnnotationAnnotationLineage {
 
 export interface RcsbNonpolymerInstanceFeature {
   __typename?: 'RcsbNonpolymerInstanceFeature';
+  additional_properties?: Maybe<Array<Maybe<RcsbNonpolymerInstanceFeatureAdditionalProperties>>>;
   /**
    * Identifies the version of the feature assignment.
    * 
@@ -9101,6 +9137,19 @@ export interface RcsbNonpolymerInstanceFeature {
    * MOGUL_BOND_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, STEREO_OUTLIER
    */
   type?: Maybe<Scalars['String']>;
+}
+
+export interface RcsbNonpolymerInstanceFeatureAdditionalProperties {
+  __typename?: 'RcsbNonpolymerInstanceFeatureAdditionalProperties';
+  /**
+   * The additional property name.
+   * 
+   * Examples:
+   * bond_distance, bond_angle
+   */
+  name?: Maybe<Scalars['String']>;
+  /** 2.54, 300 */
+  values?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface RcsbNonpolymerInstanceFeatureFeatureValue {
@@ -9704,6 +9753,7 @@ export interface RcsbPolymerEntityContainerIdentifiersReferenceSequenceIdentifie
 
 export interface RcsbPolymerEntityFeature {
   __typename?: 'RcsbPolymerEntityFeature';
+  additional_properties?: Maybe<Array<Maybe<RcsbPolymerEntityFeatureAdditionalProperties>>>;
   /**
    * Identifies the version of the feature assignment.
    * 
@@ -9740,6 +9790,19 @@ export interface RcsbPolymerEntityFeature {
    * artifact, modified_monomer, mutation
    */
   type?: Maybe<Scalars['String']>;
+}
+
+export interface RcsbPolymerEntityFeatureAdditionalProperties {
+  __typename?: 'RcsbPolymerEntityFeatureAdditionalProperties';
+  /**
+   * The additional property name.
+   * 
+   * Allowable values:
+   * PARENT_COMP_ID
+   */
+  name?: Maybe<Scalars['String']>;
+  /** globin-like, 2.54, 300 */
+  values?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface RcsbPolymerEntityFeatureFeaturePositions {
@@ -9966,6 +10029,7 @@ export interface RcsbPolymerInstanceAnnotationAnnotationLineage {
 
 export interface RcsbPolymerInstanceFeature {
   __typename?: 'RcsbPolymerInstanceFeature';
+  additional_properties?: Maybe<Array<Maybe<RcsbPolymerInstanceFeatureAdditionalProperties>>>;
   /**
    * Identifies the version of the feature assignment.
    * 
@@ -10008,6 +10072,21 @@ export interface RcsbPolymerInstanceFeature {
    * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
+}
+
+export interface RcsbPolymerInstanceFeatureAdditionalProperties {
+  __typename?: 'RcsbPolymerInstanceFeatureAdditionalProperties';
+  /**
+   * The additional property name.
+   * 
+   * Allowable values:
+   * CATH_DOMAIN_ID, CATH_NAME, OMEGA_ANGLE, PARTNER_ASYM_ID,
+   * PARTNER_BOND_DISTANCE, PARTNER_COMP_ID, SCOP_DOMAIN_ID, SCOP_NAME,
+   * SCOP_SUN_ID, SHEET_SENSE
+   */
+  name?: Maybe<Scalars['String']>;
+  /** globin-like, 2.54, 300 */
+  values?: Maybe<Array<Maybe<Scalars['ObjectScalar']>>>;
 }
 
 export interface RcsbPolymerInstanceFeatureFeaturePositions {
