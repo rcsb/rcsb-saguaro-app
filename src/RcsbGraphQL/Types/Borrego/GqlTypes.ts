@@ -7,12 +7,13 @@ export interface Scalars {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** Unrepresentable type */
+  /** Use SPQR's SchemaPrinter to remove this from SDL */
   UNREPRESENTABLE: any;
 }
 
 export interface AlignedRegion {
   __typename?: 'AlignedRegion';
+  /** List of genomic indexes that are needed to complete the last nucleotide triad of a genome-protein sequence alignment */
   exon_shift?: Maybe<Array<Maybe<Scalars['Int']>>>;
   /** Query sequence start position */
   query_begin: Scalars['Int'];
@@ -60,6 +61,7 @@ export interface Feature {
   description?: Maybe<Scalars['String']>;
   /** Identifier of the feature */
   feature_id?: Maybe<Scalars['String']>;
+  /**  List of documents that describes the location of the feature */
   feature_positions?: Maybe<Array<Maybe<FeaturePosition>>>;
   /** Name associated to the feature */
   name?: Maybe<Scalars['String']>;
