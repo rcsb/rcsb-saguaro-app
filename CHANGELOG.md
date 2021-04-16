@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.3.0] - 2021-04-15
+## [1.2.0] - 2021-04-15
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
 - Class TagDelimiter renamed to Constants
@@ -13,6 +13,21 @@
 - AbstractAnnotationCollector abstract class to define specific annotations collectors
 - AnnotationClass: New getter methods for 1d Features and RowConfig data 
 - AnnotationContext: class to handle filtering and selecting annotations 
+
+## [1.1.4] - 2021-03-29
+### General
+- rcsb-saguaro update 1.2.1
+
+## [1.1.3] - 2021-03-25
+### General
+- rcsb-saguaro update 1.2.0
+
+## [1.1.2] - 2021-02-23
+### General
+- rcsb-saguaro update
+
+### Chromosome Fv Module
+- Fixed null/empty sequence bug
 
 ## [1.1.1] - 2021-02-23
 ### Sequence Collector

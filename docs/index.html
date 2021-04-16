@@ -71,7 +71,6 @@
 					and designed to display protein features at the <a href="https://www.rcsb.org">RCSB Web Site</a>. The package collects protein annotations from the
 					<a href="https://1d-coordinates.rcsb.org">1D Coordinate Server</a> and the main <a href="https://data.rcsb.org">RCSB Data API</a> and generates preconfigures Protein
 				Feature Summaries. The package allows access to RCSB Saguaro methods to add or change displayed data. </p>
-				<!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.1.4/build/dist/app.js"></script>
@@ -82,7 +81,6 @@ RcsbFvWebApp.setBoardConfig({
 });
 RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 </script>
---->
 				<a href="#node-module-instalation" id="node-module-instalation" style="color: inherit; text-decoration: none;">
 					<h3>Node Module Instalation</h3>
 				</a>
@@ -180,10 +178,19 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="enums/type.html" class="tsd-kind-icon">Type</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/abstractcollector.html" class="tsd-kind-icon">Abstract<wbr>Collector</a>
+						<a href="classes/abstractannotationcollector.html" class="tsd-kind-icon">Abstract<wbr>Annotation<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/annotationcollector.html" class="tsd-kind-icon">Annotation<wbr>Collector</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/annotationcontext.html" class="tsd-kind-icon">Annotation<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/annotationpanelui.html" class="tsd-kind-icon">Annotation<wbr>PanelUI</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/constants.html" class="tsd-kind-icon">Constants</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/corecollector.html" class="tsd-kind-icon">Core<wbr>Collector</a>
@@ -196,6 +203,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/featuretools.html" class="tsd-kind-icon">Feature<wbr>Tools</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/filtercheckbox.html" class="tsd-kind-icon">Filter<wbr>Checkbox</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/filterpanel.html" class="tsd-kind-icon">Filter<wbr>Panel</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/genomeentitytranslate.html" class="tsd-kind-icon">Genome<wbr>Entity<wbr>Translate</a>
@@ -300,22 +313,28 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/rcsbquerymultipleentityinstances.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Multiple<wbr>Entity<wbr>Instances</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/selectaction.html" class="tsd-kind-icon">Select<wbr>Action</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="classes/selectbutton.html" class="tsd-kind-icon">Select<wbr>Button</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/selectpanel.html" class="tsd-kind-icon">Select<wbr>Panel</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/selectrow.html" class="tsd-kind-icon">Select<wbr>Row</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/sequencecollector.html" class="tsd-kind-icon">Sequence<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/standardcollector.html" class="tsd-kind-icon">Standard<wbr>Collector</a>
+						<a href="classes/standardannotationcollector.html" class="tsd-kind-icon">Standard<wbr>Annotation<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/swissmodelqueryannotations.html" class="tsd-kind-icon">Swiss<wbr>Model<wbr>Query<wbr>Annotations</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/tagdelimiter.html" class="tsd-kind-icon">Tag<wbr>Delimiter</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/tcgacollector.html" class="tsd-kind-icon">Tcga<wbr>Collector</a>
+						<a href="classes/tcgaannotationcollector.html" class="tsd-kind-icon">Tcga<wbr>Annotation<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/webtoolsmanager.html" class="tsd-kind-icon">Web<wbr>Tools<wbr>Manager</a>
@@ -555,7 +574,16 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/featurepositiongaps.html" class="tsd-kind-icon">Feature<wbr>Position<wbr>Gaps</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/filtercheckboxinterface.html" class="tsd-kind-icon">Filter<wbr>Checkbox<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/filtercheckboxstate.html" class="tsd-kind-icon">Filter<wbr>Checkbox<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/filterinput.html" class="tsd-kind-icon">Filter<wbr>Input</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/filterpanelinterface.html" class="tsd-kind-icon">Filter<wbr>Panel<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/genename.html" class="tsd-kind-icon">Gene<wbr>Name</a>
@@ -981,13 +1009,16 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/rcsbexternalreferences.html" class="tsd-kind-icon">Rcsb<wbr>External<wbr>References</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbfvadditionalconfig.html" class="tsd-kind-icon">Rcsb<wbr>FvAdditional<wbr>Config</a>
+						<a href="interfaces/rcsbfvmoduleadditionalconfig.html" class="tsd-kind-icon">Rcsb<wbr>FvModule<wbr>Additional<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbfvmodulebuildinterface.html" class="tsd-kind-icon">Rcsb<wbr>FvModule<wbr>Build<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbfvmoduleinterface.html" class="tsd-kind-icon">Rcsb<wbr>FvModule<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/rcsbfvmodulepublicinterface.html" class="tsd-kind-icon">Rcsb<wbr>FvModule<wbr>Public<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbgenomiclineage.html" class="tsd-kind-icon">Rcsb<wbr>Genomic<wbr>Lineage</a>
@@ -1251,6 +1282,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/scalars.html" class="tsd-kind-icon">Scalars</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/selectactioninterface.html" class="tsd-kind-icon">Select<wbr>Action<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/selectactionstate.html" class="tsd-kind-icon">Select<wbr>Action<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/selectbuttonconfiginterface.html" class="tsd-kind-icon">Select<wbr>Button<wbr>Config<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -1261,6 +1298,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/selectoptioninterface.html" class="tsd-kind-icon">Select<wbr>Option<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/selectpanelinterface.html" class="tsd-kind-icon">Select<wbr>Panel<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/selectrowinterface.html" class="tsd-kind-icon">Select<wbr>Row<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/sequencecollectordatainterface.html" class="tsd-kind-icon">Sequence<wbr>Collector<wbr>Data<wbr>Interface</a>
@@ -1302,6 +1345,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/translatecontextinterface.html" class="tsd-kind-icon">Translate<wbr>Context<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/uipanelinterface.html" class="tsd-kind-icon">UIPanel<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/uipanelstate.html" class="tsd-kind-icon">UIPanel<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/uniprot.html" class="tsd-kind-icon">Uniprot</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -1309,6 +1358,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/workerinterface.html" class="tsd-kind-icon">Worker<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#additionalproperties" class="tsd-kind-icon">Additional<wbr>Properties</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#exact" class="tsd-kind-icon">Exact</a>
@@ -1324,6 +1376,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#worker" class="tsd-kind-icon">worker</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buildannotationsui" class="tsd-kind-icon">build<wbr>AnnotationsUI</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#buildassemblysequencefv" class="tsd-kind-icon">build<wbr>Assembly<wbr>Sequence<wbr>Fv</a>
@@ -1348,6 +1403,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#buildinstancefv" class="tsd-kind-icon">build<wbr>Instance<wbr>Fv</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buildinstanceselectbutton" class="tsd-kind-icon">build<wbr>Instance<wbr>Select<wbr>Button</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#buildinstancesequencefv" class="tsd-kind-icon">build<wbr>Instance<wbr>Sequence<wbr>Fv</a>
@@ -1378,6 +1436,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#builduniprotfv" class="tsd-kind-icon">build<wbr>Uniprot<wbr>Fv</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#checkadditionalpropertyfilter" class="tsd-kind-icon">check<wbr>Additional<wbr>Property<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#getfeatures" class="tsd-kind-icon">get<wbr>Features</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getrcsbfv" class="tsd-kind-icon">get<wbr>Rcsb<wbr>Fv</a>
