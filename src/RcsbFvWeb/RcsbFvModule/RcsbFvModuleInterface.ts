@@ -1,12 +1,19 @@
-import {FilterInput, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, FilterInput, PropertyName, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {AnnotationContext} from "../Utils/AnnotationContext";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 
-export interface RcsbFvAdditionalConfig{
+export interface RcsbFvModuleAdditionalConfig{
     sources?: Array<Source>;
     filters?:Array<FilterInput>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
     collectorType?: "tcga"|"standard";
+    annotationContext?: AnnotationContext;
+    annotationUI?: {
+        selectId: string;
+        panelId: string;
+    }
 }
 
 export interface RcsbFvModuleBuildInterface {
@@ -20,15 +27,21 @@ export interface RcsbFvModuleBuildInterface {
     upAcc?:string;
     refSeqId?:string;
     chrId?:string;
-    additionalConfig?:RcsbFvAdditionalConfig;
-    resolve?:()=>void;
+    additionalConfig?:RcsbFvModuleAdditionalConfig;
+    resolve?:(rcsbFvModule: RcsbFvModulePublicInterface)=>void;
 
     elementSelectId?: string;
 }
 
-export interface RcsbFvModuleInterface {
+export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     display: () => void;
     build: (buildConfig: RcsbFvModuleBuildInterface) => void;
-    getTargets: () => Promise<Array<string>>;
     setPolymerEntityInstance: (polymerEntityInstance: PolymerEntityInstanceTranslate)=>void;
 }
+
+export interface RcsbFvModulePublicInterface {
+    getTargets: () => Promise<Array<string>>;
+    getFeatures: () => Promise<Array<Feature>>;
+    getAnnotationConfigData: () => Promise<Array<RcsbFvRowConfigInterface>>;
+}
+

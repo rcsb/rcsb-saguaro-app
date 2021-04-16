@@ -15,7 +15,7 @@ import {
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 import {MultipleEntityInstanceTranslate} from "../Utils/MultipleEntityInstanceTranslate";
 import {MultipleEntityInstancesCollector} from "./MultipleEntityInstancesCollector";
-import {TagDelimiter} from "../Utils/TagDelimiter";
+import {Constants} from "../Utils/Constants";
 
 export class ObservedSequenceCollector extends SequenceCollector{
 
@@ -69,12 +69,12 @@ export class ObservedSequenceCollector extends SequenceCollector{
 
     protected tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
         if(this.entityInstanceMap.get(commonContext.targetId)!=null){
-            const asymIds: Array<string> = this.entityInstanceMap.get(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
-            const entryId: string = commonContext.targetId.split(TagDelimiter.entity)[0];
+            const asymIds: Array<string> = this.entityInstanceMap.get(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(Constants.entity)[1]);
+            const entryId: string = commonContext.targetId.split(Constants.entity)[0];
             const unModelled: Map<number,number> = new Map<number,number>();
             asymIds.forEach(id=>{
-                if(this.unObservedMap.has(entryId+TagDelimiter.instance+id))
-                    this.unObservedMap.get(entryId+TagDelimiter.instance+id).forEach(n=>{
+                if(this.unObservedMap.has(entryId+Constants.instance+id))
+                    this.unObservedMap.get(entryId+Constants.instance+id).forEach(n=>{
                         if(n>=region.query_begin && n<=region.query_end)
                             if(!unModelled.has(n))
                                 unModelled.set(n,1);

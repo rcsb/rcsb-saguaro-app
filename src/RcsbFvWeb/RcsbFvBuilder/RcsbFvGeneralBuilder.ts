@@ -1,6 +1,7 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvProteinSequence} from "../RcsbFvModule/RcsbFvProteinSequence";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
+import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 
 export interface PfvBuilderInterface {
     queryId:string;
@@ -11,14 +12,14 @@ export interface PfvBuilderInterface {
 }
 
 export class RcsbFvGeneralBuilder {
-     static buildPfv(elementId: string, config: PfvBuilderInterface): Promise<null> {
+     static buildPfv(elementId: string, config: PfvBuilderInterface): Promise<RcsbFvModulePublicInterface> {
         const alignmentSource: SequenceReference = config.alignmentSource ?? config.reference;
         const sources = [Source.Uniprot];
         if(config.reference == SequenceReference.PdbEntity)
             sources.unshift(Source.PdbEntity);
         if(config.reference == SequenceReference.PdbInstance)
             sources.unshift(Source.PdbInstance);
-        return new Promise<null>((resolve,reject)=> {
+        return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
             try {
                 RcsbFvCoreBuilder.createFv({
                     elementId: elementId,

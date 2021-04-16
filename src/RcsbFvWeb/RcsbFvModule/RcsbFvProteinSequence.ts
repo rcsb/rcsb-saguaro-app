@@ -29,7 +29,7 @@ export class RcsbFvProteinSequence extends RcsbFvCore implements RcsbFvModuleInt
                     this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
                 }
                 this.display();
-                if(buildConfig.resolve!=null)buildConfig.resolve();
+                if(buildConfig.resolve!=null)buildConfig.resolve(this);
             }).catch(error=>{
                 console.error(error);
             });

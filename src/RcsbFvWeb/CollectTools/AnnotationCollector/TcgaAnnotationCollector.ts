@@ -1,10 +1,18 @@
-import {AbstractCollector, CollectAnnotationsInterface, FeaturePositionGaps} from "./AbstractCollector";
-import {AnnotationFeatures, PropertyName, Source} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AbstractAnnotationCollector, CollectAnnotationsInterface, FeaturePositionGaps} from "./AbstractAnnotationCollector";
+import {
+    AdditionalProperty,
+    AnnotationFeatures,
+    Feature,
+    PropertyName,
+    Source
+} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
+import {AnnotationContext} from "../../Utils/AnnotationContext";
 
-export class TcgaCollector extends AbstractCollector {
+export class TcgaAnnotationCollector extends AbstractAnnotationCollector {
 
-    protected processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
+    protected processAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
+        super.processAnnotations(data, requestConfig);
         this.positionalNumberOfCases(
             data.filter(ann=>(ann.source === Source.NcbiGenome)),
             requestConfig
@@ -19,12 +27,14 @@ export class TcgaCollector extends AbstractCollector {
         this.minValue.set(type, 0 );
         data.forEach(ann=>{
             ann.features.forEach(d=>{
+                if(!checkAdditionalPropertyFilter(requestConfig.annotationContext, d))
+                    return;
                 let anatomicSite: string|null = null;
                 d.additional_properties?.forEach(p=>{
-                    if(p.property_name === PropertyName.PrimarySite){
+                    if(p.property_name === (requestConfig.annotationContext?.getPrincipalComponent() ?? PropertyName.PrimarySite)){
                         anatomicSite = p.property_value[0].toUpperCase();
                     }
-                })
+                });
                 if (anatomicSite !== null && !annotations.has(anatomicSite)) {
                     annotations.set(anatomicSite, new Map<string,RcsbFvTrackDataElementInterface>());
                 }
@@ -67,18 +77,35 @@ export class TcgaCollector extends AbstractCollector {
         if(nCasesTrack.size > 0 ){
             this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(nCasesTrack.values()), type));
         }
-        annotations.forEach((v,k)=>{
-            this.annotationsConfigData.push(this.buildAnnotationTrack(
-                Array.from<RcsbFvTrackDataElementInterface>(v.values()),
-                k,
-                {
-                    display: RcsbFvDisplayTypes.COMPOSITE,
-                    type: k,
-                    color: "#ba3356",
-                    title: k,
-                    provenanceList: new Set<string>([])
-                })
-            );
-        });
+        [...annotations.entries()]
+            .sort((a,b)=>(a[0].localeCompare(b[0])))
+            .forEach((m,n)=>{
+                const k = m[0];
+                const v = m[1];
+                this.annotationsConfigData.push(this.buildAnnotationTrack(
+                    Array.from<RcsbFvTrackDataElementInterface>(v.values()),
+                    k,
+                    {
+                        display: RcsbFvDisplayTypes.COMPOSITE,
+                        type: k,
+                        color: "#ba3356",
+                        title: k,
+                        provenanceList: new Set<string>([])
+                    })
+                );
+            });
     }
+}
+
+function checkAdditionalPropertyFilter(annotationContext: AnnotationContext, d: Feature): boolean{
+    if(!annotationContext || annotationContext.getPropertyFiler().size == 0)
+        return true;
+    for(const ap of d.additional_properties){
+        for(const v of ap.property_value){
+            if(!annotationContext.getPropertyValue(ap.property_name,v)){
+                return false;
+            }
+        }
+    }
+    return true;
 }

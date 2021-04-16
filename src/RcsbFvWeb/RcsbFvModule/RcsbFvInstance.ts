@@ -16,13 +16,15 @@ export class RcsbFvInstance extends RcsbFvCore implements RcsbFvModuleInterface{
                 queryId: instanceId,
                 reference: SequenceReference.PdbInstance,
                 sources: source,
-                filters: buildConfig.additionalConfig?.filters
-            }, buildConfig.additionalConfig?.collectorType).then(annResult=>{
+                filters: buildConfig.additionalConfig?.filters,
+                collectorType: buildConfig.additionalConfig?.collectorType,
+                annotationContext: buildConfig.additionalConfig?.annotationContext
+            }).then(annResult=>{
                 this.boardConfigData.length = this.sequenceCollector.getLength();
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(seqResult.alignment).concat(annResult) : seqResult.sequence.concat(annResult);
                 this.display();
-                if(buildConfig.resolve!=null)buildConfig.resolve();
+                if(buildConfig.resolve!=null)buildConfig.resolve(this);
             }).catch(error=>{
                 console.error(error);
                 throw error;

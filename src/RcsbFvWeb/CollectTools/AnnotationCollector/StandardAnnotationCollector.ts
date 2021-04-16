@@ -1,11 +1,12 @@
-import {AbstractCollector, CollectAnnotationsInterface} from "./AbstractCollector";
+import {AbstractAnnotationCollector, CollectAnnotationsInterface} from "./AbstractAnnotationCollector";
 import {AnnotationFeatures, Source} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
+import {Constants} from "../../Utils/Constants";
 
-export class StandardCollector extends AbstractCollector {
+export class StandardAnnotationCollector extends AbstractAnnotationCollector {
 
-    protected processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
+    protected processAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
+        super.processAnnotations(data, requestConfig);
         const annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>> = new Map();
         data.forEach(ann => {
             ann.features.forEach(d => {
@@ -13,7 +14,7 @@ export class StandardCollector extends AbstractCollector {
                 if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
                     let targetId: string = ann.target_id;
                     if( this.getPolymerEntityInstance() != null && ann.source === Source.PdbInstance){
-                        const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
+                        const labelAsymId: string = ann.target_id.split(Constants.instance)[1];
                         const authAsymId: string = this.getPolymerEntityInstance().translateAsymToAuth(labelAsymId);
                         targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
                     }

@@ -32,8 +32,8 @@ const commonConfig = {
 
 const webWorker = {
     ...commonConfig,
-    //mode: "development",
-    mode:"production",
+    mode: "development",
+    //mode:"production",
     entry: {
         'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
     },
@@ -46,8 +46,8 @@ const webWorker = {
 
 const webBuilder = {
     ...commonConfig,
-    //mode: "development",
-    mode:"production",
+    mode: "development",
+    //mode:"production",
     entry: {
         'app':'./build/src/app.js'
     },

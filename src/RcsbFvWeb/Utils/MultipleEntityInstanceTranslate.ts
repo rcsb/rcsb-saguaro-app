@@ -1,6 +1,6 @@
 import {PolymerEntityInstanceTranslate} from "./PolymerEntityInstanceTranslate";
 import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
-import {TagDelimiter} from "./TagDelimiter";
+import {Constants} from "./Constants";
 
 export class MultipleEntityInstanceTranslate {
 
@@ -9,7 +9,7 @@ export class MultipleEntityInstanceTranslate {
     public add(data: Array<PolymerEntityInstanceInterface>) {
         const entryEntityInstanceMapList: Map<string, Array<PolymerEntityInstanceInterface>> = new Map<string, Array<PolymerEntityInstanceInterface>>();
         data.forEach(d=>{
-            const entityId: string = d.entryId+TagDelimiter.entity+d.entityId;
+            const entityId: string = d.entryId+Constants.entity+d.entityId;
             if(!entryEntityInstanceMapList.has(entityId))
                 entryEntityInstanceMapList.set(entityId, new Array<PolymerEntityInstanceInterface>())
             entryEntityInstanceMapList.get(entityId).push(d);

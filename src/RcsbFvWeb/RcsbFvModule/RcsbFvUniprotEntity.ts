@@ -4,14 +4,14 @@ import {
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvModuleInterface, RcsbFvModuleAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 
 export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInterface{
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
         const upAcc: string = buildConfig.upAcc;
         const entityId: string = buildConfig.entityId;
-        const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig
+        const additionalConfig:RcsbFvModuleAdditionalConfig = buildConfig.additionalConfig
 
         const filters:Array<FilterInput> = [{
             field:FieldName.TargetId,
@@ -38,7 +38,7 @@ export class RcsbFvUniprotEntity extends RcsbFvCore implements RcsbFvModuleInter
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
                 this.display();
-                if(buildConfig.resolve!=null)buildConfig.resolve();
+                if(buildConfig.resolve!=null)buildConfig.resolve(this);
             }).catch(error=>{
                 console.error(error);
             });

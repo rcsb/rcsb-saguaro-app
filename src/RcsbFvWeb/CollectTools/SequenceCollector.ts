@@ -15,8 +15,8 @@ import {
     TargetAlignment
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../Utils/TagDelimiter";
-import {CoreCollector} from "./AnnotationCollector/CoreCollector";
+import {Constants} from "../Utils/Constants";
+import {CoreCollector} from "./CoreCollector/CoreCollector";
 import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
 
 import * as resource from "../../RcsbServerConfig/web.resources.json";
@@ -83,7 +83,7 @@ export class SequenceCollector extends CoreCollector{
             const data: AlignmentResponse = result;
             const querySequence: string = data.query_sequence;
             const alignmentData: Array<TargetAlignment> = data.target_alignment;
-            let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
+            let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+Constants.sequenceTitle;
             let rowTitle:string|RcsbFvLink;
             if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.Uniprot){
                 rowTitle = {
@@ -96,7 +96,7 @@ export class SequenceCollector extends CoreCollector{
                 };
             }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null) {
                 rowTitle = {
-                    visibleTex: this.buildInstanceId(requestConfig.queryId.split(TagDelimiter.instance)[1]),
+                    visibleTex: this.buildInstanceId(requestConfig.queryId.split(Constants.instance)[1]),
                     style: {
                         fontWeight:"bold",
                     }
@@ -270,7 +270,7 @@ export class SequenceCollector extends CoreCollector{
                     displayColor: "#9999FF",
                     displayData: alignedBlocks
                 };
-                let rowPrefix: string = alignmentData.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle;
+                let rowPrefix: string = alignmentData.to.replace("_", " ") + " " + Constants.alignmentTitle;
                 const track: RcsbFvRowConfigInterface = {
                     trackId: "targetSequenceTrack_"+targetAlignment.target_id,
                     displayType: RcsbFvDisplayTypes.COMPOSITE,
@@ -329,37 +329,37 @@ export class SequenceCollector extends CoreCollector{
             this.getPolymerEntityInstance().addAuthorResIds(o,alignmentContext);
         }
         if(alignmentContext.to == SequenceReference.PdbInstance && o.sourceId != null)
-            o.sourceId = o.sourceId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(o.sourceId.split(TagDelimiter.instance)[1])
+            o.sourceId = o.sourceId.split(Constants.instance)[0] + Constants.instance + this.getPolymerEntityInstance().translateAsymToAuth(o.sourceId.split(Constants.instance)[1])
         return o;
     }
 
     private buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
         let rowTitle: string | RcsbFvLink;
         if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null) {
-            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
+            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(Constants.instance)[1]);
             rowTitle = {
-                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
+                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(Constants.instance)[1]),
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(Constants.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
                 }
             };
         } else if (alignmentData.to === SequenceReference.PdbEntity && !alignmentData.excludeAlignmentLinks ) {
-            const entityId: string = targetAlignment.target_id.split(TagDelimiter.entity)[1];
+            const entityId: string = targetAlignment.target_id.split(Constants.entity)[1];
             rowTitle = {
                 visibleTex:targetAlignment.target_id,
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.entity)[0]+"#entity-"+entityId,
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(Constants.entity)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
                 }
             };
         } else if ( alignmentData.to === SequenceReference.PdbInstance && !alignmentData.excludeAlignmentLinks ) {
-            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
+            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(Constants.instance)[1]);
             rowTitle = {
-                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
+                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(Constants.instance)[1]),
+                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(Constants.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb

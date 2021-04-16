@@ -2,21 +2,57 @@ import {
     RcsbFvRowConfigInterface,
 } from '@rcsb/rcsb-saguaro';
 
-import {CoreCollector} from "./AnnotationCollector/CoreCollector";
-import {CollectAnnotationsInterface} from "./AnnotationCollector/AbstractCollector";
-import {StandardCollector} from "./AnnotationCollector/StandardCollector";
-import {TcgaCollector} from "./AnnotationCollector/TcgaCollector";
+import {CoreCollector} from "./CoreCollector/CoreCollector";
+import {CollectAnnotationsInterface} from "./AnnotationCollector/AbstractAnnotationCollector";
+import {StandardAnnotationCollector} from "./AnnotationCollector/StandardAnnotationCollector";
+import {TcgaAnnotationCollector} from "./AnnotationCollector/TcgaAnnotationCollector";
+import {Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export class AnnotationCollector extends CoreCollector{
 
-    public collect(requestConfig: CollectAnnotationsInterface, collectorType?:"standard"|"tcga"): Promise<Array<RcsbFvRowConfigInterface>> {
-        if(collectorType === "tcga"){
-            const collector: TcgaCollector = new TcgaCollector();
-            return collector.collect(requestConfig);
-        }else{
-            const collector: StandardCollector = new StandardCollector();
-            return collector.collect(requestConfig);
-        }
+    private featureList: Array<Feature> = new Array<Feature>();
+    private featuresReadyFlag: boolean = false;
+    private annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+
+    public collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
+        const collector: TcgaAnnotationCollector|StandardAnnotationCollector = requestConfig.collectorType === "tcga" ? new TcgaAnnotationCollector() : new StandardAnnotationCollector();
+        collector.setPolymerEntityInstance(this.getPolymerEntityInstance());
+        return collector.collect(requestConfig).then((annResult)=>{
+            this.featureList = collector.getFeatures();
+            this.annotationsConfigData = collector.getAnnotationConfigData();
+            this.featuresReadyFlag = true;
+            return annResult;
+        });
+    }
+
+    public getFeatures(): Promise<Array<Feature>>{
+        return new Promise<Array<Feature>>((resolve, reject)=>{
+            const recursive = ()=>{
+                if(this.featuresReadyFlag){
+                    resolve(this.featureList);
+                }else{
+                    setTimeout(()=>{
+                        recursive();
+                    },300);
+                }
+            };
+            recursive();
+        })
+    }
+
+    public getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
+        return new Promise<Array<RcsbFvRowConfigInterface>>((resolve, reject)=>{
+            const recursive = ()=>{
+                if(this.featuresReadyFlag){
+                    resolve(this.annotationsConfigData);
+                }else{
+                    setTimeout(()=>{
+                        recursive();
+                    },300);
+                }
+            };
+            recursive();
+        })
     }
 
 }

@@ -26,6 +26,7 @@ interface SelectButtonInterface {
     width?:number;
     dropdownTitle?:string;
     optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    titleStyle?: CSSProperties;
 }
 
 export interface OptionPropsInterface extends SelectOptionInterface{
@@ -51,7 +52,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     render():JSX.Element {
-        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
+        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12, ...this.props.titleStyle}}>{this.props.dropdownTitle}</div> : null;
         return(<div>
             {title}
             {this.selectRender()}

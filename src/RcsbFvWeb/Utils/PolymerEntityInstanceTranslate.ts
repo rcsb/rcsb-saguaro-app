@@ -1,7 +1,7 @@
 import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
 import {RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {TagDelimiter} from "./TagDelimiter";
+import {Constants} from "./Constants";
 
 export interface TranslateContextInterface {
     queryId: string;
@@ -69,11 +69,11 @@ export class PolymerEntityInstanceTranslate{
     addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
         if(alignmentContext.from === SequenceReference.PdbInstance) {
-            const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];
+            const asymId: string = alignmentContext.queryId.split(Constants.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
             o.indexName = this.INDEX_NAME;
         }else if(alignmentContext.to === SequenceReference.PdbInstance){
-            const asymId: string = alignmentContext.targetId.split(TagDelimiter.instance)[1];
+            const asymId: string = alignmentContext.targetId.split(Constants.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
             o.indexName = this.INDEX_NAME;
         }

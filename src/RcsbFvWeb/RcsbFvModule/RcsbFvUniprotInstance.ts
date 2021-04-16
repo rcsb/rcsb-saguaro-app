@@ -6,7 +6,7 @@ import {
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvCore} from "./RcsbFvCore";
-import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvModuleInterface, RcsbFvModuleAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 
 export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInterface{
 
@@ -14,7 +14,7 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
         const upAcc: string = buildConfig.upAcc;
         const entityId:string = buildConfig.entityId;
         const instanceId: string = buildConfig.instanceId;
-        const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig;
+        const additionalConfig:RcsbFvModuleAdditionalConfig = buildConfig.additionalConfig;
 
         let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
@@ -50,7 +50,7 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
                 this.display();
-                if(buildConfig.resolve!=null)buildConfig.resolve();
+                if(buildConfig.resolve!=null)buildConfig.resolve(this);
             }).catch(error=>{
                 console.error(error);
             });

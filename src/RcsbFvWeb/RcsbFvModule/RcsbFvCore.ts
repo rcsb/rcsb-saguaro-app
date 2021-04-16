@@ -7,6 +7,7 @@ import {
 import {SequenceCollector} from "../CollectTools/SequenceCollector";
 import {AnnotationCollector} from "../CollectTools/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 
 
@@ -41,4 +42,11 @@ export abstract class RcsbFvCore {
         return this.sequenceCollector.getTargets();
     }
 
+    public getFeatures(): Promise<Array<Feature>>{
+        return this.annotationCollector.getFeatures();
+    }
+
+    public getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
+        return this.annotationCollector.getAnnotationConfigData();
+    }
 }

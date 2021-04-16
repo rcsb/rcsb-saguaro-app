@@ -12,12 +12,13 @@
   ],
   "scripts": {
     "buildAll": "npm run buildApp && npm run buildAllDoc",
-    "buildApp": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
+    "buildApp": "npm run cleanAll && npm run tsc && npm run copyCss && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
     "build": "npm run generateBorrego && npm run generateYosemite && webpack --config ./webpack.config.js",
     "generateBorrego": "graphql-codegen --config src/RcsbServerConfig/codegen.borrego.json",
     "generateYosemite": "graphql-codegen --config src/RcsbServerConfig/codegen.yosemite.json",
     "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
     "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
+    "copyCss": "ncp src/RcsbFvWeb/WebTools/scss build/src/RcsbFvWeb/WebTools/scss",
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
@@ -77,8 +78,10 @@
   },
   "dependencies": {
     "@graphql-codegen/cli": "^1.16.0",
-    "@rcsb/rcsb-saguaro": "^1.2.1",
-    "ideogram": "^1.27.0"
+    "@rcsb/rcsb-saguaro": "file:../rcsb-saguaro",
+    "bootstrap": "^4.6.0",
+    "ideogram": "^1.27.0",
+    "react-bootstrap": "^1.5.2"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"

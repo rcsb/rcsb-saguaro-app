@@ -23,7 +23,7 @@ export class RcsbFvEntity extends RcsbFvCore implements RcsbFvModuleInterface{
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(seqResult.alignment).concat(annResult) : seqResult.sequence.concat(seqResult.alignment).concat(annResult);
                 this.display();
-                if(buildConfig.resolve!=null)buildConfig.resolve();
+                if(buildConfig.resolve!=null)buildConfig.resolve(this);
             }).catch(error=>{
                 console.error(error);
                 throw error;

@@ -1,13 +1,16 @@
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 
 
 class RcsbFvContextManager {
     private rcsbFvManager: Map<string, RcsbFv> = new Map<string, RcsbFv>();
-    private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
+    private rcsbMountedManager: Map<string, Set<string>> = new Map<string, Set<string>>();
     private boardConfig: RcsbFvBoardConfigInterface;
     private polymerEntityToInstanceMap: Map<string,PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
+    private rcsbFvFeatures: Map<string, Promise<Array<Feature>>> = new Map<string, Promise<Array<Feature>>>();
+    private rcsbFvAnnotationConfigData: Map<string, Promise<Array<RcsbFvRowConfigInterface>>> = new Map<string, Promise<Array<RcsbFvRowConfigInterface>>>();
 
     getFv(elementFvId: string): RcsbFv{
         return this.rcsbFvManager.get(elementFvId);
@@ -17,20 +20,36 @@ class RcsbFvContextManager {
         this.rcsbFvManager.set(elementFvId, rcsbFv);
     }
 
-    getButtonList(elementFvId: string): Set<string>{
-        return this.rcsbButtonManager.get(elementFvId);
+    getFeatures(elementFvId: string): Promise<Array<Feature>>{
+        return this.rcsbFvFeatures.get(elementFvId);
     }
 
-    setButton(elementFvId: string, buttonId: string): void{
-        if(this.rcsbButtonManager.get(elementFvId) == null)
-            this.rcsbButtonManager.set(elementFvId, new Set<string>());
-        this.rcsbButtonManager.get(elementFvId).add(buttonId);
+    setFeatures(elementFvId: string, features: Promise<Array<Feature>>): void{
+        this.rcsbFvFeatures.set(elementFvId, features);
+    }
+
+    getAnnotationConfigData(elementFvId: string): Promise<Array<RcsbFvRowConfigInterface>>{
+        return this.rcsbFvAnnotationConfigData.get(elementFvId);
+    }
+
+    setAnnotationConfigData(elementFvId: string, acd: Promise<Array<RcsbFvRowConfigInterface>>): void{
+        this.rcsbFvAnnotationConfigData.set(elementFvId, acd);
+    }
+
+    getMountedList(elementFvId: string): Set<string>{
+        return this.rcsbMountedManager.get(elementFvId);
+    }
+
+    setMounted(elementFvId: string, buttonId: string): void{
+        if(this.rcsbMountedManager.get(elementFvId) == null)
+            this.rcsbMountedManager.set(elementFvId, new Set<string>());
+        this.rcsbMountedManager.get(elementFvId).add(buttonId);
     }
 
     removeFv(elementFvId: string): void{
         this.rcsbFvManager.delete(elementFvId);
-        if(this.rcsbButtonManager.has(elementFvId))
-            this.rcsbButtonManager.delete(elementFvId);
+        if(this.rcsbMountedManager.has(elementFvId))
+            this.rcsbMountedManager.delete(elementFvId);
     }
 
     setBoardConfig(boardConfig: RcsbFvBoardConfigInterface): void{

@@ -16,6 +16,7 @@
     //"strictNullChecks": true,
     "strictFunctionTypes": true,
     "declaration": true,
+    "esModuleInterop": true,
     "declarationDir": "./build/dist"
   },
   "include": [ "src/*", "src/**/*", "src/**/**/*", "src/**/**/**/*" ],

@@ -11,31 +11,34 @@ import {SwissModelQueryAnnotations} from "../../../ExternalResources/SwissModel/
 import {
     AnnotationFeatures,
     Feature,
-    FeaturePosition,
+    FeaturePosition, PropertyName,
     QueryAnnotationsArgs,
     Source
 } from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
+import {Constants} from "../../Utils/Constants";
 import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
 import {ParseLink} from "../ParseLink";
-import {CoreCollector} from "./CoreCollector";
+import {CoreCollector} from "../CoreCollector/CoreCollector";
+import {AnnotationContext} from "../../Utils/AnnotationContext";
 
 export interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;
     collectSwissModel?: boolean;
+    collectorType?: "standard"|"tcga";
+    annotationContext?: AnnotationContext;
 }
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
 }
 
-export abstract class AbstractCollector extends CoreCollector {
+export abstract class AbstractAnnotationCollector extends CoreCollector {
     protected rcsbAnnotationMap: RcsbAnnotationMap = new RcsbAnnotationMap();
     protected annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
     protected maxValue: Map<string,number> = new Map<string, number>();
     protected minValue: Map<string,number> = new Map<string, number>();
-
+    private featureList: Array<Feature> = new Array<Feature>();
 
     public collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
         if(requestConfig.collectSwissModel === true){
@@ -46,9 +49,9 @@ export abstract class AbstractCollector extends CoreCollector {
                 filters: requestConfig.filters,
                 range: requestConfig.range
             }).then(result => {
-                this.processRcsbPdbAnnotations(result,requestConfig);
+                this.processAnnotations(result,requestConfig);
                 return SwissModelQueryAnnotations.request(requestConfig.queryId).then(result=>{
-                    this.processRcsbPdbAnnotations(result,requestConfig);
+                    this.processAnnotations(result,requestConfig);
                 }).catch(error=>{
                     console.log(error);
                 });
@@ -66,7 +69,7 @@ export abstract class AbstractCollector extends CoreCollector {
                 filters: requestConfig.filters,
                 range: requestConfig.range
             }).then(result => {
-                this.processRcsbPdbAnnotations(result,requestConfig);
+                this.processAnnotations(result,requestConfig);
                 return this.annotationsConfigData;
             }).catch(error=>{
                 console.log(error);
@@ -75,7 +78,21 @@ export abstract class AbstractCollector extends CoreCollector {
         }
     }
 
-    protected processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void {}
+    public getAnnotationConfigData(): Array<RcsbFvRowConfigInterface>{
+        return this.annotationsConfigData;
+    }
+
+    public getFeatures(): Array<Feature>{
+        return this.featureList;
+    }
+
+    protected processAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void {
+        data.forEach(d=>{
+            if(d.features instanceof Array){
+                this.featureList = this.featureList.concat(d.features);
+            }
+        });
+    }
 
     protected computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<FeaturePositionGaps>{
         const rangeIdMap: Map<String,Array<FeaturePosition>> = new Map<String, Array<FeaturePosition>>();
@@ -168,7 +185,7 @@ export abstract class AbstractCollector extends CoreCollector {
         const annConfig: RcsbAnnotationMapInterface = trackConfig ?? this.rcsbAnnotationMap.getConfig(type);
         if (annConfig !== null) {
             displayType = annConfig.display;
-            rowTitle = AbstractCollector.buildRowTitle(annConfig);
+            rowTitle = AbstractAnnotationCollector.buildRowTitle(annConfig);
             displayColor = annConfig.color;
             rowPrefix = annConfig.prefix
         } else {
@@ -229,7 +246,7 @@ export abstract class AbstractCollector extends CoreCollector {
                 d.isEmpty = true;
             });
         }
-        const rowTitle = AbstractCollector.buildRowTitle(annConfig);
+        const rowTitle = AbstractAnnotationCollector.buildRowTitle(annConfig);
         const rowPrefix = annConfig.prefix;
         const displayColor = annConfig.color;
 
@@ -304,7 +321,7 @@ export abstract class AbstractCollector extends CoreCollector {
         if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
             provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
         const sourceId: string = source == Source.PdbInstance && this.getPolymerEntityInstance() != null ?
-            targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(TagDelimiter.instance)[1]) : targetId;
+            targetId.split(Constants.instance)[0] + Constants.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(Constants.instance)[1]) : targetId;
         return {
             begin: p.beg_seq_id,
             end: p.end_seq_id,

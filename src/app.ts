@@ -19,5 +19,6 @@ export {
     buildUniprotFv,
     setBoardConfig,
     getRcsbFv,
+    getFeatures,
     unmount
 } from "./RcsbFvWeb/RcsbFvBuilder";

@@ -1,21 +1,21 @@
 import {EntryInstancesCollector} from "../CollectTools/EntryInstancesCollector";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {TagDelimiter} from "../Utils/TagDelimiter";
+import {Constants} from "../Utils/Constants";
 import {GenomeEntityTranslate} from "../Utils/GenomeEntityTranslate";
-import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
+import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 
 export class RcsbFvChromosomeBuilder {
 
-    static buildFullChromosome(elementFvId:string, chrId: string): Promise<void>{
+    static buildFullChromosome(elementFvId:string, chrId: string): Promise<RcsbFvModulePublicInterface>{
         return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, null, chrId);
     }
 
-    static buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<void>{
-        return new Promise<void>((resolve, reject)=>{
+    static buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<RcsbFvModulePublicInterface>{
+        return new Promise<RcsbFvModulePublicInterface>((resolve, reject)=>{
             rcsbFvCtxManager.setBoardConfig({rowTitleWidth:160});
             const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
             instanceCollector.collect({entry_id:entryId}).then(result=> {
@@ -24,7 +24,7 @@ export class RcsbFvChromosomeBuilder {
                 result.sort((a,b)=>{
                     return parseInt(a.entityId)-parseInt(b.entityId);
                 }).forEach(r=>{
-                    entitySet.add(r.entryId+TagDelimiter.entity+r.entityId);
+                    entitySet.add(r.entryId+Constants.entity+r.entityId);
                 });
                 const entityGenomeTranslate: GenomeEntityTranslate = new GenomeEntityTranslate(Array.from(entitySet));
                 entityGenomeTranslate.getChrMap().then(entityMap=>{
@@ -33,14 +33,14 @@ export class RcsbFvChromosomeBuilder {
                     }else{
                         const unique: Set<string> = new Set<string>();
                         RcsbFvCoreBuilder.buildSelectButton(elementFvId, entitySelectId,result.filter(r=>{
-                            const included: boolean = unique.has(r.entryId+TagDelimiter.entity+r.entityId);
-                            unique.add(r.entryId+TagDelimiter.entity+r.entityId);
-                            return entityMap.has(r.entryId+TagDelimiter.entity+r.entityId) && !included;
+                            const included: boolean = unique.has(r.entryId+Constants.entity+r.entityId);
+                            unique.add(r.entryId+Constants.entity+r.entityId);
+                            return entityMap.has(r.entryId+Constants.entity+r.entityId) && !included;
                         }).map((e,n)=>{
-                            const entityId: string = e.entryId+TagDelimiter.entity+e.entityId;
+                            const entityId: string = e.entryId+Constants.entity+e.entityId;
                             if(n == 0) {
-                                RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, chromosomeSelectId, entityId).then(()=>{
-                                    resolve();
+                                RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, chromosomeSelectId, entityId).then((rcsbFvModule)=>{
+                                    resolve(rcsbFvModule);
                                 });
                             }
                             return{
@@ -59,8 +59,8 @@ export class RcsbFvChromosomeBuilder {
 
     }
 
-    static buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<void> {
-        return new Promise<void>((resolve, reject)=>{
+    static buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>((resolve, reject)=>{
             const rcsbFvSingleViewer: RcsbFv = rcsbFvCtxManager.getFv(elementFvId) ?? RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementFvId);
             if (rcsbFvCtxManager.getFv(elementFvId) == null ){
                 rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
@@ -78,13 +78,13 @@ export class RcsbFvChromosomeBuilder {
                         }
                     };
                 }),{addTitle: false, width:190, dropdownTitle: "CHROMOSOME"});
-                resolve();
+                resolve(chrViewer);
             });
         });
     }
 
-    static buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<void> {
-        return new Promise<void>((resolve,reject)=> {
+    static buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
             try {
                 RcsbFvCoreBuilder.createFv({
                     elementId: elementFvId,
@@ -92,10 +92,10 @@ export class RcsbFvChromosomeBuilder {
                     config: {
                         entityId: entityId,
                         chrId: chrId,
-                        elementSelectId: elementSelectId
+                        elementSelectId: elementSelectId,
+                        resolve: resolve
                     }
                 });
-                resolve()
             }catch(e) {
                 reject(e);
             }
