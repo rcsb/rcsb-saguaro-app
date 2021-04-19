@@ -657,7 +657,7 @@ export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterfac
         else
             this.rowConfigData = headerTracks;
         console.log("RENDERING");
-        this.boardConfigData.borderColor = "#F9F9F9";
+        this.boardConfigData.hideInnerBorder = true;
         this.boardConfigData.length = Math.floor(this.maxRange + 0.01*this.maxRange);
         this.boardConfigData.includeAxis = true;
         this.setDisplayView();
