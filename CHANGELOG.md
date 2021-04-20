@@ -2,6 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
+<<<<<<< HEAD
 ## [1.2.0] - 2021-04-15
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
@@ -14,15 +15,27 @@
 - AnnotationClass: New getter methods for 1d Features and RowConfig data 
 - AnnotationContext: class to handle filtering and selecting annotations 
 
-## [1.1.4] - 2021-03-29
+## [1.1.7] - 2021-04-19
+### General
+- rcsb-saguaro update 1.4.1
+
+## [1.1.6] - 2021-04-19
+### General
+- rcsb-saguaro update 1.4.0
+
+## [1.1.5] - 2021-04-15
+### General
+- rcsb-saguaro update 1.3.0
+
+## [1.1.4] - 2021-02-23
 ### General
 - rcsb-saguaro update 1.2.1
 
-## [1.1.3] - 2021-03-25
+## [1.1.3] - 2021-03-29
 ### General
 - rcsb-saguaro update 1.2.0
 
-## [1.1.2] - 2021-02-23
+## [1.1.2] - 2021-03-25
 ### General
 - rcsb-saguaro update
 
