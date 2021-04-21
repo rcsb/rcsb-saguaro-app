@@ -2,7 +2,6 @@
 
 [Semantic Versioning](https://semver.org/)
 
-<<<<<<< HEAD
 ## [1.2.0] - 2021-04-15
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
