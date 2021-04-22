@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.1.9] - 2021-04-22
+### General
+- rcsb-saguaro update 1.5.1
+
 ## [1.1.8] - 2021-04-21
 ### General
 - rcsb-saguaro update 1.5.0
