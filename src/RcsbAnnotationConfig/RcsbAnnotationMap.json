@@ -51,6 +51,7 @@
     "PROPEPTIDE",
     "TRANSMEMBRANE_REGION",
     "INTRAMEMBRANE_REGION",
+    "MEMBRANE_SEGMENT",
     "TOPOLOGICAL_DOMAIN",
     "COILED_COIL_REGION",
     "REPEAT",
@@ -366,6 +367,11 @@
     "display": "block",
     "color": "#8fc50f",
     "title": "TRANSMEMBRANE REGION"
+  },{
+    "type": "MEMBRANE_SEGMENT",
+    "display": "block",
+    "color": "#8fc50f",
+    "title": "MEMBRANE SEGMENT"
   },{
     "type": "REPEAT",
     "display": "block",
