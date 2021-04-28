@@ -102,7 +102,7 @@ export class AnnotationCollector extends CoreCollector{
                 }
                 this.computeFeatureGaps(d.feature_positions).forEach(p => {
                     if(p.beg_seq_id != null) {
-                        const key:string = p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString() + this.rcsbAnnotationMap.getConfig(d.type).displayCooccurrence ? Math.random().toString(36).substr(2) : "";
+                        const key:string = (p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString()) + (this.rcsbAnnotationMap.getConfig(d.type)?.displayCooccurrence ? Math.random().toString(36).substr(2) : "");
                         if (!annotations.get(type).has(key)) {
                             const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type,d.provenance_source);
                             this.addAuthorResIds(a,{
@@ -297,7 +297,7 @@ export class AnnotationCollector extends CoreCollector{
         }
         const rowTitle = AnnotationCollector.buildRowTitle(annConfig);
         const rowPrefix = annConfig.prefix;
-        const displayColor = annConfig.color;
+        const displayColor = annConfig.color ?? this.rcsbAnnotationMap.randomRgba();
 
         const pin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
         const nonPin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
@@ -373,7 +373,7 @@ export class AnnotationCollector extends CoreCollector{
             targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(TagDelimiter.instance)[1]) : targetId;
         return {
             begin: p.beg_seq_id,
-            end: p.end_seq_id,
+            end: p.end_seq_id ?? p.beg_seq_id,
             oriBegin: p.beg_ori_id,
             oriEnd: p.end_ori_id,
             description: new Array<string>(),

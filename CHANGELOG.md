@@ -4,6 +4,11 @@
 
 ## [1.2.0] - 2021-04-28
 ### General
+- Composite merging bug fixed
+- New tracks merged
+
+## [1.2.0] - 2021-04-28
+### General
 - New annotation map property <b>displayCooccurrence</b> avoids merging positional co-occurrent features   
 - rcsb-saguaro update 1.6.0
 

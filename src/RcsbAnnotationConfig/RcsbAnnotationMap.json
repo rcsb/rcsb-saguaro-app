@@ -11,15 +11,27 @@
       "display": "block"
     },
     {
-      "merged_types": ["TRANSMEMBRANE_REGION", "INTRAMEMBRANE_REGION"],
-      "type": "TRANS_INTRA_MEMBRANE_REGION",
-      "title": "TRANS/INTRA MEMBRANE",
+      "merged_types": ["TOPOLOGICAL_DOMAIN", "TRANSMEMBRANE_REGION", "INTRAMEMBRANE_REGION"],
+      "type": "MEMBRANE_TOPOLOGY",
+      "title": "MEMBRANE TOPOLOGY",
+      "display": "block"
+    },{
+      "merged_types": ["INITIATOR_METHIONINE", "CHAIN", "SIGNAL_PEPTIDE"],
+      "type": "MOLECULE_PROCESSING",
+      "title": "MOLECULE PROCESSING",
+      "display": "block"
+    },{
+      "merged_types": ["HELIX_P", "SHEET"],
+      "type": "SECONDARY_STRUCTURE",
+      "title": "SECONDARY STRUCTURE",
       "display": "block"
     }
   ],
   "external_data_order": [
     "CATH",
     "SCOP",
+    "MOLECULE_PROCESSING",
+    "MEMBRANE_TOPOLOGY",
     "CHAIN",
     "INITIATOR_METHIONINE",
     "SEQUENCE_VARIANT",
@@ -47,7 +59,8 @@
     "COMPOSITIONALLY_BIASED_REGION",
     "SPLICE_VARIANT",
     "NON_TERMINAL_RESIDUE",
-    "TURN"
+    "TURN",
+    "SIGNAL_PEPTIDE"
   ],
   "instance_order": [
     "HELIX_P",
@@ -169,7 +182,7 @@
   },{
     "type": "INITIATOR_METHIONINE",
     "display": "pin",
-    "color": "#a2916d",
+    "color": "#e2916d",
     "title": "INITIATOR METHIONINE"
   },{
     "type": "MODIFIED_RESIDUE",
@@ -350,6 +363,11 @@
     "display": "block",
     "color": "#2ea37b",
     "title": "REPEAT"
+  },{
+    "type": "SIGNAL_PEPTIDE",
+    "display": "block",
+    "color": "#2ea3bb",
+    "title": "SIGNAL PEPTIDE"
   },{
     "type": "COILED_COIL_REGION",
     "display": "block",
