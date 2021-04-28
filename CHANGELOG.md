@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.2.0] - 2021-04-28
+### General
+- New annotation map property <b>displayCoocurrence</b> avoids merging positional co-occurrent features   
+- rcsb-saguaro update 1.6.0
+
 ## [1.1.9] - 2021-04-22
 ### General
 - rcsb-saguaro update 1.5.1

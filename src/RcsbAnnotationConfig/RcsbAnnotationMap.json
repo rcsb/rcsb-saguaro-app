@@ -9,6 +9,12 @@
       "type": "UNOBSERVED",
       "title": "UNMODELED",
       "display": "block"
+    },
+    {
+      "merged_types": ["TRANSMEMBRANE_REGION", "INTRAMEMBRANE_REGION"],
+      "type": "TRANS_INTRA_MEMBRANE_REGION",
+      "title": "TRANS/INTRA MEMBRANE",
+      "display": "block"
     }
   ],
   "external_data_order": [
@@ -226,7 +232,7 @@
     "color": "#aa33aa",
     "height": 40,
     "title": "ANGLE OUTLIER",
-    "transform_to_numerical": true
+    "transformToNumerical": true
   },{
     "type": "ROTAMER_OUTLIER",
     "display": "pin",
@@ -248,7 +254,7 @@
     "color": "#33aa33",
     "height": 40,
     "title": "BOND OUTLIER",
-    "transform_to_numerical": true
+    "transformToNumerical": true
   },{
     "type": "MOGUL_BOND_OUTLIER",
     "display": "pin",
