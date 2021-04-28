@@ -23,13 +23,30 @@ export class FilterCheckbox extends React.Component<FilterCheckboxInterface,Filt
 
     render():JSX.Element {
         return (
-            <input type={"checkbox"} checked={this.state.checked} onChange={this.change.bind(this)} />
+            <div style={{cursor:"pointer"}} onMouseEnter={(evt)=>{this.enter(evt)}} onMouseDown={this.down.bind(this)}>
+                <div style={{display:"inline-block", marginRight:10}} >
+                    <input type={"checkbox"} checked={this.state.checked} readOnly  />
+                </div>
+                <div style={{display:"inline-block", fontSize:12, color: this.state.checked ? "black" : "grey"}}>
+                    {this.props.propertyValue}
+                </div>
+            </div>
         );
     }
 
-    private change():void {
+    componentDidUpdate(prevProps: Readonly<FilterCheckboxInterface>, prevState: Readonly<FilterCheckboxState>, snapshot?: any) {
+        this.props.additionalPropertyFilter.setPropertyValue(this.props.propertyName, this.props.propertyValue, this.state.checked);
+    }
+
+    private enter(evt: React.MouseEvent<HTMLDivElement>): void {
+        if(evt.buttons == 1)
+            this.down();
+    }
+
+    private down():void {
         const previousFlag: boolean = this.props.additionalPropertyFilter.getPropertyValue(this.props.propertyName, this.props.propertyValue);
-        this.props.additionalPropertyFilter.setPropertyValue(this.props.propertyName, this.props.propertyValue, !previousFlag);
         this.setState({checked: !previousFlag});
     }
+
+
 }

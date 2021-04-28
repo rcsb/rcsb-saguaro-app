@@ -18,7 +18,7 @@ export interface CreateFvInterface {
 
 export class RcsbFvCoreBuilder {
 
-    static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void): void{
+    public static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void): void{
         if(rcsbFvCtxManager.getEntityToInstance(entryId) != null) {
             f(rcsbFvCtxManager.getEntityToInstance(entryId));
         }else{
@@ -30,7 +30,7 @@ export class RcsbFvCoreBuilder {
         }
     }
 
-    static createFvBuilder(
+    public static createFvBuilder(
         elementId: string,
         fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
         config: RcsbFvModuleBuildInterface
@@ -45,29 +45,28 @@ export class RcsbFvCoreBuilder {
         }
     }
 
-    static createFv (createFvI: CreateFvInterface): void {
+    public static createFv (createFvI: CreateFvInterface): void {
         const elementId: string = createFvI.elementId;
         const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
+        let rcsbFvInstance: RcsbFvModuleInterface;
         if (rcsbFvCtxManager.getFv(elementId) != null) {
-            const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
-            rcsbFvInstance.build(config);
-            rcsbFvCtxManager.setFeatures(elementId, rcsbFvInstance.getFeatures());
-            rcsbFvCtxManager.setAnnotationConfigData(elementId, rcsbFvInstance.getAnnotationConfigData());
+            rcsbFvInstance = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
         } else {
             const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementId);
-            const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvSingleViewer);
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
-            rcsbFvInstance.build(config);
+            rcsbFvInstance = new fvModuleI(elementId, rcsbFvSingleViewer);
             rcsbFvCtxManager.setFv(elementId, rcsbFvSingleViewer);
-            rcsbFvCtxManager.setFeatures(elementId, rcsbFvInstance.getFeatures());
-            rcsbFvCtxManager.setAnnotationConfigData(elementId, rcsbFvInstance.getAnnotationConfigData());
         }
+        if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
+        if(createFvI.config.additionalConfig?.boardConfig)
+            rcsbFvInstance.updateBoardConfig(createFvI.config.additionalConfig.boardConfig);
+        rcsbFvInstance.build(config);
+        rcsbFvCtxManager.setFeatures(elementId, rcsbFvInstance.getFeatures());
+        rcsbFvCtxManager.setAnnotationConfigData(elementId, rcsbFvInstance.getAnnotationConfigData());
     }
 
-    static buildRcsbFvSingleViewer(elementId: string): RcsbFv{
+    public static buildRcsbFvSingleViewer(elementId: string): RcsbFv{
         const config: RcsbFvBoardConfigInterface = rcsbFvCtxManager.getBoardConfig() != null ? {
             rowTitleWidth: 190,
             trackWidth: 900,
@@ -83,7 +82,7 @@ export class RcsbFvCoreBuilder {
             });
     }
 
-    static unmount(elementId:string): void{
+    public static unmount(elementId:string): void{
         if (rcsbFvCtxManager.getFv(elementId) != null) {
             if(rcsbFvCtxManager.getMountedList(elementId)!=null){
                 rcsbFvCtxManager.getMountedList(elementId).forEach(buttonId=>{
@@ -95,42 +94,46 @@ export class RcsbFvCoreBuilder {
         }
     }
 
-    static unmountSelectButton(elementFvId: string, selectButtonId: string): void{
+    public static unmountSelectButton(elementFvId: string, selectButtonId: string): void{
         rcsbFvCtxManager.getMountedList(elementFvId).delete(selectButtonId);
         WebToolsManager.clearSelectButton(selectButtonId);
     }
 
-    static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void{
+    public static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void{
         rcsbFvCtxManager.setMounted(elementFvId, selectButtonId);
         WebToolsManager.buildSelectButton(selectButtonId, options, config);
     }
 
-    static buildUIPanel(elementFvId: string, panelId: string, additionalPropertyContext: AnnotationContext, filterChangeCallback: ()=>void, annotationConfigData: Array<RcsbFvRowConfigInterface>, rcsbFv: RcsbFv): void{
+    public static buildUIPanel(elementFvId: string, panelId: string, additionalPropertyContext: AnnotationContext, filterChangeCallback: ()=>void, annotationConfigData: Array<RcsbFvRowConfigInterface>, rcsbFv: RcsbFv): void{
         RcsbFvCoreBuilder.unmountPanel(elementFvId, panelId);
         rcsbFvCtxManager.setMounted(elementFvId, panelId);
         WebToolsManager.buildUIPanel(panelId, additionalPropertyContext, filterChangeCallback, annotationConfigData, rcsbFv);
     }
 
-    static unmountPanel(elementFvId: string, panelId: string): void{
+    public static buildAnnotationMetadataPanel(panelId: string, features: Array<Feature>){
+        WebToolsManager.buildAnnotationMetadataPanel(panelId, features);
+    }
+
+    public static unmountPanel(elementFvId: string, panelId: string): void{
         if(rcsbFvCtxManager.getMountedList(elementFvId)?.has(panelId)){
             rcsbFvCtxManager.getMountedList(elementFvId).delete(panelId);
         }
         WebToolsManager.unmountElement(panelId);
     }
 
-    static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string): void{
+    public static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string): void{
         if(rcsbFvCtxManager.getMountedList(elementFvId)?.has(selectButtonId)){
             rcsbFvCtxManager.getMountedList(elementFvId).delete(selectButtonId);
         }
         WebToolsManager.clearAdditionalSelectButton(selectButtonId);
     }
 
-    static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface): void{
+    public static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface): void{
         rcsbFvCtxManager.setMounted(elementFvId, selectButtonId);
         WebToolsManager.addSelectButton(selectButtonId, options);
     }
 
-    static showMessage(elementId: string, message: string): void{
+    public static showMessage(elementId: string, message: string): void{
         const domElement: HTMLElement = document.createElement<"h4">("h4");
         domElement.innerHTML = message;
         document.getElementById(elementId).append(domElement);

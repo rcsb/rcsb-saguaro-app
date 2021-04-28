@@ -31,16 +31,13 @@ export class FilterPanel extends React.Component<FilterPanelInterface,null> {
                     const [name, values]: [PropertyName, Map<any,boolean>] = entry;
                     return (
                         <Tab key={name} eventKey={name} title={name.replace("_", " ")} >
-                            <div style={{paddingTop:10, paddingLeft:15, paddingBottom:10}}>
+                            <div style={{paddingTop:10, paddingLeft:15, paddingBottom:10, WebkitTouchCallout: "none", WebkitUserSelect: "none", userSelect: "none"}} >
                                 {
                                     [...values.entries()].sort((a,b)=>(a[0].localeCompare(b[0]))).map(v=>{
                                         return (
                                             <div key={name+":"+v[0]}>
                                                 <div style={{display:"inline-block", marginRight:10}}>
                                                     <FilterCheckbox propertyName={name} propertyValue={v[0]} additionalPropertyFilter={this.props.additionalPropertyContext} />
-                                                </div>
-                                                <div style={{display:"inline-block", fontSize:12}}>
-                                                    {v[0]}
                                                 </div>
                                             </div>
                                         );

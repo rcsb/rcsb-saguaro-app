@@ -82,6 +82,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="annotationcontext.html#annotationconfigdata" class="tsd-kind-icon">annotation<wbr>Config<wbr>Data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="annotationcontext.html#features" class="tsd-kind-icon">features</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="annotationcontext.html#principalcomponent" class="tsd-kind-icon">principal<wbr>Component</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="annotationcontext.html#propertyfilter" class="tsd-kind-icon">property<wbr>Filter</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="annotationcontext.html#propertyfilterchangeflag" class="tsd-kind-icon">property<wbr>Filter<wbr>Change<wbr>Flag</a></li>
@@ -90,8 +91,10 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#clearfilter" class="tsd-kind-icon">clear<wbr>Filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#filterhaschanged" class="tsd-kind-icon">filter<wbr>Has<wbr>Changed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#getannotationconfigdata" class="tsd-kind-icon">get<wbr>Annotation<wbr>Config<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#getfeatureswithcondition" class="tsd-kind-icon">get<wbr>Features<wbr>With<wbr>Condition</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#getprincipalcomponent" class="tsd-kind-icon">get<wbr>Principal<wbr>Component</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#getpropertyfiler" class="tsd-kind-icon">get<wbr>Property<wbr>Filer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="annotationcontext.html#getpropertyvalue" class="tsd-kind-icon">get<wbr>Property<wbr>Value</a></li>
@@ -113,7 +116,17 @@
 					<div class="tsd-signature tsd-kind-icon">annotation<wbr>Config<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Array&lt;RcsbFvRowConfigInterface&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L11">src/RcsbFvWeb/Utils/AnnotationContext.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L11">src/RcsbFvWeb/Utils/AnnotationContext.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="features" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> features</h3>
+					<div class="tsd-signature tsd-kind-icon">features<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/feature.html" class="tsd-signature-type">Feature</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L12">src/RcsbFvWeb/Utils/AnnotationContext.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -123,7 +136,7 @@
 					<div class="tsd-signature tsd-kind-icon">principal<wbr>Component<span class="tsd-signature-symbol">:</span> <a href="../enums/propertyname.html" class="tsd-signature-type">PropertyName</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L9">src/RcsbFvWeb/Utils/AnnotationContext.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L9">src/RcsbFvWeb/Utils/AnnotationContext.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -133,7 +146,7 @@
 					<div class="tsd-signature tsd-kind-icon">property<wbr>Filter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/propertyname.html" class="tsd-signature-type">PropertyName</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;PropertyName, Map&lt;any, boolean&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L10">src/RcsbFvWeb/Utils/AnnotationContext.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L10">src/RcsbFvWeb/Utils/AnnotationContext.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -143,13 +156,30 @@
 					<div class="tsd-signature tsd-kind-icon">property<wbr>Filter<wbr>Change<wbr>Flag<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L8">src/RcsbFvWeb/Utils/AnnotationContext.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L8">src/RcsbFvWeb/Utils/AnnotationContext.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="clearfilter" class="tsd-anchor"></a>
+					<h3>clear<wbr>Filter</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Filter<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L101">src/RcsbFvWeb/Utils/AnnotationContext.ts:101</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="filterhaschanged" class="tsd-anchor"></a>
 					<h3>filter<wbr>Has<wbr>Changed</h3>
@@ -160,7 +190,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L17">src/RcsbFvWeb/Utils/AnnotationContext.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L18">src/RcsbFvWeb/Utils/AnnotationContext.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -177,10 +207,44 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L61">src/RcsbFvWeb/Utils/AnnotationContext.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L70">src/RcsbFvWeb/Utils/AnnotationContext.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvRowConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getfeatureswithcondition" class="tsd-anchor"></a>
+					<h3>get<wbr>Features<wbr>With<wbr>Condition</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Features<wbr>With<wbr>Condition<span class="tsd-signature-symbol">(</span>pos<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>beg_seq_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>end_seq_id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span>, propertyValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>property_name<span class="tsd-signature-symbol">: </span><a href="../enums/propertyname.html" class="tsd-signature-type">PropertyName</a><span class="tsd-signature-symbol">; </span>property_value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/feature.html" class="tsd-signature-type">Feature</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L78">src/RcsbFvWeb/Utils/AnnotationContext.ts:78</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>pos: <span class="tsd-signature-symbol">{ </span>beg_seq_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>end_seq_id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>beg_<wbr>seq_<wbr>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> end_<wbr>seq_<wbr>id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>propertyValue: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>property_name<span class="tsd-signature-symbol">: </span><a href="../enums/propertyname.html" class="tsd-signature-type">PropertyName</a><span class="tsd-signature-symbol">; </span>property_value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/feature.html" class="tsd-signature-type">Feature</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -194,7 +258,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L25">src/RcsbFvWeb/Utils/AnnotationContext.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L26">src/RcsbFvWeb/Utils/AnnotationContext.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../enums/propertyname.html" class="tsd-signature-type">PropertyName</a></h4>
@@ -211,7 +275,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L43">src/RcsbFvWeb/Utils/AnnotationContext.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L47">src/RcsbFvWeb/Utils/AnnotationContext.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/propertyname.html" class="tsd-signature-type">PropertyName</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -228,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L54">src/RcsbFvWeb/Utils/AnnotationContext.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L60">src/RcsbFvWeb/Utils/AnnotationContext.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -254,7 +318,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L29">src/RcsbFvWeb/Utils/AnnotationContext.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L30">src/RcsbFvWeb/Utils/AnnotationContext.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -277,7 +341,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L13">src/RcsbFvWeb/Utils/AnnotationContext.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L14">src/RcsbFvWeb/Utils/AnnotationContext.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -294,7 +358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L65">src/RcsbFvWeb/Utils/AnnotationContext.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L74">src/RcsbFvWeb/Utils/AnnotationContext.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -317,7 +381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L21">src/RcsbFvWeb/Utils/AnnotationContext.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L22">src/RcsbFvWeb/Utils/AnnotationContext.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -340,7 +404,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L47">src/RcsbFvWeb/Utils/AnnotationContext.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/Utils/AnnotationContext.ts#L51">src/RcsbFvWeb/Utils/AnnotationContext.ts:51</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -380,6 +444,9 @@
 								<a href="annotationcontext.html#annotationconfigdata" class="tsd-kind-icon">annotation<wbr>Config<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="annotationcontext.html#features" class="tsd-kind-icon">features</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="annotationcontext.html#principalcomponent" class="tsd-kind-icon">principal<wbr>Component</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -389,10 +456,16 @@
 								<a href="annotationcontext.html#propertyfilterchangeflag" class="tsd-kind-icon">property<wbr>Filter<wbr>Change<wbr>Flag</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="annotationcontext.html#clearfilter" class="tsd-kind-icon">clear<wbr>Filter</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="annotationcontext.html#filterhaschanged" class="tsd-kind-icon">filter<wbr>Has<wbr>Changed</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="annotationcontext.html#getannotationconfigdata" class="tsd-kind-icon">get<wbr>Annotation<wbr>Config<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="annotationcontext.html#getfeatureswithcondition" class="tsd-kind-icon">get<wbr>Features<wbr>With<wbr>Condition</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="annotationcontext.html#getprincipalcomponent" class="tsd-kind-icon">get<wbr>Principal<wbr>Component</a>

@@ -1,7 +1,7 @@
-import {Feature, FilterInput, PropertyName, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, FilterInput, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {AnnotationContext} from "../Utils/AnnotationContext";
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export interface RcsbFvModuleAdditionalConfig{
     sources?: Array<Source>;
@@ -10,9 +10,11 @@ export interface RcsbFvModuleAdditionalConfig{
     bottomAlignments?: boolean;
     collectorType?: "tcga"|"standard";
     annotationContext?: AnnotationContext;
+    boardConfig?: Partial<RcsbFvBoardConfigInterface>;
     annotationUI?: {
         selectId: string;
         panelId: string;
+        metadataId: string;
     }
 }
 
@@ -37,6 +39,7 @@ export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     display: () => void;
     build: (buildConfig: RcsbFvModuleBuildInterface) => void;
     setPolymerEntityInstance: (polymerEntityInstance: PolymerEntityInstanceTranslate)=>void;
+    updateBoardConfig: (config: Partial<RcsbFvBoardConfigInterface>) => void;
 }
 
 export interface RcsbFvModulePublicInterface {

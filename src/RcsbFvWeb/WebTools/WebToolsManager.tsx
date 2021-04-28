@@ -10,6 +10,7 @@ import {Constants} from "../Utils/Constants";
 import {SelectPanel} from "./SelectPanel";
 import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {AnnotationContext} from "../Utils/AnnotationContext";
+import {AnnotationMetadataPanel} from "./AnnotationMetadataPanel";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -24,12 +25,12 @@ export class WebToolsManager {
     private static suffix: string = "_buttonDiv";
     private static suffixAdditionalButton: string = "_additionalButton";
 
-    static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void{
+    public static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void{
         WebToolsManager.clearSelectButton(elementId);
         WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffix, options, config);
     }
 
-    static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface): void{
+    public static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface): void{
         WebToolsManager.clearAdditionalSelectButton(elementId);
         WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffixAdditionalButton, options, config);
     }
@@ -40,33 +41,28 @@ export class WebToolsManager {
         div.style.display = "inline-block";
         document.getElementById(elementId).append(div);
         ReactDom.render(
-            this.jsxButton(options,config),
+            <SelectButton options={options} optionProps={config?.optionProps} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle} titleStyle={config?.titleStyle}/>,
             div
         );
     }
 
-    private static jsxButton(options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?: SelectButtonConfigInterface): JSX.Element{
-        return (<SelectButton options={options} optionProps={config?.optionProps} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle} titleStyle={config?.titleStyle}/>);
+    public static clearSelectButton(elementId: string): void{
+        WebToolsManager.innerClearSelectButton(elementId + WebToolsManager.suffix);
+        WebToolsManager.innerClearSelectButton(elementId + WebToolsManager.suffixAdditionalButton);
     }
 
-    static clearSelectButton(elementId: string): void{
-        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffix);
-        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffixAdditionalButton);
+    public static clearAdditionalSelectButton(elementId: string): void{
+        WebToolsManager.innerClearSelectButton(elementId + WebToolsManager.suffixAdditionalButton);
     }
 
-    static clearAdditionalSelectButton(elementId: string): void{
-        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffixAdditionalButton);
-    }
-
-    private static innerClearSelectButton(elementId: string, suffix: string): void{
-        const id: string = elementId+suffix;
-        if( document.getElementById(id) != null){
-            ReactDom.unmountComponentAtNode(document.getElementById(id));
-            document.getElementById(id)?.remove();
+    private static innerClearSelectButton(elementId: string): void{
+        if( document.getElementById(elementId) != null){
+            ReactDom.unmountComponentAtNode(document.getElementById(elementId));
+            document.getElementById(elementId)?.remove();
         }
     }
 
-    static buildUIPanel(panelId: string, additionalPropertyContext: AnnotationContext, filterChangeCallback: ()=>void, annotationConfigData: Array<RcsbFvRowConfigInterface>, rcsbFv: RcsbFv){
+    public static buildUIPanel(panelId: string, additionalPropertyContext: AnnotationContext, filterChangeCallback: ()=>void, annotationConfigData: Array<RcsbFvRowConfigInterface>, rcsbFv: RcsbFv){
         if( document.getElementById(panelId) != null) {
             ReactDom.render(
                 <AnnotationPanelUI panelId={panelId} additionalPropertyContext={additionalPropertyContext} filterChangeCallback={filterChangeCallback} annotationConfigData={annotationConfigData} rcsbFv={rcsbFv} />,
@@ -75,7 +71,16 @@ export class WebToolsManager {
         }
     }
 
-    static unmountElement(elementId: string){
+    public static buildAnnotationMetadataPanel(panelId: string, features: Array<Feature>): void {
+        if(document.getElementById(panelId) != null){
+            ReactDom.render(
+                <AnnotationMetadataPanel panelId={panelId} features={features} />,
+                document.getElementById(panelId)
+            );
+        }
+    }
+
+    public static unmountElement(elementId: string){
         if( document.getElementById(elementId) != null){
             ReactDom.unmountComponentAtNode(document.getElementById(elementId));
         }

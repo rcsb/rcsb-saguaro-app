@@ -7,11 +7,9 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
-import {Feature, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AdditionalProperties} from "../Utils/AnnotationContext";
+import {Feature, PropertyName, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationContext} from "../Utils/AnnotationContext";
-import {getRcsbFv} from "../RcsbFvBuilder";
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 
 export interface InstanceSequenceOnchangeInterface {
     pdbId: string;
@@ -61,7 +59,7 @@ export class RcsbFvInstanceBuilder {
 
     static buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<RcsbFvModulePublicInterface>{
         const filteredInstanceList: Array<PolymerEntityInstanceInterface> = instanceList.filter(i=>(config.filterInstances == null || config.filterInstances.has(i.asymId)));
-        const annotationContext: AnnotationContext = new AnnotationContext();
+        const annotationContext: AnnotationContext | undefined = config.additionalConfig?.annotationContext;
         buildInstanceSelectButton(elementFvId, elementSelectId, filteredInstanceList, annotationContext, config);
         let index: number = 0;
         if (config.defaultValue != null) {
@@ -70,20 +68,21 @@ export class RcsbFvInstanceBuilder {
             });
             if (n >= 0) index = n;
         }
-        return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, config.additionalConfig).then((rcsbFvModule) => {
+        return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, {...config.additionalConfig,}).then((rcsbFvModule) => {
             if (typeof config.onChangeCallback === "function")
                 config.onChangeCallback({
                     pdbId: filteredInstanceList[index].entryId,
                     authId: filteredInstanceList[index].authId,
                     asymId: filteredInstanceList[index].asymId
                 });
-            Promise.all([rcsbFvModule.getAnnotationConfigData(), rcsbFvModule.getFeatures()]).then(values=>{
-                const [ann, features]: [Array<RcsbFvRowConfigInterface>, Array<Feature>] = values;
-                annotationContext.parseFeatures(features);
-                annotationContext.setAnnotationConfigData(ann);
-                if(config?.additionalConfig?.annotationUI)
-                    buildAnnotationsUI(elementFvId, config.additionalConfig.annotationUI.selectId, config.additionalConfig.annotationUI.panelId, filteredInstanceList[index], annotationContext, config);
-            })
+            if(annotationContext)
+                Promise.all([rcsbFvModule.getAnnotationConfigData(), rcsbFvModule.getFeatures()]).then(values=>{
+                    const [ann, features]: [Array<RcsbFvRowConfigInterface>, Array<Feature>] = values;
+                    annotationContext.parseFeatures(features);
+                    annotationContext.setAnnotationConfigData(ann);
+                    if(config?.additionalConfig?.annotationUI)
+                        buildAnnotationsUI(elementFvId, config.additionalConfig.annotationUI.selectId, config.additionalConfig.annotationUI.panelId, filteredInstanceList[index], annotationContext, config);
+                })
             return rcsbFvModule;
         });
     }
@@ -105,6 +104,7 @@ export class RcsbFvInstanceBuilder {
     }
 
     static buildInstanceTcgaFv(elementFvId:string, elementSelectId:string, entryId: string, config?: InstanceSequenceConfig): Promise<RcsbFvModulePublicInterface> {
+        const annotationContext: AnnotationContext = new AnnotationContext();
         return RcsbFvInstanceBuilder.buildInstanceSequenceFv(
             elementFvId,
             elementSelectId,
@@ -114,14 +114,35 @@ export class RcsbFvInstanceBuilder {
                 additionalConfig:{
                     ...config?.additionalConfig,
                     sources:[Source.NcbiGenome],
-                    collectorType:"tcga"
+                    collectorType:"tcga",
+                    annotationContext: annotationContext,
+                    boardConfig:{
+                        elementClickCallBack: (d: RcsbFvTrackDataElementInterface, e:MouseEvent)=>{
+                            //TODO we need a better to setup multiple click callbacks
+                            if(typeof rcsbFvCtxManager.getBoardConfig().elementClickCallBack === "function")
+                                rcsbFvCtxManager.getBoardConfig().elementClickCallBack(d,e);
+                            if(e.altKey){
+                                if(d.type) {
+                                    const features: Array<Feature> = annotationContext.getFeaturesWithCondition(
+                                        {beg_seq_id: d.begin, end_seq_id: d.end},
+                                        [{
+                                            property_name: annotationContext.getPrincipalComponent(),
+                                            property_value: d.type
+                                        }]
+                                    );
+                                    if(features.length > 0)
+                                        RcsbFvCoreBuilder.buildAnnotationMetadataPanel(config.additionalConfig.annotationUI.metadataId, features);
+                                }
+                            }
+                        }
+                    }
                 }
             });
     }
 
 }
 
-function buildInstanceSelectButton(elementFvId:string, elementSelectId:string, filteredInstanceList: Array<PolymerEntityInstanceInterface>, annotationContext: AnnotationContext, config: InstanceSequenceConfig){
+function buildInstanceSelectButton(elementFvId:string, elementSelectId:string, filteredInstanceList: Array<PolymerEntityInstanceInterface>, annotationContext: AnnotationContext | undefined, config: InstanceSequenceConfig) {
     const groupedInstances: Map<string, Array<SelectOptionInterface>> = new Map<string, Array<SelectOptionInterface>>();
     filteredInstanceList.forEach((instance)=>{
         if(!groupedInstances.has(instance.entityId))
@@ -135,6 +156,8 @@ function buildInstanceSelectButton(elementFvId:string, elementSelectId:string, f
             optId: instance.authId,
             onChange: () => {
                 RcsbFvCoreBuilder.unmountSelectButton(elementFvId, config?.additionalConfig?.annotationUI.selectId);
+                if(annotationContext)
+                    annotationContext.clearFilter();
                 RcsbFvInstanceBuilder.buildInstanceFv(
                     elementFvId,
                     instance.rcsbId,
@@ -146,13 +169,14 @@ function buildInstanceSelectButton(elementFvId:string, elementSelectId:string, f
                             authId: instance.authId,
                             asymId: instance.asymId
                         });
-                    Promise.all([rcsbFvModule.getAnnotationConfigData(), rcsbFvModule.getFeatures()]).then(values=>{
-                        const [ann, features]: [Array<RcsbFvRowConfigInterface>, Array<Feature>] = values;
-                        annotationContext.parseFeatures(features);
-                        annotationContext.setAnnotationConfigData(ann);
-                        if(config?.additionalConfig?.annotationUI)
-                            buildAnnotationsUI(elementFvId, config.additionalConfig.annotationUI.selectId, config.additionalConfig.annotationUI.panelId, instance, annotationContext, config);
-                    })
+                    if(annotationContext)
+                        Promise.all([rcsbFvModule.getAnnotationConfigData(), rcsbFvModule.getFeatures()]).then(values=>{
+                            const [ann, features]: [Array<RcsbFvRowConfigInterface>, Array<Feature>] = values;
+                            annotationContext.parseFeatures(features);
+                            annotationContext.setAnnotationConfigData(ann);
+                            if(config?.additionalConfig?.annotationUI)
+                                buildAnnotationsUI(elementFvId, config.additionalConfig.annotationUI.selectId, config.additionalConfig.annotationUI.panelId, instance, annotationContext, config);
+                        });
                 });
             }
         })
@@ -165,7 +189,9 @@ function buildInstanceSelectButton(elementFvId:string, elementSelectId:string, f
 
 function buildAnnotationsUI(elementFvId:string, annotationSelectId: string, annotationUIPanelId: string, instance: PolymerEntityInstanceInterface, annotationContext: AnnotationContext, config: InstanceSequenceConfig){
     if(annotationContext.getPropertyFiler().size > 0){
-        RcsbFvCoreBuilder.buildSelectButton(elementFvId, annotationSelectId, Array.from(annotationContext.getPropertyFiler().keys()).map(pn=>({
+        const propertyNames: Array<PropertyName> = Array.from(annotationContext.getPropertyFiler().keys())
+        annotationContext.setPrincipalComponent(propertyNames[0]);
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, annotationSelectId, propertyNames.map(pn=>({
             label:pn.replace("_"," "),
             name: pn.replace("_"," "),
             optId: pn,

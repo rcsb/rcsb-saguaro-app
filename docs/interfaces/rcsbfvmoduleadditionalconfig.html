@@ -83,6 +83,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rcsbfvmoduleadditionalconfig.html#annotationcontext" class="tsd-kind-icon">annotation<wbr>Context</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rcsbfvmoduleadditionalconfig.html#annotationui" class="tsd-kind-icon">annotationUI</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rcsbfvmoduleadditionalconfig.html#boardconfig" class="tsd-kind-icon">board<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rcsbfvmoduleadditionalconfig.html#bottomalignments" class="tsd-kind-icon">bottom<wbr>Alignments</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rcsbfvmoduleadditionalconfig.html#collectortype" class="tsd-kind-icon">collector<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="rcsbfvmoduleadditionalconfig.html#filters" class="tsd-kind-icon">filters</a></li>
@@ -101,22 +102,25 @@
 					<div class="tsd-signature tsd-kind-icon">annotation<wbr>Context<span class="tsd-signature-symbol">:</span> <a href="../classes/annotationcontext.html" class="tsd-signature-type">AnnotationContext</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L12">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L12">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="annotationui" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> annotationUI</h3>
-					<div class="tsd-signature tsd-kind-icon">annotationUI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>panelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>selectId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">annotationUI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>metadataId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>panelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>selectId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L13">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L14">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>metadata<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
 							<li class="tsd-parameter">
 								<h5>panel<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 							</li>
@@ -127,12 +131,22 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="boardconfig" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> board<wbr>Config</h3>
+					<div class="tsd-signature tsd-kind-icon">board<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RcsbFvBoardConfigInterface</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L13">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="bottomalignments" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> bottom<wbr>Alignments</h3>
 					<div class="tsd-signature tsd-kind-icon">bottom<wbr>Alignments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L10">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L10">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -142,7 +156,7 @@
 					<div class="tsd-signature tsd-kind-icon">collector<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"tcga"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"standard"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L11">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L11">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -152,7 +166,7 @@
 					<div class="tsd-signature tsd-kind-icon">filters<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="filterinput.html" class="tsd-signature-type">FilterInput</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L8">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L8">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -162,7 +176,7 @@
 					<div class="tsd-signature tsd-kind-icon">hide<wbr>Alignments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L9">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L9">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -172,7 +186,7 @@
 					<div class="tsd-signature tsd-kind-icon">sources<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../enums/source.html" class="tsd-signature-type">Source</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/41e0c45e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L7">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/24046f5e/src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts#L7">src/RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -198,6 +212,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="rcsbfvmoduleadditionalconfig.html#annotationui" class="tsd-kind-icon">annotationUI</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="rcsbfvmoduleadditionalconfig.html#boardconfig" class="tsd-kind-icon">board<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="rcsbfvmoduleadditionalconfig.html#bottomalignments" class="tsd-kind-icon">bottom<wbr>Alignments</a>

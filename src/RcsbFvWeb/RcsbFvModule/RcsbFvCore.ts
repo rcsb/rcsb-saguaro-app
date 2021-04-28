@@ -33,9 +33,13 @@ export abstract class RcsbFvCore {
         this.sequenceCollector.setPolymerEntityInstance(polymerEntityInstance)
     }
 
-    display(): void{
+    public display(): void{
         console.log("Starting display");
         this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
+    }
+
+    public updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void {
+        this.boardConfigData = { ...this.boardConfigData, ...config };
     }
 
     public getTargets(): Promise<Array<string>>{

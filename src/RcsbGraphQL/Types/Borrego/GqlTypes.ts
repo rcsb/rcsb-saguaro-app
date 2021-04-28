@@ -148,19 +148,23 @@ export enum PropertyName {
   CathDomainId = 'CATH_DOMAIN_ID',
   CathName = 'CATH_NAME',
   DiseaseType = 'DISEASE_TYPE',
+  Gender = 'GENDER',
+  Link = 'LINK',
   OmegaAngle = 'OMEGA_ANGLE',
   ParentCompId = 'PARENT_COMP_ID',
   PartnerAsymId = 'PARTNER_ASYM_ID',
   PartnerBondDistance = 'PARTNER_BOND_DISTANCE',
   PartnerCompId = 'PARTNER_COMP_ID',
   PrimarySite = 'PRIMARY_SITE',
+  Race = 'RACE',
   ReferenceAllele = 'REFERENCE_ALLELE',
   ScopDomainId = 'SCOP_DOMAIN_ID',
   ScopName = 'SCOP_NAME',
   ScopSunId = 'SCOP_SUN_ID',
   SheetSense = 'SHEET_SENSE',
   TumorAllele = 'TUMOR_ALLELE',
-  TumorStage = 'TUMOR_STAGE'
+  TumorStage = 'TUMOR_STAGE',
+  VitalStatus = 'VITAL_STATUS'
 }
 
 /** Query root */

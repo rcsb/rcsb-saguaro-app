@@ -9,6 +9,7 @@ export class AnnotationContext {
     private principalComponent: PropertyName;
     private propertyFilter: Map<PropertyName, Map<any,boolean>> = new Map<PropertyName, Map<any, boolean>>();
     private annotationConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private features: Array<Feature>;
 
     public resetSate(): void{
         this.propertyFilterChangeFlag = false;
@@ -27,15 +28,18 @@ export class AnnotationContext {
     }
 
     public parseFeatures(features: Array<Feature>){
+        this.features = features;
         this.propertyFilterChangeFlag = false;
         this.propertyFilter.clear();
         features.forEach(f=>{
             f.additional_properties.forEach(ap=>{
-                if(!this.propertyFilter.has(ap.property_name))
-                    this.propertyFilter.set(ap.property_name, new Map<string, boolean>());
-                ap.property_value.forEach(v=>{
-                    this.propertyFilter.get(ap.property_name).set(v.toString().toUpperCase(), true);
-                })
+                if(ap.property_name != PropertyName.Link) {
+                    if (!this.propertyFilter.has(ap.property_name))
+                        this.propertyFilter.set(ap.property_name, new Map<string, boolean>());
+                    ap.property_value.forEach(v => {
+                        this.propertyFilter.get(ap.property_name).set(v.toString().toUpperCase(), true);
+                    });
+                }
             });
         });
     }
@@ -45,13 +49,18 @@ export class AnnotationContext {
     }
 
     public setPropertyValue(propertyName: PropertyName, value: any, flag: boolean): void{
-        this.propertyFilterChangeFlag = true;
         if(this.propertyFilter.has(propertyName)){
-            this.propertyFilter.get(propertyName).set(value.toUpperCase(), flag);
+            if(this.propertyFilter.get(propertyName).get(value.toUpperCase()) != flag) {
+                this.propertyFilter.get(propertyName).set(value.toUpperCase(), flag);
+                this.propertyFilterChangeFlag = true;
+            }
         }
     }
 
     public getPropertyValue(propertyName: PropertyName, value: any): boolean{
+        //This condition ignores properties that are not defined @attribute propertyFilter
+        if(!this.propertyFilter.has(propertyName))
+            return true;
         if(this.propertyFilter.has(propertyName) && this.propertyFilter.get(propertyName).has(value.toUpperCase())){
             return this.propertyFilter.get(propertyName).get(value.toUpperCase());
         }
@@ -66,4 +75,30 @@ export class AnnotationContext {
         this.annotationConfigData = acd;
     }
 
+    public getFeaturesWithCondition(pos: {beg_seq_id: number, end_seq_id?:number}, propertyValue: Array<{property_name: PropertyName, property_value: any}>): Array<Feature> {
+        return this.features.filter((d) => {
+            return (d.feature_positions.filter(p => ((p.beg_seq_id === pos.beg_seq_id) && (!pos.end_seq_id || (pos.end_seq_id === p.end_seq_id)))).length > 0);
+        }).filter((d)=>{
+            for(const ap of d.additional_properties){
+                for(const v of ap.property_value) {
+                    if(!this.getPropertyValue(ap.property_name,v))
+                        return false;
+                }
+            }
+            for(const pv of propertyValue){
+                for(const ap of d.additional_properties){
+                    if(pv.property_name == ap.property_name)
+                        for(const v of ap.property_value){
+                            if(pv.property_value.toString().toUpperCase() == v.toString().toUpperCase())
+                                return true;
+                        }
+                }
+            }
+            return false;
+        });
+    }
+
+    public clearFilter(): void {
+        this.propertyFilter.clear();
+    }
 }

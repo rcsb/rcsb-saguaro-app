@@ -2,12 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.2.0] - 2021-04-15
+## [1.2.0] - 2021-04-27
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
 - Class TagDelimiter renamed to Constants
 - New TCGA Instance builder method
 - Annotation Panel UI: Filter / Select annotations (beta)
+- Annotation metadata panel
 
 ### Annotation Collector Classes
 - AbstractAnnotationCollector abstract class to define specific annotations collectors
