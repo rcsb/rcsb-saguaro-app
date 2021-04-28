@@ -57,7 +57,7 @@ export class TcgaAnnotationCollector extends AbstractAnnotationCollector {
                     }
                     for(let i=e.beg_seq_id;i<=e.end_seq_id;i++){
                         const p: FeaturePositionGaps = {...e, beg_seq_id: i , end_seq_id: null};
-                        const key:string = p.beg_seq_id.toString();
+                        const key:string = i.toString();
                         if (!nCasesTrack.has(key)) {
                             const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,nCasesTrackType ,d.provenance_source);
                             this.addAuthorResIds(a,{

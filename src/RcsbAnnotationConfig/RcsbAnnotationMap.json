@@ -99,7 +99,7 @@
     "color": "#ba3356",
     "height": 80,
     "title": "TCGA CASES",
-    "transform_to_numerical": true
+    "transformToNumerical": true
   },{
     "type": "HOMOLOGY MODELLING",
     "color": "#2fcc5d",
