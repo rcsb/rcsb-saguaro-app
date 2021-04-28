@@ -14,7 +14,7 @@ export interface RcsbAnnotationMapInterface {
     addToType?: string[];
     transformToNumerical?: boolean;
     domain?: [number,number];
-    displayCoocurrence?: boolean;
+    displayCooccurrence?: boolean;
 }
 
 export interface RcsbMergedTypesInterface {

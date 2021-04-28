@@ -4,7 +4,7 @@
 
 ## [1.2.0] - 2021-04-28
 ### General
-- New annotation map property <b>displayCoocurrence</b> avoids merging positional co-occurrent features   
+- New annotation map property <b>displayCooccurrence</b> avoids merging positional co-occurrent features   
 - rcsb-saguaro update 1.6.0
 
 ## [1.1.9] - 2021-04-22
