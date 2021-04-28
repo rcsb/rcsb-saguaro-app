@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.2.0] - 2021-04-27
+## [1.2.2] - 2021-04-28
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
 - Class TagDelimiter renamed to Constants
@@ -14,6 +14,24 @@
 - AbstractAnnotationCollector abstract class to define specific annotations collectors
 - AnnotationClass: New getter methods for 1d Features and RowConfig data 
 - AnnotationContext: class to handle filtering and selecting annotations 
+
+## [1.2.1] - 2021-04-28
+### General
+- Composite merging bug fixed
+- New tracks merged
+
+## [1.2.0] - 2021-04-28
+### General
+- New annotation map property <b>displayCooccurrence</b> avoids merging positional co-occurrent features   
+- rcsb-saguaro update 1.6.0
+
+## [1.1.9] - 2021-04-22
+### General
+- rcsb-saguaro update 1.5.1
+
+## [1.1.8] - 2021-04-21
+### General
+- rcsb-saguaro update 1.5.0
 
 ## [1.1.7] - 2021-04-19
 ### General

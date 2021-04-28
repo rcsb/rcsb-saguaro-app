@@ -12,8 +12,9 @@ export interface RcsbAnnotationMapInterface {
     height?:number;
     key?: string;
     addToType?: string[];
-    transform_to_numerical?: boolean;
+    transformToNumerical?: boolean;
     domain?: [number,number];
+    displayCooccurrence?: boolean;
 }
 
 export interface RcsbMergedTypesInterface {
@@ -211,7 +212,7 @@ export class RcsbAnnotationMap {
     }
 
     isTransformedToNumerical(type: string): boolean{
-        return this.annotationMap.get(type).transform_to_numerical === true;
+        return this.annotationMap.get(type).transformToNumerical === true;
 
     }
 }

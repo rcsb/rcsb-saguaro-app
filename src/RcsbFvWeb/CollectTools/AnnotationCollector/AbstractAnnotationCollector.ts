@@ -248,7 +248,7 @@ export abstract class AbstractAnnotationCollector extends CoreCollector {
         }
         const rowTitle = AbstractAnnotationCollector.buildRowTitle(annConfig);
         const rowPrefix = annConfig.prefix;
-        const displayColor = annConfig.color;
+        const displayColor = annConfig.color ?? this.rcsbAnnotationMap.randomRgba();
 
         const pin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
         const nonPin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
@@ -324,7 +324,7 @@ export abstract class AbstractAnnotationCollector extends CoreCollector {
             targetId.split(Constants.instance)[0] + Constants.instance + this.getPolymerEntityInstance().translateAsymToAuth(targetId.split(Constants.instance)[1]) : targetId;
         return {
             begin: p.beg_seq_id,
-            end: p.end_seq_id,
+            end: p.end_seq_id ?? p.beg_seq_id,
             oriBegin: p.beg_ori_id,
             oriEnd: p.end_ori_id,
             description: new Array<string>(),

@@ -29,7 +29,7 @@ export class StandardAnnotationCollector extends AbstractAnnotationCollector {
                 }
                 this.computeFeatureGaps(d.feature_positions).forEach(p => {
                     if(p.beg_seq_id != null) {
-                        const key:string = p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString();
+                        const key:string = (p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString()) + (this.rcsbAnnotationMap.getConfig(d.type)?.displayCooccurrence ? Math.random().toString(36).substr(2) : "");
                         if (!annotations.get(type).has(key)) {
                             const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,type,d.provenance_source);
                             this.addAuthorResIds(a,{
