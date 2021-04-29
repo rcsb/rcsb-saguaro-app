@@ -1,6 +1,11 @@
 import * as React from "react";
 import {ChangeEvent, MouseEvent} from "react";
-import {RcsbFv, RcsbFvDisplayTypes, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {
+    RcsbFv,
+    RcsbFvDisplayTypes,
+    RcsbFvRowConfigInterface,
+    RcsbFvTrackDataElementInterface
+} from "@rcsb/rcsb-saguaro";
 import {Button} from "react-bootstrap";
 import {SetSelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
 
@@ -36,13 +41,28 @@ export class SelectAction extends React.Component<SelectActionInterface, SelectA
                 }),
                 mode:'select'
             })
-        }else{
-            action({
-                elements: this.props.rowConfig.trackData.map(d=>{
-                    return {begin: d.begin, end: d.end}
-                }),
-                mode:'select'
-            })
+        }else {
+            if(this.props.rowConfig.trackData){
+                action({
+                    elements: this.props.rowConfig.trackData.map(d => {
+                        return {begin: d.begin, end: d.end}
+                    }),
+                    mode: 'select'
+                });
+            }else if(this.props.rowConfig.displayConfig){
+                let data: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
+                this.props.rowConfig.displayConfig.forEach((display)=>{
+                    data = data.concat(
+                        display.displayData.map(d => {
+                            return {begin: d.begin, end: d.end}
+                        })
+                    )
+                })
+                action({
+                    elements: data,
+                    mode: 'select'
+                });
+            }
         }
     }
 
