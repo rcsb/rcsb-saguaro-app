@@ -2,7 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.2.0] - 2021-04-28
+## [1.2.2] - 2021-04-30
+### General
+- open_end attribute bug fixed 
+- Instance default value bug fixed
+
+## [1.2.1] - 2021-04-28
 ### General
 - Composite merging bug fixed
 - New tracks merged

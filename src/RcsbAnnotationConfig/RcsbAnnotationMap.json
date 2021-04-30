@@ -63,6 +63,7 @@
     "SIGNAL_PEPTIDE"
   ],
   "instance_order": [
+    "SECONDARY_STRUCTURE",
     "HELIX_P",
     "SHEET",
     "BINDING_SITE",

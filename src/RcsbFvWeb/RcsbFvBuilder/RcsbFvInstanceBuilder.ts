@@ -81,17 +81,20 @@ export class RcsbFvInstanceBuilder {
                 }
             })
         });
-        RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, Array.from(groupedInstances.values()).map(group=>({
-            label: group[0].groupLabel,
-            options: group
-        })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle:"INSTANCE", width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
         let index: number = 0;
         if (config.defaultValue != null) {
             const n: number = filteredInstanceList.findIndex(a => {
                 return a.authId === config.defaultValue
             });
-            if (n >= 0) index = n;
+            if (n >= 0)
+                index = n;
+            else
+                config.defaultValue = undefined
         }
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, Array.from(groupedInstances.values()).map(group=>({
+            label: group[0].groupLabel,
+            options: group
+        })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle:"INSTANCE", width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
         return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId).then(() => {
             if (typeof config.onChangeCallback === "function")
                 config.onChangeCallback({

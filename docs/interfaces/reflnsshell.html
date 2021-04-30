@@ -123,7 +123,7 @@
 					<div class="tsd-signature tsd-kind-icon">Rmerge_<wbr><wbr>F_all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12330">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12330</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12330">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12330</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -132,7 +132,7 @@
 								resolution limits established by _reflns_shell.d_res_high and
 							_reflns_shell.d_res_low.</p>
 						</div>
-						<pre><code>         <span class="hljs-built_in">sum</span>~i~(<span class="hljs-built_in">sum</span>~j~|<span class="hljs-built_in">F</span>~j~ - &lt;<span class="hljs-built_in">F</span>&gt;|)</code></pre><p> Rmerge(F) = --------------------------
+						<pre><code>         <span class="hljs-built_in">sum</span>~i~(<span class="hljs-built_in">sum</span>~j~|<span class="hljs-type">F</span>~j~ - &lt;F&gt;|<span class="hljs-type">)</span></code></pre><p> Rmerge(F) = --------------------------
 						sum<del>i</del>(sum<del>j</del><F>)</p>
 						<p> F<del>j</del> = the amplitude of the jth observation of reflection i
 							<F>  = the mean of the amplitudes of all observations of
@@ -147,7 +147,7 @@
 					<div class="tsd-signature tsd-kind-icon">Rmerge_<wbr><wbr>F_obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12348">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12348</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12348">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12348</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -157,7 +157,7 @@
 								_reflns_shell.d_res_low and the observation criterion
 							established by _reflns.observed_criterion.</p>
 						</div>
-						<pre><code>         <span class="hljs-built_in">sum</span>~i~(<span class="hljs-built_in">sum</span>~j~|<span class="hljs-built_in">F</span>~j~ - &lt;<span class="hljs-built_in">F</span>&gt;|)</code></pre><p> Rmerge(F) = --------------------------
+						<pre><code>         <span class="hljs-built_in">sum</span>~i~(<span class="hljs-built_in">sum</span>~j~|<span class="hljs-type">F</span>~j~ - &lt;F&gt;|<span class="hljs-type">)</span></code></pre><p> Rmerge(F) = --------------------------
 						sum<del>i</del>(sum<del>j</del><F>)</p>
 						<p> F<del>j</del> = the amplitude of the jth observation of reflection i
 							<F>  = the mean of the amplitudes of all observations of
@@ -172,14 +172,14 @@
 					<div class="tsd-signature tsd-kind-icon">Rmerge_<wbr><wbr>I_all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12363">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12363</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12363">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12363</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The value of Rmerge(I) for all reflections in a given shell.</p>
 						</div>
-						<pre><code>        <span class="hljs-built_in"> sum</span>~i~<span class="hljs-built_in">(sum</span>~j~|I~j~ - <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">I</span>&gt;</span>|)</span></code></pre><p> Rmerge(I) = --------------------------
+						<pre><code>         <span class="hljs-built_in">sum</span>~i~(<span class="hljs-built_in">sum</span>~j~|<span class="hljs-type">I</span>~j~ - &lt;I&gt;|<span class="hljs-type">)</span></code></pre><p> Rmerge(I) = --------------------------
 						sum<del>i</del>(sum<del>j</del><I>)</p>
 						<p> I<del>j</del> = the intensity of the jth observation of reflection i
 							<I>  = the mean of the intensities of all observations of
@@ -194,7 +194,7 @@
 					<div class="tsd-signature tsd-kind-icon">Rmerge_<wbr><wbr>I_obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12379">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12379</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12379">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12379</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,7 +202,7 @@
 							<p>The value of Rmerge(I) for reflections classified as &#39;observed&#39;
 							(see _reflns.observed_criterion) in a given shell.</p>
 						</div>
-						<pre><code>        <span class="hljs-built_in"> sum</span>~i~<span class="hljs-built_in">(sum</span>~j~|I~j~ - <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">I</span>&gt;</span>|)</span></code></pre><p> Rmerge(I) = --------------------------
+						<pre><code>         <span class="hljs-built_in">sum</span>~i~(<span class="hljs-built_in">sum</span>~j~|<span class="hljs-type">I</span>~j~ - &lt;I&gt;|<span class="hljs-type">)</span></code></pre><p> Rmerge(I) = --------------------------
 						sum<del>i</del>(sum<del>j</del><I>)</p>
 						<p> I<del>j</del> = the intensity of the jth observation of reflection i
 							<I>  = the mean of the intensities of all observations of
@@ -217,7 +217,7 @@
 					<div class="tsd-signature tsd-kind-icon">__typename<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"ReflnsShell"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12313">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12313</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12313">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12313</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -227,7 +227,7 @@
 					<div class="tsd-signature tsd-kind-icon">d_<wbr>res_<wbr>high<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12385">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12385</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12385">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12385</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -244,7 +244,7 @@
 					<div class="tsd-signature tsd-kind-icon">d_<wbr>res_<wbr>low<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12391">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12391</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12391">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12391</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -261,7 +261,7 @@
 					<div class="tsd-signature tsd-kind-icon">mean<wbr>I_<wbr>over_<wbr>sig<wbr>I_<wbr>all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12397">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12397</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12397">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12397</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -278,7 +278,7 @@
 					<div class="tsd-signature tsd-kind-icon">mean<wbr>I_<wbr>over_<wbr>sig<wbr>I_<wbr>obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12405">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12405</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12405">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12405</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -297,7 +297,7 @@
 					<div class="tsd-signature tsd-kind-icon">mean<wbr>I_<wbr>over_<wbr>u<wbr>I_<wbr>all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12411">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12411</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12411">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12411</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -314,7 +314,7 @@
 					<div class="tsd-signature tsd-kind-icon">number_<wbr>measured_<wbr>all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12416">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12416</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12416">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12416</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -330,7 +330,7 @@
 					<div class="tsd-signature tsd-kind-icon">number_<wbr>measured_<wbr>obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12422">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12422</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12422">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12422</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -347,7 +347,7 @@
 					<div class="tsd-signature tsd-kind-icon">number_<wbr>possible<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12427">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12427</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12427">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12427</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -363,7 +363,7 @@
 					<div class="tsd-signature tsd-kind-icon">number_<wbr>unique_<wbr>all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12432">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12432</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12432">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12432</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -379,7 +379,7 @@
 					<div class="tsd-signature tsd-kind-icon">number_<wbr>unique_<wbr>obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12438">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12438</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12438">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12438</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -396,7 +396,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>CC_<wbr>half<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12446">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12446</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12446">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12446</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -405,7 +405,7 @@
 								between the average intensities from randomly selected
 							half-datasets within the resolution shell.</p>
 						</div>
-						<pre><code>      <span class="hljs-attribute">Ref</span>: Karplus &amp; Diederichs (<span class="hljs-number">2012</span>), Science <span class="hljs-number">336</span>, <span class="hljs-number">1030</span>-<span class="hljs-number">33</span></code></pre>
+						<pre><code>      Ref: Karplus &amp; Diederichs (<span class="hljs-number">2012</span>), Science <span class="hljs-number">336</span>, <span class="hljs-number">1030</span><span class="hljs-number">-33</span></code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -414,7 +414,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr><wbr>R_split<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12454">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12454</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12454">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12454</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -432,7 +432,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr><wbr>Rpim_<wbr><wbr>I_all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12478">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12478</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12478">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12478</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -440,7 +440,7 @@
 							<p>The precision-indicating merging R factor value Rpim,
 							for merging all intensities in a given shell.</p>
 						</div>
-						<pre><code>    <span class="hljs-built_in">sum</span>~i~ [<span class="hljs-number">1</span>/(N~i~ - <span class="hljs-number">1</span>)]<span class="hljs-number">1</span>/<span class="hljs-number">2</span>^ <span class="hljs-built_in">sum</span>~j~ | <span class="hljs-type">I</span>~j~ - &lt;I~i~&gt; |<span class="hljs-type"></span></code></pre><p> Rpim = --------------------------------------------------
+						<pre><code>    sum~<span class="hljs-built_in">i</span>~ [<span class="hljs-number">1</span>/(N~<span class="hljs-built_in">i</span>~ - <span class="hljs-number">1</span>)]<span class="hljs-number">1</span>/<span class="hljs-number">2</span>^ sum~<span class="hljs-built_in">j</span>~ | I~<span class="hljs-built_in">j</span>~ - &lt;I~<span class="hljs-built_in">i</span>~&gt; |</code></pre><p> Rpim = --------------------------------------------------
 						sum<del>i</del> ( sum<del>j</del> I<del>j</del> )</p>
 						<p> I<del>j</del>   = the intensity of the jth observation of reflection i
 							&lt;I<del>i</del>&gt; = the mean of the intensities of all observations of
@@ -462,7 +462,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr><wbr>Rrim_<wbr><wbr>I_all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12503">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12503</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12503">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12503</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -472,23 +472,23 @@
 							given shell.</p>
 						</div>
 						<pre><code>                 sum~i~ [N~i~ /( N~i~ - <span class="hljs-number">1</span>)]<span class="hljs-number">1</span>/<span class="hljs-number">2</span>^ sum~j~ | I~j~ - &lt;I~i~&gt; |
-          Rrim <span class="hljs-built_in">=</span> --------------------------------------------------------
+          Rrim = --------------------------------------------------------
                                sum~i~ ( sum~j~ I~j~ )
 
-          I~j~   <span class="hljs-built_in">=</span> the intensity of the jth observation of reflection i
-          &lt;I~i~&gt; <span class="hljs-built_in">=</span> the mean of the intensities of <span class="hljs-built_in">all</span> observations of
-                   reflection i
-      N~i~   <span class="hljs-built_in">=</span> the redundancy (the number of times reflection i
+          I~j~   = the <span class="hljs-built_in">int</span>ensity of the jth observation of <span class="hljs-built_in">ref</span>lection i
+          &lt;I~i~&gt; = the mean of the <span class="hljs-built_in">int</span>ensities of all observations of
+                   <span class="hljs-built_in">ref</span>lection i
+      N~i~   = the redundancy (the number of times <span class="hljs-built_in">ref</span>lection i
                    has been measured).
 
-          sum~i~ <span class="hljs-keyword">is</span> taken over <span class="hljs-built_in">all</span> reflections
-          sum~j~ <span class="hljs-keyword">is</span> taken over <span class="hljs-built_in">all</span> observations of each reflection.
+          sum~i~ <span class="hljs-keyword">is</span> taken over all <span class="hljs-built_in">ref</span>lections
+          sum~j~ <span class="hljs-keyword">is</span> taken over all observations of each <span class="hljs-built_in">ref</span>lection.
 
           Ref: Diederichs, K. &amp; Karplus, P. A. (<span class="hljs-number">1997</span>). Nature Struct.
-               Biol. <span class="hljs-number">4</span>, <span class="hljs-number">269</span>-<span class="hljs-number">275</span>.
+               Biol. <span class="hljs-number">4</span>, <span class="hljs-number">269</span><span class="hljs-number">-275.</span>
                Weiss, M. S. &amp; Hilgenfeld, R. (<span class="hljs-number">1997</span>). J. Appl. Cryst.
-               <span class="hljs-number">30</span>, <span class="hljs-number">203</span>-<span class="hljs-number">205</span>.
-               Weiss, M. S. (<span class="hljs-number">2001</span>). J. Appl. Cryst. <span class="hljs-number">34</span>, <span class="hljs-number">130</span>-<span class="hljs-number">135</span>.</code></pre>
+               <span class="hljs-number">30</span>, <span class="hljs-number">203</span><span class="hljs-number">-205.</span>
+               Weiss, M. S. (<span class="hljs-number">2001</span>). J. Appl. Cryst. <span class="hljs-number">34</span>, <span class="hljs-number">130</span><span class="hljs-number">-135.</span></code></pre>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -497,7 +497,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr><wbr>Rsym_<wbr>value<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12505">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12505</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12505">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12505</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -512,7 +512,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>chi_<wbr>squared<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12507">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12507</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12507">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12507</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -527,7 +527,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>diffrn_<wbr>id<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"String"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12513">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12513</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12513">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12513</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -543,7 +543,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>net<wbr>I_<wbr>over_<wbr>sigma<wbr>I_<wbr>all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12521">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12521</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12521">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12521</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -561,7 +561,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>net<wbr>I_<wbr>over_<wbr>sigma<wbr>I_<wbr>obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12529">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12529</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12529">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12529</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -579,7 +579,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>ordinal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12531">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12531</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12531">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12531</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -594,7 +594,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>redundancy<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12533">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12533</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12533">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12533</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -609,7 +609,7 @@
 					<div class="tsd-signature tsd-kind-icon">pdbx_<wbr>rejects<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Int"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12540">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12540</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12540">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12540</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -627,7 +627,7 @@
 					<div class="tsd-signature tsd-kind-icon">percent_<wbr>possible_<wbr>all<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12545">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12545</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12545">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12545</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -643,7 +643,7 @@
 					<div class="tsd-signature tsd-kind-icon">percent_<wbr>possible_<wbr>obs<span class="tsd-signature-symbol">:</span> <a href="../globals.html#maybe" class="tsd-signature-type">Maybe</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Scalars</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"Float"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/e7b62ff3/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12551">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12551</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts#L12551">src/RcsbGraphQL/Types/Yosemite/GqlTypes.ts:12551</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">

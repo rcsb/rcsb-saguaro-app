@@ -168,6 +168,7 @@ export class AnnotationCollector extends CoreCollector{
                     ...sorted[0],
                     end_seq_id: sorted[ sorted.length-1 ].end_seq_id,
                     end_ori_id: sorted[ sorted.length-1 ].end_ori_id,
+                    open_end: sorted[ sorted.length-1 ].open_end,
                     gaps: new Array<RcsbFvTrackDataElementGapInterface>()
                 };
                 for(let n=0;n<sorted.length-1;n++){
