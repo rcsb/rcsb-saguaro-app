@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.3.0] - 2021-05-07
+### General
+- New class AnnotationTransformer. Transforms Feature into RcsbFvTrackDataElementInterface
+- Typed types 
+
 ## [1.2.2] - 2021-04-30
 ### General
 - open_end attribute bug fixed 

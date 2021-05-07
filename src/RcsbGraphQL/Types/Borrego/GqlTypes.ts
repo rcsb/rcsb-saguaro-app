@@ -67,8 +67,13 @@ export interface Feature {
   name?: Maybe<Scalars['String']>;
   /** Original database or software name used to obtain the feature */
   provenance_source?: Maybe<Scalars['String']>;
-  /** A type or category of the feature */
-  type?: Maybe<Scalars['String']>;
+  /**
+   * The connection type.
+   * 
+   * Examples:
+   * mutation, artifact, CATH, SCOP
+   */
+  type?: Maybe<Type>;
   /** Numerical value associated with the feature */
   value?: Maybe<Scalars['Float']>;
 }
@@ -102,7 +107,7 @@ export interface FeaturePosition {
   /** Fragment identifier that groups a set of ranges resulting from gaps */
   range_id?: Maybe<Scalars['String']>;
   /** The value for the feature at this region */
-  value?: Maybe<Scalars['Float']>;
+  value?: Maybe<Array<Maybe<Scalars['Float']>>>;
 }
 
 export enum FieldName {
@@ -176,5 +181,77 @@ export interface TargetAlignment {
   target_id?: Maybe<Scalars['String']>;
   /** Full sequence of the target */
   target_sequence?: Maybe<Scalars['String']>;
+}
+
+export enum Type {
+  ActiveSite = 'ACTIVE_SITE',
+  AngleOutlier = 'ANGLE_OUTLIER',
+  Artifact = 'ARTIFACT',
+  BindingSite = 'BINDING_SITE',
+  BondOutlier = 'BOND_OUTLIER',
+  CalciumBindingRegion = 'CALCIUM_BINDING_REGION',
+  Cath = 'CATH',
+  Chain = 'CHAIN',
+  CisPeptide = 'CIS_PEPTIDE',
+  CompositionallyBiasedRegion = 'COMPOSITIONALLY_BIASED_REGION',
+  CovalentBond = 'COVALENT_BOND',
+  CovalentModificationOfANucleotideBase = 'COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_BASE',
+  CovalentModificationOfANucleotidePhosphate = 'COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_PHOSPHATE',
+  CovalentModificationOfANucleotideSugar = 'COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_SUGAR',
+  CovalentResidueModification = 'COVALENT_RESIDUE_MODIFICATION',
+  CrossLink = 'CROSS_LINK',
+  Disorder = 'DISORDER',
+  DisorderBinding = 'DISORDER_BINDING',
+  DisulfideBridge = 'DISULFIDE_BRIDGE',
+  DnaBindingRegion = 'DNA_BINDING_REGION',
+  Domain = 'DOMAIN',
+  GlycosylationSite = 'GLYCOSYLATION_SITE',
+  HelixP = 'HELIX_P',
+  HydrogenBond = 'HYDROGEN_BOND',
+  Hydropathy = 'HYDROPATHY',
+  InitiatorMethionine = 'INITIATOR_METHIONINE',
+  IntramembraneRegion = 'INTRAMEMBRANE_REGION',
+  IonicInteraction = 'IONIC_INTERACTION',
+  LipidMoietyBindingRegion = 'LIPID_MOIETY_BINDING_REGION',
+  MetalCoordination = 'METAL_COORDINATION',
+  MetalIonBindingSite = 'METAL_ION_BINDING_SITE',
+  MismatchedBasePairs = 'MISMATCHED_BASE_PAIRS',
+  ModifiedMonomer = 'MODIFIED_MONOMER',
+  ModifiedResidue = 'MODIFIED_RESIDUE',
+  MogulAngleOutlier = 'MOGUL_ANGLE_OUTLIER',
+  MogulBondOutlier = 'MOGUL_BOND_OUTLIER',
+  MutagenesisSite = 'MUTAGENESIS_SITE',
+  Mutation = 'MUTATION',
+  NonConsecutiveResidues = 'NON_CONSECUTIVE_RESIDUES',
+  NonStandardAminoAcid = 'NON_STANDARD_AMINO_ACID',
+  NonTerminalResidue = 'NON_TERMINAL_RESIDUE',
+  NucleotidePhosphateBindingRegion = 'NUCLEOTIDE_PHOSPHATE_BINDING_REGION',
+  Peptide = 'PEPTIDE',
+  Propeptide = 'PROPEPTIDE',
+  RamachandranOutlier = 'RAMACHANDRAN_OUTLIER',
+  RegionOfInterest = 'REGION_OF_INTEREST',
+  Repeat = 'REPEAT',
+  RotamerOutlier = 'ROTAMER_OUTLIER',
+  RsccOutlier = 'RSCC_OUTLIER',
+  RsrzOutlier = 'RSRZ_OUTLIER',
+  Scop = 'SCOP',
+  SequenceConflict = 'SEQUENCE_CONFLICT',
+  SequenceVariant = 'SEQUENCE_VARIANT',
+  Sheet = 'SHEET',
+  ShortSequenceMotif = 'SHORT_SEQUENCE_MOTIF',
+  SignalPeptide = 'SIGNAL_PEPTIDE',
+  Site = 'SITE',
+  SpliceVariant = 'SPLICE_VARIANT',
+  StereoOutlier = 'STEREO_OUTLIER',
+  TopologicalDomain = 'TOPOLOGICAL_DOMAIN',
+  TransitPeptide = 'TRANSIT_PEPTIDE',
+  TransmembraneRegion = 'TRANSMEMBRANE_REGION',
+  UnassignedSecStruct = 'UNASSIGNED_SEC_STRUCT',
+  UnobservedAtomXyz = 'UNOBSERVED_ATOM_XYZ',
+  UnobservedResidueXyz = 'UNOBSERVED_RESIDUE_XYZ',
+  UnsureResidue = 'UNSURE_RESIDUE',
+  ZeroOccupancyAtomXyz = 'ZERO_OCCUPANCY_ATOM_XYZ',
+  ZeroOccupancyResidueXyz = 'ZERO_OCCUPANCY_RESIDUE_XYZ',
+  ZincFingerRegion = 'ZINC_FINGER_REGION'
 }
 
