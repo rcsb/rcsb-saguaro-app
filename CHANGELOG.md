@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.2.2] - 2021-04-28
+## [1.2.2-TCGA] - 2021-04-28
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
 - Class TagDelimiter renamed to Constants
