@@ -15,6 +15,7 @@ export interface RcsbAnnotationMapInterface {
     transformToNumerical?: boolean;
     domain?: [number,number];
     displayCooccurrence?: boolean;
+    ignore?: boolean;
 }
 
 export interface RcsbMergedTypesInterface {

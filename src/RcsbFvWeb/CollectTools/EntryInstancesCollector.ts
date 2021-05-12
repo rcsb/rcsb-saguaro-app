@@ -39,25 +39,23 @@ export class EntryInstancesCollector {
 
     static parsePolymerEntityInstances(polymerEntityInstances: Array<CorePolymerEntityInstance>, out: Array<PolymerEntityInstanceInterface>){
         polymerEntityInstances.forEach(instance=>{
-            if(instance.polymer_entity?.entity_poly?.rcsb_entity_polymer_type == "Protein") {
-                const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;
-                const taxIds: Set<string> = new Set<string>();
-                if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
-                    instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
-                        if(typeof sO.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
-                            taxIds.add(sO.ncbi_scientific_name);
-                    });
-                out.push({
-                    rcsbId: instance.rcsb_id,
-                    entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
-                    entityId: instance.rcsb_polymer_entity_instance_container_identifiers.entity_id,
-                    asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
-                    authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
-                    authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
-                    names: name,
-                    taxIds:Array.from(taxIds)
+            const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;
+            const taxIds: Set<string> = new Set<string>();
+            if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
+                instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
+                    if(typeof sO.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
+                        taxIds.add(sO.ncbi_scientific_name);
                 });
-            }
+            out.push({
+                rcsbId: instance.rcsb_id,
+                entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
+                entityId: instance.rcsb_polymer_entity_instance_container_identifiers.entity_id,
+                asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
+                authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
+                authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
+                names: name,
+                taxIds:Array.from(taxIds)
+            });
         });
     }
 

@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.2.2-NUCLEIC-INSTANCES] - 2021-04-30
+### Improvements
+- Displaying nucleic (non-protein) entities/instances
+- Track configuration attribute "ignore" can be used to ignore annotations based on its type 
+
 ## [1.2.2] - 2021-04-30
 ### General
 - open_end attribute bug fixed 
