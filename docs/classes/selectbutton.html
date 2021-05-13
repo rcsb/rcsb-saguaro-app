@@ -286,14 +286,14 @@ context!: React.ContextType&lt;<span class="hljs-keyword">typeof</span> MyContex
 							<p>If set, <code>this.context</code> will be set at runtime to the current value of the given Context.</p>
 						</div>
 						<p>Usage:</p>
-						<pre><code class="language-ts">type MyContext = number
-const Ctx = React.createContext&lt;MyContext&gt;(0)
+						<pre><code class="language-ts"><span class="hljs-keyword">type</span> MyContext = <span class="hljs-built_in">number</span>
+<span class="hljs-keyword">const</span> Ctx = React.createContext&lt;MyContext&gt;(<span class="hljs-number">0</span>)
 
-class Foo extends React.Component {
-  static contextType = Ctx
-  context!: React.ContextType&lt;typeof Ctx&gt;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Foo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  <span class="hljs-keyword">static</span> contextType = Ctx
+  context!: React.ContextType&lt;<span class="hljs-keyword">typeof</span> Ctx&gt;
   render () {
-    return &lt;&gt;My context&#x27;s value: {this.context}&lt;/&gt;;
+    <span class="hljs-keyword">return</span> <span class="xml"><span class="hljs-tag">&lt;&gt;</span>My context&#x27;s value: {this.context}<span class="hljs-tag">&lt;/&gt;</span></span>;
   }
 }</code></pre>
 						<dl class="tsd-comment-tags">
@@ -453,7 +453,7 @@ class Foo extends React.Component {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L45">src/RcsbFvWeb/WebTools/SelectButton.tsx:45</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L45">src/RcsbFvWeb/WebTools/SelectButton.tsx:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -533,7 +533,7 @@ class Foo extends React.Component {
 							<aside class="tsd-sources">
 								<p>Overrides NewLifecycle.componentDidUpdate</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L49">src/RcsbFvWeb/WebTools/SelectButton.tsx:49</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L49">src/RcsbFvWeb/WebTools/SelectButton.tsx:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -717,7 +717,7 @@ class Foo extends React.Component {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L148">src/RcsbFvWeb/WebTools/SelectButton.tsx:148</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L148">src/RcsbFvWeb/WebTools/SelectButton.tsx:148</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Styles</span></h4>
@@ -807,7 +807,7 @@ class Foo extends React.Component {
 							<aside class="tsd-sources">
 								<p>Overrides Component.render</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L53">src/RcsbFvWeb/WebTools/SelectButton.tsx:53</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L53">src/RcsbFvWeb/WebTools/SelectButton.tsx:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
@@ -824,7 +824,7 @@ class Foo extends React.Component {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L74">src/RcsbFvWeb/WebTools/SelectButton.tsx:74</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L74">src/RcsbFvWeb/WebTools/SelectButton.tsx:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
@@ -841,7 +841,7 @@ class Foo extends React.Component {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L61">src/RcsbFvWeb/WebTools/SelectButton.tsx:61</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L61">src/RcsbFvWeb/WebTools/SelectButton.tsx:61</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
@@ -943,7 +943,7 @@ class Foo extends React.Component {
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L68">src/RcsbFvWeb/WebTools/SelectButton.tsx:68</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L68">src/RcsbFvWeb/WebTools/SelectButton.tsx:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
@@ -960,7 +960,7 @@ class Foo extends React.Component {
 					<aside class="tsd-sources">
 						<p>Overrides Component.state</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L41">src/RcsbFvWeb/WebTools/SelectButton.tsx:41</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L41">src/RcsbFvWeb/WebTools/SelectButton.tsx:41</a></li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -969,7 +969,7 @@ class Foo extends React.Component {
 						<div class="tsd-signature tsd-kind-icon">selected<wbr>Option<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = ((this.props.options as Array&lt;GroupedOptionsInterface&gt;)[0].options) &#x3D;&#x3D; null ? {...((this.props.options as Array&lt;SelectOptionInterface&gt;)[0]), value:0} : {...((this.props.options as Array&lt;GroupedOptionsInterface&gt;)[0].options[0]), value: 0}</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/37cb82a8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L42">src/RcsbFvWeb/WebTools/SelectButton.tsx:42</a></li>
+								<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/b037f4e8/src/RcsbFvWeb/WebTools/SelectButton.tsx#L42">src/RcsbFvWeb/WebTools/SelectButton.tsx:42</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-type-declaration">

@@ -2,8 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.2.3] - 2021-05-13
+### Dependency update
+- rcsb-saguaro update 1.7.3
+
 ## [1.2.2] - 2021-04-30
-### General
+### Bug fix
 - open_end attribute bug fixed 
 - Instance default value bug fixed
 

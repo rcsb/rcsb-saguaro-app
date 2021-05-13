@@ -9832,7 +9832,7 @@ export interface RcsbPolymerEntityFeatureSummary {
   count?: Maybe<Scalars['Int']>;
   /**
    * The fractional feature coverage relative to the full entity sequence.
-   *  For instance, the fraction of mutations, artifacts or modified monomers
+   *  For instance, the fraction of features such as mutations, artifacts or modified monomers
    *  relative to the length of the entity sequence.
    * 
    * Examples:
@@ -10538,8 +10538,8 @@ export interface RcsbRepositoryHoldingsCurrent {
    * 2fo-fc Map, Combined NMR data (NEF), Combined NMR data (NMR-STAR), FASTA
    * sequence, Map Coefficients, NMR chemical shifts, NMR restraints V1, NMR
    * restraints V2, assembly PDB, assembly mmCIF, entry PDB, entry PDB bundle,
-   * entry PDBML, entry mmCIF, fo-fc Map, structure factors, validation report,
-   * validation slider image
+   * entry PDBML, entry mmCIF, fo-fc Map, structure factors, validation data mmCIF,
+   * validation report, validation slider image
    */
   repository_content_types?: Maybe<Array<Maybe<Scalars['String']>>>;
 }
