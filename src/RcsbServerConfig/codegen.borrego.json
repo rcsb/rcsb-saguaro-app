@@ -1,6 +1,6 @@
 {
   "overwrite": true,
-  "schema": "https://1d-coordinates.rcsb.org/graphql",
+  "schema": "http://132.249.210.188/graphql",
   "documents": "src/RcsbGraphQL/Queries/Borrego/*.graphql",
   "config":{
     "declarationKind":"interface"
