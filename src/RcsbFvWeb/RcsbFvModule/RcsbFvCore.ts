@@ -5,7 +5,7 @@ import {
 } from '@rcsb/rcsb-saguaro';
 
 import {SequenceCollector} from "../CollectTools/SequenceCollector";
-import {AnnotationCollector} from "../CollectTools/AnnotationCollector";
+import {AnnotationCollector} from "../CollectTools/AnnotationCollector/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 
 

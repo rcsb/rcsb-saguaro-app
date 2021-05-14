@@ -1,8 +1,8 @@
-import * as annotationMap from "./RcsbAnnotationMap.json";
+import * as annotationMap from "./RcsbAnnotationConfig.json";
 import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvDisplayTypes, RcsbFvColorGradient} from '@rcsb/rcsb-saguaro';
 
-export interface RcsbAnnotationMapInterface {
+export interface RcsbAnnotationConfigInterface {
     type: string;
     display: RcsbFvDisplayTypes;
     color: string | RcsbFvColorGradient;
@@ -28,8 +28,8 @@ interface DynamicKeyAnnotationInterface extends Feature{
     [key: string]: any;
 }
 
-export class RcsbAnnotationMap {
-    private annotationMap: Map<string,RcsbAnnotationMapInterface> = new Map<string, RcsbAnnotationMapInterface>();
+export class RcsbAnnotationConfig {
+    private annotationMap: Map<string,RcsbAnnotationConfigInterface> = new Map<string, RcsbAnnotationConfigInterface>();
     private readonly externalAnnotationsOrder: Array<string> = new Array<string>();
     private readonly instanceAnnotationsOrder: Array<string> = new Array<string>();
     private readonly entityAnnotationsOrder: Array<string> = new Array<string>();
@@ -37,7 +37,7 @@ export class RcsbAnnotationMap {
     private readonly addedTypes: Map<string,Array<string>> = new Map<string,Array<string>>();
 
     constructor() {
-        const config: Array<RcsbAnnotationMapInterface> = (<any>annotationMap).config;
+        const config: Array<RcsbAnnotationConfigInterface> = (<any>annotationMap).config;
         config.forEach(m=>{
             m.provenanceList = new Set<string>();
             this.annotationMap.set(m.type,m);
@@ -54,7 +54,7 @@ export class RcsbAnnotationMap {
         });
     }
 
-    getConfig(type: string): RcsbAnnotationMapInterface{
+    getConfig(type: string): RcsbAnnotationConfigInterface{
         if(this.annotationMap.has(type)){
             return this.annotationMap.get(type);
         }
@@ -102,7 +102,7 @@ export class RcsbAnnotationMap {
                     prefix: this.annotationMap.get(type).title,
                     title: title,
                     provenanceList: new Set<string>()
-                } as RcsbAnnotationMapInterface);
+                } as RcsbAnnotationConfigInterface);
             }
             this.addNewType(newType, type);
             return newType;

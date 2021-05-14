@@ -1,4 +1,4 @@
-import {AnnotationFeatures, Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, Feature, Type} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Structure, SwissModelResultInterface} from "./SwissModelDataInterface";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
@@ -29,7 +29,7 @@ export class SwissModelQueryAnnotations {
         data.result.structures.forEach((s: Structure)=>{
             const feature: Feature = {
                 provenance_source: s.provider,
-                type: s.method,
+                type: s.method as Type,
                 feature_positions:[{beg_seq_id:s.from, end_seq_id: s.to}]
             };
             features.push(feature)
