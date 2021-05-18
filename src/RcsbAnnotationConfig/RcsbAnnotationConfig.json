@@ -63,6 +63,7 @@
     "SIGNAL_PEPTIDE"
   ],
   "instance_order": [
+    "SECONDARY_STRUCTURE",
     "HELIX_P",
     "SHEET",
     "BINDING_SITE",
@@ -94,13 +95,6 @@
     "DISORDER_BINDING"
   ],
   "config": [{
-    "type": "NUMBER_OF_CASES",
-    "display": "area",
-    "color": "#ba3356",
-    "height": 80,
-    "title": "TCGA CASES",
-    "transformToNumerical": true
-  },{
     "type": "HOMOLOGY MODELLING",
     "color": "#2fcc5d",
     "display": "block",
@@ -110,9 +104,9 @@
     "display": "area",
     "color": {
       "thresholds":[0.5],
-      "colors":["#0000FF","#FF0000"]
+      "colors":["#8484FF","#FF8484"]
     },
-    "height": 40,
+    "height": 45,
     "title": "DISORDER BINDING",
     "domain": [0,1]
   },{
@@ -120,18 +114,18 @@
     "display": "area",
     "color": {
       "thresholds":[0],
-      "colors":["#0000FF","#FF0000"]
+      "colors":["#8484FF","#FF8484"]
     },
-    "height": 40,
+    "height": 45,
     "title": "HYDROPATHY"
   },{
     "type": "DISORDER",
     "display": "area",
     "color": {
       "thresholds":[0.5],
-      "colors":["#0000FF","#FF0000"]
+      "colors":["#8484FF","#FF8484"]
     },
-    "height": 40,
+    "height": 45,
     "title": "DISORDER",
     "domain": [0,1]
   },{
@@ -250,7 +244,7 @@
     "type": "ANGLE_OUTLIER",
     "display": "area",
     "color": "#aa33aa",
-    "height": 40,
+    "height": 45,
     "title": "ANGLE OUTLIER",
     "transformToNumerical": true
   },{
@@ -272,7 +266,7 @@
     "type": "BOND_OUTLIER",
     "display": "area",
     "color": "#33aa33",
-    "height": 40,
+    "height": 45,
     "title": "BOND OUTLIER",
     "transformToNumerical": true
   },{
@@ -346,7 +340,7 @@
     "color": "#4c3f0f",
     "title": "ARTIFACT"
   },{
-    "type": "artifact",
+    "type": "ARTIFACT",
     "display": "block",
     "color": "#4c3f0f",
     "title": "ARTIFACT"
@@ -401,7 +395,7 @@
     "color": "#458756",
     "title": "MODIFIED MONOMER"
   },{
-    "type": "modified_monomer",
+    "type": "MODIFIED_MONOMER",
     "display": "composite",
     "color": "#458756",
     "title": "MODIFIED MONOMER"

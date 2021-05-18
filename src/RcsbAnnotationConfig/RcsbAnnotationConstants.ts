@@ -1,4 +1,4 @@
-import * as annotationMap from "./RcsbAnnotationMap.json";
+import * as annotationMap from "./RcsbAnnotationConfig.json";
 
 export const RcsbAnnotationConstants = {
     provenanceColorCode:{

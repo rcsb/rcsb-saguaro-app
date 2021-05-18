@@ -30,7 +30,7 @@ export class SwissModelQueryAnnotations {
             const feature: Feature = {
                 provenance_source: s.provider,
                 type: s.method as Type,
-                feature_positions: [{beg_seq_id:s.from, end_seq_id: s.to}]
+                feature_positions:[{beg_seq_id:s.from, end_seq_id: s.to}]
             };
             features.push(feature)
         });

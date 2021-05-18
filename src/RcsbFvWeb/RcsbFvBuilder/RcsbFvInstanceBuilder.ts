@@ -66,7 +66,10 @@ export class RcsbFvInstanceBuilder {
             const n: number = filteredInstanceList.findIndex(a => {
                 return a.authId === config.defaultValue
             });
-            if (n >= 0) index = n;
+            if (n >= 0)
+                index = n;
+            else
+                config.defaultValue = undefined
         }
         return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, {...config.additionalConfig,}).then((rcsbFvModule) => {
             if (typeof config.onChangeCallback === "function")

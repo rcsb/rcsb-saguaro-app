@@ -1,100 +1,72 @@
-import {AbstractAnnotationCollector, CollectAnnotationsInterface, FeaturePositionGaps} from "./AbstractAnnotationCollector";
-import {
-    AdditionalProperty,
-    AnnotationFeatures,
-    Feature,
-    PropertyName,
-    Source, Type
-} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
+import {AbstractAnnotationCollector, CollectAnnotationsInterface} from "./AbstractAnnotationCollector";
+import {AnnotationFeatures, Feature, PropertyName, Source} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro";
 import {AnnotationContext} from "../../Utils/AnnotationContext";
+import {AnnotationTransformer} from "./AnnotationTransformer";
 
 export class TcgaAnnotationCollector extends AbstractAnnotationCollector {
 
-    protected processAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
-        super.processAnnotations(data, requestConfig);
-        this.positionalNumberOfCases(
+    protected processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
+        super.processRcsbPdbAnnotations(data, requestConfig);
+        this.buildTracks(
             data.filter(ann=>(ann.source === Source.NcbiGenome)),
             requestConfig
         );
     }
 
-    private positionalNumberOfCases(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface){
-        const nCasesTrack: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
-        const nCasesTrackType: string = "NUMBER_OF_CASES";
-        this.maxValue.set(nCasesTrackType, 0 );
-        this.minValue.set(nCasesTrackType, 0 );
+    private buildTracks(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface){
+        const annotationTracks: Map<string, AnnotationTransformer> = new Map<string, AnnotationTransformer>();
+        const nCasesTrackType: "NUMBER_OF_CASES" = "NUMBER_OF_CASES";
+        annotationTracks.set(nCasesTrackType, new AnnotationTransformer(nCasesTrackType, this.rcsbAnnotationConfig.getConfig(nCasesTrackType), this.getPolymerEntityInstance()));
         const principalComponent: PropertyName = requestConfig.annotationContext?.getPrincipalComponent() ?? PropertyName.PrimarySite;
-        const annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>> = new Map<string, Map<string,RcsbFvTrackDataElementInterface>>();
         data.forEach(ann=>{
             ann.features.forEach(d=>{
                 if(!checkAdditionalPropertyFilter(requestConfig.annotationContext, d) || !hasAdditionalProperty(d, principalComponent))
                     return;
-                let anatomicSite: string|null = null;
-                d.additional_properties?.forEach(p=>{
+                let type: string|null = null;
+
+                for(const p of d.additional_properties){
                     if(p.property_name === principalComponent){
-                        anatomicSite = p.property_value[0].toUpperCase();
+                        type = p.property_value[0].toUpperCase();
+                        break;
                     }
-                });
-                if (anatomicSite !== null && !annotations.has(anatomicSite)) {
-                    annotations.set(anatomicSite, new Map<string,RcsbFvTrackDataElementInterface>());
                 }
-                this.computeFeatureGaps(d.feature_positions).forEach(e => {
-                    const p: FeaturePositionGaps = e;
-                    const key:string = p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString();
-                    if (anatomicSite!=null && !annotations.get(anatomicSite).has(key)) {
-                        const a: RcsbFvTrackDataElementInterface = {
-                            ...this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,anatomicSite,d.provenance_source),
-                            name: anatomicSite
-                        };
-                        this.addAuthorResIds(a,{
-                            from:requestConfig.reference,
-                            to:ann.source,
-                            queryId:requestConfig.queryId,
-                            targetId:ann.target_id
-                        });
-                        annotations.get(anatomicSite).set(key,a);
-                    }
-                    for(let i=e.beg_seq_id;i<=e.end_seq_id;i++){
-                        const p: FeaturePositionGaps = {...e, beg_seq_id: i , end_seq_id: null};
-                        const key:string = i.toString();
-                        if (!nCasesTrack.has(key)) {
-                            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,ann.target_id,ann.source,nCasesTrackType ,d.provenance_source);
-                            this.addAuthorResIds(a,{
-                                from:requestConfig.reference,
-                                to:ann.source,
-                                queryId:requestConfig.queryId,
-                                targetId:ann.target_id
-                            });
-                            nCasesTrack.set(key, a);
-                        }else{
-                            (nCasesTrack.get(key).value as number) += 1;
-                            if(nCasesTrack.get(key).value > this.maxValue.get(nCasesTrackType))
-                                this.maxValue.set(nCasesTrackType, nCasesTrack.get(key).value as number);
-                            if(nCasesTrack.get(key).value < this.minValue.get(nCasesTrackType))
-                                this.minValue.set(nCasesTrackType, nCasesTrack.get(key).value as number);
-                        }
-                    }
-                });
+                if (type !== null && !annotationTracks.has(type)) {
+                    annotationTracks.set(type, new AnnotationTransformer(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstance()));
+                }
+                this.rcsbAnnotationConfig.addProvenance(type, d.provenance_source);
+                annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId, ann.source, ann.target_id, {...d, name: type});
+                annotationTracks.get(nCasesTrackType).increaseElement(requestConfig.reference, requestConfig.queryId, ann.source, ann.target_id, {...d, name: nCasesTrackType.replace(/_/g, " ")});
             });
         });
-        if(nCasesTrack.size > 0 ){
-            this.annotationsConfigData.push(this.buildAnnotationTrack(Array.from<RcsbFvTrackDataElementInterface>(nCasesTrack.values()), nCasesTrackType));
+        if(annotationTracks.get(nCasesTrackType).size > 0 ){
+            const nCases: number = Array.from(annotationTracks.get(nCasesTrackType).values()).map((a)=>a.value).reduce((total,n)=>((total as  number)+(n as number))) as number;
+            this.annotationsConfigData.push(this.buildAnnotationTrack(annotationTracks.get(nCasesTrackType), nCasesTrackType, {
+                type: nCasesTrackType,
+                display: RcsbFvDisplayTypes.AREA,
+                color: "#ba3356",
+                height: 80,
+                title: "MUTATIONS ("+nCases+")",
+                transformToNumerical: true,
+                provenanceList:new Set<string>(["TCGA"])
+            }));
         }
-        [...annotations.entries()]
+        [...annotationTracks.entries()]
             .sort((a,b)=>(a[0].localeCompare(b[0])))
             .forEach((m,n)=>{
-                const k = m[0];
-                const v = m[1];
+                const type = m[0];
+                if(type == nCasesTrackType)
+                    return;
+                const annotationTransformer = m[1];
                 this.annotationsConfigData.push(this.buildAnnotationTrack(
-                    Array.from<RcsbFvTrackDataElementInterface>(v.values()),
-                    k,
+                    annotationTransformer,
+                    type,
                     {
                         display: RcsbFvDisplayTypes.COMPOSITE,
-                        type: k,
+                        type: type,
                         color: "#ba3356",
-                        title: k,
-                        provenanceList: new Set<string>([])
+                        title: type,
+                        provenanceList: new Set<string>(["TCGA"])
                     })
                 );
             });

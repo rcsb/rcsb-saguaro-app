@@ -8,7 +8,7 @@ import {StandardAnnotationCollector} from "./AnnotationCollector/StandardAnnotat
 import {TcgaAnnotationCollector} from "./AnnotationCollector/TcgaAnnotationCollector";
 import {Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
-export class AnnotationCollector extends CoreCollector{
+export class AnnotationCollector extends CoreCollector {
 
     private featureList: Array<Feature> = new Array<Feature>();
     private featuresReadyFlag: boolean = false;

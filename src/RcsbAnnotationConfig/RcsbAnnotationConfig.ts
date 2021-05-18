@@ -1,8 +1,8 @@
-import * as annotationMap from "./RcsbAnnotationMap.json";
+import * as annotationMap from "./RcsbAnnotationConfig.json";
 import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvDisplayTypes, RcsbFvColorGradient} from '@rcsb/rcsb-saguaro';
 
-export interface RcsbAnnotationMapInterface {
+export interface RcsbAnnotationConfigInterface {
     type: string;
     display: RcsbFvDisplayTypes;
     color: string | RcsbFvColorGradient;
@@ -28,8 +28,8 @@ interface DynamicKeyAnnotationInterface extends Feature{
     [key: string]: any;
 }
 
-export class RcsbAnnotationMap {
-    private annotationMap: Map<string,RcsbAnnotationMapInterface> = new Map<string, RcsbAnnotationMapInterface>();
+export class RcsbAnnotationConfig {
+    private annotationMap: Map<string,RcsbAnnotationConfigInterface> = new Map<string, RcsbAnnotationConfigInterface>();
     private readonly externalAnnotationsOrder: Array<string> = new Array<string>();
     private readonly instanceAnnotationsOrder: Array<string> = new Array<string>();
     private readonly entityAnnotationsOrder: Array<string> = new Array<string>();
@@ -37,7 +37,7 @@ export class RcsbAnnotationMap {
     private readonly addedTypes: Map<string,Array<string>> = new Map<string,Array<string>>();
 
     constructor() {
-        const config: Array<RcsbAnnotationMapInterface> = (<any>annotationMap).config;
+        const config: Array<RcsbAnnotationConfigInterface> = (<any>annotationMap).config;
         config.forEach(m=>{
             m.provenanceList = new Set<string>();
             this.annotationMap.set(m.type,m);
@@ -54,7 +54,7 @@ export class RcsbAnnotationMap {
         });
     }
 
-    getConfig(type: string): RcsbAnnotationMapInterface{
+    getConfig(type: string): RcsbAnnotationConfigInterface{
         if(this.annotationMap.has(type)){
             return this.annotationMap.get(type);
         }
@@ -98,11 +98,11 @@ export class RcsbAnnotationMap {
                 this.annotationMap.set(newType, {
                     type: newType,
                     display: this.annotationMap.get(type).display,
-                    color: this.randomRgba(title),
+                    color: RcsbAnnotationConfig.randomRgba(title),
                     prefix: this.annotationMap.get(type).title,
                     title: title,
                     provenanceList: new Set<string>()
-                } as RcsbAnnotationMapInterface);
+                } as RcsbAnnotationConfigInterface);
             }
             this.addNewType(newType, type);
             return newType;
@@ -183,22 +183,7 @@ export class RcsbAnnotationMap {
         return null;
     }
 
-    randomRgba(str?: string): string{
-        if(typeof str === "string"){
-            let hash: number = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const rgb = [0, 0, 0];
-            for (let i = 0; i < 3; i++) {
-                rgb[i] = (hash >> (i * 8)) & 255;
-            }
-            return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-        }else{
-            var o = Math.round, r = Math.random, s = 255;
-            return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')';
-        }
-    }
+
 
     addProvenance(type:string, provenanceName: string): void {
         if(this.annotationMap.has(type))
@@ -214,5 +199,22 @@ export class RcsbAnnotationMap {
     isTransformedToNumerical(type: string): boolean{
         return this.annotationMap.get(type).transformToNumerical === true;
 
+    }
+
+    public static randomRgba(str?: string): string{
+        if(typeof str === "string"){
+            let hash: number = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const rgb = [0, 0, 0];
+            for (let i = 0; i < 3; i++) {
+                rgb[i] = (hash >> (i * 8)) & 255;
+            }
+            return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+        }else{
+            var o = Math.round, r = Math.random, s = 255;
+            return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')';
+        }
     }
 }

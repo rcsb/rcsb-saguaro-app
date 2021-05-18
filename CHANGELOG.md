@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.2.2-TCGA] - 2021-04-28
+## [1.3.0-TCGA] - 2021-04-14
 ### General
 - Module builder functions promise(return) a PublicModuleInterface
 - Class TagDelimiter renamed to Constants
@@ -11,57 +11,70 @@
 - Annotation metadata panel
 
 ### Annotation Collector Classes
-- AbstractAnnotationCollector abstract class to define specific annotations collectors
+- DeprecatedAbstractAnnotationCollector abstract class to define specific annotations collectors
 - AnnotationClass: New getter methods for 1d Features and RowConfig data 
 - AnnotationContext: class to handle filtering and selecting annotations 
 
+## [1.3.0] - 2021-05-14
+### Improvements
+- Typed types 
+- New class AnnotationTransformer. Transforms Feature into RcsbFvTrackDataElementInterface
+- Added commented code to handle FeaturePositionValue as Arrays
+
+## [1.2.3] - 2021-05-13
+### Dependency update
+- rcsb-saguaro update 1.7.3
+
+## [1.2.2] - 2021-04-30
+### Bug fix
+- open_end attribute bug fixed 
+- Instance default value bug fixed
+
 ## [1.2.1] - 2021-04-28
-### General
+### Bug fix and data display config
 - Composite merging bug fixed
 - New tracks merged
 
 ## [1.2.0] - 2021-04-28
-### General
+### Dependency update and config improvement
 - New annotation map property <b>displayCooccurrence</b> avoids merging positional co-occurrent features   
 - rcsb-saguaro update 1.6.0
 
 ## [1.1.9] - 2021-04-22
-### General
+### Dependency update
 - rcsb-saguaro update 1.5.1
 
 ## [1.1.8] - 2021-04-21
-### General
+### Dependency update
 - rcsb-saguaro update 1.5.0
 
 ## [1.1.7] - 2021-04-19
-### General
+### Dependency update
 - rcsb-saguaro update 1.4.1
 
 ## [1.1.6] - 2021-04-19
-### General
+### Dependency update
 - rcsb-saguaro update 1.4.0
 
 ## [1.1.5] - 2021-04-15
-### General
+### Dependency update
 - rcsb-saguaro update 1.3.0
 
 ## [1.1.4] - 2021-02-23
-### General
+### Dependency update
 - rcsb-saguaro update 1.2.1
 
 ## [1.1.3] - 2021-03-29
-### General
+### Dependency update
 - rcsb-saguaro update 1.2.0
 
 ## [1.1.2] - 2021-03-25
-### General
+### Bug Fix and Dependency update
 - rcsb-saguaro update
-
-### Chromosome Fv Module
-- Fixed null/empty sequence bug
+- Chromosome Fv Module: fixed null/empty sequence bug
 
 ## [1.1.1] - 2021-02-23
-### Sequence Collector
+### Data display
 - Track instance related title changed to X[auth Y]
 
 ## [1.1.0] - 2021-02-23
