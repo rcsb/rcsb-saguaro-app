@@ -77,7 +77,7 @@ export class SequenceCollector extends CoreCollector{
         }).then(result => {
             if(result.query_sequence == null || result.query_sequence.length == 0) {
                 console.warn(result);
-                throw "Alignment not found from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;
+                throw "Sequence not found in alignment from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;
             }
             this.sequenceLength = result.query_sequence.length;
             const data: AlignmentResponse = result;

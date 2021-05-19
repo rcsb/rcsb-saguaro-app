@@ -84,7 +84,8 @@
     "CIS-PEPTIDE",
     "disulfide bridge",
     "covalent bond",
-    "metal coordination"
+    "metal coordination",
+    "hydrogen bond"
   ],
   "entity_order": [
     "artifact",
@@ -334,6 +335,12 @@
     "display": "bond",
     "color": "#761e47",
     "title": "CIS-PEPTIDE"
+  },{
+    "type": "hydrogen bond",
+    "display": "bond",
+    "color": "#76Ae47",
+    "title": "HYDROGEN BOND",
+    "ignore": true
   },{
     "type": "ARTIFACT",
     "display": "block",

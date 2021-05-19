@@ -83,6 +83,8 @@ export class AnnotationCollector extends CoreCollector{
         const annotations: Map<string, Map<string,RcsbFvTrackDataElementInterface>> = new Map();
         data.forEach(ann => {
             ann.features.forEach(d => {
+                if(this.rcsbAnnotationMap.getConfig(d.type)?.ignore)
+                    return;
                 let type: string;
                 if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
                     let targetId: string = ann.target_id;

@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.3.0] - 2021-05-18
+### Improvements
+- Displaying nucleic (non-protein) entities/instances
+- Track configuration attribute "ignore" can be used to ignore annotations based on its type 
+
 ## [1.2.3] - 2021-05-13
 ### Dependency update
 - rcsb-saguaro update 1.7.3
