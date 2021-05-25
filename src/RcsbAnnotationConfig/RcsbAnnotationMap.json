@@ -32,6 +32,10 @@
     "SCOP",
     "MOLECULE_PROCESSING",
     "MEMBRANE_TOPOLOGY",
+    "TRANSMEMBRANE_REGION",
+    "INTRAMEMBRANE_REGION",
+    "TOPOLOGICAL_DOMAIN",
+    "MEMBRANE_SEGMENT",
     "CHAIN",
     "INITIATOR_METHIONINE",
     "SEQUENCE_VARIANT",
@@ -49,10 +53,6 @@
     "SHORT_SEQUENCE_MOTIF",
     "ZINC_FINGER_REGION",
     "PROPEPTIDE",
-    "TRANSMEMBRANE_REGION",
-    "INTRAMEMBRANE_REGION",
-    "MEMBRANE_SEGMENT",
-    "TOPOLOGICAL_DOMAIN",
     "COILED_COIL_REGION",
     "REPEAT",
     "DOMAIN",
@@ -371,7 +371,8 @@
     "type": "MEMBRANE_SEGMENT",
     "display": "block",
     "color": "#8fc50f",
-    "title": "MEMBRANE SEGMENT"
+    "title": "MEMBRANE SEGMENT",
+    "displayCooccurrence": true
   },{
     "type": "REPEAT",
     "display": "block",
