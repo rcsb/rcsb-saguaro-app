@@ -84,7 +84,8 @@
     "CIS_PEPTIDE",
     "DISULFIDE_BRIDGE",
     "COVALENT_BOND",
-    "METAL_COORDINATION"
+    "METAL_COORDINATION",
+    "HYDROGEN_BOND"
   ],
   "entity_order": [
     "ARTIFACT",
@@ -334,6 +335,12 @@
     "display": "bond",
     "color": "#761e47",
     "title": "CIS-PEPTIDE"
+  },{
+    "type": "HYDROGEN_BOND",
+    "display": "bond",
+    "color": "#76Ae47",
+    "title": "HYDROGEN BOND",
+    "ignore": true
   },{
     "type": "ARTIFACT",
     "display": "block",

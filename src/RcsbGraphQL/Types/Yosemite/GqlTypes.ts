@@ -3236,11 +3236,15 @@ export interface PdbxAuditRevisionItem {
 
 export interface PdbxAuditSupport {
   __typename?: 'PdbxAuditSupport';
-  /** The country/region providing the funding support for the entry. */
+  /**
+   * The country/region providing the funding support for the entry.
+   *  Funding information is optionally provided for entries after June 2016.
+   */
   country?: Maybe<Scalars['String']>;
   /**
    * The name of the organization providing funding support for the
-   *  entry.
+   *  entry. Funding information is optionally provided for entries
+   *  after June 2016.
    * 
    * Examples:
    * National Institutes of Health, Welcome Trust, National Institutes of Health/National Institute of General Medical Sciences
@@ -7278,6 +7282,13 @@ export interface RcsbBranchedEntityContainerIdentifiers {
   /** Unique list of monomer chemical component identifiers in the entity in this container. */
   chem_comp_monomers?: Maybe<Array<Maybe<Scalars['String']>>>;
   /**
+   * The chemical reference definition identifier for the entity in this container.
+   * 
+   * Examples:
+   * PRD_000010
+   */
+  chem_ref_def_id?: Maybe<Scalars['String']>;
+  /**
    * Entity identifier for the container.
    * 
    * Examples:
@@ -8691,7 +8702,7 @@ export interface RcsbExternalReferences {
    * Internal identifier for external resource.
    * 
    * Allowable values:
-   * OLDERADO, BMRB, NDB, SB GRID, STORE SYNCHROTRON, PROTEIN DIFFRACTION, EM DATA RESOURCE
+   * OLDERADO, BMRB, NDB, SB GRID, PROTEIN DIFFRACTION, EM DATA RESOURCE
    */
   type: Scalars['String'];
 }
@@ -8869,6 +8880,13 @@ export interface RcsbNonpolymerEntityContainerIdentifiers {
   asym_ids?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Author instance identifiers corresponding to copies of the entity in this container. */
   auth_asym_ids?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /**
+   * The chemical reference definition identifier for the entity in this container.
+   * 
+   * Examples:
+   * PRD_000010
+   */
+  chem_ref_def_id?: Maybe<Scalars['String']>;
   /**
    * Entity identifier for the container.
    * 
@@ -9660,7 +9678,7 @@ export interface RcsbPolymerEntityAnnotation {
    * A type or category of the annotation.
    * 
    * Allowable values:
-   * GO, InterPro, MemProtMD, OPM, Pfam, mpstruc
+   * GO, InterPro, MemProtMD, OPM, PDBTM, Pfam, mpstruc
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9685,6 +9703,13 @@ export interface RcsbPolymerEntityContainerIdentifiers {
   chem_comp_monomers?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Unique list of non-standard monomer chemical component identifiers in the polymer entity in this container. */
   chem_comp_nstd_monomers?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /**
+   * The chemical reference definition identifier for the entity in this container.
+   * 
+   * Examples:
+   * PRD_000010
+   */
+  chem_ref_def_id?: Maybe<Scalars['String']>;
   /**
    * Entity identifier for the container.
    * 
@@ -10067,10 +10092,10 @@ export interface RcsbPolymerInstanceFeature {
    * 
    * Allowable values:
    * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
-   * MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RAMACHANDRAN_OUTLIER,
-   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET, STEREO_OUTLIER,
-   * UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
-   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER,
+   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP,
+   * SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ,
+   * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -10148,10 +10173,10 @@ export interface RcsbPolymerInstanceFeatureSummary {
    * 
    * Allowable values:
    * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
-   * MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RAMACHANDRAN_OUTLIER,
-   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET, STEREO_OUTLIER,
-   * UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
-   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER,
+   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP,
+   * SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ,
+   * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
