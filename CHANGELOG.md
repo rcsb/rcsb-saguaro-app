@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.3.0] - 2021-05-31
+### Improvements
+Dependency update
+- rcsb-saguaro update 1.7.4
+
 ## [1.3.0] - 2021-05-18
 ### Improvements
 - Displaying nucleic (non-protein) entities/instances
