@@ -7317,6 +7317,32 @@ export interface RcsbBranchedEntityContainerIdentifiers {
    * 2HYV_2
    */
   rcsb_id?: Maybe<Scalars['String']>;
+  reference_identifiers?: Maybe<Array<Maybe<RcsbBranchedEntityContainerIdentifiersReferenceIdentifiers>>>;
+}
+
+export interface RcsbBranchedEntityContainerIdentifiersReferenceIdentifiers {
+  __typename?: 'RcsbBranchedEntityContainerIdentifiersReferenceIdentifiers';
+  /**
+   * Source of the reference resource assignment
+   * 
+   * Allowable values:
+   * PDB, RCSB
+   */
+  provenance_source?: Maybe<Scalars['String']>;
+  /**
+   * Reference resource accession code
+   * 
+   * Examples:
+   * G07411ON, G42666HT
+   */
+  resource_accession?: Maybe<Scalars['String']>;
+  /**
+   * Reference resource name
+   * 
+   * Allowable values:
+   * GlyCosmos, GlyGen, GlyTouCan
+   */
+  resource_name?: Maybe<Scalars['String']>;
 }
 
 export interface RcsbBranchedEntityFeature {
@@ -9678,7 +9704,7 @@ export interface RcsbPolymerEntityAnnotation {
    * A type or category of the annotation.
    * 
    * Allowable values:
-   * GO, InterPro, MemProtMD, OPM, PDBTM, Pfam, mpstruc
+   * GO, GlyCosmos, GlyGen, InterPro, MemProtMD, OPM, PDBTM, Pfam, mpstruc
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -10091,11 +10117,13 @@ export interface RcsbPolymerInstanceFeature {
    * A type or category of the feature.
    * 
    * Allowable values:
-   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
-   * MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER,
-   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP,
-   * SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ,
-   * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, C-MANNOSYLATION_SITE, CATH,
+   * CIS-PEPTIDE, HELIX_P, MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER,
+   * MOGUL_BOND_OUTLIER, N-GLYCOSYLATION_SITE, O-GLYCOSYLATION_SITE,
+   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER,
+   * S-GLYCOSYLATION_SITE, SCOP, SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT,
+   * UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ,
+   * ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -10172,11 +10200,13 @@ export interface RcsbPolymerInstanceFeatureSummary {
    * Type or category of the feature.
    * 
    * Allowable values:
-   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
-   * MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER,
-   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP,
-   * SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ,
-   * UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, C-MANNOSYLATION_SITE, CATH,
+   * CIS-PEPTIDE, HELIX_P, MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER,
+   * MOGUL_BOND_OUTLIER, N-GLYCOSYLATION_SITE, O-GLYCOSYLATION_SITE,
+   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER,
+   * S-GLYCOSYLATION_SITE, SCOP, SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT,
+   * UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ,
+   * ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
