@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.1] - 2021-06-02
+### Bug fix
+- Undefined end in block elements bug fixed 
+
 ## [1.4.0] - 2021-06-02
 ### Improvements
 - Typed types 

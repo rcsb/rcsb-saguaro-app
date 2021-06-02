@@ -93,9 +93,9 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
             targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(targetId.split(TagDelimiter.instance)[1]) : targetId;
         return {
             begin: p.beg_seq_id,
-            end: p.end_seq_id,
+            end: p.end_seq_id ?? p.beg_seq_id,
             oriBegin: p.beg_ori_id,
-            oriEnd: p.end_ori_id,
+            oriEnd: p.end_ori_id ?? p.beg_ori_id,
             description: new Array<string>(),
             featureId: d.feature_id,
             type: this.type,
