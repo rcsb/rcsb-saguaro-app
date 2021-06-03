@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.4] - 2021-06-03
+### Bug fix
+- Mogul config bug fixed
+
 ## [1.4.3] - 2021-06-03
 ### Data display
 - Mogul outliers transformed to continuous

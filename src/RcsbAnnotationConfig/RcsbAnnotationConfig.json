@@ -273,13 +273,13 @@
     "transformToNumerical": true
   },{
     "type": "MOGUL_BOND_OUTLIER",
-    "display": "pin",
+    "display": "area",
     "color": "#fcd303",
     "title": "MOGUL-BOND OUTLIER",
     "transformToNumerical": true
   },{
     "type": "MOGUL_ANGLE_OUTLIER",
-    "display": "pin",
+    "display": "area",
     "color": "#d303fc",
     "title": "MOGUL-ANGLE OUTLIER",
     "transformToNumerical": true
