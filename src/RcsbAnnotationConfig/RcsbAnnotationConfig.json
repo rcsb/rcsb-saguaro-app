@@ -275,12 +275,14 @@
     "type": "MOGUL_BOND_OUTLIER",
     "display": "area",
     "color": "#fcd303",
+    "height": 45,
     "title": "MOGUL-BOND OUTLIER",
     "transformToNumerical": true
   },{
     "type": "MOGUL_ANGLE_OUTLIER",
     "display": "area",
     "color": "#d303fc",
+    "height": 45,
     "title": "MOGUL-ANGLE OUTLIER",
     "transformToNumerical": true
   },{

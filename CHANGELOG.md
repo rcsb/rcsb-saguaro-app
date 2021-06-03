@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.5] - 2021-06-03
+### Bug fix
+- Mogul track height
+
 ## [1.4.4] - 2021-06-03
 ### Bug fix
 - Mogul config bug fixed
