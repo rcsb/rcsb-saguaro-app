@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.3] - 2021-06-03
+### Data display
+- Mogul outliers transformed to continuous
+- New annotation type MEMBRANE_SEGMENT 
+
 ## [1.4.2] - 2021-06-03
 ### Bug fix
 - ignore annotation type attribute bug fixed 

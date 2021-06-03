@@ -32,6 +32,7 @@
     "SCOP",
     "MOLECULE_PROCESSING",
     "MEMBRANE_TOPOLOGY",
+    "MEMBRANE_SEGMENT",
     "CHAIN",
     "INITIATOR_METHIONINE",
     "SEQUENCE_VARIANT",
@@ -274,12 +275,14 @@
     "type": "MOGUL_BOND_OUTLIER",
     "display": "pin",
     "color": "#fcd303",
-    "title": "MOGUL-BOND OUTLIER"
+    "title": "MOGUL-BOND OUTLIER",
+    "transformToNumerical": true
   },{
     "type": "MOGUL_ANGLE_OUTLIER",
     "display": "pin",
     "color": "#d303fc",
-    "title": "MOGUL-ANGLE OUTLIER"
+    "title": "MOGUL-ANGLE OUTLIER",
+    "transformToNumerical": true
   },{
     "type": "MUTATION",
     "display": "pin",
@@ -421,5 +424,11 @@
     "display": "bond",
     "color": "#aadaaa",
     "title": "COVALENT BOND"
+  },{
+    "type": "MEMBRANE_SEGMENT",
+    "display": "block",
+    "color": "#8fc50f",
+    "title": "MEMBRANE SEGMENT",
+    "displayCooccurrence": true
   }]
 }
