@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.2] - 2021-06-03
+### Bug fix
+- ignore annotation type attribute bug fixed 
+
 ## [1.4.1] - 2021-06-02
 ### Bug fix
 - Undefined end in block elements bug fixed 
