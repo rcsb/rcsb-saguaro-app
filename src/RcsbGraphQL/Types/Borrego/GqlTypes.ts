@@ -268,6 +268,7 @@ export enum Type {
   NGlycosylationSite = 'N_GLYCOSYLATION_SITE',
   OGlycosylationSite = 'O_GLYCOSYLATION_SITE',
   Peptide = 'PEPTIDE',
+  Pfam = 'PFAM',
   Propeptide = 'PROPEPTIDE',
   RamachandranOutlier = 'RAMACHANDRAN_OUTLIER',
   RegionOfInterest = 'REGION_OF_INTEREST',

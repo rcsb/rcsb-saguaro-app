@@ -28,6 +28,7 @@
     }
   ],
   "external_data_order": [
+    "PFAM",
     "CATH",
     "SCOP",
     "MOLECULE_PROCESSING",
@@ -315,6 +316,11 @@
     "display": "block",
     "color": "#455d5a",
     "title": "SCOP"
+  },{
+    "type": "PFAM",
+    "display": "block",
+    "color": "#ECACA6",
+    "title": "PFAM"
   },{
     "type": "RSRZ_OUTLIER",
     "display": "pin",

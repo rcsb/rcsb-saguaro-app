@@ -9837,7 +9837,7 @@ export interface RcsbPolymerEntityFeature {
    * A type or category of the feature.
    * 
    * Allowable values:
-   * artifact, modified_monomer, mutation
+   * Pfam, artifact, modified_monomer, mutation
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9912,7 +9912,7 @@ export interface RcsbPolymerEntityFeatureSummary {
    * Type or category of the feature.
    * 
    * Allowable values:
-   * artifact, modified_monomer, mutation
+   * Pfam, artifact, modified_monomer, mutation
    */
   type?: Maybe<Scalars['String']>;
 }

@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.6] - 2021-06-09
+### Display config
+- PFAM config added
+
 ## [1.4.5] - 2021-06-03
 ### Bug fix
 - Mogul track height
