@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.7] - 2021-06-14
+### Dependency update
+- rcsb-saguaro update 1.8.1
+
 ## [1.4.6] - 2021-06-09
 ### Display config
 - PFAM config added
