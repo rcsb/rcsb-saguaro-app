@@ -16,21 +16,12 @@ export interface CreateFvInterface {
 export class RcsbFvCoreBuilder {
 
     static getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>Promise<void>): Promise<void>{
-        if(rcsbFvCtxManager.getEntityToInstance(entryId) != null) {
-            f(rcsbFvCtxManager.getEntityToInstance(entryId));
+        return rcsbFvCtxManager.getEntityToInstance(entryId).then((entityToInstance)=>{
+            f(entityToInstance);
             if(resolve!=undefined){
-                return resolve()
+                resolve();
             }
-        }else{
-            const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-            instanceCollector.collect({entry_id:entryId}).then(result=> {
-                rcsbFvCtxManager.setEntityToInstance(entryId,new PolymerEntityInstanceTranslate(result));
-                f(rcsbFvCtxManager.getEntityToInstance(entryId));
-                if(resolve!=undefined){
-                    return resolve()
-                }
-            });
-        }
+        });
     }
 
     static createFvBuilder(

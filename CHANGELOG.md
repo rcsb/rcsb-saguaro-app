@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.4.8] - 2021-06-15
+### Optimization
+- RcsbFvContextManager never duplicates requests. It tracks individual request status ("available"|"pending")
+
 ## [1.4.7] - 2021-06-14
 ### Dependency update
 - rcsb-saguaro update 1.8.1
