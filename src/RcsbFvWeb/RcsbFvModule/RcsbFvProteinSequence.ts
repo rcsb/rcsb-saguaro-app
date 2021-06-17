@@ -1,8 +1,8 @@
 import {Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvCore} from "./RcsbFvCore";
+import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
-export class RcsbFvProteinSequence extends RcsbFvCore implements RcsbFvModuleInterface{
+export class RcsbFvProteinSequence extends RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
         const queryId: string = buildConfig.queryId;
@@ -19,7 +19,7 @@ export class RcsbFvProteinSequence extends RcsbFvCore implements RcsbFvModuleInt
                 sources:source,
                 collectSwissModel:true
             }).then(annResult=>{
-                this.boardConfigData.length = this.sequenceCollector.getLength();
+                this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
                 this.boardConfigData.includeAxis = true;
                 if(buildConfig.additionalConfig?.hideAlignments){
                     this.rowConfigData = seqResult.sequence.concat(annResult);

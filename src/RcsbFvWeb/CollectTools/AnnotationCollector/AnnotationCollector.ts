@@ -10,30 +10,29 @@ import {
 
 import {
     AnnotationFeatures,
-    QueryAnnotationsArgs,
     Source
 } from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig, RcsbAnnotationConfigInterface} from "../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {CoreCollector} from "../CoreCollector";
 import {SwissModelQueryAnnotations} from "../../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {ParseLink} from "../ParseLink";
 import {TagDelimiter} from "../../Utils/TagDelimiter";
 import {AnnotationTransformer} from "./AnnotationTransformer";
+import {RcsbFvQuery} from "../../../RcsbGraphQL/RcsbFvQuery";
+import {PolymerEntityInstanceTranslate} from "../../Utils/PolymerEntityInstanceTranslate";
+import {AnnotationCollectorInterface, CollectAnnotationsInterface} from "./AnnotationCollectorInterface";
 
-interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
-    addTargetInTitle?: Set<Source>;
-    collectSwissModel?: boolean;
-}
 
-export class AnnotationCollector extends CoreCollector{
+export class AnnotationCollector implements AnnotationCollectorInterface{
 
     private rcsbAnnotationConfig: RcsbAnnotationConfig = new RcsbAnnotationConfig();
     private annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
+    private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
     public collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
         if(requestConfig.collectSwissModel === true){
-            return this.rcsbFvQuery.requestRcsbPdbAnnotations({
+            return this.query().requestRcsbPdbAnnotations({
                 queryId: requestConfig.queryId,
                 reference: requestConfig.reference,
                 sources: requestConfig.sources,
@@ -53,7 +52,7 @@ export class AnnotationCollector extends CoreCollector{
                 throw error;
             });
         }else{
-            return this.rcsbFvQuery.requestRcsbPdbAnnotations({
+            return this.query().requestRcsbPdbAnnotations({
                 queryId: requestConfig.queryId,
                 reference: requestConfig.reference,
                 sources: requestConfig.sources,
@@ -69,6 +68,18 @@ export class AnnotationCollector extends CoreCollector{
         }
     }
 
+    public getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate {
+        return this.polymerEntityInstanceTranslator;
+    }
+
+    public query(): RcsbFvQuery {
+        return this.rcsbFvQuery;
+    }
+
+    public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
+        this.polymerEntityInstanceTranslator = p;
+    }
+
     private processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
         const annotationTracks: Map<string, AnnotationTransformer> = new Map();
         data.forEach(ann => {
@@ -78,9 +89,9 @@ export class AnnotationCollector extends CoreCollector{
                 let type: string;
                 if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
                     let targetId: string = ann.target_id;
-                    if( this.getPolymerEntityInstance() != null && ann.source === Source.PdbInstance){
+                    if( this.getPolymerEntityInstanceTranslator() != null && ann.source === Source.PdbInstance){
                         const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
-                        const authAsymId: string = this.getPolymerEntityInstance().translateAsymToAuth(labelAsymId);
+                        const authAsymId: string = this.getPolymerEntityInstanceTranslator().translateAsymToAuth(labelAsymId);
                         targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
                     }
                     type = this.rcsbAnnotationConfig.setAnnotationKey(d, targetId);
@@ -88,7 +99,7 @@ export class AnnotationCollector extends CoreCollector{
                     type = this.rcsbAnnotationConfig.setAnnotationKey(d);
                 }
                 if (!annotationTracks.has(type)) {
-                    annotationTracks.set(type, new AnnotationTransformer(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstance()));
+                    annotationTracks.set(type, new AnnotationTransformer(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
                 }
                 this.rcsbAnnotationConfig.addProvenance(type, d.provenance_source);
                 annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId, ann.source, ann.target_id, d);

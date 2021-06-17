@@ -13,21 +13,19 @@ export interface RcsbFvModuleBuildInterface {
     from?:SequenceReference;
     to?:SequenceReference;
     sources?:Array<Source>;
-
     entityId?: string;
     instanceId?: string;
     upAcc?:string;
     refSeqId?:string;
     chrId?:string;
     additionalConfig?:RcsbFvAdditionalConfig;
-    resolve?:()=>void;
-
     elementSelectId?: string;
+    resolve?(): void;
 }
 
 export interface RcsbFvModuleInterface {
-    display: () => void;
-    build: (buildConfig: RcsbFvModuleBuildInterface) => void;
-    getTargets: () => Promise<Array<string>>;
-    setPolymerEntityInstance: (polymerEntityInstance: PolymerEntityInstanceTranslate)=>void;
+    display(): void;
+    build(buildConfig: RcsbFvModuleBuildInterface): void;
+    getTargets(): Promise<Array<string>>;
+    setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
 }

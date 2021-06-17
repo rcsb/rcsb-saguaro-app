@@ -1,10 +1,10 @@
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvCore} from "./RcsbFvCore";
+import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
-import {ObservedSequenceCollector} from "../CollectTools/ObservedCollector";
+import {ObservedSequenceCollector} from "../CollectTools/SequenceCollector/ObservedSequenceCollector";
 
-export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
+export class RcsbFvUniprot extends RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     constructor(elementId: string, rcsbFv: RcsbFv) {
         super(elementId, rcsbFv);
@@ -28,7 +28,7 @@ export class RcsbFvUniprot extends RcsbFvCore implements RcsbFvModuleInterface{
                 sources:source,
                 collectSwissModel:true
             }).then(annResult=>{
-                this.boardConfigData.length = this.sequenceCollector.getLength();
+                this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(annResult).concat(seqResult.alignment) : seqResult.sequence.concat(annResult);
                 this.display();

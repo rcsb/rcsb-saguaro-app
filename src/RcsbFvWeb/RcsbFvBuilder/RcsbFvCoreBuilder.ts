@@ -46,12 +46,12 @@ export class RcsbFvCoreBuilder {
         const p: PolymerEntityInstanceTranslate = createFvI.p;
         if (rcsbFvCtxManager.getFv(elementId) != null) {
             const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
+            if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
             rcsbFvInstance.build(config);
         } else {
             const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementId);
             const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvSingleViewer);
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstance(p);
+            if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
             rcsbFvInstance.build(config);
             rcsbFvCtxManager.setFv(elementId, rcsbFvSingleViewer);
         }

@@ -16,7 +16,7 @@ export class RcsbFvEntityBuilder {
         const buildSelectAndFv: (p: PolymerEntityInstanceTranslate)=>Promise<void> = (p: PolymerEntityInstanceTranslate)=>{
             return new Promise<void>((resolve, reject)=>{
                 const rcsbFvEntity: RcsbFvEntity = new RcsbFvEntity(elementFvId, rcsbFvSingleViewer);
-                rcsbFvEntity.setPolymerEntityInstance(p);
+                rcsbFvEntity.setPolymerEntityInstanceTranslator(p);
                 rcsbFvEntity.build({entityId:entityId,additionalConfig:{
                         sources:[Source.PdbEntity,Source.PdbInstance],
                         filters:[{

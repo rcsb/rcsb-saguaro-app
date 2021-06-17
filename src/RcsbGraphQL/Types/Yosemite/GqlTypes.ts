@@ -9294,6 +9294,13 @@ export interface RcsbNonpolymerInstanceValidationScore {
   /** Alternate conformer identifier for the non-polymer entity instance. */
   alt_id?: Maybe<Scalars['String']>;
   /**
+   * The average heavy atom occupancy for coordinate records for the non-polymer entity instance.
+   * 
+   * Examples:
+   * null, null
+   */
+  average_occupancy?: Maybe<Scalars['Float']>;
+  /**
    * The reported fraction of atomic coordinate records for the non-polymer entity instance.
    * 
    * Examples:
@@ -9316,6 +9323,13 @@ export interface RcsbNonpolymerInstanceValidationScore {
    * N, Y
    */
   is_subject_of_investigation?: Maybe<Scalars['String']>;
+  /**
+   * The provenance for the selection of the molecular entity identified as the subject of the current study.
+   * 
+   * Allowable values:
+   * Author, RCSB
+   */
+  is_subject_of_investigation_provenance?: Maybe<Scalars['String']>;
   /**
    * Number of bond angle outliers obtained from a CCDC Mogul survey of bond angles  in the CSD small
    *    molecule crystal structure database. Outliers are defined as bond angles that have a Z-score

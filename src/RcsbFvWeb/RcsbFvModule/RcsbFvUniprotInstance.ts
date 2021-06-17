@@ -5,10 +5,10 @@ import {
     SequenceReference,
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvCore} from "./RcsbFvCore";
+import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 
-export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInterface{
+export class RcsbFvUniprotInstance extends RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     public build(buildConfig: RcsbFvModuleBuildInterface): void {
         const upAcc: string = buildConfig.upAcc;
@@ -46,7 +46,7 @@ export class RcsbFvUniprotInstance extends RcsbFvCore implements RcsbFvModuleInt
                 filters:filters,
                 collectSwissModel:true
             }).then(annResult=>{
-                this.boardConfigData.length = this.sequenceCollector.getLength();
+                this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
                 this.boardConfigData.includeAxis = true;
                 this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
                 this.display();

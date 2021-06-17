@@ -1,39 +1,17 @@
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
+import {AlignedRegion, SequenceReference, Source, TargetAlignment} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
-    RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes,
+    RcsbFvDisplayConfigInterface, RcsbFvDisplayTypes,
     RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
-} from '@rcsb/rcsb-saguaro';
+} from "@rcsb/rcsb-saguaro";
+import {TagDelimiter} from "../../Utils/TagDelimiter";
+import * as resource from "../../../RcsbServerConfig/web.resources.json";
+import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {FeatureTools} from "../../FeatureTools/FeatureTools";
+import {AlignedObservedRegion, CollectAlignmentInterface} from "./SequenceCollector";
 
-import {
-    AlignedRegion,
-    AlignmentResponse,
-    QueryAlignmentArgs,
-    SequenceReference,
-    Source,
-    TargetAlignment
-} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../Utils/TagDelimiter";
-import {CoreCollector} from "./CoreCollector";
-import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
-
-import * as resource from "../../RcsbServerConfig/web.resources.json";
-import {FeatureTools} from "../FeatureTools/FeatureTools";
-
-export interface CollectAlignmentInterface extends QueryAlignmentArgs {
-    filterByTargetContains?:string;
-    dynamicDisplay?: boolean;
-    excludeAlignmentLinks?: boolean;
-    fitTitleWidth?:boolean;
-    excludeFirstRowLink?:boolean;
-}
-
-export interface SequenceCollectorDataInterface {
-    sequence: Array<RcsbFvRowConfigInterface>;
-    alignment: Array<RcsbFvRowConfigInterface>;
-}
 
 export interface BuildAlignementsInterface {
     targetAlignmentList: Array<TargetAlignment>;
@@ -53,123 +31,20 @@ interface BuildSequenceDataInterface extends TranslateContextInterface{
     oriBegin: number;
 }
 
-export interface AlignedObservedRegion extends AlignedRegion {
-    unModelled?:boolean;
-    openBegin?:boolean;
-    openEnd?:boolean;
-}
 
-export class SequenceCollector extends CoreCollector{
+export class SequenceCollectorHelper {
 
-    private seqeunceConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
-    private sequenceLength: number;
-    private targets: Array<string> = new Array<string>();
-    protected finished: boolean = false;
-    private dynamicDisplay: boolean = false;
+    private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate;
 
-    public collect(requestConfig: CollectAlignmentInterface, entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<null>): Promise<SequenceCollectorDataInterface> {
-        if(requestConfig.dynamicDisplay)
-            this.dynamicDisplay = true;
-        return this.rcsbFvQuery.requestAlignment({
-           queryId: requestConfig.queryId,
-           from: requestConfig.from,
-           to: requestConfig.to
-        }).then(result => {
-            if(result.query_sequence == null || result.query_sequence.length == 0) {
-                console.warn(result);
-                throw "Sequence not found in alignment from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;
-            }
-            this.sequenceLength = result.query_sequence.length;
-            const data: AlignmentResponse = result;
-            const querySequence: string = data.query_sequence;
-            const alignmentData: Array<TargetAlignment> = data.target_alignment;
-            let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
-            let rowTitle:string|RcsbFvLink;
-            if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.Uniprot){
-                rowTitle = {
-                    visibleTex: requestConfig.queryId,
-                    url: (resource as any).rcsb_uniprot.url+requestConfig.queryId,
-                    style: {
-                        fontWeight:"bold",
-                        color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
-                    }
-                };
-            }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.getPolymerEntityInstance()!=null) {
-                rowTitle = {
-                    visibleTex: this.buildInstanceId(requestConfig.queryId.split(TagDelimiter.instance)[1]),
-                    style: {
-                        fontWeight:"bold",
-                    }
-                };
-            }else{
-                rowTitle = {
-                    visibleTex: requestConfig.queryId,
-                    style: {
-                        fontWeight:"bold",
-                    }
-                };
-            }
-            const track: RcsbFvRowConfigInterface = {
-                trackId: "mainSequenceTrack_" + requestConfig.queryId,
-                displayType: RcsbFvDisplayTypes.SEQUENCE,
-                trackColor: "#F9F9F9",
-                displayColor: "#000000",
-                rowTitle: rowTitle,
-                rowPrefix: rowPrefix,
-                nonEmptyDisplay: true,
-                trackData: this.buildSequenceData({
-                    sequenceData:[],
-                    sequence:result.query_sequence,
-                    begin:1,
-                    oriBegin:null,
-                    queryId:requestConfig.queryId,
-                    targetId:null,
-                    from:requestConfig.from,
-                    to:null},true)
-            };
-            if(requestConfig.from === SequenceReference.PdbEntity || requestConfig.from === SequenceReference.PdbInstance ){
-                track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
-            }else{
-                track.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.external;
-            }
-            this.seqeunceConfigData.push(track);
-            if(entityInstanceMapCollector == null){
-                return this.buildAlignments({
-                    targetAlignmentList: alignmentData,
-                    queryId:requestConfig.queryId,
-                    querySequence: querySequence,
-                    filterByTargetContains:requestConfig.filterByTargetContains,
-                    to:requestConfig.to,
-                    from:requestConfig.from,
-                    excludeAlignmentLinks: requestConfig.excludeAlignmentLinks,
-                    fitTitleWidth: requestConfig.fitTitleWidth
-                });
-            }else{
-                return entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id})).then(()=>{
-                    return this.buildAlignments({
-                        targetAlignmentList: alignmentData,
-                        queryId:requestConfig.queryId,
-                        querySequence: querySequence,
-                        filterByTargetContains:requestConfig.filterByTargetContains,
-                        to:requestConfig.to,
-                        from:requestConfig.from,
-                        excludeAlignmentLinks: requestConfig.excludeAlignmentLinks,
-                        fitTitleWidth: requestConfig.fitTitleWidth
-                    })
-                });
-            }
-
-         }).catch(error=>{
-             console.log(error);
-             throw error;
-         });
+    constructor(entityInstanceTranslator: PolymerEntityInstanceTranslate) {
+        this.entityInstanceTranslator = entityInstanceTranslator;
     }
 
-    public getLength(): number{
-        return this.sequenceLength;
-    }
-
-    private buildAlignments(alignmentData: BuildAlignementsInterface): SequenceCollectorDataInterface {
+    public buildAlignments(
+        alignmentData: BuildAlignementsInterface,
+        dynamicDisplayFlag: boolean,
+        tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface)=>Array<AlignedObservedRegion>
+    ): {alignments: Array<RcsbFvRowConfigInterface>, targets: Array<string>} {
 
         const findMismatch = (seqA: string, seqB: string) => {
             const out = [];
@@ -183,6 +58,7 @@ export class SequenceCollector extends CoreCollector{
             return out;
         };
 
+        const targets: Array<string> = new Array<string>();
         const alignmentsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
         if(alignmentData.targetAlignmentList instanceof Array) {
             alignmentData.targetAlignmentList.sort((a: TargetAlignment, b: TargetAlignment) => {
@@ -202,7 +78,7 @@ export class SequenceCollector extends CoreCollector{
                     targetSequenceLength: targetSequence.length
                 };
 
-                this.targets.push(targetAlignment.target_id);
+                targets.push(targetAlignment.target_id);
                 const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
                 let alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
                 const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
@@ -222,7 +98,7 @@ export class SequenceCollector extends CoreCollector{
                     if (region.target_end != targetSequence.length)
                         openEnd = true;
 
-                    this.tagObservedRegions(region, commonContext).forEach(r=>{
+                    tagObservedRegions(region, commonContext).forEach(r=>{
                         alignedBlocks.push(this.addAuthorResIds({
                             begin: r.query_begin,
                             end: r.query_end,
@@ -258,7 +134,7 @@ export class SequenceCollector extends CoreCollector{
                     displayType: RcsbFvDisplayTypes.SEQUENCE,
                     displayColor: "#000000",
                     displayData: sequenceData,
-                    dynamicDisplay: this.dynamicDisplay
+                    dynamicDisplay: dynamicDisplayFlag
                 };
                 const mismatchDisplay: RcsbFvDisplayConfigInterface = {
                     displayType: RcsbFvDisplayTypes.PIN,
@@ -284,12 +160,10 @@ export class SequenceCollector extends CoreCollector{
                 alignmentsConfigData.push(track);
             });
         }
-        this.finished = true;
-        console.log("Alignment Processing Complete");
-        return { sequence: this.seqeunceConfigData, alignment:alignmentsConfigData};
+        return { targets:targets, alignments:alignmentsConfigData};
     }
 
-    private buildSequenceData(config: BuildSequenceDataInterface, isQuerySequence?: boolean):Array<RcsbFvTrackDataElementInterface> {
+    public buildSequenceData(config: BuildSequenceDataInterface, isQuerySequence?: boolean):Array<RcsbFvTrackDataElementInterface> {
         let provenanceName: string = config.to;
         if(isQuerySequence === true)
             provenanceName = config.from;
@@ -323,20 +197,39 @@ export class SequenceCollector extends CoreCollector{
         return config.sequenceData;
     }
 
-    private addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
-        let o:RcsbFvTrackDataElementInterface = e;
-        if(this.getPolymerEntityInstance()!=null){
-            this.getPolymerEntityInstance().addAuthorResIds(o,alignmentContext);
+    public buildSequenceRowTitle(requestConfig: CollectAlignmentInterface): string|RcsbFvLink{
+        let rowTitle:string|RcsbFvLink;
+        if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.Uniprot){
+            rowTitle = {
+                visibleTex: requestConfig.queryId,
+                url: (resource as any).rcsb_uniprot.url+requestConfig.queryId,
+                style: {
+                    fontWeight:"bold",
+                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                }
+            };
+        }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.entityInstanceTranslator!=null) {
+            rowTitle = {
+                visibleTex: this.buildInstanceId(requestConfig.queryId.split(TagDelimiter.instance)[1]),
+                style: {
+                    fontWeight:"bold",
+                }
+            };
+        }else{
+            rowTitle = {
+                visibleTex: requestConfig.queryId,
+                style: {
+                    fontWeight:"bold",
+                }
+            };
         }
-        if(alignmentContext.to == SequenceReference.PdbInstance && o.sourceId != null)
-            o.sourceId = o.sourceId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.getPolymerEntityInstance().translateAsymToAuth(o.sourceId.split(TagDelimiter.instance)[1])
-        return o;
+        return rowTitle;
     }
 
-    private buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
+    public buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
         let rowTitle: string | RcsbFvLink;
-        if (alignmentData.to === SequenceReference.PdbInstance && this.getPolymerEntityInstance() != null) {
-            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
+        if (alignmentData.to === SequenceReference.PdbInstance && this.entityInstanceTranslator != null) {
+            const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
                 visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
                 url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
@@ -355,8 +248,8 @@ export class SequenceCollector extends CoreCollector{
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
                 }
             };
-        } else if ( alignmentData.to === SequenceReference.PdbInstance && !alignmentData.excludeAlignmentLinks ) {
-            const entityId: string = this.getPolymerEntityInstance().translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
+        } else if ( alignmentData.to === SequenceReference.PdbInstance && !alignmentData.excludeAlignmentLinks && this.entityInstanceTranslator != null) {
+            const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
                 visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
                 url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
@@ -380,30 +273,18 @@ export class SequenceCollector extends CoreCollector{
         return rowTitle;
     }
 
-    private buildInstanceId(labelAsymId: string): string{
-        const authAsymId: string = this.getPolymerEntityInstance().translateAsymToAuth(labelAsymId);
-        return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
+    public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+        let o:RcsbFvTrackDataElementInterface = e;
+        if(this.entityInstanceTranslator!=null){
+            this.entityInstanceTranslator.addAuthorResIds(o,alignmentContext);
+        }
+        if(alignmentContext.to == SequenceReference.PdbInstance && o.sourceId != null)
+            o.sourceId = o.sourceId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(o.sourceId.split(TagDelimiter.instance)[1])
+        return o;
     }
 
-    protected tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
-        return [{...region,unModelled:false}];
+    public buildInstanceId(labelAsymId: string): string{
+        const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
+        return labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
     }
-
-    public getTargets():Promise<Array<string>> {
-        return new Promise<Array<string>>((resolve,reject)=>{
-            const recursive:()=>void = ()=>{
-                if(this.finished){
-                    resolve(this.targets);
-                }else{
-                    if(typeof window!== "undefined") {
-                        window.setTimeout(() => {
-                            recursive();
-                        }, 1000);
-                    }
-                }
-            };
-            recursive();
-        });
-    }
-
 }

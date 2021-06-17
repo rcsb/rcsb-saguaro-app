@@ -63,7 +63,7 @@ export class PairwiseAlignmentBuilder {
         this.pairwiseView = paI.pairwiseView;
 
         if(this.queryAlignment.length != this.targetAlignment.length)
-            throw "Sequence alignment length mismatch";
+            throw "Sequence alignments length mismatch";
         if(this.pairwiseView)
             this.alignmentLength = this.queryAlignment.length;
         else

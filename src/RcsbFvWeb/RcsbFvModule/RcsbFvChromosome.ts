@@ -1,4 +1,4 @@
-import {RcsbFvCore} from "./RcsbFvCore";
+import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
     AlignedRegion,
     AlignmentResponse,
@@ -72,7 +72,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
     };
 }
 
-export class RcsbFvChromosome extends RcsbFvCore implements RcsbFvModuleInterface {
+export class RcsbFvChromosome extends RcsbFvAbstractModule implements RcsbFvModuleInterface {
     private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
         [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
         [SequenceReference.Uniprot, new Array<Array<TargetAlignment>>()],

@@ -1,35 +1,57 @@
 import {
     AlignedRegion,
-    AnnotationFeatures, Feature,
+    AnnotationFeatures,
     FieldName,
     OperationType,
     SequenceReference,
     Source,
-} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
-    AlignedObservedRegion, BuildAlignementsInterface,
+    AlignedObservedRegion,
     CollectAlignmentInterface,
     SequenceCollector,
     SequenceCollectorDataInterface
 } from "./SequenceCollector";
-import {TranslateContextInterface} from "../Utils/PolymerEntityInstanceTranslate";
-import {MultipleEntityInstanceTranslate} from "../Utils/MultipleEntityInstanceTranslate";
-import {MultipleEntityInstancesCollector} from "./MultipleEntityInstancesCollector";
-import {TagDelimiter} from "../Utils/TagDelimiter";
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
+import {MultipleEntityInstanceTranslate} from "../../Utils/MultipleEntityInstanceTranslate";
+import {MultipleEntityInstancesCollector} from "../MultipleEntityInstancesCollector";
+import {TagDelimiter} from "../../Utils/TagDelimiter";
+import {RcsbFvQuery} from "../../../RcsbGraphQL/RcsbFvQuery";
+import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
 
-export class ObservedSequenceCollector extends SequenceCollector{
+export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
     private entityInstanceMap: MultipleEntityInstanceTranslate = new MultipleEntityInstanceTranslate();
-    private unobservedIntervalsHashMap: Map<string,string> = new Map<string, string>();
-    private entityTargets: Set<string> = new Set<string>();
-    private entityInstanceTargets: Set<string> = new Set<string>();
     private unObservedMap: Map<string,Set<number>> = new Map<string, Set<number>>();
+    private sequenceCollector: SequenceCollector = new SequenceCollector();
+    private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
+    private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
     public collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
         return this.collectUnmodeledRegions(requestConfig.queryId, requestConfig.from).then(result=> {
             this.loadObservedRegions(result);
-            return super.collect(requestConfig, this.collectEntityInstanceMap.bind(this));
+            return this.sequenceCollector.collect(requestConfig, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
         });
+    }
+
+    public getTargets():Promise<Array<string>> {
+        return this.sequenceCollector.getTargets();
+    }
+
+    public getSequenceLength(): number{
+        return this.sequenceCollector.getSequenceLength();
+    }
+
+    public getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate {
+        return this.polymerEntityInstanceTranslator;
+    }
+
+    public query(): RcsbFvQuery {
+        return this.rcsbFvQuery;
+    }
+
+    public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
+        this.polymerEntityInstanceTranslator = p;
     }
 
     private loadObservedRegions(results : Array<AnnotationFeatures>){
@@ -54,7 +76,7 @@ export class ObservedSequenceCollector extends SequenceCollector{
     }
 
     private collectUnmodeledRegions(queryId: string, reference: SequenceReference): Promise<Array<AnnotationFeatures>>{
-        return this.rcsbFvQuery.requestRcsbPdbAnnotations({
+        return this.query().requestRcsbPdbAnnotations({
             queryId: queryId,
             reference: reference,
             sources: [Source.PdbInstance],
@@ -67,7 +89,7 @@ export class ObservedSequenceCollector extends SequenceCollector{
         });
     }
 
-    protected tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
+    private tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
         if(this.entityInstanceMap.get(commonContext.targetId)!=null){
             const asymIds: Array<string> = this.entityInstanceMap.get(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
             const entryId: string = commonContext.targetId.split(TagDelimiter.entity)[0];
@@ -182,5 +204,7 @@ export class ObservedSequenceCollector extends SequenceCollector{
             return null;
         });
     }
+
+
 
 }
