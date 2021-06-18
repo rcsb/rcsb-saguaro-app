@@ -11,14 +11,14 @@ export interface PfvBuilderInterface {
 }
 
 export class RcsbFvGeneralBuilder {
-     static buildPfv(elementId: string, config: PfvBuilderInterface): Promise<null> {
+    static async buildPfv(elementId: string, config: PfvBuilderInterface): Promise<void> {
         const alignmentSource: SequenceReference = config.alignmentSource ?? config.reference;
         const sources = [Source.Uniprot];
         if(config.reference == SequenceReference.PdbEntity)
             sources.unshift(Source.PdbEntity);
         if(config.reference == SequenceReference.PdbInstance)
             sources.unshift(Source.PdbInstance);
-        return new Promise<null>((resolve,reject)=> {
+        return new Promise<void>((resolve,reject)=> {
             try {
                 RcsbFvCoreBuilder.createFv({
                     elementId: elementId,

@@ -16,7 +16,7 @@ import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../U
 import {MultipleEntityInstanceTranslate} from "../../Utils/MultipleEntityInstanceTranslate";
 import {MultipleEntityInstancesCollector} from "../MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../Utils/TagDelimiter";
-import {RcsbFvQuery} from "../../../RcsbGraphQL/RcsbFvQuery";
+import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
 import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {
@@ -24,14 +24,13 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     private entityInstanceMap: MultipleEntityInstanceTranslate = new MultipleEntityInstanceTranslate();
     private unObservedMap: Map<string,Set<number>> = new Map<string, Set<number>>();
     private sequenceCollector: SequenceCollector = new SequenceCollector();
-    private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
+    readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
-    public collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
-        return this.collectUnmodeledRegions(requestConfig.queryId, requestConfig.from).then(result=> {
-            this.loadObservedRegions(result);
-            return this.sequenceCollector.collect(requestConfig, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
-        });
+    public async collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
+        const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig.queryId, requestConfig.from);
+        this.loadObservedRegions(annotationFeatures);
+        return await this.sequenceCollector.collect(requestConfig, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
     }
 
     public getTargets():Promise<Array<string>> {
@@ -44,10 +43,6 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
     public getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate {
         return this.polymerEntityInstanceTranslator;
-    }
-
-    public query(): RcsbFvQuery {
-        return this.rcsbFvQuery;
     }
 
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
@@ -76,7 +71,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     }
 
     private collectUnmodeledRegions(queryId: string, reference: SequenceReference): Promise<Array<AnnotationFeatures>>{
-        return this.query().requestRcsbPdbAnnotations({
+        return this.rcsbFvQuery.requestRcsbPdbAnnotations({
             queryId: queryId,
             reference: reference,
             sources: [Source.PdbInstance],

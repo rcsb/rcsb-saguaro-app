@@ -34,29 +34,13 @@ interface BuildSequenceDataInterface extends TranslateContextInterface{
 
 export class SequenceCollectorHelper {
 
-    private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate;
-
-    constructor(entityInstanceTranslator: PolymerEntityInstanceTranslate) {
-        this.entityInstanceTranslator = entityInstanceTranslator;
-    }
+    private entityInstanceTranslator: PolymerEntityInstanceTranslate;
 
     public buildAlignments(
         alignmentData: BuildAlignementsInterface,
         dynamicDisplayFlag: boolean,
         tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface)=>Array<AlignedObservedRegion>
     ): {alignments: Array<RcsbFvRowConfigInterface>, targets: Array<string>} {
-
-        const findMismatch = (seqA: string, seqB: string) => {
-            const out = [];
-            if (seqA.length === seqB.length) {
-                for (let i = 0; i < seqA.length; i++) {
-                    if (seqA.charAt(i) !== seqB.charAt(i)) {
-                        out.push(i);
-                    }
-                }
-            }
-            return out;
-        };
 
         const targets: Array<string> = new Array<string>();
         const alignmentsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
@@ -210,7 +194,7 @@ export class SequenceCollectorHelper {
             };
         }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.entityInstanceTranslator!=null) {
             rowTitle = {
-                visibleTex: this.buildInstanceId(requestConfig.queryId.split(TagDelimiter.instance)[1]),
+                visibleTex: this.buildInstanceId(requestConfig.queryId),
                 style: {
                     fontWeight:"bold",
                 }
@@ -231,7 +215,7 @@ export class SequenceCollectorHelper {
         if (alignmentData.to === SequenceReference.PdbInstance && this.entityInstanceTranslator != null) {
             const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
-                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
+                visibleTex:this.buildInstanceId(targetAlignment.target_id),
                 url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
@@ -251,7 +235,7 @@ export class SequenceCollectorHelper {
         } else if ( alignmentData.to === SequenceReference.PdbInstance && !alignmentData.excludeAlignmentLinks && this.entityInstanceTranslator != null) {
             const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);
             rowTitle = {
-                visibleTex:this.buildInstanceId(targetAlignment.target_id.split(TagDelimiter.instance)[1]),
+                visibleTex:this.buildInstanceId(targetAlignment.target_id),
                 url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.instance)[0]+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
@@ -283,8 +267,25 @@ export class SequenceCollectorHelper {
         return o;
     }
 
-    public buildInstanceId(labelAsymId: string): string{
+    public buildInstanceId(targetId: string): string{
+        const labelAsymId: string = targetId.split(TagDelimiter.instance)[1]
         const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
-        return labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
+        return (labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]");
     }
+
+    public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
+        this.entityInstanceTranslator = p;
+    }
+}
+
+function findMismatch(seqA: string, seqB: string): Array<number> {
+    const out: Array<number> = [];
+    if (seqA.length === seqB.length) {
+        for (let i = 0; i < seqA.length; i++) {
+            if (seqA.charAt(i) !== seqB.charAt(i)) {
+                out.push(i);
+            }
+        }
+    }
+    return out;
 }

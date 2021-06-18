@@ -24,7 +24,7 @@ export interface InstanceSequenceConfig {
 
 export class RcsbFvInstanceBuilder {
 
-    static buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig): Promise<void> {
+    static async buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig): Promise<void> {
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementEntrySelectId, entryIdList.map(entryId=>{
             return {
                 label:entryId,
@@ -35,25 +35,23 @@ export class RcsbFvInstanceBuilder {
             }
         }),{addTitle:true, dropdownTitle:"PDB"});
         const entryId: string = entryIdList[0];
-        return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementInstanceSelectId, entryId, {...config, displayAuthId: true});
+        await RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementInstanceSelectId, entryId, {...config, displayAuthId: true});
+        return void 0;
     }
 
-    static buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<void> {
+    static async buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<void> {
         const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
-        return instanceCollector.collect({entry_id:entryId}).then(result=>{
-            if(result.length == 0){
-                RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
-            }else{
-                rcsbFvCtxManager.setEntityToInstance(entryId, new PolymerEntityInstanceTranslate(result));
-                return RcsbFvInstanceBuilder.buildSelectorInstanceFv(result, elementFvId, elementSelectId, entryId, config);
-            }
-        }).catch(error=>{
-            console.error(error);
-            throw error;
-        });
+        const result: Array<PolymerEntityInstanceInterface> = await instanceCollector.collect({entry_id:entryId});
+        if(result.length == 0){
+            RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
+            return void 0;
+        }else{
+            rcsbFvCtxManager.setEntityToInstance(entryId, new PolymerEntityInstanceTranslate(result));
+            return RcsbFvInstanceBuilder.buildSelectorInstanceFv(result, elementFvId, elementSelectId, entryId, config);
+        }
     }
 
-    static buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<void>{
+    static async buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<void>{
         const filteredInstanceList: Array<PolymerEntityInstanceInterface> = instanceList.filter(i=>(config.filterInstances == null || config.filterInstances.has(i.asymId)));
         const groupedInstances: Map<string, Array<SelectOptionInterface>> = new Map<string, Array<SelectOptionInterface>>();
         filteredInstanceList.forEach((instance)=>{
@@ -66,18 +64,17 @@ export class RcsbFvInstanceBuilder {
                 groupLabel: `ENTITY ${instance.entityId} - ${instance.names}`,
                 shortLabel: config.displayAuthId === true ? instance.authId : label,
                 optId: instance.authId,
-                onChange: () => {
-                    RcsbFvInstanceBuilder.buildInstanceFv(
+                onChange: async () => {
+                    await RcsbFvInstanceBuilder.buildInstanceFv(
                         elementFvId,
                         instance.rcsbId
-                    ).then(() => {
-                        if (typeof config.onChangeCallback === "function")
-                            config.onChangeCallback({
-                                pdbId: instance.entryId,
-                                authId: instance.authId,
-                                asymId: instance.asymId
-                            });
-                    });
+                    );
+                    if (typeof config.onChangeCallback === "function")
+                        config.onChangeCallback({
+                            pdbId: instance.entryId,
+                            authId: instance.authId,
+                            asymId: instance.asymId
+                        });
                 }
             })
         });
@@ -95,17 +92,17 @@ export class RcsbFvInstanceBuilder {
             label: group[0].groupLabel,
             options: group
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle:"INSTANCE", width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
-        return RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId).then(() => {
-            if (typeof config.onChangeCallback === "function")
-                config.onChangeCallback({
-                    pdbId: filteredInstanceList[index].entryId,
-                    authId: filteredInstanceList[index].authId,
-                    asymId: filteredInstanceList[index].asymId
-                });
-        });
+        await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId);
+        if (typeof config.onChangeCallback === "function")
+            config.onChangeCallback({
+                pdbId: filteredInstanceList[index].entryId,
+                authId: filteredInstanceList[index].authId,
+                asymId: filteredInstanceList[index].asymId
+            });
+        return void 0;
     }
 
-    static buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
+    static async buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
         return new Promise<void>((resolve,reject)=>{
             try {
                 const buildFv: (p: PolymerEntityInstanceTranslate) => void = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvInstance, {
@@ -119,7 +116,6 @@ export class RcsbFvInstanceBuilder {
                 reject(e);
             }
         });
-
     }
 
 }

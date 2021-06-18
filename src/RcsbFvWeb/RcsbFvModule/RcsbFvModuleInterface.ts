@@ -1,5 +1,6 @@
 import {FilterInput, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
@@ -25,7 +26,7 @@ export interface RcsbFvModuleBuildInterface {
 
 export interface RcsbFvModuleInterface {
     display(): void;
-    build(buildConfig: RcsbFvModuleBuildInterface): void;
+    build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;
     getTargets(): Promise<Array<string>>;
     setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
 }

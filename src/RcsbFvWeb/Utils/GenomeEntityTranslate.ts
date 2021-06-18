@@ -1,5 +1,5 @@
 import {AlignmentResponse, QueryAlignmentArgs, SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class GenomeEntityTranslate {
 
@@ -24,7 +24,7 @@ export class GenomeEntityTranslate {
         })
     }
 
-    getChrMap(): Promise<Map<string, Array<string>>>{
+    public async getChrMap(): Promise<Map<string, Array<string>>>{
         return new Promise<Map<string, Array<string>>>( (resolve,reject)=>{
             const recursive = ()=>{
                 if(this.finished){
@@ -39,13 +39,13 @@ export class GenomeEntityTranslate {
         })
     }
 
-    private static entityChromosomes(entityId: string): Promise<AlignmentResponse>{
+    private static async entityChromosomes(entityId: string): Promise<AlignmentResponse>{
         const request: QueryAlignmentArgs = {
             from: SequenceReference.PdbEntity,
             to: SequenceReference.NcbiGenome,
             queryId: entityId
         };
-        const rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
-        return rcsbFvQuery.requestAlignment(request);
+        const rcsbFvQuery: RcsbClient = new RcsbClient();
+        return await rcsbFvQuery.requestAlignment(request);
     }
 }

@@ -7,15 +7,16 @@ import {
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/SequenceCollector";
 
-export class RcsbFvUniprotInstance extends RcsbFvAbstractModule implements RcsbFvModuleInterface{
+export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
 
-    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv> {
         const upAcc: string = buildConfig.upAcc;
         const entityId:string = buildConfig.entityId;
         const instanceId: string = buildConfig.instanceId;
         const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig;
-
         let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
             sources = additionalConfig.sources;
@@ -32,31 +33,27 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule implements RcsbF
         }];
         if(additionalConfig != null && additionalConfig.filters!=null && additionalConfig.filters.length>0)
             filters = additionalConfig.filters;
-        this.sequenceCollector.collect({
+        const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbInstance,
             filterByTargetContains: instanceId,
             excludeFirstRowLink: true
-        }).then(seqResult=>{
-            this.annotationCollector.collect({
-                queryId: upAcc,
-                reference: SequenceReference.Uniprot,
-                sources:sources,
-                filters:filters,
-                collectSwissModel:true
-            }).then(annResult=>{
-                this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
-                this.boardConfigData.includeAxis = true;
-                this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
-                this.display();
-                if(buildConfig.resolve!=null)buildConfig.resolve();
-            }).catch(error=>{
-                console.error(error);
-            });
-        }).catch(error=>{
-            console.error(error);
         });
+        const annResult: Array<RcsbFvRowConfigInterface> = await this.annotationCollector.collect({
+            queryId: upAcc,
+            reference: SequenceReference.Uniprot,
+            sources:sources,
+            filters:filters,
+            collectSwissModel:true
+        });
+        this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
+        this.boardConfigData.includeAxis = true;
+        this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
+        this.display();
+        if(buildConfig.resolve!=null)
+            await buildConfig.resolve();
+        return this.rcsbFv;
     }
 
 }

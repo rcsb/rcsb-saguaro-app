@@ -3,7 +3,7 @@ import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 
 export class RcsbFvPairwiseAligmentBuilder {
-     static buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): Promise<void> {
+     static async buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): Promise<void> {
          return new Promise<void>((resolve, reject)=>{
              if(elementId == null)
                  throw ("DOM elementId is null");

@@ -1,4 +1,4 @@
-import {RcsbFvQuery} from "../../RcsbGraphQL/RcsbFvQuery";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     CorePolymerEntity,
     QueryPolymer_EntitiesArgs
@@ -8,7 +8,7 @@ import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "./EntryIn
 
 export class MultipleEntityInstancesCollector {
 
-    private rcsbFvQuery: RcsbFvQuery = new RcsbFvQuery();
+    private rcsbFvQuery: RcsbClient = new RcsbClient();
 
     public collect(requestConfig: QueryPolymer_EntitiesArgs):  Promise<Array<PolymerEntityInstanceInterface>> {
         return this.rcsbFvQuery.requestMultipleEntityInstances(requestConfig).then(result=>{

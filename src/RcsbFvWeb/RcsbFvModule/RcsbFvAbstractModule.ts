@@ -9,10 +9,11 @@ import {AnnotationCollector} from "../CollectTools/AnnotationCollector/Annotatio
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {SequenceCollectorInterface} from "../CollectTools/SequenceCollector/SequenceCollectorInterface";
 import {AnnotationCollectorInterface} from "../CollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 
 
 
-export abstract class RcsbFvAbstractModule {
+export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     protected readonly rcsbFv: RcsbFv;
     protected readonly elementId: string;
@@ -39,8 +40,9 @@ export abstract class RcsbFvAbstractModule {
         this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
     }
 
-    public getTargets(): Promise<Array<string>>{
-        return this.sequenceCollector.getTargets();
+    public async getTargets(): Promise<Array<string>>{
+        return await this.sequenceCollector.getTargets();
     }
 
+    abstract async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;
 }

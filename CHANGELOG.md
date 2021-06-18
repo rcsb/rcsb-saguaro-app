@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [1.5.0] - Refactoring
+### Code Refactor
+- Inheritance to composition for collector classes
+- async/await promise style
+
 ## [1.4.8] - 2021-06-15
 ### Optimization
 - RcsbFvContextManager never duplicates requests. It tracks individual request status ("available"|"pending")

@@ -6,22 +6,16 @@ export class SwissModelQueryAnnotations {
     private static readonly url:string  = (resource as any).swiss_model.url;
     private static readonly urlSuffix: string = (resource as any).swiss_model.url_suffix;
 
-    public static request(uniprotAcc: string): Promise<Array<AnnotationFeatures>>{
-        return new Promise<Array<AnnotationFeatures>>((resolve, reject)=>{
-            const url: string = SwissModelQueryAnnotations.url+uniprotAcc+SwissModelQueryAnnotations.urlSuffix;
-            const response: Promise<Response> = fetch(url);
-            response.then((result)=>{
-                result.json().then((jsonResponse)=>{
-                    resolve(SwissModelQueryAnnotations.parse(jsonResponse as SwissModelResultInterface));
-                }).catch((error)=>{
-                    console.error(error);
-                    reject(error);
-                });
-            }).catch((error)=>{
-                console.error(error);
-                reject(error);
-            });
-        });
+    public static async request(uniprotAcc: string): Promise<Array<AnnotationFeatures>>{
+        const url: string = SwissModelQueryAnnotations.url+uniprotAcc+SwissModelQueryAnnotations.urlSuffix;
+        try{
+            const response: Response = await fetch(url);
+            const jsonResponse: SwissModelResultInterface = await response.json();
+            return SwissModelQueryAnnotations.parse(jsonResponse);
+        } catch(error) {
+            console.error(error);
+            throw(error);
+        }
     }
 
     private static parse(data: SwissModelResultInterface): Array<AnnotationFeatures>{

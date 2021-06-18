@@ -99,7 +99,7 @@ export class RcsbAnnotationConfig {
                 this.annotationMap.set(newType, {
                     type: newType,
                     display: this.annotationMap.get(type).display,
-                    color: this.randomRgba(title),
+                    color: RcsbAnnotationConfig.randomRgba(title),
                     prefix: this.annotationMap.get(type).title,
                     title: title,
                     provenanceList: new Set<string>()
@@ -184,7 +184,7 @@ export class RcsbAnnotationConfig {
         return null;
     }
 
-    randomRgba(str?: string): string{
+    static randomRgba(str?: string): string{
         if(typeof str === "string"){
             let hash: number = 0;
             for (let i = 0; i < str.length; i++) {

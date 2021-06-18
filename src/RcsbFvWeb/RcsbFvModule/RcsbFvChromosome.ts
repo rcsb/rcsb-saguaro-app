@@ -8,6 +8,7 @@ import {
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 import {
+    RcsbFv,
     RcsbFvDisplayTypes,
     RcsbFvLocationViewInterface,
     RcsbFvRowConfigInterface,
@@ -72,7 +73,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
     };
 }
 
-export class RcsbFvChromosome extends RcsbFvAbstractModule implements RcsbFvModuleInterface {
+export class RcsbFvChromosome extends RcsbFvAbstractModule {
     private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
         [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
         [SequenceReference.Uniprot, new Array<Array<TargetAlignment>>()],
@@ -128,7 +129,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule implements RcsbFvModu
         });
     }
 
-    private buildFullGenomeRangeFv(chrId: string){
+    private buildFullGenomeRangeFv(chrId: string): void{
         this.plotChromosomeTitle(chrId);
         this.targetFilterFlag = false;
         this.genomeSequenceTracks(chrId);
@@ -285,7 +286,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule implements RcsbFvModu
         this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein, range, 0);
     }
 
-    private collectChromosomeAlignments(chrId: string, to: SequenceReference, range?:[number,number], index?: number) {
+    private collectChromosomeAlignments(chrId: string, to: SequenceReference, range?:[number,number], index?: number): void {
         if(range != null){
             this.nTasks++;
             this.alignmentCollectorQueue.sendTask({
@@ -663,13 +664,14 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule implements RcsbFvModu
         this.setDisplayView();
     }
 
-    public build(buildConfig: RcsbFvModuleBuildInterface): void {
+    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv> {
         if(buildConfig.elementSelectId)
             this.elementSelectId = buildConfig.elementSelectId;
         if(buildConfig.entityId != null)
-            this.buildPdbGenomeFv(buildConfig.entityId, buildConfig.chrId);
+            await this.buildPdbGenomeFv(buildConfig.entityId, buildConfig.chrId);
         else if(buildConfig.chrId != null)
             this.buildFullGenomeRangeFv(buildConfig.chrId);
+        return this.rcsbFv
     }
 
     public getTargets(): Promise<Array<string>> {
