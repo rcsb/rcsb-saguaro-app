@@ -20,10 +20,6 @@ export function getRcsbFv(elementFvId: string): RcsbFv{
     return rcsbFvCtxManager.getFv(elementFvId);
 }
 
-export function setBoardConfig(boardConfigData: RcsbFvBoardConfigInterface): void{
-    rcsbFvCtxManager.setBoardConfig(boardConfigData);
-}
-
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
 }

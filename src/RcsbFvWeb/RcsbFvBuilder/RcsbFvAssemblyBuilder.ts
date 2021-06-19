@@ -1,21 +1,19 @@
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {EntryAssembliesCollector} from "../CollectTools/EntryAssembliesCollector";
+import {EntryAssembliesCollector} from "../CollectTools/Translators/EntryAssembliesCollector";
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
-import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {EntryAssemblyTranslate} from "../Utils/EntryAssemblyTranslate";
 
 export class RcsbFvAssemblyBuilder {
 
     static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<RcsbFvModulePublicInterface> {
-        const assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
-        const assemblyMap:Map<string,Array<PolymerEntityInstanceInterface>>  = await assemblyCollector.collect({entry_id:entryId});
+        const assemblyTranslate: EntryAssemblyTranslate = await rcsbFvCtxManager.getEntryToAssembly(entryId);
+        const assemblyMap:Map<string,Array<PolymerEntityInstanceInterface>>  = assemblyTranslate.getData();
         if(assemblyMap.size == 0){
             RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
         }else{
-            rcsbFvCtxManager.setEntityToInstance(entryId, new PolymerEntityInstanceTranslate(assemblyMap.get(EntryAssembliesCollector.modelKey)));
-            rcsbFvCtxManager.setButton(elementFvId, elementSelectAssemblyId);
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectAssemblyId, Array.from(assemblyMap.keys()).map(assemblyId=>{
                 return {
                     name: assemblyId,

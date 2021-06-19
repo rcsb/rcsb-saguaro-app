@@ -1,24 +1,25 @@
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
 import {
     CoreAssembly,
     CoreEntry,
     CorePolymerEntityInstance,
     QueryEntryArgs
-} from "../../RcsbGraphQL/Types/Yosemite/GqlTypes";
-import {PolymerEntityInstanceInterface} from "./EntryInstancesCollector";
+} from "../../../RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 
 export class EntryAssembliesCollector {
 
     private rcsbFvQuery: RcsbClient = new RcsbClient();
-    static modelKey: string = "Model";
+    static readonly modelKey: string = "Model";
 
-    public collect(requestConfig: QueryEntryArgs): Promise< Map<string,Array<PolymerEntityInstanceInterface>>> {
-        return this.rcsbFvQuery.requestEntityInstances(requestConfig).then(result=>{
-            return EntryAssembliesCollector.getEntryAssemblies(result);
-        }).catch(error=>{
+    public async collect(requestConfig: QueryEntryArgs): Promise<Map<string,Array<PolymerEntityInstanceInterface>>> {
+        try{
+            const coreEntry: CoreEntry = await this.rcsbFvQuery.requestEntityInstances(requestConfig);
+            return EntryAssembliesCollector.getEntryAssemblies(coreEntry);
+        }catch (error){
             console.log(error);
             throw error;
-        });
+        }
     }
 
     private static getEntryAssemblies(entry: CoreEntry ): Map<string,Array<PolymerEntityInstanceInterface>>{

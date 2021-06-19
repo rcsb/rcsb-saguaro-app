@@ -1,5 +1,5 @@
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreEntry, CorePolymerEntityInstance, Maybe, QueryEntryArgs} from "../../RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
+import {CoreEntry, CorePolymerEntityInstance, Maybe, QueryEntryArgs} from "../../../RcsbGraphQL/Types/Yosemite/GqlTypes";
 
 export interface PolymerEntityInstanceInterface {
     rcsbId: string;
@@ -12,17 +12,18 @@ export interface PolymerEntityInstanceInterface {
     taxIds: Array<string>;
 }
 
-export class EntryInstancesCollector {
+export class PolymerEntityInstancesCollector {
 
     private rcsbFvQuery: RcsbClient = new RcsbClient();
 
-    public collect(requestConfig: QueryEntryArgs): Promise<Array<PolymerEntityInstanceInterface>> {
-        return this.rcsbFvQuery.requestEntityInstances(requestConfig).then(result=>{
-            return EntryInstancesCollector.getEntryInstances(result);
-        }).catch(error=>{
+    public async collect(requestConfig: QueryEntryArgs): Promise<Array<PolymerEntityInstanceInterface>> {
+        try {
+            const result: CoreEntry = await this.rcsbFvQuery.requestEntityInstances(requestConfig);
+            return PolymerEntityInstancesCollector.getEntryInstances(result);
+        }catch (error) {
             console.log(error);
             throw error;
-        });
+        }
     }
 
     private static getEntryInstances(entry: CoreEntry ): Array<PolymerEntityInstanceInterface>{
@@ -30,7 +31,7 @@ export class EntryInstancesCollector {
         if(entry?.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
                 if(entity.polymer_entity_instances instanceof Array){
-                    EntryInstancesCollector.parsePolymerEntityInstances(entity.polymer_entity_instances, out);
+                    PolymerEntityInstancesCollector.parsePolymerEntityInstances(entity.polymer_entity_instances, out);
                 }
             })
         }

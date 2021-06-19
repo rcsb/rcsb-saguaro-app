@@ -1,4 +1,4 @@
-import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
 import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "./TagDelimiter";
@@ -12,14 +12,16 @@ export interface TranslateContextInterface {
 }
 
 export class PolymerEntityInstanceTranslate{
-    private instanceAsymToAuth: Map<string,string> = new Map<string, string>();
-    private instanceAuthToAsym: Map<string,string> = new Map<string, string>();
-    private instanceAsymToEntity: Map<string,string> = new Map<string, string>();
-    private entityToAsym: Map<string,Set<string>> = new Map<string, Set<string>>();
-    private instanceAuthResIds: Map<string,Array<string>> = new Map<string, Array<string>>();
+    private readonly rawData: Array<PolymerEntityInstanceInterface>;
+    private readonly instanceAsymToAuth: Map<string,string> = new Map<string, string>();
+    private readonly instanceAuthToAsym: Map<string,string> = new Map<string, string>();
+    private readonly instanceAsymToEntity: Map<string,string> = new Map<string, string>();
+    private readonly entityToAsym: Map<string,Set<string>> = new Map<string, Set<string>>();
+    private readonly instanceAuthResIds: Map<string,Array<string>> = new Map<string, Array<string>>();
     private readonly INDEX_NAME: string = "auth";
 
     constructor(data: Array<PolymerEntityInstanceInterface>) {
+        this.rawData = data;
         data.forEach(d=>{
             this.instanceAsymToAuth.set(d.asymId,d.authId);
             this.instanceAuthToAsym.set(d.authId,d.asymId);
@@ -31,31 +33,35 @@ export class PolymerEntityInstanceTranslate{
         });
     }
 
-    translateEntityToAsym(id: string): Array<string>{
+    public getData(): Array<PolymerEntityInstanceInterface>{
+        return this.rawData;
+    }
+
+    public translateEntityToAsym(id: string): Array<string>{
         if(this.entityToAsym.has(id))
             return Array.from( this.entityToAsym.get(id) );
         return null;
     }
 
-    translateAsymToEntity(id: string): string{
+    public translateAsymToEntity(id: string): string{
         if(this.instanceAsymToEntity.has(id))
             return this.instanceAsymToEntity.get(id);
         return null;
     }
 
-    translateAsymToAuth(id: string): string{
+    public translateAsymToAuth(id: string): string{
         if(this.instanceAsymToAuth.has(id))
             return this.instanceAsymToAuth.get(id);
         return null;
     }
 
-    translateAuthToAsym(id: string): string{
+    public translateAuthToAsym(id: string): string{
         if(this.instanceAuthToAsym.has(id))
             return this.instanceAuthToAsym.get(id);
         return null;
     }
 
-    translateAuthResid(asymId:string, index:number): string{
+    public translateAuthResId(asymId:string, index:number): string{
         if(!this.instanceAuthResIds.has(asymId))
             return null;
         else if(index>this.instanceAuthResIds.get(asymId).length)
@@ -66,7 +72,7 @@ export class PolymerEntityInstanceTranslate{
             return this.instanceAuthResIds.get(asymId)[index-1];
     }
 
-    addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+    public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
         if(alignmentContext.from === SequenceReference.PdbInstance) {
             const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];

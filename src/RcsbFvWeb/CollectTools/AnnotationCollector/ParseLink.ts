@@ -1,6 +1,6 @@
 import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
-import * as resource from "../../RcsbServerConfig/web.resources.json";
-import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import * as resource from "../../../RcsbServerConfig/web.resources.json";
+import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 
 export class ParseLink {
     private static readonly rcsbLigand: RegExp = new RegExp(/^(ligand)(\s)(\w{1,3})$/);

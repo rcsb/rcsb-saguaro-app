@@ -14,10 +14,11 @@ import {
 } from "./SequenceCollector";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
 import {MultipleEntityInstanceTranslate} from "../../Utils/MultipleEntityInstanceTranslate";
-import {MultipleEntityInstancesCollector} from "../MultipleEntityInstancesCollector";
+import {MultipleEntityInstancesCollector} from "../Translators/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../Utils/TagDelimiter";
 import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
 import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
+import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
@@ -190,16 +191,11 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
         return [{...region,unModelled:false}];
     }
 
-    private collectEntityInstanceMap(entityIds: Array<string>): Promise<null>{
+    private async collectEntityInstanceMap(entityIds: Array<string>): Promise<void>{
         const entityInstanceCollector: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
-        return entityInstanceCollector.collect({
-            entity_ids:entityIds
-        }).then(result=>{
-            this.entityInstanceMap.add(result);
-            return null;
-        });
+        const result: Array<PolymerEntityInstanceInterface> = await entityInstanceCollector.collect({entity_ids:entityIds});
+        this.entityInstanceMap.add(result);
+        return void 0;
     }
-
-
 
 }

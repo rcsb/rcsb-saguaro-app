@@ -1,5 +1,5 @@
 import {PolymerEntityInstanceTranslate} from "./PolymerEntityInstanceTranslate";
-import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
 import {TagDelimiter} from "./TagDelimiter";
 
 export class MultipleEntityInstanceTranslate {

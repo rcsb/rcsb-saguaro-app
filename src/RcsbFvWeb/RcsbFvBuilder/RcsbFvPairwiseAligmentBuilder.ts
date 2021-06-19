@@ -36,7 +36,7 @@ export class RcsbFvPairwiseAligmentBuilder {
                  rcsbFvCtxManager.setFv(elementId,rcsbFV);
              }
              //TODO this need to resolve RcsbFvModulePublicInterface
-             resolve(null);
+             resolve(null as RcsbFvModulePublicInterface);
          });
     }
 }

@@ -16,7 +16,6 @@ export {
     buildUniprotEntityFv,
     buildUniprotEntityInstanceFv,
     buildUniprotFv,
-    setBoardConfig,
     getRcsbFv,
     unmount
 } from "./RcsbFvWeb/RcsbFvBuilder";
