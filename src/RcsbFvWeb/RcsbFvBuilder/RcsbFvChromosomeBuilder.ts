@@ -7,15 +7,16 @@ import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
+import {RcsbFvModuleInterface, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 
 export class RcsbFvChromosomeBuilder {
 
-    static async buildFullChromosome(elementFvId:string, chrId: string): Promise<void>{
+    static async buildFullChromosome(elementFvId:string, chrId: string): Promise<RcsbFvModulePublicInterface>{
         return await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, null, chrId);
     }
 
-    static async buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<void>{
-        return new Promise<void>(async (resolve, reject)=>{
+    static async buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<RcsbFvModulePublicInterface>{
+        return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
             rcsbFvCtxManager.setBoardConfig({rowTitleWidth:160});
             const instanceCollector: EntryInstancesCollector = new EntryInstancesCollector();
             const result = await instanceCollector.collect({entry_id:entryId});
@@ -39,8 +40,8 @@ export class RcsbFvChromosomeBuilder {
                 }).map((e,n)=>{
                     const entityId: string = e.entryId+TagDelimiter.entity+e.entityId;
                     if(n == 0) {
-                        RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, chromosomeSelectId, entityId).then(()=>{
-                            resolve();
+                        RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, chromosomeSelectId, entityId).then((module)=>{
+                            resolve(module);
                         });
                     }
                     return{
@@ -56,14 +57,14 @@ export class RcsbFvChromosomeBuilder {
         });
     }
 
-    static async buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject)=>{
+    static async buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
             const rcsbFvSingleViewer: RcsbFv = rcsbFvCtxManager.getFv(elementFvId) ?? RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementFvId);
             if (rcsbFvCtxManager.getFv(elementFvId) == null ){
                 rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
             }
-            const chrViewer: RcsbFvChromosome = new RcsbFvChromosome(elementFvId,rcsbFvSingleViewer);
-            await chrViewer.build({entityId: entityId, elementSelectId: elementSelectId});
+            const chrViewer: RcsbFvModuleInterface = new RcsbFvChromosome(elementFvId,rcsbFvSingleViewer);
+            await chrViewer.build({entityId: entityId, elementSelectId: elementSelectId, resolve:resolve});
             const targets: Array<string>  = await chrViewer.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
                 return {
@@ -75,12 +76,11 @@ export class RcsbFvChromosomeBuilder {
                     }
                 };
             }),{addTitle: false, width:190, dropdownTitle: "CHROMOSOME"});
-            resolve();
         });
     }
 
-    static async buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<void> {
-        return new Promise<void>(async (resolve,reject)=> {
+    static async buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
             try {
                 await RcsbFvCoreBuilder.createFv({
                     elementId: elementFvId,
@@ -88,10 +88,10 @@ export class RcsbFvChromosomeBuilder {
                     config: {
                         entityId: entityId,
                         chrId: chrId,
-                        elementSelectId: elementSelectId
+                        elementSelectId: elementSelectId,
+                        resolve:resolve
                     }
                 });
-                resolve()
             }catch(e) {
                 reject(e);
             }

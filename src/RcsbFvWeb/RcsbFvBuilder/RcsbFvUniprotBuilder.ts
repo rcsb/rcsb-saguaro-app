@@ -1,4 +1,4 @@
-import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvAdditionalConfig, RcsbFvModuleInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFvUniprotEntity} from "../RcsbFvModule/RcsbFvUniprotEntity";
 import {TagDelimiter} from "../Utils/TagDelimiter";
@@ -6,20 +6,20 @@ import {RcsbFvUniprotInstance} from "../RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvUniprot} from "../RcsbFvModule/RcsbFvUniprot";
 import {EntryInstancesCollector, PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
 import {SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {buildUniprotEntityInstanceFv, buildUniprotFv} from "../RcsbFvBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
+import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvUniprotBuilder {
 
-    static async buildUniprotMultipleEntitySequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): Promise<void> {
-        return new Promise<void>(async (resolve, reject)=>{
+    static async buildUniprotMultipleEntitySequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
             rcsbFvCtxManager.setBoardConfig({rowTitleWidth:210});
             const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementFvId);
             const ALL:string = "ALL";
-            const rcsbFvUniprot: RcsbFvUniprot = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer);
-            rcsbFvUniprot.build({upAcc:upAcc});
+            const rcsbFvUniprot: RcsbFvModuleInterface = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer);
+            rcsbFvUniprot.build({upAcc:upAcc, resolve:resolve});
             rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
             const targets: Array<string>  = await rcsbFvUniprot.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
@@ -65,12 +65,11 @@ export class RcsbFvUniprotBuilder {
                     }
                 }
             }))
-            resolve();
         });
     }
 
-    static async buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
-        return new Promise<void>((resolve,reject)=> {
+    static async buildUniprotFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
             try {
                 RcsbFvCoreBuilder.createFv({
                     elementId: elementId,
@@ -83,10 +82,10 @@ export class RcsbFvUniprotBuilder {
         });
     }
 
-    static async buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
-        return new Promise<void>(async (resolve,reject)=> {
+    static async buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
             try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => void = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvUniprotEntity, {
+                const buildFv: (p: PolymerEntityInstanceTranslate) => Promise<RcsbFvModulePublicInterface> = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvUniprotEntity, {
                     upAcc: upAcc,
                     entityId: entityId,
                     additionalConfig: additionalConfig,
@@ -100,10 +99,10 @@ export class RcsbFvUniprotBuilder {
         });
     }
 
-    static async buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<void> {
-        return new Promise<void>(async (resolve,reject)=> {
+    static async buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
             try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => void = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvUniprotInstance, {
+                const buildFv: (p: PolymerEntityInstanceTranslate) => Promise<RcsbFvModulePublicInterface> = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvUniprotInstance, {
                     upAcc: upAcc,
                     entityId: entityId,
                     instanceId: instanceId,

@@ -62,7 +62,10 @@
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
-    RcsbFvWebApp.buildInstanceSequenceFv("pfv","select","2uzi",{});
+    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select","2uzi",{});
+    module.then(result=>{
+        console.log(result);
+    });
 </script>
 
 

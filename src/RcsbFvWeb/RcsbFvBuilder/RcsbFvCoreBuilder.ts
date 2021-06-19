@@ -1,7 +1,11 @@
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
-import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {
+    RcsbFvModuleBuildInterface,
+    RcsbFvModuleInterface,
+    RcsbFvModulePublicInterface
+} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
 import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 
@@ -14,22 +18,18 @@ export interface CreateFvInterface {
 
 export class RcsbFvCoreBuilder {
 
-    static async getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>void, resolve?:()=>Promise<void>): Promise<void>{
+    static async getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>Promise<RcsbFvModulePublicInterface>): Promise<RcsbFvModulePublicInterface>{
         const entityToInstance: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
-        f(entityToInstance);
-        if(resolve!=undefined){
-            await resolve();
-        }
-        return void 0;
+        return await f(entityToInstance);
     }
 
     static createFvBuilder(
         elementId: string,
         fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
         config: RcsbFvModuleBuildInterface
-    ): ((p: PolymerEntityInstanceTranslate)=>void) {
-        return async (p: PolymerEntityInstanceTranslate)=>{
-            await RcsbFvCoreBuilder.createFv({
+    ): ((p: PolymerEntityInstanceTranslate)=>Promise<RcsbFvModulePublicInterface>) {
+        return (p: PolymerEntityInstanceTranslate)=>{
+            return RcsbFvCoreBuilder.createFv({
                 elementId:elementId,
                 fvModuleI:fvModuleI,
                 config:config,
@@ -38,23 +38,24 @@ export class RcsbFvCoreBuilder {
         }
     }
 
-    static async createFv (createFvI: CreateFvInterface): Promise<void> {
+    static async createFv (createFvI: CreateFvInterface): Promise<RcsbFvModulePublicInterface> {
         const elementId: string = createFvI.elementId;
         const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
+        let rcsbFvInstance: RcsbFvModuleInterface;
         if (rcsbFvCtxManager.getFv(elementId) != null) {
-            const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
+            rcsbFvInstance = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
             if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
             await rcsbFvInstance.build(config);
         } else {
             const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementId);
-            const rcsbFvInstance: RcsbFvModuleInterface = new fvModuleI(elementId, rcsbFvSingleViewer);
+            rcsbFvInstance = new fvModuleI(elementId, rcsbFvSingleViewer);
             if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
             await rcsbFvInstance.build(config);
             rcsbFvCtxManager.setFv(elementId, rcsbFvSingleViewer);
         }
-        return void 0;
+        return rcsbFvInstance;
     }
 
     static buildRcsbFvSingleViewer(elementId: string): RcsbFv{

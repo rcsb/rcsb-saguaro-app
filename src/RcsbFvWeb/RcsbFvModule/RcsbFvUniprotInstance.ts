@@ -6,7 +6,7 @@ import {
     Source
 } from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
-import {RcsbFvModuleInterface, RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/SequenceCollector";
 
@@ -52,7 +52,7 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
         this.display();
         if(buildConfig.resolve!=null)
-            await buildConfig.resolve();
+            buildConfig.resolve(this);
         return this.rcsbFv;
     }
 

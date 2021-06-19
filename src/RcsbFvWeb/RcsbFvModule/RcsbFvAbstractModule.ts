@@ -10,6 +10,7 @@ import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTran
 import {SequenceCollectorInterface} from "../CollectTools/SequenceCollector/SequenceCollectorInterface";
 import {AnnotationCollectorInterface} from "../CollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
+import {Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 
 
 
@@ -40,8 +41,24 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
     }
 
+    public getFv(): RcsbFv {
+        return this.rcsbFv;
+    }
+
     public async getTargets(): Promise<Array<string>>{
         return await this.sequenceCollector.getTargets();
+    }
+
+    public async getFeatures(): Promise<Array<Feature>>{
+        return await this.annotationCollector.getFeatures();
+    }
+
+    public async getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
+        return await this.annotationCollector.getAnnotationConfigData();
+    }
+
+    public updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void {
+        this.boardConfigData = {...this.boardConfigData, ...config};
     }
 
     abstract async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;

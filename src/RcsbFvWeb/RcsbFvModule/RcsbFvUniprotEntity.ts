@@ -39,7 +39,7 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
         this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
         this.display();
         if(buildConfig.resolve!=null)
-            await buildConfig.resolve();
+            buildConfig.resolve(this);
         return this.rcsbFv;
 
     }

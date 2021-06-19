@@ -671,6 +671,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
             await this.buildPdbGenomeFv(buildConfig.entityId, buildConfig.chrId);
         else if(buildConfig.chrId != null)
             this.buildFullGenomeRangeFv(buildConfig.chrId);
+        buildConfig.resolve(this);
         return this.rcsbFv
     }
 

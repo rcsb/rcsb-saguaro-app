@@ -32,7 +32,7 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
         }
         this.display();
         if(buildConfig.resolve!=null)
-            await buildConfig.resolve();
+            buildConfig.resolve(this);
         return this.rcsbFv;
     }
 

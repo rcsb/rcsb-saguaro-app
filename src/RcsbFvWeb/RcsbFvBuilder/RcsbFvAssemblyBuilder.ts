@@ -4,10 +4,11 @@ import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {EntryAssembliesCollector} from "../CollectTools/EntryAssembliesCollector";
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
 import {PolymerEntityInstanceInterface} from "../CollectTools/EntryInstancesCollector";
+import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 
 export class RcsbFvAssemblyBuilder {
 
-    static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<void> {
+    static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<RcsbFvModulePublicInterface> {
         const assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
         const assemblyMap:Map<string,Array<PolymerEntityInstanceInterface>>  = await assemblyCollector.collect({entry_id:entryId});
         if(assemblyMap.size == 0){
@@ -26,10 +27,10 @@ export class RcsbFvAssemblyBuilder {
                     }
                 }
             }), {dropdownTitle:"ASSEMBLY"});
-            await RcsbFvInstanceBuilder.buildSelectorInstanceFv(assemblyMap.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
+            const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildSelectorInstanceFv(assemblyMap.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
             if(typeof onAsseblyChangeCallback === "function")
                 onAsseblyChangeCallback(EntryAssembliesCollector.modelKey);
-            return void 0;
+            return out;
         }
     }
 

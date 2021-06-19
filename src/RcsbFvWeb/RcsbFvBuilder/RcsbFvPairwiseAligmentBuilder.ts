@@ -1,10 +1,11 @@
 import {PairwiseAlignmentBuilder, PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
+import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 
 export class RcsbFvPairwiseAligmentBuilder {
-     static async buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): Promise<void> {
-         return new Promise<void>((resolve, reject)=>{
+     static async buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): Promise<RcsbFvModulePublicInterface> {
+         return new Promise<RcsbFvModulePublicInterface>((resolve, reject)=>{
              if(elementId == null)
                  throw ("DOM elementId is null");
 
@@ -34,7 +35,8 @@ export class RcsbFvPairwiseAligmentBuilder {
                  })
                  rcsbFvCtxManager.setFv(elementId,rcsbFV);
              }
-             resolve();
+             //TODO this need to resolve RcsbFvModulePublicInterface
+             resolve(null);
          });
     }
 }

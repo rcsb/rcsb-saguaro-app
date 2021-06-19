@@ -26,7 +26,7 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
         this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(seqResult.alignment).concat(annResult) : seqResult.sequence.concat(seqResult.alignment).concat(annResult);
         this.display();
         if(buildConfig.resolve!=null)
-            await buildConfig.resolve();
+            buildConfig.resolve(this);
         return this.rcsbFv;
     }
 

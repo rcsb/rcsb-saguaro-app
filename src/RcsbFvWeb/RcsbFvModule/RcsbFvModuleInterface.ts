@@ -1,6 +1,6 @@
-import {FilterInput, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, FilterInput, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {RcsbFv} from "@rcsb/rcsb-saguaro";
+import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
@@ -21,12 +21,20 @@ export interface RcsbFvModuleBuildInterface {
     chrId?:string;
     additionalConfig?:RcsbFvAdditionalConfig;
     elementSelectId?: string;
-    resolve?(): void;
+    resolve(module:RcsbFvModulePublicInterface): void;
 }
 
-export interface RcsbFvModuleInterface {
+export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     display(): void;
     build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;
     getTargets(): Promise<Array<string>>;
     setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
+    updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void;
+}
+
+export interface RcsbFvModulePublicInterface {
+    getTargets(): Promise<Array<string>>;
+    getFeatures(): Promise<Array<Feature>>;
+    getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
+    getFv(): RcsbFv;
 }

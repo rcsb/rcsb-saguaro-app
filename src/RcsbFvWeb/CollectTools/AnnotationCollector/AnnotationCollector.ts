@@ -5,7 +5,7 @@ import {
 } from '@rcsb/rcsb-saguaro';
 
 import {
-    AnnotationFeatures,
+    AnnotationFeatures, Feature,
     Source
 } from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
@@ -24,8 +24,11 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     private readonly annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
+    private requestStatus: "pending"|"complete" = "pending";
+    private rawFeatures: Array<Feature>;
 
     public async collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
+        this.requestStatus = "pending";
         const annotationFeatures: Array<AnnotationFeatures> = await this.rcsbFvQuery.requestRcsbPdbAnnotations({
             queryId: requestConfig.queryId,
             reference: requestConfig.reference,
@@ -38,6 +41,8 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
             const swissModelData = await SwissModelQueryAnnotations.request(requestConfig.queryId)
             this.processRcsbPdbAnnotations(swissModelData, requestConfig);
         }
+        this.rawFeatures = [].concat.apply([], annotationFeatures.map(af=>af.features));
+        this.requestStatus = "complete";
         return this.annotationsConfigData;
     }
 
@@ -47,6 +52,36 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
         this.polymerEntityInstanceTranslator = p;
+    }
+
+    public async getFeatures(): Promise<Array<Feature>>{
+        return new Promise<Array<Feature>>((resolve, reject)=>{
+            const recursive = ()=>{
+                if(this.requestStatus === "complete"){
+                    resolve(this.rawFeatures);
+                }else{
+                    setTimeout(()=>{
+                        recursive();
+                    },300);
+                }
+            };
+            recursive();
+        })
+    }
+
+    public async getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
+        return new Promise<Array<RcsbFvRowConfigInterface>>((resolve, reject)=>{
+            const recursive = ()=>{
+                if(this.requestStatus === "complete"){
+                    resolve(this.annotationsConfigData);
+                }else{
+                    setTimeout(()=>{
+                        recursive();
+                    },300);
+                }
+            };
+            recursive();
+        })
     }
 
     private processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{
