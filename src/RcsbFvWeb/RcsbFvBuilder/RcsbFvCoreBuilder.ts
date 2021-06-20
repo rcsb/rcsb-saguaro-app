@@ -46,15 +46,15 @@ export class RcsbFvCoreBuilder {
         let rcsbFvInstance: RcsbFvModuleInterface;
         if (rcsbFvCtxManager.getFv(elementId) != null) {
             rcsbFvInstance = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
-            await rcsbFvInstance.build(config);
         } else {
             const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementId);
             rcsbFvInstance = new fvModuleI(elementId, rcsbFvSingleViewer);
-            if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
-            await rcsbFvInstance.build(config);
             rcsbFvCtxManager.setFv(elementId, rcsbFvSingleViewer);
         }
+        if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
+        await rcsbFvInstance.build(config);
+        if(createFvI.config.additionalConfig?.boardConfig)
+            rcsbFvInstance.updateBoardConfig(createFvI.config.additionalConfig.boardConfig);
         return rcsbFvInstance;
     }
 

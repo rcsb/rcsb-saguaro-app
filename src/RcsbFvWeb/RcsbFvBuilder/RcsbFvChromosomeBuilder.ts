@@ -6,8 +6,12 @@ import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {RcsbFv} from "@rcsb/rcsb-saguaro";
-import {RcsbFvModuleInterface, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
+import {
+    RcsbFvAdditionalConfig,
+    RcsbFvModuleInterface,
+    RcsbFvModulePublicInterface
+} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityChromosomeCollector} from "../CollectTools/Translators/PolymerEntityChromosomeCollector";
 
 export class RcsbFvChromosomeBuilder {
@@ -18,8 +22,6 @@ export class RcsbFvChromosomeBuilder {
 
     static async buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<RcsbFvModulePublicInterface>{
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
-            //TODO get rid of ctx board config!
-            rcsbFvCtxManager.setBoardConfig({rowTitleWidth:160});
             const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
             const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData();
             const entitySet: Set<string> = new Set<string>();
@@ -35,25 +37,26 @@ export class RcsbFvChromosomeBuilder {
             }else{
                 const unique: Set<string> = new Set<string>();
                 RcsbFvCoreBuilder.buildSelectButton(elementFvId, entitySelectId,result.filter(r=>{
-                    const included: boolean = unique.has(r.entryId+TagDelimiter.entity+r.entityId);
-                    unique.add(r.entryId+TagDelimiter.entity+r.entityId);
-                    return entityMap.has(r.entryId+TagDelimiter.entity+r.entityId) && !included;
-                }).map((e,n)=>{
-                    const entityId: string = e.entryId+TagDelimiter.entity+e.entityId;
-                    if(n == 0) {
-                        RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, chromosomeSelectId, entityId).then((module)=>{
-                            resolve(module);
-                        });
-                    }
-                    return{
-                        name: e.names + " - " + e.taxIds.join(", "),
-                        label: entityId + " - " + e.names,
-                        shortLabel: entityId,
-                        onChange:async ()=>{
-                            await RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);
+                        const included: boolean = unique.has(r.entryId+TagDelimiter.entity+r.entityId);
+                        unique.add(r.entryId+TagDelimiter.entity+r.entityId);
+                        return entityMap.has(r.entryId+TagDelimiter.entity+r.entityId) && !included;
+                    }).map((e,n)=>{
+                        const entityId: string = e.entryId+TagDelimiter.entity+e.entityId;
+                        if(n == 0) {
+                            RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId, chromosomeSelectId, entityId).then((module)=>{
+                                resolve(module);
+                            });
                         }
-                    }
-                }), {addTitle:true, dropdownTitle:"ENTITY"});
+                        return{
+                            name: e.names + " - " + e.taxIds.join(", "),
+                            label: entityId + " - " + e.names,
+                            shortLabel: entityId,
+                            onChange:async ()=>{
+                                await RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);
+                            }
+                        }
+                    }), {addTitle:true, dropdownTitle:"ENTITY"}
+                );
             }
         });
     }
@@ -64,9 +67,9 @@ export class RcsbFvChromosomeBuilder {
             if (rcsbFvCtxManager.getFv(elementFvId) == null ){
                 rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
             }
-            const chrViewer: RcsbFvModuleInterface = new RcsbFvChromosome(elementFvId,rcsbFvSingleViewer);
-            await chrViewer.build({entityId: entityId, elementSelectId: elementSelectId, resolve:resolve});
-            const targets: Array<string>  = await chrViewer.getTargets();
+            const chrViewer: RcsbFvModulePublicInterface = await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, null, elementSelectId,{boardConfig:{rowTitleWidth:160}});
+            resolve(chrViewer);
+            const targets: Array<string> = await chrViewer.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
                 return {
                     label: chrId,
@@ -80,16 +83,17 @@ export class RcsbFvChromosomeBuilder {
         });
     }
 
-    static async buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<RcsbFvModulePublicInterface> {
-        return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
+    static async buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
             try {
-                await RcsbFvCoreBuilder.createFv({
+                RcsbFvCoreBuilder.createFv({
                     elementId: elementFvId,
                     fvModuleI: RcsbFvChromosome,
                     config: {
                         entityId: entityId,
                         chrId: chrId,
                         elementSelectId: elementSelectId,
+                        additionalConfig:additionalConfig,
                         resolve:resolve
                     }
                 });

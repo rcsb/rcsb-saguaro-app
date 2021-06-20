@@ -1,26 +1,21 @@
-import {RcsbFvAdditionalConfig, RcsbFvModuleInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFvUniprotEntity} from "../RcsbFvModule/RcsbFvUniprotEntity";
 import {TagDelimiter} from "../Utils/TagDelimiter";
 import {RcsbFvUniprotInstance} from "../RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvUniprot} from "../RcsbFvModule/RcsbFvUniprot";
-import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
-import {SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {RcsbFv} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvUniprotBuilder {
 
     static async buildUniprotMultipleEntitySequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): Promise<RcsbFvModulePublicInterface> {
+        const ALL:string = "ALL";
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
-            rcsbFvCtxManager.setBoardConfig({rowTitleWidth:210});
-            const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementFvId);
-            const ALL:string = "ALL";
-            const rcsbFvUniprot: RcsbFvModuleInterface = new RcsbFvUniprot(elementFvId, rcsbFvSingleViewer);
-            await rcsbFvUniprot.build({upAcc:upAcc, resolve:resolve});
-            rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
+            const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {boardConfig:{rowTitleWidth:210}});
+            resolve(rcsbFvUniprot);
             const targets: Array<string>  = await rcsbFvUniprot.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
                     return a.localeCompare(b);

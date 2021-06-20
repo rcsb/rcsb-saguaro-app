@@ -7,6 +7,7 @@ export interface RcsbFvAdditionalConfig{
     filters?:Array<FilterInput>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
+    boardConfig?: Partial<RcsbFvBoardConfigInterface>;
 }
 
 export interface RcsbFvModuleBuildInterface {
@@ -27,7 +28,6 @@ export interface RcsbFvModuleBuildInterface {
 export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     display(): void;
     build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;
-    getTargets(): Promise<Array<string>>;
     setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
     updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void;
 }
