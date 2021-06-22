@@ -1,6 +1,6 @@
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFv} from "@rcsb/rcsb-saguaro";
 import {
     RcsbFvModuleBuildInterface,
     RcsbFvModuleInterface,
@@ -15,63 +15,56 @@ export interface CreateFvInterface {
     config: RcsbFvModuleBuildInterface;
     p?: PolymerEntityInstanceTranslate;
 }
-
+/**
+ * This class provides static methods to build PFVs. PFVs should be always created using methods in this class
+ * */
 export class RcsbFvCoreBuilder {
 
-    static async getPolymerEntityInstanceMapAndBuildFv(entryId: string, f:(p: PolymerEntityInstanceTranslate)=>Promise<RcsbFvModulePublicInterface>): Promise<RcsbFvModulePublicInterface>{
+    /**
+     * @description The main purpose of this method is to have a unique point where Entity to Instance maps are collected.  It forces to generate a <PolymerEntityInstanceTranslate> that will be passed to the PFV create method <getPolymerEntityInstanceMapAndBuildFv>
+     * @param entryId PDB entry Id
+     * @param createFvBuilder This is the function used to create the PFV. Cases where buttons are needed will be created in custom definitions of createFvBuilder. The PFV should be always created calling RcsbFvCoreBuilder.createFv
+     * */
+    static async getPolymerEntityInstanceMapAndCustomBuildFv(entryId: string, createFvBuilder:(p: PolymerEntityInstanceTranslate)=>Promise<RcsbFvModulePublicInterface>): Promise<RcsbFvModulePublicInterface>{
         const entityToInstance: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
-        return await f(entityToInstance);
+        return await createFvBuilder(entityToInstance);
     }
 
-    static createFvBuilder(
+    /**
+     * @description Generic method to create PFVs. This method must be used if no other elements such as buttons are needed.
+     * */
+    static async getPolymerEntityInstanceMapAndBuildFv(
         elementId: string,
+        entryId: string,
         fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
         config: RcsbFvModuleBuildInterface
-    ): ((p: PolymerEntityInstanceTranslate)=>Promise<RcsbFvModulePublicInterface>) {
-        return (p: PolymerEntityInstanceTranslate)=>{
-            return RcsbFvCoreBuilder.createFv({
-                elementId:elementId,
-                fvModuleI:fvModuleI,
-                config:config,
-                p:p
-            });
-        }
+    ): Promise<RcsbFvModulePublicInterface> {
+        const entityToInstance: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
+        return await RcsbFvCoreBuilder.createFv({
+            elementId:elementId,
+            fvModuleI:fvModuleI,
+            config:config,
+            p:entityToInstance
+        });
     }
 
+    /**
+     * @description This method implements a centralized point where PFVs are created. All PFV should be created using this method directly or through <CreateFvInterface.getPolymerEntityInstanceMapAndBuildFv>. In any case PFV should be built using a custom implementation.
+     * */
     static async createFv (createFvI: CreateFvInterface): Promise<RcsbFvModulePublicInterface> {
         const elementId: string = createFvI.elementId;
         const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
-        let rcsbFvInstance: RcsbFvModuleInterface;
-        if (rcsbFvCtxManager.getFv(elementId) != null) {
-            rcsbFvInstance = new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
-        } else {
-            const rcsbFvSingleViewer: RcsbFv = RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementId);
-            rcsbFvInstance = new fvModuleI(elementId, rcsbFvSingleViewer);
-            rcsbFvCtxManager.setFv(elementId, rcsbFvSingleViewer);
-        }
+        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
         if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
-        await rcsbFvInstance.build(config);
         if(createFvI.config.additionalConfig?.boardConfig)
             rcsbFvInstance.updateBoardConfig(createFvI.config.additionalConfig.boardConfig);
+        await rcsbFvInstance.build(config);
+        if(!rcsbFvInstance.activeDisplay())
+            throw "ERROR: Module display failed";
+        config.resolve(rcsbFvInstance);
         return rcsbFvInstance;
-    }
-
-    static buildRcsbFvSingleViewer(elementId: string): RcsbFv{
-        const config: RcsbFvBoardConfigInterface = rcsbFvCtxManager.getBoardConfig() != null ? {
-            rowTitleWidth: 190,
-            trackWidth: 900,
-            ...rcsbFvCtxManager.getBoardConfig()
-        } : {
-            rowTitleWidth: 190,
-            trackWidth: 900
-        };
-        return new RcsbFv({
-                rowConfigData: null,
-                boardConfigData: config,
-                elementId: elementId
-            });
     }
 
     static unmount(elementId:string): void{

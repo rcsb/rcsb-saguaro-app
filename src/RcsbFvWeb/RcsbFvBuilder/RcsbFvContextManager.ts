@@ -5,24 +5,33 @@ import {EntryAssemblyTranslate} from "../Utils/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../CollectTools/Translators/EntryAssembliesCollector";
 import {PolymerEntityChromosomeTranslate} from "../Utils/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../CollectTools/Translators/PolymerEntityChromosomeCollector";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {ObservableHelper} from "../Utils/ObservableHelper";
 
 interface DataStatusInterface<T>{
     data:T;
+    resolveList : Array<(x:T)=>void>;
     status:"pending"|"available";
 }
 
 class RcsbFvContextManager {
     private rcsbFvManager: Map<string, RcsbFv> = new Map<string, RcsbFv>();
     private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
-    private boardConfig: RcsbFvBoardConfigInterface;
     private polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
 
+
     public getFv(elementFvId: string): RcsbFv{
-        return this.rcsbFvManager.get(elementFvId);
+        if( this.rcsbFvManager.has(elementFvId))
+            return this.rcsbFvManager.get(elementFvId);
+        else{
+            const rcsbFvSingleViewer: RcsbFv = buildRcsbFvSingleViewer(elementFvId);
+            rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
+            return rcsbFvSingleViewer;
+        }
     }
 
-    public setFv(elementFvId: string, rcsbFv: RcsbFv): void{
+    private setFv(elementFvId: string, rcsbFv: RcsbFv): void{
         this.rcsbFvManager.set(elementFvId, rcsbFv);
     }
 
@@ -42,16 +51,12 @@ class RcsbFvContextManager {
             this.rcsbButtonManager.delete(elementFvId);
     }
 
-    public getBoardConfig():RcsbFvBoardConfigInterface{
-        return this.boardConfig;
-    }
-
     private setEntityToInstance(entryId: string, map: PolymerEntityInstanceTranslate): void{
-        this.polymerEntityToInstanceMap.set(entryId, {data:map, status: "available"});
+        mapSet<PolymerEntityInstanceTranslate>(this.polymerEntityToInstanceMap.get(entryId), map);
     }
 
     private setEntryToAssembly(entryId: string, map: EntryAssemblyTranslate): void{
-        this.entryToAssemblyMap.set(entryId, {data:map, status: "available"});
+        mapSet<EntryAssemblyTranslate>(this.entryToAssemblyMap.get(entryId), map);
     }
 
     public async getEntityToInstance(entryId: string): Promise<PolymerEntityInstanceTranslate>{
@@ -59,9 +64,9 @@ class RcsbFvContextManager {
         if(this.polymerEntityToInstanceMap.get(key)?.status === "available") {
             return this.polymerEntityToInstanceMap.get(key).data;
         } else if (this.polymerEntityToInstanceMap.get(key)?.status === "pending") {
-            return await requestWait<PolymerEntityInstanceTranslate>(key, this.polymerEntityToInstanceMap);
+            return await mapResolve<PolymerEntityInstanceTranslate>(this.polymerEntityToInstanceMap.get(key));
         }else{
-            requestPending(key, this.polymerEntityToInstanceMap);
+            mapPending<PolymerEntityInstanceTranslate>(key, this.polymerEntityToInstanceMap);
             const instanceCollector: PolymerEntityInstancesCollector = new PolymerEntityInstancesCollector();
             const result = await instanceCollector.collect({entry_id: key});
             const translator: PolymerEntityInstanceTranslate =  new PolymerEntityInstanceTranslate(result);
@@ -75,10 +80,10 @@ class RcsbFvContextManager {
         if(this.entryToAssemblyMap.get(key)?.status === "available") {
             return this.entryToAssemblyMap.get(key).data;
         } else if (this.entryToAssemblyMap.get(key)?.status === "pending") {
-            return await requestWait<EntryAssemblyTranslate>(key, this.entryToAssemblyMap);
+            return await mapResolve<EntryAssemblyTranslate>(this.entryToAssemblyMap.get(key));
         }else{
-            requestPending(key, this.entryToAssemblyMap);
-            requestPending(key, this.polymerEntityToInstanceMap);
+            mapPending<EntryAssemblyTranslate>(key, this.entryToAssemblyMap);
+            mapPending<PolymerEntityInstanceTranslate>(key, this.polymerEntityToInstanceMap);
             const assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
             const result = await assemblyCollector.collect({entry_id: key});
             const translator: EntryAssemblyTranslate =  new EntryAssemblyTranslate(result);
@@ -96,23 +101,34 @@ class RcsbFvContextManager {
 
 }
 
-function requestPending<T>(key:string, map: Map<string,DataStatusInterface<T>>): void{
-    map.set(key, {data:null, status: "pending"});
+function buildRcsbFvSingleViewer(elementId: string): RcsbFv{
+    const config: RcsbFvBoardConfigInterface =  {
+        rowTitleWidth: 190,
+        trackWidth: 900
+    };
+    return new RcsbFv({
+        rowConfigData: null,
+        boardConfigData: config,
+        elementId: elementId
+    });
 }
 
-function requestWait<T>(key:string, map: Map<string,DataStatusInterface<T>>): Promise<T>{
+function mapPending<T>(key:string, hashMap: Map<string,DataStatusInterface<T>>): void{
+    hashMap.set(key, {data:null, resolveList: new Array<(x:T)=>void>(), status: "pending"});
+}
+
+function mapResolve<T>(map: DataStatusInterface<T>): Promise<T>{
     return new Promise<T>((resolve, reject) => {
-        const recursiveWait = () =>{
-            if(map.get(key)?.status === "pending"){
-                setTimeout(()=>{
-                    recursiveWait();
-                },100);
-            }else{
-                resolve(map.get(key).data);
-            }
-        };
-        recursiveWait();
+        map.resolveList.push(resolve);
     });
+}
+
+function mapSet<T>(mapItem: DataStatusInterface<T>, map:T){
+    mapItem.data = map;
+    mapItem.status = "available";
+    while (mapItem.resolveList.length > 0){
+        mapItem.resolveList.shift()(map);
+    }
 }
 
 export const rcsbFvCtxManager: RcsbFvContextManager = new RcsbFvContextManager();

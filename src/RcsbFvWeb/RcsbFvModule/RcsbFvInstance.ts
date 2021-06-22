@@ -6,7 +6,7 @@ import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/
 
 export class RcsbFvInstance extends RcsbFvAbstractModule {
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv> {
+    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const instanceId: string = buildConfig.instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
         const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
@@ -22,10 +22,8 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
         this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(seqResult.alignment).concat(annResult) : seqResult.sequence.concat(annResult);
-        this.display();
-        if(buildConfig.resolve!=null)
-            buildConfig.resolve(this);
-        return this.rcsbFv;
+        await this.display();
+        return void 0;
     }
 
 }

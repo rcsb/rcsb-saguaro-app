@@ -2,10 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [1.5.0] - Refactoring
-### Code Refactor
+## [2.0.0] - 2021-06-21
+### Code refactor and deprecations
 - Inheritance to composition for collector classes
 - async/await promise style
+- Recursive waits migrated to rxjx Observables
+- PFV unique building method
+- RcsbFvWebApp.setBoardConfig has been removed. Custom board config must be defined in RcsbFvAdditionalConfig. Some RcsbFvWebApp methods do not support additional configs yet
 
 ## [1.4.8] - 2021-06-15
 ### Optimization

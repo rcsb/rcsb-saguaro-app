@@ -26,6 +26,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
     protected annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
+    private activeDisplayFlag: boolean = false;
+
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
         this.elementId = elementId;
@@ -36,9 +38,15 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         this.sequenceCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance)
     }
 
-    public display(): void{
+    public async display(): Promise<void>{
         console.log("Starting display");
-        this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
+        await this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
+        this.activeDisplayFlag = true;
+        return void 0;
+    }
+
+    public activeDisplay(): boolean {
+        return this.activeDisplayFlag;
     }
 
     public getFv(): RcsbFv {
@@ -61,5 +69,5 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         this.boardConfigData = {...this.boardConfigData, ...config};
     }
 
-    abstract async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;
+    abstract async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
 }

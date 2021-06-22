@@ -16,6 +16,8 @@ import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
 import {PolymerEntityInstanceTranslate} from "../../Utils/PolymerEntityInstanceTranslate";
 import {AnnotationCollectorInterface, CollectAnnotationsInterface} from "./AnnotationCollectorInterface";
 import {AnnotationCollectorHelper} from "./AnnotationCollectorHelper";
+import {Subject} from "rxjs";
+import {ObservableHelper} from "../../Utils/ObservableHelper";
 
 
 export class AnnotationCollector implements AnnotationCollectorInterface{
@@ -26,6 +28,9 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
     private requestStatus: "pending"|"complete" = "pending";
     private rawFeatures: Array<Feature>;
+
+    private readonly rawFeaturesSubject: Subject<Array<Feature>> = new Subject<Array<Feature>>();
+    private readonly annotationsConfigDataSubject: Subject<Array<RcsbFvRowConfigInterface>> = new Subject<Array<RcsbFvRowConfigInterface>>();
 
     public async collect(requestConfig: CollectAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>> {
         this.requestStatus = "pending";
@@ -42,7 +47,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
             this.processRcsbPdbAnnotations(swissModelData, requestConfig);
         }
         this.rawFeatures = [].concat.apply([], annotationFeatures.map(af=>af.features));
-        this.requestStatus = "complete";
+        this.complete();
         return this.annotationsConfigData;
     }
 
@@ -56,32 +61,28 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     public async getFeatures(): Promise<Array<Feature>>{
         return new Promise<Array<Feature>>((resolve, reject)=>{
-            const recursive = ()=>{
-                if(this.requestStatus === "complete"){
-                    resolve(this.rawFeatures);
-                }else{
-                    setTimeout(()=>{
-                        recursive();
-                    },300);
-                }
-            };
-            recursive();
-        })
+            if(this.requestStatus === "complete"){
+                resolve(this.rawFeatures);
+            }else{
+                ObservableHelper.oneTimeSubscription<Array<Feature>>(resolve, this.rawFeaturesSubject);
+            }
+        });
     }
 
     public async getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
         return new Promise<Array<RcsbFvRowConfigInterface>>((resolve, reject)=>{
-            const recursive = ()=>{
-                if(this.requestStatus === "complete"){
-                    resolve(this.annotationsConfigData);
-                }else{
-                    setTimeout(()=>{
-                        recursive();
-                    },300);
-                }
-            };
-            recursive();
+            if(this.requestStatus === "complete"){
+                resolve(this.annotationsConfigData);
+            }else{
+                ObservableHelper.oneTimeSubscription<Array<RcsbFvRowConfigInterface>>(resolve, this.annotationsConfigDataSubject);
+            }
         })
+    }
+
+    private complete(): void {
+        this.requestStatus = "complete";
+        this.annotationsConfigDataSubject.next(this.annotationsConfigData);
+        this.rawFeaturesSubject.next(this.rawFeatures);
     }
 
     private processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: CollectAnnotationsInterface): void{

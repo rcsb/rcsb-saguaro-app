@@ -93,16 +93,18 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="polymerentityinstancetranslate.html#instanceasymtoentity" class="tsd-kind-icon">instance<wbr>Asym<wbr>ToEntity</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="polymerentityinstancetranslate.html#instanceauthresids" class="tsd-kind-icon">instance<wbr>Auth<wbr>Res<wbr>Ids</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="polymerentityinstancetranslate.html#instanceauthtoasym" class="tsd-kind-icon">instance<wbr>Auth<wbr>ToAsym</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="polymerentityinstancetranslate.html#rawdata" class="tsd-kind-icon">raw<wbr>Data</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#addauthorresids" class="tsd-kind-icon">add<wbr>Author<wbr>Res<wbr>Ids</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#getdata" class="tsd-kind-icon">get<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="polymerentityinstancetranslate.html#helperaddauthorresids" class="tsd-kind-icon">helper<wbr>Add<wbr>Author<wbr>Res<wbr>Ids</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#translateasymtoauth" class="tsd-kind-icon">translate<wbr>Asym<wbr>ToAuth</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#translateasymtoentity" class="tsd-kind-icon">translate<wbr>Asym<wbr>ToEntity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#translateauthresid" class="tsd-kind-icon">translate<wbr>Auth<wbr>Resid</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#translateauthresid" class="tsd-kind-icon">translate<wbr>Auth<wbr>Res<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#translateauthtoasym" class="tsd-kind-icon">translate<wbr>Auth<wbr>ToAsym</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentityinstancetranslate.html#translateentitytoasym" class="tsd-kind-icon">translate<wbr>Entity<wbr>ToAsym</a></li>
 							</ul>
@@ -122,7 +124,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L20">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L21">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -144,57 +146,67 @@
 					<div class="tsd-signature tsd-kind-icon">INDEX_<wbr>NAME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;auth&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L20">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L21">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="entitytoasym" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> entity<wbr>ToAsym</h3>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> entity<wbr>ToAsym</h3>
 					<div class="tsd-signature tsd-kind-icon">entity<wbr>ToAsym<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Set&lt;string&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L18">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L19">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="instanceasymtoauth" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> instance<wbr>Asym<wbr>ToAuth</h3>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> instance<wbr>Asym<wbr>ToAuth</h3>
 					<div class="tsd-signature tsd-kind-icon">instance<wbr>Asym<wbr>ToAuth<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, string&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L15">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L16">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="instanceasymtoentity" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> instance<wbr>Asym<wbr>ToEntity</h3>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> instance<wbr>Asym<wbr>ToEntity</h3>
 					<div class="tsd-signature tsd-kind-icon">instance<wbr>Asym<wbr>ToEntity<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, string&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L17">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L18">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="instanceauthresids" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> instance<wbr>Auth<wbr>Res<wbr>Ids</h3>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> instance<wbr>Auth<wbr>Res<wbr>Ids</h3>
 					<div class="tsd-signature tsd-kind-icon">instance<wbr>Auth<wbr>Res<wbr>Ids<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Array&lt;string&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L19">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L20">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="instanceauthtoasym" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> instance<wbr>Auth<wbr>ToAsym</h3>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> instance<wbr>Auth<wbr>ToAsym</h3>
 					<div class="tsd-signature tsd-kind-icon">instance<wbr>Auth<wbr>ToAsym<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, string&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L16">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L17">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="rawdata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> raw<wbr>Data</h3>
+					<div class="tsd-signature tsd-kind-icon">raw<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/polymerentityinstanceinterface.html" class="tsd-signature-type">PolymerEntityInstanceInterface</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L15">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -211,7 +223,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L69">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L75">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -227,6 +239,23 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getdata" class="tsd-anchor"></a>
+					<h3>get<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/polymerentityinstanceinterface.html" class="tsd-signature-type">PolymerEntityInstanceInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L36">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:36</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/polymerentityinstanceinterface.html" class="tsd-signature-type">PolymerEntityInstanceInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="helperaddauthorresids" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> helper<wbr>Add<wbr>Author<wbr>Res<wbr>Ids</h3>
@@ -237,7 +266,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L83">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L89">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:89</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -269,7 +298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L46">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L52">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -292,7 +321,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L40">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L46">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -307,15 +336,15 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="translateauthresid" class="tsd-anchor"></a>
-					<h3>translate<wbr>Auth<wbr>Resid</h3>
+					<h3>translate<wbr>Auth<wbr>Res<wbr>Id</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">translate<wbr>Auth<wbr>Resid<span class="tsd-signature-symbol">(</span>asymId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">translate<wbr>Auth<wbr>Res<wbr>Id<span class="tsd-signature-symbol">(</span>asymId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L58">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L64">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -341,7 +370,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L52">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L58">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -364,7 +393,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L34">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts#L40">src/RcsbFvWeb/Utils/PolymerEntityInstanceTranslate.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -415,8 +444,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="polymerentityinstancetranslate.html#instanceauthtoasym" class="tsd-kind-icon">instance<wbr>Auth<wbr>ToAsym</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="polymerentityinstancetranslate.html#rawdata" class="tsd-kind-icon">raw<wbr>Data</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="polymerentityinstancetranslate.html#addauthorresids" class="tsd-kind-icon">add<wbr>Author<wbr>Res<wbr>Ids</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="polymerentityinstancetranslate.html#getdata" class="tsd-kind-icon">get<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="polymerentityinstancetranslate.html#helperaddauthorresids" class="tsd-kind-icon">helper<wbr>Add<wbr>Author<wbr>Res<wbr>Ids</a>
@@ -428,7 +463,7 @@
 								<a href="polymerentityinstancetranslate.html#translateasymtoentity" class="tsd-kind-icon">translate<wbr>Asym<wbr>ToEntity</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="polymerentityinstancetranslate.html#translateauthresid" class="tsd-kind-icon">translate<wbr>Auth<wbr>Resid</a>
+								<a href="polymerentityinstancetranslate.html#translateauthresid" class="tsd-kind-icon">translate<wbr>Auth<wbr>Res<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="polymerentityinstancetranslate.html#translateauthtoasym" class="tsd-kind-icon">translate<wbr>Auth<wbr>ToAsym</a>
@@ -460,8 +495,8 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
@@ -472,7 +507,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>

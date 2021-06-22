@@ -70,24 +70,24 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="rcsbquery.html" class="tsd-signature-type">RcsbQuery</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">RcsbQueryAlignment</span>
-							</li>
-						</ul>
+						<span class="target">RcsbQueryAlignment</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/rcsbcorequeryinterface.html" class="tsd-signature-type">RcsbCoreQueryInterface</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/queryalignmentargs.html" class="tsd-signature-type">QueryAlignmentArgs</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/alignmentresponse.html" class="tsd-signature-type">AlignmentResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="rcsbqueryalignment.html#borregoclient" class="tsd-kind-icon">borrego<wbr>Client</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="rcsbqueryalignment.html#yosemiteclient" class="tsd-kind-icon">yosemite<wbr>Client</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="rcsbqueryalignment.html#client" class="tsd-kind-icon">client</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -99,27 +99,16 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="borregoclient" class="tsd-anchor"></a>
-					<h3>borrego<wbr>Client</h3>
-					<div class="tsd-signature tsd-kind-icon">borrego<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ApolloClient</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new ApolloClient({uri: (&lt;any&gt;configBorregoGraphQL).schema})</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="client" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> client</h3>
+					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DefaultClient</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new ApolloClient({uri: (&lt;any&gt;configBorregoGraphQL).schema})</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="rcsbquery.html">RcsbQuery</a>.<a href="rcsbquery.html#borregoclient">borregoClient</a></p>
+						<p>Implementation of <a href="../interfaces/rcsbcorequeryinterface.html">RcsbCoreQueryInterface</a>.<a href="../interfaces/rcsbcorequeryinterface.html#client">client</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbGraphQL/RcsbQuery.ts#L7">src/RcsbGraphQL/RcsbQuery.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="yosemiteclient" class="tsd-anchor"></a>
-					<h3>yosemite<wbr>Client</h3>
-					<div class="tsd-signature tsd-kind-icon">yosemite<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ApolloClient</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new ApolloClient({uri: (&lt;any&gt;configYosemiteGraphQL).schema})</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="rcsbquery.html">RcsbQuery</a>.<a href="rcsbquery.html#yosemiteclient">yosemiteClient</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbGraphQL/RcsbQuery.ts#L11">src/RcsbGraphQL/RcsbQuery.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbGraphQL/RcsbQueryAlignment.ts#L13">src/RcsbGraphQL/RcsbQueryAlignment.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -136,7 +125,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbGraphQL/RcsbQueryAlignment.ts#L11">src/RcsbGraphQL/RcsbQueryAlignment.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbGraphQL/RcsbQueryAlignment.ts#L16">src/RcsbGraphQL/RcsbQueryAlignment.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -166,11 +155,8 @@
 					<li class="current tsd-kind-class">
 						<a href="rcsbqueryalignment.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Alignment</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="rcsbqueryalignment.html#borregoclient" class="tsd-kind-icon">borrego<wbr>Client</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="rcsbqueryalignment.html#yosemiteclient" class="tsd-kind-icon">yosemite<wbr>Client</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="rcsbqueryalignment.html#client" class="tsd-kind-icon">client</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="rcsbqueryalignment.html#request" class="tsd-kind-icon">request</a>
@@ -199,8 +185,8 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
@@ -211,7 +197,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>

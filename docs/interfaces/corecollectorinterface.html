@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CoreCollector | @rcsb/rcsb-saguaro-app</title>
+	<title>CoreCollectorInterface | @rcsb/rcsb-saguaro-app</title>
 	<meta name="description" content="Documentation for @rcsb/rcsb-saguaro-app">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="corecollector.html">CoreCollector</a>
+					<a href="corecollectorinterface.html">CoreCollectorInterface</a>
 				</li>
 			</ul>
-			<h1>Class CoreCollector</h1>
+			<h1>Interface CoreCollectorInterface</h1>
 		</div>
 	</div>
 </header>
@@ -70,13 +70,13 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CoreCollector</span>
+						<span class="target">CoreCollectorInterface</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="annotationcollector.html" class="tsd-signature-type">AnnotationCollector</a>
+								<a href="annotationcollectorinterface.html" class="tsd-signature-type">AnnotationCollectorInterface</a>
 							</li>
 							<li>
-								<a href="sequencecollector.html" class="tsd-signature-type">SequenceCollector</a>
+								<a href="sequencecollectorinterface.html" class="tsd-signature-type">SequenceCollectorInterface</a>
 							</li>
 						</ul>
 					</li>
@@ -86,82 +86,71 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-private-protected">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="corecollector.html#polymerentityinstance" class="tsd-kind-icon">polymer<wbr>Entity<wbr>Instance</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="corecollector.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="corecollectorinterface.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="corecollector.html#getpolymerentityinstance" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="corecollector.html#setpolymerentityinstance" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="corecollectorinterface.html#getpolymerentityinstancetranslator" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="corecollectorinterface.html#setpolymerentityinstancetranslator" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="polymerentityinstance" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> polymer<wbr>Entity<wbr>Instance</h3>
-					<div class="tsd-signature tsd-kind-icon">polymer<wbr>Entity<wbr>Instance<span class="tsd-signature-symbol">:</span> <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a><span class="tsd-signature-symbol"> = null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L7">src/RcsbFvWeb/CollectTools/CoreCollector.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="rcsbfvquery" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> rcsb<wbr>FvQuery</h3>
-					<div class="tsd-signature tsd-kind-icon">rcsb<wbr>FvQuery<span class="tsd-signature-symbol">:</span> <a href="rcsbfvquery.html" class="tsd-signature-type">RcsbFvQuery</a><span class="tsd-signature-symbol"> = new RcsbFvQuery()</span></div>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> rcsb<wbr>FvQuery</h3>
+					<div class="tsd-signature tsd-kind-icon">rcsb<wbr>FvQuery<span class="tsd-signature-symbol">:</span> <a href="../classes/rcsbclient.html" class="tsd-signature-type">RcsbClient</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L6">src/RcsbFvWeb/CollectTools/CoreCollector.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/CollectTools/CoreCollectorInterface.ts#L5">src/RcsbFvWeb/CollectTools/CoreCollectorInterface.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-					<a name="getpolymerentityinstance" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> get<wbr>Polymer<wbr>Entity<wbr>Instance</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="getpolymerentityinstancetranslator" class="tsd-anchor"></a>
+					<h3>get<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L11">src/RcsbFvWeb/CollectTools/CoreCollector.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/CollectTools/CoreCollectorInterface.ts#L7">src/RcsbFvWeb/CollectTools/CoreCollectorInterface.ts:7</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setpolymerentityinstance" class="tsd-anchor"></a>
-					<h3>set<wbr>Polymer<wbr>Entity<wbr>Instance</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance<span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="setpolymerentityinstancetranslator" class="tsd-anchor"></a>
+					<h3>set<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator<span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><a href="../classes/polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/CollectTools/CoreCollector.ts#L8">src/RcsbFvWeb/CollectTools/CoreCollector.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/CollectTools/CoreCollectorInterface.ts#L6">src/RcsbFvWeb/CollectTools/CoreCollectorInterface.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>p: <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h5>
+									<h5>p: <a href="../classes/polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -182,20 +171,17 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="corecollector.html" class="tsd-kind-icon">Core<wbr>Collector</a>
+					<li class="current tsd-kind-interface">
+						<a href="corecollectorinterface.html" class="tsd-kind-icon">Core<wbr>Collector<wbr>Interface</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="corecollector.html#polymerentityinstance" class="tsd-kind-icon">polymer<wbr>Entity<wbr>Instance</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="corecollectorinterface.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
-								<a href="corecollector.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="corecollectorinterface.html#getpolymerentityinstancetranslator" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-								<a href="corecollector.html#getpolymerentityinstance" class="tsd-kind-icon">get<wbr>Polymer<wbr>Entity<wbr>Instance</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="corecollector.html#setpolymerentityinstance" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="corecollectorinterface.html#setpolymerentityinstancetranslator" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</a>
 							</li>
 						</ul>
 					</li>
@@ -221,8 +207,8 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
@@ -233,7 +219,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>

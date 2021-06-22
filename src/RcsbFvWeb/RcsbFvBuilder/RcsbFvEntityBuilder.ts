@@ -47,31 +47,29 @@ export class RcsbFvEntityBuilder {
                 return rcsbFvEntity;
             };
             const entryId:string = entityId.split(TagDelimiter.entity)[0];
-            RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId,createSelectAndFvBuilder);
+            RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndCustomBuildFv(entryId,createSelectAndFvBuilder);
         });
     }
 
     static async buildSingleEntitySummaryFv(elementId: string, entityId: string): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
-            const buildFv: (p: PolymerEntityInstanceTranslate) => Promise<RcsbFvModulePublicInterface> = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvEntity, {
+            const entryId: string = entityId.split(TagDelimiter.entity)[0];
+            RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvEntity, {
                 entityId: entityId,
                 additionalConfig: additionalConfig(),
                 resolve:resolve
             });
-            const entryId: string = entityId.split(TagDelimiter.entity)[0];
-            RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
         });
     }
 
      static async buildEntityFv(elementId: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
          return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
-             const buildFv: (p: PolymerEntityInstanceTranslate) => Promise<RcsbFvModulePublicInterface> = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvEntity, {
+             const entryId: string = entityId.split(TagDelimiter.entity)[0];
+             RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvEntity, {
                  entityId: entityId,
                  additionalConfig: additionalConfig,
                  resolve: resolve
              });
-             const entryId: string = entityId.split(TagDelimiter.entity)[0];
-             RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
          });
     }
 

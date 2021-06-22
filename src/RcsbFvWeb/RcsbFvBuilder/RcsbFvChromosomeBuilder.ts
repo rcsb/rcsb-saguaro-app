@@ -62,25 +62,19 @@ export class RcsbFvChromosomeBuilder {
     }
 
     static async buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<RcsbFvModulePublicInterface> {
-        return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
-            const rcsbFvSingleViewer: RcsbFv = rcsbFvCtxManager.getFv(elementFvId) ?? RcsbFvCoreBuilder.buildRcsbFvSingleViewer(elementFvId);
-            if (rcsbFvCtxManager.getFv(elementFvId) == null ){
-                rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
-            }
-            const chrViewer: RcsbFvModulePublicInterface = await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, null, elementSelectId,{boardConfig:{rowTitleWidth:160}});
-            resolve(chrViewer);
-            const targets: Array<string> = await chrViewer.getTargets();
-            RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
-                return {
-                    label: chrId,
-                    name: chrId,
-                    shortLabel: chrId,
-                    onChange: async ()=>{
-                        await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, chrId, elementSelectId);
-                    }
-                };
-            }),{addTitle: false, width:190, dropdownTitle: "CHROMOSOME"});
-        });
+        const chrViewer: RcsbFvModulePublicInterface = await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, null, elementSelectId,{boardConfig:{rowTitleWidth:160}});
+        const targets: Array<string> = await chrViewer.getTargets();
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
+            return {
+                label: chrId,
+                name: chrId,
+                shortLabel: chrId,
+                onChange: async ()=>{
+                    await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, chrId, elementSelectId);
+                }
+            };
+        }),{addTitle: false, width:190, dropdownTitle: "CHROMOSOME"});
+        return chrViewer;
     }
 
     static async buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {

@@ -12,7 +12,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         this.sequenceCollector = new ObservedSequenceCollector();
     }
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv> {
+    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const upAcc: string = buildConfig.upAcc;
         const source: Array<Source> = [Source.Uniprot];
         const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
@@ -32,10 +32,8 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
         this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(annResult).concat(seqResult.alignment) : seqResult.sequence.concat(annResult);
-        this.display();
-        if(buildConfig.resolve!=null)
-            buildConfig.resolve(this);
-        return this.rcsbFv;
+        await this.display();
+        return void 0;
     }
 
 }

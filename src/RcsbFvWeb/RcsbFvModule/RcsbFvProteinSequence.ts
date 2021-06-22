@@ -2,11 +2,11 @@ import {Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/SequenceCollector";
-import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv> {
+    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const queryId: string = buildConfig.queryId;
         const source: Array<Source> = buildConfig.sources ?? [Source.Uniprot];
         const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
@@ -30,10 +30,8 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
         }else{
             this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
         }
-        this.display();
-        if(buildConfig.resolve!=null)
-            buildConfig.resolve(this);
-        return this.rcsbFv;
+        await this.display();
+        return void 0;
     }
 
 }

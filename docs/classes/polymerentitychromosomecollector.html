@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GenomeEntityTranslate | @rcsb/rcsb-saguaro-app</title>
+	<title>PolymerEntityChromosomeCollector | @rcsb/rcsb-saguaro-app</title>
 	<meta name="description" content="Documentation for @rcsb/rcsb-saguaro-app">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="genomeentitytranslate.html">GenomeEntityTranslate</a>
+					<a href="polymerentitychromosomecollector.html">PolymerEntityChromosomeCollector</a>
 				</li>
 			</ul>
-			<h1>Class GenomeEntityTranslate</h1>
+			<h1>Class PolymerEntityChromosomeCollector</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">GenomeEntityTranslate</span>
+						<span class="target">PolymerEntityChromosomeCollector</span>
 					</li>
 				</ul>
 			</section>
@@ -78,42 +78,48 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="genomeentitytranslate.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="genomeentitytranslate.html#entitymap" class="tsd-kind-icon">entity<wbr>Map</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="genomeentitytranslate.html#finished" class="tsd-kind-icon">finished</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="polymerentitychromosomecollector.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="genomeentitytranslate.html#getchrmap" class="tsd-kind-icon">get<wbr>Chr<wbr>Map</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="genomeentitytranslate.html#entitychromosomes" class="tsd-kind-icon">entity<wbr>Chromosomes</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="polymerentitychromosomecollector.html#collect" class="tsd-kind-icon">collect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="polymerentitychromosomecollector.html#entitychromosomes" class="tsd-kind-icon">entity<wbr>Chromosomes</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="rcsbfvquery" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> rcsb<wbr>FvQuery</h3>
+					<div class="tsd-signature tsd-kind-icon">rcsb<wbr>FvQuery<span class="tsd-signature-symbol">:</span> <a href="rcsbclient.html" class="tsd-signature-type">RcsbClient</a><span class="tsd-signature-symbol"> = new RcsbClient()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/CollectTools/Translators/PolymerEntityChromosomeCollector.ts#L6">src/RcsbFvWeb/CollectTools/Translators/PolymerEntityChromosomeCollector.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Genome<wbr>Entity<wbr>Translate<span class="tsd-signature-symbol">(</span>entityIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="genomeentitytranslate.html" class="tsd-signature-type">GenomeEntityTranslate</a></li>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="collect" class="tsd-anchor"></a>
+					<h3>collect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">collect<span class="tsd-signature-symbol">(</span>entityIds<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts#L7">src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/CollectTools/Translators/PolymerEntityChromosomeCollector.ts#L8">src/RcsbFvWeb/CollectTools/Translators/PolymerEntityChromosomeCollector.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -122,64 +128,21 @@
 									<h5>entityIds: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="genomeentitytranslate.html" class="tsd-signature-type">GenomeEntityTranslate</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="entitymap" class="tsd-anchor"></a>
-					<h3>entity<wbr>Map</h3>
-					<div class="tsd-signature tsd-kind-icon">entity<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Array&lt;string&gt;&gt;()</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts#L6">src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts:6</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="finished" class="tsd-anchor"></a>
-					<h3>finished</h3>
-					<div class="tsd-signature tsd-kind-icon">finished<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts#L7">src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getchrmap" class="tsd-anchor"></a>
-					<h3>get<wbr>Chr<wbr>Map</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Chr<wbr>Map<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts#L27">src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts:27</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
 					<a name="entitychromosomes" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> entity<wbr>Chromosomes</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> entity<wbr>Chromosomes</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
 						<li class="tsd-signature tsd-kind-icon">entity<wbr>Chromosomes<span class="tsd-signature-symbol">(</span>entityId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/alignmentresponse.html" class="tsd-signature-type">AlignmentResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts#L42">src/RcsbFvWeb/Utils/GenomeEntityTranslate.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/CollectTools/Translators/PolymerEntityChromosomeCollector.ts#L26">src/RcsbFvWeb/CollectTools/Translators/PolymerEntityChromosomeCollector.ts:26</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -207,22 +170,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="genomeentitytranslate.html" class="tsd-kind-icon">Genome<wbr>Entity<wbr>Translate</a>
+						<a href="polymerentitychromosomecollector.html" class="tsd-kind-icon">Polymer<wbr>Entity<wbr>Chromosome<wbr>Collector</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="genomeentitytranslate.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="genomeentitytranslate.html#entitymap" class="tsd-kind-icon">entity<wbr>Map</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="genomeentitytranslate.html#finished" class="tsd-kind-icon">finished</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="polymerentitychromosomecollector.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="genomeentitytranslate.html#getchrmap" class="tsd-kind-icon">get<wbr>Chr<wbr>Map</a>
+								<a href="polymerentitychromosomecollector.html#collect" class="tsd-kind-icon">collect</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="genomeentitytranslate.html#entitychromosomes" class="tsd-kind-icon">entity<wbr>Chromosomes</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="polymerentitychromosomecollector.html#entitychromosomes" class="tsd-kind-icon">entity<wbr>Chromosomes</a>
 							</li>
 						</ul>
 					</li>
@@ -248,8 +205,8 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
@@ -260,7 +217,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>

@@ -14,6 +14,8 @@ import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../U
 import {BuildAlignementsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
 import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
 import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
+import {Subject} from "rxjs";
+import {ObservableHelper} from "../../Utils/ObservableHelper";
 
 export interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;
@@ -38,12 +40,13 @@ export class SequenceCollector implements SequenceCollectorInterface{
 
     private sequenceLength: number;
     private targets: Array<string> = new Array<string>();
-    protected finished: boolean = false;
+    private requestStatus: "pending"|"complete" = "pending";
     private dynamicDisplay: boolean = false;
 
     private readonly helper: SequenceCollectorHelper = new SequenceCollectorHelper();
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
+    private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
 
     private tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion> = (region: AlignedRegion, commonContext: TranslateContextInterface) => {
         return [{...region,unModelled:false}];
@@ -55,6 +58,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         tagObservedRegions?: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion>
     ): Promise<SequenceCollectorDataInterface> {
 
+        this.requestStatus = "pending";
         if(typeof tagObservedRegions === "function")
             this.tagObservedRegions = tagObservedRegions;
         if(requestConfig.dynamicDisplay)
@@ -103,22 +107,17 @@ export class SequenceCollector implements SequenceCollectorInterface{
             fitTitleWidth: requestConfig.fitTitleWidth
         };
         const alignmentTracks = this.buildAlignments(buildAlignmentConfig);
-        this.finished = true;
+        this.complete();
         return { sequence: [this.buildSequenceTrack(requestConfig, querySequence)], alignment:alignmentTracks};
     }
 
     public async getTargets():Promise<Array<string>> {
         return new Promise<Array<string>>((resolve,reject)=>{
-            const recursive:()=>void = ()=>{
-                if(this.finished){
-                    resolve(this.targets);
-                }else{
-                    window.setTimeout(() => {
-                        recursive();
-                    }, 1000);
-                }
-            };
-            recursive();
+            if(this.requestStatus === "complete"){
+                resolve(this.targets);
+            }else{
+                ObservableHelper.oneTimeSubscription<Array<string>>(resolve, this.targetsSubject);
+            }
         });
     }
 
@@ -133,6 +132,11 @@ export class SequenceCollector implements SequenceCollectorInterface{
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
         this.helper.setPolymerEntityInstanceTranslator(p);
         this.polymerEntityInstanceTranslator = p;
+    }
+
+    private complete(){
+        this.requestStatus = "complete";
+        this.targetsSubject.next(this.targets);
     }
 
     private buildAlignments(alignmentData: BuildAlignementsInterface): Array<RcsbFvRowConfigInterface> {

@@ -104,13 +104,12 @@ export class RcsbFvInstanceBuilder {
     static async buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=>{
             try {
-                const buildFv: (p: PolymerEntityInstanceTranslate) => Promise<RcsbFvModulePublicInterface> = RcsbFvCoreBuilder.createFvBuilder(elementId, RcsbFvInstance, {
+                const entryId: string = instanceId.split(TagDelimiter.instance)[0];
+                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvInstance, {
                     instanceId: instanceId,
                     additionalConfig: additionalConfig,
                     resolve: resolve
                 });
-                const entryId: string = instanceId.split(TagDelimiter.instance)[0];
-                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(entryId, buildFv);
             }catch (e) {
                 reject(e);
             }

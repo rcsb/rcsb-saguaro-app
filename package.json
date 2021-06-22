@@ -77,8 +77,9 @@
   },
   "dependencies": {
     "@graphql-codegen/cli": "^1.16.0",
-    "@rcsb/rcsb-saguaro": "file:../rcsb-saguaro",
-    "ideogram": "^1.27.0"
+    "@rcsb/rcsb-saguaro": "^1.8.2",
+    "ideogram": "^1.27.0",
+    "rxjs": "^6.6.0"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"

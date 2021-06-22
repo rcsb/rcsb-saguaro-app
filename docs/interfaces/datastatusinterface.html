@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RcsbQuery | @rcsb/rcsb-saguaro-app</title>
+	<title>DataStatusInterface | @rcsb/rcsb-saguaro-app</title>
 	<meta name="description" content="Documentation for @rcsb/rcsb-saguaro-app">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,35 +56,29 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="rcsbquery.html">RcsbQuery</a>
+					<a href="datastatusinterface.html">DataStatusInterface</a>
 				</li>
 			</ul>
-			<h1>Class RcsbQuery</h1>
+			<h1>Interface DataStatusInterface&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">RcsbQuery</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="rcsbqueryannotations.html" class="tsd-signature-type">RcsbQueryAnnotations</a>
-							</li>
-							<li>
-								<a href="rcsbqueryalignment.html" class="tsd-signature-type">RcsbQueryAlignment</a>
-							</li>
-							<li>
-								<a href="rcsbqueryentryinstances.html" class="tsd-signature-type">RcsbQueryEntryInstances</a>
-							</li>
-							<li>
-								<a href="rcsbquerymultipleentityinstances.html" class="tsd-signature-type">RcsbQueryMultipleEntityInstances</a>
-							</li>
-						</ul>
+						<span class="target">DataStatusInterface</span>
 					</li>
 				</ul>
 			</section>
@@ -95,8 +89,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="rcsbquery.html#borregoclient" class="tsd-kind-icon">borrego<wbr>Client</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="rcsbquery.html#yosemiteclient" class="tsd-kind-icon">yosemite<wbr>Client</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="datastatusinterface.html#data" class="tsd-kind-icon">data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="datastatusinterface.html#resolvelist" class="tsd-kind-icon">resolve<wbr>List</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="datastatusinterface.html#status" class="tsd-kind-icon">status</a></li>
 							</ul>
 						</section>
 					</div>
@@ -104,23 +99,33 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="borregoclient" class="tsd-anchor"></a>
-					<h3>borrego<wbr>Client</h3>
-					<div class="tsd-signature tsd-kind-icon">borrego<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ApolloClient</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new ApolloClient({uri: (&lt;any&gt;configBorregoGraphQL).schema})</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="data" class="tsd-anchor"></a>
+					<h3>data</h3>
+					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbGraphQL/RcsbQuery.ts#L7">src/RcsbGraphQL/RcsbQuery.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L12">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="yosemiteclient" class="tsd-anchor"></a>
-					<h3>yosemite<wbr>Client</h3>
-					<div class="tsd-signature tsd-kind-icon">yosemite<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ApolloClient</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new ApolloClient({uri: (&lt;any&gt;configYosemiteGraphQL).schema})</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="resolvelist" class="tsd-anchor"></a>
+					<h3>resolve<wbr>List</h3>
+					<div class="tsd-signature tsd-kind-icon">resolve<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0df2a1de/src/RcsbGraphQL/RcsbQuery.ts#L11">src/RcsbGraphQL/RcsbQuery.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L13">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"pending"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"available"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L14">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -138,14 +143,17 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="rcsbquery.html" class="tsd-kind-icon">Rcsb<wbr>Query</a>
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
+						<a href="datastatusinterface.html" class="tsd-kind-icon">Data<wbr>Status<wbr>Interface</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="rcsbquery.html#borregoclient" class="tsd-kind-icon">borrego<wbr>Client</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="datastatusinterface.html#data" class="tsd-kind-icon">data</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="rcsbquery.html#yosemiteclient" class="tsd-kind-icon">yosemite<wbr>Client</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="datastatusinterface.html#resolvelist" class="tsd-kind-icon">resolve<wbr>List</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="datastatusinterface.html#status" class="tsd-kind-icon">status</a>
 							</li>
 						</ul>
 					</li>
@@ -171,8 +179,8 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
@@ -183,7 +191,7 @@
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>

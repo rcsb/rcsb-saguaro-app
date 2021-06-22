@@ -1,4 +1,4 @@
-import {RcsbFv, RcsbFvBoardConfigInterface} from '@rcsb/rcsb-saguaro';
+import {RcsbFv} from '@rcsb/rcsb-saguaro';
 import {RcsbFvAdditionalConfig } from "./RcsbFvModule/RcsbFvModuleInterface";
 import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
@@ -12,7 +12,7 @@ import {
     RcsbFvInstanceBuilder
 } from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvBuilder/RcsbFvContextManager";
-import {PfvBuilderInterface, RcsbFvGeneralBuilder} from "./RcsbFvBuilder/RcsbFvGeneralBuilder";
+import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder/RcsbFvProteinSequenceBuilder";
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
 
@@ -70,11 +70,11 @@ export function buildUniprotEntityInstanceFv(elementId: string, upAcc: string, e
 }
 
 export function buildPfv(elementId: string, config: PfvBuilderInterface): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvGeneralBuilder.buildPfv(elementId, config);
+    return RcsbFvProteinSequenceBuilder.buildPfv(elementId, config);
 }
 
-export function buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvPairwiseAligmentBuilder.buildPairwiseAlignment(elementId, psa);
+export function buildPairwiseAlignment(elementId:string, psa: PairwiseAlignmentInterface, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    return RcsbFvPairwiseAligmentBuilder.buildPairwiseAlignment(elementId, psa, additionalConfig);
 }
 
 export function buildFullChromosome(elementFvId:string, chrId: string): Promise<RcsbFvModulePublicInterface>{

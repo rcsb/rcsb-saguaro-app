@@ -11,7 +11,7 @@ export interface PfvBuilderInterface {
     bottomAlignments?: boolean;
 }
 
-export class RcsbFvGeneralBuilder {
+export class RcsbFvProteinSequenceBuilder {
     static async buildPfv(elementId: string, config: PfvBuilderInterface): Promise<RcsbFvModulePublicInterface> {
         const alignmentSource: SequenceReference = config.alignmentSource ?? config.reference;
         const sources = [Source.Uniprot];

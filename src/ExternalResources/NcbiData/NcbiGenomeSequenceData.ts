@@ -2,12 +2,12 @@ import {RcsbFvLocationViewInterface, RcsbFvTrackData} from "@rcsb/rcsb-saguaro";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
 export class NcbiGenomeSequenceData {
-    process: number = 0;
-    urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
-    urlSuffix: string = (resource as any).ncbi_genome_sequence.url_suffix;
-    update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
+    private static readonly urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
+    private static readonly urlSuffix: string = (resource as any).ncbi_genome_sequence.url_suffix;
+    public static update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
+        let process: number = 0;
         return (where: RcsbFvLocationViewInterface) => {
-            window.clearTimeout(this.process);
+            window.clearTimeout(process);
             return new Promise<RcsbFvTrackData>((resolve, reject) => {
                 const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
                 if (delta > 4) {
@@ -16,7 +16,7 @@ export class NcbiGenomeSequenceData {
                     const getGenomeSequence: ()=>void = ()=> {
                         const Http = new XMLHttpRequest();
                         Http.timeout = timeout;
-                        const url = this.urlPrefix + 'id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + this.urlSuffix;
+                        const url = NcbiGenomeSequenceData.urlPrefix + 'id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + NcbiGenomeSequenceData.urlSuffix;
                         Http.open("GET", url);
                         Http.send();
                         Http.onloadend = (e) => {
@@ -25,7 +25,7 @@ export class NcbiGenomeSequenceData {
                                 N++;
                                 console.warn("HTTP error while access URL: " + url + " - empty sequence - "+ N);
                                 if(N<4){
-                                    this.process = window.setTimeout(()=>{
+                                    process = window.setTimeout(()=>{
                                         getGenomeSequence();
                                     },timeout);
                                 }else{
@@ -43,7 +43,7 @@ export class NcbiGenomeSequenceData {
                             N++;
                             console.warn("HTTP error while access URL: " + url + " - "+ N);
                             if(N<4){
-                                this.process = window.setTimeout(()=>{
+                                process = window.setTimeout(()=>{
                                     getGenomeSequence();
                                 },timeout);
                             }else{

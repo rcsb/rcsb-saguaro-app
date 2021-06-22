@@ -1,6 +1,7 @@
 import {Feature, FilterInput, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
 import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
@@ -20,14 +21,16 @@ export interface RcsbFvModuleBuildInterface {
     upAcc?:string;
     refSeqId?:string;
     chrId?:string;
+    psa?: PairwiseAlignmentInterface;
     additionalConfig?:RcsbFvAdditionalConfig;
     elementSelectId?: string;
     resolve(module:RcsbFvModulePublicInterface): void;
 }
 
 export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
+    activeDisplay(): boolean;
     display(): void;
-    build(buildConfig: RcsbFvModuleBuildInterface): Promise<RcsbFv>;
+    build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
     setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
     updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void;
 }
