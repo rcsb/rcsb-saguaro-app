@@ -1,5 +1,5 @@
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {PolymerEntityInstanceTranslate} from "../RcsbUtils/PolymerEntityInstanceTranslate";
+import {RcsbClient} from "../RcsbGraphQL/RcsbClient";
 
 export interface CoreCollectorInterface {
     readonly rcsbFvQuery: RcsbClient;

@@ -1,7 +1,7 @@
 import {Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/SequenceCollector";
+import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvProteinSequence extends RcsbFvAbstractModule {

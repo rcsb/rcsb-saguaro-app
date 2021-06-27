@@ -1,5 +1,5 @@
-import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
-import {CoreEntry, CorePolymerEntityInstance, Maybe, QueryEntryArgs} from "../../../RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {CoreEntry, CorePolymerEntityInstance, Maybe, QueryEntryArgs} from "../../RcsbGraphQL/Types/Yosemite/GqlTypes";
 
 export interface PolymerEntityInstanceInterface {
     rcsbId: string;

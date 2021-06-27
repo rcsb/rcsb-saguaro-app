@@ -7,17 +7,17 @@ import {
 import {
     AnnotationFeatures, Feature,
     Source
-} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConfig} from "../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {SwissModelQueryAnnotations} from "../../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
+} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
+import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {AnnotationTransformer} from "./AnnotationTransformer";
-import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
-import {PolymerEntityInstanceTranslate} from "../../Utils/PolymerEntityInstanceTranslate";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {AnnotationCollectorInterface, CollectAnnotationsInterface} from "./AnnotationCollectorInterface";
 import {AnnotationCollectorHelper} from "./AnnotationCollectorHelper";
 import {Subject} from "rxjs";
-import {ObservableHelper} from "../../Utils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
 
 
 export class AnnotationCollector implements AnnotationCollectorInterface{

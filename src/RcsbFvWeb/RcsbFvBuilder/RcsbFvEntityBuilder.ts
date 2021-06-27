@@ -1,5 +1,5 @@
-import {TagDelimiter} from "../Utils/TagDelimiter";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbFvEntity} from "../RcsbFvModule/RcsbFvEntity";
 import {FieldName, FilterInput, OperationType, Source, Type} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";

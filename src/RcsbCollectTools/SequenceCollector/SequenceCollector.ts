@@ -6,16 +6,16 @@ import {
     QueryAlignmentArgs,
     SequenceReference,
     TargetAlignment
-} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
-import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
+} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 
 import {BuildAlignementsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
-import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
 import {Subject} from "rxjs";
-import {ObservableHelper} from "../../Utils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
 
 export interface CollectAlignmentInterface extends QueryAlignmentArgs {
     filterByTargetContains?:string;

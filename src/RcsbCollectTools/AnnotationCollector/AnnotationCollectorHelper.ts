@@ -6,9 +6,9 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {RcsbAnnotationConfig, RcsbAnnotationConfigInterface} from "../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
+import {RcsbAnnotationConfig, RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {ParseLink} from "./ParseLink";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 
 export class AnnotationCollectorHelper {
 

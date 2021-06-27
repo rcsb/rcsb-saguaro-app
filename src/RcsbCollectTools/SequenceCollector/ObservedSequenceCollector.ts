@@ -5,18 +5,18 @@ import {
     OperationType,
     SequenceReference,
     Source,
-} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion,
     CollectAlignmentInterface,
     SequenceCollector,
     SequenceCollectorDataInterface
 } from "./SequenceCollector";
-import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
-import {MultipleEntityInstanceTranslate} from "../../Utils/MultipleEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {MultipleEntityInstanceTranslate} from "../../RcsbUtils/MultipleEntityInstanceTranslate";
 import {MultipleEntityInstancesCollector} from "../Translators/MultipleEntityInstancesCollector";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
-import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
 import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 

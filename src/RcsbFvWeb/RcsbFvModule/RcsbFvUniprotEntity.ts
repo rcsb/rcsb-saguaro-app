@@ -6,7 +6,7 @@ import {
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import { RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/SequenceCollector";
+import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 
 export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 

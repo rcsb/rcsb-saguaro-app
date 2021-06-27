@@ -1,8 +1,8 @@
 import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbFvInstance} from "../RcsbFvModule/RcsbFvInstance";
-import {TagDelimiter} from "../Utils/TagDelimiter";
-import {PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";

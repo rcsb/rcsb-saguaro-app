@@ -1,14 +1,14 @@
-import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
-import {AlignedRegion, SequenceReference, Source, TargetAlignment} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {AlignedRegion, SequenceReference, Source, TargetAlignment} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     RcsbFvDisplayConfigInterface, RcsbFvDisplayTypes,
     RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
-import * as resource from "../../../RcsbServerConfig/web.resources.json";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import * as resource from "../../RcsbServerConfig/web.resources.json";
+import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {FeatureTools} from "../../FeatureTools/FeatureTools";
 import {AlignedObservedRegion, CollectAlignmentInterface} from "./SequenceCollector";
 

@@ -1,8 +1,8 @@
-import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     CorePolymerEntity,
     QueryPolymer_EntitiesArgs
-} from "../../../RcsbGraphQL/Types/Yosemite/GqlTypes";
+} from "../../RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 
 

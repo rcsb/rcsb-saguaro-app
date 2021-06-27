@@ -1,12 +1,12 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {PolymerEntityInstancesCollector} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
-import {EntryAssemblyTranslate} from "../Utils/EntryAssemblyTranslate";
-import {EntryAssembliesCollector} from "../CollectTools/Translators/EntryAssembliesCollector";
-import {PolymerEntityChromosomeTranslate} from "../Utils/PolymerEntityChromosomeTranslate";
-import {PolymerEntityChromosomeCollector} from "../CollectTools/Translators/PolymerEntityChromosomeCollector";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstancesCollector} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
+import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
+import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
+import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {ObservableHelper} from "../Utils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
 
 interface DataStatusInterface<T>{
     data:T;

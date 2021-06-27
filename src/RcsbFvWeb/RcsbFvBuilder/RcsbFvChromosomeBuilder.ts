@@ -1,7 +1,7 @@
-import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {TagDelimiter} from "../Utils/TagDelimiter";
-import {PolymerEntityChromosomeTranslate} from "../Utils/PolymerEntityChromosomeTranslate";
+import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
 import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
@@ -12,7 +12,7 @@ import {
     RcsbFvModuleInterface,
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
-import {PolymerEntityChromosomeCollector} from "../CollectTools/Translators/PolymerEntityChromosomeCollector";
+import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
 
 export class RcsbFvChromosomeBuilder {
 

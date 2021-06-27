@@ -3,11 +3,11 @@ import {
     RcsbFvTrackDataElementGapInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {Feature, FeaturePosition, SequenceReference, Source} from "../../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../../Utils/TagDelimiter";
-import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../Utils/PolymerEntityInstanceTranslate";
-import {RcsbAnnotationConfigInterface} from "../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
+import {Feature, FeaturePosition, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 
 interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;

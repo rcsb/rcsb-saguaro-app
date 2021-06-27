@@ -1,10 +1,10 @@
-import {RcsbClient} from "../../../RcsbGraphQL/RcsbClient";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     CoreAssembly,
     CoreEntry,
     CorePolymerEntityInstance,
     QueryEntryArgs
-} from "../../../RcsbGraphQL/Types/Yosemite/GqlTypes";
+} from "../../RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 
 export class EntryAssembliesCollector {

@@ -1,10 +1,10 @@
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {EntryAssembliesCollector} from "../CollectTools/Translators/EntryAssembliesCollector";
+import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
-import {PolymerEntityInstanceInterface} from "../CollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {EntryAssemblyTranslate} from "../Utils/EntryAssemblyTranslate";
+import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
 
 export class RcsbFvAssemblyBuilder {
 

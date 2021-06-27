@@ -2,8 +2,8 @@ import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlType
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {ObservedSequenceCollector} from "../CollectTools/SequenceCollector/ObservedSequenceCollector";
-import {SequenceCollectorDataInterface} from "../CollectTools/SequenceCollector/SequenceCollector";
+import {ObservedSequenceCollector} from "../../RcsbCollectTools/SequenceCollector/ObservedSequenceCollector";
+import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
