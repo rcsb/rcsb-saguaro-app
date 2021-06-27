@@ -7,8 +7,8 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConfig, RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {ParseLink} from "./ParseLink";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {FeatureTools} from "../FeatureTools/FeatureTools";
 
 export class AnnotationCollectorHelper {
 
@@ -170,6 +170,6 @@ export class AnnotationCollectorHelper {
     }
 
     private static buildRowTitle(annConfig: RcsbAnnotationConfigInterface): string|RcsbFvLink {
-        return annConfig.prefix ? ParseLink.build(annConfig.title) : annConfig.title
+        return annConfig.prefix ? FeatureTools.parseLink(annConfig.title) : annConfig.title
     }
 }

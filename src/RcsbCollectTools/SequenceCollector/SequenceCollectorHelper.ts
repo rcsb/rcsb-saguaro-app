@@ -9,7 +9,7 @@ import {
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {FeatureTools} from "../../FeatureTools/FeatureTools";
+import {FeatureTools} from "../FeatureTools/FeatureTools";
 import {AlignedObservedRegion, CollectAlignmentInterface} from "./SequenceCollector";
 
 

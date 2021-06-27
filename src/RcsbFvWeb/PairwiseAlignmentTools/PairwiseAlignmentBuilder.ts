@@ -2,7 +2,7 @@ import {RcsbFvTrackDataElementInterface, RcsbFvDisplayTypes, RcsbFvRowConfigInte
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
-import {FeatureTools} from "../../FeatureTools/FeatureTools";
+import {FeatureTools} from "../../RcsbCollectTools/FeatureTools/FeatureTools";
 
 export interface PairwiseAlignmentInterface{
     querySequence: string;
