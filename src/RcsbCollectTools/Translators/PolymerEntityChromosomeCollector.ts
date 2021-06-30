@@ -3,7 +3,7 @@ import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class PolymerEntityChromosomeCollector {
 
-    private rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
     public async collect( entityIds: Array<string>): Promise<Map<string, Array<string>>> {
         const entityMap: Map<string, Array<string>> = new Map<string, Array<string>>();

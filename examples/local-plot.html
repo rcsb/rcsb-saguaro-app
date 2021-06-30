@@ -10,11 +10,14 @@
 <br/>
 <br/>
 <br/>
-<div id="pfv" style="position: absolute" ></div>
+<div id="chart1" style="width: 400px; height: 400px;"></div>
+<div id="chart2" style="width: 400px; height: 400px;"></div>
 
 <script>
-    const data = [{objectId:"101m", value:"Human"},{objectId:"2uzi", value: "Human"},{objectId:"1ash", value: "Mouse"}];
-    RcsbChartWebApp.piePlot("pfv", data);
+
+    RcsbChartWebApp.plot("chart1", "uniprot_entity", "P01112", "barplot", "experimental_method");
+    RcsbChartWebApp.plot("chart2", "uniprot_entity", "P01112", "histogram", "resolution");
+
 </script>
 
 

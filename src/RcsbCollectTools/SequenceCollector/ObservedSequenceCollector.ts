@@ -86,8 +86,8 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     }
 
     private tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
-        if(this.entityInstanceMap.get(commonContext.targetId)!=null){
-            const asymIds: Array<string> = this.entityInstanceMap.get(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
+        if(this.entityInstanceMap.getEntity(commonContext.targetId)!=null){
+            const asymIds: Array<string> = this.entityInstanceMap.getEntity(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
             const entryId: string = commonContext.targetId.split(TagDelimiter.entity)[0];
             const unModelled: Map<number,number> = new Map<number,number>();
             asymIds.forEach(id=>{

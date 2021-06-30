@@ -14,7 +14,7 @@ export interface PolymerEntityInstanceInterface {
 
 export class PolymerEntityInstancesCollector {
 
-    private rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
     public async collect(requestConfig: QueryEntryArgs): Promise<Array<PolymerEntityInstanceInterface>> {
         try {

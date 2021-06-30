@@ -48,6 +48,16 @@ click events.
 - **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/rcsbfvboardconfiginterface.html))
 - **RcsbFvWebApp.getRcsbFv**(elementId: string)
 
+###GraphQL configuration
+##### Building TypeScript interfaces
+- Files ["src/RcsbServerConfig/codegen.borrego.json", "src/RcsbServerConfig/codegen.yosemite.json"]
+- Borrego Interfaces: graphql-codegen --config src/RcsbServerConfig/codegen.borrego.json
+- Yosemite Interfaces: graphql-codegen --config src/RcsbServerConfig/codegen.yosemite.json
+- Generated Sources: "src/RcsbGraphQL/Types"
+##### IntelliJ schemas
+- Config Files: ["src/RcsbGraphQL/Queries/Borrego/.graphqlconfig", "src/RcsbGraphQL/Queries/Yosemite/.graphqlconfig"]
+- Generated Schemas: ["src/RcsbGraphQL/Queries/Borrego/schema.graphql", "src/RcsbGraphQL/Queries/Yosemite/schema.graphql"]
+
 Contributing
 ---
 All contributions are welcome. Please, make a pull request or open an issue.

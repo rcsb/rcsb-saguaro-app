@@ -9,7 +9,7 @@ import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector"
 
 export class EntryAssembliesCollector {
 
-    private rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     static readonly modelKey: string = "Model";
 
     public async collect(requestConfig: QueryEntryArgs): Promise<Map<string,Array<PolymerEntityInstanceInterface>>> {

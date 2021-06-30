@@ -8,7 +8,7 @@ import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from ".
 
 export class MultipleEntityInstancesCollector {
 
-    private rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
     public async collect(requestConfig: QueryPolymer_EntitiesArgs):  Promise<Array<PolymerEntityInstanceInterface>> {
         try{

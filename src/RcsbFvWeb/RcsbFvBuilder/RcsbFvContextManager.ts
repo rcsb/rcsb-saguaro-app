@@ -1,12 +1,23 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
-import {PolymerEntityInstancesCollector} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {
+    PolymerEntityInstanceInterface,
+    PolymerEntityInstancesCollector
+} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
 import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
+import {GroupMemberCollector} from "../../RcsbCollectTools/Translators/GroupMemberCollector";
+import {
+    EntryPropertyIntreface,
+    MultipleEntryPropertyCollector
+} from "../../RcsbCollectTools/PropertyCollector/MultipleEntryPropertyCollector";
+import {GroupPropertiesProvider} from "../../RcsbUtils/GroupPropertiesProvider";
+import {Operator} from "../../Helpers/Operator";
+import {GroupKey} from "../../RcsbGraphQL/RcsbClient";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -19,7 +30,7 @@ class RcsbFvContextManager {
     private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
     private polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
-
+    private groupPropertyMap: Map<string,DataStatusInterface<GroupPropertiesProvider>> = new Map<string, DataStatusInterface<GroupPropertiesProvider>>();
 
     public getFv(elementFvId: string): RcsbFv{
         if( this.rcsbFvManager.has(elementFvId))
@@ -57,6 +68,10 @@ class RcsbFvContextManager {
 
     private setEntryToAssembly(entryId: string, map: EntryAssemblyTranslate): void{
         mapSet<EntryAssemblyTranslate>(this.entryToAssemblyMap.get(entryId), map);
+    }
+
+    private setGroupProperties(groupId: string, map:GroupPropertiesProvider): void{
+        mapSet<GroupPropertiesProvider>(this.groupPropertyMap.get(groupId), map);
     }
 
     public async getEntityToInstance(entryId: string): Promise<PolymerEntityInstanceTranslate>{
@@ -97,6 +112,24 @@ class RcsbFvContextManager {
         const entityChrCollector: PolymerEntityChromosomeCollector = new PolymerEntityChromosomeCollector();
         const chrMap = await entityChrCollector.collect(entityIds);
         return new PolymerEntityChromosomeTranslate(chrMap);
+    }
+
+    public async getGroupProperties(groupKey: GroupKey, groupId: string): Promise<GroupPropertiesProvider>{
+        const key: string = groupId.toUpperCase();
+        if(this.groupPropertyMap.get(key)?.status === "available") {
+            return this.groupPropertyMap.get(key).data;
+        }else if(this.groupPropertyMap.get(key)?.status === "pending"){
+            return await mapResolve<GroupPropertiesProvider>(this.groupPropertyMap.get(key));
+        }else{
+            mapPending<GroupPropertiesProvider>(key, this.groupPropertyMap);
+            const groupMemberCollector: GroupMemberCollector = new GroupMemberCollector();
+            const result = await groupMemberCollector.collect({groupId: groupId, groupKey: groupKey});
+            const multipleEntryPropertyCollector: MultipleEntryPropertyCollector = new MultipleEntryPropertyCollector();
+            const entriesProperties: Array<EntryPropertyIntreface> = await multipleEntryPropertyCollector.collect({entry_ids:Operator.uniqueValues(result.map(r=>r.entryId))})
+            const propertiesProvider: GroupPropertiesProvider = new GroupPropertiesProvider({entryProperties: entriesProperties});
+            this.setGroupProperties(groupId, propertiesProvider);
+            return propertiesProvider;
+        }
     }
 
 }

@@ -1,3 +1,3 @@
 export {
-    piePlot
+    plot
 } from "./RcsbChartWeb/RcsbChartPlot";
