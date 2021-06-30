@@ -3236,11 +3236,15 @@ export interface PdbxAuditRevisionItem {
 
 export interface PdbxAuditSupport {
   __typename?: 'PdbxAuditSupport';
-  /** The country/region providing the funding support for the entry. */
+  /**
+   * The country/region providing the funding support for the entry.
+   *  Funding information is optionally provided for entries after June 2016.
+   */
   country?: Maybe<Scalars['String']>;
   /**
    * The name of the organization providing funding support for the
-   *  entry.
+   *  entry. Funding information is optionally provided for entries
+   *  after June 2016.
    * 
    * Examples:
    * National Institutes of Health, Welcome Trust, National Institutes of Health/National Institute of General Medical Sciences
@@ -7278,6 +7282,13 @@ export interface RcsbBranchedEntityContainerIdentifiers {
   /** Unique list of monomer chemical component identifiers in the entity in this container. */
   chem_comp_monomers?: Maybe<Array<Maybe<Scalars['String']>>>;
   /**
+   * The chemical reference definition identifier for the entity in this container.
+   * 
+   * Examples:
+   * PRD_000010
+   */
+  chem_ref_def_id?: Maybe<Scalars['String']>;
+  /**
    * Entity identifier for the container.
    * 
    * Examples:
@@ -7306,6 +7317,32 @@ export interface RcsbBranchedEntityContainerIdentifiers {
    * 2HYV_2
    */
   rcsb_id?: Maybe<Scalars['String']>;
+  reference_identifiers?: Maybe<Array<Maybe<RcsbBranchedEntityContainerIdentifiersReferenceIdentifiers>>>;
+}
+
+export interface RcsbBranchedEntityContainerIdentifiersReferenceIdentifiers {
+  __typename?: 'RcsbBranchedEntityContainerIdentifiersReferenceIdentifiers';
+  /**
+   * Source of the reference resource assignment
+   * 
+   * Allowable values:
+   * PDB, RCSB
+   */
+  provenance_source?: Maybe<Scalars['String']>;
+  /**
+   * Reference resource accession code
+   * 
+   * Examples:
+   * G07411ON, G42666HT
+   */
+  resource_accession?: Maybe<Scalars['String']>;
+  /**
+   * Reference resource name
+   * 
+   * Allowable values:
+   * GlyCosmos, GlyGen, GlyTouCan
+   */
+  resource_name?: Maybe<Scalars['String']>;
 }
 
 export interface RcsbBranchedEntityFeature {
@@ -8691,7 +8728,7 @@ export interface RcsbExternalReferences {
    * Internal identifier for external resource.
    * 
    * Allowable values:
-   * OLDERADO, BMRB, NDB, SB GRID, STORE SYNCHROTRON, PROTEIN DIFFRACTION, EM DATA RESOURCE
+   * OLDERADO, BMRB, NDB, SB GRID, PROTEIN DIFFRACTION, EM DATA RESOURCE
    */
   type: Scalars['String'];
 }
@@ -8869,6 +8906,13 @@ export interface RcsbNonpolymerEntityContainerIdentifiers {
   asym_ids?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Author instance identifiers corresponding to copies of the entity in this container. */
   auth_asym_ids?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /**
+   * The chemical reference definition identifier for the entity in this container.
+   * 
+   * Examples:
+   * PRD_000010
+   */
+  chem_ref_def_id?: Maybe<Scalars['String']>;
   /**
    * Entity identifier for the container.
    * 
@@ -9250,6 +9294,13 @@ export interface RcsbNonpolymerInstanceValidationScore {
   /** Alternate conformer identifier for the non-polymer entity instance. */
   alt_id?: Maybe<Scalars['String']>;
   /**
+   * The average heavy atom occupancy for coordinate records for the non-polymer entity instance.
+   * 
+   * Examples:
+   * null, null
+   */
+  average_occupancy?: Maybe<Scalars['Float']>;
+  /**
    * The reported fraction of atomic coordinate records for the non-polymer entity instance.
    * 
    * Examples:
@@ -9272,6 +9323,13 @@ export interface RcsbNonpolymerInstanceValidationScore {
    * N, Y
    */
   is_subject_of_investigation?: Maybe<Scalars['String']>;
+  /**
+   * The provenance for the selection of the molecular entity identified as the subject of the current study.
+   * 
+   * Allowable values:
+   * Author, RCSB
+   */
+  is_subject_of_investigation_provenance?: Maybe<Scalars['String']>;
   /**
    * Number of bond angle outliers obtained from a CCDC Mogul survey of bond angles  in the CSD small
    *    molecule crystal structure database. Outliers are defined as bond angles that have a Z-score
@@ -9660,7 +9718,7 @@ export interface RcsbPolymerEntityAnnotation {
    * A type or category of the annotation.
    * 
    * Allowable values:
-   * GO, InterPro, MemProtMD, OPM, Pfam, mpstruc
+   * GO, GlyCosmos, GlyGen, InterPro, MemProtMD, OPM, PDBTM, Pfam, mpstruc
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9685,6 +9743,13 @@ export interface RcsbPolymerEntityContainerIdentifiers {
   chem_comp_monomers?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Unique list of non-standard monomer chemical component identifiers in the polymer entity in this container. */
   chem_comp_nstd_monomers?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /**
+   * The chemical reference definition identifier for the entity in this container.
+   * 
+   * Examples:
+   * PRD_000010
+   */
+  chem_ref_def_id?: Maybe<Scalars['String']>;
   /**
    * Entity identifier for the container.
    * 
@@ -9786,7 +9851,7 @@ export interface RcsbPolymerEntityFeature {
    * A type or category of the feature.
    * 
    * Allowable values:
-   * artifact, modified_monomer, mutation
+   * Pfam, artifact, modified_monomer, mutation
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -9861,7 +9926,7 @@ export interface RcsbPolymerEntityFeatureSummary {
    * Type or category of the feature.
    * 
    * Allowable values:
-   * artifact, modified_monomer, mutation
+   * Pfam, artifact, modified_monomer, mutation
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -10066,11 +10131,13 @@ export interface RcsbPolymerInstanceFeature {
    * A type or category of the feature.
    * 
    * Allowable values:
-   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
-   * MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RAMACHANDRAN_OUTLIER,
-   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET, STEREO_OUTLIER,
-   * UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
-   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, C-MANNOSYLATION_SITE, CATH,
+   * CIS-PEPTIDE, HELIX_P, MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER,
+   * MOGUL_BOND_OUTLIER, N-GLYCOSYLATION_SITE, O-GLYCOSYLATION_SITE,
+   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER,
+   * S-GLYCOSYLATION_SITE, SCOP, SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT,
+   * UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ,
+   * ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
@@ -10147,11 +10214,13 @@ export interface RcsbPolymerInstanceFeatureSummary {
    * Type or category of the feature.
    * 
    * Allowable values:
-   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, CATH, CIS-PEPTIDE, HELIX_P,
-   * MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, RAMACHANDRAN_OUTLIER,
-   * ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, SCOP, SHEET, STEREO_OUTLIER,
-   * UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ,
-   * ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+   * ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, C-MANNOSYLATION_SITE, CATH,
+   * CIS-PEPTIDE, HELIX_P, MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER,
+   * MOGUL_BOND_OUTLIER, N-GLYCOSYLATION_SITE, O-GLYCOSYLATION_SITE,
+   * RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER,
+   * S-GLYCOSYLATION_SITE, SCOP, SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT,
+   * UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ,
+   * ZERO_OCCUPANCY_RESIDUE_XYZ
    */
   type?: Maybe<Scalars['String']>;
 }
