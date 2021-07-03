@@ -151,7 +151,6 @@ export enum PropertyName {
   DiseaseType = 'DISEASE_TYPE',
   Evidence = 'EVIDENCE',
   Link = 'LINK',
-  ModificationType = 'MODIFICATION_TYPE',
   MutatedType = 'MUTATED_TYPE',
   OmegaAngle = 'OMEGA_ANGLE',
   ParentCompId = 'PARENT_COMP_ID',
@@ -164,6 +163,7 @@ export enum PropertyName {
   ScopSunId = 'SCOP_SUN_ID',
   SheetSense = 'SHEET_SENSE',
   StrainId = 'STRAIN_ID',
+  Subtype = 'SUBTYPE',
   WildType = 'WILD_TYPE'
 }
 
