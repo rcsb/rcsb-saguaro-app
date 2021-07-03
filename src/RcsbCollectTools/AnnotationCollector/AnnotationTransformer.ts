@@ -3,7 +3,7 @@ import {
     RcsbFvTrackDataElementGapInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {Feature, FeaturePosition, SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";

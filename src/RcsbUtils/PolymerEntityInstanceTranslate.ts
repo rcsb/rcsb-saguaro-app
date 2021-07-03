@@ -1,6 +1,6 @@
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
-import {SequenceReference, Source} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceReference, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "./TagDelimiter";
 
 export interface TranslateContextInterface {

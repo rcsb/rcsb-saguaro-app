@@ -1,6 +1,6 @@
 import {CoreCollectorInterface} from "../CoreCollectorInterface";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {Feature, QueryAnnotationsArgs, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, QueryAnnotationsArgs, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     addTargetInTitle?: Set<Source>;

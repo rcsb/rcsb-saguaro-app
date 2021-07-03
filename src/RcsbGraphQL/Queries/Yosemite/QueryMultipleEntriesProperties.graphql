@@ -1,5 +1,5 @@
-query multiple_entries_properties($entryIds: [String!]!){
-    entries(entry_ids:$entryIds){
+query multiple_entries_properties($entry_ids: [String!]!){
+    entries(entry_ids:$entry_ids){
         rcsb_id
         rcsb_entry_info{
             experimental_method

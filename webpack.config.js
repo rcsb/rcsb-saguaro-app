@@ -10,7 +10,7 @@ const commonConfig = {
             },{
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
-                loader: 'graphql-tag/loader'
+                loader: 'raw-loader'
             },{
                 test: /\.scss$/,
                 use: ['style-loader', {

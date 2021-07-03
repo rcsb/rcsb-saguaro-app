@@ -5,11 +5,11 @@ import {
     AnnotationFeatures,
     QueryAlignmentArgs,
     QueryAnnotationsArgs
-} from "./Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,
     QueryEntryArgs, QueryPolymer_EntitiesArgs, QueryUniprot_Entity_GroupArgs,
-} from "./Types/Yosemite/GqlTypes";
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 import {RcsbQueryMultipleEntityInstances} from "./RcsbQueryMultipleEntityInstances";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";

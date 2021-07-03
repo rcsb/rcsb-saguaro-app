@@ -1,5 +1,5 @@
 import {GroupKey, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreGroup} from "../../RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {CoreGroup} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 import {MultipleEntityInstancesCollector} from "./MultipleEntityInstancesCollector";
 

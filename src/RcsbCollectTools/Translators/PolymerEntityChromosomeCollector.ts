@@ -1,4 +1,4 @@
-import {AlignmentResponse, QueryAlignmentArgs, SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentResponse, QueryAlignmentArgs, SequenceReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class PolymerEntityChromosomeCollector {

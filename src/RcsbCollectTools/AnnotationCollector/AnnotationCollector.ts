@@ -7,7 +7,7 @@ import {
 import {
     AnnotationFeatures, Feature,
     Source
-} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";

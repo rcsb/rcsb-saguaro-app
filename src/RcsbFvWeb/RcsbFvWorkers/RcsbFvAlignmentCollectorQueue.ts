@@ -1,4 +1,4 @@
-import {QueryAlignmentArgs, SequenceReference} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {QueryAlignmentArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 interface WorkerInterface {
     worker: Worker;

@@ -1,4 +1,4 @@
-import {AnnotationFeatures, Feature, Type} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, Feature, Type} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Structure, SwissModelResultInterface} from "./SwissModelDataInterface";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
