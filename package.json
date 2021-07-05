@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "buildAll": "npm run buildApp && npm run buildAllDoc",
-    "buildApp": "npm run cleanAll && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
+    "buildApp": "npm run cleanAll && npm run checkQueries && npm run tsc && npm run copyQueries && npm run build && npm run copyConfig && npm run clean",
     "build": "webpack --config ./webpack.config.js",
     "checkQueries": "ts-node src/RcsbGraphQL/Queries/QueryCheck.ts",
     "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",

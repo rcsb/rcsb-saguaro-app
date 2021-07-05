@@ -8,12 +8,8 @@ declare module '*.graphql' {
 }
 declare module "codegen.*.json" {
     const value: {
-        overwrite: boolean,
         schema: string,
-        documents: string,
-        config:{
-            declarationKind:"interface"|"type"
-        }
+        documents: string
     };
     export default value;
 }
