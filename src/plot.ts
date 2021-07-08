@@ -1,3 +1,4 @@
 export {
-    plot
+    plot,
+    searchRequestPlot
 } from "./RcsbChartWeb/RcsbChartPlot";

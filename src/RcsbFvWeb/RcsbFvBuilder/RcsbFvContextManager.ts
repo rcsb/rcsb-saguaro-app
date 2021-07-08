@@ -18,6 +18,9 @@ import {
 import {GroupPropertiesProvider} from "../../RcsbUtils/GroupPropertiesProvider";
 import {Operator} from "../../Helpers/Operator";
 import {GroupKey} from "../../RcsbGraphQL/RcsbClient";
+import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
+import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {SearchQueryType, SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -130,6 +133,11 @@ class RcsbFvContextManager {
             this.setGroupProperties(groupId, propertiesProvider);
             return propertiesProvider;
         }
+    }
+
+    public async getSearchRequestProperties(query: SearchQueryType, returnType: ReturnType): Promise<QueryResult>{
+        const collector: SearchRequestProperty = new SearchRequestProperty();
+        return collector.request(query, returnType);
     }
 
 }
