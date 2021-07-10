@@ -1,4 +1,4 @@
 export {
-    plot,
-    searchRequestPlot
+    searchRequestPlot,
+    uniprotEntityGroupPlot
 } from "./RcsbChartWeb/RcsbChartPlot";

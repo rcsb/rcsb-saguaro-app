@@ -2,6 +2,8 @@ import * as React from "react";
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryContainer} from "victory";
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
+import {ChartTools} from "../RcsbChartTools/ChartTools";
+
 
 export class HistogramChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
@@ -14,23 +16,18 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
     private data(): {x:number;y:number}[]{
         let data: {x:number;y:number}[] = [];
         if(this.props.config?.mergeDomainMaxValue) {
-            const thr: number = this.props.config?.mergeDomainMaxValue;
-            data = this.state.data.filter(d => parseFloat(d.label as string) < thr).map(d => ({
-                x: parseFloat(d.label as string),
-                y: d.population
-            }));
-            data.push({
-                x:thr,
-                y:this.state.data.filter(d => parseFloat(d.label as string) >= thr).reduce((a, b) => a + b.population, 0)
-            });
+            data = ChartTools.mergeDomainMaxValue(this.state.data, this.props.config.mergeDomainMaxValue);
         }else{
-            data = this.state.data.map(d=>({x: parseFloat(d.label as string), y:d.population}));
+            data = ChartTools.labelsAsNumber(this.state.data);
         }
         return data;
     }
 
     private xDomain(): [number, number]{
-        return [Math.floor(Math.min(...this.data().map(d=>d.x))), this.props.config?.mergeDomainMaxValue ? Math.ceil(this.props.config?.mergeDomainMaxValue) : Math.ceil(Math.max(...this.data().map(d=>d.x)))]
+        return [
+            this.props.config.domainMinValue ?? Math.floor(Math.min(...this.data().map(d=>d.x))),
+            this.props.config?.mergeDomainMaxValue ? Math.ceil(this.props.config?.mergeDomainMaxValue) : Math.ceil(Math.max(...this.data().map(d=>d.x)))
+        ]
     }
 
 
@@ -47,24 +44,27 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
 
     render():ReactNode {
         const histData: {x:number;y:number}[] = this.data();
-        const width: number = histData.length*40;
-        const height: number = 250;
+        const paddingLeft: number = ChartTools.paddingLeft;
+        const width: number = paddingLeft + ChartTools.constWidth;
+        const height: number = ChartTools.constHeight;
+        const paddingBottom: number = ChartTools.paddingBottom;
+
         return (
             <div style={{width:width, height:height}}>
                 <VictoryChart
-                    domainPadding={{ x: 10 }}
+                    padding={{left:paddingLeft, bottom:paddingBottom}}
                     height={height}
                     width={width}
                     domain={{x:this.xDomain()}}
                 >
                     <VictoryBar
-                        barWidth={10}
+                        barWidth={ChartTools.barWidth}
                         style={{
                             data: {
                                 fill: "#5e94c3",
                                 stroke: "#325880",
                                 strokeWidth: 1
-                            }//5e94c3
+                            }
                         }}
                         data={histData}
                     />

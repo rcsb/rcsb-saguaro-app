@@ -9,6 +9,7 @@ export interface ChartConfigInterface {
     mergeDomainMaxValue?:number;
     mostPopulatedGroups?: number;
     mergeName?: string;
+    domainMinValue?:number;
     tickIncrement?: {
         origin: number;
         increment: number

@@ -4,6 +4,8 @@ query QueryUniprotEntityGroup($group_id: String!){
     ){
         rcsb_id
         rcsb_group_info{
+            group_name
+            group_description
             group_members_granularity
         }
         rcsb_group_container_identifiers{

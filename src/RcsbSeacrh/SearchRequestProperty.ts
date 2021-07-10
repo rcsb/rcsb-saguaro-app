@@ -2,8 +2,9 @@ import {SearchRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/SearchReque
 import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
 import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 import {GroupNode, TerminalNode} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
-import {FacetTools} from "./Facets/FacetTools";
-import {FacetType} from "./Facets/FacetStore";
+import {FacetTools} from "./FacetTools";
+import {FacetType} from "./FacetStore/FacetMemberInterface";
+import {FacetStoreType} from "./FacetStore/FacetStore";
 
 export type SearchQueryType = GroupNode | TerminalNode;
 
@@ -30,16 +31,8 @@ export class SearchRequestProperty {
         });
     }
 
-    public async request(query: SearchQueryType, returnType: ReturnType): Promise<QueryResult> {
-        //TODO Now we are using all defined facets in the face store (FacetTools.getFacetStores). In the future we may need to use only certain facets depending on the @returnType
-        switch (returnType){
-            case ReturnType.PolymerEntity:
-                return this._request({query:query, facets:FacetTools.getFacetStores().map(f=>f.facet), returnType:returnType});
-            case ReturnType.PolymerInstance:
-                return this._request({query:query, facets:FacetTools.getFacetStores().map(f=>f.facet), returnType:returnType});
-            case ReturnType.Entry:
-                return this._request({query:query, facets:FacetTools.getFacetStores().map(f=>f.facet), returnType:returnType});
-        }
+    public async request(query: SearchQueryType, facetStoreType: FacetStoreType): Promise<QueryResult> {
+        return this._request({query:query, facets:FacetTools.getFacetStores(facetStoreType).map(f=>f.facet), returnType:FacetTools.getReturnType(facetStoreType)});
     }
 
 }

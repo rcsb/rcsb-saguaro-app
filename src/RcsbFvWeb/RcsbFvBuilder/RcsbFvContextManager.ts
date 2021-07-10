@@ -1,15 +1,12 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {
-    PolymerEntityInstanceInterface,
     PolymerEntityInstancesCollector
 } from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
 import {GroupMemberCollector} from "../../RcsbCollectTools/Translators/GroupMemberCollector";
 import {
     EntryPropertyIntreface,
@@ -19,8 +16,8 @@ import {GroupPropertiesProvider} from "../../RcsbUtils/GroupPropertiesProvider";
 import {Operator} from "../../Helpers/Operator";
 import {GroupKey} from "../../RcsbGraphQL/RcsbClient";
 import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
-import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 import {SearchQueryType, SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
+import {FacetStoreType} from "../../RcsbSeacrh/FacetStore/FacetStore";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -135,9 +132,9 @@ class RcsbFvContextManager {
         }
     }
 
-    public async getSearchRequestProperties(query: SearchQueryType, returnType: ReturnType): Promise<QueryResult>{
+    public async getSearchRequestProperties(query: SearchQueryType, facetStoreType: FacetStoreType): Promise<QueryResult>{
         const collector: SearchRequestProperty = new SearchRequestProperty();
-        return collector.request(query, returnType);
+        return collector.request(query, facetStoreType);
     }
 
 }

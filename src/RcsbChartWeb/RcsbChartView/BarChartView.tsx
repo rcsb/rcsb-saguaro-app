@@ -2,6 +2,7 @@ import * as React from "react";
 import {VictoryAxis, VictoryBar, VictoryChart} from "victory";
 import {ReactNode} from "react";
 import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
+import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 type BarData = {categories:string[];values:{x: string, y:number}[];};
 export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
@@ -16,30 +17,11 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
         const categories: string[] = Array.from(new Set(this.state.data.map(d=>d.label as string)));
         let data: {x:string;y:number;}[] = [];
         if(this.props.config?.mergeGroupSize ){
-            data = this.state.data.filter(d=>(this.props.config?.mergeGroupSize && d.population>this.props.config.mergeGroupSize)).map(d=>({
-                x:d.label  as string,
-                y:d.population
-            }));
-            data.push({
-                x: this.props.config?.mergeName ?? "Other",
-                y: this.state.data.filter(d=>(this.props.config && this.props.config.mergeGroupSize && d.population<=this.props.config.mergeGroupSize)).length
-            })
+            data = ChartTools.mergeGroupSize(this.state.data, this.props.config.mergeGroupSize, this.props.config.mergeName);
         }else if(this.props.config?.mostPopulatedGroups) {
-            const sorted:ChartObjectInterface[] = this.state.data.sort((a,b)=>(b.population-a.population));
-
-            data = sorted.slice(0,this.props.config.mostPopulatedGroups).map(d=>({
-                x:d.label  as string,
-                y:d.population
-            }));
-            data.push({
-                x:this.props.config?.mergeName ?? "Other",
-                y:sorted.slice(this.props.config.mostPopulatedGroups).reduce((a, b) => a + b.population, 0)
-            })
+           data = ChartTools.mostPopulatedGroups(this.state.data, this.props.config.mostPopulatedGroups, this.props.config.mergeName);
         }else{
-            data = this.state.data.map(d=>({
-                x:d.label  as string,
-                y:d.population
-            }))
+            data = ChartTools.labelsAsString(this.state.data);
         }
         return {
             categories: categories,
@@ -50,26 +32,26 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
     render():ReactNode {
 
         const barData: BarData = this.dataByCategory();
-        const paddingBottom: number = 50;
-        const paddingLeft: number = 200;
-        const width: number = paddingLeft + 250;
-        const height: number = paddingBottom + barData.values.length*20;
+        const paddingBottom: number = ChartTools.paddingBottom;
+        const paddingLeft: number = ChartTools.paddingLeft;
+        const width: number = paddingLeft + ChartTools.constWidth;
+        const height: number = paddingBottom + barData.values.length*ChartTools.xIncrement;
         return (
             <div style={{width:width, height:height}}>
                 <VictoryChart
-                    domainPadding={{ x: 10 }}
+                    domainPadding={{ x: ChartTools.xDomainPadding }}
                     padding={{left:paddingLeft, bottom:paddingBottom}}
                     height={height}
                     width={width}
                 >
                     <VictoryBar
-                        barWidth={10}
+                        barWidth={ChartTools.xDomainPadding}
                         style={{
                             data: {
                                 fill: "#5e94c3",
                                 stroke: "#325880",
                                 strokeWidth: 1
-                            }//5e94c3
+                            }
                         }}
                         horizontal={true}
                         data={barData.values}
