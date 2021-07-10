@@ -17,7 +17,7 @@
     "checkQueries": "ts-node src/RcsbGraphQL/Queries/QueryCheck.ts",
     "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
     "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
-    "copyCss": "ncp src/RcsbChartWeb/RcsbChartDisplay/scss build/src/RcsbChartWeb/RcsbChartDisplay/scss",
+    "copyCss": "ncp src/RcsbGroupWeb/RcsbGroupView/scss build/src/RcsbGroupWeb/RcsbGroupView/scss",
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",

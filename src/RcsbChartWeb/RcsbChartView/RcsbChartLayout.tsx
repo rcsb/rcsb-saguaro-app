@@ -1,11 +1,9 @@
 import * as React from "react";
-import {ChartType} from "../RcsbChartView/ChartViewInterface";
-import {HistogramChartView} from "../RcsbChartView/HistogramChartView";
-import {BarChartView} from "../RcsbChartView/BarChartView";
-import * as classes from "./scss/chart-display.module.scss";
+import {ChartType} from "./ChartViewInterface";
+import {HistogramChartView} from "./HistogramChartView";
+import {BarChartView} from "./BarChartView";
 import {Container, Row, Col} from "react-bootstrap";
-import {FacetTools, RcsbChartInterface} from "../../RcsbSeacrh/FacetTools";
-import {FacetStoreType} from "../../RcsbSeacrh/FacetStore/FacetStore";
+import {RcsbChartInterface} from "../../RcsbSeacrh/FacetTools";
 export interface RcsbChartLayoutInterface {
     layout: [string,string?][];
     charts: RcsbChartInterface[];
@@ -20,8 +18,7 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,R
 
     render():JSX.Element {
         return (
-            <div id={"RcsbChartLayout"} className={classes.chartLayoutComponentScope}>
-                <Container fluid={"lg"}>
+            <>
                 {
                     this.props.layout.map(([attrF,attrG])=>{
                         if(attrG){
@@ -47,8 +44,7 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,R
 
                     })
                 }
-                </Container>
-            </div>
+            </>
         );
     }
 

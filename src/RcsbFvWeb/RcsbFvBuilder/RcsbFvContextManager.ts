@@ -1,8 +1,6 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
-import {
-    PolymerEntityInstancesCollector
-} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstancesCollector} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
@@ -18,6 +16,10 @@ import {GroupKey} from "../../RcsbGraphQL/RcsbClient";
 import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryType, SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {FacetStoreType} from "../../RcsbSeacrh/FacetStore/FacetStore";
+import {
+    GroupPropertyCollector,
+    GroupPropertyInterface
+} from "../../RcsbCollectTools/PropertyCollector/GroupPropertyCollector";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -114,7 +116,7 @@ class RcsbFvContextManager {
         return new PolymerEntityChromosomeTranslate(chrMap);
     }
 
-    public async getGroupProperties(groupKey: GroupKey, groupId: string): Promise<GroupPropertiesProvider>{
+    public async getGroupMemberProperties(groupKey: GroupKey, groupId: string): Promise<GroupPropertiesProvider>{
         const key: string = groupId.toUpperCase();
         if(this.groupPropertyMap.get(key)?.status === "available") {
             return this.groupPropertyMap.get(key).data;
@@ -132,9 +134,17 @@ class RcsbFvContextManager {
         }
     }
 
-    public async getSearchRequestProperties(query: SearchQueryType, facetStoreType: FacetStoreType): Promise<QueryResult>{
+    public async getSearchQueryResult(query: SearchQueryType, facetStoreType: FacetStoreType): Promise<QueryResult>{
         const collector: SearchRequestProperty = new SearchRequestProperty();
         return collector.request(query, facetStoreType);
+    }
+
+    public async getGroupProperties(groupKey: GroupKey, groupId: string): Promise<GroupPropertyInterface> {
+        const groupPropertyCollector: GroupPropertyCollector = new GroupPropertyCollector();
+        return await groupPropertyCollector.collect({
+            groupId: groupId,
+            groupKey: groupKey
+        });
     }
 
 }

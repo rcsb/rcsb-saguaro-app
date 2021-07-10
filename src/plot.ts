@@ -1,4 +1,4 @@
 export {
-    searchRequestPlot,
-    uniprotEntityGroupPlot
-} from "./RcsbChartWeb/RcsbChartPlot";
+    buildSearchRequest,
+    buildUniprotEntityGroup
+} from "./RcsbGroupWeb/RcsbGroupBuilder";
