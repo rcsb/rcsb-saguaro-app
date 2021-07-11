@@ -1,4 +1,3 @@
-import {RcsbFv} from '@rcsb/rcsb-saguaro';
 import {RcsbFvAdditionalConfig } from "./RcsbFvModule/RcsbFvModuleInterface";
 import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
@@ -11,14 +10,9 @@ import {
     InstanceSequenceOnchangeInterface,
     RcsbFvInstanceBuilder
 } from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
-import {rcsbFvCtxManager} from "./RcsbFvBuilder/RcsbFvContextManager";
 import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder/RcsbFvProteinSequenceBuilder";
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
-
-export function getRcsbFv(elementFvId: string): RcsbFv{
-    return rcsbFvCtxManager.getFv(elementFvId);
-}
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -36,8 +30,8 @@ export function buildSingleEntitySummaryFv(elementId: string, entityId: string):
     return RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementId, entityId);
 }
 
-export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, config);
+export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, config, additionalConfig);
 }
 
 export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig): Promise<RcsbFvModulePublicInterface> {

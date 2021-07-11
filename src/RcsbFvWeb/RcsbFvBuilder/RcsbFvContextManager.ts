@@ -20,15 +20,18 @@ class RcsbFvContextManager {
     private polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
 
-
-    public getFv(elementFvId: string): RcsbFv{
-        if( this.rcsbFvManager.has(elementFvId))
+    public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
+        if( this.rcsbFvManager.has(elementFvId)) {
             return this.rcsbFvManager.get(elementFvId);
-        else{
-            const rcsbFvSingleViewer: RcsbFv = buildRcsbFvSingleViewer(elementFvId);
+        }else{
+            const rcsbFvSingleViewer: RcsbFv = buildRcsbFvSingleViewer(elementFvId, boardConfig);
             rcsbFvCtxManager.setFv(elementFvId, rcsbFvSingleViewer);
             return rcsbFvSingleViewer;
         }
+    }
+
+    public hasFv(elementFvId: string): boolean{
+        return this.rcsbFvManager.has(elementFvId);
     }
 
     private setFv(elementFvId: string, rcsbFv: RcsbFv): void{
@@ -101,10 +104,11 @@ class RcsbFvContextManager {
 
 }
 
-function buildRcsbFvSingleViewer(elementId: string): RcsbFv{
+function buildRcsbFvSingleViewer(elementId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
     const config: RcsbFvBoardConfigInterface =  {
         rowTitleWidth: 190,
-        trackWidth: 900
+        trackWidth: 900,
+        ...boardConfig
     };
     return new RcsbFv({
         rowConfigData: null,
