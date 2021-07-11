@@ -56,10 +56,9 @@ export class RcsbFvCoreBuilder {
         const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
-        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFvCtxManager.getFv(elementId));
+        const rcsbFv: RcsbFv = rcsbFvCtxManager.getFv(elementId, createFvI.config.additionalConfig?.boardConfig);
+        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFv);
         if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
-        if(createFvI.config.additionalConfig?.boardConfig)
-            rcsbFvInstance.updateBoardConfig(createFvI.config.additionalConfig.boardConfig);
         await rcsbFvInstance.build(config);
         if(!rcsbFvInstance.activeDisplay())
             throw "ERROR: Module display failed";
@@ -68,7 +67,7 @@ export class RcsbFvCoreBuilder {
     }
 
     static unmount(elementId:string): void{
-        if (rcsbFvCtxManager.getFv(elementId) != null) {
+        if (rcsbFvCtxManager.hasFv(elementId)) {
             if(rcsbFvCtxManager.getButtonList(elementId)!=null){
                 rcsbFvCtxManager.getButtonList(elementId).forEach(buttonId=>{
                     WebToolsManager.clearSelectButton(buttonId);

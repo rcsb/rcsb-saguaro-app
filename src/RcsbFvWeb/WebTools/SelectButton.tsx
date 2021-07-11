@@ -59,19 +59,20 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private selectRender():JSX.Element {
+        const {defaultValue, index}: {defaultValue: SelectOptionInterface; index: number;} = this.getDefaultValue();
         if(this.props.addTitle === true)
-            return this.titleRender();
+            return this.titleRender(defaultValue, index);
         else
-            return this.selectButtonRender();
+            return this.selectButtonRender(defaultValue, index);
     }
 
-    private titleRender():JSX.Element{
+    private titleRender(defaultValue: SelectOptionInterface, index: number):JSX.Element{
         return(<div>
-            <div style={{display:"inline-block"}}>{this.selectButtonRender()}</div><div style={{display:"inline-block", marginLeft:"20px"}}>{this.state.selectedOption.name}</div>
+            <div style={{display:"inline-block"}}>{this.selectButtonRender(defaultValue, index)}</div><div style={{display:"inline-block", marginLeft:"20px"}}>{defaultValue.name}</div>
         </div>);
     }
 
-    private selectButtonRender():JSX.Element {
+    private selectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
         const SingleValue:(n:SingleValueProps<OptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
@@ -80,43 +81,6 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 </components.SingleValue>
             )
         };
-        const Option = (props:OptionProps<OptionPropsInterface>)=>{
-            return (components.Option && <div style={{display:'flex'}}><input type={'checkbox'}/><components.Option {...props}/></div>);
-        };
-        let index: number = 0;
-        let defaultValue: SelectOptionInterface;
-        if(this.props.defaultValue!=null){
-            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
-                const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
-                    return a.optId === this.props.defaultValue
-                });
-                if (n >= 0) {
-                    index = n;
-                    defaultValue = (this.props.options as Array<SelectOptionInterface>)[n];
-                }
-            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
-                let flag: boolean = false;
-                for(const group of (this.props.options as Array<GroupedOptionsInterface>)){
-                    for(const opt of group.options){
-                        if(opt.optId === this.props.defaultValue){
-                            defaultValue = opt;
-                            flag = true;
-                            break;
-                        }
-                        index++;
-                    }
-                    if (flag){
-                        break;
-                    }
-                }
-            }
-        }else{
-            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
-                defaultValue = (this.props.options as Array<SelectOptionInterface>)[0];
-            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
-                defaultValue = (this.props.options as Array<GroupedOptionsInterface>)[0].options[0];
-            }
-        }
         let options: OptionsType<OptionPropsInterface> | GroupedOptionsType<OptionPropsInterface>;
         if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null){
             options = (this.props.options as Array<SelectOptionInterface>).map((opt,index)=>{
@@ -165,5 +129,43 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 ...base
             })
         };
+    }
+
+    private getDefaultValue(): {defaultValue: SelectOptionInterface; index: number;}{
+        let index: number = 0;
+        let defaultValue: SelectOptionInterface;
+        if(this.props.defaultValue!=null){
+            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
+                const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
+                    return a.optId === this.props.defaultValue
+                });
+                if (n >= 0) {
+                    index = n;
+                    defaultValue = (this.props.options as Array<SelectOptionInterface>)[n];
+                }
+            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
+                let flag: boolean = false;
+                for(const group of (this.props.options as Array<GroupedOptionsInterface>)){
+                    for(const opt of group.options){
+                        if(opt.optId === this.props.defaultValue){
+                            defaultValue = opt;
+                            flag = true;
+                            break;
+                        }
+                        index++;
+                    }
+                    if (flag){
+                        break;
+                    }
+                }
+            }
+        }else{
+            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
+                defaultValue = (this.props.options as Array<SelectOptionInterface>)[0];
+            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
+                defaultValue = (this.props.options as Array<GroupedOptionsInterface>)[0].options[0];
+            }
+        }
+        return {defaultValue: defaultValue, index: index};
     }
 }
