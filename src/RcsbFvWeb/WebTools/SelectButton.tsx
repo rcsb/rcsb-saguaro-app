@@ -38,16 +38,26 @@ interface SelectButtonState {
 
 export class SelectButton extends React.Component <SelectButtonInterface, SelectButtonState> {
 
+    private defaultValue: string|undefined|null;
     readonly state: SelectButtonState = {
         selectedOption: ((this.props.options as Array<GroupedOptionsInterface>)[0].options) == null ? {...((this.props.options as Array<SelectOptionInterface>)[0]), value:0} : {...((this.props.options as Array<GroupedOptionsInterface>)[0].options[0]), value: 0}
     };
 
-    private change(option: OptionPropsInterface):void {
+    constructor(props: SelectButtonInterface) {
+        super(props);
+        this.defaultValue = props.defaultValue;
+    }
+
+    private change(option: OptionPropsInterface): void {
         this.setState({selectedOption: option});
     }
 
     componentDidUpdate(prevProps: Readonly<SelectButtonInterface>, prevState: Readonly<SelectButtonState>): void {
         this.state.selectedOption.onChange();
+    }
+
+    componentDidMount(): void {
+        this.defaultValue = null;
     }
 
     render():JSX.Element {
@@ -59,11 +69,11 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private selectRender():JSX.Element {
-        const {defaultValue, index}: {defaultValue: SelectOptionInterface; index: number;} = this.getDefaultValue();
+        const {selectOpt, index}: {selectOpt: SelectOptionInterface; index: number;} = this.getSelectOpt();
         if(this.props.addTitle === true)
-            return this.titleRender(defaultValue, index);
+            return this.titleRender(selectOpt, index);
         else
-            return this.selectButtonRender(defaultValue, index);
+            return this.selectButtonRender(selectOpt, index);
     }
 
     private titleRender(defaultValue: SelectOptionInterface, index: number):JSX.Element{
@@ -131,24 +141,24 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
         };
     }
 
-    private getDefaultValue(): {defaultValue: SelectOptionInterface; index: number;}{
+    private getSelectOpt(): {selectOpt: SelectOptionInterface; index: number;}{
         let index: number = 0;
-        let defaultValue: SelectOptionInterface;
-        if(this.props.defaultValue!=null){
+        let selectOpt: SelectOptionInterface;
+        if(this.defaultValue!=null){
             if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
                 const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
-                    return a.optId === this.props.defaultValue
+                    return a.optId === this.defaultValue
                 });
                 if (n >= 0) {
                     index = n;
-                    defaultValue = (this.props.options as Array<SelectOptionInterface>)[n];
+                    selectOpt = (this.props.options as Array<SelectOptionInterface>)[n];
                 }
             }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
                 let flag: boolean = false;
                 for(const group of (this.props.options as Array<GroupedOptionsInterface>)){
                     for(const opt of group.options){
-                        if(opt.optId === this.props.defaultValue){
-                            defaultValue = opt;
+                        if(opt.optId === this.defaultValue){
+                            selectOpt = opt;
                             flag = true;
                             break;
                         }
@@ -160,12 +170,11 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }
             }
         }else{
-            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
-                defaultValue = (this.props.options as Array<SelectOptionInterface>)[0];
-            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
-                defaultValue = (this.props.options as Array<GroupedOptionsInterface>)[0].options[0];
-            }
+            selectOpt = this.state.selectedOption;
+            index = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
+                return a.optId === this.state.selectedOption.optId
+            });
         }
-        return {defaultValue: defaultValue, index: index};
+        return {selectOpt: selectOpt, index: index};
     }
 }
