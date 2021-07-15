@@ -73,7 +73,7 @@
 				Feature Summaries. The package allows access to RCSB Saguaro methods to add or change displayed data. </p>
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.5.0/build/dist/app.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.4.8/build/dist/app.js"></script>
 <script type="text/javascript">
 RcsbFvWebApp.setBoardConfig({
     trackWidth:540,
@@ -88,7 +88,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 				<a href="#cdn-javascript" id="cdn-javascript" style="color: inherit; text-decoration: none;">
 					<h3>CDN JavaScript</h3>
 				</a>
-				<p><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.5.0/build/dist/app.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></p>
+				<p><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.4.8/build/dist/app.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></p>
 				<a href="#javascript-examples" id="javascript-examples" style="color: inherit; text-decoration: none;">
 					<h3>JavaScript Examples</h3>
 				</a>
@@ -123,6 +123,22 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li><p><strong>RcsbFvWebApp.getRcsbFv</strong>(elementId: string)</p>
 					</li>
+				</ul>
+				<p>###GraphQL configuration</p>
+				<a href="#building-typescript-interfaces" id="building-typescript-interfaces" style="color: inherit; text-decoration: none;">
+					<h5>Building TypeScript interfaces</h5>
+				</a>
+				<ul>
+					<li>Files [&quot;src/RcsbServerConfig/codegen.borrego.json&quot;, &quot;src/RcsbServerConfig/codegen.yosemite.json&quot;]</li>
+					<li>Borrego Interfaces: graphql-codegen --config src/RcsbServerConfig/codegen.borrego.json</li>
+					<li>Yosemite Interfaces: graphql-codegen --config src/RcsbServerConfig/codegen.yosemite.json</li>
+					<li>Generated Sources: &quot;src/RcsbGraphQL/Types&quot;
+						<a href="#intellij-schemas" id="intellij-schemas" style="color: inherit; text-decoration: none;">
+							<h5>IntelliJ schemas</h5>
+						</a>
+					</li>
+					<li>Config Files: [&quot;src/RcsbGraphQL/Queries/Borrego/.graphqlconfig&quot;, &quot;src/RcsbGraphQL/Queries/Yosemite/.graphqlconfig&quot;]</li>
+					<li>Generated Schemas: [&quot;src/RcsbGraphQL/Queries/Borrego/schema.graphql&quot;, &quot;src/RcsbGraphQL/Queries/Yosemite/schema.graphql&quot;]</li>
 				</ul>
 				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
 					<h2>Contributing</h2>
@@ -160,7 +176,13 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum">
+						<a href="enums/charttype.html" class="tsd-kind-icon">Chart<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
 						<a href="enums/fieldname.html" class="tsd-kind-icon">Field<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/groupkey.html" class="tsd-kind-icon">Group<wbr>Key</a>
 					</li>
 					<li class=" tsd-kind-enum">
 						<a href="enums/operationtype.html" class="tsd-kind-icon">Operation<wbr>Type</a>
@@ -186,11 +208,26 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					<li class=" tsd-kind-class">
 						<a href="classes/annotationtransformer.html" class="tsd-kind-icon">Annotation<wbr>Transformer</a>
 					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/barchartview.html" class="tsd-kind-icon">Bar<wbr>Chart<wbr>View</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/charttools.html" class="tsd-kind-icon">Chart<wbr>Tools</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/entitygranularitysearchfacetstore.html" class="tsd-kind-icon">Entity<wbr>Granularity<wbr>Search<wbr>Facet<wbr>Store</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/entryassembliescollector.html" class="tsd-kind-icon">Entry<wbr>Assemblies<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/entryassemblytranslate.html" class="tsd-kind-icon">Entry<wbr>Assembly<wbr>Translate</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/facetstore.html" class="tsd-kind-icon">Facet<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/facettools.html" class="tsd-kind-icon">Facet<wbr>Tools</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/featuretools.html" class="tsd-kind-icon">Feature<wbr>Tools</a>
@@ -199,10 +236,25 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/genomemapcollector.html" class="tsd-kind-icon">Genome<wbr>Map<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/groupmembercollector.html" class="tsd-kind-icon">Group<wbr>Member<wbr>Collector</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/grouppropertiesprovider.html" class="tsd-kind-icon">Group<wbr>Properties<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/grouppropertycollector.html" class="tsd-kind-icon">Group<wbr>Property<wbr>Collector</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/histogramchartview.html" class="tsd-kind-icon">Histogram<wbr>Chart<wbr>View</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/multipleentityinstancetranslate.html" class="tsd-kind-icon">Multiple<wbr>Entity<wbr>Instance<wbr>Translate</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/multipleentityinstancescollector.html" class="tsd-kind-icon">Multiple<wbr>Entity<wbr>Instances<wbr>Collector</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/multipleentrypropertycollector.html" class="tsd-kind-icon">Multiple<wbr>Entry<wbr>Property<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/ncbigenomesequencedata.html" class="tsd-kind-icon">Ncbi<wbr>Genome<wbr>Sequence<wbr>Data</a>
@@ -217,10 +269,13 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/observedsequencecollector.html" class="tsd-kind-icon">Observed<wbr>Sequence<wbr>Collector</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/pairwisealignmentbuilder.html" class="tsd-kind-icon">Pairwise<wbr>Alignment<wbr>Builder</a>
+						<a href="classes/operator.html" class="tsd-kind-icon">Operator</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/parselink.html" class="tsd-kind-icon">Parse<wbr>Link</a>
+						<a href="classes/pairwisealignmentbuilder.html" class="tsd-kind-icon">Pairwise<wbr>Alignment<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/piechartview.html" class="tsd-kind-icon">Pie<wbr>Chart<wbr>View</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/polymerentitychromosomecollector.html" class="tsd-kind-icon">Polymer<wbr>Entity<wbr>Chromosome<wbr>Collector</a>
@@ -236,6 +291,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbannotationconfig.html" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/rcsbchartlayout.html" class="tsd-kind-icon">Rcsb<wbr>Chart<wbr>Layout</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbclient.html" class="tsd-kind-icon">Rcsb<wbr>Client</a>
@@ -268,9 +326,6 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/rcsbfventitybuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvEntity<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/rcsbfvgeneralbuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvGeneral<wbr>Builder</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvinstance.html" class="tsd-kind-icon">Rcsb<wbr>FvInstance</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -280,7 +335,13 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/rcsbfvpairwisealigmentbuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvPairwise<wbr>Aligment<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/rcsbfvpairwisealignment.html" class="tsd-kind-icon">Rcsb<wbr>FvPairwise<wbr>Alignment</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvproteinsequence.html" class="tsd-kind-icon">Rcsb<wbr>FvProtein<wbr>Sequence</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rcsbfvproteinsequencebuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvProtein<wbr>Sequence<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvuniprot.html" class="tsd-kind-icon">Rcsb<wbr>FvUniprot</a>
@@ -295,6 +356,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/rcsbfvuniprotinstance.html" class="tsd-kind-icon">Rcsb<wbr>FvUniprot<wbr>Instance</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/rcsbgroupdisplay.html" class="tsd-kind-icon">Rcsb<wbr>Group<wbr>Display</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/rcsbgroupheader.html" class="tsd-kind-icon">Rcsb<wbr>Group<wbr>Header</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/rcsbqueryalignment.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Alignment</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -305,6 +372,15 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbquerymultipleentityinstances.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Multiple<wbr>Entity<wbr>Instances</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rcsbquerymultipleentriesproperties.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Multiple<wbr>Entries<wbr>Properties</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rcsbqueryuniprotentitygroup.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Uniprot<wbr>Entity<wbr>Group</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/searchrequestproperty.html" class="tsd-kind-icon">Search<wbr>Request<wbr>Property</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="classes/selectbutton.html" class="tsd-kind-icon">Select<wbr>Button</a>
@@ -320,6 +396,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/tagdelimiter.html" class="tsd-kind-icon">Tag<wbr>Delimiter</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/uniprotentitygroupfacetstore.html" class="tsd-kind-icon">Uniprot<wbr>Entity<wbr>Group<wbr>Facet<wbr>Store</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/webtoolsmanager.html" class="tsd-kind-icon">Web<wbr>Tools<wbr>Manager</a>
@@ -349,9 +428,6 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/annotationsresultinterface.html" class="tsd-kind-icon">Annotations<wbr>Result<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/auditauthor.html" class="tsd-kind-icon">Audit<wbr>Author</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/b.html" class="tsd-kind-icon">B</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -361,22 +437,19 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/buildsequencedatainterface.html" class="tsd-kind-icon">Build<wbr>Sequence<wbr>Data<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/cell.html" class="tsd-kind-icon">Cell</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/chains.html" class="tsd-kind-icon">Chains</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/chemcomp.html" class="tsd-kind-icon">Chem<wbr>Comp</a>
+						<a href="interfaces/chartconfiginterface.html" class="tsd-kind-icon">Chart<wbr>Config<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/chartobjectinterface.html" class="tsd-kind-icon">Chart<wbr>Object<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/chartviewinterface.html" class="tsd-kind-icon">Chart<wbr>View<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/chromosomemetadatainterface.html" class="tsd-kind-icon">Chromosome<wbr>Metadata<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/citation.html" class="tsd-kind-icon">Citation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/clustersmembers.html" class="tsd-kind-icon">Clusters<wbr>Members</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/collectalignmentinterface.html" class="tsd-kind-icon">Collect<wbr>Alignment<wbr>Interface</a>
@@ -385,55 +458,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/collectannotationsinterface.html" class="tsd-kind-icon">Collect<wbr>Annotations<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/coreassembly.html" class="tsd-kind-icon">Core<wbr>Assembly</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corebranchedentity.html" class="tsd-kind-icon">Core<wbr>Branched<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corebranchedentityinstance.html" class="tsd-kind-icon">Core<wbr>Branched<wbr>Entity<wbr>Instance</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corechemcomp.html" class="tsd-kind-icon">Core<wbr>Chem<wbr>Comp</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/corecollectorinterface.html" class="tsd-kind-icon">Core<wbr>Collector<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/coredrugbank.html" class="tsd-kind-icon">Core<wbr>Drugbank</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/coreentityalignmentsalignedregions.html" class="tsd-kind-icon">Core<wbr>Entity<wbr>Alignments<wbr>Aligned<wbr>Regions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/coreentityalignmentscoreentityidentifiers.html" class="tsd-kind-icon">Core<wbr>Entity<wbr>Alignments<wbr>Core<wbr>Entity<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/coreentityalignmentsscores.html" class="tsd-kind-icon">Core<wbr>Entity<wbr>Alignments<wbr>Scores</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/coreentry.html" class="tsd-kind-icon">Core<wbr>Entry</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corenonpolymerentity.html" class="tsd-kind-icon">Core<wbr>Nonpolymer<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corenonpolymerentityinstance.html" class="tsd-kind-icon">Core<wbr>Nonpolymer<wbr>Entity<wbr>Instance</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corepfam.html" class="tsd-kind-icon">Core<wbr>Pfam</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corepolymerentity.html" class="tsd-kind-icon">Core<wbr>Polymer<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corepolymerentityinstance.html" class="tsd-kind-icon">Core<wbr>Polymer<wbr>Entity<wbr>Instance</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/corepubmed.html" class="tsd-kind-icon">Core<wbr>Pubmed</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/coreuniprot.html" class="tsd-kind-icon">Core<wbr>Uniprot</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/coverage.html" class="tsd-kind-icon">Coverage</a>
@@ -441,122 +466,23 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/createfvinterface.html" class="tsd-kind-icon">Create<wbr>FvInterface</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/currententry.html" class="tsd-kind-icon">Current<wbr>Entry</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/datastatusinterface.html" class="tsd-kind-icon">Data<wbr>Status<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/diffrn.html" class="tsd-kind-icon">Diffrn</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/diffrndetector.html" class="tsd-kind-icon">Diffrn<wbr>Detector</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/diffrnradiation.html" class="tsd-kind-icon">Diffrn<wbr>Radiation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/diffrnsource.html" class="tsd-kind-icon">Diffrn<wbr>Source</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/drugbankcontaineridentifiers.html" class="tsd-kind-icon">Drugbank<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/drugbankinfo.html" class="tsd-kind-icon">Drugbank<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/drugbanktarget.html" class="tsd-kind-icon">Drugbank<wbr>Target</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/dynamickeyannotationinterface.html" class="tsd-kind-icon">Dynamic<wbr>Key<wbr>Annotation<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/em2dcrystalentity.html" class="tsd-kind-icon">Em2d<wbr>Crystal<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/em3dcrystalentity.html" class="tsd-kind-icon">Em3d<wbr>Crystal<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/em3dfitting.html" class="tsd-kind-icon">Em3d<wbr>Fitting</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/em3dfittinglist.html" class="tsd-kind-icon">Em3d<wbr>Fitting<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/em3dreconstruction.html" class="tsd-kind-icon">Em3d<wbr>Reconstruction</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emctfcorrection.html" class="tsd-kind-icon">Em<wbr>Ctf<wbr>Correction</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emdiffraction.html" class="tsd-kind-icon">Em<wbr>Diffraction</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emdiffractionshell.html" class="tsd-kind-icon">Em<wbr>Diffraction<wbr>Shell</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emdiffractionstats.html" class="tsd-kind-icon">Em<wbr>Diffraction<wbr>Stats</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emembedding.html" class="tsd-kind-icon">Em<wbr>Embedding</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/ementityassembly.html" class="tsd-kind-icon">Em<wbr>Entity<wbr>Assembly</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emexperiment.html" class="tsd-kind-icon">Em<wbr>Experiment</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emhelicalentity.html" class="tsd-kind-icon">Em<wbr>Helical<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emimagerecording.html" class="tsd-kind-icon">Em<wbr>Image<wbr>Recording</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emimaging.html" class="tsd-kind-icon">Em<wbr>Imaging</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emparticleselection.html" class="tsd-kind-icon">Em<wbr>Particle<wbr>Selection</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emsingleparticleentity.html" class="tsd-kind-icon">Em<wbr>Single<wbr>Particle<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emsoftware.html" class="tsd-kind-icon">Em<wbr>Software</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emspecimen.html" class="tsd-kind-icon">Em<wbr>Specimen</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emstaining.html" class="tsd-kind-icon">Em<wbr>Staining</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/emvitrification.html" class="tsd-kind-icon">Em<wbr>Vitrification</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/entitypoly.html" class="tsd-kind-icon">Entity<wbr>Poly</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/entitysrcgen.html" class="tsd-kind-icon">Entity<wbr>Src<wbr>Gen</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/entitysrcnat.html" class="tsd-kind-icon">Entity<wbr>Src<wbr>Nat</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/entry.html" class="tsd-kind-icon">Entry</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/entryinstancesresultinterface.html" class="tsd-kind-icon">Entry<wbr>Instances<wbr>Result<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/exptl.html" class="tsd-kind-icon">Exptl</a>
+						<a href="interfaces/entrypropertyintreface.html" class="tsd-kind-icon">Entry<wbr>Property<wbr>Intreface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/exptlcrystal.html" class="tsd-kind-icon">Exptl<wbr>Crystal</a>
+						<a href="interfaces/facetmemberinterface.html" class="tsd-kind-icon">Facet<wbr>Member<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/exptlcrystalgrow.html" class="tsd-kind-icon">Exptl<wbr>Crystal<wbr>Grow</a>
+						<a href="interfaces/facetstoreinterface.html" class="tsd-kind-icon">Facet<wbr>Store<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/feature.html" class="tsd-kind-icon">Feature</a>
@@ -571,7 +497,13 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/filterinput.html" class="tsd-kind-icon">Filter<wbr>Input</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/genename.html" class="tsd-kind-icon">Gene<wbr>Name</a>
+						<a href="interfaces/grouppropertiesproviderinterface.html" class="tsd-kind-icon">Group<wbr>Properties<wbr>Provider<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/grouppropertyinterface.html" class="tsd-kind-icon">Group<wbr>Property<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/groupresultinterface.html" class="tsd-kind-icon">Group<wbr>Result<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/groupedoptionsinterface.html" class="tsd-kind-icon">Grouped<wbr>Options<wbr>Interface</a>
@@ -581,6 +513,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/instancesequenceonchangeinterface.html" class="tsd-kind-icon">Instance<wbr>Sequence<wbr>Onchange<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/itempropertyinterface.html" class="tsd-kind-icon">Item<wbr>Property<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/ligand.html" class="tsd-kind-icon">Ligand</a>
@@ -598,186 +533,6 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/pairwisealignmentinterface.html" class="tsd-kind-icon">Pairwise<wbr>Alignment<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxauditrevisioncategory.html" class="tsd-kind-icon">Pdbx<wbr>Audit<wbr>Revision<wbr>Category</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxauditrevisiondetails.html" class="tsd-kind-icon">Pdbx<wbr>Audit<wbr>Revision<wbr>Details</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxauditrevisiongroup.html" class="tsd-kind-icon">Pdbx<wbr>Audit<wbr>Revision<wbr>Group</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxauditrevisionhistory.html" class="tsd-kind-icon">Pdbx<wbr>Audit<wbr>Revision<wbr>History</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxauditrevisionitem.html" class="tsd-kind-icon">Pdbx<wbr>Audit<wbr>Revision<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxauditsupport.html" class="tsd-kind-icon">Pdbx<wbr>Audit<wbr>Support</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxchemcompaudit.html" class="tsd-kind-icon">Pdbx<wbr>Chem<wbr>Comp<wbr>Audit</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxchemcompdescriptor.html" class="tsd-kind-icon">Pdbx<wbr>Chem<wbr>Comp<wbr>Descriptor</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxchemcompfeature.html" class="tsd-kind-icon">Pdbx<wbr>Chem<wbr>Comp<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxchemcompidentifier.html" class="tsd-kind-icon">Pdbx<wbr>Chem<wbr>Comp<wbr>Identifier</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxdatabasepdbobsspr.html" class="tsd-kind-icon">Pdbx<wbr>Database<wbr>Pdb<wbr>Obs<wbr>Spr</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxdatabaserelated.html" class="tsd-kind-icon">Pdbx<wbr>Database<wbr>Related</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxdatabasestatus.html" class="tsd-kind-icon">Pdbx<wbr>Database<wbr>Status</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxdepositgroup.html" class="tsd-kind-icon">Pdbx<wbr>Deposit<wbr>Group</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxentitybranch.html" class="tsd-kind-icon">Pdbx<wbr>Entity<wbr>Branch</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxentitybranchdescriptor.html" class="tsd-kind-icon">Pdbx<wbr>Entity<wbr>Branch<wbr>Descriptor</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxentitynonpoly.html" class="tsd-kind-icon">Pdbx<wbr>Entity<wbr>Nonpoly</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxentitysrcsyn.html" class="tsd-kind-icon">Pdbx<wbr>Entity<wbr>Src<wbr>Syn</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxfamilyprdaudit.html" class="tsd-kind-icon">Pdbx<wbr>Family<wbr>Prd<wbr>Audit</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxmoleculefeatures.html" class="tsd-kind-icon">Pdbx<wbr>Molecule<wbr>Features</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrdetails.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Details</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrensemble.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Ensemble</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrexptl.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Exptl</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrexptlsampleconditions.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Exptl<wbr>Sample<wbr>Conditions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrrefine.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Refine</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrrepresentative.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Representative</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrsampledetails.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Sample<wbr>Details</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrsoftware.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Software</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxnmrspectrometer.html" class="tsd-kind-icon">Pdbx<wbr>Nmr<wbr>Spectrometer</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxprdaudit.html" class="tsd-kind-icon">Pdbx<wbr>Prd<wbr>Audit</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferenceentitylist.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Entity<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferenceentitypoly.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Entity<wbr>Poly</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferenceentitypolylink.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Entity<wbr>Poly<wbr>Link</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferenceentitypolyseq.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Entity<wbr>Poly<wbr>Seq</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferenceentitysequence.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Entity<wbr>Sequence</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferenceentitysrcnat.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Entity<wbr>Src<wbr>Nat</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemolecule.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculeannotation.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculedetails.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>Details</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculefamily.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>Family</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculefeatures.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>Features</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculelist.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculerelatedstructures.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>Related<wbr>Structures</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxreferencemoleculesynonyms.html" class="tsd-kind-icon">Pdbx<wbr>Reference<wbr>Molecule<wbr>Synonyms</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxrelatedexpdataset.html" class="tsd-kind-icon">Pdbx<wbr>Related<wbr>Exp<wbr>Data<wbr>Set</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxserialcrystallographydatareduction.html" class="tsd-kind-icon">Pdbx<wbr>Serial<wbr>Crystallography<wbr>Data<wbr>Reduction</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxserialcrystallographymeasurement.html" class="tsd-kind-icon">Pdbx<wbr>Serial<wbr>Crystallography<wbr>Measurement</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxserialcrystallographysampledelivery.html" class="tsd-kind-icon">Pdbx<wbr>Serial<wbr>Crystallography<wbr>Sample<wbr>Delivery</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxserialcrystallographysampledeliveryfixedtarget.html" class="tsd-kind-icon">Pdbx<wbr>Serial<wbr>Crystallography<wbr>Sample<wbr>Delivery<wbr>Fixed<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxserialcrystallographysampledeliveryinjection.html" class="tsd-kind-icon">Pdbx<wbr>Serial<wbr>Crystallography<wbr>Sample<wbr>Delivery<wbr>Injection</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxsgproject.html" class="tsd-kind-icon">Pdbx<wbr>SgProject</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxsolnscatter.html" class="tsd-kind-icon">Pdbx<wbr>Soln<wbr>Scatter</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxsolnscattermodel.html" class="tsd-kind-icon">Pdbx<wbr>Soln<wbr>Scatter<wbr>Model</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxstructassembly.html" class="tsd-kind-icon">Pdbx<wbr>Struct<wbr>Assembly</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxstructassemblyauthevidence.html" class="tsd-kind-icon">Pdbx<wbr>Struct<wbr>Assembly<wbr>Auth<wbr>Evidence</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxstructassemblygen.html" class="tsd-kind-icon">Pdbx<wbr>Struct<wbr>Assembly<wbr>Gen</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxstructassemblyprop.html" class="tsd-kind-icon">Pdbx<wbr>Struct<wbr>Assembly<wbr>Prop</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxstructoperlist.html" class="tsd-kind-icon">Pdbx<wbr>Struct<wbr>Oper<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxstructspecialsymmetry.html" class="tsd-kind-icon">Pdbx<wbr>Struct<wbr>Special<wbr>Symmetry</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/pdbxvrptsummary.html" class="tsd-kind-icon">Pdbx<wbr>Vrpt<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/pfvbuilderinterface.html" class="tsd-kind-icon">Pfv<wbr>Builder<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -793,211 +548,16 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/queryannotationsargs.html" class="tsd-kind-icon">Query<wbr>Annotations<wbr>Args</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/queryassembliesargs.html" class="tsd-kind-icon">Query<wbr>Assemblies<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/queryassemblyargs.html" class="tsd-kind-icon">Query<wbr>Assembly<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querybranched_entitiesargs.html" class="tsd-kind-icon">Query<wbr>Branched_<wbr><wbr>Entities<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querybranched_entityargs.html" class="tsd-kind-icon">Query<wbr>Branched_<wbr><wbr>Entity<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querybranched_entity_instanceargs.html" class="tsd-kind-icon">Query<wbr>Branched_<wbr><wbr>Entity_<wbr><wbr>Instance<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querybranched_entity_instancesargs.html" class="tsd-kind-icon">Query<wbr>Branched_<wbr><wbr>Entity_<wbr><wbr>Instances<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querychem_compargs.html" class="tsd-kind-icon">Query<wbr>Chem_<wbr><wbr>Comp<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querychem_compsargs.html" class="tsd-kind-icon">Query<wbr>Chem_<wbr><wbr>Comps<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/queryentriesargs.html" class="tsd-kind-icon">Query<wbr>Entries<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/queryentryargs.html" class="tsd-kind-icon">Query<wbr>Entry<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querynonpolymer_entitiesargs.html" class="tsd-kind-icon">Query<wbr>Nonpolymer_<wbr><wbr>Entities<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querynonpolymer_entityargs.html" class="tsd-kind-icon">Query<wbr>Nonpolymer_<wbr><wbr>Entity<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querynonpolymer_entity_instanceargs.html" class="tsd-kind-icon">Query<wbr>Nonpolymer_<wbr><wbr>Entity_<wbr><wbr>Instance<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querynonpolymer_entity_instancesargs.html" class="tsd-kind-icon">Query<wbr>Nonpolymer_<wbr><wbr>Entity_<wbr><wbr>Instances<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querypolymer_entitiesargs.html" class="tsd-kind-icon">Query<wbr>Polymer_<wbr><wbr>Entities<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querypolymer_entityargs.html" class="tsd-kind-icon">Query<wbr>Polymer_<wbr><wbr>Entity<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querypolymer_entity_instanceargs.html" class="tsd-kind-icon">Query<wbr>Polymer_<wbr><wbr>Entity_<wbr><wbr>Instance<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querypolymer_entity_instancesargs.html" class="tsd-kind-icon">Query<wbr>Polymer_<wbr><wbr>Entity_<wbr><wbr>Instances<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/querypubmedargs.html" class="tsd-kind-icon">Query<wbr>Pubmed<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/queryuniprotargs.html" class="tsd-kind-icon">Query<wbr>Uniprot<wbr>Args</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbaccessioninfo.html" class="tsd-kind-icon">Rcsb<wbr>Accession<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbannotationconfiginterface.html" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Config<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbassemblycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Assembly<wbr>Container<wbr>Identifiers</a>
+						<a href="interfaces/rcsbchartinterface.html" class="tsd-kind-icon">Rcsb<wbr>Chart<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbassemblyinfo.html" class="tsd-kind-icon">Rcsb<wbr>Assembly<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbindingaffinity.html" class="tsd-kind-icon">Rcsb<wbr>Binding<wbr>Affinity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbirdcitation.html" class="tsd-kind-icon">Rcsb<wbr>Bird<wbr>Citation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentity.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityannotation.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentitycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentitycontaineridentifiersreferenceidentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Container<wbr>Identifiers<wbr>Reference<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityfeature.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityfeatureadditionalproperties.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Feature<wbr>Additional<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityfeaturefeaturepositions.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Feature<wbr>Feature<wbr>Positions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityfeaturesummary.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Feature<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentityinstancecontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Instance<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentitykeywords.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Keywords</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentitynamecom.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Name<wbr>Com</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedentitynamesys.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Name<wbr>Sys</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstanceannotation.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstanceannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstancefeature.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstancefeatureadditionalproperties.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Feature<wbr>Additional<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstancefeaturefeaturepositions.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Feature<wbr>Feature<wbr>Positions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstancefeaturefeaturevalue.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Feature<wbr>Feature<wbr>Value</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedinstancefeaturesummary.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Instance<wbr>Feature<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedstructconn.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Struct<wbr>Conn</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedstructconnconnectpartner.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Struct<wbr>Conn<wbr>Connect<wbr>Partner</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbbranchedstructconnconnecttarget.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Struct<wbr>Conn<wbr>Connect<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcompannotation.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcompannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcompcontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcompdescriptor.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Descriptor</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcompinfo.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcomprelated.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Related</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcompsynonyms.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Synonyms</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbchemcomptarget.html" class="tsd-kind-icon">Rcsb<wbr>Chem<wbr>Comp<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbclusterflexibility.html" class="tsd-kind-icon">Rcsb<wbr>Cluster<wbr>Flexibility</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbclustermembership.html" class="tsd-kind-icon">Rcsb<wbr>Cluster<wbr>Membership</a>
+						<a href="interfaces/rcsbchartlayoutinterface.html" class="tsd-kind-icon">Rcsb<wbr>Chart<wbr>Layout<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/rcsbcorequeryinterface.html" class="tsd-kind-icon">Rcsb<wbr>Core<wbr>Query<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentityhostorganism.html" class="tsd-kind-icon">Rcsb<wbr>Entity<wbr>Host<wbr>Organism</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentityhostorganismtaxonomylineage.html" class="tsd-kind-icon">Rcsb<wbr>Entity<wbr>Host<wbr>Organism<wbr>Taxonomy<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentitysourceorganism.html" class="tsd-kind-icon">Rcsb<wbr>Entity<wbr>Source<wbr>Organism</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentitysourceorganismrcsbgenename.html" class="tsd-kind-icon">Rcsb<wbr>Entity<wbr>Source<wbr>Organism<wbr>Rcsb<wbr>Gene<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentitysourceorganismtaxonomylineage.html" class="tsd-kind-icon">Rcsb<wbr>Entity<wbr>Source<wbr>Organism<wbr>Taxonomy<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentrycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Entry<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentryinfo.html" class="tsd-kind-icon">Rcsb<wbr>Entry<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbentryinfodiffrnresolutionhigh.html" class="tsd-kind-icon">Rcsb<wbr>Entry<wbr>Info<wbr>Diffrn<wbr>Resolution<wbr>High</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbexternalreferences.html" class="tsd-kind-icon">Rcsb<wbr>External<wbr>References</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbfvadditionalconfig.html" class="tsd-kind-icon">Rcsb<wbr>FvAdditional<wbr>Config</a>
@@ -1012,262 +572,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/rcsbfvmodulepublicinterface.html" class="tsd-kind-icon">Rcsb<wbr>FvModule<wbr>Public<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbgenomiclineage.html" class="tsd-kind-icon">Rcsb<wbr>Genomic<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsblatestrevision.html" class="tsd-kind-icon">Rcsb<wbr>Latest<wbr>Revision</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbligandneighbors.html" class="tsd-kind-icon">Rcsb<wbr>Ligand<wbr>Neighbors</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbmembranelineage.html" class="tsd-kind-icon">Rcsb<wbr>Membrane<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbmergedtypesinterface.html" class="tsd-kind-icon">Rcsb<wbr>Merged<wbr>Types<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentity.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentityannotation.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentityannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentitycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentityfeature.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentityfeatureadditionalproperties.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Feature<wbr>Additional<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentityfeaturesummary.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Feature<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentityinstancecontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Instance<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentitykeywords.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Keywords</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerentitynamecom.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Entity<wbr>Name<wbr>Com</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstanceannotation.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstanceannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstancefeature.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstancefeatureadditionalproperties.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Feature<wbr>Additional<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstancefeaturefeaturevalue.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Feature<wbr>Feature<wbr>Value</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstancefeaturesummary.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Feature<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerinstancevalidationscore.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Instance<wbr>Validation<wbr>Score</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerstructconn.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Struct<wbr>Conn</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerstructconnconnectpartner.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Struct<wbr>Conn<wbr>Connect<wbr>Partner</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbnonpolymerstructconnconnecttarget.html" class="tsd-kind-icon">Rcsb<wbr>Nonpolymer<wbr>Struct<wbr>Conn<wbr>Connect<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpfamcontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Pfam<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentity.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityalign.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Align</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityalignalignedregions.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Align<wbr>Aligned<wbr>Regions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityannotation.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentitycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentitycontaineridentifiersreferencesequenceidentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Container<wbr>Identifiers<wbr>Reference<wbr>Sequence<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityfeature.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityfeatureadditionalproperties.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Feature<wbr>Additional<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityfeaturefeaturepositions.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Feature<wbr>Feature<wbr>Positions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityfeaturesummary.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Feature<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityinstancecontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentitykeywords.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Keywords</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentitynamecom.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Name<wbr>Com</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentitynamesys.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Name<wbr>Sys</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityrcsbeclineage.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Rcsb<wbr>EcLineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityrcsbenzymeclasscombined.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Rcsb<wbr>Enzyme<wbr>Class<wbr>Combined</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerentityrcsbmacromolecularnamescombined.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Entity<wbr>Rcsb<wbr>Macromolecular<wbr>Names<wbr>Combined</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerinstanceannotation.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Instance<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerinstanceannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Instance<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerinstancefeature.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Instance<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerinstancefeatureadditionalproperties.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Instance<wbr>Feature<wbr>Additional<wbr>Properties</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerinstancefeaturefeaturepositions.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Instance<wbr>Feature<wbr>Feature<wbr>Positions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerinstancefeaturesummary.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Instance<wbr>Feature<wbr>Summary</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerstructconn.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Struct<wbr>Conn</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerstructconnconnectpartner.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Struct<wbr>Conn<wbr>Connect<wbr>Partner</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpolymerstructconnconnecttarget.html" class="tsd-kind-icon">Rcsb<wbr>Polymer<wbr>Struct<wbr>Conn<wbr>Connect<wbr>Target</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbprimarycitation.html" class="tsd-kind-icon">Rcsb<wbr>Primary<wbr>Citation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpubmedcontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Pubmed<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbpubmedmeshdescriptorslineage.html" class="tsd-kind-icon">Rcsb<wbr>Pubmed<wbr>Mesh<wbr>Descriptors<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbrepositoryholdingscurrent.html" class="tsd-kind-icon">Rcsb<wbr>Repository<wbr>Holdings<wbr>Current</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbrepositoryholdingscurrententrycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Repository<wbr>Holdings<wbr>Current<wbr>Entry<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbschemacontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Schema<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbstructsymmetry.html" class="tsd-kind-icon">Rcsb<wbr>Struct<wbr>Symmetry</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbstructsymmetryclusters.html" class="tsd-kind-icon">Rcsb<wbr>Struct<wbr>Symmetry<wbr>Clusters</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbstructsymmetrylineage.html" class="tsd-kind-icon">Rcsb<wbr>Struct<wbr>Symmetry<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbstructsymmetryrotationaxes.html" class="tsd-kind-icon">Rcsb<wbr>Struct<wbr>Symmetry<wbr>Rotation<wbr>Axes</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbtargetneighbors.html" class="tsd-kind-icon">Rcsb<wbr>Target<wbr>Neighbors</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotalignments.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Alignments</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotalignmentscoreentityalignments.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Alignments<wbr>Core<wbr>Entity<wbr>Alignments</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotannotation.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Annotation</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotannotationannotationlineage.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Annotation<wbr>Annotation<wbr>Lineage</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotcontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Container<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotcontaineridentifiersreferencesequenceidentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Container<wbr>Identifiers<wbr>Reference<wbr>Sequence<wbr>Identifiers</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotexternalreference.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>External<wbr>Reference</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotfeature.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Feature</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotfeaturefeaturepositions.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Feature<wbr>Feature<wbr>Positions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotkeyword.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Keyword</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotprotein.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Protein</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotproteinec.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Protein<wbr>Ec</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotproteinfunction.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Protein<wbr>Function</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotproteingene.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Protein<wbr>Gene</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotproteinname.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Protein<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbuniprotproteinsourceorganism.html" class="tsd-kind-icon">Rcsb<wbr>Uniprot<wbr>Protein<wbr>Source<wbr>Organism</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/refine.html" class="tsd-kind-icon">Refine</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/refineanalyze.html" class="tsd-kind-icon">Refine<wbr>Analyze</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/refinehist.html" class="tsd-kind-icon">Refine<wbr>Hist</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/refinelsrestr.html" class="tsd-kind-icon">Refine<wbr>LsRestr</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/reflns.html" class="tsd-kind-icon">Reflns</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/reflnsshell.html" class="tsd-kind-icon">Reflns<wbr>Shell</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/scalars.html" class="tsd-kind-icon">Scalars</a>
@@ -1294,15 +599,6 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/smtl.html" class="tsd-kind-icon">Smtl</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/software.html" class="tsd-kind-icon">Software</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/struct.html" class="tsd-kind-icon">Struct</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/structkeywords.html" class="tsd-kind-icon">Struct<wbr>Keywords</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/structure.html" class="tsd-kind-icon">Structure</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -1310,9 +606,6 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/swissmodelresultinterface.html" class="tsd-kind-icon">Swiss<wbr>Model<wbr>Result<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/symmetry.html" class="tsd-kind-icon">Symmetry</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/targetalignment.html" class="tsd-kind-icon">Target<wbr>Alignment</a>
@@ -1335,11 +628,32 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/workerinterface.html" class="tsd-kind-icon">Worker<wbr>Interface</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#bardata" class="tsd-kind-icon">Bar<wbr>Data</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#exact" class="tsd-kind-icon">Exact</a>
 					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#facetstoretype" class="tsd-kind-icon">Facet<wbr>Store<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#facettype" class="tsd-kind-icon">Facet<wbr>Type</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#maybe" class="tsd-kind-icon">Maybe</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#searchquerytype" class="tsd-kind-icon">Search<wbr>Query<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#groupproperty" class="tsd-kind-icon">group<wbr>Property</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#piedata" class="tsd-kind-icon">pie<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#entitygranularitygroupfacetstore" class="tsd-kind-icon">entity<wbr>Granularity<wbr>Group<wbr>Facet<wbr>Store</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#rcsbfvctxmanager" class="tsd-kind-icon">rcsb<wbr>FvCtx<wbr>Manager</a>
@@ -1348,10 +662,16 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="globals.html#rcsbfvwebapppath" class="tsd-kind-icon">rcsb<wbr>FvWeb<wbr>App<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-variable">
+						<a href="globals.html#uniprotentitygroupfacetstore" class="tsd-kind-icon">uniprot<wbr>Entity<wbr>Group<wbr>Facet<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-variable">
 						<a href="globals.html#worker" class="tsd-kind-icon">worker</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#additionalconfig" class="tsd-kind-icon">additional<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#barchart" class="tsd-kind-icon">bar<wbr>Chart</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#buildassemblysequencefv" class="tsd-kind-icon">build<wbr>Assembly<wbr>Sequence<wbr>Fv</a>
@@ -1396,10 +716,16 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="globals.html#buildrcsbfvsingleviewer" class="tsd-kind-icon">build<wbr>Rcsb<wbr>FvSingle<wbr>Viewer</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#buildsearchrequest" class="tsd-kind-icon">build<wbr>Search<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#buildsingleentitysummaryfv" class="tsd-kind-icon">build<wbr>Single<wbr>Entity<wbr>Summary<wbr>Fv</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#builduniprotentityfv" class="tsd-kind-icon">build<wbr>Uniprot<wbr>Entity<wbr>Fv</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#builduniprotentitygroup" class="tsd-kind-icon">build<wbr>Uniprot<wbr>Entity<wbr>Group</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#builduniprotentityinstancefv" class="tsd-kind-icon">build<wbr>Uniprot<wbr>Entity<wbr>Instance<wbr>Fv</a>
@@ -1408,16 +734,19 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="globals.html#builduniprotfv" class="tsd-kind-icon">build<wbr>Uniprot<wbr>Fv</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#chartcell" class="tsd-kind-icon">chart<wbr>Cell</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#computefeaturegaps" class="tsd-kind-icon">compute<wbr>Feature<wbr>Gaps</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#findmismatch" class="tsd-kind-icon">find<wbr>Mismatch</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#getrcsbfv" class="tsd-kind-icon">get<wbr>Rcsb<wbr>Fv</a>
+						<a href="globals.html#gradient" class="tsd-kind-icon">gradient</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="globals.html#gradient" class="tsd-kind-icon">gradient</a>
+						<a href="globals.html#histogramchart" class="tsd-kind-icon">histogram<wbr>Chart</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#mappending" class="tsd-kind-icon">map<wbr>Pending</a>
@@ -1430,6 +759,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#sequencedisplaydynamicupdate" class="tsd-kind-icon">sequence<wbr>Display<wbr>Dynamic<wbr>Update</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#uniprotentitygroupquery" class="tsd-kind-icon">uniprot<wbr>Entity<wbr>Group<wbr>Query</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#unmount" class="tsd-kind-icon">unmount</a>

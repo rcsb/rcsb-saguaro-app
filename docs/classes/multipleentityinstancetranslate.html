@@ -81,14 +81,17 @@
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="multipleentityinstancetranslate.html#entryentityinstancetranslatemap" class="tsd-kind-icon">entry<wbr>Entity<wbr>Instance<wbr>Translate<wbr>Map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="multipleentityinstancetranslate.html#entityinstancetranslatemap" class="tsd-kind-icon">entity<wbr>Instance<wbr>Translate<wbr>Map</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="multipleentityinstancetranslate.html#add" class="tsd-kind-icon">add</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="multipleentityinstancetranslate.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="multipleentityinstancetranslate.html#getentities" class="tsd-kind-icon">get<wbr>Entities</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="multipleentityinstancetranslate.html#getentity" class="tsd-kind-icon">get<wbr>Entity</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="multipleentityinstancetranslate.html#getentries" class="tsd-kind-icon">get<wbr>Entries</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="multipleentityinstancetranslate.html#getinstances" class="tsd-kind-icon">get<wbr>Instances</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,12 +100,12 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="entryentityinstancetranslatemap" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> entry<wbr>Entity<wbr>Instance<wbr>Translate<wbr>Map</h3>
-					<div class="tsd-signature tsd-kind-icon">entry<wbr>Entity<wbr>Instance<wbr>Translate<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, PolymerEntityInstanceTranslate&gt;()</span></div>
+					<a name="entityinstancetranslatemap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> entity<wbr>Instance<wbr>Translate<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">entity<wbr>Instance<wbr>Translate<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, PolymerEntityInstanceTranslate&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/MultipleEntityInstanceTranslate.ts#L7">src/RcsbFvWeb/Utils/MultipleEntityInstanceTranslate.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/fa0af938/src/RcsbUtils/MultipleEntityInstanceTranslate.ts#L8">src/RcsbUtils/MultipleEntityInstanceTranslate.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -119,7 +122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/MultipleEntityInstanceTranslate.ts#L9">src/RcsbFvWeb/Utils/MultipleEntityInstanceTranslate.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/fa0af938/src/RcsbUtils/MultipleEntityInstanceTranslate.ts#L10">src/RcsbUtils/MultipleEntityInstanceTranslate.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -133,16 +136,33 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="get" class="tsd-anchor"></a>
-					<h3>get</h3>
+					<a name="getentities" class="tsd-anchor"></a>
+					<h3>get<wbr>Entities</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>entityId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Entities<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/4ea2ca10/src/RcsbFvWeb/Utils/MultipleEntityInstanceTranslate.ts#L22">src/RcsbFvWeb/Utils/MultipleEntityInstanceTranslate.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/fa0af938/src/RcsbUtils/MultipleEntityInstanceTranslate.ts#L27">src/RcsbUtils/MultipleEntityInstanceTranslate.ts:27</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getentity" class="tsd-anchor"></a>
+					<h3>get<wbr>Entity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Entity<span class="tsd-signature-symbol">(</span>entityId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/fa0af938/src/RcsbUtils/MultipleEntityInstanceTranslate.ts#L23">src/RcsbUtils/MultipleEntityInstanceTranslate.ts:23</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -152,6 +172,40 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getentries" class="tsd-anchor"></a>
+					<h3>get<wbr>Entries</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Entries<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/fa0af938/src/RcsbUtils/MultipleEntityInstanceTranslate.ts#L31">src/RcsbUtils/MultipleEntityInstanceTranslate.ts:31</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getinstances" class="tsd-anchor"></a>
+					<h3>get<wbr>Instances</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Instances<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/fa0af938/src/RcsbUtils/MultipleEntityInstanceTranslate.ts#L37">src/RcsbUtils/MultipleEntityInstanceTranslate.ts:37</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -173,13 +227,22 @@
 						<a href="multipleentityinstancetranslate.html" class="tsd-kind-icon">Multiple<wbr>Entity<wbr>Instance<wbr>Translate</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="multipleentityinstancetranslate.html#entryentityinstancetranslatemap" class="tsd-kind-icon">entry<wbr>Entity<wbr>Instance<wbr>Translate<wbr>Map</a>
+								<a href="multipleentityinstancetranslate.html#entityinstancetranslatemap" class="tsd-kind-icon">entity<wbr>Instance<wbr>Translate<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="multipleentityinstancetranslate.html#add" class="tsd-kind-icon">add</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="multipleentityinstancetranslate.html#get" class="tsd-kind-icon">get</a>
+								<a href="multipleentityinstancetranslate.html#getentities" class="tsd-kind-icon">get<wbr>Entities</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="multipleentityinstancetranslate.html#getentity" class="tsd-kind-icon">get<wbr>Entity</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="multipleentityinstancetranslate.html#getentries" class="tsd-kind-icon">get<wbr>Entries</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="multipleentityinstancetranslate.html#getinstances" class="tsd-kind-icon">get<wbr>Instances</a>
 							</li>
 						</ul>
 					</li>
