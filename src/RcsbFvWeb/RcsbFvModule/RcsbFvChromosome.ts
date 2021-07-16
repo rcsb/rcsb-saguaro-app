@@ -6,7 +6,7 @@ import {
     Coverage,
     SequenceReference,
     TargetAlignment
-} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 import {
     RcsbFvDisplayTypes,
@@ -22,7 +22,7 @@ import {RcsbQueryAlignment} from "../../RcsbGraphQL/RcsbQueryAlignment";
 import {NcbiGenomeSequenceData} from "../../ExternalResources/NcbiData/NcbiGenomeSequenceData";
 import {ChromosomeMetadataInterface, NcbiSummary} from "../../ExternalResources/NcbiData/NcbiSummary";
 import Ideogram from 'ideogram';
-import {ObservableHelper} from "../Utils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
 
 function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>){
     return (where: RcsbFvLocationViewInterface) => {

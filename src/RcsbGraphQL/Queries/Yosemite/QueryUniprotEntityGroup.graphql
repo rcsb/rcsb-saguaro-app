@@ -1,0 +1,15 @@
+query QueryUniprotEntityGroup($group_id: String!){
+    uniprot_entity_group(
+        group_id:$group_id
+    ){
+        rcsb_id
+        rcsb_group_info{
+            group_name
+            group_description
+            group_members_granularity
+        }
+        rcsb_group_container_identifiers{
+            group_member_ids
+        }
+    }
+}

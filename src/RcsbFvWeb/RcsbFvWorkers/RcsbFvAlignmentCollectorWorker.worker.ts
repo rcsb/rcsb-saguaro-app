@@ -1,5 +1,5 @@
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {QueryAlignmentArgs} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {QueryAlignmentArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 const worker: Window & typeof globalThis = self;
 worker.onmessage = function(message: MessageEvent){

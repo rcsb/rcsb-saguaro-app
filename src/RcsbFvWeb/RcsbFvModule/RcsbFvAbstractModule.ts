@@ -4,13 +4,13 @@ import {
     RcsbFvRowConfigInterface
 } from '@rcsb/rcsb-saguaro';
 
-import {SequenceCollector} from "../CollectTools/SequenceCollector/SequenceCollector";
-import {AnnotationCollector} from "../CollectTools/AnnotationCollector/AnnotationCollector";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
-import {SequenceCollectorInterface} from "../CollectTools/SequenceCollector/SequenceCollectorInterface";
-import {AnnotationCollectorInterface} from "../CollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {SequenceCollector} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
+import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
+import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {Feature} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 
 

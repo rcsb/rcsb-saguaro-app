@@ -82,6 +82,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#entrytoassemblymap" class="tsd-kind-icon">entry<wbr>ToAssembly<wbr>Map</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#grouppropertymap" class="tsd-kind-icon">group<wbr>Property<wbr>Map</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#polymerentitytoinstancemap" class="tsd-kind-icon">polymer<wbr>Entity<wbr>ToInstance<wbr>Map</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#rcsbbuttonmanager" class="tsd-kind-icon">rcsb<wbr>Button<wbr>Manager</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#rcsbfvmanager" class="tsd-kind-icon">rcsb<wbr>FvManager</a></li>
@@ -95,12 +96,16 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#getentitytoinstance" class="tsd-kind-icon">get<wbr>Entity<wbr>ToInstance</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#getentrytoassembly" class="tsd-kind-icon">get<wbr>Entry<wbr>ToAssembly</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#getfv" class="tsd-kind-icon">get<wbr>Fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#getgroupmemberproperties" class="tsd-kind-icon">get<wbr>Group<wbr>Member<wbr>Properties</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#getgroupproperties" class="tsd-kind-icon">get<wbr>Group<wbr>Properties</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#getsearchqueryresult" class="tsd-kind-icon">get<wbr>Search<wbr>Query<wbr>Result</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#hasfv" class="tsd-kind-icon">has<wbr>Fv</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#removefv" class="tsd-kind-icon">remove<wbr>Fv</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="rcsbfvcontextmanager.html#setbutton" class="tsd-kind-icon">set<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#setentitytoinstance" class="tsd-kind-icon">set<wbr>Entity<wbr>ToInstance</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#setentrytoassembly" class="tsd-kind-icon">set<wbr>Entry<wbr>ToAssembly</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#setfv" class="tsd-kind-icon">set<wbr>Fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="rcsbfvcontextmanager.html#setgroupproperties" class="tsd-kind-icon">set<wbr>Group<wbr>Properties</a></li>
 							</ul>
 						</section>
 					</div>
@@ -114,7 +119,17 @@
 					<div class="tsd-signature tsd-kind-icon">entry<wbr>ToAssembly<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/datastatusinterface.html" class="tsd-signature-type">DataStatusInterface</a><span class="tsd-signature-symbol">&lt;</span><a href="entryassemblytranslate.html" class="tsd-signature-type">EntryAssemblyTranslate</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, DataStatusInterface&lt;EntryAssemblyTranslate&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L21">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L34">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:34</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="grouppropertymap" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> group<wbr>Property<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">group<wbr>Property<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/datastatusinterface.html" class="tsd-signature-type">DataStatusInterface</a><span class="tsd-signature-symbol">&lt;</span><a href="grouppropertiesprovider.html" class="tsd-signature-type">GroupPropertiesProvider</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, DataStatusInterface&lt;GroupPropertiesProvider&gt;&gt;()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L35">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -124,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">polymer<wbr>Entity<wbr>ToInstance<wbr>Map<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../interfaces/datastatusinterface.html" class="tsd-signature-type">DataStatusInterface</a><span class="tsd-signature-symbol">&lt;</span><a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, DataStatusInterface&lt;PolymerEntityInstanceTranslate&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L20">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L33">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -134,7 +149,7 @@
 					<div class="tsd-signature tsd-kind-icon">rcsb<wbr>Button<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, Set&lt;string&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L19">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L32">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -144,7 +159,7 @@
 					<div class="tsd-signature tsd-kind-icon">rcsb<wbr>FvManager<span class="tsd-signature-symbol">:</span> <a href="annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">RcsbFv</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Map&lt;string, RcsbFv&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L18">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L31">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -161,7 +176,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L41">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L56">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -184,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L99">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L118">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:118</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -207,7 +222,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L65">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L84">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:84</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -230,7 +245,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L81">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L100">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -253,7 +268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L23">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L38">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -270,6 +285,84 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getgroupmemberproperties" class="tsd-anchor"></a>
+					<h3>get<wbr>Group<wbr>Member<wbr>Properties</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Group<wbr>Member<wbr>Properties<span class="tsd-signature-symbol">(</span>groupKey<span class="tsd-signature-symbol">: </span><a href="../enums/groupkey.html" class="tsd-signature-type">GroupKey</a>, groupId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="grouppropertiesprovider.html" class="tsd-signature-type">GroupPropertiesProvider</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L124">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:124</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>groupKey: <a href="../enums/groupkey.html" class="tsd-signature-type">GroupKey</a></h5>
+								</li>
+								<li>
+									<h5>groupId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="grouppropertiesprovider.html" class="tsd-signature-type">GroupPropertiesProvider</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getgroupproperties" class="tsd-anchor"></a>
+					<h3>get<wbr>Group<wbr>Properties</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Group<wbr>Properties<span class="tsd-signature-symbol">(</span>groupKey<span class="tsd-signature-symbol">: </span><a href="../enums/groupkey.html" class="tsd-signature-type">GroupKey</a>, groupId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grouppropertyinterface.html" class="tsd-signature-type">GroupPropertyInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L147">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:147</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>groupKey: <a href="../enums/groupkey.html" class="tsd-signature-type">GroupKey</a></h5>
+								</li>
+								<li>
+									<h5>groupId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/grouppropertyinterface.html" class="tsd-signature-type">GroupPropertyInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getsearchqueryresult" class="tsd-anchor"></a>
+					<h3>get<wbr>Search<wbr>Query<wbr>Result</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Search<wbr>Query<wbr>Result<span class="tsd-signature-symbol">(</span>query<span class="tsd-signature-symbol">: </span><a href="../globals.html#searchquerytype" class="tsd-signature-type">SearchQueryType</a>, facetStoreType<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">QueryResult</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L142">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:142</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>query: <a href="../globals.html#searchquerytype" class="tsd-signature-type">SearchQueryType</a></h5>
+								</li>
+								<li>
+									<h5>facetStoreType: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">QueryResult</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="hasfv" class="tsd-anchor"></a>
 					<h3>has<wbr>Fv</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -279,7 +372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L33">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L48">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -302,7 +395,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L51">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L66">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:66</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -325,7 +418,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L45">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L60">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -351,7 +444,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L57">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L72">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -377,7 +470,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L61">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L76">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -403,7 +496,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9f9fd61b/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L37">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L52">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:52</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -413,6 +506,32 @@
 								</li>
 								<li>
 									<h5>rcsbFv: <span class="tsd-signature-type">RcsbFv</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="setgroupproperties" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> set<wbr>Group<wbr>Properties</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Group<wbr>Properties<span class="tsd-signature-symbol">(</span>groupId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, map<span class="tsd-signature-symbol">: </span><a href="grouppropertiesprovider.html" class="tsd-signature-type">GroupPropertiesProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/02599e08/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts#L80">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager.ts:80</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>groupId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>map: <a href="grouppropertiesprovider.html" class="tsd-signature-type">GroupPropertiesProvider</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -440,6 +559,9 @@
 								<a href="rcsbfvcontextmanager.html#entrytoassemblymap" class="tsd-kind-icon">entry<wbr>ToAssembly<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="rcsbfvcontextmanager.html#grouppropertymap" class="tsd-kind-icon">group<wbr>Property<wbr>Map</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="rcsbfvcontextmanager.html#polymerentitytoinstancemap" class="tsd-kind-icon">polymer<wbr>Entity<wbr>ToInstance<wbr>Map</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -464,6 +586,15 @@
 								<a href="rcsbfvcontextmanager.html#getfv" class="tsd-kind-icon">get<wbr>Fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="rcsbfvcontextmanager.html#getgroupmemberproperties" class="tsd-kind-icon">get<wbr>Group<wbr>Member<wbr>Properties</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="rcsbfvcontextmanager.html#getgroupproperties" class="tsd-kind-icon">get<wbr>Group<wbr>Properties</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="rcsbfvcontextmanager.html#getsearchqueryresult" class="tsd-kind-icon">get<wbr>Search<wbr>Query<wbr>Result</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="rcsbfvcontextmanager.html#hasfv" class="tsd-kind-icon">has<wbr>Fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -480,6 +611,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
 								<a href="rcsbfvcontextmanager.html#setfv" class="tsd-kind-icon">set<wbr>Fv</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="rcsbfvcontextmanager.html#setgroupproperties" class="tsd-kind-icon">set<wbr>Group<wbr>Properties</a>
 							</li>
 						</ul>
 					</li>

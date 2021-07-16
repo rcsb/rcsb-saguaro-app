@@ -1,30 +1,25 @@
-import {AlignmentResponse, QueryAlignmentArgs} from "./Types/Borrego/GqlTypes";
-import * as query from "./Queries/Borrego/QueryAlignments.graphql";
-import {ApolloQueryResult} from "apollo-client";
+import {AlignmentResponse, QueryAlignmentArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import query from "./Queries/Borrego/QueryAlignments.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import ApolloClient from "apollo-boost";
-import * as configBorregoGraphQL from "../RcsbServerConfig/codegen.borrego.json";
+import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
 
 interface AlignmentResponseInterface{
     alignment: AlignmentResponse;
 }
 
 export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse>{
-    readonly client = new ApolloClient({
-        uri: (<any>configBorregoGraphQL).schema
-    });
+    readonly client: GraphQLRequest = new GraphQLRequest("borrego");
     public async request(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse> {
         try {
-            const alignment: ApolloQueryResult<AlignmentResponseInterface> = await this.client.query<AlignmentResponseInterface>({
-                query: query,
-                variables: {
+            const result: AlignmentResponseInterface = await this.client.request<QueryAlignmentArgs,AlignmentResponseInterface>({
                     queryId: requestConfig.queryId,
                     from: requestConfig.from,
                     to: requestConfig.to,
                     range: requestConfig.range
-                }
-            });
-            return alignment.data.alignment;
+                },
+                query
+            );
+            return result.alignment;
         } catch (error) {
             console.error(error);
             throw error;

@@ -1,6 +1,6 @@
-query QueryMultipleEntityInstances($entityIds: [String!]!){
+query QueryMultipleEntityInstances($entity_ids: [String!]!){
     polymer_entities(
-        entity_ids:$entityIds
+        entity_ids:$entity_ids
     ){
         polymer_entity_instances{
             rcsb_id

@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [2.0.0] - 2021-07-11
+## [2.0.0] - 2021-07-16
 ### Code refactor, deprecations and bug fixes
 - Inheritance to composition for collector classes
 - async/await promise style
@@ -13,6 +13,7 @@
   - Builder methods return RcsbFvModulePublicInterface
 - Context Manager rcsbFv build new board config param 
 - Select button default value title bug fixed
+- rcsb-saguaro update 1.8.4
 
 ## [1.4.8] - 2021-06-15
 ### Optimization

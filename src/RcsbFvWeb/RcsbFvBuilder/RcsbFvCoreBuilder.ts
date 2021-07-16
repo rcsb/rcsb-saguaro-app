@@ -1,5 +1,5 @@
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {PolymerEntityInstanceTranslate} from "../Utils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
 import {
     RcsbFvModuleBuildInterface,

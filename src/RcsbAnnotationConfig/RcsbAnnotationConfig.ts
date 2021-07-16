@@ -1,5 +1,5 @@
 import * as annotationMap from "./RcsbAnnotationConfig.json";
-import {Feature} from "../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvDisplayTypes, RcsbFvColorGradient} from '@rcsb/rcsb-saguaro';
 
 export interface RcsbAnnotationConfigInterface {

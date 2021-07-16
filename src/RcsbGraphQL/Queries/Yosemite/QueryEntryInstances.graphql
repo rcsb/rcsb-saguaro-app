@@ -1,6 +1,6 @@
-query QueryEntryInstance($queryId: String!){
+query QueryEntryInstance($entry_id: String!){
     entry(
-        entry_id:$queryId
+        entry_id:$entry_id
     ){
         polymer_entities {
             polymer_entity_instances{

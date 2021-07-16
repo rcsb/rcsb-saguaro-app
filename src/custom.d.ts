@@ -1,15 +1,16 @@
-declare module '*.module.css';
-declare module '*.module.scss';
-declare module '*.module.sass';
+declare module '*.css';
+declare module '*.scss';
+declare module '*.sass';
 declare module '@d3fc/d3fc-sample';
 declare module '*.graphql' {
-    import {DocumentNode} from 'graphql';
-
-    const value: DocumentNode;
+    const value: string;
     export = value;
 }
-declare module "*.json" {
-    const value: any;
+declare module "codegen.*.json" {
+    const value: {
+        schema: string,
+        documents: string
+    };
     export default value;
 }
 

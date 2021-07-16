@@ -1,4 +1,4 @@
-import {SequenceReference, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceReference, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvProteinSequence} from "../RcsbFvModule/RcsbFvProteinSequence";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";

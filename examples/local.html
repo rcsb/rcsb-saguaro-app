@@ -33,8 +33,8 @@
     //RcsbFvWebApp.buildPfv("pfv", {queryId:"NP_002515",reference:"NCBI_PROTEIN",alignmentSource:"PDB_INSTANCE", bottomAlignments:true});
     //RcsbFvWebApp.buildPairwiseAlignment("pfv", seq1, seq2);
 
-    const module = RcsbFvWebApp.buildEntryChromosome("pfv","select","selectBis","2uzi");
-    console.log(module);
+    //const module = RcsbFvWebApp.buildEntryChromosome("pfv","select","selectBis","2uzi");
+    //console.log(module);
     /*RcsbFvWebApp.buildAssemblySequenceFv(
         "pfv",
         "select",
@@ -60,10 +60,10 @@
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
-    /*const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select","2uzi",{});
+    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select","2uzi",{defaultValue:"R"});
     module.then(result=>{
         console.log(result);
-    });*/
+    });
 </script>
 
 

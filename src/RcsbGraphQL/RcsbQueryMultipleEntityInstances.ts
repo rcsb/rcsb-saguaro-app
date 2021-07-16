@@ -1,30 +1,26 @@
-import * as query from "./Queries/Yosemite/QueryMultipleEntityInstances.graphql";
+import query from "./Queries/Yosemite/QueryMultipleEntityInstances.graphql";
 import {
     CorePolymerEntity,
     QueryPolymer_EntitiesArgs
-} from "./Types/Yosemite/GqlTypes";
-import {ApolloQueryResult} from "apollo-client";
-import ApolloClient from "apollo-boost";
-import * as configYosemiteGraphQL from "../RcsbServerConfig/codegen.yosemite.json";
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
+import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
 
 interface EntryInstancesResultInterface {
     polymer_entities: Array<CorePolymerEntity>;
 }
 
 export class RcsbQueryMultipleEntityInstances implements RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>>{
-    readonly client = new ApolloClient({
-        uri: (<any>configYosemiteGraphQL).schema
-    });
+    readonly client: GraphQLRequest = new GraphQLRequest("yosemite");
     public async request(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>> {
         try {
-            const result:ApolloQueryResult<EntryInstancesResultInterface> = await this.client.query<EntryInstancesResultInterface>({
-                query: query,
-                variables: {
-                    entityIds: requestConfig.entity_ids,
-                }
-            });
-            return result.data.polymer_entities;
+            const result:EntryInstancesResultInterface = await this.client.request<QueryPolymer_EntitiesArgs, EntryInstancesResultInterface>(
+                {
+                    entity_ids: requestConfig.entity_ids,
+                },
+                query
+            );
+            return result.polymer_entities;
         } catch (error) {
             console.error(error);
             throw error;
