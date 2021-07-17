@@ -61,22 +61,5 @@ const webBuilder = {
     devtool: 'source-map'
 };
 
-const webChart = {
-    ...commonConfig,
-    //mode: "development",
-    mode:"production",
-    entry: {
-        'plot':'./build/src/plot.js'
-    },
-    output: {
-        filename: '[name].js',
-        library: 'RcsbChartWebApp',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
-    },
-    devtool: 'source-map'
-};
-
-module.exports =[webWorker, webBuilder, webChart];
+module.exports =[webWorker, webBuilder];
 

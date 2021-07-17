@@ -7,18 +7,13 @@ import {
     QueryAnnotationsArgs
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
-    CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,
-    QueryEntryArgs, QueryPolymer_EntitiesArgs, QueryUniprot_Entity_GroupArgs,
+    CoreEntry, CorePolymerEntity, QueryEntriesArgs,
+    QueryEntryArgs, QueryPolymer_EntitiesArgs
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 import {RcsbQueryMultipleEntityInstances} from "./RcsbQueryMultipleEntityInstances";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {RcsbQueryUniprotEntityGroup} from "./RcsbQueryUniprotEntityGroup";
 import {RcsbQueryMultipleEntriesProperties} from "./RcsbQueryMultipleEntriesProperties";
-
-export enum GroupKey {
-    UniprotEntity = "uniprot_entity"
-}
 
 export class RcsbClient {
     private rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryAnnotations();
@@ -41,14 +36,6 @@ export class RcsbClient {
 
     public async requestMultipleEntityInstances(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>>{
         return await this.rcsbQueryMutipleEntityInstances.request(requestConfig);
-    }
-
-    public async requestGroupMembers(requestConfig: QueryUniprot_Entity_GroupArgs, groupKey: GroupKey): Promise<CoreGroup>{
-        switch (groupKey){
-            case GroupKey.UniprotEntity:
-                const rcsbQueryUniprotEntityGroup: RcsbCoreQueryInterface<QueryUniprot_Entity_GroupArgs,CoreGroup> = new RcsbQueryUniprotEntityGroup();
-                return await rcsbQueryUniprotEntityGroup.request(requestConfig);
-        }
     }
 
     public async requestMultipleEntriesProperties(requestConfig: QueryEntriesArgs): Promise<Array<CoreEntry>>{
