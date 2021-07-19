@@ -93,7 +93,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         const data: AlignmentResponse = alignmentResponse;
         const querySequence: string = data.query_sequence;
         const alignmentData: Array<TargetAlignment> = data.target_alignment;
-        if(typeof entityInstanceMapCollector === "function"){
+        if(typeof entityInstanceMapCollector === "function" && alignmentData){
             await entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id}));
         }
         const buildAlignmentConfig: BuildAlignementsInterface= {

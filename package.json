@@ -1,14 +1,10 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
-    "build/dist/worker.js",
-    "build/dist/config.js",
-    "build/dist/**/*ts",
-    "build/dist/**/**/*ts",
-    "build/dist/**/**/**/*ts"
+    "build/dist"
   ],
   "scripts": {
     "buildAll": "npm run buildApp && npm run buildAllDoc",
