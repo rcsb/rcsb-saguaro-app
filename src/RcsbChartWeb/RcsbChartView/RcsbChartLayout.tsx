@@ -24,6 +24,8 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,R
                         if(attrG){
                             const chartF: RcsbChartInterface = this.state.charts.filter(f=>f.attribute == attrF)[0];
                             const chartG: RcsbChartInterface = this.state.charts.filter(g=>g.attribute == attrG)[0];
+                            if(!chartF || !chartG)
+                                return null;
                             const nodeF: JSX.Element =  chartF.chartType == ChartType.histogram ? histogramChart(chartF) : barChart(chartF);
                             const nodeG: JSX.Element =  chartG.chartType == ChartType.histogram ? histogramChart(chartG) : barChart(chartG);
                             return (
@@ -34,6 +36,8 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,R
                             );
                         }else{
                             const chartF: RcsbChartInterface = this.state.charts.filter(f=>f.attribute == attrF)[0];
+                            if(!chartF)
+                                return null;
                             const nodeF: JSX.Element =  chartF.chartType == ChartType.histogram ? histogramChart(chartF) : barChart(chartF);
                             return (
                                 <Row className={"mt-lg-4"}>

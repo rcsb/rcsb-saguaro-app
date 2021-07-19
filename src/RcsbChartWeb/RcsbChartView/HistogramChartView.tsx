@@ -44,16 +44,13 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
 
     render():ReactNode {
         const histData: {x:number;y:number}[] = this.data();
-        const paddingLeft: number = ChartTools.paddingLeft;
-        const width: number = paddingLeft + ChartTools.constWidth;
-        const height: number = ChartTools.constHeight;
-        const paddingBottom: number = ChartTools.paddingBottom;
+        const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
 
         return (
-            <div style={{width:width, height:height}}>
+            <div style={{width:width, height:ChartTools.constHeight}}>
                 <VictoryChart
-                    padding={{left:paddingLeft, bottom:paddingBottom}}
-                    height={height}
+                    padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingBottom, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
+                    height={ChartTools.constHeight}
                     width={width}
                     domain={{x:this.xDomain()}}
                 >

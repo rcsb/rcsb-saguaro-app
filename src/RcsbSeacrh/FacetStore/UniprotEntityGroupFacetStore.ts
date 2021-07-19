@@ -21,6 +21,7 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         facet: {
             aggregation_type: AggregationType.Terms,
             attribute: CoreEntry.Exptl.Method,
+            min_interval_population: 1
         }
     },{
         id:"resolution",
@@ -82,7 +83,8 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         },
         facet:{
             aggregation_type: AggregationType.Terms,
-            attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName
+            attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName,
+            min_interval_population: 1
         }
     }, {
         id: "taxonomy",
@@ -93,10 +95,10 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
             mostPopulatedGroups: 5,
             mergeName: "OTHER TAXONOMIES"
         },
-
         facet: {
             aggregation_type: AggregationType.Terms,
-            attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName
+            attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName,
+            min_interval_population: 1
         }
     }];
 
@@ -105,7 +107,6 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         [CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName, CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName],
         [CoreEntry.Exptl.Method, CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name],
     ];
-
 
     readonly returnType: ReturnType = ReturnType.PolymerEntity;
 }

@@ -32,15 +32,13 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
     render():ReactNode {
 
         const barData: BarData = this.dataByCategory();
-        const paddingBottom: number = ChartTools.paddingBottom;
-        const paddingLeft: number = ChartTools.paddingLeft;
-        const width: number = paddingLeft + ChartTools.constWidth;
-        const height: number = paddingBottom + barData.values.length*ChartTools.xIncrement;
+        const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
+        const height: number = ChartTools.paddingBottom + barData.values.length*ChartTools.xIncrement;
         return (
             <div style={{width:width, height:height}}>
                 <VictoryChart
                     domainPadding={{ x: ChartTools.xDomainPadding }}
-                    padding={{left:paddingLeft, bottom:paddingBottom}}
+                    padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingBottom, right:ChartTools.paddingRight}}
                     height={height}
                     width={width}
                 >

@@ -4,6 +4,8 @@ export class ChartTools {
 
     public static readonly paddingLeft: number = 200;
     public static readonly paddingBottom: number = 50;
+    public static readonly paddingTop: number = 10;
+    public static readonly paddingRight: number = 10;
     public static readonly constWidth: number = 300;
     public static readonly constHeight: number = 200;
     public static readonly xIncrement: number = 20;
@@ -15,24 +17,27 @@ export class ChartTools {
             x:d.label  as string,
             y:d.population
         }));
-        out.push({
-            x: mergeName ?? "Other",
-            y: data.filter(d=>(d.population<=size)).length
-        });
+        const others: number = data.filter(d=>(d.population<=size)).length;
+        if(others > 0)
+            out.push({
+                x: mergeName ?? "Other",
+                y: others
+            });
         return out;
     }
 
     public static mostPopulatedGroups (data: ChartObjectInterface[], maxGroups: number, mergeName?: string): {x:string;y:number;}[]{
         const sorted :ChartObjectInterface[] = data.sort((a,b)=>(b.population-a.population));
-
         const out: {x:string;y:number;}[] =  sorted.slice(0,maxGroups).map(d=>({
             x:d.label  as string,
             y:d.population
         }));
-        out.push({
-            x:mergeName ?? "Other",
-            y:sorted.slice(maxGroups).reduce((a, b) => a + b.population, 0)
-        });
+        const others: number = sorted.slice(maxGroups).reduce((a, b) => a + b.population, 0);
+        if(others > 0)
+            out.push({
+                x:mergeName ?? "Other",
+                y:others
+            });
         return out;
     }
 
@@ -41,10 +46,12 @@ export class ChartTools {
             x: parseFloat(d.label as string),
             y: d.population
         }));
-        out.push({
-            x:maxValue,
-            y:data.filter(d => parseFloat(d.label as string) >= maxValue).reduce((a, b) => a + b.population, 0)
-        });
+        const others: number = data.filter(d => parseFloat(d.label as string) >= maxValue).reduce((a, b) => a + b.population, 0);
+        if(others>0)
+            out.push({
+                x:maxValue,
+                y:others
+            });
         return out;
     }
 

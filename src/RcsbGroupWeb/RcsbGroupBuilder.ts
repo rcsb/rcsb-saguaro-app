@@ -13,6 +13,16 @@ export async function buildSearchRequest(elementId: string, query:SearchQueryTyp
     RcsbGroupDisplay.displaySearchAttributes(elementId, facetStoreType, properties);
 }
 
+export async function buildGroup(elementId: string, groupType: FacetStoreType, groupId: string, query?:SearchQueryType): Promise<void>{
+    switch (groupType){
+        case "uniprot-entity-group":
+            const queryResult: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(query ?? uniprotEntityGroupQuery(groupId), "uniprot-entity-group");
+            const properties: Array<Facet> = queryResult.drilldown as Facet[];
+            RcsbGroupDisplay.displaySearchAttributes(elementId, groupType, properties);
+            break;
+    }
+}
+
 export async function buildUniprotEntityGroup(elementId: string, uniprotAcc: string, query?:SearchQueryType): Promise<void>{
     const queryResult: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(query ?? uniprotEntityGroupQuery(uniprotAcc), "uniprot-entity-group");
     const properties: Array<Facet> = queryResult.drilldown as Facet[];
