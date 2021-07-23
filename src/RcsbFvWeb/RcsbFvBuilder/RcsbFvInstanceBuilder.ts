@@ -7,7 +7,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
-import {Feature, PropertyName, Source} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, FieldName, OperationType, PropertyName, Source, Type} from "../../RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationContext} from "../Utils/AnnotationContext";
 import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 
@@ -116,13 +116,24 @@ export class RcsbFvInstanceBuilder {
                 ...config,
                 additionalConfig:{
                     ...config?.additionalConfig,
-                    sources:[Source.NcbiGenome],
+                    sources:[Source.NcbiGenome, Source.Uniprot, Source.PdbInstance],
+                    filters:[{
+                        field: FieldName.Type,
+                        operation: OperationType.Equals,
+                        source: Source.PdbInstance,
+                        values:[Type.HelixP, Type.Sheet, Type.Scop, Type.BindingSite, Type.MetalCoordination]
+                    },{
+                        field: FieldName.Type,
+                        operation: OperationType.Equals,
+                        source: Source.Uniprot,
+                        values:[Type.ShortSequenceMotif, Type.MutagenesisSite, Type.GlycosylationSite, Type.NucleotidePhosphateBindingRegion, Type.SequenceVariant]
+                    }],
                     collectorType:"tcga",
                     annotationContext: annotationContext,
                     boardConfig:{
                         elementClickCallBack: (d: RcsbFvTrackDataElementInterface, e:MouseEvent)=>{
                             //TODO we need a better to setup multiple click callbacks
-                            if(typeof rcsbFvCtxManager.getBoardConfig().elementClickCallBack === "function")
+                            if(typeof rcsbFvCtxManager.getBoardConfig()?.elementClickCallBack === "function")
                                 rcsbFvCtxManager.getBoardConfig().elementClickCallBack(d,e);
                             if(e.altKey){
                                 if(d.type) {
@@ -193,8 +204,8 @@ function buildInstanceSelectButton(elementFvId:string, elementSelectId:string, f
 function buildAnnotationsUI(elementFvId:string, annotationSelectId: string, annotationUIPanelId: string, instance: PolymerEntityInstanceInterface, annotationContext: AnnotationContext, config: InstanceSequenceConfig){
     if(annotationContext.getPropertyFiler().size > 0){
         const propertyNames: Array<PropertyName> = Array.from(annotationContext.getPropertyFiler().keys())
-        annotationContext.setPrincipalComponent(propertyNames[0]);
-        RcsbFvCoreBuilder.buildSelectButton(elementFvId, annotationSelectId, propertyNames.map(pn=>({
+        annotationContext.setPrincipalComponent("PROTEIN_FEATURES"  as PropertyName);
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, annotationSelectId, ["PROTEIN_FEATURES"  as PropertyName, ...propertyNames].map(pn=>({
             label:pn.replace("_"," "),
             name: pn.replace("_"," "),
             optId: pn,
@@ -233,6 +244,7 @@ function buildAnnotationsUI(elementFvId:string, annotationSelectId: string, anno
             }
         };
         rcsbFvCtxManager.getAnnotationConfigData(elementFvId).then(acd=>{
+            console.log(acd);
             RcsbFvCoreBuilder.buildUIPanel(elementFvId,annotationUIPanelId,annotationContext, callback, acd, rcsbFvCtxManager.getFv(elementFvId));
         });
     }else{

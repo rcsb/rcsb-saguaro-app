@@ -71,13 +71,10 @@
 					and designed to display protein features at the <a href="https://www.rcsb.org">RCSB Web Site</a>. The package collects protein annotations from the
 					<a href="https://1d-coordinates.rcsb.org">1D Coordinate Server</a> and the main <a href="https://data.rcsb.org">RCSB Data API</a> and generates preconfigures Protein
 				Feature Summaries. The package allows access to RCSB Saguaro methods to add or change displayed data. </p>
+				<!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
-<<<<<<< HEAD
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.2.0/build/dist/app.js"></script>
-=======
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.2.3/build/dist/app.js"></script>
->>>>>>> dev-js-master
 <script type="text/javascript">
 RcsbFvWebApp.setBoardConfig({
     trackWidth:540,
@@ -85,6 +82,7 @@ RcsbFvWebApp.setBoardConfig({
 });
 RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 </script>
+--->
 				<a href="#node-module-instalation" id="node-module-instalation" style="color: inherit; text-decoration: none;">
 					<h3>Node Module Instalation</h3>
 				</a>
@@ -92,11 +90,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 				<a href="#cdn-javascript" id="cdn-javascript" style="color: inherit; text-decoration: none;">
 					<h3>CDN JavaScript</h3>
 				</a>
-<<<<<<< HEAD
-				<p><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.2.0/build/dist/app.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></p>
-=======
 				<p><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@1.2.3/build/dist/app.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></p>
->>>>>>> dev-js-master
 				<a href="#javascript-examples" id="javascript-examples" style="color: inherit; text-decoration: none;">
 					<h3>JavaScript Examples</h3>
 				</a>
@@ -201,6 +195,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/annotationpanelui.html" class="tsd-kind-icon">Annotation<wbr>PanelUI</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/annotationtransformer.html" class="tsd-kind-icon">Annotation<wbr>Transformer</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/constants.html" class="tsd-kind-icon">Constants</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -249,7 +246,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="classes/polymerentityinstancetranslate.html" class="tsd-kind-icon">Polymer<wbr>Entity<wbr>Instance<wbr>Translate</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/rcsbannotationmap.html" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Map</a>
+						<a href="classes/rcsbannotationconfig.html" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvalignmentcollectorqueue.html" class="tsd-kind-icon">Rcsb<wbr>FvAlignment<wbr>Collector<wbr>Queue</a>
@@ -295,6 +292,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvquery.html" class="tsd-kind-icon">Rcsb<wbr>FvQuery</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rcsbfvrowbuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvRow<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvuniprot.html" class="tsd-kind-icon">Rcsb<wbr>FvUniprot</a>
@@ -888,7 +888,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/rcsbaccessioninfo.html" class="tsd-kind-icon">Rcsb<wbr>Accession<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/rcsbannotationmapinterface.html" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Map<wbr>Interface</a>
+						<a href="interfaces/rcsbannotationconfiginterface.html" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Config<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbassemblycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Assembly<wbr>Container<wbr>Identifiers</a>
@@ -913,6 +913,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbbranchedentitycontaineridentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Container<wbr>Identifiers</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/rcsbbranchedentitycontaineridentifiersreferenceidentifiers.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Container<wbr>Identifiers<wbr>Reference<wbr>Identifiers</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbbranchedentityfeature.html" class="tsd-kind-icon">Rcsb<wbr>Branched<wbr>Entity<wbr>Feature</a>
@@ -1206,6 +1209,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 						<a href="interfaces/rcsbpubmedmeshdescriptorslineage.html" class="tsd-kind-icon">Rcsb<wbr>Pubmed<wbr>Mesh<wbr>Descriptors<wbr>Lineage</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/rcsbrelatedtargetreferences.html" class="tsd-kind-icon">Rcsb<wbr>Related<wbr>Target<wbr>References</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/rcsbrelatedtargetreferencesalignedtarget.html" class="tsd-kind-icon">Rcsb<wbr>Related<wbr>Target<wbr>References<wbr>Aligned<wbr>Target</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbrepositoryholdingscurrent.html" class="tsd-kind-icon">Rcsb<wbr>Repository<wbr>Holdings<wbr>Current</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -1225,6 +1234,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbstructsymmetryrotationaxes.html" class="tsd-kind-icon">Rcsb<wbr>Struct<wbr>Symmetry<wbr>Rotation<wbr>Axes</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/rcsbtargetcofactors.html" class="tsd-kind-icon">Rcsb<wbr>Target<wbr>Cofactors</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/rcsbtargetneighbors.html" class="tsd-kind-icon">Rcsb<wbr>Target<wbr>Neighbors</a>
@@ -1456,6 +1468,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#checkadditionalpropertyfilter" class="tsd-kind-icon">check<wbr>Additional<wbr>Property<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#computefeaturegaps" class="tsd-kind-icon">compute<wbr>Feature<wbr>Gaps</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#getfeatures" class="tsd-kind-icon">get<wbr>Features</a>

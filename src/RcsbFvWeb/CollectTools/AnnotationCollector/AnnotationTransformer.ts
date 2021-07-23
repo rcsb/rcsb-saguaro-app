@@ -19,7 +19,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
     private readonly type: string;
     private readonly annotationConfig: RcsbAnnotationConfigInterface;
 
-    constructor(type: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator: PolymerEntityInstanceTranslate) {
+    constructor(type: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator: PolymerEntityInstanceTranslate, private allowRanges: boolean = false) {
         super();
         this.entityInstanceTranslator = entityInstanceTranslator;
         this.type = type;
@@ -33,7 +33,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
     public addElement(reference: SequenceReference, queryId: string, source: Source, targetId:string, d: Feature): void{
         computeFeatureGaps(d.feature_positions).forEach(p => {
             //TODO this is to avoid genome deletions. It only has sense in theTCGA context
-            if(p.end_seq_id > p.beg_seq_id)
+            if(p.end_seq_id > p.beg_seq_id && !this.allowRanges)
                 return;
             if(p.beg_seq_id != null) {
                 const key:string = (p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString()) + (this.annotationConfig?.displayCooccurrence ? Math.random().toString(36).substr(2) : "");
@@ -66,7 +66,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
     public increaseElement(reference: SequenceReference, queryId: string, source: Source, targetId:string,d: Feature): void{
         computeFeatureGaps(d.feature_positions).forEach(e => {
             //TODO this is to avoid genome deletions. It only has sense in theTCGA context
-            if(e.end_seq_id > e.beg_seq_id)
+            if(e.end_seq_id > e.beg_seq_id && !this.allowRanges)
                 return;
             for(let i=e.beg_seq_id;i<=e.end_seq_id;i++){
                 const p: FeaturePositionGaps = {...e, beg_seq_id: i , end_seq_id: null};

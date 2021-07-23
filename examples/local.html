@@ -7,12 +7,17 @@
 
 <script src="../build/dist/app.js" type="text/javascript"></script>
 
+<div style="position: relative;">
 <br/>
 <br/>
 <br/>
 <div id="select" ></div>
 <div id="selectBis" ></div>
+<div id="ui1" ></div>
+<div id="ui2" ></div>
+<div id="ui3" ></div>
 <div id="pfv" ></div>
+</div>
 
 <script>
     function getJsonFromUrl(url) {
@@ -59,7 +64,15 @@
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
-    RcsbFvWebApp.buildInstanceTcgaFv("pfv","select","1NKP");
+    RcsbFvWebApp.buildInstanceTcgaFv("pfv","select","3K8Y", {
+        additionalConfig: {
+            annotationUI: {
+                selectId: "ui1",
+                panelId: "ui2",
+                metadataId: "ui3"
+            }
+        }
+    });
 </script>
 
 
