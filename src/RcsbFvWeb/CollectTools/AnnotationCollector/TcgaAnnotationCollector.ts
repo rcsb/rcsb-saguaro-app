@@ -53,7 +53,7 @@ export class TcgaAnnotationCollector extends AbstractAnnotationCollector {
                 display: RcsbFvDisplayTypes.AREA,
                 color: "#ba3356",
                 height: 80,
-                title: "MUTATIONS ("+nCases+")",
+                title: "CANCER MUTATIONS ("+nCases+")",
                 transformToNumerical: true,
                 provenanceList:new Set<string>(["TCGA"])
             }));
@@ -62,7 +62,7 @@ export class TcgaAnnotationCollector extends AbstractAnnotationCollector {
                 display: RcsbFvDisplayTypes.AREA,
                 color: "#ba3356",
                 height: 80,
-                title: "MUTATIONS ("+nCases+")",
+                title: "CANCER MUTATIONS ("+nCases+")",
                 transformToNumerical: true,
                 provenanceList:new Set<string>(["TCGA"])
             }));
