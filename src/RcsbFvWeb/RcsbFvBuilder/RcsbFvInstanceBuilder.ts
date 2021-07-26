@@ -121,7 +121,7 @@ export class RcsbFvInstanceBuilder {
                         field: FieldName.Type,
                         operation: OperationType.Equals,
                         source: Source.PdbInstance,
-                        values:[Type.HelixP, Type.Sheet, Type.Scop, Type.BindingSite, Type.MetalCoordination]
+                        values:[Type.HelixP, Type.Sheet, Type.Scop, Type.BindingSite, Type.MetalCoordination, Type.UnobservedAtomXyz, Type.UnobservedResidueXyz]
                     },{
                         field: FieldName.Type,
                         operation: OperationType.Equals,
