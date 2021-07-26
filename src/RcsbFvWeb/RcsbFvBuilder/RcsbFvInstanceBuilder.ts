@@ -126,7 +126,7 @@ export class RcsbFvInstanceBuilder {
                         field: FieldName.Type,
                         operation: OperationType.Equals,
                         source: Source.Uniprot,
-                        values:[Type.ShortSequenceMotif, Type.MutagenesisSite, Type.GlycosylationSite, Type.NucleotidePhosphateBindingRegion, Type.SequenceVariant]
+                        values:[Type.ShortSequenceMotif, Type.MutagenesisSite, Type.GlycosylationSite, Type.NucleotidePhosphateBindingRegion, Type.SequenceVariant, Type.ActiveSite, Type.MetalIonBindingSite, Type.Site]
                     }],
                     collectorType:"tcga",
                     annotationContext: annotationContext,
@@ -205,9 +205,9 @@ function buildAnnotationsUI(elementFvId:string, annotationSelectId: string, anno
     if(annotationContext.getPropertyFiler().size > 0){
         const propertyNames: Array<PropertyName> = Array.from(annotationContext.getPropertyFiler().keys())
         annotationContext.setPrincipalComponent("PROTEIN_FEATURES"  as PropertyName);
-        RcsbFvCoreBuilder.buildSelectButton(elementFvId, annotationSelectId, ["PROTEIN_FEATURES"  as PropertyName, ...propertyNames].map(pn=>({
-            label:pn.replace("_"," "),
-            name: pn.replace("_"," "),
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, annotationSelectId, ["PROTEIN_FEATURES"  as PropertyName, ...propertyNames].map((pn, i)=>({
+            label: (i == 0 ? "" : "TCGA - ") + pn.replace("_"," "),
+            name: (i == 0 ? "" : "TCGA - ") + pn.replace("_"," "),
             optId: pn,
             onChange:()=>{
                 annotationContext.setPrincipalComponent(pn);
