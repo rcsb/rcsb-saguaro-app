@@ -1,6 +1,6 @@
 import {SearchQueryType} from "../SearchRequestProperty";
-import {LogicalOperator, Operator, Service, Type} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
-import {CorePolymerEntity} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/CorePaths";
+import {LogicalOperator, Service, Type} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {RcsbSearchMetadata} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchMetadata";
 
 export function uniprotEntityGroupQuery(acc:string): SearchQueryType {
     return {
@@ -11,9 +11,9 @@ export function uniprotEntityGroupQuery(acc:string): SearchQueryType {
                 type: Type.Terminal,
                 service: Service.Text,
                 parameters: {
-                    attribute: CorePolymerEntity.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseAccession,
+                    attribute: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseAccession.path,
                     negation: false,
-                    operator: Operator.ExactMatch,
+                    operator: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseAccession.operator.ExactMatch,
                     value: acc
                 }
             },
@@ -21,8 +21,8 @@ export function uniprotEntityGroupQuery(acc:string): SearchQueryType {
                 type: Type.Terminal,
                 service: Service.Text,
                 parameters: {
-                    attribute: CorePolymerEntity.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseName,
-                    operator: Operator.ExactMatch,
+                    attribute: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseName.path,
+                    operator: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseName.operator.ExactMatch,
                     value: "UniProt"
                 }
             }

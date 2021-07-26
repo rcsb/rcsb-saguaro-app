@@ -1,18 +1,14 @@
 import {AggregationType, Operator, ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
-import {
-    CoreEntry,
-    CorePolymerEntity,
-    CorePolymerEntityInstance
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/CorePaths";
 import {ChartType} from "../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {FacetStoreInterface} from "./FacetStoreInterface";
+import {RcsbSearchMetadata} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchMetadata";
 
 class UniprotEntityGroupFacetStore implements FacetStoreInterface{
     readonly entryFacet: FacetMemberInterface[] = [{
         id: "method",
         title: "EXPERIMENTAL METHOD",
-        attribute: CoreEntry.Exptl.Method,
+        attribute: RcsbSearchMetadata.Exptl.Method.path,
         chartType: ChartType.barplot,
         chartConfig: {
             mostPopulatedGroups: 3,
@@ -20,13 +16,13 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         },
         facet: {
             aggregation_type: AggregationType.Terms,
-            attribute: CoreEntry.Exptl.Method,
+            attribute: RcsbSearchMetadata.Exptl.Method.path,
             min_interval_population: 1
         }
     },{
         id:"resolution",
         title:"RESOLUTION",
-        attribute: CoreEntry.RcsbEntryInfo.DiffrnResolutionHigh.Value,
+        attribute: RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path,
         chartType: ChartType.histogram,
         chartConfig:{
             tickIncrement:{
@@ -38,7 +34,7 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         },
         facet:{
             aggregation_type: AggregationType.Histogram,
-            attribute: CoreEntry.RcsbEntryInfo.DiffrnResolutionHigh.Value,
+            attribute: RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path,
             interval: 0.5,
             min_interval_population: 1
         }
@@ -47,7 +43,7 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
     readonly instanceFacet: FacetMemberInterface[] = [{
         id:"scop_class",
         title:"SCOP CLASS",
-        attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name,
+        attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
         chartType: ChartType.barplot,
         chartConfig: {
             mostPopulatedGroups: 5,
@@ -56,17 +52,17 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         facet:{
             filter:{
                 operator: Operator.ExactMatch,
-                attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.Type,
+                attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.Type.path,
                 value: 'SCOP'
             },
             facets:[{
                 filter:{
                     operator: Operator.Equals,
                     value: 1,
-                    attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth
+                    attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth.path
                 },
                 min_interval_population: 1,
-                attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name,
+                attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
                 aggregation_type: AggregationType.Terms
             }]
         }
@@ -75,7 +71,7 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
     readonly entityFacet: FacetMemberInterface[] = [{
         id:"organism",
         title:"ORGANISM",
-        attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName,
+        attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path,
         chartType: ChartType.barplot,
         chartConfig: {
             mostPopulatedGroups: 5,
@@ -83,13 +79,13 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         },
         facet:{
             aggregation_type: AggregationType.Terms,
-            attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName,
+            attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path,
             min_interval_population: 1
         }
     }, {
         id: "taxonomy",
         title: "TAXONOMY",
-        attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName,
+        attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path,
         chartType: ChartType.barplot,
         chartConfig: {
             mostPopulatedGroups: 5,
@@ -97,15 +93,15 @@ class UniprotEntityGroupFacetStore implements FacetStoreInterface{
         },
         facet: {
             aggregation_type: AggregationType.Terms,
-            attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName,
+            attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path,
             min_interval_population: 1
         }
     }];
 
     readonly facetLayoutGrid: [string,string?][] = [
-        [CoreEntry.RcsbEntryInfo.DiffrnResolutionHigh.Value],
-        [CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName, CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName],
-        [CoreEntry.Exptl.Method, CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name],
+        [RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path],
+        [RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path],
+        [RcsbSearchMetadata.Exptl.Method.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path],
     ];
 
     readonly returnType: ReturnType = ReturnType.PolymerEntity;
