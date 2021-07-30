@@ -126,7 +126,7 @@ export class RcsbFvInstanceBuilder {
                         field: FieldName.Type,
                         operation: OperationType.Equals,
                         source: Source.Uniprot,
-                        values:[Type.ShortSequenceMotif, Type.MutagenesisSite, Type.GlycosylationSite, Type.NucleotidePhosphateBindingRegion, Type.SequenceVariant, Type.ActiveSite, Type.MetalIonBindingSite, Type.Site]
+                        values:[Type.ShortSequenceMotif, Type.MutagenesisSite, Type.GlycosylationSite, Type.NucleotidePhosphateBindingRegion, Type.ActiveSite, Type.MetalIonBindingSite, Type.Site]
                     }],
                     collectorType:"tcga",
                     annotationContext: annotationContext,
