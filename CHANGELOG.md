@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.0.2] - 2021-07-19
+### Bug correction
+- UniProt with no PDB bug fixed
+
+## [2.0.1] - 2021-07-16
+### Code cleaning
+- Removed all Group/Search API related methods
+
 ## [2.0.0] - 2021-07-16
 ### Code refactor, deprecations and bug fixes
 - Inheritance to composition for collector classes
