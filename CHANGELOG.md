@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.1.0] - 2021-08-11
+### Display config
+- Antibody and domain DBs config added
+- `merged_types` defines the annotation display priority when multiple annotations share the same location
+
 ## [2.0.2] - 2021-07-19
 ### Bug correction
 - UniProt with no PDB bug fixed

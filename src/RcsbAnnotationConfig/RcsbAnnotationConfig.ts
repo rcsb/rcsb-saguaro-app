@@ -1,6 +1,6 @@
 import * as annotationMap from "./RcsbAnnotationConfig.json";
 import {Feature} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvDisplayTypes, RcsbFvColorGradient} from '@rcsb/rcsb-saguaro';
+import {RcsbFvDisplayTypes, RcsbFvColorGradient, RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
 
 export interface RcsbAnnotationConfigInterface {
     type: string;
@@ -182,6 +182,13 @@ export class RcsbAnnotationConfig {
         if(this.mergedTypes.has(type))
             return this.mergedTypes.get(type).type;
         return null;
+    }
+
+    annotationMergedPreference(type: string, a: RcsbFvTrackDataElementInterface, b: RcsbFvTrackDataElementInterface): boolean {
+        if(!this.mergedTypes.has(type))
+            return false;
+        return this.mergedTypes.get(type).merged_types.indexOf(a.type) < this.mergedTypes.get(type).merged_types.indexOf(b.type);
+
     }
 
     static randomRgba(str?: string): string{

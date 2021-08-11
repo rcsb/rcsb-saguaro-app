@@ -134,8 +134,10 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
                     annotationTracks.set(newType, new Map<string, RcsbFvTrackDataElementInterface>());
                 annotationTracks.get(type).forEach((ann,loc)=>{
                     ann.color = color;
-                    annotationTracks.get(newType).set(loc,ann);
-                    this.rcsbAnnotationConfig.addProvenance(newType,ann.provenanceName);
+                    if( !annotationTracks.get(newType).has(loc) || this.rcsbAnnotationConfig.annotationMergedPreference(type, ann, annotationTracks.get(newType).get(loc))){
+                        annotationTracks.get(newType).set(loc,ann);
+                        this.rcsbAnnotationConfig.addProvenance(newType,ann.provenanceName);
+                    }
                 });
                 annotationTracks.delete(type);
             }
