@@ -10,11 +10,12 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 <div id="pfv" ></div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@2.2.0/build/dist/app.js"></script>
 <script type="text/javascript">
-RcsbFvWebApp.setBoardConfig({
-    trackWidth:540,
-    rowTitleWidth:170
+RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
+    boardConfig:{
+        trackWidth:540,
+        rowTitleWidth:170
+    }
 });
-RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A");
 </script>
 --->
 
