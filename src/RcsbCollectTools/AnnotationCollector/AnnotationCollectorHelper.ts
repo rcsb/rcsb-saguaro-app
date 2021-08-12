@@ -1,14 +1,17 @@
 import {AnnotationTransformer} from "./AnnotationTransformer";
 import {
     InterpolationTypes,
-    RcsbFvColorGradient, RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes, RcsbFvLink,
+    RcsbFvColorGradient,
+    RcsbFvDisplayConfigInterface,
+    RcsbFvDisplayTypes,
+    RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {RcsbAnnotationConfig, RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
+import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {FeatureTools} from "../FeatureTools/FeatureTools";
+import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 
 export class AnnotationCollectorHelper {
 
@@ -23,6 +26,8 @@ export class AnnotationCollectorHelper {
             out = AnnotationCollectorHelper.buildRcsbFvRowConfigComposite(annotationHandler,type, rcsbAnnotationConfig);
         }else if(displayType === RcsbFvDisplayTypes.AREA || displayType === RcsbFvDisplayTypes.LINE){
             out = AnnotationCollectorHelper.buildRcsbFvRowConfigArea(annotationHandler,type, rcsbAnnotationConfig);
+        }else if(displayType === RcsbFvDisplayTypes.BLOCK_AREA){
+            out = AnnotationCollectorHelper.buildRcsbFvRowConfigBlockArea(annotationHandler,type, rcsbAnnotationConfig);
         }else{
             out = AnnotationCollectorHelper.buildRcsbFvRowConfigTrack(annotationHandler,type, rcsbAnnotationConfig);
         }
@@ -63,6 +68,7 @@ export class AnnotationCollectorHelper {
             console.warn("Annotation config type " + type + " not found. Using random config");
         }
         return {
+            ...rcsbAnnotationConfig,
             trackId: "annotationTrack_" + type,
             displayType: displayType,
             trackColor: "#F9F9F9",
@@ -76,10 +82,9 @@ export class AnnotationCollectorHelper {
     private static buildRcsbFvRowConfigArea(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
         const data: Array<RcsbFvTrackDataElementInterface> = Array.from(annotationHandler.values());
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
-
         const displayType: RcsbFvDisplayTypes = annConfig.display;
         const displayColor:string|RcsbFvColorGradient = annConfig.color;
-        const rowTitle:string = annConfig.title;
+        const rowTitle:string|RcsbFvLink = AnnotationCollectorHelper.buildRowTitle(annConfig);
         const rowPrefix:string = annConfig.prefix;
 
         let min: number = annotationHandler.getRange().min;
@@ -94,6 +99,7 @@ export class AnnotationCollectorHelper {
         const domain:[number,number] =  annConfig.domain ?? [min,max];
 
         return {
+            ...rcsbAnnotationConfig,
             trackId: "annotationTrack_" + type,
             displayType: displayType,
             trackColor: "#F9F9F9",
@@ -101,6 +107,28 @@ export class AnnotationCollectorHelper {
             rowTitle: rowTitle,
             rowPrefix: rowPrefix,
             displayDomain:domain,
+            interpolationType: InterpolationTypes.STEP,
+            trackData: data
+        };
+    }
+
+    private static buildRcsbFvRowConfigBlockArea(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
+        const data: Array<RcsbFvTrackDataElementInterface> = Array.from(annotationHandler.values());
+        const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
+        const displayType: RcsbFvDisplayTypes = annConfig.display;
+        const displayColor:string|RcsbFvColorGradient = annConfig.color;
+        const rowTitle:string|RcsbFvLink = AnnotationCollectorHelper.buildRowTitle(annConfig);
+        const rowPrefix:string = annConfig.prefix;
+
+        return {
+            ...rcsbAnnotationConfig,
+            trackId: "annotationTrack_" + type,
+            displayType: displayType,
+            trackColor: "#F9F9F9",
+            displayColor: displayColor,
+            rowTitle: rowTitle,
+            rowPrefix: rowPrefix,
+            displayDomain:[0,1],
             interpolationType: InterpolationTypes.STEP,
             trackData: data
         };

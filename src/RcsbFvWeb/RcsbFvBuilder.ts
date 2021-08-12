@@ -13,6 +13,7 @@ import {
 import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder/RcsbFvProteinSequenceBuilder";
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvGroupBuilder} from "./RcsbFvBuilder/RcsbFvGroupBuilder";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -85,4 +86,8 @@ export function buildEntityChromosome(elementFvId:string,elementSelectId:string,
 
 export function buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string): Promise<RcsbFvModulePublicInterface> {
     return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
+}
+
+export function buildUniprotEntityGroupFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    return RcsbFvGroupBuilder.buildUniprotEntityGrouptFv(elementId, upAcc, additionalConfig);
 }

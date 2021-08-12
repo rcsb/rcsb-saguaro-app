@@ -1,0 +1,21 @@
+{
+  "provenance_color_code": {
+    "external": "#DB9128",
+    "rcsb_pdb": "#5e94c3"
+  },
+  "instance_order": [
+    "BINDING_SITE"
+  ],
+  "config": [{
+    "type": "BINDING_SITE",
+    "color": {
+      "colors": "#984657",
+      "thresholds": [0.25,0.5,0.75]
+    },
+    "title": "BINDING SITE",
+    "key": "name",
+    "display": "block-area",
+    "transformToNumerical": true,
+    "fitTitleWidth": true
+  }]
+}

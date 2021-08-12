@@ -76,8 +76,8 @@
     "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@rcsb/rcsb-saguaro": "^1.8.4",
-    "@rcsb/rcsb-saguaro-api": "^2.0.0-groups.2",
+    "@rcsb/rcsb-saguaro": "^1.9.0",
+    "@rcsb/rcsb-saguaro-api": "^2.0.0-groups.3",
     "bootstrap": "^5.0.2",
     "ideogram": "^1.27.0",
     "rxjs": "^6.6.0",

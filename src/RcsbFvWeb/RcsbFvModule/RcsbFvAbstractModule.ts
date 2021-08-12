@@ -23,8 +23,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     };
     protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
-    protected sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
-    protected annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
+    protected readonly sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
+    protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
     private activeDisplayFlag: boolean = false;
 

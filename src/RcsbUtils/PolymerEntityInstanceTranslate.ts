@@ -6,7 +6,7 @@ import {TagDelimiter} from "./TagDelimiter";
 export interface TranslateContextInterface {
     queryId: string;
     targetId: string;
-    from: SequenceReference;
+    from: SequenceReference | undefined;
     to: SequenceReference|Source;
     targetSequenceLength?: number;
 }

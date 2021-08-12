@@ -1,10 +1,10 @@
-import {RcsbQueryAnnotations} from "./RcsbQueryAnnotations";
+import {RcsbQueryAnnotations, RcsbQueryGroupAnnotations} from "./RcsbQueryAnnotations";
 import {RcsbQueryAlignment} from "./RcsbQueryAlignment";
 import {
     AlignmentResponse,
     AnnotationFeatures,
     QueryAlignmentArgs,
-    QueryAnnotationsArgs
+    QueryAnnotationsArgs, QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,
@@ -22,6 +22,7 @@ export enum GroupKey {
 
 export class RcsbClient {
     private rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryAnnotations();
+    private rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryGroupAnnotations();
     private rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse> = new RcsbQueryAlignment();
     private rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry> = new RcsbQueryEntryInstances();
     private rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>> = new RcsbQueryMultipleEntityInstances();
@@ -29,6 +30,10 @@ export class RcsbClient {
 
     public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return await this.rcsbQueryAnnotations.request(requestConfig);
+    }
+
+    public async requestRcsbPdbGroupAnnotations(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>>{
+        return await this.rcsbQueryGroupAnnotations.request(requestConfig);
     }
 
     public async requestAlignment(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse>{

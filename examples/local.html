@@ -60,7 +60,12 @@
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
-    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select","2uzi",{defaultValue:"R"});
+    const args = getJsonFromUrl();
+    /*const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{});
+    module.then(result=>{
+        console.log(result);
+    });*/
+    const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P69905",{});
     module.then(result=>{
         console.log(result);
     });

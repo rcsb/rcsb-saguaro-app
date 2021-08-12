@@ -1,4 +1,10 @@
-import {Feature, FilterInput, SequenceReference, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    Feature,
+    FilterInput,
+    GroupReference,
+    SequenceReference,
+    Source
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
@@ -12,6 +18,8 @@ export interface RcsbFvAdditionalConfig{
 }
 
 export interface RcsbFvModuleBuildInterface {
+    group?: GroupReference;
+    groupId?:string;
     queryId?: string;
     from?:SequenceReference;
     to?:SequenceReference;

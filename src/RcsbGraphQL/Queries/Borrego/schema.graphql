@@ -107,7 +107,7 @@ type Query {
         from: SequenceReference,
         "Database sequence identifier"
         queryId: String!,
-        "Optional integer list (2-tuple) to filter the alignment to a particular region"
+        "Optional integer list (2-tuple) to filter the alignments to a particular region"
         range: [Int],
         "Target Sequence database"
         to: SequenceReference
@@ -122,6 +122,24 @@ type Query {
         range: [Int],
         "Query database"
         reference: SequenceReference,
+        "List defining the annotation collections to be requested"
+        sources: [Source]
+    ): [AnnotationFeatures]
+    "Get group sequence alignments"
+    group_alignment(
+        "Group Type"
+        group: GroupReference!,
+        "Group Id"
+        groupId: String
+    ): AlignmentResponse
+    "Get group positional features"
+    group_annotations(
+        "Optional list of filters that can be used to select what annotations will be retrieved"
+        filters: [FilterInput],
+        "Group Type"
+        group: GroupReference!,
+        "Group Id"
+        groupId: String!,
         "List defining the annotation collections to be requested"
         sources: [Source]
     ): [AnnotationFeatures]
@@ -140,6 +158,10 @@ type TargetAlignment {
     target_sequence: String
 }
 
+enum GroupReference {
+    UNIPROT_ENTITY_GROUP
+}
+
 enum PropertyName {
     CATH_DOMAIN_ID
     CATH_NAME
@@ -148,7 +170,6 @@ enum PropertyName {
     DISEASE_TYPE
     EVIDENCE
     LINK
-    MODIFICATION_TYPE
     MUTATED_TYPE
     OMEGA_ANGLE
     PARENT_COMP_ID
@@ -161,6 +182,7 @@ enum PropertyName {
     SCOP_SUN_ID
     SHEET_SENSE
     STRAIN_ID
+    SUBTYPE
     WILD_TYPE
 }
 
