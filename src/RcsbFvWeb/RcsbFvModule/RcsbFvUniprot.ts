@@ -4,12 +4,14 @@ import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {ObservedSequenceCollector} from "../../RcsbCollectTools/SequenceCollector/ObservedSequenceCollector";
 import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
+import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
+    protected readonly sequenceCollector: SequenceCollectorInterface = new ObservedSequenceCollector();
+
     constructor(elementId: string, rcsbFv: RcsbFv) {
         super(elementId, rcsbFv);
-        this.sequenceCollector = new ObservedSequenceCollector();
     }
 
     public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {

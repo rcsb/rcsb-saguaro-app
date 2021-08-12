@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.2.0] - 2021-08-12
+### Code refactor
+- New class `AnnotationTrackManager` to process and format track annotations
+- Support for multiple `AnnotationConfigInterface`
+
 ## [2.1.0] - 2021-08-11
 ### Display config
 - Antibody and domain DBs config added

@@ -1,5 +1,8 @@
-import {AnnotationFeatures, QueryAnnotationsArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import query from "./Queries/Borrego/QueryAnnotations.graphql";
+import {
+    AnnotationFeatures,
+    QueryAnnotationsArgs
+} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import queryAnnotations from "./Queries/Borrego/QueryAnnotations.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
 
@@ -18,7 +21,7 @@ export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotat
                     sources: requestConfig.sources,
                     filters: requestConfig.filters,
                     range: requestConfig.range
-                }, query
+                }, queryAnnotations
             );
             return annotationsResponse.annotations;
         } catch (error) {

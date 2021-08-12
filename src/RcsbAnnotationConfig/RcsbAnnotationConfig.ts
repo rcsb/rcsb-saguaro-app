@@ -1,22 +1,7 @@
-import * as annotationMap from "./RcsbAnnotationConfig.json";
+import * as acm from "./RcsbAnnotationConfig.ac.json";
 import {Feature} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvDisplayTypes, RcsbFvColorGradient, RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
-
-export interface RcsbAnnotationConfigInterface {
-    type: string;
-    display: RcsbFvDisplayTypes;
-    color: string | RcsbFvColorGradient;
-    title: string;
-    prefix?: string;
-    provenanceList: Set<string>;
-    height?:number;
-    key?: string;
-    addToType?: string[];
-    transformToNumerical?: boolean;
-    domain?: [number,number];
-    displayCooccurrence?: boolean;
-    ignore?: boolean;
-}
+import {RcsbFvColorGradient, RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
+import {AnnotationConfigInterface, RcsbAnnotationConfigInterface} from "./AnnotationConfigInterface";
 
 export interface RcsbMergedTypesInterface {
     merged_types: Array<string>;
@@ -29,57 +14,57 @@ interface DynamicKeyAnnotationInterface extends Feature{
     [key: string]: any;
 }
 
+const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbAnnotationConfig {
-    private annotationMap: Map<string,RcsbAnnotationConfigInterface> = new Map<string, RcsbAnnotationConfigInterface>();
+    private readonly annotationConfigMap: AnnotationConfigInterface;
+    private readonly annotationMap: Map<string,RcsbAnnotationConfigInterface> = new Map<string, RcsbAnnotationConfigInterface>();
     private readonly externalAnnotationsOrder: Array<string> = new Array<string>();
     private readonly instanceAnnotationsOrder: Array<string> = new Array<string>();
     private readonly entityAnnotationsOrder: Array<string> = new Array<string>();
     private readonly mergedTypes: Map<string,RcsbMergedTypesInterface> = new Map<string,RcsbMergedTypesInterface>();
     private readonly addedTypes: Map<string,Array<string>> = new Map<string,Array<string>>();
 
-    constructor() {
-        const config: Array<RcsbAnnotationConfigInterface> = (<any>annotationMap).config;
-        config.forEach(m=>{
+    constructor(acm?: AnnotationConfigInterface) {
+        this.annotationConfigMap = acm ?? annotationConfigMap;
+        this.annotationConfigMap.config.forEach(m=>{
             m.provenanceList = new Set<string>();
             this.annotationMap.set(m.type,m);
         });
-        this.externalAnnotationsOrder = (<any>annotationMap).external_data_order;
-        this.instanceAnnotationsOrder = (<any>annotationMap).instance_order;
-        this.entityAnnotationsOrder = (<any>annotationMap).entity_order;
-
-        const mergedTypes: Array<RcsbMergedTypesInterface> = (<any>annotationMap).merge;
-        mergedTypes.forEach(m=>{
+        this.externalAnnotationsOrder = this.annotationConfigMap.external_data_order ?? [];
+        this.instanceAnnotationsOrder = this.annotationConfigMap.instance_order ?? [];
+        this.entityAnnotationsOrder = this.annotationConfigMap.entity_order ?? [];
+        this.annotationConfigMap.merge?.forEach(m=>{
             m.merged_types.forEach(type=>{
                 this.mergedTypes.set(type,m);
             });
         });
     }
 
-    getConfig(type: string): RcsbAnnotationConfigInterface{
+    public getConfig(type: string): RcsbAnnotationConfigInterface{
         if(this.annotationMap.has(type)){
             return this.annotationMap.get(type);
         }
         return null;
     }
 
-    allTypes(): Set<string>{
+    public allTypes(): Set<string>{
         const concat: Array<string> = this.externalAnnotationsOrder.concat(this.instanceAnnotationsOrder).concat(this.entityAnnotationsOrder);
         return new Set(concat);
     }
 
-    uniprotOrder(): Array<string>{
+    public uniprotOrder(): Array<string>{
         return this.externalAnnotationsOrder;
     }
 
-    instanceOrder(): Array<string>{
+    public instanceOrder(): Array<string>{
         return this.instanceAnnotationsOrder;
     }
 
-    entityOrder(): Array<string>{
+    public entityOrder(): Array<string>{
         return this.entityAnnotationsOrder;
     }
 
-    setAnnotationKey(d: Feature, targetId?: string): string{
+    public buildAndAddType(d: Feature, targetId?: string): string{
         const type: string = d.type;
         const a: DynamicKeyAnnotationInterface = d;
         let prefix: string = '';
@@ -97,9 +82,9 @@ export class RcsbAnnotationConfig {
             if(!this.annotationMap.has(newType)) {
                 const title: string = a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "";
                 this.annotationMap.set(newType, {
+                    ...this.annotationMap.get(type),
                     type: newType,
-                    display: this.annotationMap.get(type).display,
-                    color: RcsbAnnotationConfig.randomRgba(title),
+                    color: typeof this.annotationMap.get(type).color === "string" ? RcsbAnnotationConfig.randomRgba(title) : { ...(this.annotationMap.get(type).color as RcsbFvColorGradient), colors:RcsbAnnotationConfig.randomRgba(title) },
                     prefix: this.annotationMap.get(type).title,
                     title: title,
                     provenanceList: new Set<string>()
@@ -112,9 +97,8 @@ export class RcsbAnnotationConfig {
             newType = newType+":"+prefix+"."+targetId;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
+                    ...this.annotationMap.get(type),
                     type: newType,
-                    display: this.annotationMap.get(type).display,
-                    color: this.annotationMap.get(type).color,
                     title: targetId,
                     prefix: this.annotationMap.get(type).title,
                     provenanceList: new Set<string>()
@@ -155,7 +139,7 @@ export class RcsbAnnotationConfig {
         }
     }
 
-    sortAndIncludeNewTypes(): void{
+    public sortAndIncludeNewTypes(): void{
         this.addedTypes.forEach((newTypes,type)=> {
             newTypes.sort((a,b)=>a.localeCompare(b)).forEach(newT=>{
                 this.checkAndIncludeNewType(newT,type);
