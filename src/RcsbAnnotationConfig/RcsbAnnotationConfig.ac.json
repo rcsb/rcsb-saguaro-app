@@ -25,12 +25,35 @@
       "type": "SECONDARY_STRUCTURE",
       "title": "SECONDARY STRUCTURE",
       "display": "block"
+    },{
+      "merged_types": ["SCOP_2_FAMILY", "SCOP_2_SUPERFAMILY", "SCOP_2_B_SUPERFAMILY", "SCOP"],
+      "type": "ALL_SCOP",
+      "title": "SCOP",
+      "display": "block"
     }
   ],
   "external_data_order": [
     "PFAM",
     "CATH",
+    "ALL_SCOP",
     "SCOP",
+    "SCOP_2_B_SUPERFAMILY",
+    "SCOP2_FAMILY",
+    "SCOP2_SUPERFAMILY",
+    "ECOD",
+    "IMGT_ANTIBODY_DESCRIPTION",
+    "IMGT_ANTIBODY_DOMAIN_NAME",
+    "IMGT_ANTIBODY_GENE_ALLELE_NAME",
+    "IMGT_ANTIBODY_ORGANISM_NAME",
+    "IMGT_ANTIBODY_PROTEIN_NAME",
+    "IMGT_ANTIBODY_RECEPTOR_DESCRIPTION",
+    "IMGT_ANTIBODY_RECEPTOR_TYPE",
+    "SABDAB_ANTIBODY_ANTIGEN_NAME",
+    "SABDAB_ANTIBODY_NAME",
+    "SABDAB_ANTIBODY_TARGET",
+    "SABDAB_ANTIBODY_HEAVY_CHAIN_SUBCLASS",
+    "SABDAB_ANTIBODY_LIGHT_CHAIN_SUBCLASS",
+    "SABDAB_ANTIBODY_LIGHT_CHAIN_TYPE",
     "MOLECULE_PROCESSING",
     "MEMBRANE_TOPOLOGY",
     "MEMBRANE_SEGMENT",
@@ -43,6 +66,7 @@
     "DISULFIDE_BOND",
     "METAL_ION_BINDING_SITE",
     "NUCLEOTIDE_PHOSPHATE_BINDING_REGION",
+    "DNA_BINDING_REGION",
     "ACTIVE_SITE",
     "MODIFIED_RESIDUE",
     "MUTAGENESIS_SITE",
@@ -62,7 +86,8 @@
     "SPLICE_VARIANT",
     "NON_TERMINAL_RESIDUE",
     "TURN",
-    "SIGNAL_PEPTIDE"
+    "SIGNAL_PEPTIDE",
+    "CARD_MODEL"
   ],
   "instance_order": [
     "SECONDARY_STRUCTURE",
@@ -98,6 +123,93 @@
     "DISORDER_BINDING"
   ],
   "config": [{
+    "type": "CARD_MODEL",
+    "color": "#4d901b",
+    "display": "block",
+    "title": "CARD"
+  },{
+    "type": "ECOD",
+    "color": "#42d0b1",
+    "display": "block",
+    "title": "ECOD"
+  },{
+    "type": "IMGT_ANTIBODY_DOMAIN_NAME",
+    "color": "#3c0d7f",
+    "display": "block",
+    "title": "ANTIBODY DOMAIN"
+  },{
+    "type": "SABDAB_ANTIBODY_HEAVY_CHAIN_SUBCLASS",
+    "color": "#4c9f0d",
+    "display": "block",
+    "title": "ANTIBODY HEAVY CHAIN",
+    "ignore": true
+  },{
+    "type": "SABDAB_ANTIBODY_LIGHT_CHAIN_SUBCLASS",
+    "color": "#4c9f0d",
+    "display": "block",
+    "title": "ANTIBODY HEAVY CHAIN",
+    "ignore": true
+  },{
+    "type": "SABDAB_ANTIBODY_LIGHT_CHAIN_TYPE",
+    "color": "#4c9f0d",
+    "display": "block",
+    "title": "ANTIBODY HEAVY CHAIN",
+    "ignore": true
+  },{
+    "type": "IMGT_ANTIBODY_DESCRIPTION",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY DESCRIPTION",
+    "ignore": true
+  },{
+    "type": "IMGT_ANTIBODY_GENE_ALLELE_NAME",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY GENE NAME",
+    "ignore": true
+  },{
+    "type": "IMGT_ANTIBODY_ORGANISM_NAME",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY ORGANISM NAME",
+    "ignore": true
+  },{
+    "type": "IMGT_ANTIBODY_PROTEIN_NAME",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY PROTEIN NAME",
+    "ignore": true
+  },{
+    "type": "IMGT_ANTIBODY_RECEPTOR_DESCRIPTION",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY RECEPTOR DESCRIPTION",
+    "ignore": true
+  },{
+    "type": "IMGT_ANTIBODY_RECEPTOR_TYPE",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY RECEPTOR TYPE",
+    "ignore": true
+  },{
+    "type": "SABDAB_ANTIBODY_ANTIGEN_NAME",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY ANTIGEN NAME",
+    "ignore": true
+  },{
+    "type": "SABDAB_ANTIBODY_NAME",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY NAME",
+    "ignore": true
+  },{
+    "type": "SABDAB_ANTIBODY_TARGET",
+    "color": "#bf5c0d",
+    "display": "block",
+    "title": "ANTIBODY TARGET",
+    "ignore": true
+  },{
     "type": "HOMOLOGY MODELLING",
     "color": "#2fcc5d",
     "display": "block",
@@ -146,6 +258,11 @@
     "display": "block",
     "color": "#ffcc00",
     "title": "NUCLEOTIDE BINDING"
+  },{
+    "type": "DNA_BINDING_REGION",
+    "display": "block",
+    "color": "#ff5c9f",
+    "title": "DNA BINDING"
   },{
     "type": "ACTIVE_SITE",
     "display": "pin",
@@ -316,6 +433,21 @@
     "display": "block",
     "color": "#455d5a",
     "title": "SCOP"
+  },{
+    "type": "SCOP_2_FAMILY",
+    "display": "block",
+    "color": "#455d5a",
+    "title": "SCOP FAMILY"
+  },{
+    "type": "SCOP_2_B_SUPERFAMILY",
+    "display": "block",
+    "color": "#455d5a",
+    "title": "SCOP SUPERFAMILY"
+  },{
+    "type": "SCOP_2_SUPERFAMILY",
+    "display": "block",
+    "color": "#455d5a",
+    "title": "SCOP SUPERFAMILY"
   },{
     "type": "PFAM",
     "display": "block",
