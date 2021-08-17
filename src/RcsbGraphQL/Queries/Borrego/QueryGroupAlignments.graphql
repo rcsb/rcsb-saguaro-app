@@ -1,0 +1,26 @@
+query QueryGroupAlignment($group: GroupReference!, $groupId: String!){
+    group_alignment(
+        group: $group
+        groupId: $groupId
+    ){
+        query_sequence
+        target_alignment {
+            target_id
+            orientation
+            target_sequence
+            coverage {
+                query_coverage
+                query_length
+                target_coverage
+                target_length
+            }
+            aligned_regions {
+                query_begin
+                query_end
+                target_begin
+                target_end
+                exon_shift
+            }
+        }
+    }
+}

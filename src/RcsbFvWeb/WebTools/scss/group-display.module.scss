@@ -1,0 +1,14 @@
+.bootstrapComponentScope {
+  @import "~bootstrap/scss/bootstrap";
+  padding-right: 25px;
+  .nav > a {
+    font-size: 12px;
+  }
+  .tab-pane{
+    padding-right: 25px;
+  }
+}
+
+.bootstrapComponentScope * {
+  box-sizing: content-box;
+}

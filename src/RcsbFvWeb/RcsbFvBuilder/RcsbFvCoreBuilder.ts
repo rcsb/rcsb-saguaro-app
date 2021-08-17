@@ -2,6 +2,7 @@ import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
 import {
+    RcsbFvAdditionalConfig,
     RcsbFvModuleBuildInterface,
     RcsbFvModuleInterface,
     RcsbFvModulePublicInterface
@@ -53,11 +54,11 @@ export class RcsbFvCoreBuilder {
      * */
     static async createFv (createFvI: CreateFvInterface): Promise<RcsbFvModulePublicInterface> {
         const elementId: string = createFvI.elementId;
-        const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
+        const fvModuleI: new (elementId:string, rcsbFv: RcsbFv, additionalConfig?: RcsbFvAdditionalConfig) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
         const rcsbFv: RcsbFv = rcsbFvCtxManager.getFv(elementId, createFvI.config.additionalConfig?.boardConfig);
-        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFv);
+        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFv, config.additionalConfig);
         if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
         await rcsbFvInstance.build(config);
         if(!rcsbFvInstance.activeDisplay())
@@ -99,6 +100,10 @@ export class RcsbFvCoreBuilder {
         const domElement: HTMLElement = document.createElement<"h4">("h4");
         domElement.innerHTML = message;
         document.getElementById(elementId).append(domElement);
+    }
+
+    static buildGroupTabs(elementId: string, groupId: string) {
+        WebToolsManager.buildGroupTabs(elementId, groupId);
     }
 
 }

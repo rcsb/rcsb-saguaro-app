@@ -8,6 +8,7 @@ import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotation
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
+import {IncreaseAnnotationValueType} from "./AnnotationCollectorInterface";
 
 interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
@@ -30,21 +31,21 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         return this.valueRange;
     }
 
-    public addElement(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, increaseValue?:(feature:{type:string; targetId:string; positionKey: string; d:Feature;})=>number): void {
+    public addElement(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, increaseValue?:IncreaseAnnotationValueType): void {
         computeFeatureGaps(d.feature_positions).forEach(p => {
             if(p.beg_seq_id != null) {
-                this.annotationRangeKeys(p).forEach(key=>{
+                this.annotationRangeKeys(p).forEach(rangeKey=>{
+                    const key: string = rangeKey.join(":");
                     if (!this.has(key)) {
                         const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
-                        if(typeof increaseValue === "function")
-                            a.value = increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d});
-                        const translateContext: TranslateContextInterface = {
+                        if(this.annotationConfig.transformToNumerical)
+                            transformToNumerical(this.type, targetId, rangeKey, key, a, d, increaseValue);
+                        this.addAuthorResIds(a,{
                             from:reference,
                             to:source,
                             queryId:queryId,
                             targetId:targetId
-                        };
-                        this.addAuthorResIds(a,translateContext);
+                        });
                         this.set(key,a);
                         //TODO Needed when value would be mutated into Array
                         /*if(p.value instanceof Array)
@@ -140,14 +141,18 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         return (this.annotationConfig!=null && (this.annotationConfig.display === RcsbFvDisplayTypes.AREA || this.annotationConfig.display === RcsbFvDisplayTypes.BLOCK_AREA || this.annotationConfig.display === RcsbFvDisplayTypes.LINE));
     }
 
-    private annotationRangeKeys(p: FeaturePositionGaps): Array<string> {
-        const rangeKeys: Array<string> = new Array<string>();
+    private annotationRangeKeys(p: FeaturePositionGaps): Array<number[]> {
+        const rangeKeys: Array<number[]> = new Array<number[]>();
         if(this.annotationConfig.transformToNumerical && p.end_seq_id != null){
             for(let i=p.beg_seq_id; i<=p.end_seq_id; i++){
-                rangeKeys.push(p.beg_seq_id.toString());
+                rangeKeys.push([i]);
             }
+        }else if(this.annotationConfig.transformToNumerical){
+            rangeKeys.push([p.beg_seq_id]);
         }else{
-            rangeKeys.push((p.end_seq_id != null ? p.beg_seq_id.toString()+":"+p.end_seq_id.toString() : p.beg_seq_id.toString()) + (this.annotationConfig?.displayCooccurrence ? Math.random().toString(36).substr(2) : ""))
+            const key: Array<number> = p.end_seq_id != null ? [p.beg_seq_id, p.end_seq_id] : [p.beg_seq_id, p.beg_seq_id];
+            if(this.annotationConfig?.displayCooccurrence) key.push(Math.ceil(Math.random()*1000000000000));
+            rangeKeys.push(key);
         }
         return rangeKeys;
     }
@@ -198,4 +203,12 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
         }
     });
     return out;
+}
+
+function transformToNumerical(type: string, targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, increaseValue?:IncreaseAnnotationValueType): void{
+    if(typeof increaseValue === "function"){
+        a.value = increaseValue({type:type,targetId:targetId,positionKey:key,d:d});
+    }
+    a.begin = rangeKey[0];
+    a.end = rangeKey[0];
 }

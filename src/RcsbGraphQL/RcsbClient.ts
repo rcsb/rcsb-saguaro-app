@@ -1,10 +1,10 @@
 import {RcsbQueryAnnotations, RcsbQueryGroupAnnotations} from "./RcsbQueryAnnotations";
-import {RcsbQueryAlignment} from "./RcsbQueryAlignment";
+import {RcsbQueryAlignment, RcsbQueryGroupAlignment} from "./RcsbQueryAlignment";
 import {
     AlignmentResponse,
     AnnotationFeatures,
     QueryAlignmentArgs,
-    QueryAnnotationsArgs, QueryGroup_AnnotationsArgs
+    QueryAnnotationsArgs, QueryGroup_AlignmentArgs, QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,
@@ -20,10 +20,12 @@ export enum GroupKey {
     UniprotEntity = "uniprot_entity"
 }
 
+//TODO Implement a cache to store requests and avoid duplication
 export class RcsbClient {
     private rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryAnnotations();
     private rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryGroupAnnotations();
     private rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse> = new RcsbQueryAlignment();
+    private rcsbQueryGroupAlignment: RcsbCoreQueryInterface<QueryGroup_AlignmentArgs,AlignmentResponse> = new RcsbQueryGroupAlignment();
     private rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry> = new RcsbQueryEntryInstances();
     private rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>> = new RcsbQueryMultipleEntityInstances();
     private rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>> = new RcsbQueryMultipleEntriesProperties();
@@ -38,6 +40,10 @@ export class RcsbClient {
 
     public async requestAlignment(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse>{
         return await this.rcsbQueryAlignment.request(requestConfig);
+    }
+
+    public async requestGroupAlignment(requestConfig: QueryGroup_AlignmentArgs): Promise<AlignmentResponse>{
+        return await this.rcsbQueryGroupAlignment.request(requestConfig);
     }
 
     public async requestEntityInstances(requestConfig: QueryEntryArgs): Promise<CoreEntry>{

@@ -1,4 +1,4 @@
-import {RcsbFvAdditionalConfig } from "./RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
 import {RcsbFvChromosomeBuilder} from "./RcsbFvBuilder/RcsbFvChromosomeBuilder";
@@ -12,8 +12,8 @@ import {
 } from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
 import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder/RcsbFvProteinSequenceBuilder";
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
-import {RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvGroupBuilder} from "./RcsbFvBuilder/RcsbFvGroupBuilder";
+import {FieldName, OperationType, Source, Type} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -88,6 +88,6 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
     return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
 }
 
-export function buildUniprotEntityGroupFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvGroupBuilder.buildUniprotEntityGrouptFv(elementId, upAcc, additionalConfig);
+export function buildUniprotEntityGroupFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): void {
+    RcsbFvCoreBuilder.buildGroupTabs(elementId, upAcc);
 }

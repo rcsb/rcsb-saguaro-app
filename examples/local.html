@@ -65,7 +65,24 @@
     module.then(result=>{
         console.log(result);
     });*/
-    const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P69905",{});
+    /*const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P01112",{
+        filters: [{
+            field: "type",
+            values: ["BINDING_SITE"],
+            operation: "equals",
+            source: "PDB_INSTANCE"
+        }],
+        sources: ["PDB_INSTANCE"]
+    }, "feature-targets");*/
+    const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P01112",{
+        filters: [{
+            field: "type",
+            values: ["BINDING_SITE"],
+            operation: "equals",
+            source: "PDB_INSTANCE"
+        }],
+        sources: ["PDB_INSTANCE"]
+    }, "feature-targets");
     module.then(result=>{
         console.log(result);
     });

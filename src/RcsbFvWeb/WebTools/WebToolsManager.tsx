@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
+import {GroupTabs} from "./GroupTabs";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -55,6 +56,13 @@ export class WebToolsManager {
             ReactDom.unmountComponentAtNode(document.getElementById(id));
             document.getElementById(id)?.remove();
         }
+    }
+
+    static buildGroupTabs(elementId: string, groupId: string){
+        ReactDom.render(
+            <GroupTabs groupId={groupId}/>,
+            document.getElementById(elementId)
+        )
     }
 
 }

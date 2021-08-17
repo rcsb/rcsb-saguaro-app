@@ -36,6 +36,8 @@ export class FeatureTools {
                 }
             }
 
+        }else if(title == "binding_site"){
+            return {visibleTex: "", style:{fontWeight:"bold"}}
         }
         return {visibleTex: title, style:{fontWeight:"bold"}}
     }
