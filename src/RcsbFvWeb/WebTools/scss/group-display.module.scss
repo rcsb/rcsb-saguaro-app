@@ -1,11 +1,22 @@
 .bootstrapComponentScope {
   @import "~bootstrap/scss/bootstrap";
-  padding-right: 25px;
   .nav > a {
     font-size: 12px;
   }
   .tab-pane{
-    padding-right: 25px;
+    padding-top: 25px;
+  }
+  .show {
+    opacity: 1;
+  }
+  .rcsbSvg {
+    vertical-align: baseline;
+  }
+  .rcsbFvRowTitleText a {
+    text-decoration-line: none;
+  }
+  .rcsbFvRowTitleText a:hover {
+    text-decoration-line: underline;
   }
 }
 

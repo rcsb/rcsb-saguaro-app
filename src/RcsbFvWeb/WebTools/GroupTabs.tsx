@@ -55,13 +55,23 @@ export class GroupTabs extends React.Component <{groupId: string}, {}> {
 
 }
 
+const rowTitleWidth: number = 190;
 function alignment(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildUniprotEntityGroupFvAlignment(elementId, upAcc, additionalConfig);
+    return RcsbFvGroupBuilder.buildUniprotEntityGroupFvAlignment(elementId, upAcc,
+        {
+            ...additionalConfig,
+            boardConfig:{
+                rowTitleWidth
+            }
+        });
 }
 
 function bindingSites(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
     return RcsbFvGroupBuilder.buildUniprotEntityGroupFvAnnotation(elementId, upAcc, {
         ...additionalConfig,
+        boardConfig:{
+            rowTitleWidth
+        },
         filters: [{
             field: FieldName.Type,
             values: [Type.BindingSite],
@@ -75,6 +85,9 @@ function bindingSites(elementId: string, upAcc: string, additionalConfig?:RcsbFv
 function structure(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
     return RcsbFvGroupBuilder.buildUniprotEntityGroupFvAnnotation(elementId, upAcc, {
         ...additionalConfig,
+        boardConfig:{
+            rowTitleWidth: 150
+        },
         filters: [{
             field: FieldName.Type,
             values: [Type.UnobservedResidueXyz, Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
