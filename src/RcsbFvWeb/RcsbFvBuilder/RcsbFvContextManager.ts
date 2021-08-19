@@ -5,8 +5,6 @@ import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
-import {GroupPropertiesProvider} from "../../RcsbUtils/GroupPropertiesProvider";
-
 
 interface DataStatusInterface<T>{
     data:T;
@@ -19,8 +17,6 @@ class RcsbFvContextManager {
     private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
     private polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
-    private groupPropertyMap: Map<string,DataStatusInterface<GroupPropertiesProvider>> = new Map<string, DataStatusInterface<GroupPropertiesProvider>>();
-
 
     public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
         if( this.rcsbFvManager.has(elementFvId)) {
@@ -62,10 +58,6 @@ class RcsbFvContextManager {
 
     private setEntryToAssembly(entryId: string, map: EntryAssemblyTranslate): void{
         mapSet<EntryAssemblyTranslate>(this.entryToAssemblyMap.get(entryId), map);
-    }
-
-    private setGroupProperties(groupId: string, map:GroupPropertiesProvider): void{
-        mapSet<GroupPropertiesProvider>(this.groupPropertyMap.get(groupId), map);
     }
 
     public async getEntityToInstance(entryId: string): Promise<PolymerEntityInstanceTranslate>{

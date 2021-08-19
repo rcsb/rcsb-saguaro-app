@@ -1,5 +1,5 @@
 import {AlignmentResponse, QueryAlignmentArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import query from "./Queries/Borrego/QueryAlignments.graphql";
+import queryAlignment from "./Queries/Borrego/QueryAlignments.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
 
@@ -17,7 +17,7 @@ export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignment
                     to: requestConfig.to,
                     range: requestConfig.range
                 },
-                query
+                queryAlignment
             );
             return result.alignment;
         } catch (error) {

@@ -2,6 +2,8 @@ import {Feature, FilterInput, SequenceReference, Source} from "@rcsb/rcsb-saguar
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
+import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
@@ -9,8 +11,12 @@ export interface RcsbFvAdditionalConfig{
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
     boardConfig?: Partial<RcsbFvBoardConfigInterface>;
+    sequencePrefix?:string;
+    annotationProcessing?: AnnotationProcessingInterface;
+    sequenceCollector?: SequenceCollectorInterface;
 }
 
+//TODO move psa & elementSelectId into additional config
 export interface RcsbFvModuleBuildInterface {
     queryId?: string;
     from?:SequenceReference;

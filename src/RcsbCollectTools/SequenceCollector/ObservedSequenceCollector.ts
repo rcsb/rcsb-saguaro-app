@@ -8,7 +8,6 @@ import {
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion,
-    CollectAlignmentInterface,
     SequenceCollector,
     SequenceCollectorDataInterface
 } from "./SequenceCollector";
@@ -17,7 +16,10 @@ import {MultipleEntityInstanceTranslate} from "../../RcsbUtils/MultipleEntityIns
 import {MultipleEntityInstancesCollector} from "../Translators/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
+import {
+    AlignmentCollectConfig,
+    SequenceCollectorInterface
+} from "./SequenceCollectorInterface";
 import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {
@@ -28,7 +30,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
-    public async collect(requestConfig: CollectAlignmentInterface): Promise<SequenceCollectorDataInterface> {
+    public async collect(requestConfig: AlignmentCollectConfig): Promise<SequenceCollectorDataInterface> {
         const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig.queryId, requestConfig.from);
         this.loadObservedRegions(annotationFeatures);
         return await this.sequenceCollector.collect(requestConfig, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));

@@ -3,7 +3,6 @@ import {RcsbFvDisplayTypes, RcsbFvLink, RcsbFvRowConfigInterface,} from '@rcsb/r
 import {
     AlignedRegion,
     AlignmentResponse,
-    QueryAlignmentArgs,
     SequenceReference,
     TargetAlignment
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
@@ -13,17 +12,12 @@ import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../R
 
 import {BuildAlignementsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
+import {
+    AlignmentCollectConfig,
+    SequenceCollectorInterface
+} from "./SequenceCollectorInterface";
 import {Subject} from "rxjs";
 import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
-
-export interface CollectAlignmentInterface extends QueryAlignmentArgs {
-    filterByTargetContains?:string;
-    dynamicDisplay?: boolean;
-    excludeAlignmentLinks?: boolean;
-    fitTitleWidth?:boolean;
-    excludeFirstRowLink?:boolean;
-}
 
 export interface AlignedObservedRegion extends AlignedRegion {
     unModelled?:boolean;
@@ -53,38 +47,15 @@ export class SequenceCollector implements SequenceCollectorInterface{
     }
 
     public async collect(
-        requestConfig: CollectAlignmentInterface,
+        requestConfig: AlignmentCollectConfig,
         entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<void>,
         tagObservedRegions?: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion>
     ): Promise<SequenceCollectorDataInterface> {
 
-        this.requestStatus = "pending";
         if(typeof tagObservedRegions === "function")
             this.tagObservedRegions = tagObservedRegions;
-        if(requestConfig.dynamicDisplay)
-            this.dynamicDisplay = true;
 
-        const alignmentResponse: AlignmentResponse = await this.rcsbFvQuery.requestAlignment({
-            queryId: requestConfig.queryId,
-            from: requestConfig.from,
-            to: requestConfig.to
-        });
-        /*const genomeMapReponse: AlignmentResponse = await this.rcsbFvQuery.requestAlignment({
-            queryId: requestConfig.queryId,
-            from: requestConfig.from,
-            to: SequenceReference.NcbiGenome
-        });
-        const genomeData: Array<TargetAlignment> = genomeMapReponse.target_alignment;
-        console.log(this.buildAlignments({
-            targetAlignmentList: genomeData,
-            queryId:requestConfig.queryId,
-            querySequence: null,
-            filterByTargetContains:requestConfig.filterByTargetContains,
-            to:requestConfig.to,
-            from:requestConfig.from,
-            excludeAlignmentLinks: requestConfig.excludeAlignmentLinks,
-            fitTitleWidth: requestConfig.fitTitleWidth
-        }));*/
+        const alignmentResponse: AlignmentResponse = await this.requestAlignment(requestConfig);
         if(alignmentResponse.query_sequence == null || alignmentResponse.query_sequence.length == 0) {
             console.warn(alignmentResponse);
             throw "Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;
@@ -146,7 +117,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         return alignments;
     }
 
-    private buildSequenceTrack(requestConfig: CollectAlignmentInterface, querySequence: string): RcsbFvRowConfigInterface{
+    private buildSequenceTrack(requestConfig: AlignmentCollectConfig, querySequence: string): RcsbFvRowConfigInterface{
         let rowPrefix:string|RcsbFvLink = requestConfig.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle;
         let rowTitle:string|RcsbFvLink = this.helper.buildSequenceRowTitle(requestConfig);
         const sequenceTrack: RcsbFvRowConfigInterface = {
@@ -175,4 +146,34 @@ export class SequenceCollector implements SequenceCollectorInterface{
         return sequenceTrack;
     }
 
+    private collectGenomeRegions(): void {
+        /*const genomeMapReponse: AlignmentResponse = await this.rcsbFvQuery.requestAlignment({
+            queryId: requestConfig.queryId,
+            from: requestConfig.from,
+            to: SequenceReference.NcbiGenome
+        });
+        const genomeData: Array<TargetAlignment> = genomeMapReponse.target_alignment;
+        console.log(this.buildAlignments({
+            targetAlignmentList: genomeData,
+            queryId:requestConfig.queryId,
+            querySequence: null,
+            filterByTargetContains:requestConfig.filterByTargetContains,
+            to:requestConfig.to,
+            from:requestConfig.from,
+            excludeAlignmentLinks: requestConfig.excludeAlignmentLinks,
+            fitTitleWidth: requestConfig.fitTitleWidth
+        }));*/
+    }
+
+    private async requestAlignment(requestConfig: AlignmentCollectConfig): Promise<AlignmentResponse>{
+        this.requestStatus = "pending";
+        if(requestConfig.dynamicDisplay)
+            this.dynamicDisplay = true;
+
+        return await this.rcsbFvQuery.requestAlignment({
+                queryId: requestConfig.queryId,
+                from: requestConfig.from,
+                to: requestConfig.to
+            });
+    }
 }

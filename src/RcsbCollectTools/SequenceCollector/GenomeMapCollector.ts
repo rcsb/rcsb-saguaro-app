@@ -1,6 +1,6 @@
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {SequenceCollectorInterface} from "./SequenceCollectorInterface";
-import {CollectAlignmentInterface, SequenceCollectorDataInterface} from "./SequenceCollector";
+import {CollectAlignmentInterface, SequenceCollectorInterface} from "./SequenceCollectorInterface";
+import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 
 export class GenomeMapCollector implements SequenceCollectorInterface{

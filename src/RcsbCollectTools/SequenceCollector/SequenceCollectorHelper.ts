@@ -10,18 +10,18 @@ import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {FeatureTools} from "../FeatureTools/FeatureTools";
-import {AlignedObservedRegion, CollectAlignmentInterface} from "./SequenceCollector";
-
+import {AlignedObservedRegion} from "./SequenceCollector";
+import {AlignmentCollectConfig} from "./SequenceCollectorInterface";
 
 export interface BuildAlignementsInterface {
     targetAlignmentList: Array<TargetAlignment>;
     queryId: string;
     querySequence: string;
-    filterByTargetContains?:string;
-    to:SequenceReference;
-    from:SequenceReference;
+    filterByTargetContains?: string;
+    to: SequenceReference;
+    from: SequenceReference;
     excludeAlignmentLinks?: boolean;
-    fitTitleWidth?:boolean;
+    fitTitleWidth?: boolean;
 }
 
 interface BuildSequenceDataInterface extends TranslateContextInterface{
@@ -30,7 +30,6 @@ interface BuildSequenceDataInterface extends TranslateContextInterface{
     begin: number;
     oriBegin: number;
 }
-
 
 export class SequenceCollectorHelper {
 
@@ -130,7 +129,7 @@ export class SequenceCollectorHelper {
                     displayColor: "#9999FF",
                     displayData: alignedBlocks
                 };
-                let rowPrefix: string = alignmentData.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle;
+                let rowPrefix: string = alignmentData.to ? alignmentData.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle : "";
                 const track: RcsbFvRowConfigInterface = {
                     trackId: "targetSequenceTrack_"+targetAlignment.target_id,
                     displayType: RcsbFvDisplayTypes.COMPOSITE,
@@ -181,7 +180,7 @@ export class SequenceCollectorHelper {
         return config.sequenceData;
     }
 
-    public buildSequenceRowTitle(requestConfig: CollectAlignmentInterface): string|RcsbFvLink{
+    public buildSequenceRowTitle(requestConfig: AlignmentCollectConfig): string|RcsbFvLink{
         let rowTitle:string|RcsbFvLink;
         if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.Uniprot){
             rowTitle = {

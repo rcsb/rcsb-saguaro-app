@@ -7,8 +7,9 @@ import {
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationTransformer} from "./AnnotationTransformer";
 
+export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey: string; d:Feature;})=>number;
 export interface AnnotationProcessingInterface {
-    increaseAnnotationValue?:(feature:{type:string; targetId:string; positionKey: string; d:Feature;})=>number;
+    increaseAnnotationValue?:IncreaseAnnotationValueType;
     computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTransformer>)=>void;
 }
 
