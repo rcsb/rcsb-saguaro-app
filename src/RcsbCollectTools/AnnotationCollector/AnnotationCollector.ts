@@ -99,6 +99,11 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
                     );
             });
         });
+        console.log(requestConfig);
+        if(requestConfig.externalAnnotationTrackBuilder){
+            requestConfig.externalAnnotationTrackBuilder.processAnnotationFeatures(data);
+            requestConfig.externalAnnotationTrackBuilder.addTo(this.annotationsConfigData);
+        }
     }
 
     private async requestAnnotations(requestConfig: AnnotationCollectConfig): Promise<Array<AnnotationFeatures>> {

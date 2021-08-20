@@ -7,6 +7,7 @@ import {
     Source
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationTransformer} from "./AnnotationTransformer";
+import {ExternalAnnotationTrackBuilderInterface} from "./ExternalAnnotationTrackBuilderInterface";
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey: string; d:Feature;})=>number;
 export interface AnnotationProcessingInterface {
@@ -14,14 +15,18 @@ export interface AnnotationProcessingInterface {
     computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTransformer>)=>void;
 }
 
-export interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
-    addTargetInTitle?: Set<Source>;
-    collectSwissModel?: boolean;
+interface CommonAnnotationInterface {
     annotationProcessing?: AnnotationProcessingInterface;
+    externalAnnotationTrackBuilder?: ExternalAnnotationTrackBuilderInterface;
 }
 
-export interface CollectGroupAnnotationsInterface extends QueryGroup_AnnotationsArgs {
-    annotationProcessing?: AnnotationProcessingInterface;
+export interface CollectAnnotationsInterface extends QueryAnnotationsArgs, CommonAnnotationInterface {
+    addTargetInTitle?: Set<Source>;
+    collectSwissModel?: boolean;
+}
+
+export interface CollectGroupAnnotationsInterface extends QueryGroup_AnnotationsArgs, CommonAnnotationInterface {
+
 }
 
 export type AnnotationCollectConfig = Partial<CollectAnnotationsInterface & CollectGroupAnnotationsInterface>;

@@ -10,6 +10,7 @@ import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcs
 import {PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
+import {ExternalAnnotationTrackBuilderInterface} from "../../RcsbCollectTools/AnnotationCollector/ExternalAnnotationTrackBuilderInterface";
 
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
@@ -20,6 +21,7 @@ export interface RcsbFvAdditionalConfig{
     sequencePrefix?:string;
     annotationProcessing?: AnnotationProcessingInterface;
     sequenceCollector?: SequenceCollectorInterface;
+    externalAnnotationTrackBuilder?: ExternalAnnotationTrackBuilderInterface;
 }
 
 //TODO move psa & elementSelectId into additional config

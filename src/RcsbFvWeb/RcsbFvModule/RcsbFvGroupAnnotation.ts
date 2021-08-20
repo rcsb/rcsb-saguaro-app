@@ -43,7 +43,8 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             groupId: buildConfig.groupId,
             sources:buildConfig.additionalConfig?.sources,
             filters:buildConfig.additionalConfig?.filters,
-            annotationProcessing:buildConfig.additionalConfig?.annotationProcessing
+            annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalAnnotationTrackBuilder
         });
 
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
