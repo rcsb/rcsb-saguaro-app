@@ -42,7 +42,7 @@
         "1xxx"
     );*/
     //RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A")
-    //RcsbFvWebApp.buildUniprotFv("pfv","P01112")
+    RcsbFvWebApp.buildUniprotFv("pfv","P01112")
     /*RcsbFvWebApp.setBoardConfig({
         elementClickCallBack:(e)=>{
             console.log(e);
@@ -60,11 +60,11 @@
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
-    const args = getJsonFromUrl();
+    /*const args = getJsonFromUrl();
     const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{});
     module.then(result=>{
         console.log(result);
-    });
+    });*/
 </script>
 
 

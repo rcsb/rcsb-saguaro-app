@@ -38,12 +38,12 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     public async collect(requestConfig: AnnotationCollectConfig): Promise<Array<RcsbFvRowConfigInterface>> {
         this.requestStatus = "pending";
-        const annotationFeatures: Array<AnnotationFeatures> = await this.requestAnnotations(requestConfig);
-        this.processRcsbPdbAnnotations(annotationFeatures, requestConfig);
+        let annotationFeatures: Array<AnnotationFeatures> = await this.requestAnnotations(requestConfig);
         if (requestConfig.collectSwissModel === true) {
-            const swissModelData = await SwissModelQueryAnnotations.request(requestConfig.queryId)
-            this.processRcsbPdbAnnotations(swissModelData, requestConfig);
+            const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId)
+            annotationFeatures = annotationFeatures.concat(swissModelData)
         }
+        this.processRcsbPdbAnnotations(annotationFeatures, requestConfig);
         this.rawFeatures = [].concat.apply([], annotationFeatures.map(af=>af.features));
         this.complete();
         return this.annotationsConfigData;

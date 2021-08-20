@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.2.1] - 2021-08-20
+### Bug correction
+- Fixed duplication of annotations in UniProt modules
+- rcsb-saguaro-api update
+
 ## [2.2.0] - 2021-08-12
 ### Code refactor
 - New class `AnnotationTrackManager` to process and format track annotations
