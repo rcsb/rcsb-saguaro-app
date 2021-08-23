@@ -49,7 +49,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                         //TODO Needed when value would be mutated into Array
                         /*if(p.value instanceof Array)
                             this.expandValues(a, p.value, translateContext);*/
-                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig.transformToNumerical && typeof this.get(key).value === "number"){
+                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.get(key).value === "number"){
                         (this.get(key).value as number) += typeof increaseValue === "function"? increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d}) : 1;
                         if(this.get(key).value > this.valueRange.max)
                             this.valueRange.max = this.get(key).value as number;
@@ -67,7 +67,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         let title:string = this.annotationConfig?.title ?? this.type;
         let value: number|string = undefined;
         if(this.isNumericalDisplay(this.type)) {
-            if(this.annotationConfig.transformToNumerical){
+            if(this.annotationConfig?.transformToNumerical){
                 value = 1;
             }else{
                 //TODO Needed when value would be mutated into Array
@@ -142,7 +142,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
 
     private annotationRangeKeys(p: FeaturePositionGaps): Array<string> {
         const rangeKeys: Array<string> = new Array<string>();
-        if(this.annotationConfig.transformToNumerical && p.end_seq_id != null){
+        if(this.annotationConfig?.transformToNumerical && p.end_seq_id != null){
             for(let i=p.beg_seq_id; i<=p.end_seq_id; i++){
                 rangeKeys.push(p.beg_seq_id.toString());
             }

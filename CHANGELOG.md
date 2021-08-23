@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.2.2] - 2021-08-23
+### Bug correction
+- Fixed unchecked `annotationConfig` null 
+- Added display for `CALCIUM_BINDING_REGION`
+
 ## [2.2.1] - 2021-08-20
 ### Bug correction
 - Fixed duplication of annotations in UniProt modules
