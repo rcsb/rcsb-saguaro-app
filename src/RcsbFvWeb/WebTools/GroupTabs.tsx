@@ -176,7 +176,7 @@ function buildGlobalLigandBindingSite(): ExternalAnnotationTrackBuilderInterface
                 trackHeight: 40,
                 displayType: RcsbFvDisplayTypes.AREA,
                 trackColor: "#F9F9F9",
-                displayColor: "#945ec3",
+                displayColor: "#94c35e",
                 titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 rowTitle: trackName,
                 displayDomain:[0, max],
