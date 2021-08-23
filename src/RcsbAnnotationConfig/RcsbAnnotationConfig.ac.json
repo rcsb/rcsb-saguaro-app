@@ -87,7 +87,8 @@
     "NON_TERMINAL_RESIDUE",
     "TURN",
     "SIGNAL_PEPTIDE",
-    "CARD_MODEL"
+    "CARD_MODEL",
+    "CALCIUM_BINDING_REGION"
   ],
   "instance_order": [
     "SECONDARY_STRUCTURE",
@@ -570,5 +571,10 @@
     "color": "#8fc50f",
     "title": "MEMBRANE SEGMENT",
     "displayCooccurrence": true
+  },{
+    "type": "CALCIUM_BINDING_REGION",
+    "display": "block",
+    "color": "#c58f0f",
+    "title": "CALCIUM BINDING"
   }]
 }

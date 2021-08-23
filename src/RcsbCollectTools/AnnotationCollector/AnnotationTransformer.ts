@@ -68,7 +68,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         let title:string = this.annotationConfig?.title ?? this.type;
         let value: number|string = undefined;
         if(this.isNumericalDisplay(this.type)) {
-            if(this.annotationConfig.transformToNumerical){
+            if(this.annotationConfig?.transformToNumerical){
                 value = 1;
             }else{
                 value = p.values instanceof Array ? p.values[0] ?? 0 : 0;
@@ -139,7 +139,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
 
     private annotationRangeKeys(p: FeaturePositionGaps): Array<number[]> {
         const rangeKeys: Array<number[]> = new Array<number[]>();
-        if(this.annotationConfig.transformToNumerical && p.end_seq_id != null){
+        if(this.annotationConfig?.transformToNumerical && p.end_seq_id != null){
             for(let i=p.beg_seq_id; i<=p.end_seq_id; i++){
                 rangeKeys.push([i]);
             }
