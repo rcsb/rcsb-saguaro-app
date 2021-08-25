@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.1] - 2021-08-24
+### Bug correction
+- `SequenceCollectorInterface` `collect` bug fixed
+
 ## [2.3.0] - 2021-08-24
 ### Improvements
 - Annotation multidimensional value support 
