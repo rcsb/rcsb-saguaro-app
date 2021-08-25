@@ -172,11 +172,11 @@ function buildGlobalLigandBindingSite(): ExternalAnnotationTrackBuilderInterface
     return {
         addTo(annotationsConfigData: Array<RcsbFvRowConfigInterface>): void {
             annotationsConfigData.unshift({
-                trackId: "annotationTrack_GLOBAL_BUNDINGS",
+                trackId: "annotationTrack_GLOBAL_BINDINGS",
                 trackHeight: 40,
                 displayType: RcsbFvDisplayTypes.AREA,
                 trackColor: "#F9F9F9",
-                displayColor: "#94c35e",
+                displayColor: "#c4124b",
                 titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 rowTitle: trackName,
                 displayDomain:[0, max],
