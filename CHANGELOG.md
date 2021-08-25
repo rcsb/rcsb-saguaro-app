@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.0] - 2021-08-24
+### Improvements
+- Annotation multidimensional value support 
+- Disorder and hydropathy tracks 
+- rcsb-saguaro-api update 2.1.0
+
 ## [2.2.2] - 2021-08-23
 ### Bug correction
 - Fixed unchecked `annotationConfig` null 
