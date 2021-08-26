@@ -48,6 +48,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
 
     public async collect(
         requestConfig: AlignmentCollectConfig,
+        filter?: Array<string>,
         entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<void>,
         tagObservedRegions?: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion>
     ): Promise<SequenceCollectorDataInterface> {
@@ -63,7 +64,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         this.sequenceLength = alignmentResponse.query_sequence.length;
         const data: AlignmentResponse = alignmentResponse;
         const querySequence: string = data.query_sequence;
-        const alignmentData: Array<TargetAlignment> = data.target_alignment;
+        const alignmentData: Array<TargetAlignment> = !filter ? data.target_alignment : data.target_alignment.filter(ta=>filter.includes(ta.target_id));
         if(typeof entityInstanceMapCollector === "function" && alignmentData){
             await entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id}));
         }

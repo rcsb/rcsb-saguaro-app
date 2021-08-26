@@ -1,7 +1,7 @@
 import {SearchRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/SearchRequest";
 import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
 import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
-import {GroupNode, TerminalNode} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupNode, SearchQuery, TerminalNode} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetTools} from "./FacetTools";
 import {FacetType} from "./FacetStore/FacetMemberInterface";
 import {FacetStoreType} from "./FacetStore/FacetStore";
@@ -33,6 +33,16 @@ export class SearchRequestProperty {
 
     public async request(query: SearchQueryType, facetStoreType: FacetStoreType): Promise<QueryResult> {
         return this._request({query:query, facets:FacetTools.getFacetStores(facetStoreType).map(f=>f.facet), returnType:FacetTools.getReturnType(facetStoreType)});
+    }
+
+    public async requestMembers(query: SearchQuery): Promise<Array<string>> {
+        return (await this.searchRequest.request({
+            query: query.query,
+            request_options: {
+                return_all_hits: true
+            },
+            return_type: query.return_type
+        })).result_set.map(item=>item.identifier);
     }
 
 }

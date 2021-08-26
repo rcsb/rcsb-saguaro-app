@@ -30,10 +30,10 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
-    public async collect(requestConfig: AlignmentCollectConfig): Promise<SequenceCollectorDataInterface> {
+    public async collect(requestConfig: AlignmentCollectConfig, filter?: Array<string>): Promise<SequenceCollectorDataInterface> {
         const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig.queryId ?? requestConfig.groupId, requestConfig.from);
         this.loadObservedRegions(annotationFeatures);
-        return await this.sequenceCollector.collect(requestConfig, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
+        return await this.sequenceCollector.collect(requestConfig, filter, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
     }
 
     public getTargets():Promise<Array<string>> {

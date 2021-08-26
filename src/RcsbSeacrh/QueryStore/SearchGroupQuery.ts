@@ -1,8 +1,9 @@
 import {SearchQueryType} from "../SearchRequestProperty";
 import {LogicalOperator, Service, Type} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchMetadata";
+import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 
-export function uniprotEntityGroupQuery(acc:string): SearchQueryType {
+export function searchGroupQuery(groupId:string): SearchQueryType {
     return {
         type: Type.Group,
             logical_operator: LogicalOperator.And,
@@ -14,7 +15,7 @@ export function uniprotEntityGroupQuery(acc:string): SearchQueryType {
                     attribute: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseAccession.path,
                     negation: false,
                     operator: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.ReferenceSequenceIdentifiers.DatabaseAccession.operator.ExactMatch,
-                    value: acc
+                    value: groupId
                 }
             },
             {
@@ -26,6 +27,17 @@ export function uniprotEntityGroupQuery(acc:string): SearchQueryType {
                     value: "UniProt"
                 }
             }
+        ]
+    }
+}
+
+export function addGroupNodeToSearchQuery(groupId: string, searchQuery: SearchQuery): SearchQueryType {
+    return {
+        type: Type.Group,
+        logical_operator: LogicalOperator.And,
+        nodes: [
+            searchGroupQuery(groupId),
+            searchQuery.query
         ]
     }
 }

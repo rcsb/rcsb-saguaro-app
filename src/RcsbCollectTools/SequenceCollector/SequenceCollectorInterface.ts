@@ -26,5 +26,8 @@ export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & Collect
 export interface SequenceCollectorInterface extends CoreCollectorInterface {
     getTargets():Promise<Array<string>>;
     getSequenceLength(): number;
-    collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface, entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<null>): Promise<SequenceCollectorDataInterface>;
+    collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface,
+            filter?:Array<string>,
+            entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<void>,
+    ): Promise<SequenceCollectorDataInterface>;
 }

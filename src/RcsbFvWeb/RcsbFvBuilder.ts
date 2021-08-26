@@ -14,6 +14,7 @@ import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {RcsbFvGroupBuilder} from "./RcsbFvBuilder/RcsbFvGroupBuilder";
 import {FieldName, OperationType, Source, Type} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -88,6 +89,6 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
     return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
 }
 
-export function buildUniprotEntityGroupFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): void {
-    RcsbFvCoreBuilder.buildGroupTabs(elementId, upAcc);
+export function buildUniprotEntityGroupFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig, query?:SearchQuery): void {
+    RcsbFvCoreBuilder.buildGroupTabs(elementId, upAcc, query);
 }

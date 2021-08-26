@@ -15,6 +15,7 @@ import {ExternalAnnotationTrackBuilderInterface} from "../../RcsbCollectTools/An
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
     filters?:Array<FilterInput>;
+    alignmentFilter?:Array<string>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
     boardConfig?: Partial<RcsbFvBoardConfigInterface>;

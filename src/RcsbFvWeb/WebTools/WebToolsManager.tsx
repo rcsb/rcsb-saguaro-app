@@ -3,6 +3,7 @@ import * as ReactDom from "react-dom";
 import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
 import {GroupTabs} from "./GroupTabs";
+import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -58,9 +59,9 @@ export class WebToolsManager {
         }
     }
 
-    static buildGroupTabs(elementId: string, groupId: string){
+    static buildGroupTabs(elementId: string, groupId: string, query?:SearchQuery){
         ReactDom.render(
-            <GroupTabs groupId={groupId}/>,
+            <GroupTabs groupId={groupId} searchQuery={query}/>,
             document.getElementById(elementId)
         )
     }

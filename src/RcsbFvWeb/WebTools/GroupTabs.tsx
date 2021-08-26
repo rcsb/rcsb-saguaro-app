@@ -22,13 +22,23 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
+import {MultipleEntityInstancesCollector} from "../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
+import {addGroupNodeToSearchQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 
 type EventKey = "alignment"|"structural-features"|"binding-sites";
-export class GroupTabs extends React.Component <{groupId: string}, {}> {
+export class GroupTabs extends React.Component <{groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
+    private filterTargets: Array<string> = undefined;
+
+    constructor(props:{groupId: string, searchQuery: SearchQuery}) {
+        super(props);
+    }
+
     render(): JSX.Element {
         return (<div className={classes.bootstrapComponentScope}>
             <Tabs
@@ -52,22 +62,58 @@ export class GroupTabs extends React.Component <{groupId: string}, {}> {
     }
 
     componentDidMount() {
-        this.onSelect("alignment");
+        const search: SearchRequestProperty = new SearchRequestProperty();
+        if(this.props.searchQuery) {
+            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery)}).then(targets => {
+                this.filterTargets = targets;
+                this.onSelect("alignment");
+            });
+        }else{
+            this.onSelect("alignment");
+        }
     }
 
     private onSelect(eventKey: EventKey): void {
         if(this.rendered.has(eventKey))
             return;
         this.rendered.add(eventKey)
-        switch (eventKey){
+        switch (eventKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.groupId);
+                alignment(eventKey.toString(), this.props.groupId, {alignmentFilter: this.filterTargets});
                 break;
             case "binding-sites":
-                bindingSites(eventKey.toString(), this.props.groupId);
+                if (this.filterTargets){
+                    const eicbs: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
+                    eicbs.collect({entity_ids: this.filterTargets}).then(eim => {
+                        bindingSites(eventKey.toString(), this.props.groupId, {
+                            filters: [{
+                                field: FieldName.TargetId,
+                                operation: OperationType.Equals,
+                                values: eim.map(ei => (ei.entryId + TagDelimiter.instance + ei.asymId))
+                            }]
+                        });
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }else{
+                    bindingSites(eventKey.toString(), this.props.groupId );
+                }
                 break;
             case "structural-features":
-                structure(eventKey.toString(), this.props.groupId);
+                if(this.filterTargets){
+                    const eicsf: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
+                    eicsf.collect({entity_ids:this.filterTargets}).then(eim=>{
+                        structure(eventKey.toString(), this.props.groupId, {filters:[{
+                                field: FieldName.TargetId,
+                                operation: OperationType.Equals,
+                                values: eim.map(ei=>(ei.entryId+TagDelimiter.instance+ei.asymId))
+                            }]});
+                    }).catch(err=>{
+                        console.log(err);
+                    });
+                }else{
+                    structure(eventKey.toString(), this.props.groupId);
+                }
                 break;
         }
     }
@@ -92,7 +138,7 @@ function bindingSites(elementId: string, upAcc: string, additionalConfig?:RcsbFv
         boardConfig:{
             rowTitleWidth
         },
-        filters: [{
+        filters: [...(additionalConfig?.filters ?? []), {
             field: FieldName.Type,
             values: [Type.BindingSite],
             operation: OperationType.Equals,
@@ -111,7 +157,7 @@ function structure(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdd
         boardConfig:{
             rowTitleWidth: 150
         },
-        filters: [{
+        filters: [...(additionalConfig?.filters ?? []), {
             field: FieldName.Type,
             values: [Type.UnobservedResidueXyz, Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
             operation: OperationType.Equals,

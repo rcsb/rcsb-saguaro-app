@@ -37,7 +37,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             fitTitleWidth:true,
             excludeFirstRowLink: true,
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
-        });
+        }, buildConfig.additionalConfig?.alignmentFilter);
 
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
