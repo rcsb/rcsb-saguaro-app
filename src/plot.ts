@@ -1,5 +1,5 @@
 export {
     buildSearchRequest,
     buildGroup,
-    buildUniprotEntityMembers
+    buildGroupMembers
 } from "./RcsbGroupWeb/RcsbGroupBuilder";

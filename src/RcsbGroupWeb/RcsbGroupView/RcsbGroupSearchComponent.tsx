@@ -18,7 +18,7 @@ export class RcsbGroupSearchComponent extends React.Component <RcsbGroupSearchCo
         const type: FacetStoreType = "uniprot-entity-group";
         const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(this.props.query, type);
         const facets: Array<Facet> = groupProperties.drilldown as Facet[];
-        return (<div className={classes.bootstrapComponentScope}>
+        return (<div className={classes.bootstrapGroupComponentScope}>
             <Container fluid={"lg"}>
                 <RcsbChartLayout layout={FacetTools.getLayoutGrid(type)} charts={FacetTools.getResultDrilldowns(type, facets)}/>
             </Container>

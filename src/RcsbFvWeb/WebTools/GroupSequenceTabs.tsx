@@ -32,7 +32,7 @@ import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
 //TODO make this class dependent of a GroupReference parameter
-export class GroupTabs extends React.Component <{groupId: string, searchQuery?: SearchQuery}, {}> {
+export class GroupSequenceTabs extends React.Component <{groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
     private filterTargets: Array<string> = undefined;
@@ -42,7 +42,7 @@ export class GroupTabs extends React.Component <{groupId: string, searchQuery?: 
     }
 
     render(): JSX.Element {
-        return (<div className={classes.bootstrapComponentScope}>
+        return (<div className={classes.bootstrapGroupSequenceComponentScope}>
             <Tabs
                 id={"group-tab"}
                 defaultActiveKey={"alignment"}

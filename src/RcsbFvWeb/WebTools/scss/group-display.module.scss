@@ -1,4 +1,4 @@
-.bootstrapComponentScope {
+.bootstrapGroupSequenceComponentScope {
   @import "~bootstrap/scss/bootstrap";
   .nav > a {
     font-size: 12px;
@@ -20,6 +20,6 @@
   }
 }
 
-.bootstrapComponentScope * {
+.bootstrapGroupSequenceComponentScope * {
   box-sizing: content-box;
 }

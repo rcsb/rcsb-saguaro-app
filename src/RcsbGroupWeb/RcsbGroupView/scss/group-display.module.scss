@@ -1,3 +1,14 @@
-.bootstrapComponentScope {
+.bootstrapGroupComponentScope {
     @import "~bootstrap/scss/bootstrap";
+    .carousel-indicators li {
+        background-color: #666;
+    }
+    .carousel-indicators {
+        top: 0 !important;
+        bottom: auto;
+    }
+    .carousel-inner {
+        top: 25px;
+        min-height: 720px;
+    }
 }
