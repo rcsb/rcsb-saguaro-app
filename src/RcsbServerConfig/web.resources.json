@@ -26,5 +26,8 @@
   "ncbi_genome_sequence": {
     "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&",
     "url_suffix": "&rettype=fasta&retmode=text"
+  },
+  "rcsb_cdn": {
+    "url": "https://cdn.rcsb.org/images/structures/"
   }
 }

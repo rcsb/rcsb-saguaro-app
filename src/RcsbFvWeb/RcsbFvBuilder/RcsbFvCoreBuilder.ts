@@ -107,4 +107,8 @@ export class RcsbFvCoreBuilder {
         WebToolsManager.buildGroupTabs(elementId, groupId, query);
     }
 
+    static buildGroupMembers(elementId: string, groupId: string, query?:SearchQuery) {
+        WebToolsManager.buildGroupMembers(elementId, groupId, query);
+    }
+
 }

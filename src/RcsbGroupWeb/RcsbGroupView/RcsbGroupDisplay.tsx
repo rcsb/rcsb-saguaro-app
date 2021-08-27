@@ -1,4 +1,3 @@
-import {GroupKey} from "../../RcsbGraphQL/RcsbClient";
 import {FacetStoreType} from "../../RcsbSeacrh/FacetStore/FacetStore";
 import {Facet} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
 import {

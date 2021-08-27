@@ -30,6 +30,8 @@ import {addGroupNodeToSearchQuery} from "../../RcsbSeacrh/QueryStore/SearchGroup
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 
 type EventKey = "alignment"|"structural-features"|"binding-sites";
+
+//TODO make this class dependent of a GroupReference parameter
 export class GroupTabs extends React.Component <{groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
