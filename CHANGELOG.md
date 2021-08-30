@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.3] - 2021-08-30
+### Display config
+- `STEREO_OUTLIER` and `PEPTIDE` config added
+
 ## [2.3.2] - 2021-08-30
 ### Bug correction
 - `AnnotationTransformer` `annotationConfig` bug fixed
