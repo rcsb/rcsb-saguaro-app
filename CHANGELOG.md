@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.4] - 2021-08-30
+### Display config
+- `STEREO_OUTLIER` pin display
+
 ## [2.3.3] - 2021-08-30
 ### Display config
 - `STEREO_OUTLIER` and `PEPTIDE` config added

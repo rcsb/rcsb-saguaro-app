@@ -585,7 +585,7 @@
     "title": "PEPTIDE"
   },{
     "type": "STEREO_OUTLIER",
-    "display": "block",
+    "display": "pin",
     "color": "#cfdf53",
     "title": "STEREO OUTLIER"
   }]
