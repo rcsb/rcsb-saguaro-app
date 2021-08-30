@@ -38,7 +38,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                     const key: string = rangeKey.join(":");
                     if (!this.has(key)) {
                         const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
-                        if(this.annotationConfig.transformToNumerical)
+                        if(this.annotationConfig?.transformToNumerical)
                             transformToNumerical(this.type, targetId, rangeKey, key, a, d, increaseValue);
                         const translateContext: TranslateContextInterface = {
                             from:reference,
@@ -50,7 +50,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                         this.set(key,a);
                         if(p.values instanceof Array)
                             this.expandValues(a, p.values, translateContext);
-                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig.transformToNumerical && typeof this.get(key).value === "number"){
+                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.get(key).value === "number"){
                         (this.get(key).value as number) += typeof increaseValue === "function"? increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d}) : 1;
                         if(this.get(key).value > this.valueRange.max)
                             this.valueRange.max = this.get(key).value as number;
@@ -143,7 +143,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
             for(let i=p.beg_seq_id; i<=p.end_seq_id; i++){
                 rangeKeys.push([i]);
             }
-        }else if(this.annotationConfig.transformToNumerical){
+        }else if(this.annotationConfig?.transformToNumerical){
             rangeKeys.push([p.beg_seq_id]);
         }else{
             const key: Array<number> = p.end_seq_id != null ? [p.beg_seq_id, p.end_seq_id] : [p.beg_seq_id, p.beg_seq_id];

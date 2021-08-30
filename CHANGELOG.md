@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.2] - 2021-08-30
+### Bug correction
+- `AnnotationTransformer` `annotationConfig` bug fixed
+
 ## [2.3.1] - 2021-08-24
 ### Bug correction
 - `SequenceCollectorInterface` `collect` bug fixed
