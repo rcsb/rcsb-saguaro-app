@@ -4,7 +4,7 @@ import {Col, Container, Row} from "react-bootstrap";
 import {SearchRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/SearchRequest";
 import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/QueryStore/SearchGroupQuery";
-import {Direction, ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import { ReturnType, SortDirection} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
 import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
@@ -57,7 +57,7 @@ export class GroupMembersGrid extends React.Component <{groupId: string; searchQ
                 },
                 sort:[{
                     sort_by:RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
-                    direction: Direction.Asc
+                    direction: SortDirection.Asc
                 }]
             },
             return_type: ReturnType.PolymerEntity

@@ -1,25 +1,16 @@
-import {rcsbFvCtxManager} from "../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
-import {Facet, QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
-import {FacetStoreType} from "../RcsbSeacrh/FacetStore/FacetStore";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {RcsbGroupDisplay} from "./RcsbGroupView/RcsbGroupDisplay";
 import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbFvAdditionalConfig} from "../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
+import {GroupReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {entityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGroupFacetStore";
+import {entityGranularityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore";
 
-export async function buildSearchRequest(elementId: string, searchQuery:SearchQuery, facetStoreType: FacetStoreType): Promise<void>{
-    const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(searchQuery.query, facetStoreType);
-    const properties: Array<Facet> = groupProperties.drilldown as Facet[];
-    RcsbGroupDisplay.displaySearchAttributes(elementId, facetStoreType, properties);
+export async function buildSearchRequest(elementId: string, searchQuery:SearchQuery): Promise<void>{
+    await RcsbGroupDisplay.displaySearchAttributes(elementId, entityGranularityGroupFacetStore, searchQuery);
 }
 
-export async function buildGroup(elementId: string, groupType: FacetStoreType, groupId: string, query?:SearchQuery): Promise<void>{
-    switch (groupType){
-        case "uniprot-entity-group":
-            const queryResult: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(query ? addGroupNodeToSearchQuery(groupId, query): searchGroupQuery(groupId), "uniprot-entity-group");
-            const properties: Array<Facet> = queryResult.drilldown as Facet[];
-            RcsbGroupDisplay.displaySearchAttributes(elementId, groupType, properties);
-            break;
-    }
+export async function buildGroup(elementId: string, groupType: GroupReference, groupId: string, query?:SearchQuery): Promise<void>{
+    await RcsbGroupDisplay.displaySearchAttributes(elementId, entityGroupFacetStore, query, groupId);
 }
 
 export function buildGroupMembers(elementId: string, groupId: string, nMembers:number, additionalConfig?:RcsbFvAdditionalConfig, query?:SearchQuery): void {

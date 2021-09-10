@@ -32,12 +32,12 @@ import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
 //TODO make this class dependent of a GroupReference parameter
-export class GroupSequenceTabs extends React.Component <{groupId: string, searchQuery?: SearchQuery}, {}> {
+export class GroupSequenceTabs extends React.Component <{group: GroupReference, groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
     private filterTargets: Array<string> = undefined;
 
-    constructor(props:{groupId: string, searchQuery: SearchQuery}) {
+    constructor(props:{group: GroupReference, groupId: string, searchQuery: SearchQuery}) {
         super(props);
     }
 
@@ -81,13 +81,13 @@ export class GroupSequenceTabs extends React.Component <{groupId: string, search
         this.rendered.add(eventKey)
         switch (eventKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.groupId, {alignmentFilter: this.filterTargets});
+                alignment(eventKey.toString(), this.props.group, this.props.groupId, {alignmentFilter: this.filterTargets});
                 break;
             case "binding-sites":
                 if (this.filterTargets){
                     const eicbs: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
                     eicbs.collect({entity_ids: this.filterTargets}).then(eim => {
-                        bindingSites(eventKey.toString(), this.props.groupId, {
+                        bindingSites(eventKey.toString(), this.props.group, this.props.groupId, {
                             filters: [{
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
@@ -98,14 +98,14 @@ export class GroupSequenceTabs extends React.Component <{groupId: string, search
                         console.log(err);
                     });
                 }else{
-                    bindingSites(eventKey.toString(), this.props.groupId );
+                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId );
                 }
                 break;
             case "structural-features":
                 if(this.filterTargets){
                     const eicsf: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
                     eicsf.collect({entity_ids:this.filterTargets}).then(eim=>{
-                        structure(eventKey.toString(), this.props.groupId, {filters:[{
+                        structure(eventKey.toString(), this.props.group, this.props.groupId, {filters:[{
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
                                 values: eim.map(ei=>(ei.entryId+TagDelimiter.instance+ei.asymId))
@@ -114,7 +114,7 @@ export class GroupSequenceTabs extends React.Component <{groupId: string, search
                         console.log(err);
                     });
                 }else{
-                    structure(eventKey.toString(), this.props.groupId);
+                    structure(eventKey.toString(), this.props.group, this.props.groupId);
                 }
                 break;
         }
@@ -123,8 +123,8 @@ export class GroupSequenceTabs extends React.Component <{groupId: string, search
 }
 
 const rowTitleWidth: number = 190;
-function alignment(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildGroupAlignmentFv(elementId, GroupReference.UniprotEntityGroup, upAcc, SequenceReference.PdbEntity, SequenceReference.Uniprot,
+function alignment(elementId: string, group:GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    return RcsbFvGroupBuilder.buildGroupAlignmentFv(elementId, group, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
             ...additionalConfig,
             boardConfig:{
@@ -133,8 +133,8 @@ function alignment(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdd
         });
 }
 
-function bindingSites(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, GroupReference.UniprotEntityGroup, upAcc, SequenceReference.PdbEntity, SequenceReference.Uniprot,
+function bindingSites(elementId: string, group:GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, group, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
         boardConfig:{
@@ -152,8 +152,8 @@ function bindingSites(elementId: string, upAcc: string, additionalConfig?:RcsbFv
     });
 }
 
-function structure(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, GroupReference.UniprotEntityGroup, upAcc, SequenceReference.PdbEntity, SequenceReference.Uniprot,
+function structure(elementId: string, group: GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, group, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
         boardConfig:{

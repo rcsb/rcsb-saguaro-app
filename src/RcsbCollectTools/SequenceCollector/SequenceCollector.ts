@@ -59,16 +59,16 @@ export class SequenceCollector implements SequenceCollectorInterface{
         const alignmentResponse: AlignmentResponse = await this.requestAlignment(requestConfig);
         if(alignmentResponse.query_sequence == null || alignmentResponse.query_sequence.length == 0) {
             console.warn(alignmentResponse);
-            throw "Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId;
+            console.log("Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId);
         }
-        this.sequenceLength = alignmentResponse.query_sequence.length;
+        this.sequenceLength = alignmentResponse.query_sequence?.length ?? alignmentResponse.alignment_length;
         const data: AlignmentResponse = alignmentResponse;
         const querySequence: string = data.query_sequence;
         const alignmentData: Array<TargetAlignment> = !filter ? data.target_alignment : data.target_alignment.filter(ta=>filter.includes(ta.target_id));
         if(typeof entityInstanceMapCollector === "function" && alignmentData){
             await entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id}));
         }
-        const buildAlignmentConfig: BuildAlignementsInterface= {
+        const buildAlignmentConfig: BuildAlignementsInterface = {
             targetAlignmentList: alignmentData,
             queryId:requestConfig.queryId ?? requestConfig.groupId,
             querySequence: querySequence,
@@ -80,7 +80,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         };
         const alignmentTracks = this.buildAlignments(buildAlignmentConfig);
         this.complete();
-        return { sequence: [this.buildSequenceTrack(requestConfig, querySequence)], alignment:alignmentTracks};
+        return { sequence: querySequence ? [this.buildSequenceTrack(requestConfig, querySequence)] : null, alignment:alignmentTracks};
     }
 
     public async getTargets():Promise<Array<string>> {

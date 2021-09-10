@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "@rcsb/rcsb-saguaro": "^1.9.2",
-    "@rcsb/rcsb-saguaro-api": "^2.0.0-groups.3",
+    "@rcsb/rcsb-saguaro-api": "^2.2.0-groups.7",
     "bootstrap": "^4.6.0",
     "ideogram": "^1.27.0",
     "rxjs": "^6.6.0",

@@ -12,14 +12,15 @@ import {
 } from "../../RcsbCollectTools/PropertyCollector/MultipleEntryPropertyCollector";
 import {GroupPropertiesProvider} from "../../RcsbUtils/GroupPropertiesProvider";
 import {Operator} from "../../Helpers/Operator";
-import {GroupKey} from "../../RcsbGraphQL/RcsbClient";
 import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryType, SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {FacetStoreType} from "../../RcsbSeacrh/FacetStore/FacetStore";
 import {
     GroupPropertyCollector,
     GroupPropertyInterface
 } from "../../RcsbCollectTools/PropertyCollector/GroupPropertyCollector";
+import {QueryGroupArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {FacetType} from "../../RcsbSeacrh/FacetStore/FacetMemberInterface";
+import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -121,8 +122,8 @@ class RcsbFvContextManager {
         return new PolymerEntityChromosomeTranslate(chrMap);
     }
 
-    public async getGroupMemberProperties(groupKey: GroupKey, groupId: string): Promise<GroupPropertiesProvider>{
-        const key: string = groupId.toUpperCase();
+    public async getGroupMemberProperties(groupQuery: QueryGroupArgs): Promise<GroupPropertiesProvider>{
+        const key: string = groupQuery.group_id.toUpperCase();
         if(this.groupPropertyMap.get(key)?.status === "available") {
             return this.groupPropertyMap.get(key).data;
         }else if(this.groupPropertyMap.get(key)?.status === "pending"){
@@ -130,26 +131,23 @@ class RcsbFvContextManager {
         }else{
             mapPending<GroupPropertiesProvider>(key, this.groupPropertyMap);
             const groupMemberCollector: GroupMemberCollector = new GroupMemberCollector();
-            const result = await groupMemberCollector.collect({groupId: groupId, groupKey: groupKey});
+            const result = await groupMemberCollector.collect(groupQuery);
             const multipleEntryPropertyCollector: MultipleEntryPropertyCollector = new MultipleEntryPropertyCollector();
             const entriesProperties: Array<EntryPropertyIntreface> = await multipleEntryPropertyCollector.collect({entry_ids:Operator.uniqueValues(result.map(r=>r.entryId))})
             const propertiesProvider: GroupPropertiesProvider = new GroupPropertiesProvider({entryProperties: entriesProperties});
-            this.setGroupProperties(groupId, propertiesProvider);
+            this.setGroupProperties(groupQuery.group_id, propertiesProvider);
             return propertiesProvider;
         }
     }
 
-    public async getSearchQueryResult(query: SearchQueryType, facetStoreType: FacetStoreType): Promise<QueryResult>{
+    public async getSearchQueryResult(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult>{
         const collector: SearchRequestProperty = new SearchRequestProperty();
-        return collector.request(query, facetStoreType);
+        return collector.request(query, facets, returnType);
     }
 
-    public async getGroupProperties(groupKey: GroupKey, groupId: string): Promise<GroupPropertyInterface> {
+    public async getGroupProperties(groupQuery: QueryGroupArgs): Promise<GroupPropertyInterface> {
         const groupPropertyCollector: GroupPropertyCollector = new GroupPropertyCollector();
-        return await groupPropertyCollector.collect({
-            groupId: groupId,
-            groupKey: groupKey
-        });
+        return await groupPropertyCollector.collect(groupQuery);
     }
 
 }

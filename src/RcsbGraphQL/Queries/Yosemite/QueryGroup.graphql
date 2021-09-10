@@ -1,5 +1,6 @@
-query QueryUniprotEntityGroup($group_id: String!){
-    uniprot_entity_group(
+query QueryGroup($group_id: String!, $aggregation_method: GroupAggregationMethod!){
+    group(
+        aggregation_method:$aggregation_method
         group_id:$group_id
     ){
         rcsb_id

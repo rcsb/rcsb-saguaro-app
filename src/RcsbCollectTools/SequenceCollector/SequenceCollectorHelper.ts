@@ -38,7 +38,7 @@ export class SequenceCollectorHelper {
     public buildAlignments(
         alignmentData: BuildAlignementsInterface,
         dynamicDisplayFlag: boolean,
-        tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface)=>Array<AlignedObservedRegion>
+        tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface, noQuerySequenceFlag?:boolean)=>Array<AlignedObservedRegion>
     ): {alignments: Array<RcsbFvRowConfigInterface>, targets: Array<string>} {
 
         const targets: Array<string> = new Array<string>();
@@ -78,10 +78,10 @@ export class SequenceCollectorHelper {
                     if (region.target_begin != 1)
                         openBegin = true;
                     let openEnd = false;
-                    if (region.target_end != targetSequence.length)
+                    if (region.target_end != targetSequence.length && alignmentData.querySequence)
                         openEnd = true;
 
-                    tagObservedRegions(region, commonContext).forEach(r=>{
+                    tagObservedRegions(region, commonContext, alignmentData.querySequence == null).forEach(r=>{
                         alignedBlocks.push(this.addAuthorResIds({
                             begin: r.query_begin,
                             end: r.query_end,
@@ -99,18 +99,19 @@ export class SequenceCollectorHelper {
                         }, commonContext));
                     })
 
-                    findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end),).forEach(m => {
-                        mismatchData.push(this.addAuthorResIds({
-                            begin: (m + region.query_begin),
-                            oriBegin: (m + region.target_begin),
-                            sourceId: targetAlignment.target_id,
-                            source: alignmentData.to,
-                            provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-                            provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                            type: "MISMATCH",
-                            title: "MISMATCH"
-                        }, commonContext));
-                    });
+                    if(alignmentData.querySequence)
+                        findMismatch(regionSequence, alignmentData.querySequence.substring(region.query_begin - 1, region.query_end)).forEach(m => {
+                            mismatchData.push(this.addAuthorResIds({
+                                begin: (m + region.query_begin),
+                                oriBegin: (m + region.target_begin),
+                                sourceId: targetAlignment.target_id,
+                                source: alignmentData.to,
+                                provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
+                                provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                                type: "MISMATCH",
+                                title: "MISMATCH"
+                            }, commonContext));
+                        });
                 });
                 FeatureTools.mergeBlocks(alignedBlocks);
                 const sequenceDisplay: RcsbFvDisplayConfigInterface = {

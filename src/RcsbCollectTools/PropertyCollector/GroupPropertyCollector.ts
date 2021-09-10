@@ -1,5 +1,5 @@
-import {GroupKey, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreGroup} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {CoreGroup, QueryGroupArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 
 export interface GroupPropertyInterface{
     groupName: string;
@@ -10,9 +10,9 @@ export class GroupPropertyCollector {
 
     private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
-    public async collect(requestConfig: {groupId: string;groupKey: GroupKey;}): Promise<GroupPropertyInterface> {
+    public async collect(requestConfig: QueryGroupArgs): Promise<GroupPropertyInterface> {
         try {
-            const result: CoreGroup = await this.rcsbFvQuery.requestGroupMembers({group_id: requestConfig.groupId}, requestConfig.groupKey);
+            const result: CoreGroup = await this.rcsbFvQuery.requestGroupInfo(requestConfig);
             return {
                 groupName: result.rcsb_group_info.group_name,
                 groupDescription: result.rcsb_group_info.group_description

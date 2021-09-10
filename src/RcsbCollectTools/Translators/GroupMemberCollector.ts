@@ -1,5 +1,5 @@
-import {GroupKey, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreGroup} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {CoreGroup, QueryGroupArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 import {MultipleEntityInstancesCollector} from "./MultipleEntityInstancesCollector";
 
@@ -7,9 +7,9 @@ export class GroupMemberCollector {
 
     private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
-    public async collect(requestConfig: {groupId: string;groupKey: GroupKey;}): Promise<Array<PolymerEntityInstanceInterface>> {
+    public async collect(requestConfig: QueryGroupArgs): Promise<Array<PolymerEntityInstanceInterface>> {
         try {
-            const result: CoreGroup = await this.rcsbFvQuery.requestGroupMembers({group_id: requestConfig.groupId}, requestConfig.groupKey);
+            const result: CoreGroup = await this.rcsbFvQuery.requestGroupInfo(requestConfig);
             if(result.rcsb_group_info.group_members_granularity === "polymer_entity"){
                 const multipleEntityInstancesCollector: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
                 return  await multipleEntityInstancesCollector.collect({entity_ids: result.rcsb_group_container_identifiers.group_member_ids});

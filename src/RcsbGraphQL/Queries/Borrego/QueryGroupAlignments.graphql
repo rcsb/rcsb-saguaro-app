@@ -3,6 +3,7 @@ query QueryGroupAlignment($group: GroupReference!, $groupId: String!){
         group: $group
         groupId: $groupId
     ){
+        alignment_length
         query_sequence
         target_alignment {
             target_id

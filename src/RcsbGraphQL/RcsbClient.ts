@@ -8,17 +8,13 @@ import {
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,
-    QueryEntryArgs, QueryPolymer_EntitiesArgs, QueryUniprot_Entity_GroupArgs,
+    QueryEntryArgs, QueryPolymer_EntitiesArgs, QueryGroupArgs,
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 import {RcsbQueryMultipleEntityInstances} from "./RcsbQueryMultipleEntityInstances";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {RcsbQueryUniprotEntityGroup} from "./RcsbQueryUniprotEntityGroup";
+import {RcsbQueryGroup} from "./RcsbQueryGroup";
 import {RcsbQueryMultipleEntriesProperties} from "./RcsbQueryMultipleEntriesProperties";
-
-export enum GroupKey {
-    UniprotEntity = "uniprot_entity"
-}
 
 //TODO Implement a cache to store requests and avoid duplication
 export class RcsbClient {
@@ -54,12 +50,9 @@ export class RcsbClient {
         return await this.rcsbQueryMutipleEntityInstances.request(requestConfig);
     }
 
-    public async requestGroupMembers(requestConfig: QueryUniprot_Entity_GroupArgs, groupKey: GroupKey): Promise<CoreGroup>{
-        switch (groupKey){
-            case GroupKey.UniprotEntity:
-                const rcsbQueryUniprotEntityGroup: RcsbCoreQueryInterface<QueryUniprot_Entity_GroupArgs,CoreGroup> = new RcsbQueryUniprotEntityGroup();
-                return await rcsbQueryUniprotEntityGroup.request(requestConfig);
-        }
+    public async requestGroupInfo(requestConfig: QueryGroupArgs): Promise<CoreGroup>{
+        const rcsbQueryGroup: RcsbCoreQueryInterface<QueryGroupArgs,CoreGroup> = new RcsbQueryGroup();
+        return await rcsbQueryGroup.request(requestConfig);
     }
 
     public async requestMultipleEntriesProperties(requestConfig: QueryEntriesArgs): Promise<Array<CoreEntry>>{

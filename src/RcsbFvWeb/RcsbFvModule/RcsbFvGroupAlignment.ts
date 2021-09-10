@@ -41,7 +41,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
-        this.rowConfigData =  seqResult.sequence.concat(seqResult.alignment);
+        this.rowConfigData =  seqResult.sequence ? seqResult.sequence.concat(seqResult.alignment) : seqResult.alignment;
         await this.display();
 
         return void 0;

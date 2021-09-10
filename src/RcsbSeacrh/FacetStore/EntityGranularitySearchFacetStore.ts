@@ -1,4 +1,9 @@
-import {AggregationType, Operator, ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {
+    AggregationType,
+    Operator,
+    ReturnType,
+    Service
+} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 import {ChartType} from "../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {FacetStoreInterface} from "./FacetStoreInterface";
@@ -6,7 +11,7 @@ import {FacetStoreInterface} from "./FacetStoreInterface";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchMetadata";
 
 class EntityGranularitySearchFacetStore implements FacetStoreInterface{
-    readonly entryFacet: FacetMemberInterface[] = [{
+    private readonly entryFacet: FacetMemberInterface[] = [{
         id: "method",
         title: "EXPERIMENTAL METHOD",
         attribute: RcsbSearchMetadata.Exptl.Method.path,
@@ -40,7 +45,7 @@ class EntityGranularitySearchFacetStore implements FacetStoreInterface{
         }
     }];
 
-    readonly instanceFacet: FacetMemberInterface[] = [{
+    private readonly instanceFacet: FacetMemberInterface[] = [{
         id:"scop_class",
         title:"SCOP CLASS",
         attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
@@ -68,7 +73,7 @@ class EntityGranularitySearchFacetStore implements FacetStoreInterface{
         }
     }];
 
-    readonly entityFacet: FacetMemberInterface[] = [{
+    private readonly entityFacet: FacetMemberInterface[] = [{
         id:"organism",
         title:"ORGANISM",
         attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path,
@@ -96,6 +101,37 @@ class EntityGranularitySearchFacetStore implements FacetStoreInterface{
             attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path
         }
     }];
+
+    private readonly nonPolymerFacet: FacetMemberInterface[] = [{
+        id:"chemp_comp",
+        title:"CHEMICAL COMPONENT",
+        attribute: RcsbSearchMetadata.ChemComp.Type.path,
+        chartType: ChartType.barplot,
+        chartConfig:{
+            mostPopulatedGroups: 5,
+            mergeName: "OTHER COMPS"
+        },
+        facet:{
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.ChemComp.Type.path,
+            min_interval_population: 1
+        }
+    }];
+
+    getServices(): Service[] {
+        return [Service.Text, Service.Chemical];
+    }
+
+    getFacetService(service: Service): FacetMemberInterface[] {
+        switch (service){
+            case Service.Text:
+                return this.entryFacet.concat(this.instanceFacet).concat(this.entityFacet);
+            case Service.TextChem:
+                return this.nonPolymerFacet;
+            default:
+                return [];
+        }
+    }
 
     readonly facetLayoutGrid: [string,string?][] = [
         [RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path],

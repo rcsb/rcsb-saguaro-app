@@ -10,6 +10,7 @@ import {
 import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
 import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export interface CreateFvInterface {
     elementId: string;
@@ -103,8 +104,8 @@ export class RcsbFvCoreBuilder {
         document.getElementById(elementId).append(domElement);
     }
 
-    static buildGroupTabs(elementId: string, groupId: string, query?:SearchQuery) {
-        WebToolsManager.buildGroupTabs(elementId, groupId, query);
+    static buildGroupTabs(elementId: string, group: GroupReference, groupId: string, query?:SearchQuery) {
+        WebToolsManager.buildGroupTabs(elementId, group, groupId, query);
     }
 
 }

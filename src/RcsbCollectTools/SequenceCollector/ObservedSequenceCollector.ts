@@ -1,10 +1,10 @@
 import {
     AlignedRegion,
     AnnotationFeatures,
-    FieldName,
+    FieldName, FilterInput,
     OperationType,
     SequenceReference,
-    Source,
+    Source, Type,
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion,
@@ -31,7 +31,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
     public async collect(requestConfig: AlignmentCollectConfig, filter?: Array<string>): Promise<SequenceCollectorDataInterface> {
-        const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig.queryId ?? requestConfig.groupId, requestConfig.from);
+        const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig);
         this.loadObservedRegions(annotationFeatures);
         return await this.sequenceCollector.collect(requestConfig, filter, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
     }
@@ -73,21 +73,32 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
         });
     }
 
-    private collectUnmodeledRegions(queryId: string, reference: SequenceReference): Promise<Array<AnnotationFeatures>>{
-        return this.rcsbFvQuery.requestRcsbPdbAnnotations({
-            queryId: queryId,
-            reference: reference,
-            sources: [Source.PdbInstance],
-            filters: [{
-                field:FieldName.Type,
-                operation:OperationType.Equals,
-                source:Source.PdbInstance,
-                values:["UNOBSERVED_RESIDUE_XYZ"]
-            }]
-        });
+    private collectUnmodeledRegions(requestConfig: AlignmentCollectConfig): Promise<Array<AnnotationFeatures>>{
+        const filters: FilterInput[] = [{
+            field: FieldName.Type,
+            operation: OperationType.Equals,
+            source: Source.PdbInstance,
+            values: [Type.UnobservedResidueXyz]
+        }];
+        const sources: Source[] = [Source.PdbInstance];
+        if(requestConfig.group){
+            return this.rcsbFvQuery.requestRcsbPdbGroupAnnotations({
+                groupId: requestConfig.groupId,
+                group: requestConfig.group,
+                sources,
+                filters
+            });
+        }else{
+            return this.rcsbFvQuery.requestRcsbPdbAnnotations({
+                queryId: requestConfig.queryId,
+                reference: requestConfig.from,
+                sources,
+                filters
+            });
+        }
     }
 
-    private tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
+    private tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface, noQuerySequenceFlag?:boolean): Array<AlignedObservedRegion>{
         if(this.entityInstanceMap.getEntity(commonContext.targetId)!=null){
             const asymIds: Array<string> = this.entityInstanceMap.getEntity(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
             const entryId: string = commonContext.targetId.split(TagDelimiter.entity)[0];
@@ -186,7 +197,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
                     })
                 }
                 outRegions[0].openBegin = outRegions[0].target_begin != 1;
-                outRegions[outRegions.length-1].openEnd = outRegions[outRegions.length-1].target_end != commonContext.targetSequenceLength;
+                outRegions[outRegions.length-1].openEnd = (outRegions[outRegions.length-1].target_end != commonContext.targetSequenceLength && !noQuerySequenceFlag);
                 return outRegions;
             }
         }

@@ -50,7 +50,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
 
-        this.rowConfigData = seqResult.sequence.concat(annResult);
+        this.rowConfigData = seqResult.sequence ? seqResult.sequence.concat(annResult) : annResult;
         await this.display();
 
         return void 0;

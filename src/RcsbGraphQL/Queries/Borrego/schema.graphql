@@ -97,6 +97,8 @@ type FeaturePosition {
     range_id: String
     "The value for the feature at this region"
     value: Float
+    "The value(s) for the feature at this region"
+    values: [Float]
 }
 
 "Query root"
@@ -159,7 +161,8 @@ type TargetAlignment {
 }
 
 enum GroupReference {
-    UNIPROT_ENTITY_GROUP
+    matching_uniprot_accession
+    seqeunce_identity
 }
 
 enum PropertyName {
@@ -228,6 +231,8 @@ enum Type {
     COVALENT_RESIDUE_MODIFICATION
     CROSS_LINK
     C_MANNOSYLATION_SITE
+    DISORDER
+    DISORDER_BINDING
     DISULFIDE_BRIDGE
     DNA_BINDING_REGION
     DOMAIN
@@ -235,6 +240,7 @@ enum Type {
     GLYCOSYLATION_SITE
     HELIX_P
     HYDROGEN_BOND
+    HYDROPATHY
     IMGT_ANTIBODY_DESCRIPTION
     IMGT_ANTIBODY_DOMAIN_NAME
     IMGT_ANTIBODY_GENE_ALLELE_NAME
