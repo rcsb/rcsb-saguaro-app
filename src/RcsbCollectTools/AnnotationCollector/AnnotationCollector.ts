@@ -40,7 +40,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         this.requestStatus = "pending";
         let annotationFeatures: Array<AnnotationFeatures> = await this.requestAnnotations(requestConfig);
         if (requestConfig.collectSwissModel === true) {
-            const swissModelData = await SwissModelQueryAnnotations.request(requestConfig.queryId)
+            const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
             annotationFeatures = annotationFeatures.concat(swissModelData);
         }
         this.processRcsbPdbAnnotations(annotationFeatures, requestConfig);

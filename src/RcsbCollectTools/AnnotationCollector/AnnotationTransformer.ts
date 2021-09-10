@@ -38,19 +38,18 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                     const key: string = rangeKey.join(":");
                     if (!this.has(key)) {
                         const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
-                        if(this.annotationConfig.transformToNumerical)
+                        if(this.annotationConfig?.transformToNumerical)
                             transformToNumerical(this.type, targetId, rangeKey, key, a, d, increaseValue);
-                        this.addAuthorResIds(a,{
+                        const translateContext: TranslateContextInterface = {
                             from:reference,
                             to:source,
                             queryId:queryId,
                             targetId:targetId
-                        });
+                        };
                         this.set(key,a);
-                        //TODO Needed when value would be mutated into Array
-                        /*if(p.value instanceof Array)
-                            this.expandValues(a, p.value, translateContext);*/
-                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig.transformToNumerical && typeof this.get(key).value === "number"){
+                        if(p.values instanceof Array)
+                            this.expandValues(a, p.values, translateContext);
+                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.get(key).value === "number"){
                         (this.get(key).value as number) += typeof increaseValue === "function"? increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d}) : 1;
                         if(this.get(key).value > this.valueRange.max)
                             this.valueRange.max = this.get(key).value as number;
@@ -68,22 +67,19 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         let title:string = this.annotationConfig?.title ?? this.type;
         let value: number|string = undefined;
         if(this.isNumericalDisplay(this.type)) {
-            if(this.annotationConfig.transformToNumerical){
+            if(this.annotationConfig?.transformToNumerical){
                 value = 1;
             }else{
-                //TODO Needed when value would be mutated into Array
-                //value = p.value instanceof Array ? p.value[0] ?? 0 : 0;
-                value = p.value ?? 0;
+                value = p.values instanceof Array ? p.values[0] ?? 0 : 0;
             }
         }
 
-        //TODO Needed when value would be mutated into Array
-        /*if(p.value instanceof Array){
-            if(Math.max(...p.value) > this.valueRange.max)
-                this.valueRange.max = Math.max(...p.value)
-            if(Math.min(...p.value) < this.valueRange.min)
-                this.valueRange.min = Math.min(...p.value)
-        }else */if(typeof value === "number"){
+        if(p.values instanceof Array){
+            if(Math.max(...p.values) > this.valueRange.max)
+                this.valueRange.max = Math.max(...p.values)
+            if(Math.min(...p.values) < this.valueRange.min)
+                this.valueRange.min = Math.min(...p.values)
+        }else if(typeof value === "number"){
             if(value > this.valueRange.max)
                 this.valueRange.max = value
             if(value < this.valueRange.min)
@@ -117,8 +113,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         };
     }
 
-    //TODO Needed when value would be mutated into Array
-    /*private expandValues(e: RcsbFvTrackDataElementInterface, values: Array<number>, translateContext: TranslateContextInterface): void{
+    private expandValues(e: RcsbFvTrackDataElementInterface, values: Array<number>, translateContext: TranslateContextInterface): void{
         values.forEach((v,i)=>{
             if(i>0){
                 const key:string = (e.begin+i).toString();
@@ -127,7 +122,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                 this.set(key, a);
             }
         });
-    }*/
+    }
 
     private addAuthorResIds(e:RcsbFvTrackDataElementInterface, annotationContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
@@ -143,11 +138,11 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
 
     private annotationRangeKeys(p: FeaturePositionGaps): Array<number[]> {
         const rangeKeys: Array<number[]> = new Array<number[]>();
-        if(this.annotationConfig.transformToNumerical && p.end_seq_id != null){
+        if(this.annotationConfig?.transformToNumerical && p.end_seq_id != null){
             for(let i=p.beg_seq_id; i<=p.end_seq_id; i++){
                 rangeKeys.push([i]);
             }
-        }else if(this.annotationConfig.transformToNumerical){
+        }else if(this.annotationConfig?.transformToNumerical){
             rangeKeys.push([p.beg_seq_id]);
         }else{
             const key: Array<number> = p.end_seq_id != null ? [p.beg_seq_id, p.end_seq_id] : [p.beg_seq_id, p.beg_seq_id];

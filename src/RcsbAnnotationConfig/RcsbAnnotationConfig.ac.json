@@ -87,7 +87,9 @@
     "NON_TERMINAL_RESIDUE",
     "TURN",
     "SIGNAL_PEPTIDE",
-    "CARD_MODEL"
+    "CARD_MODEL",
+    "CALCIUM_BINDING_REGION",
+    "PEPTIDE"
   ],
   "instance_order": [
     "SECONDARY_STRUCTURE",
@@ -108,6 +110,7 @@
     "RSRCC_OUTLIER",
     "MOGUL_ANGLE_OUTLIER",
     "MOGUL_BOND_OUTLIER",
+    "STEREO_OUTLIER",
     "CIS_PEPTIDE",
     "DISULFIDE_BRIDGE",
     "COVALENT_BOND",
@@ -222,7 +225,7 @@
       "colors":["#8484FF","#FF8484"]
     },
     "height": 45,
-    "title": "DISORDER BINDING",
+    "title": "DISORDERED BINDING",
     "domain": [0,1]
   },{
     "type": "HYDROPATHY",
@@ -570,5 +573,20 @@
     "color": "#8fc50f",
     "title": "MEMBRANE SEGMENT",
     "displayCooccurrence": true
+  },{
+    "type": "CALCIUM_BINDING_REGION",
+    "display": "block",
+    "color": "#c58f0f",
+    "title": "CALCIUM BINDING"
+  },{
+    "type": "PEPTIDE",
+    "display": "block",
+    "color": "#cf53df",
+    "title": "PEPTIDE"
+  },{
+    "type": "STEREO_OUTLIER",
+    "display": "pin",
+    "color": "#cfdf53",
+    "title": "STEREO OUTLIER"
   }]
 }

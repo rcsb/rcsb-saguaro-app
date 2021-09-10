@@ -23,6 +23,7 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
                 open_begin
                 open_end
                 value
+                values
             }
         }
     }

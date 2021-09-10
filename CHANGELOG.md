@@ -2,6 +2,38 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.4] - 2021-08-30
+### Display config
+- `STEREO_OUTLIER` pin display
+
+## [2.3.3] - 2021-08-30
+### Display config
+- `STEREO_OUTLIER` and `PEPTIDE` config added
+
+## [2.3.2] - 2021-08-30
+### Bug correction
+- `AnnotationTransformer` `annotationConfig` bug fixed
+
+## [2.3.1] - 2021-08-24
+### Bug correction
+- `SequenceCollectorInterface` `collect` bug fixed
+
+## [2.3.0] - 2021-08-24
+### Improvements
+- Annotation multidimensional value support 
+- Disorder and hydropathy tracks 
+- rcsb-saguaro-api update 2.1.0
+
+## [2.2.2] - 2021-08-23
+### Bug correction
+- Fixed unchecked `annotationConfig` null 
+- Added display for `CALCIUM_BINDING_REGION`
+
+## [2.2.1] - 2021-08-20
+### Bug correction
+- Fixed duplication of annotations in UniProt modules
+- rcsb-saguaro-api update
+
 ## [2.2.0] - 2021-08-12
 ### Code refactor
 - New class `AnnotationTrackManager` to process and format track annotations
