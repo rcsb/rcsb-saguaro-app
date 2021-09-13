@@ -95,6 +95,6 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
     return RcsbFvChromosomeBuilder.buildChromosome(elementFvId, chrId, elementSelectId);
 }
 
-export function buildGroupFv(elementId: string, group: GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig, query?:SearchQuery): void {
+export function buildGroupFv(elementId: string, group: GroupReference, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig): void {
     RcsbFvCoreBuilder.buildGroupTabs(elementId, group, groupId, query);
 }

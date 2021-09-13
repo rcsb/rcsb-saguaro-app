@@ -28,6 +28,7 @@ import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {MultipleEntityInstancesCollector} from "../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
 import {addGroupNodeToSearchQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
@@ -35,7 +36,8 @@ type EventKey = "alignment"|"structural-features"|"binding-sites";
 export class GroupSequenceTabs extends React.Component <{group: GroupReference, groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
-    private filterTargets: Array<string> = undefined;
+    private filterInstances: Array<string> = undefined;
+    private filterEntities: Array<string> = undefined;
 
     constructor(props:{group: GroupReference, groupId: string, searchQuery: SearchQuery}) {
         super(props);
@@ -64,11 +66,18 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
     }
 
     componentDidMount() {
-        const search: SearchRequestProperty = new SearchRequestProperty();
         if(this.props.searchQuery) {
-            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery)}).then(targets => {
-                this.filterTargets = targets;
-                this.onSelect("alignment");
+            const search: SearchRequestProperty = new SearchRequestProperty();
+            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery), return_type: ReturnType.PolymerEntity}).then(targets=> {
+                this.filterEntities = targets
+                search.requestMembers({
+                    ...this.props.searchQuery,
+                    query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery),
+                    return_type: ReturnType.PolymerInstance
+                }).then(targets => {
+                    this.filterInstances = targets;
+                    this.onSelect("alignment");
+                });
             });
         }else{
             this.onSelect("alignment");
@@ -81,38 +90,30 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
         this.rendered.add(eventKey)
         switch (eventKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.group, this.props.groupId, {alignmentFilter: this.filterTargets});
+                alignment(eventKey.toString(), this.props.group, this.props.groupId, {alignmentFilter: this.filterEntities});
                 break;
             case "binding-sites":
-                if (this.filterTargets){
-                    const eicbs: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
-                    eicbs.collect({entity_ids: this.filterTargets}).then(eim => {
-                        bindingSites(eventKey.toString(), this.props.group, this.props.groupId, {
-                            filters: [{
-                                field: FieldName.TargetId,
-                                operation: OperationType.Equals,
-                                values: eim.map(ei => (ei.entryId + TagDelimiter.instance + ei.asymId))
-                            }]
-                        });
-                    }).catch(err => {
-                        console.log(err);
+                if (this.filterInstances){
+                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId, {
+                        filters: [{
+                            field: FieldName.TargetId,
+                            operation: OperationType.Equals,
+                            values: this.filterInstances
+                        }]
                     });
+
                 }else{
                     bindingSites(eventKey.toString(), this.props.group, this.props.groupId );
                 }
                 break;
             case "structural-features":
-                if(this.filterTargets){
-                    const eicsf: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
-                    eicsf.collect({entity_ids:this.filterTargets}).then(eim=>{
+                if(this.filterInstances){
                         structure(eventKey.toString(), this.props.group, this.props.groupId, {filters:[{
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
-                                values: eim.map(ei=>(ei.entryId+TagDelimiter.instance+ei.asymId))
+                                values: this.filterInstances
                             }]});
-                    }).catch(err=>{
-                        console.log(err);
-                    });
+
                 }else{
                     structure(eventKey.toString(), this.props.group, this.props.groupId);
                 }
