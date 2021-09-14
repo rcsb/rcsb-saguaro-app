@@ -74,7 +74,7 @@
         }],
         sources: ["PDB_INSTANCE"]
     }, "feature-targets");*/
-    const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P01112");
+    const module = RcsbFvWebApp.buildGroupFv("pfv", "sequence_identity", "300_100");
     module.then(result=>{
         console.log(result);
     });

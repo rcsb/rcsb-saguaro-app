@@ -15,7 +15,7 @@ import {
 import * as classes from "./scss/group-display.module.scss";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationTransformer} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTransformer";
-import {ExternalAnnotationTrackBuilderInterface} from "../../RcsbCollectTools/AnnotationCollector/ExternalAnnotationTrackBuilderInterface";
+import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
     InterpolationTypes,
     RcsbFvDisplayTypes,
@@ -214,7 +214,7 @@ function annotationPositionFrequencyProcessing(normalization: "all-targets" | "f
     }
 }
 
-function buildGlobalLigandBindingSite(): ExternalAnnotationTrackBuilderInterface {
+function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
     const trackName: string = "GLOBAL BINDINGS";
     const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
     let max: number = 0;
@@ -235,8 +235,9 @@ function buildGlobalLigandBindingSite(): ExternalAnnotationTrackBuilderInterface
         },
         getRcsbFvRowConfigInterface(): RcsbFvRowConfigInterface {
             return undefined;
-        }, processAnnotationFeatures(data: Array<AnnotationFeatures>): void {
-            data.forEach(ann => {
+        },
+        processAnnotationFeatures(data: {annotations: Array<AnnotationFeatures>}): void {
+            data.annotations.forEach(ann => {
                 ann.features.forEach(d => {
                     d.feature_positions.forEach(p=>{
                         const key: string = p.beg_seq_id.toString();

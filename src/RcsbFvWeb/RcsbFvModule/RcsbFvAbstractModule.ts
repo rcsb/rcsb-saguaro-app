@@ -58,6 +58,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async getFeatures(): Promise<Array<Feature>>{
+        //return (await this.annotationCollector.getAnnotationFeatures()).map(af=>af.features).flat();
         return await this.annotationCollector.getFeatures();
     }
 

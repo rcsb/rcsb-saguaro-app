@@ -1,13 +1,14 @@
 import {CoreCollectorInterface} from "../CoreCollectorInterface";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {
+    AnnotationFeatures,
     Feature,
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs,
     Source
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationTransformer} from "./AnnotationTransformer";
-import {ExternalAnnotationTrackBuilderInterface} from "./ExternalAnnotationTrackBuilderInterface";
+import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey: string; d:Feature;})=>number;
 export interface AnnotationProcessingInterface {
@@ -17,7 +18,7 @@ export interface AnnotationProcessingInterface {
 
 interface CommonAnnotationInterface {
     annotationProcessing?: AnnotationProcessingInterface;
-    externalAnnotationTrackBuilder?: ExternalAnnotationTrackBuilderInterface;
+    externalAnnotationTrackBuilder?: ExternalTrackBuilderInterface;
 }
 
 export interface CollectAnnotationsInterface extends QueryAnnotationsArgs, CommonAnnotationInterface {
@@ -33,6 +34,8 @@ export type AnnotationCollectConfig = Partial<CollectAnnotationsInterface & Coll
 
 export interface AnnotationCollectorInterface extends CoreCollectorInterface {
     collect(requestConfig: CollectAnnotationsInterface | CollectGroupAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>>;
-    getFeatures(): Promise<Array<Feature>>;
     getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
+    //TODO this two methods are redundant Array<Feature> can be collected from Array<AnnotationFeatures>
+    getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>
+    getFeatures(): Promise<Array<Feature>>;
 }
