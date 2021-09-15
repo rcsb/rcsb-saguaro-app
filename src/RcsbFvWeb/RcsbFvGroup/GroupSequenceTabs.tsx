@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Tab, Tabs} from "react-bootstrap";
 import {RcsbFvGroupBuilder} from "../RcsbFvBuilder/RcsbFvGroupBuilder";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {
+    AlignmentResponse,
     AnnotationFeatures,
     Feature,
     FieldName,
@@ -12,7 +12,6 @@ import {
     Source,
     Type
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import * as classes from "./scss/group-display.module.scss";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationTransformer} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTransformer";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
@@ -25,10 +24,11 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {MultipleEntityInstancesCollector} from "../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
 import {addGroupNodeToSearchQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {RcsbTabs} from "../WebTools/RcsbTabs";
+import {Logo} from "./Logo";
+import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
@@ -44,28 +44,18 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
     }
 
     render(): JSX.Element {
-        return (<div className={classes.bootstrapGroupSequenceComponentScope}>
-            <Tabs
-                id={"group-tab"}
-                defaultActiveKey={"alignment"}
-                onSelect={(eventKey: string)=>{
-                    this.onSelect(eventKey as EventKey);
-                }}
-            >
-                <Tab eventKey={"alignment"} title={"ALIGNMENTS"}>
-                    <div id={"alignment"}/>
-                </Tab>
-                <Tab eventKey={"structural-features"} title={"STRUCTURAL FEATURES"}>
-                    <div id={"structural-features"}/>
-                </Tab>
-                <Tab eventKey={"binding-sites"} title={"BINDING SITES"}>
-                    <div id={"binding-sites"}/>
-                </Tab>
-            </Tabs>
-        </div>);
+        return (<>
+            <RcsbTabs<EventKey>
+                id={"group-id"}
+                tabList={[{key: "alignment", title: "ALIGNMENTS"}, {key: "structural-features", title: "STRUCTURAL FEATURES"}, {key: "binding-sites", title: "BINDING SITES"}]}
+                default={"alignment"}
+                onMount={this.onMount.bind(this)}
+                onSelect={this.onSelect.bind(this)}
+            />
+        </>);
     }
 
-    componentDidMount() {
+    private onMount() {
         if(this.props.searchQuery) {
             const search: SearchRequestProperty = new SearchRequestProperty();
             search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery), return_type: ReturnType.PolymerEntity}).then(targets=> {
@@ -130,7 +120,8 @@ function alignment(elementId: string, group:GroupReference, groupId: string, add
             ...additionalConfig,
             boardConfig:{
                 rowTitleWidth
-            }
+            },
+            externalTrackBuilder: buildAlignmentVariation()
         });
 }
 
@@ -149,7 +140,7 @@ function bindingSites(elementId: string, group:GroupReference, groupId: string, 
         }],
         sources: [Source.PdbInstance],
         annotationProcessing: annotationPositionFrequencyProcessing("feature-targets"),
-        externalAnnotationTrackBuilder: buildGlobalLigandBindingSite()
+        externalTrackBuilder: buildGlobalLigandBindingSite()
     });
 }
 
@@ -172,7 +163,8 @@ function structure(elementId: string, group: GroupReference, groupId: string, ad
             source: Source.PdbEntity
         }],
         sources: [Source.PdbInstance, Source.PdbEntity],
-        annotationProcessing: annotationPositionFrequencyProcessing("all-targets")
+        annotationProcessing: annotationPositionFrequencyProcessing("all-targets"),
+        externalTrackBuilder: buildAlignmentVariation()
     });
 }
 
@@ -218,9 +210,11 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
     const trackName: string = "GLOBAL BINDINGS";
     const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
     let max: number = 0;
+    const addConservation: ExternalTrackBuilderInterface = buildAlignmentVariation();
+
     return {
-        addTo(annotationsConfigData: Array<RcsbFvRowConfigInterface>): void {
-            annotationsConfigData.unshift({
+        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): void {
+            tracks.annotationTracks.unshift({
                 trackId: "annotationTrack_GLOBAL_BINDINGS",
                 trackHeight: 40,
                 displayType: RcsbFvDisplayTypes.AREA,
@@ -228,35 +222,106 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
                 displayColor: "#c4124b",
                 titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 rowTitle: trackName,
-                displayDomain:[0, max],
+                displayDomain: [0, max],
                 interpolationType: InterpolationTypes.STEP,
                 trackData: Array.from(bindingSiteMap.values())
             });
+            addConservation.addTo(tracks);
         },
         getRcsbFvRowConfigInterface(): RcsbFvRowConfigInterface {
             return undefined;
         },
-        processAnnotationFeatures(data: {annotations: Array<AnnotationFeatures>}): void {
-            data.annotations.forEach(ann => {
-                ann.features.forEach(d => {
-                    d.feature_positions.forEach(p=>{
-                        const key: string = p.beg_seq_id.toString();
-                        if(!bindingSiteMap.has(key)){
-                            bindingSiteMap.set(key,{
-                                begin: p.beg_seq_id,
-                                type: trackName,
-                                value: 1
-                            })
-                            if(max == 0)
-                                max =1;
-                        }else{
-                            (bindingSiteMap.get(key).value as number) += 1;
-                            if((bindingSiteMap.get(key).value as number) > max)
-                                max = (bindingSiteMap.get(key).value as number);
-                        }
-                    });
-                });
-            });
+        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): void {
+            processFeatures(data.annotations);
+            addConservation.processAlignmentAndFeatures(data);
         }
     };
+
+    function processFeatures(annotations: Array<AnnotationFeatures>){
+        annotations.forEach(ann => {
+            ann.features.forEach(d => {
+                d.feature_positions.forEach(p=>{
+                    const key: string = p.beg_seq_id.toString();
+                    if(!bindingSiteMap.has(key)){
+                        bindingSiteMap.set(key,{
+                            begin: p.beg_seq_id,
+                            type: trackName,
+                            value: 1
+                        })
+                        if(max == 0)
+                            max =1;
+                    }else{
+                        (bindingSiteMap.get(key).value as number) += 1;
+                        if((bindingSiteMap.get(key).value as number) > max)
+                            max = (bindingSiteMap.get(key).value as number);
+                    }
+                });
+            });
+        });
+    }
+
 }
+
+function buildAlignmentVariation(): ExternalTrackBuilderInterface {
+    const seqName: string = "ALIGNMENT MODE";
+    const conservationName: string = "CONSERVATION";
+    let querySequenceLogo: Array<Logo<aaType>>;
+
+    return {
+        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): void {
+            if(!tracks.alignmentTracks.sequence)
+                tracks.alignmentTracks.sequence = [{
+                    trackId: "annotationTrack_ALIGNMENT_MODE",
+                    displayType: RcsbFvDisplayTypes.SEQUENCE,
+                    trackColor: "#F9F9F9",
+                    titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    rowTitle: seqName,
+                    nonEmptyDisplay: true,
+                    trackData: querySequenceLogo.map((s,n)=>({
+                        begin: n+1,
+                        value: s.mode(),
+                        description: [s.frequency().filter(s=>(s.value>=0.05)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
+                    }))
+                },{
+                    trackId: "annotationTrack_ALIGNMENT_FREQ",
+                    displayType: RcsbFvDisplayTypes.AREA,
+                    trackColor: "#F9F9F9",
+                    displayColor: "#4b12c4",
+                    trackHeight: 40,
+                    titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    rowTitle: conservationName,
+                    trackData: querySequenceLogo.map((s,n)=>({
+                        begin: n+1,
+                        value: s.frequency()[0].symbol != "-" ? Math.trunc(s.frequency()[0].value*100)/100 : 0
+                    }))
+                }];
+        },
+        getRcsbFvRowConfigInterface(): RcsbFvRowConfigInterface {
+            return undefined;
+        },
+        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): void {
+            processAlignments(data.alignments);
+        }
+    };
+
+    function processAlignments(alignment: AlignmentResponse){
+        querySequenceLogo = (new Array(alignment.query_sequence?.length ?? alignment.alignment_length).fill(undefined)).map(()=>(new Logo<aaType>(aaValues)));
+        alignment.target_alignment.forEach(ta=>{
+            const targetSeq: Array<aaType> = new Array<aaType>( alignment.query_sequence?.length ?? alignment.alignment_length).fill("-");
+            ta.aligned_regions.forEach(ar=>{
+                let targetIndex: number = ar.target_begin;
+                for(let i = ar.query_begin; i<= ar.query_end; i++){
+                    targetSeq[i-1] = ta.target_sequence.charAt(targetIndex-1) as aaType;
+                    targetIndex += 1;
+                }
+            });
+            targetSeq.forEach((aa,n)=>{
+                querySequenceLogo[n].add(aa);
+            });
+        });
+    }
+
+}
+
+type aaType = "A"|"R"|"N"|"D"|"C"|"E"|"Q"|"G"|"H"|"I"|"L"|"K"|"M"|"F"|"P"|"S"|"T"|"W"|"Y"|"V"|"-"|"X";
+const aaValues: aaType[] = ["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V","-","X"];

@@ -39,6 +39,14 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
         }, buildConfig.additionalConfig?.alignmentFilter);
 
+        if(buildConfig.additionalConfig?.externalTrackBuilder){
+            buildConfig.additionalConfig.externalTrackBuilder.processAlignmentAndFeatures({
+                alignments: await this.sequenceCollector.getAlignmentResponse()
+            })
+            buildConfig.additionalConfig.externalTrackBuilder.addTo({
+                alignmentTracks: seqResult
+            });
+        }
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
         this.rowConfigData =  seqResult.sequence ? seqResult.sequence.concat(seqResult.alignment) : seqResult.alignment;

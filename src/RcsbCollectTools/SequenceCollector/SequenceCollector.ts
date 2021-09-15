@@ -41,6 +41,8 @@ export class SequenceCollector implements SequenceCollectorInterface{
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
     private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
+    private alignmentResponse: AlignmentResponse;
+    private readonly alignmentResponseSubject: Subject<AlignmentResponse> = new Subject<AlignmentResponse>();
 
     private tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion> = (region: AlignedRegion, commonContext: TranslateContextInterface) => {
         return [{...region,unModelled:false}];
@@ -56,15 +58,14 @@ export class SequenceCollector implements SequenceCollectorInterface{
         if(typeof tagObservedRegions === "function")
             this.tagObservedRegions = tagObservedRegions;
 
-        const alignmentResponse: AlignmentResponse = await this.requestAlignment(requestConfig);
-        if(alignmentResponse.query_sequence == null || alignmentResponse.query_sequence.length == 0) {
-            console.warn(alignmentResponse);
+        this.alignmentResponse = await this.requestAlignment(requestConfig);
+        if(this.alignmentResponse.query_sequence == null || this.alignmentResponse.query_sequence.length == 0) {
+            console.warn(this.alignmentResponse);
             console.log("Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId);
         }
-        this.sequenceLength = alignmentResponse.query_sequence?.length ?? alignmentResponse.alignment_length;
-        const data: AlignmentResponse = alignmentResponse;
-        const querySequence: string = data.query_sequence;
-        const alignmentData: Array<TargetAlignment> = !filter ? data.target_alignment : data.target_alignment.filter(ta=>filter.includes(ta.target_id));
+        this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
+        const querySequence: string = this.alignmentResponse.query_sequence;
+        const alignmentData: Array<TargetAlignment> = !filter ? this.alignmentResponse.target_alignment : this.alignmentResponse.target_alignment.filter(ta=>filter.includes(ta.target_id));
         if(typeof entityInstanceMapCollector === "function" && alignmentData){
             await entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id}));
         }
@@ -89,6 +90,16 @@ export class SequenceCollector implements SequenceCollectorInterface{
                 resolve(this.targets);
             }else{
                 ObservableHelper.oneTimeSubscription<Array<string>>(resolve, this.targetsSubject);
+            }
+        });
+    }
+
+    public async getAlignmentResponse():Promise<AlignmentResponse> {
+        return new Promise<AlignmentResponse>((resolve,reject)=>{
+            if(this.requestStatus === "complete"){
+                resolve(this.alignmentResponse);
+            }else{
+                ObservableHelper.oneTimeSubscription<AlignmentResponse>(resolve, this.alignmentResponseSubject);
             }
         });
     }

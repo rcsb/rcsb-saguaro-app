@@ -1,6 +1,7 @@
 import {CoreCollectorInterface} from "../CoreCollectorInterface";
 import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {
+    AlignmentResponse,
     QueryAlignmentArgs,
     QueryGroup_AlignmentArgs
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
@@ -25,6 +26,7 @@ export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & Collect
 
 export interface SequenceCollectorInterface extends CoreCollectorInterface {
     getTargets():Promise<Array<string>>;
+    getAlignmentResponse():Promise<AlignmentResponse>;
     getSequenceLength(): number;
     collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface,
             filter?:Array<string>,

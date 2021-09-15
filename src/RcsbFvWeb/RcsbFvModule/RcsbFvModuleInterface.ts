@@ -22,7 +22,7 @@ export interface RcsbFvAdditionalConfig{
     sequencePrefix?:string;
     annotationProcessing?: AnnotationProcessingInterface;
     sequenceCollector?: SequenceCollectorInterface;
-    externalAnnotationTrackBuilder?: ExternalTrackBuilderInterface;
+    externalTrackBuilder?: ExternalTrackBuilderInterface;
 }
 
 //TODO move psa & elementSelectId into additional config

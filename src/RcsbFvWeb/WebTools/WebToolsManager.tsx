@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
-import {GroupSequenceTabs} from "./GroupSequenceTabs";
+import {GroupSequenceTabs} from "../RcsbFvGroup/GroupSequenceTabs";
 import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 

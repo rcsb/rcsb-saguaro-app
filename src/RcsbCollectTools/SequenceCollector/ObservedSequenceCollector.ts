@@ -1,5 +1,5 @@
 import {
-    AlignedRegion,
+    AlignedRegion, AlignmentResponse,
     AnnotationFeatures,
     FieldName, FilterInput,
     OperationType,
@@ -38,6 +38,10 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
     public getTargets():Promise<Array<string>> {
         return this.sequenceCollector.getTargets();
+    }
+
+    public getAlignmentResponse():Promise<AlignmentResponse> {
+        return this.sequenceCollector.getAlignmentResponse();
     }
 
     public getSequenceLength(): number{

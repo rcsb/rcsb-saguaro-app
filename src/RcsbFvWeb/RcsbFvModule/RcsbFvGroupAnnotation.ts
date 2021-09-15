@@ -44,12 +44,18 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             sources:buildConfig.additionalConfig?.sources,
             filters:buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
-            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalAnnotationTrackBuilder
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         });
 
-        if(buildConfig.additionalConfig?.externalAnnotationTrackBuilder){
-            buildConfig.additionalConfig.externalAnnotationTrackBuilder.processAnnotationFeatures({annotations: await this.annotationCollector.getAnnotationFeatures()})
-            buildConfig.additionalConfig.externalAnnotationTrackBuilder.addTo(annResult);
+        if(buildConfig.additionalConfig?.externalTrackBuilder){
+            buildConfig.additionalConfig.externalTrackBuilder.processAlignmentAndFeatures({
+                annotations: await this.annotationCollector.getAnnotationFeatures(),
+                alignments: await this.sequenceCollector.getAlignmentResponse()
+            })
+            buildConfig.additionalConfig.externalTrackBuilder.addTo({
+                annotationTracks: annResult,
+                alignmentTracks: seqResult
+            });
         }
 
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
