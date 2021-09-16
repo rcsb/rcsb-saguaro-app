@@ -12,7 +12,7 @@ const commonConfig = {
                 exclude: /node_modules/,
                 loader: 'raw-loader'
             },{
-                test: /\.scss$/,
+                test: /\.s?css$/,
                 use: ['style-loader', {
                     loader: 'css-loader',
                     options: {
