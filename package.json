@@ -72,7 +72,7 @@
     "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@rcsb/rcsb-saguaro": "^1.9.2",
+    "@rcsb/rcsb-saguaro": "^1.10.1",
     "@rcsb/rcsb-saguaro-api": "^2.1.0",
     "ideogram": "^1.27.0",
     "react-loader-spinner": "^4.0.0",

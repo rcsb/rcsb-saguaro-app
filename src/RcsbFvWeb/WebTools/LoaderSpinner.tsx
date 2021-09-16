@@ -7,11 +7,11 @@ export class LoaderSpinner extends React.Component <{}, {}> {
     render(): JSX.Element{
         return(<div className={classes.loadSpinnerComponentScope}>
             <Loader
-                type="Bars"
+                type="Circles"
                 color="#5e94c3"
                 height={100}
                 width={100}
-                timeout={3000} //3 secs
+                timeout={undefined}
             />
         </div>);
     }

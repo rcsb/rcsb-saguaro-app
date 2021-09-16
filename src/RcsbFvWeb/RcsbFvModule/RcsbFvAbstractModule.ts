@@ -41,9 +41,18 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async display(): Promise<void>{
-        WebToolsManager.unmountLoaderSpinner(this.elementId);
         console.log("Starting display");
-        await this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
+        await this.rcsbFv.updateBoardConfig({
+            boardConfigData:{
+                ...this.boardConfigData,
+                rowTitleWidth:200,
+                onFvRenderStartsCallback:()=>{
+                    console.log("Render starts");
+                    WebToolsManager.unmountLoaderSpinner(this.elementId);
+                }
+            },
+            rowConfigData:this.rowConfigData
+        });
         this.activeDisplayFlag = true;
         return void 0;
     }
