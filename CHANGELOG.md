@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.5] - 2021-09-16
+### Display Improvement
+- Loader spinner added
+
 ## [2.3.4] - 2021-08-30
 ### Display config
 - `STEREO_OUTLIER` pin display

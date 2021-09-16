@@ -11,6 +11,7 @@ import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollect
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {Feature} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {WebToolsManager} from "../WebTools/WebToolsManager";
 
 
 
@@ -31,6 +32,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
         this.elementId = elementId;
+        WebToolsManager.buildLoaderSpinner(elementId);
     }
 
     public setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate){
@@ -39,6 +41,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async display(): Promise<void>{
+        WebToolsManager.unmountLoaderSpinner(this.elementId);
         console.log("Starting display");
         await this.rcsbFv.updateBoardConfig({boardConfigData:this.boardConfigData, rowConfigData:this.rowConfigData});
         this.activeDisplayFlag = true;

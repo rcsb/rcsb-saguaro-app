@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
+import {LoaderSpinner} from "./LoaderSpinner";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -14,6 +15,7 @@ export class WebToolsManager {
 
     private static suffix: string = "_buttonDiv";
     private static suffixAdditionalButton: string = "_additionalButton";
+    private static loaderSpinner: string = "_loaderSpinner";
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         WebToolsManager.clearSelectButton(elementId);
@@ -57,4 +59,21 @@ export class WebToolsManager {
         }
     }
 
+    static buildLoaderSpinner(elementId: string){
+        const div: HTMLDivElement = document.createElement<"div">("div");
+        div.setAttribute("id", elementId+WebToolsManager.loaderSpinner);
+        document.getElementById(elementId).append(div);
+        ReactDom.render(
+            <LoaderSpinner/>,
+            div
+        );
+    }
+
+    static unmountLoaderSpinner(elementId: string){
+        var id: string = elementId+WebToolsManager.loaderSpinner;
+        if( document.getElementById(id) != null){
+            ReactDom.unmountComponentAtNode(document.getElementById(id));
+            document.getElementById(id)?.remove();
+        }
+    }
 }
