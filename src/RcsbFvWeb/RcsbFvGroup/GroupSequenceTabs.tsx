@@ -13,7 +13,10 @@ import {
     Type
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {AnnotationTransformer} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTransformer";
+import {
+    AnnotationTransformer,
+    FeaturePositionGaps
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTransformer";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
     InterpolationTypes,
@@ -24,7 +27,7 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {addGroupNodeToSearchQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {Logo} from "./Logo";
@@ -71,6 +74,11 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
             });
         }else{
             this.onSelect("alignment");
+            const search: SearchRequestProperty = new SearchRequestProperty();
+            search.requestMembers({query: searchGroupQuery(this.props.groupId), return_type: ReturnType.PolymerInstance}).then(targets=> {
+                this.filterInstances = targets
+                this.onSelect("alignment");
+            });
         }
     }
 
@@ -80,32 +88,34 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
         this.rendered.add(eventKey)
         switch (eventKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.group, this.props.groupId, {alignmentFilter: this.filterEntities});
+                alignment(eventKey.toString(), this.props.group, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities});
                 break;
             case "binding-sites":
-                if (this.filterInstances){
-                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId, {
+                if (this.props.searchQuery){
+                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {
+                        page:{first:0,after: "0"},
                         filters: [{
                             field: FieldName.TargetId,
                             operation: OperationType.Equals,
                             values: this.filterInstances
                         }]
                     });
-
                 }else{
-                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId );
+                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
                 }
                 break;
             case "structural-features":
-                if(this.filterInstances){
-                        structure(eventKey.toString(), this.props.group, this.props.groupId, {filters:[{
-                                field: FieldName.TargetId,
-                                operation: OperationType.Equals,
-                                values: this.filterInstances
-                            }]});
-
+                if(this.props.searchQuery){
+                    structure(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {
+                        page:{first:0,after: "0"},
+                        filters:[{
+                            field: FieldName.TargetId,
+                            operation: OperationType.Equals,
+                            values: this.filterInstances
+                        }]
+                    });
                 }else{
-                    structure(eventKey.toString(), this.props.group, this.props.groupId);
+                    structure(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
                 }
                 break;
         }
@@ -125,7 +135,7 @@ function alignment(elementId: string, group:GroupReference, groupId: string, add
         });
 }
 
-function bindingSites(elementId: string, group:GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+function bindingSites(elementId: string, group:GroupReference, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
     return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, group, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
@@ -139,12 +149,12 @@ function bindingSites(elementId: string, group:GroupReference, groupId: string, 
             source: Source.PdbInstance
         }],
         sources: [Source.PdbInstance],
-        annotationProcessing: annotationPositionFrequencyProcessing("feature-targets"),
+        annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
         externalTrackBuilder: buildGlobalLigandBindingSite()
     });
 }
 
-function structure(elementId: string, group: GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+function structure(elementId: string, group: GroupReference, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
     return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, group, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
@@ -153,7 +163,7 @@ function structure(elementId: string, group: GroupReference, groupId: string, ad
         },
         filters: [...(additionalConfig?.filters ?? []), {
             field: FieldName.Type,
-            values: [Type.UnobservedResidueXyz, Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
+            values: [Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
             operation: OperationType.Equals,
             source: Source.PdbInstance
         },{
@@ -163,41 +173,26 @@ function structure(elementId: string, group: GroupReference, groupId: string, ad
             source: Source.PdbEntity
         }],
         sources: [Source.PdbInstance, Source.PdbEntity],
-        annotationProcessing: annotationPositionFrequencyProcessing("all-targets"),
+        annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
         externalTrackBuilder: buildAlignmentVariation()
     });
 }
 
-function annotationPositionFrequencyProcessing(normalization: "all-targets" | "feature-targets" = "all-targets"): AnnotationProcessingInterface {
-    const targets: Map<string,Map<string, Set<string>>> = new Map<string,Map<string, Set<string>>>();
-    const allTargets: Set<string> = new Set<string>();
+function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProcessingInterface {
+    const targets: Map<string,number> = new Map<string,number>();
+    const n: number = nTargets;
     return {
-        increaseAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; }) => {
-            allTargets.add(feature.targetId);
+        increaseAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; p: FeaturePositionGaps}) => {
             if (!targets.has(feature.type)) {
-                targets.set(feature.type, new Map<string, Set<string>>());
-                targets.get(feature.type).set("targets", new Set<string>());
-                targets.get(feature.type).get("targets").add(feature.targetId);
-                targets.get(feature.type).set(feature.positionKey, new Set<string>());
-                targets.get(feature.type).get(feature.positionKey).add(feature.targetId)
-                return 1;
+                targets.set(feature.type, feature.d.value);
+                return feature.p.values[0];
+            }else{
+                return feature.p.values[0];
             }
-            if (!targets.get(feature.type).has(feature.positionKey)) {
-                targets.get(feature.type).get("targets").add(feature.targetId);
-                targets.get(feature.type).set(feature.positionKey, new Set<string>());
-                targets.get(feature.type).get(feature.positionKey).add(feature.targetId)
-                return 1;
-            }
-            if (!targets.get(feature.type).get(feature.positionKey).has(feature.targetId)) {
-                targets.get(feature.type).get("targets").add(feature.targetId);
-                targets.get(feature.type).get(feature.positionKey).add(feature.targetId)
-                return 1
-            }
-            return 0;
         },
         computeAnnotationValue: (annotationTracks: Map<string, AnnotationTransformer>) => {
             annotationTracks.forEach((at,type)=>{
-                const nTargets: number = normalization == "feature-targets" ? targets.get(type).get("targets").size : allTargets.size;
+                const nTargets: number = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite)) ? targets.get(type) : n;
                 at.forEach((ann,positionKey)=>{
                     ann.value = Math.ceil(1000*(ann.value as number) / nTargets)/1000;
                 });
@@ -228,12 +223,14 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
             });
             addConservation.addTo(tracks);
         },
-        getRcsbFvRowConfigInterface(): RcsbFvRowConfigInterface {
-            return undefined;
-        },
         processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): void {
             processFeatures(data.annotations);
             addConservation.processAlignmentAndFeatures(data);
+        },
+        filterFeatures(annotations: Array<AnnotationFeatures>) {
+            annotations.forEach(ann=>{
+                ann.features = ann.features.filter(f=>f.name.includes("ligand"));
+            })
         }
     };
 
@@ -241,20 +238,22 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
         annotations.forEach(ann => {
             ann.features.forEach(d => {
                 d.feature_positions.forEach(p=>{
-                    const key: string = p.beg_seq_id.toString();
-                    if(!bindingSiteMap.has(key)){
-                        bindingSiteMap.set(key,{
-                            begin: p.beg_seq_id,
-                            type: trackName,
-                            value: 1
-                        })
-                        if(max == 0)
-                            max =1;
-                    }else{
-                        (bindingSiteMap.get(key).value as number) += 1;
-                        if((bindingSiteMap.get(key).value as number) > max)
-                            max = (bindingSiteMap.get(key).value as number);
-                    }
+                    p.values.forEach((v,n)=>{
+                        const key: string = (p.beg_seq_id+n).toString();
+                        if(!bindingSiteMap.has(key)){
+                            bindingSiteMap.set(key,{
+                                begin: p.beg_seq_id+n,
+                                type: trackName,
+                                value: v
+                            })
+                            if(max == 0)
+                                max = v;
+                        }else{
+                            (bindingSiteMap.get(key).value as number) += v;
+                            if((bindingSiteMap.get(key).value as number) > max)
+                                max = (bindingSiteMap.get(key).value as number);
+                        }
+                    });
                 });
             });
         });
@@ -265,7 +264,7 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
 function buildAlignmentVariation(): ExternalTrackBuilderInterface {
     const seqName: string = "ALIGNMENT MODE";
     const conservationName: string = "CONSERVATION";
-    let querySequenceLogo: Array<Logo<aaType>>;
+    let querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
 
     return {
         addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): void {
@@ -280,48 +279,46 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
                     trackData: querySequenceLogo.map((s,n)=>({
                         begin: n+1,
                         value: s.mode(),
-                        description: [s.frequency().filter(s=>(s.value>=0.05)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
+                        description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
                     }))
                 },{
                     trackId: "annotationTrack_ALIGNMENT_FREQ",
-                    displayType: RcsbFvDisplayTypes.AREA,
+                    displayType: RcsbFvDisplayTypes.MULTI_AREA,
                     trackColor: "#F9F9F9",
-                    displayColor: "#4b12c4",
+                    displayColor: {thresholds:[], colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#f9f9f9"]},
                     trackHeight: 40,
                     titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                     rowTitle: conservationName,
-                    trackData: querySequenceLogo.map((s,n)=>({
-                        begin: n+1,
-                        value: s.frequency()[0].symbol != "-" ? Math.trunc(s.frequency()[0].value*100)/100 : 0
-                    }))
+                    trackData: querySequenceLogo.map((s,n)=>{
+                        const nFreq: number = 5;
+                        const maxFreqList: Array<number> = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);
+                        const gapFreq: number  = Math.trunc(s.frequency().filter(f=>f.symbol=="-")[0].value*100)/100;
+                        return {
+                            begin: n+1,
+                            values: maxFreqList.map((f,n)=>maxFreqList.slice(0,(n+1)).reduce((v,n)=>v+n)).concat([1-gapFreq,1]),
+                            value: s.frequency()[0].symbol != "-" ? Math.trunc(s.frequency()[0].value*100)/100 : 0
+                        };
+                    })
                 }];
-        },
-        getRcsbFvRowConfigInterface(): RcsbFvRowConfigInterface {
-            return undefined;
         },
         processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): void {
             processAlignments(data.alignments);
+        },
+        filterFeatures(annotations: Array<AnnotationFeatures>) {
+            annotations.forEach(ann=>{
+                ann.features = ann.features.filter(f=>(f.name != "automated matches"));
+            })
         }
     };
 
     function processAlignments(alignment: AlignmentResponse){
-        querySequenceLogo = (new Array(alignment.query_sequence?.length ?? alignment.alignment_length).fill(undefined)).map(()=>(new Logo<aaType>(aaValues)));
-        alignment.target_alignment.forEach(ta=>{
-            const targetSeq: Array<aaType> = new Array<aaType>( alignment.query_sequence?.length ?? alignment.alignment_length).fill("-");
-            ta.aligned_regions.forEach(ar=>{
-                let targetIndex: number = ar.target_begin;
-                for(let i = ar.query_begin; i<= ar.query_end; i++){
-                    targetSeq[i-1] = ta.target_sequence.charAt(targetIndex-1) as aaType;
-                    targetIndex += 1;
-                }
-            });
-            targetSeq.forEach((aa,n)=>{
-                querySequenceLogo[n].add(aa);
-            });
+        if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo.length)
+            throw "ERROR Alignment length and logo should match"
+        alignment.alignment_logo?.forEach(al=>{
+            querySequenceLogo.push(new Logo<aaType>(al));
         });
     }
 
 }
 
 type aaType = "A"|"R"|"N"|"D"|"C"|"E"|"Q"|"G"|"H"|"I"|"L"|"K"|"M"|"F"|"P"|"S"|"T"|"W"|"Y"|"V"|"-"|"X";
-const aaValues: aaType[] = ["A","R","N","D","C","E","Q","G","H","I","L","K","M","F","P","S","T","W","Y","V","-","X"];

@@ -1,23 +1,31 @@
+import {AlignmentLogo} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export class Logo<T extends string>  {
 
     private readonly symbols: {[key in T]?:number} = {};
     private n: number = 0;
 
-    constructor(symbols: Array<T>) {
+    /*constructor(symbols: Array<T>) {
         symbols.forEach(s=>{
             this.symbols[s] = 0;
         })
+    }*/
+
+    constructor(logo: AlignmentLogo[]) {
+        logo.forEach(s=>{
+            this.symbols[s.symbol as T] = s.value;
+            this.n += s.value;
+        });
     }
 
     private aaTypes(): T[]{
         return Object.keys(this.symbols) as T[];
     }
 
-    add(aa: T): void{
+    /*add(aa: T): void{
         this.symbols[aa] ++;
         this.n ++;
-    }
+    }*/
 
     get(aa: T): number{
         return this.symbols[aa];

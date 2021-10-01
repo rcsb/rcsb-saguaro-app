@@ -2,12 +2,9 @@ import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModu
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvGroupAnnotation} from "../RcsbFvModule/RcsbFvGroupAnnotation";
 import {
-    Feature,
     GroupReference,
     SequenceReference
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {AnnotationTransformer} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTransformer";
 import {RcsbFvGroupAlignment} from "../RcsbFvModule/RcsbFvGroupAlignment";
 import {ObservedSequenceCollector} from "../../RcsbCollectTools/SequenceCollector/ObservedSequenceCollector";
 
@@ -48,7 +45,7 @@ export class RcsbFvGroupBuilder {
                         to: to,
                         additionalConfig: {
                             ...additionalConfig,
-                            sequenceCollector: new ObservedSequenceCollector()
+                            //sequenceCollector: new ObservedSequenceCollector()
                         },
                         resolve: resolve
                     }

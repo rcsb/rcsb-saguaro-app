@@ -1,26 +1,42 @@
-query QueryGroupAlignment($group: GroupReference!, $groupId: String!){
+query QueryGroupAlignment($group: GroupReference!, $groupId: String!, $filter: [String], $first: Int!, $after: String){
     group_alignment(
         group: $group
         groupId: $groupId
+        filter: $filter
     ){
         alignment_length
+        alignment_logo{
+            symbol
+            value
+        }
         query_sequence
-        target_alignment {
-            target_id
-            orientation
-            target_sequence
-            coverage {
-                query_coverage
-                query_length
-                target_coverage
-                target_length
+        target_alignment_subset(first: $first, after: $after) {
+            pageInfo{
+                startCursor
+                endCursor
+                hasNextPage
+                hasPreviousPage
             }
-            aligned_regions {
-                query_begin
-                query_end
-                target_begin
-                target_end
-                exon_shift
+            edges{
+                node{
+                    target_id
+                    orientation
+                    target_sequence
+                    coverage {
+                        query_coverage
+                        query_length
+                        target_coverage
+                        target_length
+                    }
+                    aligned_regions {
+                        query_begin
+                        query_end
+                        target_begin
+                        target_end
+                        exon_shift
+                    }
+                }
+                cursor
             }
         }
     }

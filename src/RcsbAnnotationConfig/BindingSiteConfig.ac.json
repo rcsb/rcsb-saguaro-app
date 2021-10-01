@@ -49,6 +49,7 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "display": "block-area",
+    "key": "name",
     "transformToNumerical": true
   },{
     "type": "SCOP",
@@ -58,16 +59,18 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "display": "block-area",
+    "key": "name",
     "transformToNumerical": true
   },{
-      "type": "PFAM",
-      "title": "PFAM",
-      "color": {
-        "colors": "#ecaca6",
-        "thresholds": [0.25,0.5,0.75]
-      },
-      "display": "block-area",
-      "transformToNumerical": true
+    "type": "PFAM",
+    "title": "PFAM",
+    "color": {
+      "colors": "#ecaca6",
+      "thresholds": [0.25,0.5,0.75]
+    },
+    "display": "block-area",
+    "key": "name",
+    "transformToNumerical": true
   }],
   "external_data_order": [
     "CATH",

@@ -10,7 +10,7 @@ import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../R
 import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {IncreaseAnnotationValueType} from "./AnnotationCollectorInterface";
 
-interface FeaturePositionGaps extends FeaturePosition {
+export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
 }
 
@@ -39,7 +39,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                     if (!this.has(key)) {
                         const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
                         if(this.annotationConfig?.transformToNumerical)
-                            transformToNumerical(this.type, targetId, rangeKey, key, a, d, increaseValue);
+                            transformToNumerical(this.type, targetId, rangeKey, key, a, d, p, increaseValue);
                         const translateContext: TranslateContextInterface = {
                             from:reference,
                             to:source,
@@ -50,7 +50,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                         if(p.values instanceof Array)
                             this.expandValues(a, p.values, translateContext);
                     }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.get(key).value === "number"){
-                        (this.get(key).value as number) += typeof increaseValue === "function"? increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d}) : 1;
+                        (this.get(key).value as number) += typeof increaseValue === "function"? increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
                         if(this.get(key).value > this.valueRange.max)
                             this.valueRange.max = this.get(key).value as number;
                         if(this.get(key).value < this.valueRange.min)
@@ -200,9 +200,9 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
     return out;
 }
 
-function transformToNumerical(type: string, targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, increaseValue?:IncreaseAnnotationValueType): void{
+function transformToNumerical(type: string, targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, increaseValue?:IncreaseAnnotationValueType): void{
     if(typeof increaseValue === "function"){
-        a.value = increaseValue({type:type,targetId:targetId,positionKey:key,d:d});
+        a.value = increaseValue({type:type,targetId:targetId,positionKey:key,d:d,p:p});
     }
     a.begin = rangeKey[0];
     a.end = rangeKey[0];

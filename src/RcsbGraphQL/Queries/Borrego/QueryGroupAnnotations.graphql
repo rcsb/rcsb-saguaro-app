@@ -13,6 +13,7 @@ query QueryGroupAnnotations($group: GroupReference!, $groupId: String!, $sources
             description
             feature_id
             name
+            value
             feature_positions {
                 beg_seq_id
                 end_seq_id
@@ -22,6 +23,7 @@ query QueryGroupAnnotations($group: GroupReference!, $groupId: String!, $sources
                 open_begin
                 open_end
                 value
+                values
             }
         }
     }

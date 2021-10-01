@@ -21,6 +21,7 @@ import {
     SequenceCollectorInterface
 } from "./SequenceCollectorInterface";
 import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
+import {Operator} from "../../Helpers/Operator";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
@@ -63,7 +64,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
                     this.addUnmodelled(ann.target_id,p.beg_seq_id,p.end_seq_id);
                 })
             });
-        })
+        });
     }
 
     private addUnmodelled(targetId: string, start: number, end: number, remove?: boolean){
@@ -210,8 +211,10 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
     private async collectEntityInstanceMap(entityIds: Array<string>): Promise<void>{
         const entityInstanceCollector: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
-        const result: Array<PolymerEntityInstanceInterface> = await entityInstanceCollector.collect({entity_ids:entityIds});
-        this.entityInstanceMap.add(result);
+        const result: Array<Array<PolymerEntityInstanceInterface>> = await Promise.all<Array<PolymerEntityInstanceInterface>>(Operator.arrayChunk(entityIds, 100).map(ids => (entityInstanceCollector.collect({entity_ids:ids}))))
+        result.forEach(r=>{
+            this.entityInstanceMap.add(r);
+        })
         return void 0;
     }
 

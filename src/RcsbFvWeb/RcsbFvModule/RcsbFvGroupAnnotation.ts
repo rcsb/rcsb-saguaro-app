@@ -30,6 +30,8 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
         const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
             group: buildConfig.group,
             groupId: buildConfig.groupId,
+            filter: buildConfig.additionalConfig?.alignmentFilter,
+            page: buildConfig.additionalConfig?.page,
             from: buildConfig.from,
             to: buildConfig.to,
             dynamicDisplay:false,
@@ -51,7 +53,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             buildConfig.additionalConfig.externalTrackBuilder.processAlignmentAndFeatures({
                 annotations: await this.annotationCollector.getAnnotationFeatures(),
                 alignments: await this.sequenceCollector.getAlignmentResponse()
-            })
+            });
             buildConfig.additionalConfig.externalTrackBuilder.addTo({
                 annotationTracks: annResult,
                 alignmentTracks: seqResult

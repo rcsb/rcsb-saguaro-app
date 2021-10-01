@@ -15,6 +15,7 @@ import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
     filters?:Array<FilterInput>;
+    batchFilters?:Array<FilterInput>;
     alignmentFilter?:Array<string>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
@@ -23,6 +24,7 @@ export interface RcsbFvAdditionalConfig{
     annotationProcessing?: AnnotationProcessingInterface;
     sequenceCollector?: SequenceCollectorInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
+    page?:{first:number,after:string};
 }
 
 //TODO move psa & elementSelectId into additional config

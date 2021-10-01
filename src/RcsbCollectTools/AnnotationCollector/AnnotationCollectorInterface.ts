@@ -2,15 +2,15 @@ import {CoreCollectorInterface} from "../CoreCollectorInterface";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {
     AnnotationFeatures,
-    Feature,
+    Feature, FilterInput,
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs,
     Source
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AnnotationTransformer} from "./AnnotationTransformer";
+import {AnnotationTransformer, FeaturePositionGaps} from "./AnnotationTransformer";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
-export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey: string; d:Feature;})=>number;
+export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
 export interface AnnotationProcessingInterface {
     increaseAnnotationValue?:IncreaseAnnotationValueType;
     computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTransformer>)=>void;

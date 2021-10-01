@@ -31,6 +31,8 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
             group: buildConfig.group,
             groupId: buildConfig.groupId,
+            filter: buildConfig.additionalConfig?.alignmentFilter,
+            page: buildConfig.additionalConfig?.page,
             from: buildConfig.from,
             to: buildConfig.to,
             dynamicDisplay:false,

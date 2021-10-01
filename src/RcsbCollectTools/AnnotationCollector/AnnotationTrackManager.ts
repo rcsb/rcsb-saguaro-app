@@ -17,6 +17,7 @@ export class AnnotationTrackManager {
     }
 
     public processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): void{
+        requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data);
         data.forEach(ann => {
             ann.features.forEach(d => {
                 this.addAnnotationToTracks(requestConfig, ann, d);

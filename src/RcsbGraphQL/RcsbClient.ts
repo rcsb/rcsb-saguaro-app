@@ -1,5 +1,5 @@
 import {RcsbQueryAnnotations, RcsbQueryGroupAnnotations} from "./RcsbQueryAnnotations";
-import {RcsbQueryAlignment, RcsbQueryGroupAlignment} from "./RcsbQueryAlignment";
+import {RcsbQueryAlignment, RcsbQueryGroupAlignment, RcsbQueryGroupAlignmentArguments} from "./RcsbQueryAlignment";
 import {
     AlignmentResponse,
     AnnotationFeatures,
@@ -21,7 +21,7 @@ export class RcsbClient {
     private rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryAnnotations();
     private rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryGroupAnnotations();
     private rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse> = new RcsbQueryAlignment();
-    private rcsbQueryGroupAlignment: RcsbCoreQueryInterface<QueryGroup_AlignmentArgs,AlignmentResponse> = new RcsbQueryGroupAlignment();
+    private rcsbQueryGroupAlignment: RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments,AlignmentResponse> = new RcsbQueryGroupAlignment();
     private rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry> = new RcsbQueryEntryInstances();
     private rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>> = new RcsbQueryMultipleEntityInstances();
     private rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>> = new RcsbQueryMultipleEntriesProperties();
@@ -38,7 +38,7 @@ export class RcsbClient {
         return await this.rcsbQueryAlignment.request(requestConfig);
     }
 
-    public async requestGroupAlignment(requestConfig: QueryGroup_AlignmentArgs): Promise<AlignmentResponse>{
+    public async requestGroupAlignment(requestConfig: RcsbQueryGroupAlignmentArguments): Promise<AlignmentResponse>{
         return await this.rcsbQueryGroupAlignment.request(requestConfig);
     }
 

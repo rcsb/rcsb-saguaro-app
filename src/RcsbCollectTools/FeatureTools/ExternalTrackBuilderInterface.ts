@@ -3,7 +3,7 @@ import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-saguaro-api/buil
 import {SequenceCollectorDataInterface} from "../SequenceCollector/SequenceCollector";
 
 export interface ExternalTrackBuilderInterface {
-    getRcsbFvRowConfigInterface(): RcsbFvRowConfigInterface;
     processAlignmentAndFeatures(data: {annotations?: Array<AnnotationFeatures>; alignments?:AlignmentResponse;}): void;
+    filterFeatures(annotations: Array<AnnotationFeatures>): void;
     addTo(tracks:{alignmentTracks?: SequenceCollectorDataInterface, annotationTracks?: Array<RcsbFvRowConfigInterface>}): void;
 }

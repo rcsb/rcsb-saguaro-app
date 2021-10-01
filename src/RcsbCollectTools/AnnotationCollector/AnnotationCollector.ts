@@ -122,7 +122,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
                 filters: requestConfig.filters,
                 range: requestConfig.range
             })
-        :
+            :
             await this.rcsbFvQuery.requestRcsbPdbGroupAnnotations({
                 group: requestConfig.group,
                 groupId: requestConfig.groupId,

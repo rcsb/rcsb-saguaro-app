@@ -5,6 +5,7 @@
 ## [2.3.5] - 2021-09-16
 ### Display Improvement
 - Loader spinner added
+- rcsb-saguaro update 1.10.1
 
 ## [2.3.4] - 2021-08-30
 ### Display config

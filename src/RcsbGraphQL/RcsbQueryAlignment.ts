@@ -38,14 +38,13 @@ export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignment
 }
 
 
-export class RcsbQueryGroupAlignment implements RcsbCoreQueryInterface<QueryGroup_AlignmentArgs, AlignmentResponse>{
+export type RcsbQueryGroupAlignmentArguments = QueryGroup_AlignmentArgs & {page:{first:number, after:string}};
+export class RcsbQueryGroupAlignment implements RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments, AlignmentResponse>{
     readonly client: GraphQLRequest = new GraphQLRequest("borrego");
-    public async request(requestConfig: QueryGroup_AlignmentArgs): Promise<AlignmentResponse> {
+    public async request(requestConfig: RcsbQueryGroupAlignmentArguments): Promise<AlignmentResponse> {
         try {
-            const result: GroupAlignmentResponseInterface = await this.client.request<QueryGroup_AlignmentArgs,GroupAlignmentResponseInterface>({
-                    group: requestConfig.group,
-                    groupId: requestConfig.groupId
-                },
+            const result: GroupAlignmentResponseInterface = await this.client.request<QueryGroup_AlignmentArgs & {first:number, after:string}, GroupAlignmentResponseInterface>(
+                {group: requestConfig.group, groupId: requestConfig.groupId, filter:requestConfig.filter, first: requestConfig.page.first, after: requestConfig.page.after},
                 queryGroupAlignment
             );
             return result.group_alignment;

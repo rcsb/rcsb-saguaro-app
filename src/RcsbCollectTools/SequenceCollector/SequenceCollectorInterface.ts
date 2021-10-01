@@ -2,9 +2,9 @@ import {CoreCollectorInterface} from "../CoreCollectorInterface";
 import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {
     AlignmentResponse,
-    QueryAlignmentArgs,
-    QueryGroup_AlignmentArgs
+    QueryAlignmentArgs
 } from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
 
 interface CommonAlignmentInterface {
     filterByTargetContains?:string;
@@ -18,7 +18,7 @@ export interface CollectAlignmentInterface extends QueryAlignmentArgs, CommonAli
 
 }
 
-export interface CollectGroupAlignmentInterface extends QueryGroup_AlignmentArgs, CommonAlignmentInterface {
+export interface CollectGroupAlignmentInterface extends RcsbQueryGroupAlignmentArguments, CommonAlignmentInterface {
     sequencePrefix:string;
 }
 

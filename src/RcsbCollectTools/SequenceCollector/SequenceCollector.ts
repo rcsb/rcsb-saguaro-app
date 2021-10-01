@@ -65,7 +65,8 @@ export class SequenceCollector implements SequenceCollectorInterface{
         }
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
         const querySequence: string = this.alignmentResponse.query_sequence;
-        const alignmentData: Array<TargetAlignment> = !filter ? this.alignmentResponse.target_alignment : this.alignmentResponse.target_alignment.filter(ta=>filter.includes(ta.target_id));
+        const targetAlignment: Array<TargetAlignment> = this.alignmentResponse.target_alignment ?? this.alignmentResponse.target_alignment_subset.edges.map(e=>e.node);
+        const alignmentData: Array<TargetAlignment> = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id));
         if(typeof entityInstanceMapCollector === "function" && alignmentData){
             await entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id}));
         }
@@ -191,7 +192,9 @@ export class SequenceCollector implements SequenceCollectorInterface{
         :
             await this.rcsbFvQuery.requestGroupAlignment({
                 group: requestConfig.group,
-                groupId: requestConfig.groupId
+                groupId: requestConfig.groupId,
+                page: requestConfig.page,
+                filter: requestConfig.filter
             });
     }
 }
