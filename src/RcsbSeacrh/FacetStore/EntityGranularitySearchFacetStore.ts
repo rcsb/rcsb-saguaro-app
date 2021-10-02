@@ -122,12 +122,14 @@ class EntityGranularitySearchFacetStore implements FacetStoreInterface{
         return [Service.Text, Service.Chemical];
     }
 
-    getFacetService(service: Service): FacetMemberInterface[] {
+    getFacetService(service: Service|"all"): FacetMemberInterface[] {
         switch (service){
             case Service.Text:
                 return this.entryFacet.concat(this.instanceFacet).concat(this.entityFacet);
             case Service.TextChem:
                 return this.nonPolymerFacet;
+            case "all":
+                return this.entryFacet.concat(this.instanceFacet).concat(this.entityFacet).concat(this.nonPolymerFacet);
             default:
                 return [];
         }

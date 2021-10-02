@@ -4,9 +4,10 @@ import {RcsbFvAdditionalConfig} from "../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInte
 import {GroupReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {entityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGroupFacetStore";
 import {entityGranularityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore";
+import {SearchQueryType} from "../RcsbSeacrh/SearchRequestProperty";
 
-export async function buildSearchRequest(elementId: string, searchQuery:SearchQuery): Promise<void>{
-    await RcsbGroupDisplay.displaySearchAttributes(elementId, entityGranularityGroupFacetStore, searchQuery);
+export async function buildSearchRequest(elementId: string, searchQuery:SearchQueryType): Promise<void>{
+    await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery);
 }
 
 export async function buildGroup(elementId: string, groupType: GroupReference, groupId: string, query?:SearchQuery): Promise<void>{

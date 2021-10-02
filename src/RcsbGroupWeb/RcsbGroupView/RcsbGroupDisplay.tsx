@@ -10,15 +10,37 @@ import {RcsbGroupMembers} from "./RcsbGroupMembers";
 import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterface";
 import {rcsbFvCtxManager} from "../../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
 
 
 export class RcsbGroupDisplay {
+
+    public static async displayRcsbSearchStats(elementId: string, facetStore: FacetStoreInterface, searchQuery:SearchQueryType): Promise<void>{
+        let facets: Array<Facet> = [];
+        for(const service of facetStore.getServices()){
+            const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
+                searchQuery,
+                facetStore.getFacetService(service).map(f => f.facet),
+                facetStore.returnType
+            );
+            if(groupProperties.drilldown)
+                facets = facets.concat(groupProperties.drilldown as Facet[]);
+        }
+        ReactDom.render(
+            <div className={classes.bootstrapGroupComponentScope}>
+                <Container fluid={"lg"}>
+                    <RcsbChartLayout layout={facetStore.facetLayoutGrid} charts={FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets)}/>
+                </Container>
+            </div>,
+            document.getElementById(elementId)
+        );
+    }
 
     public static async displaySearchAttributes(elementId: string, facetStore: FacetStoreInterface, searchQuery?:SearchQuery, groupId?: string): Promise<void>{
 
         let facets: Array<Facet> = [];
         for(const service of facetStore.getServices()){
-            const groupQuery = await searchQuery ? addGroupNodeToSearchQuery(groupId, searchQuery, service) : searchGroupQuery(groupId, service);
+            const groupQuery: SearchQueryType = await searchQuery ? addGroupNodeToSearchQuery(groupId, searchQuery, service) : searchGroupQuery(groupId, service);
             const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
                 groupQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
