@@ -12,15 +12,15 @@ import {
 } from "../../RcsbCollectTools/PropertyCollector/MultipleEntryPropertyCollector";
 import {GroupPropertiesProvider} from "../../RcsbUtils/GroupPropertiesProvider";
 import {Operator} from "../../Helpers/Operator";
-import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
+import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryType, SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {
     GroupPropertyCollector,
     GroupPropertyInterface
 } from "../../RcsbCollectTools/PropertyCollector/GroupPropertyCollector";
-import {QueryGroupArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {QueryGroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {FacetType} from "../../RcsbSeacrh/FacetStore/FacetMemberInterface";
-import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 
 interface DataStatusInterface<T>{
     data:T;

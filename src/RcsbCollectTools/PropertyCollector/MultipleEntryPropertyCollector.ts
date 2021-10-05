@@ -1,5 +1,5 @@
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 
 export interface EntryPropertyIntreface {
     rcsbId: string;

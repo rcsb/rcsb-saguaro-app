@@ -9,8 +9,8 @@ import {
 } from "../RcsbFvModule/RcsbFvModuleInterface";
 import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
 import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
-import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
-import {GroupReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export interface CreateFvInterface {
     elementId: string;

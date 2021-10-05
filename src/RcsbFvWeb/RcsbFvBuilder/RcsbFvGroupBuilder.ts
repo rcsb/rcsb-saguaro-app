@@ -4,7 +4,7 @@ import {RcsbFvGroupAnnotation} from "../RcsbFvModule/RcsbFvGroupAnnotation";
 import {
     GroupReference,
     SequenceReference
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvGroupAlignment} from "../RcsbFvModule/RcsbFvGroupAlignment";
 import {ObservedSequenceCollector} from "../../RcsbCollectTools/SequenceCollector/ObservedSequenceCollector";
 

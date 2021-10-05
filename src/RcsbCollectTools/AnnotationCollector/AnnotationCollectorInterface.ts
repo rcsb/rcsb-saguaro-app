@@ -6,7 +6,7 @@ import {
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs,
     Source
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationTransformer, FeaturePositionGaps} from "./AnnotationTransformer";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 

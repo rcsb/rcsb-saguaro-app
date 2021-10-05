@@ -1,5 +1,5 @@
 import * as React from "react";
-import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import * as classes from "./scss/group-display.module.scss";
 import {Carousel} from "react-bootstrap";
 import {GroupMembersGrid} from "./RcsbGroupMembers/GroupMembersGrid";

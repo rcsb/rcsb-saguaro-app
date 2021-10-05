@@ -1,5 +1,5 @@
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {SequenceCollectorDataInterface} from "../SequenceCollector/SequenceCollector";
 
 export interface ExternalTrackBuilderInterface {

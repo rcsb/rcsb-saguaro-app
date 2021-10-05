@@ -5,7 +5,7 @@ import {
     OperationType,
     SequenceReference,
     Source, Type,
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion,
     SequenceCollector,

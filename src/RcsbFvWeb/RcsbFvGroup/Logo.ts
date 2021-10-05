@@ -1,4 +1,4 @@
-import {AlignmentLogo} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentLogo} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export class Logo<T extends string>  {
 

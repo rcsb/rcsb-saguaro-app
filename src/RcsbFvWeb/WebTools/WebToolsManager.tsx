@@ -3,8 +3,8 @@ import * as ReactDom from "react-dom";
 import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
 import {OptionProps} from "react-select/src/components/Option";
 import {GroupSequenceTabs} from "../RcsbFvGroup/GroupSequenceTabs";
-import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
-import {GroupReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {LoaderSpinner} from "./LoaderSpinner";
 
 export interface SelectButtonConfigInterface {

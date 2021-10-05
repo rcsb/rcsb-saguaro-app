@@ -1,14 +1,14 @@
 import * as React from "react";
-import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Col, Container, Row} from "react-bootstrap";
-import {SearchRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/SearchRequest";
-import {QueryResult} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchResultInterface";
+import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
+import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/QueryStore/SearchGroupQuery";
-import { ReturnType, SortDirection} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import { ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
 import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
-import {RcsbSearchMetadata} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchMetadata";
+import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
 
 export class GroupMembersGrid extends React.Component <{groupId: string; searchQuery?: SearchQuery; start:number; rows:number; display:boolean;}, {entityList: Array<PolymerEntityInstanceInterface>}> {

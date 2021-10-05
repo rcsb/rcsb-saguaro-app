@@ -6,7 +6,7 @@ import {
     Coverage,
     SequenceReference,
     TargetAlignment
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 import {
     RcsbFvDisplayTypes,

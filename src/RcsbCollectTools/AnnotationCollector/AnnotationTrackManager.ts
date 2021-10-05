@@ -1,5 +1,5 @@
 import {AnnotationTransformer} from "./AnnotationTransformer";
-import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";

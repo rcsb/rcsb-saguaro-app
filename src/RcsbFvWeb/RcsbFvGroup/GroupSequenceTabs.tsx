@@ -11,7 +11,7 @@ import {
     SequenceReference,
     Source,
     Type
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {
     AnnotationTransformer,
@@ -25,10 +25,10 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {SearchQuery} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
-import {ReturnType} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {Logo} from "./Logo";
 import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
@@ -85,7 +85,8 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
     private onSelect(eventKey: EventKey): void {
         if(this.rendered.has(eventKey))
             return;
-        this.rendered.add(eventKey)
+        this.rendered.add(eventKey);
+        console.log(this.filterInstances);
         switch (eventKey) {
             case "alignment":
                 alignment(eventKey.toString(), this.props.group, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities});
@@ -94,6 +95,7 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
                 if (this.props.searchQuery){
                     bindingSites(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {
                         page:{first:0,after: "0"},
+                        alignmentFilter: this.filterEntities,
                         filters: [{
                             field: FieldName.TargetId,
                             operation: OperationType.Equals,
@@ -108,6 +110,7 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
                 if(this.props.searchQuery){
                     structure(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {
                         page:{first:0,after: "0"},
+                        alignmentFilter: this.filterEntities,
                         filters:[{
                             field: FieldName.TargetId,
                             operation: OperationType.Equals,

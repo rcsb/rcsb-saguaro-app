@@ -1,5 +1,5 @@
 import {FacetMemberInterface} from "./FacetMemberInterface";
-import {ReturnType, Service} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 
 export interface FacetStoreInterface {
     getServices(): Service[];

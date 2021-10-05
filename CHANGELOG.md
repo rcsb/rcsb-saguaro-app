@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.3.6] - 2021-10-04
+### Dependency update
+- Using rcsb-api-tools
+
 ## [2.3.5] - 2021-09-16
 ### Display Improvement
 - Loader spinner added

@@ -3,7 +3,7 @@ import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {
     AlignmentResponse,
     QueryAlignmentArgs
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
 
 interface CommonAlignmentInterface {

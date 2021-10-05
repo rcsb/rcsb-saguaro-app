@@ -3,12 +3,12 @@ import {
     Operator,
     ReturnType,
     Service
-} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchEnums";
+} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {ChartType} from "../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {FacetStoreInterface} from "./FacetStoreInterface";
 
-import {RcsbSearchMetadata} from "@rcsb/rcsb-saguaro-api/build/RcsbSearch/Types/SearchMetadata";
+import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 
 class EntityGranularitySearchFacetStore implements FacetStoreInterface{
     private readonly entryFacet: FacetMemberInterface[] = [{
