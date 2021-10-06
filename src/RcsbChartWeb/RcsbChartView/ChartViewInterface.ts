@@ -10,6 +10,7 @@ export interface ChartConfigInterface {
     mostPopulatedGroups?: number;
     mergeName?: string;
     domainMinValue?:number;
+    histogramBinIncrement?: number;
     tickIncrement?: {
         origin: number;
         increment: number

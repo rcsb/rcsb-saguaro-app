@@ -5,7 +5,7 @@ export class ChartTools {
     public static readonly paddingLeft: number = 200;
     public static readonly paddingBottom: number = 50;
     public static readonly paddingTop: number = 10;
-    public static readonly paddingRight: number = 10;
+    public static readonly paddingRight: number = 15;
     public static readonly constWidth: number = 300;
     public static readonly constHeight: number = 200;
     public static readonly xIncrement: number = 20;

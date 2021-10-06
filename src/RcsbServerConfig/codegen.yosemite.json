@@ -1,4 +1,4 @@
 {
-  "schema": "http://132.249.213.71/graphql",
+  "schema": "https://data-groups.rcsb.org/graphql",
   "documents": "src/RcsbGraphQL/Queries/Yosemite/*.graphql"
 }

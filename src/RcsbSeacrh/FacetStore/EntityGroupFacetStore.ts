@@ -34,6 +34,7 @@ class EntityGroupFacetStore implements FacetStoreInterface{
                 origin: 0.5,
                 increment: 0.5
             },
+            histogramBinIncrement:0.5,
             mergeDomainMaxValue:4.5,
             domainMinValue: 0
         },
@@ -41,6 +42,25 @@ class EntityGroupFacetStore implements FacetStoreInterface{
             aggregation_type: AggregationType.Histogram,
             attribute: RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path,
             interval: 0.5,
+            min_interval_population: 1
+        }
+    },{
+        id:"release_date",
+        title:"RELEASE DATE",
+        attribute: RcsbSearchMetadata.RcsbAccessionInfo.DepositDate.path,
+        chartType: ChartType.histogram,
+        chartConfig:{
+            tickIncrement:{
+                origin: 1980,
+                increment: 10
+            },
+            histogramBinIncrement:1,
+            domainMinValue: 1970
+        },
+        facet:{
+            aggregation_type: AggregationType.DateHistogram,
+            attribute: RcsbSearchMetadata.RcsbAccessionInfo.DepositDate.path,
+            interval: "year",
             min_interval_population: 1
         }
     }];
@@ -158,6 +178,7 @@ class EntityGroupFacetStore implements FacetStoreInterface{
     }
 
     readonly facetLayoutGrid: [string,string?][] = [
+        [RcsbSearchMetadata.RcsbAccessionInfo.DepositDate.path],
         [RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path, RcsbSearchMetadata.Exptl.Method.path],
         [RcsbSearchMetadata.ChemComp.Type.path],
         [RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path],
