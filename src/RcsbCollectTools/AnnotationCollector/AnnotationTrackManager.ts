@@ -80,8 +80,8 @@ export class AnnotationTrackManager {
             this.annotationTracks.set(type, new AnnotationTransformer(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
         }
         this.rcsbAnnotationConfig.addProvenance(type, d.provenance_source);
-        //TODO increaseAnnotationValue should be d.type dependant
-        this.annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId ?? requestConfig.groupId, ann.source, ann.target_id, d, requestConfig.annotationProcessing?.increaseAnnotationValue);
+        //TODO getAnnotationValue should be d.type dependant
+        this.annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId ?? requestConfig.groupId, ann.source, ann.target_id, d, requestConfig.annotationProcessing?.getAnnotationValue);
     }
 
 }

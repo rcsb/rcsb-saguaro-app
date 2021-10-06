@@ -185,7 +185,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
     const targets: Map<string,number> = new Map<string,number>();
     const n: number = nTargets;
     return {
-        increaseAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; p: FeaturePositionGaps}) => {
+        getAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; p: FeaturePositionGaps}) => {
             if (!targets.has(feature.type)) {
                 targets.set(feature.type, feature.d.value);
                 return feature.p.values[0];

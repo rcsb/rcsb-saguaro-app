@@ -10,8 +10,7 @@
       "colors": "#999999",
       "thresholds": [0.25,0.5,0.75]
     },
-    "display": "block-area",
-    "transformToNumerical": true
+    "display": "block-area"
   },{
     "type": "BINDING_SITE",
     "color": {
@@ -21,7 +20,6 @@
     "title": "BINDING SITE",
     "key": "name",
     "display": "block-area",
-    "transformToNumerical": true,
     "fitTitleWidth": true
   },{
     "type": "HELIX_P",
@@ -30,8 +28,7 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "title": "HELIX",
-    "display": "block-area",
-    "transformToNumerical": true
+    "display": "block-area"
   },{
     "type": "SHEET",
     "color": {
@@ -39,8 +36,7 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "title": "BETA STRAND",
-    "display": "block-area",
-    "transformToNumerical": true
+    "display": "block-area"
   },{
     "type": "CATH",
     "title": "CATH",
@@ -49,8 +45,7 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "display": "block-area",
-    "key": "name",
-    "transformToNumerical": true
+    "key": "name"
   },{
     "type": "SCOP",
     "title": "SCOP",
@@ -59,8 +54,7 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "display": "block-area",
-    "key": "name",
-    "transformToNumerical": true
+    "key": "name"
   },{
     "type": "PFAM",
     "title": "PFAM",
@@ -69,8 +63,7 @@
       "thresholds": [0.25,0.5,0.75]
     },
     "display": "block-area",
-    "key": "name",
-    "transformToNumerical": true
+    "key": "name"
   }],
   "external_data_order": [
     "CATH",

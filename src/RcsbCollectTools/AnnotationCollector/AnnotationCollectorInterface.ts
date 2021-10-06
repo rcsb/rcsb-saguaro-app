@@ -12,7 +12,7 @@ import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilde
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
 export interface AnnotationProcessingInterface {
-    increaseAnnotationValue?:IncreaseAnnotationValueType;
+    getAnnotationValue?:IncreaseAnnotationValueType;
     computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTransformer>)=>void;
 }
 

@@ -31,15 +31,15 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         return this.valueRange;
     }
 
-    public addElement(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, increaseValue?:IncreaseAnnotationValueType): void {
+    public addElement(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, getAnnotationValue?:IncreaseAnnotationValueType): void {
         computeFeatureGaps(d.feature_positions).forEach(p => {
             if(p.beg_seq_id != null) {
                 this.annotationRangeKeys(p).forEach(rangeKey=>{
                     const key: string = rangeKey.join(":");
                     if (!this.has(key)) {
                         const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
-                        if(this.annotationConfig?.transformToNumerical)
-                            transformToNumerical(this.type, targetId, rangeKey, key, a, d, p, increaseValue);
+                        if(this.annotationConfig?.transformToNumerical || getAnnotationValue)
+                            transformToNumerical(this.type, targetId, rangeKey, key, a, d, p, getAnnotationValue);
                         const translateContext: TranslateContextInterface = {
                             from:reference,
                             to:source,
@@ -50,7 +50,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
                         if(p.values instanceof Array)
                             this.expandValues(a, p.values, translateContext);
                     }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.get(key).value === "number"){
-                        (this.get(key).value as number) += typeof increaseValue === "function"? increaseValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
+                        (this.get(key).value as number) += typeof getAnnotationValue === "function" ? getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
                         if(this.get(key).value > this.valueRange.max)
                             this.valueRange.max = this.get(key).value as number;
                         if(this.get(key).value < this.valueRange.min)
@@ -133,7 +133,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
     }
 
     private isNumericalDisplay(type: string): boolean {
-        return (this.annotationConfig!=null && (this.annotationConfig.display === RcsbFvDisplayTypes.AREA || this.annotationConfig.display === RcsbFvDisplayTypes.BLOCK_AREA || this.annotationConfig.display === RcsbFvDisplayTypes.LINE));
+        return (this.annotationConfig!=null && (this.annotationConfig.display === RcsbFvDisplayTypes.AREA || this.annotationConfig.display === RcsbFvDisplayTypes.BLOCK_AREA || this.annotationConfig.display === RcsbFvDisplayTypes.MULTI_AREA || this.annotationConfig.display === RcsbFvDisplayTypes.LINE));
     }
 
     private annotationRangeKeys(p: FeaturePositionGaps): Array<number[]> {
@@ -200,9 +200,9 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
     return out;
 }
 
-function transformToNumerical(type: string, targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, increaseValue?:IncreaseAnnotationValueType): void{
-    if(typeof increaseValue === "function"){
-        a.value = increaseValue({type:type,targetId:targetId,positionKey:key,d:d,p:p});
+function transformToNumerical(type: string, targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, getAnnotationValue?:IncreaseAnnotationValueType): void{
+    if(typeof getAnnotationValue === "function"){
+        a.value = getAnnotationValue({type:type,targetId:targetId,positionKey:key,d:d,p:p});
     }
     a.begin = rangeKey[0];
     a.end = rangeKey[0];
