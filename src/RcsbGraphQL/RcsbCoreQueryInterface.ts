@@ -1,4 +1,4 @@
-import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 export interface RcsbCoreQueryInterface<Q,R> {
     readonly client: GraphQLRequest;

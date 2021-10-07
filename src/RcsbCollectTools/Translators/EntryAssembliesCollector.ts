@@ -4,7 +4,7 @@ import {
     CoreEntry,
     CorePolymerEntityInstance,
     QueryEntryArgs
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 
 export class EntryAssembliesCollector {

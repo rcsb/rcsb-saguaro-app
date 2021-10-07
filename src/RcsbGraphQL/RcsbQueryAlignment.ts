@@ -1,7 +1,7 @@
-import {AlignmentResponse, QueryAlignmentArgs} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentResponse, QueryAlignmentArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import queryAlignment from "./Queries/Borrego/QueryAlignments.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 interface AlignmentResponseInterface{
     alignment: AlignmentResponse;

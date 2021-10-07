@@ -10,7 +10,7 @@ import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInsta
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {Feature} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {WebToolsManager} from "../WebTools/WebToolsManager";
 
 
@@ -47,7 +47,6 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
                 ...this.boardConfigData,
                 rowTitleWidth:200,
                 onFvRenderStartsCallback:()=>{
-                    console.log("Render starts");
                     WebToolsManager.unmountLoaderSpinner(this.elementId);
                 }
             },
@@ -70,6 +69,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async getFeatures(): Promise<Array<Feature>>{
+        //return (await this.annotationCollector.getAnnotationFeatures()).map(af=>af.features).flat();
         return await this.annotationCollector.getFeatures();
     }
 

@@ -4,7 +4,7 @@ import {
 
 import {
     AnnotationFeatures, Feature
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
@@ -30,6 +30,8 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     private readonly rawFeaturesSubject: Subject<Array<Feature>> = new Subject<Array<Feature>>();
     private readonly annotationsConfigDataSubject: Subject<Array<RcsbFvRowConfigInterface>> = new Subject<Array<RcsbFvRowConfigInterface>>();
     private readonly annotationTrackManager: AnnotationTrackManager;
+    private annotationFeatures: Array<AnnotationFeatures>;
+    private readonly annotationFeaturesSubject: Subject<Array<AnnotationFeatures>> = new Subject<Array<AnnotationFeatures>>();
 
     constructor(acm?: AnnotationConfigInterface) {
         this.rcsbAnnotationConfig = new RcsbAnnotationConfig(acm);
@@ -38,13 +40,13 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     public async collect(requestConfig: AnnotationCollectConfig): Promise<Array<RcsbFvRowConfigInterface>> {
         this.requestStatus = "pending";
-        let annotationFeatures: Array<AnnotationFeatures> = await this.requestAnnotations(requestConfig);
+        this.annotationFeatures = await this.requestAnnotations(requestConfig);
         if (requestConfig.collectSwissModel === true) {
-            const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId)
-            annotationFeatures = annotationFeatures.concat(swissModelData)
+            const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
+            this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
         }
-        this.processRcsbPdbAnnotations(annotationFeatures, requestConfig);
-        this.rawFeatures = [].concat.apply([], annotationFeatures.map(af=>af.features));
+        this.processRcsbPdbAnnotations(requestConfig);
+        this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();
         return this.annotationsConfigData;
     }
@@ -78,8 +80,18 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         })
     }
 
-    private processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): void{
-        this.annotationTrackManager.processRcsbPdbAnnotations(data, requestConfig);
+    public async getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>{
+        return new Promise<Array<AnnotationFeatures>>((resolve, reject)=>{
+            if(this.requestStatus === "complete"){
+                resolve(this.annotationFeatures);
+            }else{
+                ObservableHelper.oneTimeSubscription<Array<AnnotationFeatures>>(resolve, this.annotationFeaturesSubject);
+            }
+        })
+    }
+
+    private processRcsbPdbAnnotations(requestConfig: AnnotationCollectConfig): void{
+        this.annotationTrackManager.processRcsbPdbAnnotations(this.annotationFeatures, requestConfig);
         this.rcsbAnnotationConfig.sortAndIncludeNewTypes();
         [
             this.rcsbAnnotationConfig.instanceOrder(),
@@ -101,7 +113,6 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         });
     }
 
-
     private async requestAnnotations(requestConfig: AnnotationCollectConfig): Promise<Array<AnnotationFeatures>> {
         return await this.rcsbFvQuery.requestRcsbPdbAnnotations({
             queryId: requestConfig.queryId,
@@ -115,6 +126,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     private complete(): void {
         this.requestStatus = "complete";
         this.annotationsConfigDataSubject.next(this.annotationsConfigData);
+        this.annotationFeaturesSubject.next(this.annotationFeatures);
         this.rawFeaturesSubject.next(this.rawFeatures);
     }
 

@@ -1,10 +1,10 @@
 import {
     AnnotationFeatures,
     QueryAnnotationsArgs
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import queryAnnotations from "./Queries/Borrego/QueryAnnotations.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {GraphQLRequest} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 interface AnnotationsResultInterface {
     annotations: Array<AnnotationFeatures>;

@@ -1,5 +1,5 @@
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
-import {AlignedRegion, SequenceReference, Source, TargetAlignment} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignedRegion, SequenceReference, Source, TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     RcsbFvDisplayConfigInterface, RcsbFvDisplayTypes,
     RcsbFvLink,

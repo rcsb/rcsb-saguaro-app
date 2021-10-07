@@ -1,5 +1,5 @@
 import {AnnotationTransformer} from "./AnnotationTransformer";
-import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
@@ -17,6 +17,7 @@ export class AnnotationTrackManager {
     }
 
     public processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): void{
+        requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data);
         data.forEach(ann => {
             ann.features.forEach(d => {
                 this.addAnnotationToTracks(requestConfig, ann, d);
@@ -80,7 +81,7 @@ export class AnnotationTrackManager {
         }
         this.rcsbAnnotationConfig.addProvenance(type, d.provenance_source);
         //TODO increaseAnnotationValue should be d.type dependant
-        this.annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId, ann.source, ann.target_id, d, requestConfig.annotationProcessing?.increaseAnnotationValue);
+        this.annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId, ann.source, ann.target_id, d, requestConfig.annotationProcessing?.getAnnotationValue);
     }
 
 }

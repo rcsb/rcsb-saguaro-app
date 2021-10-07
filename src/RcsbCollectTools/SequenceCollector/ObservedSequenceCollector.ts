@@ -1,11 +1,10 @@
 import {
-    AlignedRegion,
+    AlignedRegion, AlignmentResponse,
     AnnotationFeatures,
-    FieldName,
+    FieldName, FilterInput,
     OperationType,
-    SequenceReference,
-    Source,
-} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+    Source, Type
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion,
     SequenceCollector,
@@ -21,6 +20,7 @@ import {
     SequenceCollectorInterface
 } from "./SequenceCollectorInterface";
 import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
+import {Operator} from "../../Helpers/Operator";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
@@ -30,14 +30,18 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
-    public async collect(requestConfig: AlignmentCollectConfig): Promise<SequenceCollectorDataInterface> {
-        const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig.queryId, requestConfig.from);
+    public async collect(requestConfig: AlignmentCollectConfig, filter?: Array<string>): Promise<SequenceCollectorDataInterface> {
+        const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig);
         this.loadObservedRegions(annotationFeatures);
-        return await this.sequenceCollector.collect(requestConfig, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
+        return await this.sequenceCollector.collect(requestConfig, filter, this.collectEntityInstanceMap.bind(this), this.tagObservedRegions.bind(this));
     }
 
     public getTargets():Promise<Array<string>> {
         return this.sequenceCollector.getTargets();
+    }
+
+    public getAlignmentResponse():Promise<AlignmentResponse> {
+        return this.sequenceCollector.getAlignmentResponse();
     }
 
     public getSequenceLength(): number{
@@ -59,7 +63,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
                     this.addUnmodelled(ann.target_id,p.beg_seq_id,p.end_seq_id);
                 })
             });
-        })
+        });
     }
 
     private addUnmodelled(targetId: string, start: number, end: number, remove?: boolean){
@@ -73,21 +77,23 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
         });
     }
 
-    private collectUnmodeledRegions(queryId: string, reference: SequenceReference): Promise<Array<AnnotationFeatures>>{
+    private collectUnmodeledRegions(requestConfig: AlignmentCollectConfig): Promise<Array<AnnotationFeatures>>{
+        const filters: FilterInput[] = [{
+            field: FieldName.Type,
+            operation: OperationType.Equals,
+            source: Source.PdbInstance,
+            values: [Type.UnobservedResidueXyz]
+        }];
+        const sources: Source[] = [Source.PdbInstance];
         return this.rcsbFvQuery.requestRcsbPdbAnnotations({
-            queryId: queryId,
-            reference: reference,
-            sources: [Source.PdbInstance],
-            filters: [{
-                field:FieldName.Type,
-                operation:OperationType.Equals,
-                source:Source.PdbInstance,
-                values:["UNOBSERVED_RESIDUE_XYZ"]
-            }]
+            queryId: requestConfig.queryId,
+            reference: requestConfig.from,
+            sources,
+            filters
         });
     }
 
-    private tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface): Array<AlignedObservedRegion>{
+    private tagObservedRegions(region: AlignedRegion, commonContext: TranslateContextInterface, noQuerySequenceFlag?:boolean): Array<AlignedObservedRegion>{
         if(this.entityInstanceMap.getEntity(commonContext.targetId)!=null){
             const asymIds: Array<string> = this.entityInstanceMap.getEntity(commonContext.targetId).translateEntityToAsym(commonContext.targetId.split(TagDelimiter.entity)[1]);
             const entryId: string = commonContext.targetId.split(TagDelimiter.entity)[0];
@@ -186,7 +192,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
                     })
                 }
                 outRegions[0].openBegin = outRegions[0].target_begin != 1;
-                outRegions[outRegions.length-1].openEnd = outRegions[outRegions.length-1].target_end != commonContext.targetSequenceLength;
+                outRegions[outRegions.length-1].openEnd = (outRegions[outRegions.length-1].target_end != commonContext.targetSequenceLength && !noQuerySequenceFlag);
                 return outRegions;
             }
         }
@@ -195,8 +201,10 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
     private async collectEntityInstanceMap(entityIds: Array<string>): Promise<void>{
         const entityInstanceCollector: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
-        const result: Array<PolymerEntityInstanceInterface> = await entityInstanceCollector.collect({entity_ids:entityIds});
-        this.entityInstanceMap.add(result);
+        const result: Array<Array<PolymerEntityInstanceInterface>> = await Promise.all<Array<PolymerEntityInstanceInterface>>(Operator.arrayChunk(entityIds, 100).map(ids => (entityInstanceCollector.collect({entity_ids:ids}))))
+        result.forEach(r=>{
+            this.entityInstanceMap.add(r);
+        })
         return void 0;
     }
 

@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.4.0] - 2021-10-07
+### Minor code refactor and improvements
+- `AnnotationCollectorInterface` new annotation features getter `getAnnotationFeatures`
+- `ExternalTrackBuilderInterface` interface to build tracks from the collected annotations and alignments
+- `SequenceCollectorInterface` new alignment response getter `getAlignmentResponse`
+- `SequenceCollectorInterface` `collect` method accepts a new optional argument `filter?:Array<string>` to filter targets in the alignment
+
 ## [2.3.5] - 2021-09-16
 ### Display Improvement
 - Loader spinner added

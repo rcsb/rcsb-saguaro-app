@@ -2,12 +2,13 @@ import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {CollectAlignmentInterface, SequenceCollectorInterface} from "./SequenceCollectorInterface";
 import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export class GenomeMapCollector implements SequenceCollectorInterface{
 
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
-    collect(requestConfig: CollectAlignmentInterface, entityInstanceMapCollector?: (instanceIds: Array<string>) => Promise<null>): Promise<SequenceCollectorDataInterface> {
+    collect(requestConfig: CollectAlignmentInterface, filter?:Array<string>, entityInstanceMapCollector?: (instanceIds: Array<string>) => Promise<null>): Promise<SequenceCollectorDataInterface> {
         return Promise.resolve(undefined);
     }
 
@@ -26,5 +27,8 @@ export class GenomeMapCollector implements SequenceCollectorInterface{
     setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
     }
 
+    getAlignmentResponse(): Promise<AlignmentResponse> {
+        return Promise.resolve(undefined);
+    }
 
 }

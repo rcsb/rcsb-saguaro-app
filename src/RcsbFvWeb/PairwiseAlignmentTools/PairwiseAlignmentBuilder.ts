@@ -1,7 +1,7 @@
 import {RcsbFvTrackDataElementInterface, RcsbFvDisplayTypes, RcsbFvRowConfigInterface, RcsbFvDisplayConfigInterface} from '@rcsb/rcsb-saguaro';
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {SequenceReference} from "@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {FeatureTools} from "../../RcsbCollectTools/FeatureTools/FeatureTools";
 
 export interface PairwiseAlignmentInterface{
