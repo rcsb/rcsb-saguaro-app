@@ -71,6 +71,9 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="tsd-signature-type">QueryAnnotationsArgs</span>
+					</li>
+					<li>
+						<a href="commonannotationinterface.html" class="tsd-signature-type">CommonAnnotationInterface</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">CollectAnnotationsInterface</span>
@@ -87,8 +90,9 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="collectannotationsinterface.html#addtargetintitle" class="tsd-kind-icon">add<wbr>Target<wbr>InTitle</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="collectannotationsinterface.html#annotationprocessing" class="tsd-kind-icon">annotation<wbr>Processing</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="collectannotationsinterface.html#annotationprocessing" class="tsd-kind-icon">annotation<wbr>Processing</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="collectannotationsinterface.html#collectswissmodel" class="tsd-kind-icon">collect<wbr>Swiss<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="collectannotationsinterface.html#externalannotationtrackbuilder" class="tsd-kind-icon">external<wbr>Annotation<wbr>Track<wbr>Builder</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="collectannotationsinterface.html#filters" class="tsd-kind-icon">filters</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="collectannotationsinterface.html#queryid" class="tsd-kind-icon">query<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="collectannotationsinterface.html#range" class="tsd-kind-icon">range</a></li>
@@ -107,17 +111,18 @@
 					<div class="tsd-signature tsd-kind-icon">add<wbr>Target<wbr>InTitle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Source</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L17">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L25">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="annotationprocessing" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> annotation<wbr>Processing</h3>
 					<div class="tsd-signature tsd-kind-icon">annotation<wbr>Processing<span class="tsd-signature-symbol">:</span> <a href="annotationprocessinginterface.html" class="tsd-signature-type">AnnotationProcessingInterface</a></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="commonannotationinterface.html">CommonAnnotationInterface</a>.<a href="commonannotationinterface.html#annotationprocessing">annotationProcessing</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L19">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L20">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -127,7 +132,18 @@
 					<div class="tsd-signature tsd-kind-icon">collect<wbr>Swiss<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L18">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L26">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="externalannotationtrackbuilder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> external<wbr>Annotation<wbr>Track<wbr>Builder</h3>
+					<div class="tsd-signature tsd-kind-icon">external<wbr>Annotation<wbr>Track<wbr>Builder<span class="tsd-signature-symbol">:</span> <a href="externaltrackbuilderinterface.html" class="tsd-signature-type">ExternalTrackBuilderInterface</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="commonannotationinterface.html">CommonAnnotationInterface</a>.<a href="commonannotationinterface.html#externalannotationtrackbuilder">externalAnnotationTrackBuilder</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L21">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -138,7 +154,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collectannotationsinterface.html">CollectAnnotationsInterface</a>.<a href="collectannotationsinterface.html#filters">filters</a></p>
 						<ul>
-							<li>Defined in node_modules/@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:171</li>
+							<li>Defined in node_modules/@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:171</li>
 						</ul>
 					</aside>
 				</section>
@@ -149,7 +165,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collectannotationsinterface.html">CollectAnnotationsInterface</a>.<a href="collectannotationsinterface.html#queryid">queryId</a></p>
 						<ul>
-							<li>Defined in node_modules/@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:172</li>
+							<li>Defined in node_modules/@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:172</li>
 						</ul>
 					</aside>
 				</section>
@@ -160,7 +176,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collectannotationsinterface.html">CollectAnnotationsInterface</a>.<a href="collectannotationsinterface.html#range">range</a></p>
 						<ul>
-							<li>Defined in node_modules/@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:170</li>
+							<li>Defined in node_modules/@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:170</li>
 						</ul>
 					</aside>
 				</section>
@@ -171,7 +187,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collectannotationsinterface.html">CollectAnnotationsInterface</a>.<a href="collectannotationsinterface.html#reference">reference</a></p>
 						<ul>
-							<li>Defined in node_modules/@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:168</li>
+							<li>Defined in node_modules/@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:168</li>
 						</ul>
 					</aside>
 				</section>
@@ -182,7 +198,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="collectannotationsinterface.html">CollectAnnotationsInterface</a>.<a href="collectannotationsinterface.html#sources">sources</a></p>
 						<ul>
-							<li>Defined in node_modules/@rcsb/rcsb-saguaro-api/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:169</li>
+							<li>Defined in node_modules/@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes.d.ts:169</li>
 						</ul>
 					</aside>
 				</section>
@@ -206,11 +222,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="collectannotationsinterface.html#addtargetintitle" class="tsd-kind-icon">add<wbr>Target<wbr>InTitle</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="collectannotationsinterface.html#annotationprocessing" class="tsd-kind-icon">annotation<wbr>Processing</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="collectannotationsinterface.html#collectswissmodel" class="tsd-kind-icon">collect<wbr>Swiss<wbr>Model</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="collectannotationsinterface.html#externalannotationtrackbuilder" class="tsd-kind-icon">external<wbr>Annotation<wbr>Track<wbr>Builder</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="collectannotationsinterface.html#filters" class="tsd-kind-icon">filters</a>

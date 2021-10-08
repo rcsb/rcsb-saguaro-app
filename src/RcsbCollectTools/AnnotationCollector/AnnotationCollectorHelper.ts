@@ -1,4 +1,4 @@
-import {AnnotationTransformer} from "./AnnotationTransformer";
+import {AnnotationTrack} from "./AnnotationTrack";
 import {
     InterpolationTypes,
     RcsbFvColorGradient,
@@ -15,7 +15,7 @@ import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/Annotati
 
 export class AnnotationCollectorHelper {
 
-    public static buildAnnotationTrack(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface, provenanceList: Array<string>): RcsbFvRowConfigInterface {
+    public static buildAnnotationTrack(annotationHandler: AnnotationTrack, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface, provenanceList: Array<string>): RcsbFvRowConfigInterface {
         let out: RcsbFvRowConfigInterface;
         let displayType: string;
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
@@ -48,8 +48,8 @@ export class AnnotationCollectorHelper {
         return out;
     }
 
-    private static buildRcsbFvRowConfigTrack(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-        const data: Array<RcsbFvTrackDataElementInterface> = Array.from(annotationHandler.values());
+    private static buildRcsbFvRowConfigTrack(annotationHandler: AnnotationTrack, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
+        const data: Array<RcsbFvTrackDataElementInterface> = annotationHandler.values();
         let displayType: RcsbFvDisplayTypes = RcsbFvDisplayTypes.BLOCK;
         if (data.length > 0 && data[0].end == null) {
             displayType = RcsbFvDisplayTypes.PIN;
@@ -79,8 +79,8 @@ export class AnnotationCollectorHelper {
         };
     }
 
-    private static buildRcsbFvRowConfigArea(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-        const data: Array<RcsbFvTrackDataElementInterface> = Array.from(annotationHandler.values());
+    private static buildRcsbFvRowConfigArea(annotationHandler: AnnotationTrack, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
+        const data: Array<RcsbFvTrackDataElementInterface> = annotationHandler.values();
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
         const displayType: RcsbFvDisplayTypes = annConfig.display;
         const displayColor:string|RcsbFvColorGradient = annConfig.color;
@@ -112,8 +112,8 @@ export class AnnotationCollectorHelper {
         };
     }
 
-    private static buildRcsbFvRowConfigBlockArea(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-        const data: Array<RcsbFvTrackDataElementInterface> = Array.from(annotationHandler.values());
+    private static buildRcsbFvRowConfigBlockArea(annotationHandler: AnnotationTrack, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
+        const data: Array<RcsbFvTrackDataElementInterface> = annotationHandler.values();
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
         const displayType: RcsbFvDisplayTypes = annConfig.display;
         const displayColor:string|RcsbFvColorGradient = annConfig.color;
@@ -134,8 +134,8 @@ export class AnnotationCollectorHelper {
         };
     }
 
-    private static buildRcsbFvRowConfigComposite(annotationHandler: AnnotationTransformer, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-        const data: Array<RcsbFvTrackDataElementInterface> = Array.from(annotationHandler.values());
+    private static buildRcsbFvRowConfigComposite(annotationHandler: AnnotationTrack, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
+        const data: Array<RcsbFvTrackDataElementInterface> = annotationHandler.values();
         let out: RcsbFvRowConfigInterface;
 
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;

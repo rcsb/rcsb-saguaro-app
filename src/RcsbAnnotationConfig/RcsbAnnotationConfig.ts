@@ -197,6 +197,12 @@ export class RcsbAnnotationConfig {
             this.annotationMap.get(type).provenanceList.add(provenanceName);
     }
 
+    addMultipleProvenance(type:string, provenanceList: Array<string>): void {
+        provenanceList.forEach(p=>{
+            this.addProvenance(type, p);
+        });
+    }
+
     getProvenanceList(type: string): Array<string>{
         if(this.annotationMap.has(type))
             return Array.from(this.annotationMap.get(type).provenanceList);

@@ -8,20 +8,20 @@ import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotation
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {IncreaseAnnotationValueType} from "./AnnotationCollectorInterface";
+import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "./AnnotationCollectorInterface";
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
 }
 
-export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInterface> {
+export class AnnotationTrack {
     private valueRange: {min:number;max:number} = {max:Number.MIN_SAFE_INTEGER, min:Number.MAX_SAFE_INTEGER};
     private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate;
     private readonly type: string;
     private readonly annotationConfig: RcsbAnnotationConfigInterface;
+    private readonly trackElementMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
 
     constructor(type: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator: PolymerEntityInstanceTranslate) {
-        super();
         this.entityInstanceTranslator = entityInstanceTranslator;
         this.type = type;
         this.annotationConfig = annotationConfig;
@@ -31,37 +31,43 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         return this.valueRange;
     }
 
-    public addElement(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, getAnnotationValue?:IncreaseAnnotationValueType): void {
-        computeFeatureGaps(d.feature_positions).forEach(p => {
+    public addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void {
+        computeFeatureGaps(ann.feature.feature_positions).forEach(p => {
             if(p.beg_seq_id != null) {
                 this.annotationRangeKeys(p).forEach(rangeKey=>{
-                    const key: string = rangeKey.join(":");
-                    if (!this.has(key)) {
-                        const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
-                        if(this.annotationConfig?.transformToNumerical || getAnnotationValue)
-                            transformToNumerical(this.type, targetId, rangeKey, key, a, d, p, getAnnotationValue);
-                        const translateContext: TranslateContextInterface = {
-                            from:reference,
-                            to:source,
-                            queryId:queryId,
-                            targetId:targetId
-                        };
-                        this.addAuthorResIds(a,translateContext);
-                        this.set(key,a);
-                        if(p.values instanceof Array)
-                            this.expandValues(a, p.values, translateContext);
-                    }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.get(key).value === "number"){
-                        (this.get(key).value as number) += typeof getAnnotationValue === "function" ? getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
-                        if(this.get(key).value > this.valueRange.max)
-                            this.valueRange.max = this.get(key).value as number;
-                        if(this.get(key).value < this.valueRange.min)
-                            this.valueRange.min = this.get(key).value as number;
-                    }
-                    if(typeof d.description === "string")
-                        this.get(key).description.push(d.description);
+                    this.addRange(ann.reference, ann.queryId, ann.source, ann.targetId, ann.feature, p, rangeKey, annotationProcessing);
                 });
             }
         });
+    }
+
+    public size(): number{
+        return this.trackElementMap.size;
+    }
+
+    public forEach(f:(ann:RcsbFvTrackDataElementInterface,loc:string)=>void): void{
+        this.trackElementMap.forEach((ann,loc)=>{
+            f(ann,loc);
+        });
+    }
+
+    public addAll(trackElementsMap: AnnotationTrack, color?: string ): void{
+        trackElementsMap.forEach((ann,loc)=>{
+            ann.color = color ?? ann.color;
+            this.trackElementMap.set(loc,ann);
+        })
+    }
+
+    public getTrackProvenance(): Set<string> {
+        return new Set<string>( Array.from(this.trackElementMap.values()).map(e=>e.provenanceName) );
+    }
+
+    public set(loc:string, ann:RcsbFvTrackDataElementInterface): void {
+        this.trackElementMap.set(loc,ann);
+    }
+
+    public values(): Array<RcsbFvTrackDataElementInterface>{
+        return Array.from(this.trackElementMap.values());
     }
 
     private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance:string): RcsbFvTrackDataElementInterface{
@@ -75,7 +81,7 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
             }
         }
 
-        if(p.values instanceof Array){
+        if(p.values instanceof Array && p.values.length > 0){
             if(Math.max(...p.values) > this.valueRange.max)
                 this.valueRange.max = Math.max(...p.values)
             if(Math.min(...p.values) < this.valueRange.min)
@@ -114,13 +120,50 @@ export class AnnotationTransformer extends Map<string,RcsbFvTrackDataElementInte
         };
     }
 
+    private addRange(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, p: FeaturePositionGaps, rangeKey: number[], annotationProcessing?:AnnotationProcessingInterface): void{
+        const key: string = rangeKey.join(":");
+        if (!this.trackElementMap.has(key)) {
+            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
+            if(this.annotationConfig?.transformToNumerical)
+                this.transformToNumerical(targetId, rangeKey, key, a, d, p, annotationProcessing?.getAnnotationValue);
+            if(typeof annotationProcessing?.addTrackElementCallback === "function")
+                annotationProcessing?.addTrackElementCallback({type:this.type,targetId:targetId,positionKey:key,d:d,p:p})
+            const translateContext: TranslateContextInterface = {
+                from:reference,
+                to:source,
+                queryId:queryId,
+                targetId:targetId
+            };
+            this.addAuthorResIds(a,translateContext);
+            this.trackElementMap.set(key,a);
+            if(p.values instanceof Array)
+                this.expandValues(a, p.values, translateContext);
+        }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.trackElementMap.get(key).value === "number"){
+            (this.trackElementMap.get(key).value as number) +=
+                typeof annotationProcessing?.getAnnotationValue === "function" ? annotationProcessing.getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
+            if(this.trackElementMap.get(key).value > this.valueRange.max)
+                this.valueRange.max = this.trackElementMap.get(key).value as number;
+            if(this.trackElementMap.get(key).value < this.valueRange.min)
+                this.valueRange.min = this.trackElementMap.get(key).value as number;
+        }
+        if(typeof d.description === "string")
+            this.trackElementMap.get(key).description.push(d.description);
+    }
+
+    private transformToNumerical(targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, getAnnotationValue?:IncreaseAnnotationValueType): void{
+        if(typeof getAnnotationValue === "function")
+            a.value =  getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p});
+        a.begin = rangeKey[0];
+        a.end = rangeKey[0];
+    }
+
     private expandValues(e: RcsbFvTrackDataElementInterface, values: Array<number>, translateContext: TranslateContextInterface): void{
         values.forEach((v,i)=>{
             if(i>0){
                 const key:string = (e.begin+i).toString();
                 const a: RcsbFvTrackDataElementInterface = {...e, begin:(e.begin+i), end:null, oriBegin:e.oriBegin ?(e.oriBegin+i) : null, oriEnd:null, value:v};
                 this.addAuthorResIds(a, translateContext);
-                this.set(key, a);
+                this.trackElementMap.set(key, a);
             }
         });
     }
@@ -199,12 +242,4 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
         }
     });
     return out;
-}
-
-function transformToNumerical(type: string, targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, getAnnotationValue?:IncreaseAnnotationValueType): void{
-    if(typeof getAnnotationValue === "function"){
-        a.value = getAnnotationValue({type:type,targetId:targetId,positionKey:key,d:d,p:p});
-    }
-    a.begin = rangeKey[0];
-    a.end = rangeKey[0];
 }

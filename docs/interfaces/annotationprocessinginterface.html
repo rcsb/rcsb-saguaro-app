@@ -81,8 +81,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="annotationprocessinginterface.html#addtrackelementcallback" class="tsd-kind-icon">add<wbr>Track<wbr>Element<wbr>Callback</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="annotationprocessinginterface.html#computeannotationvalue" class="tsd-kind-icon">compute<wbr>Annotation<wbr>Value</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="annotationprocessinginterface.html#increaseannotationvalue" class="tsd-kind-icon">increase<wbr>Annotation<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="annotationprocessinginterface.html#getannotationvalue" class="tsd-kind-icon">get<wbr>Annotation<wbr>Value</a></li>
 							</ul>
 						</section>
 					</div>
@@ -91,12 +92,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="computeannotationvalue" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> compute<wbr>Annotation<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">compute<wbr>Annotation<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>annotationTracks<span class="tsd-signature-symbol">: </span><a href="../classes/annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/annotationtransformer.html" class="tsd-signature-type">AnnotationTransformer</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+					<a name="addtrackelementcallback" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> add<wbr>Track<wbr>Element<wbr>Callback</h3>
+					<div class="tsd-signature tsd-kind-icon">add<wbr>Track<wbr>Element<wbr>Callback<span class="tsd-signature-symbol">:</span> <a href="../globals.html#increaseannotationvaluetype" class="tsd-signature-type">IncreaseAnnotationValueType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L13">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L16">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="computeannotationvalue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> compute<wbr>Annotation<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">compute<wbr>Annotation<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>annotationTracks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/annotationtrack.html" class="tsd-signature-type">AnnotationTrack</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L15">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:15</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -104,14 +115,14 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-signature">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>annotationTracks<span class="tsd-signature-symbol">: </span><a href="../classes/annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/annotationtransformer.html" class="tsd-signature-type">AnnotationTransformer</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>annotationTracks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/annotationtrack.html" class="tsd-signature-type">AnnotationTrack</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5>annotationTracks: <a href="../classes/annotationtransformer.html#map" class="tsd-signature-type">Map</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/annotationtransformer.html" class="tsd-signature-type">AnnotationTransformer</a><span class="tsd-signature-symbol">&gt;</span></h5>
+												<h5>annotationTracks: <span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="../classes/annotationtrack.html" class="tsd-signature-type">AnnotationTrack</a><span class="tsd-signature-symbol">&gt;</span></h5>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -122,12 +133,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="increaseannotationvalue" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> increase<wbr>Annotation<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">increase<wbr>Annotation<wbr>Value<span class="tsd-signature-symbol">:</span> <a href="../globals.html#increaseannotationvaluetype" class="tsd-signature-type">IncreaseAnnotationValueType</a></div>
+					<a name="getannotationvalue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> get<wbr>Annotation<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">get<wbr>Annotation<wbr>Value<span class="tsd-signature-symbol">:</span> <a href="../globals.html#increaseannotationvaluetype" class="tsd-signature-type">IncreaseAnnotationValueType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L12">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts#L14">src/RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -149,10 +160,13 @@
 						<a href="annotationprocessinginterface.html" class="tsd-kind-icon">Annotation<wbr>Processing<wbr>Interface</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="annotationprocessinginterface.html#addtrackelementcallback" class="tsd-kind-icon">add<wbr>Track<wbr>Element<wbr>Callback</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="annotationprocessinginterface.html#computeannotationvalue" class="tsd-kind-icon">compute<wbr>Annotation<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="annotationprocessinginterface.html#increaseannotationvalue" class="tsd-kind-icon">increase<wbr>Annotation<wbr>Value</a>
+								<a href="annotationprocessinginterface.html#getannotationvalue" class="tsd-kind-icon">get<wbr>Annotation<wbr>Value</a>
 							</li>
 						</ul>
 					</li>

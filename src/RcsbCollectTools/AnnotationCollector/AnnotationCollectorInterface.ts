@@ -6,13 +6,14 @@ import {
     QueryAnnotationsArgs,
     Source
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AnnotationTransformer, FeaturePositionGaps} from "./AnnotationTransformer";
+import {AnnotationTrack, FeaturePositionGaps} from "./AnnotationTrack";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
 export interface AnnotationProcessingInterface {
     getAnnotationValue?:IncreaseAnnotationValueType;
-    computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTransformer>)=>void;
+    computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTrack>)=>void;
+    addTrackElementCallback?:IncreaseAnnotationValueType;
 }
 
 interface CommonAnnotationInterface {

@@ -81,6 +81,7 @@
 						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#loaderspinner" class="tsd-kind-icon">loader<wbr>Spinner</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#suffix" class="tsd-kind-icon">suffix</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#suffixadditionalbutton" class="tsd-kind-icon">suffix<wbr>Additional<wbr>Button</a></li>
 							</ul>
@@ -89,12 +90,16 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#addselectbutton" class="tsd-kind-icon">add<wbr>Select<wbr>Button</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#buildloaderspinner" class="tsd-kind-icon">build<wbr>Loader<wbr>Spinner</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#buildselectbutton" class="tsd-kind-icon">build<wbr>Select<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#clearadditionalselectbutton" class="tsd-kind-icon">clear<wbr>Additional<wbr>Select<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#clearselectbutton" class="tsd-kind-icon">clear<wbr>Select<wbr>Button</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#hideelement" class="tsd-kind-icon">hide<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#innerbuildselectbutton" class="tsd-kind-icon">inner<wbr>Build<wbr>Select<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#innerclearselectbutton" class="tsd-kind-icon">inner<wbr>Clear<wbr>Select<wbr>Button</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#jsxbutton" class="tsd-kind-icon">jsx<wbr>Button</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="webtoolsmanager.html#showelement" class="tsd-kind-icon">show<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="webtoolsmanager.html#unmountloaderspinner" class="tsd-kind-icon">unmount<wbr>Loader<wbr>Spinner</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,12 +108,22 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="loaderspinner" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> loader<wbr>Spinner</h3>
+					<div class="tsd-signature tsd-kind-icon">loader<wbr>Spinner<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;_loaderSpinner&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L18">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 					<a name="suffix" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> suffix</h3>
 					<div class="tsd-signature tsd-kind-icon">suffix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;_buttonDiv&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L15">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:15</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L16">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -118,7 +133,7 @@
 					<div class="tsd-signature tsd-kind-icon">suffix<wbr>Additional<wbr>Button<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;_additionalButton&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L16">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:16</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L17">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -135,7 +150,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L23">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:23</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L25">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -155,6 +170,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="buildloaderspinner" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Loader<wbr>Spinner</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Loader<wbr>Spinner<span class="tsd-signature-symbol">(</span>elementId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L62">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:62</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="buildselectbutton" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Select<wbr>Button</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -164,7 +202,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L18">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:18</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L20">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -193,7 +231,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L48">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:48</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L50">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -216,7 +254,30 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L43">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:43</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L45">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:45</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="hideelement" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> hide<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">hide<wbr>Element<span class="tsd-signature-symbol">(</span>elementId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L82">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:82</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -239,7 +300,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L28">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:28</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L30">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -271,7 +332,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L52">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:52</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L54">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -297,7 +358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/0208feaf/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L39">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:39</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L41">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -310,6 +371,52 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Element</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="showelement" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> show<wbr>Element</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">show<wbr>Element<span class="tsd-signature-symbol">(</span>elementId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L88">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:88</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="unmountloaderspinner" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> unmount<wbr>Loader<wbr>Spinner</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">unmount<wbr>Loader<wbr>Spinner<span class="tsd-signature-symbol">(</span>elementId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/28a89182/src/RcsbFvWeb/WebTools/WebToolsManager.tsx#L73">src/RcsbFvWeb/WebTools/WebToolsManager.tsx:73</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -331,6 +438,9 @@
 						<a href="webtoolsmanager.html" class="tsd-kind-icon">Web<wbr>Tools<wbr>Manager</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="webtoolsmanager.html#loaderspinner" class="tsd-kind-icon">loader<wbr>Spinner</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="webtoolsmanager.html#suffix" class="tsd-kind-icon">suffix</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
@@ -338,6 +448,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="webtoolsmanager.html#addselectbutton" class="tsd-kind-icon">add<wbr>Select<wbr>Button</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="webtoolsmanager.html#buildloaderspinner" class="tsd-kind-icon">build<wbr>Loader<wbr>Spinner</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="webtoolsmanager.html#buildselectbutton" class="tsd-kind-icon">build<wbr>Select<wbr>Button</a>
@@ -349,6 +462,9 @@
 								<a href="webtoolsmanager.html#clearselectbutton" class="tsd-kind-icon">clear<wbr>Select<wbr>Button</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="webtoolsmanager.html#hideelement" class="tsd-kind-icon">hide<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="webtoolsmanager.html#innerbuildselectbutton" class="tsd-kind-icon">inner<wbr>Build<wbr>Select<wbr>Button</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
@@ -356,6 +472,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="webtoolsmanager.html#jsxbutton" class="tsd-kind-icon">jsx<wbr>Button</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="webtoolsmanager.html#showelement" class="tsd-kind-icon">show<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="webtoolsmanager.html#unmountloaderspinner" class="tsd-kind-icon">unmount<wbr>Loader<wbr>Spinner</a>
 							</li>
 						</ul>
 					</li>
