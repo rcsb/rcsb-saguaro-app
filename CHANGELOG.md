@@ -11,6 +11,10 @@
 - No more `Map` inheritance in `AnnotationTrack`. Now it delegates `Map` methods 
 - rcsb-saguaro update 1.11.0
 
+## [2.3.6] - 2021-10-04
+### Dependency update
+- Using rcsb-api-tools
+
 ## [2.3.5] - 2021-09-16
 ### Display Improvement
 - Loader spinner added
