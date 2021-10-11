@@ -14,9 +14,9 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {
-    AnnotationTransformer,
+    AnnotationTrack,
     FeaturePositionGaps
-} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTransformer";
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTrack";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
     InterpolationTypes,
@@ -193,7 +193,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
                 return feature.p.values[0];
             }
         },
-        computeAnnotationValue: (annotationTracks: Map<string, AnnotationTransformer>) => {
+        computeAnnotationValue: (annotationTracks: Map<string, AnnotationTrack>) => {
             annotationTracks.forEach((at,type)=>{
                 const nTargets: number = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite)) ? targets.get(type) : n;
                 at.forEach((ann,positionKey)=>{

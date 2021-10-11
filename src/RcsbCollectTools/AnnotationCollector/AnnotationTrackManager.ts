@@ -1,4 +1,4 @@
-import {AnnotationTransformer} from "./AnnotationTransformer";
+import {AnnotationTrack} from "./AnnotationTrack";
 import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
@@ -9,7 +9,7 @@ import {AnnotationCollectConfig} from "./AnnotationCollectorInterface";
 export class AnnotationTrackManager {
 
     private readonly rcsbAnnotationConfig: RcsbAnnotationConfig;
-    private readonly annotationTracks: Map<string, AnnotationTransformer> = new Map<string, AnnotationTransformer>();
+    private readonly annotationTracks: Map<string, AnnotationTrack> = new Map<string, AnnotationTrack>();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
 
     constructor(rcsbAnnotationConfig: RcsbAnnotationConfig) {
@@ -18,16 +18,13 @@ export class AnnotationTrackManager {
 
     public processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): void{
         requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data);
-        data.forEach(ann => {
-            ann.features.forEach(d => {
-                this.addAnnotationToTracks(requestConfig, ann, d);
-            });
-        });
+
+        this.addAnnotationToTracks(requestConfig, data);
         requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
         this.mergeTracks();
     }
 
-    public getAnnotationTracks(): Map<string, AnnotationTransformer>{
+    public getAnnotationTracks(): Map<string, AnnotationTrack>{
         return this.annotationTracks;
     }
 
@@ -45,12 +42,9 @@ export class AnnotationTrackManager {
                 const newType: string = this.rcsbAnnotationConfig.getMergedType(type);
                 const color: string  | RcsbFvColorGradient = this.rcsbAnnotationConfig.getConfig(type).color as string;
                 if(!this.annotationTracks.has(newType))
-                    this.annotationTracks.set(newType, new AnnotationTransformer(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
-                this.annotationTracks.get(type).forEach((ann,loc)=>{
-                    ann.color = color;
-                    this.annotationTracks.get(newType).set(loc,ann);
-                    this.rcsbAnnotationConfig.addProvenance(newType,ann.provenanceName);
-                });
+                    this.annotationTracks.set(newType, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
+                this.annotationTracks.get(newType).addAll(this.annotationTracks.get(type),color);
+                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType).getTrackProvenance()));
                 this.annotationTracks.delete(type);
             }
         });
@@ -72,16 +66,26 @@ export class AnnotationTrackManager {
         return type;
     }
 
-    private addAnnotationToTracks(requestConfig: AnnotationCollectConfig, ann: AnnotationFeatures, d: Feature): void{
-        if(this.rcsbAnnotationConfig.getConfig(d.type)?.ignore)
-            return;
-        const type: string = this.buildType(requestConfig, ann, d);
-        if (!this.annotationTracks.has(type)) {
-            this.annotationTracks.set(type, new AnnotationTransformer(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
-        }
-        this.rcsbAnnotationConfig.addProvenance(type, d.provenance_source);
-        //TODO getAnnotationValue should be d.type dependant
-        this.annotationTracks.get(type).addElement(requestConfig.reference, requestConfig.queryId ?? requestConfig.groupId, ann.source, ann.target_id, d, requestConfig.annotationProcessing?.getAnnotationValue);
+    private addAnnotationToTracks(requestConfig: AnnotationCollectConfig, data: Array<AnnotationFeatures>): void{
+        data.forEach(ann => {
+            ann.features.forEach(feature => {
+                if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
+                    return;
+                const type: string = this.buildType(requestConfig, ann, feature);
+                if (!this.annotationTracks.has(type)) {
+                    this.annotationTracks.set(type, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
+                }
+                this.rcsbAnnotationConfig.addProvenance(type, feature.provenance_source);
+                this.annotationTracks.get(type).addFeature({
+                        reference: requestConfig.reference,
+                        queryId: requestConfig.queryId ?? requestConfig.groupId,
+                        source: ann.source,
+                        targetId: ann.target_id,
+                        feature: feature
+                    }, requestConfig.annotationProcessing
+                );
+            });
+        });
     }
 
 }

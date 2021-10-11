@@ -2,6 +2,15 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [2.4.0] - 2021-10-08
+### Minor code refactor and improvements
+- `AnnotationCollectorInterface` new annotation features getter `getAnnotationFeatures`
+- `ExternalTrackBuilderInterface` interface to build tracks from the collected annotations and alignments
+- `SequenceCollectorInterface` new alignment response getter `getAlignmentResponse`
+- `SequenceCollectorInterface` `collect` method accepts a new optional argument `filter?:Array<string>` to filter targets in the alignment
+- No more `Map` inheritance in `AnnotationTrack`. Now it delegates `Map` methods 
+- rcsb-saguaro update 1.11.0
+
 ## [2.3.6] - 2021-10-04
 ### Dependency update
 - Using rcsb-api-tools
@@ -21,7 +30,7 @@
 
 ## [2.3.2] - 2021-08-30
 ### Bug correction
-- `AnnotationTransformer` `annotationConfig` bug fixed
+- `AnnotationTrack` `annotationConfig` bug fixed
 
 ## [2.3.1] - 2021-08-24
 ### Bug correction
@@ -110,7 +119,7 @@
 ## [1.4.0] - 2021-06-02
 ### Improvements
 - Typed types 
-- New class AnnotationTransformer transforms Feature into RcsbFvTrackDataElementInterface
+- New class AnnotationTrack transforms Feature into RcsbFvTrackDataElementInterface
 - Added commented code to handle FeaturePositionValue as Arrays
 
 ## [1.3.2] - 2021-05-31

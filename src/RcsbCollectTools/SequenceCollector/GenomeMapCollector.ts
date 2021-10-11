@@ -8,7 +8,7 @@ export class GenomeMapCollector implements SequenceCollectorInterface{
 
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
 
-    collect(requestConfig: CollectAlignmentInterface, filter?: Array<string>, entityInstanceMapCollector?: (instanceIds: Array<string>) => Promise<void>): Promise<SequenceCollectorDataInterface> {
+    collect(requestConfig: CollectAlignmentInterface, filter?:Array<string>, entityInstanceMapCollector?: (instanceIds: Array<string>) => Promise<null>): Promise<SequenceCollectorDataInterface> {
         return Promise.resolve(undefined);
     }
 
@@ -30,6 +30,4 @@ export class GenomeMapCollector implements SequenceCollectorInterface{
     getAlignmentResponse(): Promise<AlignmentResponse> {
         return Promise.resolve(undefined);
     }
-
-
 }

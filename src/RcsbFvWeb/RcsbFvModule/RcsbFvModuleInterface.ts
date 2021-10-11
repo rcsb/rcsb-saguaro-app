@@ -15,7 +15,6 @@ import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
     filters?:Array<FilterInput>;
-    batchFilters?:Array<FilterInput>;
     alignmentFilter?:Array<string>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;

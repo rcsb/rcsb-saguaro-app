@@ -3,8 +3,7 @@ import {
     AnnotationFeatures,
     FieldName, FilterInput,
     OperationType,
-    SequenceReference,
-    Source, Type,
+    Source, Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignedObservedRegion,

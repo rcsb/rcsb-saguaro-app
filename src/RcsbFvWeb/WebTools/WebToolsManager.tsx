@@ -70,9 +70,10 @@ export class WebToolsManager {
     }
 
     static buildLoaderSpinner(elementId: string){
+        WebToolsManager.hideElement(elementId);
         const div: HTMLDivElement = document.createElement<"div">("div");
         div.setAttribute("id", elementId+WebToolsManager.loaderSpinner);
-        document.getElementById(elementId).append(div);
+        document.getElementById(elementId).prepend(div);
         ReactDom.render(
             <LoaderSpinner/>,
             div
@@ -85,5 +86,19 @@ export class WebToolsManager {
             ReactDom.unmountComponentAtNode(document.getElementById(id));
             document.getElementById(id)?.remove();
         }
+        WebToolsManager.showElement(elementId);
     }
+
+    private static hideElement(elementId:string): void{
+        for(let i=0;i<document.getElementById(elementId).children.length;i++){
+            (document.getElementById(elementId).children.item(i) as HTMLElement).style.visibility = "hidden";
+        }
+    }
+
+    private static showElement(elementId:string): void{
+        for(let i=0;i<document.getElementById(elementId).children.length;i++){
+            (document.getElementById(elementId).children.item(i) as HTMLElement).style.visibility = "visible";
+        }
+    }
+
 }

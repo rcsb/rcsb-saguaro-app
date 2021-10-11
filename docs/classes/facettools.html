@@ -82,11 +82,7 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="facettools.html#getfacetcharttypebyattribute" class="tsd-kind-icon">get<wbr>Facet<wbr>Chart<wbr>Type<wbr>ByAttribute</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="facettools.html#getfacetstoreinterfacebyattribute" class="tsd-kind-icon">get<wbr>Facet<wbr>Store<wbr>Interface<wbr>ByAttribute</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="facettools.html#getfacetstores" class="tsd-kind-icon">get<wbr>Facet<wbr>Stores</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="facettools.html#getlayoutgrid" class="tsd-kind-icon">get<wbr>Layout<wbr>Grid</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="facettools.html#getresultdrilldowns" class="tsd-kind-icon">get<wbr>Result<wbr>Drilldowns</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="facettools.html#getreturntype" class="tsd-kind-icon">get<wbr>Return<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,19 +94,19 @@
 					<a name="getfacetcharttypebyattribute" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Facet<wbr>Chart<wbr>Type<wbr>ByAttribute</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Facet<wbr>Chart<wbr>Type<wbr>ByAttribute<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>chartConfig<span class="tsd-signature-symbol">?: </span><a href="../interfaces/chartconfiginterface.html" class="tsd-signature-type">ChartConfigInterface</a><span class="tsd-signature-symbol">; </span>chartType<span class="tsd-signature-symbol">: </span><a href="../enums/charttype.html" class="tsd-signature-type">ChartType</a><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Facet<wbr>Chart<wbr>Type<wbr>ByAttribute<span class="tsd-signature-symbol">(</span>facetMembers<span class="tsd-signature-symbol">: </span><a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>chartConfig<span class="tsd-signature-symbol">?: </span><a href="../interfaces/chartconfiginterface.html" class="tsd-signature-type">ChartConfigInterface</a><span class="tsd-signature-symbol">; </span>chartType<span class="tsd-signature-symbol">: </span><a href="../enums/charttype.html" class="tsd-signature-type">ChartType</a><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetTools.ts#L38">src/RcsbSeacrh/FacetTools.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetTools.ts#L20">src/RcsbSeacrh/FacetTools.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>type: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
+									<h5>facetMembers: <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>attribute: <span class="tsd-signature-type">string</span></h5>
@@ -132,94 +128,22 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="getfacetstoreinterfacebyattribute" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Facet<wbr>Store<wbr>Interface<wbr>ByAttribute</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Facet<wbr>Store<wbr>Interface<wbr>ByAttribute<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetTools.ts#L43">src/RcsbSeacrh/FacetTools.ts:43</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
-								</li>
-								<li>
-									<h5>attribute: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="getfacetstores" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Facet<wbr>Stores</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Facet<wbr>Stores<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetTools.ts#L23">src/RcsbSeacrh/FacetTools.ts:23</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="getlayoutgrid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Layout<wbr>Grid</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Layout<wbr>Grid<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetTools.ts#L28">src/RcsbSeacrh/FacetTools.ts:28</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>type: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
 					<a name="getresultdrilldowns" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Result<wbr>Drilldowns</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Result<wbr>Drilldowns<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a>, facets<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Facet</span><span class="tsd-signature-symbol">&gt;</span>, labelList<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbchartinterface.html" class="tsd-signature-type">RcsbChartInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Result<wbr>Drilldowns<span class="tsd-signature-symbol">(</span>facetMembers<span class="tsd-signature-symbol">: </span><a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span>, facets<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Facet</span><span class="tsd-signature-symbol">&gt;</span>, labelList<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, recursiveOut<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbchartinterface.html" class="tsd-signature-type">RcsbChartInterface</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbchartinterface.html" class="tsd-signature-type">RcsbChartInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetTools.ts#L47">src/RcsbSeacrh/FacetTools.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetTools.ts#L25">src/RcsbSeacrh/FacetTools.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>type: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
+									<h5>facetMembers: <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>facets: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Facet</span><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -227,31 +151,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> labelList: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbchartinterface.html" class="tsd-signature-type">RcsbChartInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="getreturntype" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> get<wbr>Return<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Return<wbr>Type<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReturnType</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetTools.ts#L33">src/RcsbSeacrh/FacetTools.ts:33</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
 								<li>
-									<h5>type: <a href="../globals.html#facetstoretype" class="tsd-signature-type">FacetStoreType</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> recursiveOut: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbchartinterface.html" class="tsd-signature-type">RcsbChartInterface</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ReturnType</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbchartinterface.html" class="tsd-signature-type">RcsbChartInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -276,19 +180,7 @@
 								<a href="facettools.html#getfacetcharttypebyattribute" class="tsd-kind-icon">get<wbr>Facet<wbr>Chart<wbr>Type<wbr>ByAttribute</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="facettools.html#getfacetstoreinterfacebyattribute" class="tsd-kind-icon">get<wbr>Facet<wbr>Store<wbr>Interface<wbr>ByAttribute</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="facettools.html#getfacetstores" class="tsd-kind-icon">get<wbr>Facet<wbr>Stores</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="facettools.html#getlayoutgrid" class="tsd-kind-icon">get<wbr>Layout<wbr>Grid</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
 								<a href="facettools.html#getresultdrilldowns" class="tsd-kind-icon">get<wbr>Result<wbr>Drilldowns</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="facettools.html#getreturntype" class="tsd-kind-icon">get<wbr>Return<wbr>Type</a>
 							</li>
 						</ul>
 					</li>

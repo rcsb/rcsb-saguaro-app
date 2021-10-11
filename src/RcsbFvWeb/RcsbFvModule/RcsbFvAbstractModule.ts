@@ -45,7 +45,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         await this.rcsbFv.updateBoardConfig({
             boardConfigData:{
                 ...this.boardConfigData,
-                rowTitleWidth:200,
+                rowTitleWidth:190,
                 onFvRenderStartsCallback:()=>{
                     WebToolsManager.unmountLoaderSpinner(this.elementId);
                 }

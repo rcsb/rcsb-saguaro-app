@@ -4,7 +4,7 @@ import {
     AlignmentResponse,
     AnnotationFeatures,
     QueryAlignmentArgs,
-    QueryAnnotationsArgs, QueryGroup_AlignmentArgs, QueryGroup_AnnotationsArgs
+    QueryAnnotationsArgs, QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,

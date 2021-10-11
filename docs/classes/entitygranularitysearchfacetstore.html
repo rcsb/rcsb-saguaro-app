@@ -87,11 +87,19 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#entityfacet" class="tsd-kind-icon">entity<wbr>Facet</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#entryfacet" class="tsd-kind-icon">entry<wbr>Facet</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entitygranularitysearchfacetstore.html#entityfacet" class="tsd-kind-icon">entity<wbr>Facet</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entitygranularitysearchfacetstore.html#entryfacet" class="tsd-kind-icon">entry<wbr>Facet</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#facetlayoutgrid" class="tsd-kind-icon">facet<wbr>Layout<wbr>Grid</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#instancefacet" class="tsd-kind-icon">instance<wbr>Facet</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entitygranularitysearchfacetstore.html#instancefacet" class="tsd-kind-icon">instance<wbr>Facet</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="entitygranularitysearchfacetstore.html#nonpolymerfacet" class="tsd-kind-icon">non<wbr>Polymer<wbr>Facet</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#returntype" class="tsd-kind-icon">return<wbr>Type</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#getfacetservice" class="tsd-kind-icon">get<wbr>Facet<wbr>Service</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="entitygranularitysearchfacetstore.html#getservices" class="tsd-kind-icon">get<wbr>Services</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,47 +107,54 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="entityfacet" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> entity<wbr>Facet</h3>
-					<div class="tsd-signature tsd-kind-icon">entity<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id:&quot;organism&quot;,title:&quot;ORGANISM&quot;,attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 5,mergeName: &quot;OTHER ORGANISMS&quot;},facet:{aggregation_type: AggregationType.Terms,attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName}}, {id: &quot;taxonomy&quot;,title: &quot;TAXONOMY&quot;,attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 5,mergeName: &quot;OTHER TAXONOMIES&quot;},facet: {aggregation_type: AggregationType.Terms,attribute: CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName}}]</span></div>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> entity<wbr>Facet</h3>
+					<div class="tsd-signature tsd-kind-icon">entity<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id:&quot;organism&quot;,title:&quot;ORGANISM&quot;,attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 5,mergeName: &quot;OTHER ORGANISMS&quot;},facet:{aggregation_type: AggregationType.Terms,attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path}}, {id: &quot;taxonomy&quot;,title: &quot;TAXONOMY&quot;,attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 5,mergeName: &quot;OTHER TAXONOMIES&quot;},facet: {aggregation_type: AggregationType.Terms,attribute: RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path}}]</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#entityfacet">entityFacet</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L74">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L76">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:76</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="entryfacet" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> entry<wbr>Facet</h3>
-					<div class="tsd-signature tsd-kind-icon">entry<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id: &quot;method&quot;,title: &quot;EXPERIMENTAL METHOD&quot;,attribute: CoreEntry.Exptl.Method,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 3,mergeName: &quot;OTHER METHODS&quot;},facet: {aggregation_type: AggregationType.Terms,attribute: CoreEntry.Exptl.Method,}},{id:&quot;resolution&quot;,title:&quot;RESOLUTION&quot;,attribute: CoreEntry.RcsbEntryInfo.DiffrnResolutionHigh.Value,chartType: ChartType.histogram,chartConfig:{tickIncrement:{origin: 0.5,increment: 0.5},mergeDomainMaxValue:4.5,domainMinValue: 0},facet:{aggregation_type: AggregationType.Histogram,attribute: CoreEntry.RcsbEntryInfo.DiffrnResolutionHigh.Value,interval: 0.5,min_interval_population: 1}}]</span></div>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> entry<wbr>Facet</h3>
+					<div class="tsd-signature tsd-kind-icon">entry<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id: &quot;method&quot;,title: &quot;EXPERIMENTAL METHOD&quot;,attribute: RcsbSearchMetadata.Exptl.Method.path,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 3,mergeName: &quot;OTHER METHODS&quot;},facet: {aggregation_type: AggregationType.Terms,attribute: RcsbSearchMetadata.Exptl.Method.path,}},{id:&quot;resolution&quot;,title:&quot;RESOLUTION&quot;,attribute: RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path,chartType: ChartType.histogram,chartConfig:{tickIncrement:{origin: 0.5,increment: 0.5},mergeDomainMaxValue:4.5,domainMinValue: 0},facet:{aggregation_type: AggregationType.Histogram,attribute: RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path,interval: 0.5,min_interval_population: 1}}]</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#entryfacet">entryFacet</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L12">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L14">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="facetlayoutgrid" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> facet<wbr>Layout<wbr>Grid</h3>
-					<div class="tsd-signature tsd-kind-icon">facet<wbr>Layout<wbr>Grid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [[CoreEntry.RcsbEntryInfo.DiffrnResolutionHigh.Value],[CorePolymerEntity.RcsbEntitySourceOrganism.NcbiScientificName, CorePolymerEntity.RcsbEntitySourceOrganism.NcbiParentScientificName],[CoreEntry.Exptl.Method, CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name],]</span></div>
+					<div class="tsd-signature tsd-kind-icon">facet<wbr>Layout<wbr>Grid<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [[RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path],[RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path],[RcsbSearchMetadata.Exptl.Method.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path],]</span></div>
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#facetlayoutgrid">facetLayoutGrid</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L103">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:103</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L138">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:138</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="instancefacet" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> instance<wbr>Facet</h3>
-					<div class="tsd-signature tsd-kind-icon">instance<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id:&quot;scop_class&quot;,title:&quot;SCOP CLASS&quot;,attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 5,mergeName: &quot;OTHER CLASSES&quot;},facet:{filter:{operator: Operator.ExactMatch,attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.Type,value: &#x27;SCOP&#x27;},facets:[{filter:{operator: Operator.Equals,value: 1,attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth},min_interval_population: 1,attribute: CorePolymerEntityInstance.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name,aggregation_type: AggregationType.Terms}]}}]</span></div>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> instance<wbr>Facet</h3>
+					<div class="tsd-signature tsd-kind-icon">instance<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id:&quot;scop_class&quot;,title:&quot;SCOP CLASS&quot;,attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,chartType: ChartType.barplot,chartConfig: {mostPopulatedGroups: 5,mergeName: &quot;OTHER CLASSES&quot;},facet:{filter:{operator: Operator.ExactMatch,attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.Type.path,value: &#x27;SCOP&#x27;},facets:[{filter:{operator: Operator.Equals,value: 1,attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth.path},min_interval_population: 1,attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,aggregation_type: AggregationType.Terms}]}}]</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#instancefacet">instanceFacet</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L46">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L48">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:48</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="nonpolymerfacet" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> non<wbr>Polymer<wbr>Facet</h3>
+					<div class="tsd-signature tsd-kind-icon">non<wbr>Polymer<wbr>Facet<span class="tsd-signature-symbol">:</span> <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = [{id:&quot;chemp_comp&quot;,title:&quot;CHEMICAL COMPONENT&quot;,attribute: RcsbSearchMetadata.ChemComp.Type.path,chartType: ChartType.barplot,chartConfig:{mostPopulatedGroups: 5,mergeName: &quot;OTHER COMPS&quot;},facet:{aggregation_type: AggregationType.Terms,attribute: RcsbSearchMetadata.ChemComp.Type.path,min_interval_population: 1}}]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L105">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:105</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -150,9 +165,54 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#returntype">returnType</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5746759d/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L109">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:109</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L144">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:144</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getfacetservice" class="tsd-anchor"></a>
+					<h3>get<wbr>Facet<wbr>Service</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Facet<wbr>Service<span class="tsd-signature-symbol">(</span>service<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Service</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"all"</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#getfacetservice">getFacetService</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L125">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:125</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>service: <span class="tsd-signature-type">Service</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"all"</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/facetmemberinterface.html" class="tsd-signature-type">FacetMemberInterface</a><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getservices" class="tsd-anchor"></a>
+					<h3>get<wbr>Services</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Services<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Service</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/facetstoreinterface.html">FacetStoreInterface</a>.<a href="../interfaces/facetstoreinterface.html#getservices">getServices</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts#L121">src/RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore.ts:121</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Service</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -171,20 +231,29 @@
 					<li class="current tsd-kind-class">
 						<a href="entitygranularitysearchfacetstore.html" class="tsd-kind-icon">Entity<wbr>Granularity<wbr>Search<wbr>Facet<wbr>Store</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="entitygranularitysearchfacetstore.html#entityfacet" class="tsd-kind-icon">entity<wbr>Facet</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="entitygranularitysearchfacetstore.html#entryfacet" class="tsd-kind-icon">entry<wbr>Facet</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="entitygranularitysearchfacetstore.html#facetlayoutgrid" class="tsd-kind-icon">facet<wbr>Layout<wbr>Grid</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="entitygranularitysearchfacetstore.html#instancefacet" class="tsd-kind-icon">instance<wbr>Facet</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="entitygranularitysearchfacetstore.html#nonpolymerfacet" class="tsd-kind-icon">non<wbr>Polymer<wbr>Facet</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="entitygranularitysearchfacetstore.html#returntype" class="tsd-kind-icon">return<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entitygranularitysearchfacetstore.html#getfacetservice" class="tsd-kind-icon">get<wbr>Facet<wbr>Service</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="entitygranularitysearchfacetstore.html#getservices" class="tsd-kind-icon">get<wbr>Services</a>
 							</li>
 						</ul>
 					</li>

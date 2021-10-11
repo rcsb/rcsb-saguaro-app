@@ -100,7 +100,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
             Array.from(this.annotationTrackManager.getAnnotationTracks().keys()).filter(type=>!this.rcsbAnnotationConfig.allTypes().has(type))
         ].forEach(annotationGroup=>{
             annotationGroup.forEach(type => {
-                if (this.annotationTrackManager.getAnnotationTracks().has(type) && this.annotationTrackManager.getAnnotationTracks().get(type).size > 0)
+                if (this.annotationTrackManager.getAnnotationTracks().has(type) && this.annotationTrackManager.getAnnotationTracks().get(type).size() > 0)
                     this.annotationsConfigData.push(
                         AnnotationCollectorHelper.buildAnnotationTrack(
                             this.annotationTrackManager.getAnnotationTracks().get(type),
