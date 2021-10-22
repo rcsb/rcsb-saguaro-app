@@ -1,4 +1,4 @@
-
+import {asyncScheduler, Subscription} from "rxjs";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
 export interface ChromosomeMetadataInterface {
@@ -26,14 +26,18 @@ interface NcbiSummaryInterface {
     }
 }
 
+//TODO are static attributes/methods safe in this case ?
+//TODO change `XMLHttpRequest` to `fetch`
+
 export class NcbiSummary {
 
     private static timeout = 3000;
     private static httpTimeout = 10000;
-    private static jobId: number = 0;
+    private static jobTask: Subscription | null = null;
 
     public static requestChromosomeData(chrId: string): Promise<ChromosomeMetadataInterface>{
-        window.clearTimeout(NcbiSummary.jobId);
+        if(NcbiSummary.jobTask)
+            NcbiSummary.jobTask.unsubscribe();
         const urlPrefix:string  = (resource as any).ncbi_summary_nuccore.url;
         const urlSuffix: string = (resource as any).ncbi_summary_nuccore.url_suffix;
         return new Promise<ChromosomeMetadataInterface>((resolve, reject)=>{
@@ -45,7 +49,7 @@ export class NcbiSummary {
                 Http.send();
                 Http.onloadend = (e) => {
                     if(Http.responseText.length == 0){
-                        NcbiSummary.jobId = window.setTimeout(()=>{
+                        NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
                             recursiveRequest();
                         },NcbiSummary.timeout);
                     }else {
@@ -57,7 +61,9 @@ export class NcbiSummary {
                     }
                 };
                 Http.onerror = (e) => {
-                    NcbiSummary.jobId = window.setTimeout(()=>{
+                    if(NcbiSummary.jobTask)
+                        NcbiSummary.jobTask.unsubscribe();
+                    NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
                         recursiveRequest();
                     },NcbiSummary.timeout);
                 };
@@ -67,7 +73,8 @@ export class NcbiSummary {
     }
 
     public static requestTaxonomyData(taxId: string): Promise<TaxonomyMetadataInterface>{
-        window.clearTimeout(NcbiSummary.jobId);
+        if(NcbiSummary.jobTask)
+            NcbiSummary.jobTask.unsubscribe();
         const urlPrefix:string  = (resource as any).ncbi_summary_taxonomy.url;
         const urlSuffix: string = (resource as any).ncbi_summary_taxonomy.url_suffix;
         return new Promise<TaxonomyMetadataInterface>((resolve, reject)=>{
@@ -79,7 +86,7 @@ export class NcbiSummary {
                 Http.send();
                 Http.onloadend = (e) => {
                     if(Http.responseText.length == 0){
-                        NcbiSummary.jobId = window.setTimeout(()=>{
+                        NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
                             recursiveRequest();
                         },NcbiSummary.timeout);
                     }else {
@@ -89,7 +96,7 @@ export class NcbiSummary {
                     }
                 };
                 Http.onerror = (e) => {
-                    NcbiSummary.jobId = window.setTimeout(()=>{
+                    NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
                         recursiveRequest();
                     },NcbiSummary.timeout);
                 };

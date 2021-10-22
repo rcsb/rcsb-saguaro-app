@@ -1,3 +1,4 @@
+import {asyncScheduler} from "rxjs";
 import {QueryAlignmentArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 interface WorkerInterface {
@@ -31,13 +32,13 @@ export class RcsbFvAlignmentCollectorQueue {
     }
 
     public sendTask(request: QueryAlignmentArgs, callback: (data: any)=>void): void{
-        const availables:Array<WorkerInterface> = this.workerList.filter(d=>d.available);
-        if(availables.length > 0){
-            availables[0].available = false;
-            availables[0].worker.postMessage(request);
-            availables[0].worker.onmessage = (e) => {
+        const available:Array<WorkerInterface> = this.workerList.filter(d=>d.available);
+        if(available.length > 0){
+            available[0].available = false;
+            available[0].worker.postMessage(request);
+            available[0].worker.onmessage = (e) => {
                 callback(e.data);
-                availables[0].available = true;
+                available[0].available = true;
             }
         }else{
             this.taskQueue.push({request:request, callback: callback});
@@ -67,7 +68,7 @@ export class RcsbFvAlignmentCollectorQueue {
                     }
                 }
             });
-            setTimeout(()=>{
+            asyncScheduler.schedule(()=>{
                 this.recursiveExec();
             },1000);
         }
