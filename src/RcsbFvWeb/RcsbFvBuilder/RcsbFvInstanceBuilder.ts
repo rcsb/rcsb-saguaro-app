@@ -67,7 +67,8 @@ export class RcsbFvInstanceBuilder {
                     await RcsbFvInstanceBuilder.buildInstanceFv(
                         elementFvId,
                         instance.rcsbId,
-                        additionalConfig
+                        additionalConfig,
+                        instance
                     );
                     if (typeof config.onChangeCallback === "function")
                         config.onChangeCallback({
@@ -92,7 +93,7 @@ export class RcsbFvInstanceBuilder {
             label: group[0].groupLabel,
             options: group
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle:"INSTANCE", width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
-        const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig);
+        const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig, filteredInstanceList[index]);
         if (typeof config.onChangeCallback === "function")
             config.onChangeCallback({
                 pdbId: filteredInstanceList[index].entryId,
@@ -102,13 +103,21 @@ export class RcsbFvInstanceBuilder {
         return out;
     }
 
-    static async buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    static async buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig, rcsbContext?: PolymerEntityInstanceInterface): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=>{
             try {
                 const entryId: string = instanceId.split(TagDelimiter.instance)[0];
+                const asymId: string = instanceId.split(TagDelimiter.instance)[1];
                 RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvInstance, {
                     instanceId: instanceId,
-                    additionalConfig: additionalConfig,
+                    additionalConfig: {
+                        ...additionalConfig,
+                        rcsbContext: {
+                            authId: rcsbContext.authId,
+                            entryId: entryId,
+                            asymId: asymId
+                        }
+                    },
                     resolve: resolve
                 });
             }catch (e) {

@@ -5,7 +5,7 @@ import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvPairwiseAlignment extends RcsbFvAbstractModule {
 
-    async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const pab: PairwiseAlignmentBuilder = new PairwiseAlignmentBuilder(buildConfig.psa);
         const config: RcsbFvBoardConfigInterface = {
             rowTitleWidth: 120,
@@ -16,8 +16,10 @@ export class RcsbFvPairwiseAlignment extends RcsbFvAbstractModule {
         };
         this.boardConfigData = { ...this.boardConfigData, ...config};
         this.rowConfigData = buildConfig.psa.pairwiseView ? pab.buildPairwiseAlignment() : pab.buildReferenceAlignment();
-        await this.display();
         return void 0;
+    }
+
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
     }
 
 }

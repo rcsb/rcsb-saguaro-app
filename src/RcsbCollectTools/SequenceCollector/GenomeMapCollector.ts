@@ -3,6 +3,7 @@ import {CollectAlignmentInterface, SequenceCollectorInterface} from "./SequenceC
 import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export class GenomeMapCollector implements SequenceCollectorInterface{
 
@@ -29,6 +30,9 @@ export class GenomeMapCollector implements SequenceCollectorInterface{
 
     getAlignmentResponse(): Promise<AlignmentResponse> {
         return Promise.resolve(undefined);
+    }
+
+    setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
     }
 
 }

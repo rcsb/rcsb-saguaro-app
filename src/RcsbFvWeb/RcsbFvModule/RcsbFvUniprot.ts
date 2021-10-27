@@ -14,10 +14,10 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         super(elementId, rcsbFv);
     }
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const upAcc: string = buildConfig.upAcc;
         const source: Array<Source> = [Source.Uniprot];
-        const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
+        this.alignmentTracks = await this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
@@ -25,7 +25,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
             fitTitleWidth:true,
             excludeFirstRowLink: true
         });
-        const annResult: Array<RcsbFvRowConfigInterface> = await this.annotationCollector.collect({
+        this.annotationTracks = await this.annotationCollector.collect({
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:source,
@@ -33,9 +33,14 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         });
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
-        this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ? seqResult.sequence.concat(annResult).concat(seqResult.alignment) : seqResult.sequence.concat(annResult);
-        await this.display();
         return void 0;
+    }
+
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+        this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ?
+            this.alignmentTracks.sequence.concat(this.annotationTracks).concat(this.alignmentTracks.alignment)
+            :
+            this.alignmentTracks.sequence.concat(this.annotationTracks);
     }
 
 }

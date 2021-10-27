@@ -21,7 +21,13 @@ export class RcsbFvEntityBuilder {
                     config: {
                         entityId: entityId,
                         elementSelectId: elementSelectId,
-                        additionalConfig:additionalConfig(),
+                        additionalConfig:{
+                            rcsbContext:{
+                                entryId: entityId.split(TagDelimiter.entity)[0],
+                                entityId: entityId.split(TagDelimiter.entity)[1]
+                            },
+                            ...additionalConfig()
+                        },
                         resolve:resolve
                     }
                 });
@@ -56,7 +62,13 @@ export class RcsbFvEntityBuilder {
             const entryId: string = entityId.split(TagDelimiter.entity)[0];
             RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvEntity, {
                 entityId: entityId,
-                additionalConfig: additionalConfig(),
+                additionalConfig: {
+                    rcsbContext:{
+                        entryId: entityId.split(TagDelimiter.entity)[0],
+                        entityId: entityId.split(TagDelimiter.entity)[1]
+                    },
+                    ...additionalConfig()
+                },
                 resolve:resolve
             });
         });
@@ -67,7 +79,13 @@ export class RcsbFvEntityBuilder {
              const entryId: string = entityId.split(TagDelimiter.entity)[0];
              RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvEntity, {
                  entityId: entityId,
-                 additionalConfig: additionalConfig,
+                 additionalConfig: {
+                     rcsbContext:{
+                         entryId: entityId.split(TagDelimiter.entity)[0],
+                         entityId: entityId.split(TagDelimiter.entity)[1]
+                     },
+                     ...additionalConfig
+                 },
                  resolve: resolve
              });
          });

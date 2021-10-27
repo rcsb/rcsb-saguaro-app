@@ -18,6 +18,7 @@ import {Subject} from "rxjs";
 import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationTrackManager} from "./AnnotationTrackManager";
+import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export class AnnotationCollector implements AnnotationCollectorInterface{
 
@@ -32,6 +33,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     private readonly annotationTrackManager: AnnotationTrackManager;
     private annotationFeatures: Array<AnnotationFeatures>;
     private readonly annotationFeaturesSubject: Subject<Array<AnnotationFeatures>> = new Subject<Array<AnnotationFeatures>>();
+    private externalTrackBuilder: ExternalTrackBuilderInterface;
 
     constructor(acm?: AnnotationConfigInterface) {
         this.rcsbAnnotationConfig = new RcsbAnnotationConfig(acm);
@@ -45,7 +47,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
             const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
             this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
         }
-        this.processRcsbPdbAnnotations(requestConfig);
+        this.processRcsbPdbAnnotations({externalAnnotationTrackBuilder: this.externalTrackBuilder, ...requestConfig});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();
         return this.annotationsConfigData;
@@ -58,6 +60,10 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
         this.annotationTrackManager.setPolymerEntityInstanceTranslator(p);
         this.polymerEntityInstanceTranslator = p;
+    }
+
+    public setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
+        this.externalTrackBuilder = externalTrackBuilder;
     }
 
     public async getFeatures(): Promise<Array<Feature>>{

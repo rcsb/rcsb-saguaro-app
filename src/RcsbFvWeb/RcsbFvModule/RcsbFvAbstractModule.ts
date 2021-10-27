@@ -4,7 +4,10 @@ import {
     RcsbFvRowConfigInterface
 } from '@rcsb/rcsb-saguaro';
 
-import {SequenceCollector} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
+import {
+    SequenceCollector,
+    SequenceCollectorDataInterface
+} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
@@ -12,6 +15,8 @@ import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCol
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {WebToolsManager} from "../WebTools/WebToolsManager";
+import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 
 
 
@@ -26,6 +31,9 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     protected readonly sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
+
+    protected alignmentTracks: SequenceCollectorDataInterface;
+    protected annotationTracks: Array<RcsbFvRowConfigInterface>;
 
     private activeDisplayFlag: boolean = false;
 
@@ -44,8 +52,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         console.log("Starting display");
         await this.rcsbFv.updateBoardConfig({
             boardConfigData:{
-                ...this.boardConfigData,
                 rowTitleWidth:190,
+                ...this.boardConfigData,
                 onFvRenderStartsCallback:()=>{
                     WebToolsManager.unmountLoaderSpinner(this.elementId);
                 }
@@ -81,5 +89,39 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         this.boardConfigData = {...this.boardConfigData, ...config};
     }
 
-    abstract async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
+    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>{
+        if(buildConfig.additionalConfig?.externalTrackBuilder)
+            this.setExternalTrackBuilder(buildConfig.additionalConfig?.externalTrackBuilder);
+        await this.protectedBuild(buildConfig);
+        if(buildConfig.additionalConfig?.externalTrackBuilder)
+            await this.buildExternalTracks(buildConfig.additionalConfig.externalTrackBuilder, buildConfig.additionalConfig?.rcsbContext);
+        this.concatAlignmentAndAnnotationTracks(buildConfig);
+        await this.display();
+        return void 0;
+    }
+
+    protected abstract async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
+    protected abstract concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void;
+
+    private async buildExternalTracks(externalTrackBuilder: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {
+        if(typeof externalTrackBuilder.processAlignmentAndFeatures === "function")
+            externalTrackBuilder.processAlignmentAndFeatures({
+                annotations:await this.annotationCollector.getAnnotationFeatures(),
+                alignments: await this.sequenceCollector.getAlignmentResponse(),
+                rcsbContext: rcsbContext
+            });
+        if(typeof externalTrackBuilder.addTo === "function")
+            externalTrackBuilder.addTo({
+                alignmentTracks: this.alignmentTracks,
+                annotationTracks: this.annotationTracks,
+                rcsbContext: rcsbContext
+            });
+        return void 0;
+    }
+
+    private setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
+        this.annotationCollector.setExternalTrackBuilder(externalTrackBuilder);
+        this.sequenceCollector.setExternalTrackBuilder(externalTrackBuilder);
+    }
+
 }

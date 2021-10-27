@@ -1,18 +1,14 @@
-import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
-import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {
     RcsbFvAdditionalConfig,
-    RcsbFvModuleInterface,
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
-import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
 
 export class RcsbFvChromosomeBuilder {
 
@@ -87,7 +83,14 @@ export class RcsbFvChromosomeBuilder {
                         entityId: entityId,
                         chrId: chrId,
                         elementSelectId: elementSelectId,
-                        additionalConfig:additionalConfig,
+                        additionalConfig:{
+                            rcsbContext:{
+                                entryId: entityId.split(TagDelimiter.entity)[0],
+                                entityId: entityId.split(TagDelimiter.entity)[1],
+                                chrId: chrId
+                            },
+                            ...additionalConfig
+                        },
                         resolve:resolve
                     }
                 });

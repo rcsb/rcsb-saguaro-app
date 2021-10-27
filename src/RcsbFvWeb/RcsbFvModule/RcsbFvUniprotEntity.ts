@@ -5,12 +5,12 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import { RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 
 export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const upAcc: string = buildConfig.upAcc;
         const entityId: string = buildConfig.entityId;
         const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig
@@ -20,14 +20,14 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             source: Source.PdbEntity,
             values:[entityId]
         }];
-        const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
+        this.alignmentTracks = await this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
             filterByTargetContains: entityId,
             excludeAlignmentLinks: true
         });
-        const annResult: Array<RcsbFvRowConfigInterface> = await this.annotationCollector.collect({
+        this.annotationTracks = await this.annotationCollector.collect({
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:additionalConfig?.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],
@@ -36,10 +36,12 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
         });
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
-        this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
-        await this.display();
         return void 0;
 
+    }
+
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+        this.rowConfigData = this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks);
     }
 
 }

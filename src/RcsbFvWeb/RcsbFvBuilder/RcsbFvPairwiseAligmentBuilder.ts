@@ -12,7 +12,13 @@ export class RcsbFvPairwiseAligmentBuilder {
                      fvModuleI: RcsbFvPairwiseAlignment,
                      config: {
                          psa: psa,
-                         additionalConfig:additionalConfig,
+                         additionalConfig:{
+                             rcsbContext:{
+                                 queryId:psa.queryId,
+                                 targetId:psa.targetId
+                             },
+                             ...additionalConfig
+                         },
                          resolve:resolve
                      }
                  });

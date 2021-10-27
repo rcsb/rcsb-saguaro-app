@@ -2,6 +2,15 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.1.0] - 2021-10-27
+### External track builder improvements
+- `ExternalTrackBuilderInterface` available through `RcsbFvAdditionalConfig` for all `RcsbFvBuilder` types.
+In addition, it includes the query context as additional parameter for processing and addition methods.
+  - `processAlignmentAndFeatures` includes the query context as part of the input parameters
+  - `addTo` includes the query context as part of the input parameters
+  - `filterFeatures` new method for filtering positional features
+  - `filterAlignments` new method for filtering alignment data
+
 ## [3.0.0] - 2021-10-15
 ### Minor code refactor
 Changed `setTimeout` calls to 'rxjs' `asyncScheduler`
