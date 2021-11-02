@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.1.1] - 2021-11-02
+### Bug fix
+- `RcsbFvAdditionalConfig` missing in `RcsbFvBuilder.buildMultipleInstanceSequenceFv` fixed 
+
 ## [3.1.0] - 2021-10-27
 ### External track builder improvements
 - `ExternalTrackBuilderInterface` available through `RcsbFvAdditionalConfig` for all `RcsbFvBuilder` types.
