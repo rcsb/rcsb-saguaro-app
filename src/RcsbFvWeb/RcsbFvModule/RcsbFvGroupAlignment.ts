@@ -26,9 +26,9 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             this.sequenceCollector = new SequenceCollector();
     }
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
 
-        const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
+        this.alignmentTracks = await this.sequenceCollector.collect({
             group: buildConfig.group,
             groupId: buildConfig.groupId,
             filter: buildConfig.additionalConfig?.alignmentFilter,
@@ -41,20 +41,15 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
         }, buildConfig.additionalConfig?.alignmentFilter);
 
-        if(buildConfig.additionalConfig?.externalTrackBuilder){
-            buildConfig.additionalConfig.externalTrackBuilder.processAlignmentAndFeatures({
-                alignments: await this.sequenceCollector.getAlignmentResponse()
-            })
-            buildConfig.additionalConfig.externalTrackBuilder.addTo({
-                alignmentTracks: seqResult
-            });
-        }
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
-        this.rowConfigData =  seqResult.sequence ? seqResult.sequence.concat(seqResult.alignment) : seqResult.alignment;
-        await this.display();
 
         return void 0;
+    }
+
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+        this.rowConfigData =  this.alignmentTracks.sequence ? this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment) : this.alignmentTracks.alignment;
+        console.log(this.rowConfigData);
     }
 
 }

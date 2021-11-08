@@ -17,9 +17,10 @@ export class AnnotationTrackManager {
     }
 
     public processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): void{
-        requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data);
-
-        this.addAnnotationToTracks(requestConfig, data);
+        this.addAnnotationToTracks(
+            requestConfig,
+            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ? requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data) : data
+        );
         requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
         this.mergeTracks();
     }

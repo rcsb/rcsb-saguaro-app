@@ -24,7 +24,21 @@ export class RcsbFvProteinSequenceBuilder {
                 RcsbFvCoreBuilder.createFv({
                     elementId: elementId,
                     fvModuleI: RcsbFvProteinSequence,
-                    config: {queryId:config.queryId, from:config.reference, to:alignmentSource, sources:sources, additionalConfig:{hideAlignments:config.hideAlignments,bottomAlignments:config.bottomAlignments}, resolve:resolve}
+                    config: {
+                        queryId:config.queryId,
+                        from:config.reference,
+                        to:alignmentSource,
+                        sources:sources,
+                        additionalConfig:{
+                            rcsbContext:{
+                                queryId: config.queryId
+                            },
+                            hideAlignments:config.hideAlignments,
+                            bottomAlignments:
+                            config.bottomAlignments
+                        },
+                        resolve:resolve
+                    }
                 });
             }catch(e) {
                 reject(e);

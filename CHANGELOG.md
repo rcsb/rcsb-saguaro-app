@@ -2,6 +2,25 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.1.1] - 2021-11-02
+### Bug fix
+- `RcsbFvAdditionalConfig` missing in `RcsbFvBuilder.buildMultipleInstanceSequenceFv` fixed 
+
+## [3.1.0] - 2021-10-27
+### External track builder improvements
+- `ExternalTrackBuilderInterface` available through `RcsbFvAdditionalConfig` for all `RcsbFvBuilder` types.
+In addition, it includes the query context as additional parameter for processing and addition methods.
+  - `processAlignmentAndFeatures` includes the query context as part of the input parameters
+  - `addTo` includes the query context as part of the input parameters
+  - `filterFeatures` new method for filtering positional features
+  - `filterAlignments` new method for filtering alignment data
+
+## [3.0.0] - 2021-10-15
+### Minor code refactor
+Changed `setTimeout` calls to 'rxjs' `asyncScheduler`
+### Breaking changes
+- rcsb-saguaro update 2.0.0
+
 ## [2.4.0] - 2021-10-08
 ### Minor code refactor and improvements
 - `AnnotationCollectorInterface` new annotation features getter `getAnnotationFeatures`
@@ -76,12 +95,13 @@
 - async/await promise style
 - Recursive waits migrated to rxjx Observables
 - PFV unique building method
-- RcsbFvWebApp.setBoardConfig  and RcsbFvWebApp.getRcsbFv have been removed. 
-  - Custom board config must be defined in RcsbFvAdditionalConfig (Some RcsbFvWebApp methods do not support additional configs yet)
-  - Builder methods return RcsbFvModulePublicInterface
 - Context Manager rcsbFv build new board config param 
 - Select button default value title bug fixed
 - rcsb-saguaro update 1.8.4
+#### Breaking changes
+- RcsbFvWebApp.setBoardConfig  and RcsbFvWebApp.getRcsbFv have been removed. 
+  - Custom board config must be defined in RcsbFvAdditionalConfig (Some RcsbFvWebApp methods do not support additional configs yet)
+  - Builder methods return RcsbFvModulePublicInterface
 
 ## [1.4.8] - 2021-06-15
 ### Optimization

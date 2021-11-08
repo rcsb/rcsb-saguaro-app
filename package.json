@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "2.4.0-groups.11",
+  "version": "3.1.1-groups.11",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
@@ -17,7 +17,7 @@
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
-    "buildDoc": "typedoc --mode file --out docs src",
+    "buildDoc": "typedoc --mode file --out docs src && sed -i '' '/---/d' docs/index.html",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "@rcsb/rcsb-api-tools": "^2.2.1-groups.9",
-    "@rcsb/rcsb-saguaro": "^1.11.0",
+    "@rcsb/rcsb-saguaro": "^2.0.0",
     "bootstrap": "^4.6.0",
     "ideogram": "^1.27.0",
     "rxjs": "^6.6.0",

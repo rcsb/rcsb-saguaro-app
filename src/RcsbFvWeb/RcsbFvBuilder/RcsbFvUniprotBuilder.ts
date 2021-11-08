@@ -67,7 +67,16 @@ export class RcsbFvUniprotBuilder {
                 RcsbFvCoreBuilder.createFv({
                     elementId: elementId,
                     fvModuleI: RcsbFvUniprot,
-                    config: {upAcc: upAcc, additionalConfig: additionalConfig, resolve: resolve}
+                    config: {
+                        upAcc: upAcc,
+                        additionalConfig: {
+                            rcsbContext:{
+                                upAcc:upAcc
+                            },
+                            ...additionalConfig
+                        },
+                        resolve: resolve
+                    }
                 });
             }catch(e) {
                 reject(e);
@@ -82,7 +91,14 @@ export class RcsbFvUniprotBuilder {
                 RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvUniprotEntity, {
                     upAcc: upAcc,
                     entityId: entityId,
-                    additionalConfig: additionalConfig,
+                    additionalConfig: {
+                        rcsbContext:{
+                            entryId: entityId.split(TagDelimiter.entity)[0],
+                            entityId: entityId.split(TagDelimiter.entity)[1],
+                            upAcc: upAcc,
+                        },
+                        ...additionalConfig
+                    },
                     resolve: resolve
                 });
             }catch (e) {
@@ -95,11 +111,19 @@ export class RcsbFvUniprotBuilder {
         return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
             try {
                 const entryId: string = entityId.split(TagDelimiter.entity)[0];
-                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvUniprotInstance, {
+                await RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvUniprotInstance, {
                     upAcc: upAcc,
                     entityId: entityId,
                     instanceId: instanceId,
-                    additionalConfig: additionalConfig,
+                    additionalConfig: {
+                        rcsbContext:{
+                            entryId: entityId.split(TagDelimiter.entity)[0],
+                            entityId: entityId.split(TagDelimiter.entity)[1],
+                            asymId: instanceId,
+                            upAcc: upAcc,
+                        },
+                        ...additionalConfig
+                    },
                     resolve: resolve
                 });
             }catch (e) {

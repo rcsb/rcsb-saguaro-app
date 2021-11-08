@@ -18,6 +18,7 @@ import {
 } from "./SequenceCollectorInterface";
 import {Subject} from "rxjs";
 import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
+import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export interface AlignedObservedRegion extends AlignedRegion {
     unModelled?:boolean;
@@ -34,7 +35,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
 
     private sequenceLength: number;
     private targets: Array<string> = new Array<string>();
-    private requestStatus: "pending"|"complete" = "pending";
+    private requestStatus: "pending"|"complete" = "complete";
     private dynamicDisplay: boolean = false;
 
     private readonly helper: SequenceCollectorHelper = new SequenceCollectorHelper();
@@ -43,6 +44,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
     private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
     private alignmentResponse: AlignmentResponse;
     private readonly alignmentResponseSubject: Subject<AlignmentResponse> = new Subject<AlignmentResponse>();
+    private externalTrackBuilder: ExternalTrackBuilderInterface;
 
     private tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion> = (region: AlignedRegion, commonContext: TranslateContextInterface) => {
         return [{...region,unModelled:false}];
@@ -54,6 +56,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<void>,
         tagObservedRegions?: (region: AlignedRegion, commonContext: TranslateContextInterface) => Array<AlignedObservedRegion>
     ): Promise<SequenceCollectorDataInterface> {
+        this.requestStatus = "pending";
 
         if(typeof tagObservedRegions === "function")
             this.tagObservedRegions = tagObservedRegions;
@@ -116,6 +119,10 @@ export class SequenceCollector implements SequenceCollectorInterface{
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
         this.helper.setPolymerEntityInstanceTranslator(p);
         this.polymerEntityInstanceTranslator = p;
+    }
+
+    public setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
+        this.externalTrackBuilder = externalTrackBuilder;
     }
 
     private complete(){

@@ -90,6 +90,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#alignmentresponse" class="tsd-kind-icon">alignment<wbr>Response</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#alignmentresponsesubject" class="tsd-kind-icon">alignment<wbr>Response<wbr>Subject</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#dynamicdisplay" class="tsd-kind-icon">dynamic<wbr>Display</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#externaltrackbuilder" class="tsd-kind-icon">external<wbr>Track<wbr>Builder</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#helper" class="tsd-kind-icon">helper</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#polymerentityinstancetranslator" class="tsd-kind-icon">polymer<wbr>Entity<wbr>Instance<wbr>Translator</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="sequencecollector.html#rcsbfvquery" class="tsd-kind-icon">rcsb<wbr>FvQuery</a></li>
@@ -112,6 +113,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sequencecollector.html#getsequencelength" class="tsd-kind-icon">get<wbr>Sequence<wbr>Length</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sequencecollector.html#gettargets" class="tsd-kind-icon">get<wbr>Targets</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#requestalignment" class="tsd-kind-icon">request<wbr>Alignment</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sequencecollector.html#setexternaltrackbuilder" class="tsd-kind-icon">set<wbr>External<wbr>Track<wbr>Builder</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="sequencecollector.html#setpolymerentityinstancetranslator" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="sequencecollector.html#tagobservedregions" class="tsd-kind-icon">tag<wbr>Observed<wbr>Regions</a></li>
 							</ul>
@@ -127,7 +129,7 @@
 					<div class="tsd-signature tsd-kind-icon">alignment<wbr>Response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">AlignmentResponse</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L44">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L45">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:45</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -137,7 +139,7 @@
 					<div class="tsd-signature tsd-kind-icon">alignment<wbr>Response<wbr>Subject<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">AlignmentResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;AlignmentResponse&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L45">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L46">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -147,7 +149,17 @@
 					<div class="tsd-signature tsd-kind-icon">dynamic<wbr>Display<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L38">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L39">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:39</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="externaltrackbuilder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> external<wbr>Track<wbr>Builder</h3>
+					<div class="tsd-signature tsd-kind-icon">external<wbr>Track<wbr>Builder<span class="tsd-signature-symbol">:</span> <a href="../interfaces/externaltrackbuilderinterface.html" class="tsd-signature-type">ExternalTrackBuilderInterface</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L47">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:47</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -157,7 +169,7 @@
 					<div class="tsd-signature tsd-kind-icon">helper<span class="tsd-signature-symbol">:</span> <a href="sequencecollectorhelper.html" class="tsd-signature-type">SequenceCollectorHelper</a><span class="tsd-signature-symbol"> = new SequenceCollectorHelper()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L40">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L41">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -167,7 +179,7 @@
 					<div class="tsd-signature tsd-kind-icon">polymer<wbr>Entity<wbr>Instance<wbr>Translator<span class="tsd-signature-symbol">:</span> <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L42">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L43">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:43</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -178,17 +190,17 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#rcsbfvquery">rcsbFvQuery</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L41">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L42">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:42</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="requeststatus" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> request<wbr>Status</h3>
-					<div class="tsd-signature tsd-kind-icon">request<wbr>Status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"pending"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"complete"</span><span class="tsd-signature-symbol"> = &quot;pending&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">request<wbr>Status<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"pending"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"complete"</span><span class="tsd-signature-symbol"> = &quot;complete&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L37">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L38">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -198,7 +210,7 @@
 					<div class="tsd-signature tsd-kind-icon">sequence<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L35">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L36">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">targets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Array&lt;string&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L36">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L37">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -218,7 +230,7 @@
 					<div class="tsd-signature tsd-kind-icon">targets<wbr>Subject<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;Array&lt;string&gt;&gt;()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L43">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L44">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:44</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -235,7 +247,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L126">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L133">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:133</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -258,7 +270,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L133">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L140">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:140</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -284,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L51">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L53">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -355,7 +367,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L162">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:162</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L169">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:169</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -372,7 +384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L121">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L128">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -390,7 +402,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#getalignmentresponse">getAlignmentResponse</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L98">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L101">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">AlignmentResponse</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -408,7 +420,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#getpolymerentityinstancetranslator">getPolymerEntityInstanceTranslator</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L112">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L115">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:115</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="polymerentityinstancetranslate.html" class="tsd-signature-type">PolymerEntityInstanceTranslate</a></h4>
@@ -426,7 +438,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#getsequencelength">getSequenceLength</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L108">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L111">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:111</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -444,7 +456,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#gettargets">getTargets</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L88">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L91">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:91</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -461,7 +473,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L181">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L188">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:188</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -471,6 +483,30 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">AlignmentResponse</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="setexternaltrackbuilder" class="tsd-anchor"></a>
+					<h3>set<wbr>External<wbr>Track<wbr>Builder</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>External<wbr>Track<wbr>Builder<span class="tsd-signature-symbol">(</span>externalTrackBuilder<span class="tsd-signature-symbol">: </span><a href="../interfaces/externaltrackbuilderinterface.html" class="tsd-signature-type">ExternalTrackBuilderInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#setexternaltrackbuilder">setExternalTrackBuilder</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L124">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:124</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>externalTrackBuilder: <a href="../interfaces/externaltrackbuilderinterface.html" class="tsd-signature-type">ExternalTrackBuilderInterface</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -485,7 +521,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/sequencecollectorinterface.html">SequenceCollectorInterface</a>.<a href="../interfaces/sequencecollectorinterface.html#setpolymerentityinstancetranslator">setPolymerEntityInstanceTranslator</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L116">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L119">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:119</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -508,7 +544,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/ab5b363b/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L47">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/9ee8cb04/src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts#L49">src/RcsbCollectTools/SequenceCollector/SequenceCollector.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -549,6 +585,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="sequencecollector.html#dynamicdisplay" class="tsd-kind-icon">dynamic<wbr>Display</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="sequencecollector.html#externaltrackbuilder" class="tsd-kind-icon">external<wbr>Track<wbr>Builder</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="sequencecollector.html#helper" class="tsd-kind-icon">helper</a>
@@ -602,6 +641,9 @@
 								<a href="sequencecollector.html#requestalignment" class="tsd-kind-icon">request<wbr>Alignment</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="sequencecollector.html#setexternaltrackbuilder" class="tsd-kind-icon">set<wbr>External<wbr>Track<wbr>Builder</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="sequencecollector.html#setpolymerentityinstancetranslator" class="tsd-kind-icon">set<wbr>Polymer<wbr>Entity<wbr>Instance<wbr>Translator</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -635,15 +677,16 @@
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>

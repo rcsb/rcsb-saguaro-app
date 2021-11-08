@@ -81,6 +81,60 @@
     /*module.then(result=>{
         console.log(result);
     });*/
+    /*const args = getJsonFromUrl();
+    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{},{
+        externalTrackBuilder:{
+            processAlignmentAndFeatures(data) {
+
+            },
+            filterFeatures(annotations) {
+                const data = [...annotations];
+                data.forEach(ann=>{
+                    ann.features = ann.features.filter(f=>(
+                        f.type === "DISORDER" || f.type === "HYDROPATHY"
+                    ));
+                })
+                return data;
+            },
+            addTo(tracks) {
+                if(tracks.rcsbContext.asymId === "A") {
+                    const myTrack = {
+                        trackId: "blockTrack",
+                        trackHeight: 20,
+                        trackColor: "#F9F9F9",
+                        titleFlagColor: "#53AD77",
+                        displayType: "block",
+                        displayColor: "#FF0000",
+                        rowTitle: "MY TRACK",
+                        trackData: [{
+                            begin: 30,
+                            end: 60
+                        }]
+                    }
+                    tracks.annotationTracks?.push(myTrack);
+                }else if(tracks.rcsbContext.asymId === "B") {
+                    const myTrack = {
+                        trackId: "blockTrack",
+                        trackHeight: 20,
+                        trackColor: "#F9F9F9",
+                        titleFlagColor: "#5377AD",
+                        displayType: "block",
+                        displayColor: "#00FF00",
+                        rowTitle: "MY TRACK",
+                        trackData: [{
+                            begin: 50,
+                            end: 80
+                        }]
+                    }
+                    tracks.annotationTracks?.push(myTrack);
+                }
+            }
+        }
+    });*/
+    /*const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P69905");
+    module.then(result=>{
+        console.log(result);
+    });*/
 </script>
 
 

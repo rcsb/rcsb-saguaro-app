@@ -21,6 +21,7 @@ import {
 } from "./SequenceCollectorInterface";
 import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 import {Operator} from "../../Helpers/Operator";
+import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {
 
@@ -29,6 +30,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     private sequenceCollector: SequenceCollector = new SequenceCollector();
     readonly rcsbFvQuery: RcsbClient = new RcsbClient();
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
+    private externalTrackBuilder: ExternalTrackBuilderInterface;
 
     public async collect(requestConfig: AlignmentCollectConfig, filter?: Array<string>): Promise<SequenceCollectorDataInterface> {
         const annotationFeatures: Array<AnnotationFeatures> = await this.collectUnmodeledRegions(requestConfig);
@@ -53,7 +55,13 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     }
 
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
+        this.sequenceCollector.setPolymerEntityInstanceTranslator(p);
         this.polymerEntityInstanceTranslator = p;
+    }
+
+    public setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
+        this.sequenceCollector.setExternalTrackBuilder(externalTrackBuilder);
+        this.externalTrackBuilder = externalTrackBuilder;
     }
 
     private loadObservedRegions(results : Array<AnnotationFeatures>){

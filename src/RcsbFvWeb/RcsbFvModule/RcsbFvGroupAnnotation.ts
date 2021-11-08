@@ -25,9 +25,9 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             this.sequenceCollector = new SequenceCollector();
     }
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    public async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
 
-        const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
+        this.alignmentTracks = await this.sequenceCollector.collect({
             group: buildConfig.group,
             groupId: buildConfig.groupId,
             filter: buildConfig.additionalConfig?.alignmentFilter,
@@ -40,7 +40,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
         });
 
-        const annResult: Array<RcsbFvRowConfigInterface> = await this.annotationCollector.collect({
+        this.annotationTracks = await this.annotationCollector.collect({
             group: buildConfig.group,
             groupId: buildConfig.groupId,
             sources:buildConfig.additionalConfig?.sources,
@@ -49,24 +49,13 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         });
 
-        if(buildConfig.additionalConfig?.externalTrackBuilder){
-            buildConfig.additionalConfig.externalTrackBuilder.processAlignmentAndFeatures({
-                annotations: await this.annotationCollector.getAnnotationFeatures(),
-                alignments: await this.sequenceCollector.getAlignmentResponse()
-            });
-            buildConfig.additionalConfig.externalTrackBuilder.addTo({
-                annotationTracks: annResult,
-                alignmentTracks: seqResult
-            });
-        }
-
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
-
-        this.rowConfigData = seqResult.sequence ? seqResult.sequence.concat(annResult) : annResult;
-        await this.display();
 
         return void 0;
     }
 
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+        this.rowConfigData = this.alignmentTracks.sequence ? this.alignmentTracks.sequence.concat(this.annotationTracks) : this.annotationTracks;
+    }
 }

@@ -24,6 +24,7 @@ export interface RcsbFvAdditionalConfig{
     sequenceCollector?: SequenceCollectorInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
     page?:{first:number,after:string};
+    rcsbContext?:Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string}>;
 }
 
 //TODO move psa & elementSelectId into additional config

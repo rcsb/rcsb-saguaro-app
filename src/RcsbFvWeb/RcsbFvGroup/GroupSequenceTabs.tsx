@@ -86,7 +86,6 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
         if(this.rendered.has(eventKey))
             return;
         this.rendered.add(eventKey);
-        console.log(this.filterInstances);
         switch (eventKey) {
             case "alignment":
                 alignment(eventKey.toString(), this.props.group, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities});
@@ -234,6 +233,7 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>f.name.includes("ligand"));
             })
+            return annotations;
         }
     };
 
@@ -288,9 +288,10 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
                     trackId: "annotationTrack_ALIGNMENT_FREQ",
                     displayType: RcsbFvDisplayTypes.MULTI_AREA,
                     trackColor: "#F9F9F9",
-                    displayColor: {thresholds:[], colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd",
-                            "#e6f5fd",
-                            "#ececec"]},
+                    displayColor: {
+                        thresholds:[],
+                        colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#ececec"]
+                    },
                     trackHeight: 20,
                     titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                     rowTitle: conservationName,
@@ -313,6 +314,7 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>(f.name != "automated matches"));
             })
+            return annotations;
         }
     };
 

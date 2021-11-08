@@ -671,7 +671,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         return new Promise<void>(((resolve, reject) => {
             ObservableHelper.oneTimeSubscription<void>(resolve, this.buildSubject);
             if(buildConfig.elementSelectId)
@@ -691,6 +691,9 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
             else
                 ObservableHelper.oneTimeSubscription<Array<string>>(resolve, this.targetsSubject);
         });
+    }
+
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
     }
 
 }

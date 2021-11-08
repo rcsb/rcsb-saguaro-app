@@ -1,3 +1,4 @@
+import {asyncScheduler, Subscription} from "rxjs";
 import {RcsbFvLocationViewInterface, RcsbFvTrackData} from "@rcsb/rcsb-saguaro";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
@@ -5,9 +6,10 @@ export class NcbiGenomeSequenceData {
     private static readonly urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
     private static readonly urlSuffix: string = (resource as any).ncbi_genome_sequence.url_suffix;
     public static update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
-        let process: number = 0;
+        let process: Subscription | null = null;
         return (where: RcsbFvLocationViewInterface) => {
-            window.clearTimeout(process);
+            if(process)
+                process.unsubscribe();
             return new Promise<RcsbFvTrackData>((resolve, reject) => {
                 const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
                 if (delta > 4) {
@@ -25,7 +27,7 @@ export class NcbiGenomeSequenceData {
                                 N++;
                                 console.warn("HTTP error while access URL: " + url + " - empty sequence - "+ N);
                                 if(N<4){
-                                    process = window.setTimeout(()=>{
+                                    process = asyncScheduler.schedule(()=>{
                                         getGenomeSequence();
                                     },timeout);
                                 }else{
@@ -43,7 +45,7 @@ export class NcbiGenomeSequenceData {
                             N++;
                             console.warn("HTTP error while access URL: " + url + " - "+ N);
                             if(N<4){
-                                process = window.setTimeout(()=>{
+                                process = asyncScheduler.schedule(()=>{
                                     getGenomeSequence();
                                 },timeout);
                             }else{

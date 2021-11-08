@@ -7,12 +7,10 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 
 export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
 
-    public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const upAcc: string = buildConfig.upAcc;
         const entityId:string = buildConfig.entityId;
         const instanceId: string = buildConfig.instanceId;
@@ -33,14 +31,14 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         }];
         if(additionalConfig != null && additionalConfig.filters!=null && additionalConfig.filters.length>0)
             filters = additionalConfig.filters;
-        const seqResult:SequenceCollectorDataInterface = await this.sequenceCollector.collect({
+        this.alignmentTracks = await this.sequenceCollector.collect({
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbInstance,
             filterByTargetContains: instanceId,
             excludeFirstRowLink: true
         });
-        const annResult: Array<RcsbFvRowConfigInterface> = await this.annotationCollector.collect({
+        this.annotationTracks = await this.annotationCollector.collect({
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:sources,
@@ -49,9 +47,11 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         });
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
-        this.rowConfigData = seqResult.sequence.concat(seqResult.alignment).concat(annResult);
-        await this.display();
         return void 0;
+    }
+
+    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+        this.rowConfigData = this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks);
     }
 
 }
