@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.2.1] - 2021-11-10
+### Minor configuration
+- Dropdown title configuration is exposed in `InstanceSequenceConfig` attribute `dropdownTitle` 
+
 ## [3.1.1] - 2021-11-02
 ### Bug fix
 - `RcsbFvAdditionalConfig` missing in `RcsbFvBuilder.buildMultipleInstanceSequenceFv` fixed 

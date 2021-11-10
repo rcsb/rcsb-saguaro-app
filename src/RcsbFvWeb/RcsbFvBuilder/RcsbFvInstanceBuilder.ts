@@ -16,6 +16,7 @@ export interface InstanceSequenceOnchangeInterface {
 }
 
 export interface InstanceSequenceConfig {
+    dropdownTitle?: string;
     defaultValue?: string|undefined|null;
     onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
     filterInstances?: Set<string>;
@@ -92,7 +93,7 @@ export class RcsbFvInstanceBuilder {
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, Array.from(groupedInstances.values()).map(group=>({
             label: group[0].groupLabel,
             options: group
-        })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle:"INSTANCE", width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
+        })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
         const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig, filteredInstanceList[index]);
         if (typeof config.onChangeCallback === "function")
             config.onChangeCallback({
