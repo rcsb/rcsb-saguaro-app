@@ -1,7 +1,7 @@
 import * as React from "react";
-import {VictoryAxis, VictoryBar, VictoryChart, VictoryContainer, VictoryHistogram} from "victory";
+import {VictoryAxis, VictoryBar, VictoryChart, VictoryContainer, VictoryHistogram, VictoryStack} from "victory";
 import {ReactNode} from "react";
-import {ChartViewInterface} from "./ChartViewInterface";
+import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 
@@ -13,26 +13,27 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
         super(props);
     }
 
-    private data(): {x:number;y:number}[]{
-        let data: {x:number;y:number}[] = [];
+    private data(data: ChartObjectInterface[]): {x:number;y:number}[]{
+        if(!data)
+            return [];
+        let out: {x:number;y:number}[] = [];
         if(this.props.config?.mergeDomainMaxValue) {
-            data = ChartTools.mergeDomainMaxValue(this.state.data, this.props.config.mergeDomainMaxValue);
+            out = ChartTools.mergeDomainMaxValue(data, this.props.config.mergeDomainMaxValue);
         }else{
-            data = ChartTools.labelsAsNumber(this.state.data);
+            out = ChartTools.labelsAsNumber(data);
         }
-        return data.map(d=>({x:d.x+this.props.config.histogramBinIncrement*0.5,y:d.y}));
+        return out.map(d=>({x:d.x+this.props.config.histogramBinIncrement*0.5,y:d.y}));
     }
 
     private xDomain(): [number, number]{
         return [
-            this.props.config.domainMinValue ?? Math.floor(Math.min(...this.data().map(d=>d.x))),
+            this.props.config.domainMinValue ?? Math.floor(Math.min(...this.data(this.state.data).map(d=>d.x),...this.data(this.state.subData).map(d=>d.x))),
             this.props.config?.mergeDomainMaxValue ?
                 Math.ceil(this.props.config?.mergeDomainMaxValue+this.props.config.histogramBinIncrement)
                 :
-                Math.ceil(Math.max(...this.data().map(d=>d.x))+this.props.config.histogramBinIncrement)
+                Math.ceil(Math.max(...this.data(this.state.data).map(d=>d.x),...this.data(this.state.subData).map(d=>d.x))+this.props.config.histogramBinIncrement)
         ]
     }
-
 
     private tickValues(): number[] | undefined {
         if(this.props.config?.tickIncrement){
@@ -46,7 +47,8 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
     }
 
     render():ReactNode {
-        const histData: {x:number;y:number}[] = this.data();
+        const histData: {x:number;y:number}[] = this.data(this.state.data);
+        const subData: {x:number;y:number}[] = this.data(this.state.subData);
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.xDomain();
         const nBins: number = (dom[1]-dom[0])/this.props.config.histogramBinIncrement;
@@ -58,18 +60,29 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
                     width={width}
                     domain={{x:this.xDomain()}}
                 >
-                    <VictoryBar
-                        barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
-                        alignment={"middle"}
-                        style={{
-                            data: {
-                                fill: "#5e94c3",
-                                stroke: "#325880",
-                                strokeWidth: 1
-                            }
-                        }}
-                        data={histData}
-                    />
+                    {CROSS_AXIS}
+                    <VictoryStack>
+                        <VictoryBar
+                            barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
+                            alignment={"middle"}
+                            style={{
+                                data: {
+                                    fill: "#5e94c3"
+                                }
+                            }}
+                            data={histData}
+                        />
+                        <VictoryBar
+                            barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
+                            alignment={"middle"}
+                            style={{
+                                data: {
+                                    fill: "#d0d0d0"
+                                }
+                            }}
+                            data={subData}
+                        />
+                    </VictoryStack>
                     <VictoryAxis tickValues={this.tickValues()} tickFormat={(t) => {
                         if(this.props.config?.mergeDomainMaxValue){
                             if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
@@ -79,19 +92,21 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
                         }
                         return t;
                     }}/>
-                    <VictoryAxis
-                        dependentAxis={true}
-                        crossAxis={true}
-                        style={{
-                            grid: {
-                                stroke: "#999999",
-                                strokeDasharray: "1 3"
-                            }
-                        }}
-                    />
+
                 </VictoryChart>
             </div>
         );
     }
 
 }
+
+const CROSS_AXIS = (<VictoryAxis
+    dependentAxis={true}
+    crossAxis={true}
+    style={{
+        grid: {
+            stroke: "#999999",
+            strokeDasharray: "1 3"
+        }
+    }}
+/>);

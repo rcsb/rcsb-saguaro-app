@@ -140,7 +140,7 @@ class RcsbFvContextManager {
         }
     }
 
-    public async getSearchQueryResult(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult>{
+    public async getSearchQueryResult(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null>{
         const collector: SearchRequestProperty = new SearchRequestProperty();
         return collector.request(query, facets, returnType);
     }

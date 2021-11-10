@@ -10,7 +10,7 @@ export class SearchRequestProperty {
 
     private searchRequest: SearchRequest = new SearchRequest();
 
-    private async _request(config: {query: SearchQueryType; facets: FacetType[]; returnType: ReturnType;}): Promise<QueryResult> {
+    private async _request(config: {query: SearchQueryType; facets: FacetType[]; returnType: ReturnType;}): Promise<QueryResult | null> {
         return await this.searchRequest.request({
             query: config.query,
             request_options: config.facets.length > 0 ? {
@@ -29,7 +29,7 @@ export class SearchRequestProperty {
         });
     }
 
-    public async request(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult> {
+    public async request(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null> {
         return this._request({query:query, facets:facets, returnType:returnType});
     }
 

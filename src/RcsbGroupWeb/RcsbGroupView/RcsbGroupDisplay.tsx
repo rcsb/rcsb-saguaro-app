@@ -1,7 +1,7 @@
 import {Facet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import * as ReactDom from "react-dom";
 import {RcsbChartLayout} from "../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
-import {FacetTools} from "../../RcsbSeacrh/FacetTools";
+import {FacetTools, RcsbChartInterface} from "../../RcsbSeacrh/FacetTools";
 import React from "react";
 import * as classes from "./scss/group-display.module.scss";
 import {Container} from "react-bootstrap";
@@ -11,6 +11,7 @@ import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterfa
 import {rcsbFvCtxManager} from "../../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
+import cloneDeep from 'lodash/cloneDeep';
 
 
 export class RcsbGroupDisplay {
@@ -40,19 +41,28 @@ export class RcsbGroupDisplay {
 
         let facets: Array<Facet> = [];
         for(const service of facetStore.getServices()){
-            const groupQuery: SearchQueryType = await searchQuery ? addGroupNodeToSearchQuery(groupId, searchQuery, service) : searchGroupQuery(groupId, service);
-            const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
+            const groupQuery: SearchQueryType = await searchGroupQuery(groupId, service);
+            const groupProperties: QueryResult | null = await rcsbFvCtxManager.getSearchQueryResult(
                 groupQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
                 facetStore.returnType
             );
-            facets = facets.concat(groupProperties.drilldown as Facet[]);
+            if(groupProperties)
+                facets = facets.concat(groupProperties.drilldown as Facet[]);
+        }
+
+        let chartData: Array<RcsbChartInterface> = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets);
+        let subData: Array<RcsbChartInterface> | undefined = undefined;
+        if(searchQuery) {
+            const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, facetStore, groupId, searchQuery);
+            chartData = searchData.chartData;
+            subData = searchData.subData;
         }
 
         ReactDom.render(
             <div className={classes.bootstrapGroupComponentScope}>
                 <Container fluid={"lg"}>
-                    <RcsbChartLayout layout={facetStore.facetLayoutGrid} charts={FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets)}/>
+                    <RcsbChartLayout layout={facetStore.facetLayoutGrid} charts={chartData} subCharts={subData}/>
                 </Container>
             </div>,
             document.getElementById(elementId)
@@ -66,4 +76,35 @@ export class RcsbGroupDisplay {
         );
     }
 
+}
+
+async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, facetStore: FacetStoreInterface, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+    let subData: Array<RcsbChartInterface> | undefined;
+    let partialFacets: Array<Facet> = [];
+    for (const service of facetStore.getServices()) {
+        const groupQuery: SearchQueryType = await addGroupNodeToSearchQuery(groupId, searchQuery, service);
+        const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
+            groupQuery,
+            facetStore.getFacetService(service).map(f => f.facet),
+            facetStore.returnType
+        );
+        if(groupProperties)
+            partialFacets = partialFacets.concat(groupProperties.drilldown as Facet[]);
+    }
+    let partialData: Array<RcsbChartInterface> = cloneDeep(chartData);
+    if(partialFacets.length > 0) {
+        partialData = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), partialFacets)
+        subData = FacetTools.subtractDrilldowns(
+            partialData,
+            chartData
+        );
+    }else{
+        subData = cloneDeep(chartData);
+        partialData.forEach(chart=>{
+            chart.data.forEach(d=>{
+                d.population = 0;
+            })
+        });
+    }
+    return {chartData: partialData, subData: subData};
 }

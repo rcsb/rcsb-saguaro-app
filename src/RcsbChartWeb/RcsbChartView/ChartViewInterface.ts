@@ -19,6 +19,7 @@ export interface ChartConfigInterface {
 
 export interface ChartViewInterface {
     data: ChartObjectInterface[];
+    subData?: ChartObjectInterface[];
     config?:ChartConfigInterface;
 }
 
