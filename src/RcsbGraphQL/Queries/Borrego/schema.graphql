@@ -29,7 +29,15 @@ type AlignedRegion {
     target_end: Int!
 }
 
+type AlignmentLogo {
+    symbol: String
+    value: Int
+}
+
 type AlignmentResponse {
+    "Length of the alignment"
+    alignment_length: Int
+    alignment_logo: [[AlignmentLogo]]
     "Full sequence of the query"
     query_sequence: String
     "JSON schema that describes the different alignments between the query sequence and targets"
@@ -73,7 +81,7 @@ type Feature {
     The connection type.
 
     Examples:
-    mutation, artifact, CATH, SCOP
+    ASA_UNBOUND, BINDING_SITE, mutation, artifact, CATH, SCOP
     """
     type: Type
     "Numerical value associated with the feature"
@@ -97,6 +105,8 @@ type FeaturePosition {
     range_id: String
     "The value for the feature at this region"
     value: Float
+    "The value(s) for the feature at this region"
+    values: [Float]
 }
 
 "Query root"
@@ -107,7 +117,7 @@ type Query {
         from: SequenceReference,
         "Database sequence identifier"
         queryId: String!,
-        "Optional integer list (2-tuple) to filter the alignment to a particular region"
+        "Optional integer list (2-tuple) to filter the alignments to a particular region"
         range: [Int],
         "Target Sequence database"
         to: SequenceReference
@@ -184,6 +194,7 @@ enum SequenceReference {
 enum Source {
     PDB_ENTITY
     PDB_INSTANCE
+    PDB_INTERFACE
     UNIPROT
 }
 
@@ -191,8 +202,11 @@ enum Type {
     ACTIVE_SITE
     ANGLE_OUTLIER
     ARTIFACT
+    ASA_BOUND
+    ASA_UNBOUND
     BINDING_SITE
     BOND_OUTLIER
+    BURIAL_FRACTION
     CALCIUM_BINDING_REGION
     CARD_MODEL
     CATH
@@ -206,6 +220,8 @@ enum Type {
     COVALENT_RESIDUE_MODIFICATION
     CROSS_LINK
     C_MANNOSYLATION_SITE
+    DISORDER
+    DISORDER_BINDING
     DISULFIDE_BRIDGE
     DNA_BINDING_REGION
     DOMAIN
@@ -213,6 +229,7 @@ enum Type {
     GLYCOSYLATION_SITE
     HELIX_P
     HYDROGEN_BOND
+    HYDROPATHY
     IMGT_ANTIBODY_DESCRIPTION
     IMGT_ANTIBODY_DOMAIN_NAME
     IMGT_ANTIBODY_GENE_ALLELE_NAME

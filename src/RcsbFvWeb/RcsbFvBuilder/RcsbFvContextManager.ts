@@ -5,6 +5,8 @@ import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
+import {InterfaceInstanceTranslate} from "../../RcsbUtils/InterfaceInstanceTranslate";
+import {InterfaceInstanceCollector} from "../../RcsbCollectTools/Translators/InterfaceInstanceCollector";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -17,6 +19,7 @@ class RcsbFvContextManager {
     private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
     private polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
+    private interfaceToInstanceMap: Map<string,DataStatusInterface<InterfaceInstanceTranslate>> = new Map<string, DataStatusInterface<InterfaceInstanceTranslate>>();
 
     public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
         if( this.rcsbFvManager.has(elementFvId)) {
@@ -98,6 +101,22 @@ class RcsbFvContextManager {
         const entityChrCollector: PolymerEntityChromosomeCollector = new PolymerEntityChromosomeCollector();
         const chrMap = await entityChrCollector.collect(entityIds);
         return new PolymerEntityChromosomeTranslate(chrMap);
+    }
+
+    public async getInterfaceToInstance(interfaceId:string): Promise<InterfaceInstanceTranslate>{
+        const key: string = interfaceId;
+        if(this.interfaceToInstanceMap.get(key)?.status === "available"){
+            return this.interfaceToInstanceMap.get(key).data;
+        } else if (this.interfaceToInstanceMap.get(key)?.status === "pending"){
+            return await mapResolve<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(key));
+        }else{
+            mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
+            const interfaceCollector: InterfaceInstanceCollector = new InterfaceInstanceCollector();
+            const result = await interfaceCollector.collect({interface_ids: [interfaceId]});
+            const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
+            mapSet<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(key), translator);
+            return translator;
+        }
     }
 
 }

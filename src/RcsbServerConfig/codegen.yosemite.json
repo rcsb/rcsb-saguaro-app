@@ -1,4 +1,4 @@
 {
-  "schema": "https://data.rcsb.org/graphql",
+  "schema": "http://data-interfaces-dev.rcsb.org/graphql",
   "documents": "src/RcsbGraphQL/Queries/Yosemite/*.graphql"
 }

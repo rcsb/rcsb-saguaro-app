@@ -2,6 +2,16 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.3.0] - 2021-11-29
+### Annotations configuration improvements
+- Removed interface `CollectAnnotationsInterface` attribute `addTargetInTitle`
+- Added `titleSuffix` and `trackTitle` attributes to `CollectAnnotationsInterface`
+     - These new attributes are defined as async functions (ann: AnnotationFeatures, d: Feature) => Promise<string|undefined> to provide or modify track titles based on the features content
+- New `RcsbFvInterface` module
+     - Interface `InstanceSequenceConfig` provides a new attribute `module` to choose between the `RcsbFvInstance` or RcsbFvInterface` modules
+- New classes to collect and translate instance/interface ids relationships from data api
+    - `RcsbQueryInterfaceInstances`, `InterfaceInstanceCollector` and  `InterfaceInstanceTranslate`
+
 ## [3.2.1] - 2021-11-10
 ### Minor configuration
 - Dropdown title configuration is exposed in `InstanceSequenceConfig` attribute `dropdownTitle` 

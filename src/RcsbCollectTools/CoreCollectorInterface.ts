@@ -6,5 +6,4 @@ export interface CoreCollectorInterface {
     readonly rcsbFvQuery: RcsbClient;
     setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void;
     setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void;
-    getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate;
 }

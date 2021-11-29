@@ -16,8 +16,8 @@ export class AnnotationTrackManager {
         this.rcsbAnnotationConfig = rcsbAnnotationConfig;
     }
 
-    public processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): void{
-        this.addAnnotationToTracks(
+    public async processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): Promise<void>{
+        await this.addAnnotationToTracks(
             requestConfig,
             typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ? requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data) : data
         );
@@ -51,28 +51,20 @@ export class AnnotationTrackManager {
         });
     }
 
-    private buildType(requestConfig: AnnotationCollectConfig, ann: AnnotationFeatures, d: Feature): string{
-        let type: string;
-        if (requestConfig.addTargetInTitle != null && requestConfig.addTargetInTitle.has(ann.source)) {
-            let targetId: string = ann.target_id;
-            if( this.getPolymerEntityInstanceTranslator() != null && ann.source === Source.PdbInstance){
-                const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
-                const authAsymId: string = this.getPolymerEntityInstanceTranslator().translateAsymToAuth(labelAsymId);
-                targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
-            }
-            type = this.rcsbAnnotationConfig.buildAndAddType(d, targetId);
-        }else{
-            type = this.rcsbAnnotationConfig.buildAndAddType(d);
-        }
-        return type;
+    private async buildType(requestConfig: AnnotationCollectConfig, ann: AnnotationFeatures, d: Feature): Promise<string>{
+        return this.rcsbAnnotationConfig.buildAndAddType(
+            d,
+            typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,d)) : undefined,
+            typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,d)) : undefined
+        );
     }
 
-    private addAnnotationToTracks(requestConfig: AnnotationCollectConfig, data: Array<AnnotationFeatures>): void{
-        data.forEach(ann => {
-            ann.features.forEach(feature => {
+    private async addAnnotationToTracks(requestConfig: AnnotationCollectConfig, data: Array<AnnotationFeatures>): Promise<void>{
+        for(const ann of data){
+            for(const feature of ann.features){
                 if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
                     return;
-                const type: string = this.buildType(requestConfig, ann, feature);
+                const type: string = await this.buildType(requestConfig, ann, feature);
                 if (!this.annotationTracks.has(type)) {
                     this.annotationTracks.set(type, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
                 }
@@ -85,9 +77,8 @@ export class AnnotationTrackManager {
                         feature: feature
                     }, requestConfig.annotationProcessing
                 );
-            });
-        });
-
+            }
+        }
     }
 
 }

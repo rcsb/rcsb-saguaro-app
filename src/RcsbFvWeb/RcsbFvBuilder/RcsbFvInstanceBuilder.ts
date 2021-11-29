@@ -8,6 +8,7 @@ import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {OptionProps} from "react-select/src/components/Option";
+import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 
 export interface InstanceSequenceOnchangeInterface {
     pdbId: string;
@@ -15,6 +16,7 @@ export interface InstanceSequenceOnchangeInterface {
     asymId: string;
 }
 
+type instanceModule = "interface"|"instance";
 export interface InstanceSequenceConfig {
     dropdownTitle?: string;
     defaultValue?: string|undefined|null;
@@ -22,6 +24,7 @@ export interface InstanceSequenceConfig {
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
     selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    module?: instanceModule;
 }
 
 export class RcsbFvInstanceBuilder {
@@ -69,7 +72,8 @@ export class RcsbFvInstanceBuilder {
                         elementFvId,
                         instance.rcsbId,
                         additionalConfig,
-                        instance
+                        instance,
+                        config.module
                     );
                     if (typeof config.onChangeCallback === "function")
                         config.onChangeCallback({
@@ -94,7 +98,7 @@ export class RcsbFvInstanceBuilder {
             label: group[0].groupLabel,
             options: group
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
-        const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig, filteredInstanceList[index]);
+        const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig, filteredInstanceList[index], config.module);
         if (typeof config.onChangeCallback === "function")
             config.onChangeCallback({
                 pdbId: filteredInstanceList[index].entryId,
@@ -104,12 +108,12 @@ export class RcsbFvInstanceBuilder {
         return out;
     }
 
-    static async buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig, rcsbContext?: PolymerEntityInstanceInterface): Promise<RcsbFvModulePublicInterface> {
+    static async buildInstanceFv(elementId:string, instanceId:string, additionalConfig?:RcsbFvAdditionalConfig, rcsbContext?:PolymerEntityInstanceInterface, module?:instanceModule): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=>{
             try {
                 const entryId: string = instanceId.split(TagDelimiter.instance)[0];
                 const asymId: string = instanceId.split(TagDelimiter.instance)[1];
-                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvInstance, {
+                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, module === "interface" ? RcsbFvInterface : RcsbFvInstance, {
                     instanceId: instanceId,
                     additionalConfig: {
                         ...additionalConfig,

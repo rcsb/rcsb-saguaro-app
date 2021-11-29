@@ -64,7 +64,7 @@ export class RcsbAnnotationConfig {
         return this.entityAnnotationsOrder;
     }
 
-    public buildAndAddType(d: Feature, targetId?: string): string{
+    public buildAndAddType(d: Feature, mainTitle?:string, titleSuffix?: string): string{
         const type: string = d.type;
         const a: DynamicKeyAnnotationInterface = d;
         let prefix: string = '';
@@ -77,44 +77,50 @@ export class RcsbAnnotationConfig {
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
             let newType: string = type;
             newType = newType+":"+a[this.annotationMap.get(type).key]+":"+prefix;
-            if(targetId !=null)
-                newType += "."+targetId;
+            if(titleSuffix !=null)
+                newType += "."+titleSuffix;
             if(!this.annotationMap.has(newType)) {
                 const title: string = a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "";
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
                     type: newType,
                     color: typeof this.annotationMap.get(type).color === "string" ? RcsbAnnotationConfig.randomRgba(title) : { ...(this.annotationMap.get(type).color as RcsbFvColorGradient), colors:RcsbAnnotationConfig.randomRgba(title) },
-                    prefix: this.annotationMap.get(type).title,
+                    prefix: mainTitle ?? this.annotationMap.get(type).title,
                     title: title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationConfigInterface);
             }
             this.addNewType(newType, type);
             return newType;
-        }else if(targetId !=  null){
+        }else if(titleSuffix !=  null){
             let newType: string = type;
-            newType = newType+":"+prefix+"."+targetId;
+            newType = newType+":"+prefix+"."+titleSuffix;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
                     type: newType,
-                    title: targetId,
-                    prefix: this.annotationMap.get(type).title,
+                    title: titleSuffix,
+                    prefix: mainTitle ?? this.annotationMap.get(type).title,
                     provenanceList: new Set<string>()
                 });
             }
-            this.addNewType(newType, type, targetId);
+            this.addNewType(newType, type, titleSuffix);
             return newType;
+        }else if(mainTitle!=null){
+            this.annotationMap.set(type, {
+                ...this.annotationMap.get(type),
+                title: mainTitle
+            });
+            this.addNewType(type,type);
         }else{
             this.addNewType(type,type);
         }
         return type;
     }
 
-    private addNewType(newType: string, type: string, targetId?: string){
+    private addNewType(newType: string, type: string, titleSuffix?: string){
         if(this.mergedTypes.has(type)) {
-            const mergedType: string = targetId ? this.mergedTypes.get(type).type+"."+targetId : this.mergedTypes.get(type).type;
+            const mergedType: string = titleSuffix ? this.mergedTypes.get(type).type+"."+titleSuffix : this.mergedTypes.get(type).type;
             if(newType!=type)
                 this.mergedTypes.set(newType, {
                     merged_types:this.mergedTypes.get(type).merged_types,
@@ -140,11 +146,14 @@ export class RcsbAnnotationConfig {
     }
 
     public sortAndIncludeNewTypes(): void{
-        this.addedTypes.forEach((newTypes,type)=> {
-            newTypes.sort((a,b)=>a.localeCompare(b)).forEach(newT=>{
+        this.cleanAddedTypes();
+        const addedTypesKeys: Array<string> = Array.from(this.addedTypes.keys()).sort((a,b)=>a.localeCompare(b));
+        addedTypesKeys.forEach(type=>{
+            const newTypes: Array<string> = this.addedTypes.get(type).sort((a,b)=>a.localeCompare(b));
+            newTypes.forEach(newT=>{
                 this.checkAndIncludeNewType(newT,type);
             });
-        })
+        });
     }
 
     private checkAndIncludeNewType(newType: string, type: string){
@@ -156,6 +165,18 @@ export class RcsbAnnotationConfig {
             this.entityAnnotationsOrder.push(newType);
         else if(this.externalAnnotationsOrder.includes(type) && !this.externalAnnotationsOrder.includes(newType))
             this.externalAnnotationsOrder.push(newType);
+    }
+
+    private cleanAddedTypes(): void{
+        this.addedTypes.forEach((newTypes,type)=>{
+            newTypes.forEach(newT=>{
+                [this.instanceAnnotationsOrder, this.entityAnnotationsOrder, this.externalAnnotationsOrder].forEach(array=>{
+                    const index: number = array.indexOf(newT);
+                    if(index>-1)
+                        array.splice(index,1);
+                });
+            });
+        })
     }
 
     isMergedType(type: string): boolean {

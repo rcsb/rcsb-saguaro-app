@@ -52,17 +52,17 @@
         includeTooltip: true,
         disableMenu: false
     });*/
-    RcsbFvWebApp.buildMultipleInstanceSequenceFv(
+    /*RcsbFvWebApp.buildMultipleInstanceSequenceFv(
         "pfv",
         "select",
         "selectBis",
         ["2uzi","101m"]
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
-    })
-    /*const args = getJsonFromUrl();
-    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{},{
-        externalTrackBuilder:{
+    })*/
+    const args = getJsonFromUrl();
+    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{module:"interface"},{
+        /*externalTrackBuilder:{
             processAlignmentAndFeatures(data) {
 
             },
@@ -108,8 +108,8 @@
                     tracks.annotationTracks?.push(myTrack);
                 }
             }
-        }
-    });*/
+        }*/
+    });
     /*const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P69905");
     module.then(result=>{
         console.log(result);
