@@ -146,7 +146,7 @@ export class RcsbAnnotationConfig {
     }
 
     public sortAndIncludeNewTypes(): void{
-        this.cleanAddedTypes();
+        //this.cleanAddedTypes();
         const addedTypesKeys: Array<string> = Array.from(this.addedTypes.keys()).sort((a,b)=>a.localeCompare(b));
         addedTypesKeys.forEach(type=>{
             const newTypes: Array<string> = this.addedTypes.get(type).sort((a,b)=>a.localeCompare(b));
@@ -160,11 +160,11 @@ export class RcsbAnnotationConfig {
         if(type === newType)
             return;
         if(this.instanceAnnotationsOrder.includes(type) && !this.instanceAnnotationsOrder.includes(newType))
-            this.instanceAnnotationsOrder.push(newType);
+            addType(this.instanceAnnotationsOrder, newType, type);
         else if(this.entityAnnotationsOrder.includes(type) && !this.entityAnnotationsOrder.includes(newType))
-            this.entityAnnotationsOrder.push(newType);
+            addType(this.entityAnnotationsOrder, newType, type);
         else if(this.externalAnnotationsOrder.includes(type) && !this.externalAnnotationsOrder.includes(newType))
-            this.externalAnnotationsOrder.push(newType);
+            addType(this.externalAnnotationsOrder, newType, type);
     }
 
     private cleanAddedTypes(): void{
@@ -234,4 +234,9 @@ export class RcsbAnnotationConfig {
         return this.annotationMap.get(type).transformToNumerical === true;
 
     }
+}
+
+function addType(array: Array<string>, newType: string, type: string): void{
+    const index: number = array.indexOf(type);
+    array.splice(index+1,0, newType);
 }

@@ -61,7 +61,7 @@
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
     const args = getJsonFromUrl();
-    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{module:"interface"},{
+    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{module:"instance"},{
         /*externalTrackBuilder:{
             processAlignmentAndFeatures(data) {
 
