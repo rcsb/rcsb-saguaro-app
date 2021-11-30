@@ -29,6 +29,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     };
     protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
+    protected polymerEntityInstance: PolymerEntityInstanceTranslate;
     protected readonly sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
@@ -44,6 +45,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate){
+        this.polymerEntityInstance = polymerEntityInstance;
         this.annotationCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance);
         this.sequenceCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance)
     }

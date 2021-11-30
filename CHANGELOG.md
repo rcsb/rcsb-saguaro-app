@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.3.0] - 2021-11-30
+### Annotations configuration improvements
+- Removed interface `CollectAnnotationsInterface` attribute `addTargetInTitle`
+- Added `titleSuffix` and `trackTitle` attributes to `CollectAnnotationsInterface`
+     - These new attributes are defined as async functions (ann: AnnotationFeatures, d: Feature) => Promise<string|undefined> to provide or modify track titles based on the features content
+
 ## [3.2.1] - 2021-11-10
 ### Minor configuration
 - Dropdown title configuration is exposed in `InstanceSequenceConfig` attribute `dropdownTitle` 
