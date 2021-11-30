@@ -60,25 +60,30 @@ export class AnnotationTrackManager {
     }
 
     private async addAnnotationToTracks(requestConfig: AnnotationCollectConfig, data: Array<AnnotationFeatures>): Promise<void>{
-        for(const ann of data){
-            for(const feature of ann.features){
-                if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
-                    return;
-                const type: string = await this.buildType(requestConfig, ann, feature);
-                if (!this.annotationTracks.has(type)) {
-                    this.annotationTracks.set(type, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
-                }
-                this.rcsbAnnotationConfig.addProvenance(type, feature.provenance_source);
-                this.annotationTracks.get(type).addFeature({
-                        reference: requestConfig.reference,
-                        queryId: requestConfig.queryId,
-                        source: ann.source,
-                        targetId: ann.target_id,
-                        feature: feature
-                    }, requestConfig.annotationProcessing
-                );
-            }
+        await Promise.all(data.map<Promise<void>[]>(ann=>{
+            return ann.features.map<Promise<void>>(async feature=>{
+                return  await this.addFeature(requestConfig,ann,feature);
+            });
+        }).flat());
+        return void 0;
+    }
+
+    private async addFeature(requestConfig: AnnotationCollectConfig, ann: AnnotationFeatures, feature: Feature): Promise<void> {
+        if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
+            return;
+        const type: string = await this.buildType(requestConfig, ann, feature);
+        if (!this.annotationTracks.has(type)) {
+            this.annotationTracks.set(type, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
         }
+        this.rcsbAnnotationConfig.addProvenance(type, feature.provenance_source);
+        this.annotationTracks.get(type).addFeature({
+                reference: requestConfig.reference,
+                queryId: requestConfig.queryId,
+                source: ann.source,
+                targetId: ann.target_id,
+                feature: feature
+            }, requestConfig.annotationProcessing
+        )
     }
 
 }
