@@ -19,6 +19,7 @@ export interface SelectOptionInterface {
 }
 
 interface SelectButtonInterface {
+    elementId: string;
     options?: Array<SelectOptionInterface> | Array<GroupedOptionsInterface>;
     additionalOptions?: Array<SelectOptionInterface>;
     addTitle: boolean;
@@ -26,6 +27,7 @@ interface SelectButtonInterface {
     width?:number;
     dropdownTitle?:string;
     optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    isAdditionalButton?: boolean;
 }
 
 export interface OptionPropsInterface extends SelectOptionInterface{
@@ -37,6 +39,8 @@ interface SelectButtonState {
 }
 
 export class SelectButton extends React.Component <SelectButtonInterface, SelectButtonState> {
+
+    public static readonly BUTTON_CONTAINER_DIV_SUFFIX = "_buttonContainerDiv";
 
     private defaultValue: string|undefined|null;
     readonly state: SelectButtonState = {
@@ -62,10 +66,15 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
 
     render():JSX.Element {
         const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
-        return(<div>
-            {title}
-            {this.selectRender()}
-        </div>);
+        if(!this.props.isAdditionalButton) {
+            return (<div>
+                {title}
+                {this.selectRender()}
+            </div>);
+        } else {
+            const {selectOpt, index}: {selectOpt: SelectOptionInterface; index: number;} = this.getSelectOpt();
+            return this.innerSelectButtonRender(selectOpt, index);
+        }
     }
 
     private selectRender():JSX.Element {
@@ -83,6 +92,12 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private selectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
+        return (<div id={this.props.elementId+SelectButton.BUTTON_CONTAINER_DIV_SUFFIX}>
+            {this.innerSelectButtonRender(defaultValue, index)}
+        </div>);
+    }
+
+    private innerSelectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
         const SingleValue:(n:SingleValueProps<OptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
@@ -108,14 +123,16 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             }))
         }
         return(
-            <Select
-                options={options}
-                isSearchable={false}
-                onChange={this.change.bind(this)}
-                styles={this.configStyle()}
-                components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props}/>)) }}
-                defaultValue={{...defaultValue,value:index}}
-            />
+            <div style={{display:"inline-block"}}>
+                <Select
+                    options={options}
+                    isSearchable={false}
+                    onChange={this.change.bind(this)}
+                    styles={this.configStyle()}
+                    components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props}/>)) }}
+                    defaultValue={{...defaultValue,value:index}}
+                />
+            </div>
         );
     }
 

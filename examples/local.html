@@ -61,8 +61,9 @@
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
     const args = getJsonFromUrl();
-    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{},{
-        /*externalTrackBuilder:{
+    RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
+    /*const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{},{
+        externalTrackBuilder:{
             processAlignmentAndFeatures(data) {
 
             },
@@ -108,8 +109,8 @@
                     tracks.annotationTracks?.push(myTrack);
                 }
             }
-        }*/
-    });
+        }
+    });*/
     /*const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P69905");
     module.then(result=>{
         console.log(result);

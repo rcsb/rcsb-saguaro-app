@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [3.4.0] - 2021-12-07
+### UI improvements
+- Exposed methods for creating dropdown menus. Class `RcsbFvUI` static methods
+    - `createSelectButton` creates a select dropdown menu
+    - `addSelectButton` adds a second menu. Only an additional button can be created (replaced if a new one is created)
+    - `clearSelectButton` clear all menus
+
 ## [3.3.0] - 2021-11-30
 ### Annotations configuration improvements
 - Removed interface `CollectAnnotationsInterface` attribute `addTargetInTitle`
@@ -18,8 +25,8 @@
 
 ## [3.1.0] - 2021-10-27
 ### External track builder improvements
-- `ExternalTrackBuilderInterface` available through `RcsbFvAdditionalConfig` for all `RcsbFvBuilder` types.
-In addition, it includes the query context as additional parameter for processing and addition methods.
+- `ExternalTrackBuilderInterface` available through `RcsbFvAdditionalConfig` for all `RcsbFvBuilder` types
+In addition, it includes the query context as additional parameter for processing and addition methods
   - `processAlignmentAndFeatures` includes the query context as part of the input parameters
   - `addTo` includes the query context as part of the input parameters
   - `filterFeatures` new method for filtering positional features

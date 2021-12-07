@@ -23,8 +23,8 @@ export class RcsbFvUniprotBuilder {
                     return {
                         label: entityId === ALL ? entityId+" ("+targets.length+")": entityId,
                         onChange: async () => {
+                            RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                             if (entityId === ALL) {
-                                RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                                 await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc);
                             } else {
                                 const entryId: string = entityId.split(TagDelimiter.entity)[0];
