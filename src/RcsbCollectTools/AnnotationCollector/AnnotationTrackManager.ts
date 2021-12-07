@@ -19,7 +19,7 @@ export class AnnotationTrackManager {
     public async processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): Promise<void>{
         await this.addAnnotationToTracks(
             requestConfig,
-            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ? requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data) : data
+            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ? await requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data) : data
         );
         requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
         this.mergeTracks();

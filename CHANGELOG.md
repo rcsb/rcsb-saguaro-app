@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.0.0-master] - 2021-12-07
+### Breaking change
+- `ExternalTrackBuilderInterface` methods return a promise and are executed asynchronous
+
 ## [3.4.0] - 2021-12-07
 ### UI improvements
 - Exposed methods for creating dropdown menus. Class `RcsbFvUI` static methods

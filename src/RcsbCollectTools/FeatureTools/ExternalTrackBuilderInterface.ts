@@ -4,8 +4,8 @@ import {SequenceCollectorDataInterface} from "../SequenceCollector/SequenceColle
 import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 
 export interface ExternalTrackBuilderInterface {
-    processAlignmentAndFeatures?(data: {annotations?: Array<AnnotationFeatures>; alignments?:AlignmentResponse; rcsbContext?:Partial<PolymerEntityInstanceInterface>}): void;
-    filterAlignments?(alignments:AlignmentResponse): AlignmentResponse;
-    filterFeatures?(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures>;
-    addTo?(tracks:{alignmentTracks?: SequenceCollectorDataInterface, annotationTracks?: Array<RcsbFvRowConfigInterface>; rcsbContext?:Partial<PolymerEntityInstanceInterface>}): void;
+    processAlignmentAndFeatures?(data: {annotations?: Array<AnnotationFeatures>; alignments?:AlignmentResponse; rcsbContext?:Partial<PolymerEntityInstanceInterface>}): Promise<void>;
+    filterAlignments?(alignments:AlignmentResponse): Promise<AlignmentResponse>;
+    filterFeatures?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
+    addTo?(tracks:{alignmentTracks?: SequenceCollectorDataInterface, annotationTracks?: Array<RcsbFvRowConfigInterface>; rcsbContext?:Partial<PolymerEntityInstanceInterface>}): Promise<void>;
 }

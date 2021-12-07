@@ -107,13 +107,13 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     private async buildExternalTracks(externalTrackBuilder: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {
         if(typeof externalTrackBuilder.processAlignmentAndFeatures === "function")
-            externalTrackBuilder.processAlignmentAndFeatures({
+            await externalTrackBuilder.processAlignmentAndFeatures({
                 annotations:await this.annotationCollector.getAnnotationFeatures(),
                 alignments: await this.sequenceCollector.getAlignmentResponse(),
                 rcsbContext: rcsbContext
             });
         if(typeof externalTrackBuilder.addTo === "function")
-            externalTrackBuilder.addTo({
+            await externalTrackBuilder.addTo({
                 alignmentTracks: this.alignmentTracks,
                 annotationTracks: this.annotationTracks,
                 rcsbContext: rcsbContext
