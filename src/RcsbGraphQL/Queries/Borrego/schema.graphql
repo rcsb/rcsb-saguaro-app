@@ -51,6 +51,7 @@ type AnnotationFeatures {
     source: Source
     "Database source entry identifier associated to the positional features"
     target_id: String
+    target_identifiers: TargetIdentifiers
 }
 
 type Coverage {
@@ -148,6 +149,16 @@ type TargetAlignment {
     target_id: String
     "Full sequence of the target"
     target_sequence: String
+}
+
+type TargetIdentifiers {
+    asym_id: String
+    entity_id: String
+    entry_id: String
+    interface_id: String
+    interface_partner_index: Int
+    target_id: String
+    uniprot_id: String
 }
 
 enum PropertyName {

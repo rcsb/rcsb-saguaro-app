@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RcsbFvEntityBuilder | @rcsb/rcsb-saguaro-app</title>
+	<title>RcsbFvUI | @rcsb/rcsb-saguaro-app</title>
 	<meta name="description" content="Documentation for @rcsb/rcsb-saguaro-app">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="rcsbfventitybuilder.html">RcsbFvEntityBuilder</a>
+					<a href="rcsbfvui.html">RcsbFvUI</a>
 				</li>
 			</ul>
-			<h1>Class RcsbFvEntityBuilder</h1>
+			<h1>Class RcsbFvUI</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">RcsbFvEntityBuilder</span>
+						<span class="target">RcsbFvUI</span>
 					</li>
 				</ul>
 			</section>
@@ -81,9 +81,9 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfventitybuilder.html#buildentityfv" class="tsd-kind-icon">build<wbr>Entity<wbr>Fv</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfventitybuilder.html#buildentitysummaryfv" class="tsd-kind-icon">build<wbr>Entity<wbr>Summary<wbr>Fv</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfventitybuilder.html#buildsingleentitysummaryfv" class="tsd-kind-icon">build<wbr>Single<wbr>Entity<wbr>Summary<wbr>Fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvui.html#addselectbutton" class="tsd-kind-icon">add<wbr>Select<wbr>Button</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvui.html#clearselectbutton" class="tsd-kind-icon">clear<wbr>Select<wbr>Button</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="rcsbfvui.html#createselectbutton" class="tsd-kind-icon">create<wbr>Select<wbr>Button</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,45 +92,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="buildentityfv" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Entity<wbr>Fv</h3>
+					<a name="addselectbutton" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> add<wbr>Select<wbr>Button</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Entity<wbr>Fv<span class="tsd-signature-symbol">(</span>elementId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, entityId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, additionalConfig<span class="tsd-signature-symbol">?: </span><a href="../interfaces/rcsbfvadditionalconfig.html" class="tsd-signature-type">RcsbFvAdditionalConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbfvmodulepublicinterface.html" class="tsd-signature-type">RcsbFvModulePublicInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Select<wbr>Button<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectButtonId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvEntityBuilder.ts#L77">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvEntityBuilder.ts:77</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>elementId: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>entityId: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> additionalConfig: <a href="../interfaces/rcsbfvadditionalconfig.html" class="tsd-signature-type">RcsbFvAdditionalConfig</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbfvmodulepublicinterface.html" class="tsd-signature-type">RcsbFvModulePublicInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="buildentitysummaryfv" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Entity<wbr>Summary<wbr>Fv</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Entity<wbr>Summary<wbr>Fv<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, elementSelectId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, entityId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbfvmodulepublicinterface.html" class="tsd-signature-type">RcsbFvModulePublicInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvEntityBuilder.ts#L12">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvEntityBuilder.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/app.ts#L37">src/app.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -139,39 +110,74 @@
 									<h5>elementFvId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>elementSelectId: <span class="tsd-signature-type">string</span></h5>
+									<h5>selectButtonId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>entityId: <span class="tsd-signature-type">string</span></h5>
+									<h5>options: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbfvmodulepublicinterface.html" class="tsd-signature-type">RcsbFvModulePublicInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="buildsingleentitysummaryfv" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> build<wbr>Single<wbr>Entity<wbr>Summary<wbr>Fv</h3>
+					<a name="clearselectbutton" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> clear<wbr>Select<wbr>Button</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Single<wbr>Entity<wbr>Summary<wbr>Fv<span class="tsd-signature-symbol">(</span>elementId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, entityId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbfvmodulepublicinterface.html" class="tsd-signature-type">RcsbFvModulePublicInterface</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Select<wbr>Button<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectButtonId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvEntityBuilder.ts#L60">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvEntityBuilder.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/app.ts#L29">src/app.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>elementId: <span class="tsd-signature-type">string</span></h5>
+									<h5>elementFvId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>entityId: <span class="tsd-signature-type">string</span></h5>
+									<h5>selectButtonId: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/rcsbfvmodulepublicinterface.html" class="tsd-signature-type">RcsbFvModulePublicInterface</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="createselectbutton" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> create<wbr>Select<wbr>Button</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Select<wbr>Button<span class="tsd-signature-symbol">(</span>elementFvId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, selectButtonId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/groupedoptionsinterface.html" class="tsd-signature-type">GroupedOptionsInterface</a><span class="tsd-signature-symbol">&gt;</span>, config<span class="tsd-signature-symbol">?: </span><a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/app.ts#L33">src/app.ts:33</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>elementFvId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>selectButtonId: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>options: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/selectoptioninterface.html" class="tsd-signature-type">SelectOptionInterface</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/groupedoptionsinterface.html" class="tsd-signature-type">GroupedOptionsInterface</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> config: <a href="../interfaces/selectbuttonconfiginterface.html" class="tsd-signature-type">SelectButtonConfigInterface</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -190,16 +196,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="rcsbfventitybuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvEntity<wbr>Builder</a>
+						<a href="rcsbfvui.html" class="tsd-kind-icon">Rcsb<wbr>FvUI</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="rcsbfventitybuilder.html#buildentityfv" class="tsd-kind-icon">build<wbr>Entity<wbr>Fv</a>
+								<a href="rcsbfvui.html#addselectbutton" class="tsd-kind-icon">add<wbr>Select<wbr>Button</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="rcsbfventitybuilder.html#buildentitysummaryfv" class="tsd-kind-icon">build<wbr>Entity<wbr>Summary<wbr>Fv</a>
+								<a href="rcsbfvui.html#clearselectbutton" class="tsd-kind-icon">clear<wbr>Select<wbr>Button</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="rcsbfventitybuilder.html#buildsingleentitysummaryfv" class="tsd-kind-icon">build<wbr>Single<wbr>Entity<wbr>Summary<wbr>Fv</a>
+								<a href="rcsbfvui.html#createselectbutton" class="tsd-kind-icon">create<wbr>Select<wbr>Button</a>
 							</li>
 						</ul>
 					</li>

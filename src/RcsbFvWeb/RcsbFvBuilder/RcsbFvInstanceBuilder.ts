@@ -20,6 +20,7 @@ type instanceModule = "interface"|"instance";
 export interface InstanceSequenceConfig {
     dropdownTitle?: string;
     defaultValue?: string|undefined|null;
+    beforeRenderCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
     onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
@@ -68,6 +69,12 @@ export class RcsbFvInstanceBuilder {
                 shortLabel: config.displayAuthId === true ? instance.authId : label,
                 optId: instance.authId,
                 onChange: async () => {
+                    if (typeof config.beforeRenderCallback === "function")
+                        config.beforeRenderCallback({
+                            pdbId: instance.entryId,
+                            authId: instance.authId,
+                            asymId: instance.asymId
+                        });
                     await RcsbFvInstanceBuilder.buildInstanceFv(
                         elementFvId,
                         instance.rcsbId,
@@ -98,6 +105,12 @@ export class RcsbFvInstanceBuilder {
             label: group[0].groupLabel,
             options: group
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
+        if (typeof config.beforeRenderCallback === "function")
+            config.beforeRenderCallback({
+                pdbId: filteredInstanceList[index].entryId,
+                authId: filteredInstanceList[index].authId,
+                asymId: filteredInstanceList[index].asymId
+            });
         const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig, filteredInstanceList[index], config.module);
         if (typeof config.onChangeCallback === "function")
             config.onChangeCallback({

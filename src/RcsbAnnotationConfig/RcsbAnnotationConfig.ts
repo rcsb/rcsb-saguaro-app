@@ -64,19 +64,23 @@ export class RcsbAnnotationConfig {
         return this.entityAnnotationsOrder;
     }
 
-    public buildAndAddType(d: Feature, mainTitle?:string, titleSuffix?: string): string{
+    public buildAndAddType(d: Feature, mainTitle?:string, titleSuffix?: string, typeSuffix?: string): string{
         const type: string = d.type;
         const a: DynamicKeyAnnotationInterface = d;
-        let prefix: string = '';
+        let suffix: string = '';
         if(this.annotationMap.has(type) && this.annotationMap.get(type).addToType instanceof Array){
             (this.annotationMap.get(type).addToType as Array<string>).forEach(field=>{
                 if(a[field]!=null)
-                    prefix += "."+a[field]
+                    suffix += "."+a[field]
             });
+            if(suffix.length > 0)
+                suffix = ":" + suffix;
         }
+        if(typeSuffix)
+            suffix += ":" + typeSuffix;
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
             let newType: string = type;
-            newType = newType+":"+a[this.annotationMap.get(type).key]+":"+prefix;
+            newType = newType+":"+a[this.annotationMap.get(type).key]+suffix;
             if(titleSuffix !=null)
                 newType += "."+titleSuffix;
             if(!this.annotationMap.has(newType)) {
@@ -94,7 +98,7 @@ export class RcsbAnnotationConfig {
             return newType;
         }else if(titleSuffix !=  null){
             let newType: string = type;
-            newType = newType+":"+prefix+"."+titleSuffix;
+            newType = newType+suffix+"."+titleSuffix;
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
@@ -107,15 +111,20 @@ export class RcsbAnnotationConfig {
             this.addNewType(newType, type, titleSuffix);
             return newType;
         }else if(mainTitle!=null){
-            this.annotationMap.set(type, {
+            let newType: string = type;
+            newType = newType+suffix;
+            this.annotationMap.set(newType, {
                 ...this.annotationMap.get(type),
                 title: mainTitle
             });
-            this.addNewType(type,type);
+            this.addNewType(newType,type);
+            return newType;
         }else{
-            this.addNewType(type,type);
+            let newType: string = type;
+            newType = newType+suffix;
+            this.addNewType(newType,type);
+            return newType;
         }
-        return type;
     }
 
     private addNewType(newType: string, type: string, titleSuffix?: string){

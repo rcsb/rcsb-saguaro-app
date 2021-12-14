@@ -1,10 +1,10 @@
 import {AnnotationTrack} from "./AnnotationTrack";
-import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {AnnotationCollectConfig} from "./AnnotationCollectorInterface";
+import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 
 export class AnnotationTrackManager {
 
@@ -19,7 +19,10 @@ export class AnnotationTrackManager {
     public async processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): Promise<void>{
         await this.addAnnotationToTracks(
             requestConfig,
-            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ? requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data) : data
+            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ?
+                await requestConfig.externalAnnotationTrackBuilder?.filterFeatures({annotations: data, rcsbContext: requestConfig.rcsbContext})
+                :
+                data
         );
         requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
         this.mergeTracks();
@@ -55,8 +58,9 @@ export class AnnotationTrackManager {
         return this.rcsbAnnotationConfig.buildAndAddType(
             d,
             typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,d)) : undefined,
-            typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,d)) : undefined
-        );
+            typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,d)) : undefined,
+            typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,d)) : undefined
+    );
     }
 
     private async addAnnotationToTracks(requestConfig: AnnotationCollectConfig, data: Array<AnnotationFeatures>): Promise<void>{

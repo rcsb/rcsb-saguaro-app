@@ -13,5 +13,6 @@ query QueryInterfaceInstance($interface_ids: [String!]!){
                 asym_id
             }
         }
+        rcsb_interface_operator
     }
 }

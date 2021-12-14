@@ -8,6 +8,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationTrack, FeaturePositionGaps} from "./AnnotationTrack";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
+import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
 export interface AnnotationProcessingInterface {
@@ -16,15 +17,14 @@ export interface AnnotationProcessingInterface {
     addTrackElementCallback?:IncreaseAnnotationValueType;
 }
 
-interface CommonAnnotationInterface {
+export interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
+    collectSwissModel?: boolean;
+    rcsbContext?:Partial<PolymerEntityInstanceInterface>
     annotationProcessing?: AnnotationProcessingInterface;
     externalAnnotationTrackBuilder?: ExternalTrackBuilderInterface;
-}
-
-export interface CollectAnnotationsInterface extends QueryAnnotationsArgs, CommonAnnotationInterface {
-    collectSwissModel?: boolean;
     titleSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
     trackTitle?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
+    typeSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
 }
 
 export type AnnotationCollectConfig = Partial<CollectAnnotationsInterface>;

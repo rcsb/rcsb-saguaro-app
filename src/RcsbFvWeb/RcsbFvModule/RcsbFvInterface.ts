@@ -12,15 +12,18 @@ import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/An
 import * as acm from "../../RcsbAnnotationConfig/RcsbInterfaceConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {rcsbFvCtxManager} from "../RcsbFvBuilder/RcsbFvContextManager";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 
 export class RcsbFvInterface extends RcsbFvAbstractModule {
 
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector(annotationConfigMap);
+    private instanceId: string;
 
     protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
         const instanceId: string = buildConfig.instanceId;
+        this.instanceId = instanceId;
         //const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
         const source: Array<Source> = [Source.PdbInterface];
 
@@ -34,7 +37,9 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 reference: SequenceReference.PdbInstance,
                 titleSuffix: this.titleSuffix.bind(this),
                 trackTitle: this.trackTitle.bind(this),
-                sources:source
+                typeSuffix: this.typeSuffix.bind(this),
+                sources:source,
+                rcsbContext: buildConfig.additionalConfig?.rcsbContext
         });
 
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
@@ -50,16 +55,26 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 this.alignmentTracks.sequence.concat(this.annotationTracks);
     }
 
+    private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string> {
+        if(ann.source === Source.PdbInterface) {
+            return ann.target_identifiers.interface_id + "|" + ann.target_identifiers.interface_partner_index;
+        }
+    }
+
     private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string> {
         if(ann.source === Source.PdbInterface) {
             const interfaceTranslate = await rcsbFvCtxManager.getInterfaceToInstance(ann.target_id);
-            return " " + interfaceTranslate.getInstances(ann.target_id).join("-");
+            const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
+            const chPair: [string,string] = interfaceTranslate.getInstances(ann.target_id);
+            const asym: string = chPair[0] == chain ? chPair[1] : chPair[0]
+            const auth:string = (await rcsbFvCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
+            return asym == auth ? asym : `${asym}[auth ${auth}]`;
         }
     }
 
     private async trackTitle(ann: AnnotationFeatures, d: Feature): Promise<string> {
         if (ann.source === Source.PdbInterface && d.type === Type.BurialFraction) {
-            return "BINDING SITE ";
+            return "BINDING CHAIN ";
         }
     }
 }

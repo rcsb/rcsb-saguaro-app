@@ -93,7 +93,7 @@ export class RcsbFvCoreBuilder {
 
     static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
-        WebToolsManager.addSelectButton(selectButtonId, options);
+        WebToolsManager.addSelectButton(selectButtonId, options, config);
     }
 
     static showMessage(elementId: string, message: string){

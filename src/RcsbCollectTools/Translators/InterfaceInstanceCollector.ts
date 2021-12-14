@@ -9,6 +9,7 @@ export interface InterfaceInstanceInterface {
     assemblyId: string;
     interfaceId: string;
     asymIds: [string,string];
+    operatorIds: [Array<Array<string>>,Array<Array<string>>];
 }
 
 export class InterfaceInstanceCollector {
@@ -33,6 +34,7 @@ function parseInterfaceInstances(coreInterface:CoreInterface): InterfaceInstance
         asymIds: [
             coreInterface.rcsb_interface_partner[0].interface_partner_identifier.asym_id,
             coreInterface.rcsb_interface_partner[1].interface_partner_identifier.asym_id
-        ]
+        ],
+        operatorIds: [coreInterface.rcsb_interface_operator[0], coreInterface.rcsb_interface_operator[1]]
     }
 }
