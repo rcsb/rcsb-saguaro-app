@@ -47,6 +47,12 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
             const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
             this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
         }
+        if(typeof requestConfig?.annotationGenerator === "function") {
+            this.annotationFeatures = this.annotationFeatures.concat(await requestConfig.annotationGenerator(this.annotationFeatures));
+        }
+        if(typeof requestConfig?.annotationFilter === "function") {
+            this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);
+        }
         await this.processRcsbPdbAnnotations({externalAnnotationTrackBuilder: this.externalTrackBuilder, ...requestConfig});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();

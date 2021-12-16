@@ -152,6 +152,7 @@ type TargetAlignment {
 }
 
 type TargetIdentifiers {
+    assembly_id: String
     asym_id: String
     entity_id: String
     entry_id: String

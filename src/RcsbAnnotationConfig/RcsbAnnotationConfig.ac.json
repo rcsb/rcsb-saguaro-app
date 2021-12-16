@@ -112,6 +112,10 @@
     "STEREO_OUTLIER",
     "CIS_PEPTIDE",
     "BINDING_SITE",
+    "ASA_UNBOUND",
+    "ASA_BOUND",
+    "BURIAL_FRACTION",
+    "BURIED_RESIDUES",
     "DISULFIDE_BRIDGE",
     "COVALENT_BOND",
     "METAL_COORDINATION",
@@ -588,5 +592,39 @@
     "display": "pin",
     "color": "#cfdf53",
     "title": "STEREO OUTLIER"
+  },{
+    "type": "ASA_UNBOUND",
+    "display": "area",
+    "color": {
+      "thresholds": [50],
+      "colors": ["#8484FF", "#FF8484"]
+    },
+    "height": 45,
+    "title": "ASA UNBOUND"
+  },{
+    "type": "ASA_BOUND",
+    "display": "area",
+    "color": {
+      "thresholds": [50],
+      "colors": ["#8484FF", "#FF8484"]
+    },
+    "height": 45,
+    "title": "ASA BOUND"
+  },{
+    "type": "BURIAL_FRACTION",
+    "display": "block-area",
+    "color": {
+      "colors": "#8484FF",
+      "thresholds": [0.00001,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+    },
+    "title": "BURIAL FRACTION"
+  },{
+    "type": "BURIED_RESIDUES",
+    "display": "block-area",
+    "color": {
+      "colors": "#44AA44",
+      "thresholds": [0.000001]
+    },
+    "title": "BURIED RESIDUES"
   }]
 }

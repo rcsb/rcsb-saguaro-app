@@ -11,6 +11,7 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
         target_identifiers{
             target_id
             entry_id
+            assembly_id
             entity_id
             asym_id
             interface_id

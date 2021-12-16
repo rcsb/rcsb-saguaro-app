@@ -1,6 +1,7 @@
 import {CoreCollectorInterface} from "../CoreCollectorInterface";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {
+    AlignmentResponse,
     AnnotationFeatures,
     Feature, FilterInput,
     QueryAnnotationsArgs,
@@ -22,6 +23,8 @@ export interface CollectAnnotationsInterface extends QueryAnnotationsArgs {
     rcsbContext?:Partial<PolymerEntityInstanceInterface>
     annotationProcessing?: AnnotationProcessingInterface;
     externalAnnotationTrackBuilder?: ExternalTrackBuilderInterface;
+    annotationGenerator?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
+    annotationFilter?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
     titleSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
     trackTitle?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
     typeSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;

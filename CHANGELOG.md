@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.0.0-interfaces] - 2021-12-15
+###  Annotation collector improvements 
+- CollectAnnotationsInterface added method for generating new annotations internally (not exposed)
+    - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
+    - `annotationFilter?(annotations: Array<AnnotationFeatures>)` filter the collected annotations
+    - Both method are called before annotations processing and thus, they should be configured in `RcsbAnnotationConfig.ac.json` or equivalent config
+
 ## [4.0.0-master] - 2021-12-07
 ### Breaking change
 - `ExternalTrackBuilderInterface` methods return a promise and are executed asynchronous

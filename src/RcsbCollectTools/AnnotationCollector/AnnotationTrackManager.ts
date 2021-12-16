@@ -4,7 +4,6 @@ import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationCon
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
 import {AnnotationCollectConfig} from "./AnnotationCollectorInterface";
-import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
 
 export class AnnotationTrackManager {
 
