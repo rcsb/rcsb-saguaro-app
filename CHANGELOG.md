@@ -8,6 +8,7 @@
     - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
     - `annotationFilter?(annotations: Array<AnnotationFeatures>)` filter the collected annotations
     - Both method are called before annotations processing and thus, they should be configured in `RcsbAnnotationConfig.ac.json` or equivalent config
+    - Checking content before adding generated features
 
 ## [4.0.0-master] - 2021-12-07
 ### Breaking change

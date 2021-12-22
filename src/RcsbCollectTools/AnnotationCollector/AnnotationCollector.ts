@@ -45,10 +45,13 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         this.annotationFeatures = await this.requestAnnotations(requestConfig);
         if (requestConfig.collectSwissModel === true) {
             const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
-            this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
+            if(swissModelData && swissModelData.length > 0)
+                this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
         }
         if(typeof requestConfig?.annotationGenerator === "function") {
-            this.annotationFeatures = this.annotationFeatures.concat(await requestConfig.annotationGenerator(this.annotationFeatures));
+            const generatedFeatures: Array<AnnotationFeatures> = await requestConfig.annotationGenerator(this.annotationFeatures)
+            if(generatedFeatures && generatedFeatures.length > 0)
+                this.annotationFeatures = this.annotationFeatures.concat(generatedFeatures);
         }
         if(typeof requestConfig?.annotationFilter === "function") {
             this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);
