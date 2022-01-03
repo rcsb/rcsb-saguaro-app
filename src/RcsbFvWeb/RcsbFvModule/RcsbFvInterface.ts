@@ -111,7 +111,7 @@ function buriedResidues(annotations: Array<AnnotationFeatures>): Array<Annotatio
                     feature.name = "Core protein residues";
                     feature.description = `Residue accessibility lower than ${accThr}Å`;
                     feature.feature_positions.forEach(p=>{
-                        p.values = p.values.map(p=> (p<accThr ? p : 0))
+                        p.values = p.values.map(p=> (p<accThr ? Math.floor(p*100)/100 : 0))
                     });
                     buriedResidues.features = [feature];
                 }
@@ -123,16 +123,18 @@ function buriedResidues(annotations: Array<AnnotationFeatures>): Array<Annotatio
 
 function burialFraction(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
     const burialFractionOut: Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
-    const asaUnboundAnn:Array<AnnotationFeatures> = cloneDeep(annotations);
-    asaUnboundAnn.forEach(ann=>{
+    const asaUnboundAnn:Array<AnnotationFeatures> = cloneDeep(annotations).map(ann=>{
         ann.features = ann.features.filter(f=>(f.type===Type.AsaUnbound));
-    });
-    const asaBoundAnn:Array<AnnotationFeatures> = cloneDeep(annotations);
-    asaBoundAnn.forEach(ann=>{
+        return ann;
+    }).filter(ann=>(ann.features.length>0));
+    const asaBoundAnn:Array<AnnotationFeatures> = cloneDeep(annotations).map(ann=>{
         ann.features = ann.features.filter(f=>(f.type===Type.AsaBound));
-    });
+        return ann;
+    }).filter(ann=>(ann.features.length>0));
     asaUnboundAnn.forEach((asaUnbound)=>{
-        const asaBound: AnnotationFeatures = asaBoundAnn.find((ann)=>(ann.target_id === asaUnbound.target_id));
+        const asaBound: AnnotationFeatures = asaBoundAnn.find(
+            (ann)=>(ann.target_identifiers.target_id === asaUnbound.target_identifiers.target_id && ann.target_identifiers.interface_partner_index === asaUnbound.target_identifiers.interface_partner_index)
+        );
         if(asaUnbound && asaBound){
             if(asaBound.features.length != asaUnbound.features.length)
                 throw "Inconsistent bound and unbound ASA features, different array lengths";
@@ -152,7 +154,7 @@ function burialFraction(annotations: Array<AnnotationFeatures>): Array<Annotatio
                         values: uP.values.map((uV,m)=>{
                             const bV: number = bP.values[m];
                             if(uV===0) return 0;
-                            return 1-bV/uV;
+                            return Math.floor((1-bV/uV)*100)/100;
                         })
                     });
                 });
@@ -166,21 +168,31 @@ function burialFraction(annotations: Array<AnnotationFeatures>): Array<Annotatio
 
 function interfaceFilter(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
     const out: Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
-    const interfaceSet: Set<string> = new Set<string>();
-    annotations.forEach(ann=>{
+    for(const ann of annotations){
         const cpAnn: AnnotationFeatures = cloneDeep<AnnotationFeatures>(ann);
         if(ann.source === Source.PdbInterface){
             cpAnn.features = [];
-            ann.features.forEach(f=>{
-                if(f.type === Type.BurialFraction && !interfaceSet.has(ann.target_id)) {
+            for(const f of ann.features){
+                if(f.type === Type.BurialFraction) {
                     cpAnn.features.push(f);
-                    interfaceSet.add(ann.target_id);
                 }
-            })
+            }
         }
-        out.push(cpAnn)
-    });
+        out.push(cpAnn);
+    }
     return new Promise<Array<AnnotationFeatures>>(resolve => {
         resolve(out);
     });
+}
+
+async function uniqueKey(ann: AnnotationFeatures): Promise<string> {
+    const interfaceTranslate = await rcsbFvCtxManager.getInterfaceToInstance(ann.target_identifiers.target_id);
+    const key: Array<string> = [interfaceTranslate.getInstances(ann.target_identifiers.target_id)[ann.target_identifiers.interface_partner_index]];
+    ann.features.forEach(f=>{
+        f.feature_positions.forEach(p=>{
+            key.push(p.beg_seq_id.toString());
+            key.push(...p.values.map(v=>v.toString()));
+        });
+    });
+    return key.join("-");
 }
