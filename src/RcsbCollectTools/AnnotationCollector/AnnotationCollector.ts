@@ -50,8 +50,8 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         }
         if(typeof requestConfig?.annotationGenerator === "function") {
             const generatedFeatures: Array<AnnotationFeatures> = await requestConfig.annotationGenerator(this.annotationFeatures)
-            if(generatedFeatures && generatedFeatures.length > 0)
-                this.annotationFeatures = this.annotationFeatures.concat(generatedFeatures);
+            if(generatedFeatures && generatedFeatures.filter((f)=>(f!=null)).length > 0)
+                this.annotationFeatures = this.annotationFeatures.concat(generatedFeatures.filter((f)=>(f!=null)));
         }
         if(typeof requestConfig?.annotationFilter === "function") {
             this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);

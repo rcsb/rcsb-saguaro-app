@@ -4,10 +4,10 @@
 
 ## [4.0.0-interfaces] - 2021-12-15
 ###  Annotation collector improvements 
-- CollectAnnotationsInterface added method for generating new annotations internally (not exposed)
+-  Added interface `CollectAnnotationsInterface` for generating new annotations internally (not exposed)
     - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
     - `annotationFilter?(annotations: Array<AnnotationFeatures>)` filter the collected annotations
-    - Both method are called before annotations processing and thus, they should be configured in `RcsbAnnotationConfig.ac.json` or equivalent config
+    - Both methods are called before annotations processing and thus, they should be configured in `RcsbAnnotationConfig.ac.json` or equivalent config file
     - Checking content before adding generated features
 
 ## [4.0.0-master] - 2021-12-07

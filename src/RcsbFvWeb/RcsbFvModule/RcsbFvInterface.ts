@@ -1,6 +1,7 @@
 import {
     AnnotationFeatures,
     Feature,
+    FeaturePosition,
     SequenceReference,
     Source,
     Type
@@ -41,7 +42,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             trackTitle: this.trackTitle.bind(this),
             typeSuffix: this.typeSuffix.bind(this),
             sources:source,
-            annotationGenerator: buriedResidues,
+            annotationGenerator: interfaceAnnotations,
             annotationFilter: buildConfig.additionalConfig?.externalTrackBuilder?.filterFeatures ? undefined : interfaceFilter,
             rcsbContext: buildConfig.additionalConfig?.rcsbContext
         });
@@ -83,15 +84,28 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     }
 }
 
+function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+    const buried: Array<AnnotationFeatures> = buriedResidues(annotations);
+    const burial: Array<AnnotationFeatures> = burialFraction(annotations);
+    return new Promise<Array<AnnotationFeatures>>(resolve => {
+        const out:Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
+        if(buried && buried.length > 0)
+            out.push(...buried);
+        if(burial && burial.length > 0)
+            out.push(...burial)
+        resolve(out);
+    })
+}
 
-function buriedResidues(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+function buriedResidues(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
     const accThr: number = 6;
+    let buriedResidues:AnnotationFeatures;
     for(const ann of annotations){
         if(ann.source === Source.PdbInterface){
             for(const f of ann.features){
                 if(f.type === Type.AsaUnbound){
-                    const out:AnnotationFeatures = cloneDeep<AnnotationFeatures>(ann);
-                    out.source = Source.PdbInstance;
+                    buriedResidues = cloneDeep<AnnotationFeatures>(ann);
+                    buriedResidues.source = Source.PdbInstance;
                     const feature:Feature = cloneDeep<Feature>(f);
                     feature.type = <Type>"BURIED_RESIDUES";
                     feature.name = "Core protein residues";
@@ -99,14 +113,55 @@ function buriedResidues(annotations: Array<AnnotationFeatures>): Promise<Array<A
                     feature.feature_positions.forEach(p=>{
                         p.values = p.values.map(p=> (p<accThr ? p : 0))
                     });
-                    out.features = [feature];
-                    return new Promise<Array<AnnotationFeatures>>(resolve => {
-                        resolve([out]);
-                    })
+                    buriedResidues.features = [feature];
                 }
             }
         }
     }
+    return [buriedResidues];
+}
+
+function burialFraction(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
+    const burialFractionOut: Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
+    const asaUnboundAnn:Array<AnnotationFeatures> = cloneDeep(annotations);
+    asaUnboundAnn.forEach(ann=>{
+        ann.features = ann.features.filter(f=>(f.type===Type.AsaUnbound));
+    });
+    const asaBoundAnn:Array<AnnotationFeatures> = cloneDeep(annotations);
+    asaBoundAnn.forEach(ann=>{
+        ann.features = ann.features.filter(f=>(f.type===Type.AsaBound));
+    });
+    asaUnboundAnn.forEach((asaUnbound)=>{
+        const asaBound: AnnotationFeatures = asaBoundAnn.find((ann)=>(ann.target_id === asaUnbound.target_id));
+        if(asaUnbound && asaBound){
+            if(asaBound.features.length != asaUnbound.features.length)
+                throw "Inconsistent bound and unbound ASA features, different array lengths";
+            const burialFraction: AnnotationFeatures = cloneDeep<AnnotationFeatures>(asaUnbound);
+            burialFraction.features = [];
+            asaUnbound.features.forEach((uF,l)=>{
+                const bF: Feature = asaBound.features[l];
+                const feature: Feature = cloneDeep<Feature>(uF);
+                feature.type = <Type>"BURIAL_FRACTION";
+                feature.name = "Interface residues buried fraction";
+                feature.description = "(1 - bASA/uASA)";
+                feature.feature_positions = [];
+                uF.feature_positions.forEach((uP,n)=>{
+                    const bP: FeaturePosition = bF.feature_positions[n];
+                    feature.feature_positions.push({
+                        beg_seq_id: uP.beg_seq_id,
+                        values: uP.values.map((uV,m)=>{
+                            const bV: number = bP.values[m];
+                            if(uV===0) return 0;
+                            return 1-bV/uV;
+                        })
+                    });
+                });
+                burialFraction.features.push(feature);
+            });
+            burialFractionOut.push(burialFraction)
+        }
+    });
+    return burialFractionOut;
 }
 
 function interfaceFilter(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
