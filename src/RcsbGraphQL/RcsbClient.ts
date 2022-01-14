@@ -7,8 +7,8 @@ import {
     QueryAnnotationsArgs, QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
-    CoreEntry, CoreGroup, CorePolymerEntity, QueryEntriesArgs,
-    QueryEntryArgs, QueryPolymer_EntitiesArgs, QueryGroupArgs,
+    CoreEntry, GroupPolymerEntity, CorePolymerEntity, QueryEntriesArgs,
+    QueryEntryArgs, QueryPolymer_EntitiesArgs, QueryPolymer_Entity_GroupArgs,
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 import {RcsbQueryMultipleEntityInstances} from "./RcsbQueryMultipleEntityInstances";
@@ -50,8 +50,8 @@ export class RcsbClient {
         return await this.rcsbQueryMutipleEntityInstances.request(requestConfig);
     }
 
-    public async requestGroupInfo(requestConfig: QueryGroupArgs): Promise<CoreGroup>{
-        const rcsbQueryGroup: RcsbCoreQueryInterface<QueryGroupArgs,CoreGroup> = new RcsbQueryGroup();
+    public async requestGroupInfo(requestConfig: QueryPolymer_Entity_GroupArgs): Promise<GroupPolymerEntity>{
+        const rcsbQueryGroup: RcsbCoreQueryInterface<QueryPolymer_Entity_GroupArgs,GroupPolymerEntity> = new RcsbQueryGroup();
         return await rcsbQueryGroup.request(requestConfig);
     }
 

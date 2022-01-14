@@ -8,9 +8,9 @@ export function searchGroupQuery(groupId:string, service?: Service): SearchQuery
         type: Type.Terminal,
         service: service ?? Service.Text,
         parameters: {
-            attribute: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.GroupIds.path,
+            attribute: RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId.path,
             negation: false,
-            operator: RcsbSearchMetadata.RcsbPolymerEntityContainerIdentifiers.GroupIds.operator.ExactMatch,
+            operator: RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId.operator.ExactMatch,
             value: groupId
         }
     }

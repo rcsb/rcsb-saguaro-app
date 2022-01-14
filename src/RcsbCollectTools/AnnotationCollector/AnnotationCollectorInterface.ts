@@ -23,8 +23,9 @@ interface CommonAnnotationInterface {
 }
 
 export interface CollectAnnotationsInterface extends QueryAnnotationsArgs, CommonAnnotationInterface {
-    addTargetInTitle?: Set<Source>;
     collectSwissModel?: boolean;
+    titleSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
+    trackTitle?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
 }
 
 export interface CollectGroupAnnotationsInterface extends QueryGroup_AnnotationsArgs, CommonAnnotationInterface {

@@ -1,6 +1,11 @@
-import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    AnnotationFeatures, Feature,
+    SequenceReference,
+    Source
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 
 export class RcsbFvEntity extends RcsbFvAbstractModule {
 
@@ -16,7 +21,7 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
                 queryId: entityId,
                 reference: SequenceReference.PdbEntity,
                 sources:source,
-                addTargetInTitle:new Set([Source.PdbInstance]),
+                titleSuffix: this.titleSuffix.bind(this),
                 filters:buildConfig.additionalConfig?.filters
         });
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
@@ -29,6 +34,16 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
             this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks)
             :
             this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks);
+    }
+
+    private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{
+        let targetId: string = ann.target_id;
+        if( this.polymerEntityInstance != null && ann.source === Source.PdbInstance){
+            const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
+            const authAsymId: string = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
+            targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
+        }
+        return targetId;
     }
 
 }

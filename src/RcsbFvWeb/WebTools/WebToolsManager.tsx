@@ -13,6 +13,7 @@ export interface SelectButtonConfigInterface {
     width?: number;
     dropdownTitle?: string;
     optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    isAdditionalButton?: boolean;
 }
 export class WebToolsManager {
 
@@ -27,7 +28,7 @@ export class WebToolsManager {
 
     static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
         WebToolsManager.clearAdditionalSelectButton(elementId);
-        WebToolsManager.innerBuildSelectButton(elementId, WebToolsManager.suffixAdditionalButton, options, config);
+        WebToolsManager.innerBuildSelectButton(elementId+SelectButton.BUTTON_CONTAINER_DIV_SUFFIX, WebToolsManager.suffixAdditionalButton, options, {...config, isAdditionalButton:true});
     }
 
     private static innerBuildSelectButton(elementId: string, suffix: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
@@ -36,22 +37,31 @@ export class WebToolsManager {
         div.style.display = "inline-block";
         document.getElementById(elementId).append(div);
         ReactDom.render(
-            this.jsxButton(options,config),
+            this.jsxButton(elementId, options,config),
             div
         );
     }
 
-    private static jsxButton(options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?: SelectButtonConfigInterface):JSX.Element{
-        return (<SelectButton options={options} optionProps={config?.optionProps} addTitle={config?.addTitle} defaultValue={config?.defaultValue} width={config?.width} dropdownTitle={config?.dropdownTitle}/>);
+    private static jsxButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?: SelectButtonConfigInterface):JSX.Element{
+        return (<SelectButton
+            elementId={elementId}
+            options={options}
+            optionProps={config?.optionProps}
+            addTitle={config?.addTitle}
+            defaultValue={config?.defaultValue}
+            width={config?.width}
+            dropdownTitle={config?.dropdownTitle}
+            isAdditionalButton={config?.isAdditionalButton}
+        />);
     }
 
     static clearSelectButton(elementId: string){
         WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffix);
-        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffixAdditionalButton);
+        WebToolsManager.clearAdditionalSelectButton(elementId);
     }
 
     static clearAdditionalSelectButton(elementId: string){
-        WebToolsManager.innerClearSelectButton(elementId, WebToolsManager.suffixAdditionalButton);
+        WebToolsManager.innerClearSelectButton(elementId+SelectButton.BUTTON_CONTAINER_DIV_SUFFIX, WebToolsManager.suffixAdditionalButton);
     }
 
     static innerClearSelectButton(elementId: string, suffix: string){

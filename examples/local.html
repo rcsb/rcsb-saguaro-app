@@ -4,7 +4,6 @@
 </head>
 <body>
 
-
 <script src="../build/dist/app.js" type="text/javascript"></script>
 
 <br/>
@@ -82,55 +81,61 @@
         console.log(result);
     });*/
     /*const args = getJsonFromUrl();
+    //RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
     const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{},{
         externalTrackBuilder:{
             processAlignmentAndFeatures(data) {
 
             },
             filterFeatures(annotations) {
-                const data = [...annotations];
-                data.forEach(ann=>{
-                    ann.features = ann.features.filter(f=>(
-                        f.type === "DISORDER" || f.type === "HYDROPATHY"
-                    ));
-                })
-                return data;
+                return new Promise(resolve=>{
+                    const data = [...annotations];
+                    data.forEach(ann=>{
+                        ann.features = ann.features.filter(f=>(
+                            f.type === "DISORDER" || f.type === "HYDROPATHY"
+                        ));
+                    })
+                    resolve(data);
+                });
             },
             addTo(tracks) {
-                if(tracks.rcsbContext.asymId === "A") {
-                    const myTrack = {
-                        trackId: "blockTrack",
-                        trackHeight: 20,
-                        trackColor: "#F9F9F9",
-                        titleFlagColor: "#53AD77",
-                        displayType: "block",
-                        displayColor: "#FF0000",
-                        rowTitle: "MY TRACK",
-                        trackData: [{
-                            begin: 30,
-                            end: 60
-                        }]
+                return new Promise(resolve => {
+                    if(tracks.rcsbContext.asymId === "A") {
+                        const myTrack = {
+                            trackId: "blockTrack",
+                            trackHeight: 20,
+                            trackColor: "#F9F9F9",
+                            titleFlagColor: "#53AD77",
+                            displayType: "block",
+                            displayColor: "#FF0000",
+                            rowTitle: "MY TRACK",
+                            trackData: [{
+                                begin: 30,
+                                end: 60
+                            }]
+                        }
+                        tracks.annotationTracks?.push(myTrack);
+                    }else if(tracks.rcsbContext.asymId === "B") {
+                        const myTrack = {
+                            trackId: "blockTrack",
+                            trackHeight: 20,
+                            trackColor: "#F9F9F9",
+                            titleFlagColor: "#5377AD",
+                            displayType: "block",
+                            displayColor: "#00FF00",
+                            rowTitle: "MY TRACK",
+                            trackData: [{
+                                begin: 50,
+                                end: 80
+                            }]
+                        }
+                        tracks.annotationTracks?.push(myTrack);
                     }
-                    tracks.annotationTracks?.push(myTrack);
-                }else if(tracks.rcsbContext.asymId === "B") {
-                    const myTrack = {
-                        trackId: "blockTrack",
-                        trackHeight: 20,
-                        trackColor: "#F9F9F9",
-                        titleFlagColor: "#5377AD",
-                        displayType: "block",
-                        displayColor: "#00FF00",
-                        rowTitle: "MY TRACK",
-                        trackData: [{
-                            begin: 50,
-                            end: 80
-                        }]
-                    }
-                    tracks.annotationTracks?.push(myTrack);
-                }
+                    resolve();
+                })
             }
         }
-    });*/
+    });
     /*const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P69905");
     module.then(result=>{
         console.log(result);

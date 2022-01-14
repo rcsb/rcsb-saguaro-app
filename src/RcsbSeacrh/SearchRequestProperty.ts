@@ -40,7 +40,7 @@ export class SearchRequestProperty {
                 return_all_hits: true
             },
             return_type: query.return_type
-        })).result_set.map(item=>item.identifier);
+        })).result_set.map(item=>typeof item === "string" ? item : item.identifier);
     }
 
 }

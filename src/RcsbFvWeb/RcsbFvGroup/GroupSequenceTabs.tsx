@@ -210,7 +210,7 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
     const addConservation: ExternalTrackBuilderInterface = buildAlignmentVariation();
 
     return {
-        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): void {
+        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): Promise<void> {
             tracks.annotationTracks.unshift({
                 trackId: "annotationTrack_GLOBAL_BINDINGS",
                 trackHeight: 40,
@@ -224,16 +224,20 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
                 trackData: Array.from(bindingSiteMap.values())
             });
             addConservation.addTo(tracks);
+            return void 0;
         },
-        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): void {
+        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
             processFeatures(data.annotations);
             addConservation.processAlignmentAndFeatures(data);
+            return void 0;
         },
-        filterFeatures(annotations: Array<AnnotationFeatures>) {
+        filterFeatures(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>f.name.includes("ligand"));
             })
-            return annotations;
+            return new Promise<Array<AnnotationFeatures>>((resolve => {
+                resolve(annotations);
+            }));
         }
     };
 
@@ -270,7 +274,7 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
     let querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
 
     return {
-        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): void {
+        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): Promise<void> {
             if(!tracks.alignmentTracks.sequence)
                 tracks.alignmentTracks.sequence = [{
                     trackId: "annotationTrack_ALIGNMENT_MODE",
@@ -306,15 +310,19 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
                         };
                     })
                 }];
+            return void 0;
         },
-        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): void {
+        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
             processAlignments(data.alignments);
+            return void 0;
         },
-        filterFeatures(annotations: Array<AnnotationFeatures>) {
+        filterFeatures(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>(f.name != "automated matches"));
             })
-            return annotations;
+            return new Promise<Array<AnnotationFeatures>>((resolve)=>{
+                resolve(annotations);
+            });
         }
     };
 

@@ -2,7 +2,7 @@ import {
     AggregationType,
     Operator,
     ReturnType,
-    Service
+    Service, Type
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {ChartType} from "../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {FacetMemberInterface} from "./FacetMemberInterface";
@@ -76,19 +76,29 @@ class EntityGroupFacetStore implements FacetStoreInterface{
         },
         facet:{
             filter:{
-                operator: Operator.ExactMatch,
-                attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.Type.path,
-                value: 'SCOP'
+                type: Type.Terminal,
+                service: Service.Text,
+                parameters:{
+                    operator: Operator.ExactMatch,
+                    attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.Type.path,
+                    value: 'SCOP'
+                }
             },
             facets:[{
                 filter:{
-                    operator: Operator.Equals,
-                    value: 1,
-                    attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth.path
+                    type: Type.Terminal,
+                    service: Service.Text,
+                    parameters:{
+                        operator: Operator.Equals,
+                        value: 1,
+                        attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth.path
+                    }
                 },
-                min_interval_population: 1,
-                attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
-                aggregation_type: AggregationType.Terms
+                facets:[{
+                    min_interval_population: 1,
+                    attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
+                    aggregation_type: AggregationType.Terms
+                }]
             }]
         }
     }];
@@ -132,9 +142,13 @@ class EntityGroupFacetStore implements FacetStoreInterface{
         },
         facet:{
             filter:{
-                operator: Operator.ExactMatch,
-                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
-                value: 'Pfam'
+                type: Type.Terminal,
+                service: Service.Text,
+                parameters:{
+                    operator: Operator.ExactMatch,
+                    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+                    value: 'Pfam'
+                }
             },
             facets:[{
                 min_interval_population: 1,

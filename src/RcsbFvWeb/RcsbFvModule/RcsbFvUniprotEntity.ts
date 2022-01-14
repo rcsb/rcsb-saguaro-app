@@ -1,4 +1,5 @@
 import {
+    AnnotationFeatures, Feature,
     FieldName, FilterInput, OperationType,
     SequenceReference,
     Source
@@ -7,6 +8,7 @@ import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import { RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 
 export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 
@@ -31,8 +33,8 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:additionalConfig?.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],
-            addTargetInTitle:new Set([Source.PdbInstance]),
-            filters:additionalConfig?.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters
+            filters:additionalConfig?.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters,
+            titleSuffix: this.titleSuffix.bind(this)
         });
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
         this.boardConfigData.includeAxis = true;
@@ -42,6 +44,16 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 
     protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
         this.rowConfigData = this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks);
+    }
+
+    private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{
+        let targetId: string = ann.target_id;
+        if( this.polymerEntityInstance != null && ann.source === Source.PdbInstance){
+            const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
+            const authAsymId: string = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
+            targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
+        }
+        return targetId;
     }
 
 }

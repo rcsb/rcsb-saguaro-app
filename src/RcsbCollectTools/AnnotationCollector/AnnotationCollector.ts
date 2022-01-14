@@ -47,14 +47,10 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
             const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
             this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
         }
-        this.processRcsbPdbAnnotations({externalAnnotationTrackBuilder: this.externalTrackBuilder, ...requestConfig});
+        await this.processRcsbPdbAnnotations({externalAnnotationTrackBuilder: this.externalTrackBuilder, ...requestConfig});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();
         return this.annotationsConfigData;
-    }
-
-    public getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate {
-        return this.polymerEntityInstanceTranslator;
     }
 
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
@@ -96,8 +92,8 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         })
     }
 
-    private processRcsbPdbAnnotations(requestConfig: AnnotationCollectConfig): void{
-        this.annotationTrackManager.processRcsbPdbAnnotations(this.annotationFeatures, requestConfig);
+    private async processRcsbPdbAnnotations(requestConfig: AnnotationCollectConfig): Promise<void>{
+        await this.annotationTrackManager.processRcsbPdbAnnotations(this.annotationFeatures, requestConfig);
         this.rcsbAnnotationConfig.sortAndIncludeNewTypes();
         [
             this.rcsbAnnotationConfig.instanceOrder(),

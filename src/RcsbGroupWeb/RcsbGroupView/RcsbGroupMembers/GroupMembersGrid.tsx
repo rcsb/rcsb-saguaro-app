@@ -62,7 +62,7 @@ export class GroupMembersGrid extends React.Component <{groupId: string; searchQ
             },
             return_type: ReturnType.PolymerEntity
         });
-        const entityIds: Array<string> = searchResult.result_set.map(m=>m.identifier);
+        const entityIds: Array<string> = searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier);
         const meic: MultipleEntityInstancesCollector = new MultipleEntityInstancesCollector();
         const eiMap: Array<PolymerEntityInstanceInterface> = await meic.collect({entity_ids:entityIds});
         const visited: Set<string> = new Set<string>();

@@ -29,6 +29,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     };
     protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
+    protected polymerEntityInstance: PolymerEntityInstanceTranslate;
     protected readonly sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
@@ -44,6 +45,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate){
+        this.polymerEntityInstance = polymerEntityInstance;
         this.annotationCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance);
         this.sequenceCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance)
     }
@@ -105,13 +107,13 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     private async buildExternalTracks(externalTrackBuilder: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {
         if(typeof externalTrackBuilder.processAlignmentAndFeatures === "function")
-            externalTrackBuilder.processAlignmentAndFeatures({
+            await externalTrackBuilder.processAlignmentAndFeatures({
                 annotations:await this.annotationCollector.getAnnotationFeatures(),
                 alignments: await this.sequenceCollector.getAlignmentResponse(),
                 rcsbContext: rcsbContext
             });
         if(typeof externalTrackBuilder.addTo === "function")
-            externalTrackBuilder.addTo({
+            await externalTrackBuilder.addTo({
                 alignmentTracks: this.alignmentTracks,
                 annotationTracks: this.annotationTracks,
                 rcsbContext: rcsbContext

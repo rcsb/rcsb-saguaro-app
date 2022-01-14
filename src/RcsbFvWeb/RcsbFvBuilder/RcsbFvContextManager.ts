@@ -18,7 +18,7 @@ import {
     GroupPropertyCollector,
     GroupPropertyInterface
 } from "../../RcsbCollectTools/PropertyCollector/GroupPropertyCollector";
-import {QueryGroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {FacetType} from "../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 
@@ -122,7 +122,7 @@ class RcsbFvContextManager {
         return new PolymerEntityChromosomeTranslate(chrMap);
     }
 
-    public async getGroupMemberProperties(groupQuery: QueryGroupArgs): Promise<GroupPropertiesProvider>{
+    public async getGroupMemberProperties(groupQuery: QueryPolymer_Entity_GroupArgs): Promise<GroupPropertiesProvider>{
         const key: string = groupQuery.group_id.toUpperCase();
         if(this.groupPropertyMap.get(key)?.status === "available") {
             return this.groupPropertyMap.get(key).data;
@@ -145,7 +145,7 @@ class RcsbFvContextManager {
         return collector.request(query, facets, returnType);
     }
 
-    public async getGroupProperties(groupQuery: QueryGroupArgs): Promise<GroupPropertyInterface> {
+    public async getGroupProperties(groupQuery: QueryPolymer_Entity_GroupArgs): Promise<GroupPropertyInterface> {
         const groupPropertyCollector: GroupPropertyCollector = new GroupPropertyCollector();
         return await groupPropertyCollector.collect(groupQuery);
     }

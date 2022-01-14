@@ -112,10 +112,6 @@ export class SequenceCollector implements SequenceCollectorInterface{
         return this.sequenceLength;
     }
 
-    public getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate {
-        return this.polymerEntityInstanceTranslator;
-    }
-
     public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
         this.helper.setPolymerEntityInstanceTranslator(p);
         this.polymerEntityInstanceTranslator = p;

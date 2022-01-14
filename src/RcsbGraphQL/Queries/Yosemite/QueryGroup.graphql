@@ -1,6 +1,5 @@
-query QueryGroup($group_id: String!, $aggregation_method: GroupAggregationMethod!){
-    group(
-        aggregation_method:$aggregation_method
+query QueryGroup($group_id: String!){
+    polymer_entity_group(
         group_id:$group_id
     ){
         rcsb_id
