@@ -4,7 +4,7 @@ import {RcsbFv, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import * as acm from "../../RcsbAnnotationConfig/BindingSiteConfig.ac.json";
+import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
 import {
     SequenceCollector,
     SequenceCollectorDataInterface

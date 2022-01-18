@@ -5,7 +5,7 @@ import {RcsbFv} from "@rcsb/rcsb-saguaro";
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import * as acm from "../../RcsbAnnotationConfig/BindingSiteConfig.ac.json";
+import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
 import {
     SequenceCollector,
     SequenceCollectorDataInterface
@@ -49,7 +49,6 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
     protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
         this.rowConfigData =  this.alignmentTracks.sequence ? this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment) : this.alignmentTracks.alignment;
-        console.log(this.rowConfigData);
     }
 
 }

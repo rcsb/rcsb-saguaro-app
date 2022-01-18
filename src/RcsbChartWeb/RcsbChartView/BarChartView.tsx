@@ -1,7 +1,7 @@
 import * as React from "react";
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ReactNode} from "react";
-import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
+import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 type BarData = {x: string, y:number};
@@ -59,7 +59,6 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
     }
 
     render():ReactNode {
-
         const {barData,subData}: {barData: BarData[]; subData: BarData[];} = this.dataByCategory();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const height: number = ChartTools.paddingBottom + barData.length*ChartTools.xIncrement;
@@ -72,28 +71,7 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
                     width={width}
                 >
                     {CROSS_AXIS}
-                    <VictoryStack>
-                        <VictoryBar
-                            barWidth={ChartTools.xDomainPadding}
-                            style={{
-                                data: {
-                                    fill: "#5e94c3"
-                                }
-                            }}
-                            horizontal={true}
-                            data={barData}
-                        />
-                        <VictoryBar
-                            barWidth={ChartTools.xDomainPadding}
-                            style={{
-                                data: {
-                                    fill: "#d0d0d0"
-                                }
-                            }}
-                            horizontal={true}
-                            data={subData}
-                        />
-                    </VictoryStack>
+                    {stack(barData, subData)}
                     <VictoryAxis style={{tickLabels:{fontSize:12}}}/>
                 </VictoryChart>
             </div>
@@ -112,3 +90,23 @@ const CROSS_AXIS = (<VictoryAxis
         }
     }}
 />);
+
+function stack(histData:BarData[],subData:BarData[]): JSX.Element{
+    return ( <VictoryStack>
+        {bar(histData, "#5e94c3")}
+        {bar(subData, "#d0d0d0")}
+    </VictoryStack>);
+}
+
+function bar(data:BarData[],color: string): JSX.Element {
+    return data.length > 0 ? (<VictoryBar
+        barWidth={ChartTools.xDomainPadding}
+        style={{
+            data: {
+                fill: color
+            }
+        }}
+        horizontal={true}
+        data={data}
+    />)  : null;
+}

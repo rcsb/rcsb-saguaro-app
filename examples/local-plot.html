@@ -14,8 +14,9 @@
     //RcsbChartWebApp.plot("chart1", "uniprot_entity", "P01112", "barplot", "experimental_method");
     //RcsbChartWebApp.plot("chart2", "uniprot_entity", "P01112", "histogram", "resolution");
 
-    const query = {"query":{"type":"terminal","label":"text","service":"text","parameters":{"attribute":"rcsb_entry_info.resolution_combined","operator":"less","negation":false,"value":2.8}},"return_type":"polymer_entity","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}};
-    RcsbChartWebApp.buildGroup("chart_panel", "sequence_identity", "1_30", query);
+    const query = {"query":{"type":"terminal","label":"text","service":"text","parameters":{"attribute":"rcsb_entry_info.resolution_combined","operator":"less","negation":false,"value":3}},"return_type":"polymer_entity","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}};
+    //RcsbChartWebApp.buildGroup("chart_panel", "sequence_identity", "1_30", query);
+    RcsbChartWebApp.buildGroup("chart_panel", "matching_uniprot_accession", "P01112", query);
 
 </script>
 

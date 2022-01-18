@@ -61,28 +61,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
                     domain={{x:this.xDomain()}}
                 >
                     {CROSS_AXIS}
-                    <VictoryStack>
-                        <VictoryBar
-                            barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
-                            alignment={"middle"}
-                            style={{
-                                data: {
-                                    fill: "#5e94c3"
-                                }
-                            }}
-                            data={histData}
-                        />
-                        <VictoryBar
-                            barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
-                            alignment={"middle"}
-                            style={{
-                                data: {
-                                    fill: "#d0d0d0"
-                                }
-                            }}
-                            data={subData}
-                        />
-                    </VictoryStack>
+                    {stack(histData, subData, nBins)}
                     <VictoryAxis tickValues={this.tickValues()} tickFormat={(t) => {
                         if(this.props.config?.mergeDomainMaxValue){
                             if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
@@ -98,6 +77,26 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
         );
     }
 
+}
+
+function stack(histData: {x:number;y:number}[], subData: {x:number;y:number}[], nBins: number): JSX.Element{
+   return ( <VictoryStack>
+       {bar(histData,nBins, "#5e94c3")}
+       {bar(subData,nBins, "#d0d0d0")}
+    </VictoryStack>);
+}
+
+function bar(data: {x:number;y:number}[], nBins: number, color: string): JSX.Element {
+   return data.length > 0 ? (<VictoryBar
+       barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
+       alignment={"middle"}
+       style={{
+           data: {
+               fill: color
+           }
+       }}
+       data={data}
+   />)  : null;
 }
 
 const CROSS_AXIS = (<VictoryAxis
