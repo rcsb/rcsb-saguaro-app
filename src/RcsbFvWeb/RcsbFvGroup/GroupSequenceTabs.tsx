@@ -298,7 +298,7 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
                     trackColor: "#F9F9F9",
                     displayColor: {
                         thresholds:[],
-                        colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#ececec"]
+                        colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#f9f9f9"]
                     },
                     trackHeight: 20,
                     titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
