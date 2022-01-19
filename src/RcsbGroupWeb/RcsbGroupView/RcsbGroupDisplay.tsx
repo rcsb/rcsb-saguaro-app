@@ -9,9 +9,15 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {RcsbGroupMembers} from "./RcsbGroupMembers";
 import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterface";
 import {rcsbFvCtxManager} from "../../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {
+    addGroupNodeToSearchQuery,
+    getFacetStoreFromGroupType, GroupGranularityType,
+    searchGroupQuery
+} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
 import cloneDeep from 'lodash/cloneDeep';
+import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {entityGroupFacetStore} from "../../RcsbSeacrh/FacetStore/EntityGroupFacetStore";
 
 
 export class RcsbGroupDisplay {
@@ -37,11 +43,11 @@ export class RcsbGroupDisplay {
         );
     }
 
-    public static async displaySearchAttributes(elementId: string, facetStore: FacetStoreInterface, searchQuery?:SearchQuery, groupId?: string): Promise<void>{
-
+    public static async displaySearchAttributes(elementId: string, groupGranularity: GroupGranularityType, searchQuery?:SearchQuery, groupId?: string): Promise<void>{
+        const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupGranularity);
         let facets: Array<Facet> = [];
         for(const service of facetStore.getServices()){
-            const groupQuery: SearchQueryType = await searchGroupQuery(groupId, service);
+            const groupQuery: SearchQueryType = await searchGroupQuery(groupGranularity, groupId, service);
             const groupProperties: QueryResult | null = await rcsbFvCtxManager.getSearchQueryResult(
                 groupQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
@@ -54,7 +60,7 @@ export class RcsbGroupDisplay {
         let chartData: Array<RcsbChartInterface> = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets);
         let subData: Array<RcsbChartInterface> | undefined = undefined;
         if(searchQuery) {
-            const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, facetStore, groupId, searchQuery);
+            const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, groupGranularity, groupId, searchQuery);
             chartData = searchData.chartData;
             subData = searchData.subData;
         }
@@ -69,20 +75,21 @@ export class RcsbGroupDisplay {
         );
     }
 
-    static displayGroupMembers(elementId: string, groupId: string, nMembers: number, query?:SearchQuery){
+    static displayGroupMembers(elementId: string, groupGranularity: GroupGranularityType, groupId: string, nMembers: number, query?:SearchQuery){
         ReactDom.render(
-            <RcsbGroupMembers groupId={groupId} searchQuery={query} nMembers={nMembers}/>,
+            <RcsbGroupMembers groupGranularity={groupGranularity} groupId={groupId} searchQuery={query} nMembers={nMembers}/>,
             document.getElementById(elementId)
         );
     }
 
 }
 
-async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, facetStore: FacetStoreInterface, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupGranularity: GroupGranularityType, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+    const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupGranularity);
     let subData: Array<RcsbChartInterface> | undefined;
     let partialFacets: Array<Facet> = [];
     for (const service of facetStore.getServices()) {
-        const groupQuery: SearchQueryType = await addGroupNodeToSearchQuery(groupId, searchQuery, service);
+        const groupQuery: SearchQueryType = await addGroupNodeToSearchQuery(groupGranularity, groupId, searchQuery, service);
         const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
             groupQuery,
             facetStore.getFacetService(service).map(f => f.facet),

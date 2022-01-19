@@ -27,7 +27,11 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {
+    addGroupNodeToSearchQuery,
+    GroupGranularityType,
+    searchGroupQuery
+} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {Logo} from "./Logo";
@@ -36,13 +40,13 @@ import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCol
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
 //TODO make this class dependent of a GroupReference parameter
-export class GroupSequenceTabs extends React.Component <{group: GroupReference, groupId: string, searchQuery?: SearchQuery}, {}> {
+export class GroupSequenceTabs extends React.Component <{groupGranularity: GroupGranularityType, groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
     private filterInstances: Array<string> = undefined;
     private filterEntities: Array<string> = undefined;
 
-    constructor(props:{group: GroupReference, groupId: string, searchQuery: SearchQuery}) {
+    constructor(props:{groupGranularity: GroupGranularityType, groupId: string, searchQuery: SearchQuery}) {
         super(props);
     }
 
@@ -61,11 +65,11 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
     private onMount() {
         if(this.props.searchQuery) {
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery), return_type: ReturnType.PolymerEntity}).then(targets=> {
+            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupGranularity, this.props.groupId, this.props.searchQuery), return_type: ReturnType.PolymerEntity}).then(targets=> {
                 this.filterEntities = targets
                 search.requestMembers({
                     ...this.props.searchQuery,
-                    query: addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery),
+                    query: addGroupNodeToSearchQuery(this.props.groupGranularity, this.props.groupId, this.props.searchQuery),
                     return_type: ReturnType.PolymerInstance
                 }).then(targets => {
                     this.filterInstances = targets;
@@ -75,7 +79,7 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
         }else{
             this.onSelect("alignment");
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({query: searchGroupQuery(this.props.groupId), return_type: ReturnType.PolymerInstance}).then(targets=> {
+            search.requestMembers({query: searchGroupQuery(this.props.groupGranularity, this.props.groupId), return_type: ReturnType.PolymerInstance}).then(targets=> {
                 this.filterInstances = targets
                 this.onSelect("alignment");
             });
@@ -88,11 +92,11 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
         this.rendered.add(eventKey);
         switch (eventKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.group, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities});
+                alignment(eventKey.toString(), this.props.groupGranularity as GroupReference, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities});
                 break;
             case "binding-sites":
                 if (this.props.searchQuery){
-                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {
+                    bindingSites(eventKey.toString(), this.props.groupGranularity as GroupReference, this.props.groupId, this.filterInstances.length, {
                         page:{first:0,after: "0"},
                         alignmentFilter: this.filterEntities,
                         filters: [{
@@ -102,12 +106,12 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
                         }]
                     });
                 }else{
-                    bindingSites(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
+                    bindingSites(eventKey.toString(), this.props.groupGranularity as GroupReference, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
                 }
                 break;
             case "structural-features":
                 if(this.props.searchQuery){
-                    structure(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {
+                    structure(eventKey.toString(), this.props.groupGranularity as GroupReference, this.props.groupId, this.filterInstances.length, {
                         page:{first:0,after: "0"},
                         alignmentFilter: this.filterEntities,
                         filters:[{
@@ -117,7 +121,7 @@ export class GroupSequenceTabs extends React.Component <{group: GroupReference, 
                         }]
                     });
                 }else{
-                    structure(eventKey.toString(), this.props.group, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
+                    structure(eventKey.toString(), this.props.groupGranularity as GroupReference, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
                 }
                 break;
         }

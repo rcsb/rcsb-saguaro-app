@@ -3,7 +3,11 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {Col, Container, Row} from "react-bootstrap";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {
+    addGroupNodeToSearchQuery,
+    GroupGranularityType,
+    searchGroupQuery
+} from "../../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import { ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
 import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
@@ -11,7 +15,7 @@ import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
 
-export class GroupMembersGrid extends React.Component <{groupId: string; searchQuery?: SearchQuery; start:number; rows:number; display:boolean;}, {entityList: Array<PolymerEntityInstanceInterface>}> {
+export class GroupMembersGrid extends React.Component <{groupGranularity: GroupGranularityType, groupId: string; searchQuery?: SearchQuery; start:number; rows:number; display:boolean;}, {entityList: Array<PolymerEntityInstanceInterface>}> {
 
     readonly state: {entityList: Array<PolymerEntityInstanceInterface>} = {
         entityList: []
@@ -49,7 +53,7 @@ export class GroupMembersGrid extends React.Component <{groupId: string; searchQ
     private async getMembersImgUrl(): Promise<void> {
         const search: SearchRequest = new SearchRequest();
         const searchResult: QueryResult = await search.request({
-            query: this.props.searchQuery ? addGroupNodeToSearchQuery(this.props.groupId, this.props.searchQuery) : searchGroupQuery(this.props.groupId),
+            query: this.props.searchQuery ? addGroupNodeToSearchQuery(this.props.groupGranularity, this.props.groupId, this.props.searchQuery) : searchGroupQuery(this.props.groupGranularity, this.props.groupId),
             request_options:{
                 pager:{
                     start: this.props.start,

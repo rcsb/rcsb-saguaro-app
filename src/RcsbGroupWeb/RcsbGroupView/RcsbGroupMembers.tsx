@@ -3,8 +3,9 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import * as classes from "./scss/group-display.module.scss";
 import {Carousel} from "react-bootstrap";
 import {GroupMembersGrid} from "./RcsbGroupMembers/GroupMembersGrid";
+import {GroupGranularityType} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 
-export class RcsbGroupMembers extends React.Component <{groupId: string; searchQuery?: SearchQuery;nMembers: number;},{start:number; rows:number; selectedIndex: number;}> {
+export class RcsbGroupMembers extends React.Component <{groupGranularity: GroupGranularityType, groupId: string; searchQuery?: SearchQuery;nMembers: number;},{start:number; rows:number; selectedIndex: number;}> {
 
     readonly state: {start:number; rows:number; selectedIndex: number;} = {
         start:0,
@@ -14,7 +15,7 @@ export class RcsbGroupMembers extends React.Component <{groupId: string; searchQ
 
     readonly groupMembersDiv: string = "groupMembersDiv";
 
-    constructor(props: {groupId: string; searchQuery?: SearchQuery;nMembers: number;}) {
+    constructor(props: {groupGranularity: GroupGranularityType, groupId: string; searchQuery?: SearchQuery;nMembers: number;}) {
         super(props);
     }
 
@@ -27,7 +28,7 @@ export class RcsbGroupMembers extends React.Component <{groupId: string; searchQ
                         Array(nPages).fill(null).map((none,n)=>{
                             return(
                                 <Carousel.Item>
-                                    <GroupMembersGrid groupId={this.props.groupId} searchQuery={this.props.searchQuery} start={this.state.rows * n} rows={this.state.rows} display={this.state.selectedIndex == n} />
+                                    <GroupMembersGrid groupGranularity={this.props.groupGranularity} groupId={this.props.groupId} searchQuery={this.props.searchQuery} start={this.state.rows * n} rows={this.state.rows} display={this.state.selectedIndex == n} />
                                 </Carousel.Item>
                             )
                         })
