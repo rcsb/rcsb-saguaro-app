@@ -66,15 +66,10 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
 
     render():JSX.Element {
         const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
-        if(!this.props.isAdditionalButton) {
-            return (<div>
-                {title}
-                {this.selectRender()}
-            </div>);
-        } else {
-            const {selectOpt, index}: {selectOpt: SelectOptionInterface; index: number;} = this.getSelectOpt();
-            return this.innerSelectButtonRender(selectOpt, index);
-        }
+        return (<div>
+            {this.selectRender()}
+        </div>);
+
     }
 
     private selectRender():JSX.Element {
@@ -122,16 +117,20 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }))
             }))
         }
+        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
         return(
             <div style={{display:"inline-block"}}>
-                <Select
-                    options={options}
-                    isSearchable={false}
-                    onChange={this.change.bind(this)}
-                    styles={this.configStyle()}
-                    components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props}/>)) }}
-                    defaultValue={{...defaultValue,value:index}}
-                />
+                {title}
+                <div >
+                    <Select
+                        options={options}
+                        isSearchable={false}
+                        onChange={this.change.bind(this)}
+                        styles={this.configStyle()}
+                        components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props}/>)) }}
+                        defaultValue={{...defaultValue,value:index}}
+                    />
+                </div>
             </div>
         );
     }
