@@ -6,6 +6,7 @@ import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCo
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 
+export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
 export interface RcsbFvAdditionalConfig{
     sources?: Array<Source>;
     filters?:Array<FilterInput>;
@@ -17,7 +18,7 @@ export interface RcsbFvAdditionalConfig{
     annotationProcessing?: AnnotationProcessingInterface;
     sequenceCollector?: SequenceCollectorInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
-    rcsbContext?:Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string}>;
+    rcsbContext?:RcsbContextType;
 }
 
 //TODO move psa & elementSelectId into additional config

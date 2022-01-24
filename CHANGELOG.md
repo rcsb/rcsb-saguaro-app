@@ -2,13 +2,16 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.0.0-interfaces] - 2021-12-15
+## [4.0.0-interfaces] - 2022-01-24
 ###  Annotation collector improvements 
 -  Added interface `CollectAnnotationsInterface` for generating new annotations internally (not exposed)
     - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
     - `annotationFilter?(annotations: Array<AnnotationFeatures>)` filter the collected annotations
     - Both methods are called before annotations processing and thus, they should be configured in `RcsbAnnotationConfig.ac.json` or equivalent config file
     - Checking content before adding generated features
+    - New callback attribute `InstanceSequenceConfig` > `beforeChangeCallback`. This function is called when instance 
+    dropdown menu changes and before rendering the new 1D RcsbFv. 
+    The callback may return a `RcsbContextType` object that will be included in the `additionalConfig`
 
 ## [4.0.0-master] - 2021-12-07
 ### Breaking change
