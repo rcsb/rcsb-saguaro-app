@@ -77,7 +77,7 @@ export class RcsbFvInstanceBuilder {
                             asymId: instance.asymId
                         });
                     const rcsbContext:RcsbContextType = {
-                        ...additionalConfig.rcsbContext,
+                        ...additionalConfig?.rcsbContext,
                         ...externalContext,
                         ...instance
                     };
@@ -118,7 +118,7 @@ export class RcsbFvInstanceBuilder {
                 asymId: filteredInstanceList[index].asymId
             });
         const rcsbContext:RcsbContextType = {
-            ...additionalConfig.rcsbContext,
+            ...additionalConfig?.rcsbContext,
             ...externalContext,
             ...filteredInstanceList[index]
         };
@@ -133,7 +133,6 @@ export class RcsbFvInstanceBuilder {
     }
 
     static async buildInstanceFv(elementId:string, instanceId:string, additionalConfig?:RcsbFvAdditionalConfig, module?:instanceModule): Promise<RcsbFvModulePublicInterface> {
-        console.log(additionalConfig);
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=>{
             try {
                 const entryId: string = instanceId.split(TagDelimiter.instance)[0];

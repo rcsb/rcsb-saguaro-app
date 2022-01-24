@@ -63,7 +63,17 @@
     const args = getJsonFromUrl();
 
     //RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
-    const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{module:"interface"},{
+    const anchor = window.location.hash.substr(1);
+    const defaultValue =  anchor.length > 0 ? anchor : undefined;
+    const dropdownTitle = "CHAIN"
+
+        RcsbFvWebApp.buildInstanceSequenceFv(
+            "pfv",
+            "select",
+            "1A6D",
+            {module:"interface"}
+        );
+    //const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{module:"interface"},{
         /*externalTrackBuilder:{
             processAlignmentAndFeatures(data) {
 
@@ -116,7 +126,7 @@
                 })
             }
         }*/
-    });
+    //});
     /*const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P69905");
     module.then(result=>{
         console.log(result);
