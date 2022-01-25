@@ -64,32 +64,28 @@ export class RcsbAnnotationConfig {
         return this.entityAnnotationsOrder;
     }
 
-    public buildAndAddType(d: Feature, mainTitle?:string, titleSuffix?: string, typeSuffix?: string): string{
+    //TODO refactor how title and type are defined. Can this be split in two different methods ?
+    public buildAndAddType(d: Feature, trackTitle?:string, titleSuffix?: string, typeSuffix?: string): string{
         const type: string = d.type;
         const a: DynamicKeyAnnotationInterface = d;
-        let suffix: string = '';
-        if(this.annotationMap.has(type) && this.annotationMap.get(type).addToType instanceof Array){
-            (this.annotationMap.get(type).addToType as Array<string>).forEach(field=>{
+        const addToTypeSuffix: ArraySuffix<string> =  new ArraySuffix<string>();
+        addToTypeSuffix.push(typeSuffix,titleSuffix);
+        if(Array.isArray(this.annotationMap.get(type)?.addToType)){
+            this.annotationMap.get(type).addToType.forEach(field=>{
                 if(a[field]!=null)
-                    suffix += "."+a[field]
+                    addToTypeSuffix.push(a[field]);
             });
-            if(suffix.length > 0)
-                suffix = ":" + suffix;
         }
-        if(typeSuffix)
-            suffix += ":" + typeSuffix;
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
-            let newType: string = type;
-            newType = newType+":"+a[this.annotationMap.get(type).key]+suffix;
-            if(titleSuffix !=null)
-                newType += "."+titleSuffix;
+            addToTypeSuffix.unshift(a[this.annotationMap.get(type).key]);
+            const newType: string = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 const title: string = a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "";
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
                     type: newType,
                     color: typeof this.annotationMap.get(type).color === "string" ? RcsbAnnotationConfig.randomRgba(title) : { ...(this.annotationMap.get(type).color as RcsbFvColorGradient), colors:RcsbAnnotationConfig.randomRgba(title) },
-                    prefix: mainTitle ?? this.annotationMap.get(type).title,
+                    prefix: trackTitle ?? this.annotationMap.get(type).title,
                     title: title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationConfigInterface);
@@ -97,31 +93,31 @@ export class RcsbAnnotationConfig {
             this.addNewType(newType, type);
             return newType;
         }else if(titleSuffix !=  null){
-            let newType: string = type;
-            newType = newType+suffix+"."+titleSuffix;
+            const newType: string = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
                     type: newType,
+                    prefix: trackTitle ?? this.annotationMap.get(type).title,
                     title: titleSuffix,
-                    prefix: mainTitle ?? this.annotationMap.get(type).title,
                     provenanceList: new Set<string>()
                 });
+                this.addNewType(newType, type, titleSuffix);
             }
-            this.addNewType(newType, type, titleSuffix);
             return newType;
-        }else if(mainTitle!=null){
-            let newType: string = type;
-            newType = newType+suffix;
-            this.annotationMap.set(newType, {
-                ...this.annotationMap.get(type),
-                title: mainTitle
-            });
-            this.addNewType(newType,type);
+        }else if(trackTitle!=null){
+            const newType: string = type+addToTypeSuffix.join(".");
+            if(!this.annotationMap.has(newType)) {
+                this.annotationMap.set(newType, {
+                    ...this.annotationMap.get(type),
+                    title: trackTitle,
+                    provenanceList: new Set<string>()
+                });
+                this.addNewType(newType,type);
+            }
             return newType;
         }else{
-            let newType: string = type;
-            newType = newType+suffix;
+            const newType: string = type+addToTypeSuffix.join(".");
             this.addNewType(newType,type);
             return newType;
         }
@@ -242,6 +238,22 @@ export class RcsbAnnotationConfig {
     isTransformedToNumerical(type: string): boolean{
         return this.annotationMap.get(type).transformToNumerical === true;
 
+    }
+}
+
+class ArraySuffix<T> extends Array<T> {
+    join(separator?: string): string {
+        if(this.length == 0)
+            return "";
+        else
+            return ":"+super.join(separator);
+    }
+    push(...items:T[]): number {
+        items.forEach(i=>{
+            if(i)
+                super.push(i);
+        });
+        return this.length;
     }
 }
 

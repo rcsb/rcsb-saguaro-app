@@ -4,4 +4,5 @@ export class TagDelimiter {
     public static readonly sequenceTitle: string = " ";
     public static readonly alignmentTitle: string = "";
     public static readonly operatorComposition: string = "-";
+    public static readonly assembly: string = "-";
 }
