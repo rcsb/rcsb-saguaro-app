@@ -5,7 +5,6 @@ import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {
     addGroupNodeToSearchQuery,
-    GroupGranularityType,
     searchGroupQuery
 } from "../../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import { ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
@@ -14,8 +13,9 @@ import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/Translat
 import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
+import {GroupAggregationUnifiedType} from "../../../RcsbUtils/GroupProvenanceToAggregationType";
 
-export class GroupMembersGrid extends React.Component <{groupGranularity: GroupGranularityType, groupId: string; searchQuery?: SearchQuery; start:number; rows:number; display:boolean;}, {entityList: Array<PolymerEntityInstanceInterface>}> {
+export class GroupMembersGrid extends React.Component <{groupAggregationType: GroupAggregationUnifiedType, groupId: string; searchQuery?: SearchQuery; start:number; rows:number; display:boolean;}, {entityList: Array<PolymerEntityInstanceInterface>}> {
 
     readonly state: {entityList: Array<PolymerEntityInstanceInterface>} = {
         entityList: []
@@ -53,7 +53,7 @@ export class GroupMembersGrid extends React.Component <{groupGranularity: GroupG
     private async getMembersImgUrl(): Promise<void> {
         const search: SearchRequest = new SearchRequest();
         const searchResult: QueryResult = await search.request({
-            query: this.props.searchQuery ? addGroupNodeToSearchQuery(this.props.groupGranularity, this.props.groupId, this.props.searchQuery) : searchGroupQuery(this.props.groupGranularity, this.props.groupId),
+            query: this.props.searchQuery ? addGroupNodeToSearchQuery(this.props.groupAggregationType, this.props.groupId, this.props.searchQuery) : searchGroupQuery(this.props.groupAggregationType, this.props.groupId),
             request_options:{
                 pager:{
                     start: this.props.start,

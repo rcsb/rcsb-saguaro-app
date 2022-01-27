@@ -104,8 +104,10 @@ export class RcsbFvCoreBuilder {
         document.getElementById(elementId).append(domElement);
     }
 
-    static buildGroupTabs(elementId: string, group: GroupReference, groupId: string, query?:SearchQuery) {
-        WebToolsManager.buildGroupTabs(elementId, group, groupId, query);
+    static buildGroupTabs(elementId: string, groupReference: GroupReference, groupId: string, query?:SearchQuery) {
+        if(!groupReference)
+            throw "Unknown group reference"
+        WebToolsManager.buildGroupTabs(elementId, groupReference, groupId, query);
     }
 
 }

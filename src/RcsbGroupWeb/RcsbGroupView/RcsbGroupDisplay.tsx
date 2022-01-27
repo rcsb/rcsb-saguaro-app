@@ -11,13 +11,14 @@ import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterfa
 import {rcsbFvCtxManager} from "../../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
 import {
     addGroupNodeToSearchQuery,
-    getFacetStoreFromGroupType, GroupGranularityType,
+    getFacetStoreFromGroupType,
     searchGroupQuery
 } from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
 import cloneDeep from 'lodash/cloneDeep';
 import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {entityGroupFacetStore} from "../../RcsbSeacrh/FacetStore/EntityGroupFacetStore";
+import {GroupAggregationUnifiedType} from "../../RcsbUtils/GroupProvenanceToAggregationType";
 
 
 export class RcsbGroupDisplay {
@@ -43,7 +44,7 @@ export class RcsbGroupDisplay {
         );
     }
 
-    public static async displaySearchAttributes(elementId: string, groupGranularity: GroupGranularityType, searchQuery?:SearchQuery, groupId?: string): Promise<void>{
+    public static async displaySearchAttributes(elementId: string, groupGranularity: GroupAggregationUnifiedType, searchQuery?:SearchQuery, groupId?: string): Promise<void>{
         const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupGranularity);
         let facets: Array<Facet> = [];
         for(const service of facetStore.getServices()){
@@ -75,16 +76,16 @@ export class RcsbGroupDisplay {
         );
     }
 
-    static displayGroupMembers(elementId: string, groupGranularity: GroupGranularityType, groupId: string, nMembers: number, query?:SearchQuery){
+    static displayGroupMembers(elementId: string, groupGranularity: GroupAggregationUnifiedType, groupId: string, nMembers: number, query?:SearchQuery){
         ReactDom.render(
-            <RcsbGroupMembers groupGranularity={groupGranularity} groupId={groupId} searchQuery={query} nMembers={nMembers}/>,
+            <RcsbGroupMembers groupAggregationType={groupGranularity} groupId={groupId} searchQuery={query} nMembers={nMembers}/>,
             document.getElementById(elementId)
         );
     }
 
 }
 
-async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupGranularity: GroupGranularityType, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupGranularity: GroupAggregationUnifiedType, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
     const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupGranularity);
     let subData: Array<RcsbChartInterface> | undefined;
     let partialFacets: Array<Facet> = [];

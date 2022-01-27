@@ -4,9 +4,8 @@ import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptio
 import {OptionProps} from "react-select/src/components/Option";
 import {GroupSequenceTabs} from "../RcsbFvGroup/GroupSequenceTabs";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {LoaderSpinner} from "./LoaderSpinner";
-import {GroupGranularityType} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -73,9 +72,9 @@ export class WebToolsManager {
         }
     }
 
-    static buildGroupTabs(elementId: string, groupGranularity:GroupGranularityType, groupId: string, query?:SearchQuery){
+    static buildGroupTabs(elementId: string, groupReference:GroupReference, groupId: string, query?:SearchQuery){
         ReactDom.render(
-            <GroupSequenceTabs groupGranularity={groupGranularity} groupId={groupId} searchQuery={query}/>,
+            <GroupSequenceTabs groupReference={groupReference} groupId={groupId} searchQuery={query}/>,
             document.getElementById(elementId)
         )
     }
