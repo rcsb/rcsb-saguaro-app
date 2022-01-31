@@ -6,8 +6,8 @@ import {
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {cloneDeep} from "lodash";
+import {FeatureType} from "../../RcsbExport/FeatureType";
 
-export const BURIAL_FRACTION: Type = <Type>"BURIAL_FRACTION";
 export function burialFraction(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
     const burialFractionOut: Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
     const asaUnboundAnn:Array<AnnotationFeatures> = cloneDeep(annotations).map(ann=>{
@@ -30,7 +30,7 @@ export function burialFraction(annotations: Array<AnnotationFeatures>): Array<An
             asaUnbound.features.forEach((uF,l)=>{
                 const bF: Feature = asaBound.features[l];
                 const feature: Feature = cloneDeep<Feature>(uF);
-                feature.type = <Type>"BURIAL_FRACTION";
+                feature.type = FeatureType.BurialFraction;
                 feature.name = "Interface residues buried fraction";
                 feature.description = "(1 - bASA/uASA)";
                 feature.feature_positions = [];
@@ -55,7 +55,7 @@ export function burialFraction(annotations: Array<AnnotationFeatures>): Array<An
 
 export function burialFractionFilter(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
     return cloneDeep(annotations).map(ann=>{
-        ann.features = ann.features.filter(f=>(ann.source !== Source.PdbInterface || f.type===BURIAL_FRACTION));
+        ann.features = ann.features.filter(f=>(ann.source !== Source.PdbInterface || f.type===FeatureType.BurialFraction));
         return ann;
     }).filter(ann=>(ann.features.length>0));
 }

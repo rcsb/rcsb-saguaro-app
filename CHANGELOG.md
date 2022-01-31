@@ -13,6 +13,8 @@
     dropdown menu changes and before rendering the new 1D RcsbFv. 
     The callback may return a `RcsbContextType` object that will be included in the `additionalConfig`
 - Added two new classes (`AssemblyInterfacesCollector` and `AssemblyInterfacesTranslate`) to collect and handle assembly and interface id relationships
+- Exposing all feature types in a single object `FeatureType` (file: `src/RcsbExport/FeatureType.ts`)
+- New package `RcsbExport` to expose classes and methods outside the library
 
 ## [4.0.0-master] - 2021-12-07
 ### Breaking change

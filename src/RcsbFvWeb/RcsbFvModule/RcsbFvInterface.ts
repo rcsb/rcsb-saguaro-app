@@ -14,9 +14,9 @@ import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {rcsbFvCtxManager} from "../RcsbFvBuilder/RcsbFvContextManager";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
-import {cloneDeep} from "lodash";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
-import {BURIAL_FRACTION, burialFraction, burialFractionFilter} from "../../RcsbUtils/AnnotationGenerators/BurialFraction";
+import {burialFraction, burialFractionFilter} from "../../RcsbUtils/AnnotationGenerators/BurialFraction";
+import {FeatureType} from "../../RcsbExport/FeatureType";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 
@@ -86,7 +86,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     }
 
     private async trackTitle(ann: AnnotationFeatures, d: Feature): Promise<string> {
-        if (ann.source === Source.PdbInterface && d.type === BURIAL_FRACTION) {
+        if (ann.source === Source.PdbInterface && d.type === FeatureType.BurialFraction) {
             return "BINDING CHAIN ";
         }
     }

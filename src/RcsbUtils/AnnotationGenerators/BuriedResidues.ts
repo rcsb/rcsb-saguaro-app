@@ -1,7 +1,7 @@
 import {AnnotationFeatures, Feature, Source, Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {cloneDeep} from "lodash";
+import {FeatureType} from "../../RcsbExport/FeatureType";
 
-const BURIED_RESIDUES:Type = <Type>"BURIED_RESIDUES";
 export function buriedResidues(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
     const accThr: number = 6;
     let buriedResidues:AnnotationFeatures;
@@ -14,7 +14,7 @@ export function buriedResidues(annotations: Array<AnnotationFeatures>): Array<An
                         buriedResidues = cloneDeep<AnnotationFeatures>(ann);
                         buriedResidues.source = Source.PdbInstance;
                         const feature:Feature = cloneDeep<Feature>(f);
-                        feature.type = BURIED_RESIDUES;
+                        feature.type = FeatureType.BuriedResidues;
                         feature.name = "Unbound chain core residues";
                         feature.description = `Residue accessibility lower than ${accThr}Å`;
                         feature.feature_positions.forEach(p=>{
