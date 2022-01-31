@@ -21,3 +21,4 @@ export {
 
 export {RcsbFvContextManager} from "./RcsbExport/RcsbFvContextManager";
 export {RcsbFvUI} from "./RcsbExport/RcsbFvUI";
+export {FeatureType} from "./RcsbExport/FeatureType";
