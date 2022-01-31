@@ -23,7 +23,7 @@ export {
 
 import {RcsbFvCoreBuilder} from "./RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder";
 import {SelectButtonConfigInterface} from "./RcsbFvWeb/WebTools/WebToolsManager";
-import {InterfaceInstanceTranslate} from "./RcsbUtils/InterfaceInstanceTranslate";
+import {InterfaceInstanceTranslate} from "./RcsbUtils/Translators/InterfaceInstanceTranslate";
 import {rcsbFvCtxManager} from "./RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
 
 export class RcsbFvUI {

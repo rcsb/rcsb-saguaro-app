@@ -1,5 +1,5 @@
 import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvUniprotEntity} from "../RcsbFvModule/RcsbFvUniprotEntity";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {RcsbFvUniprotInstance} from "../RcsbFvModule/RcsbFvUniprotInstance";

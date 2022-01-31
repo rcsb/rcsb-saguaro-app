@@ -9,7 +9,7 @@ import {
     SequenceCollectorDataInterface
 } from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";

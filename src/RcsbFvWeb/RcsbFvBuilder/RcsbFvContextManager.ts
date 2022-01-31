@@ -1,16 +1,16 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {PolymerEntityInstancesCollector} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
-import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
+import {EntryAssemblyTranslate} from "../../RcsbUtils/Translators/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
-import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
+import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/Translators/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
-import {InterfaceInstanceTranslate} from "../../RcsbUtils/InterfaceInstanceTranslate";
+import {InterfaceInstanceTranslate} from "../../RcsbUtils/Translators/InterfaceInstanceTranslate";
 import {InterfaceInstanceCollector} from "../../RcsbCollectTools/Translators/InterfaceInstanceCollector";
 import {CoreAssembly} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {AssemblyInterfacesCollector} from "../../RcsbCollectTools/Translators/AssemblyInterfacesCollector";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
-import {AssemblyInterfacesTranslate} from "../../RcsbUtils/AssemblyInterfacesTranslate";
+import {AssemblyInterfacesTranslate} from "../../RcsbUtils/Translators/AssemblyInterfacesTranslate";
 
 interface DataStatusInterface<T>{
     data:T;

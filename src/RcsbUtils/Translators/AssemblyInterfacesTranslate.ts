@@ -1,4 +1,4 @@
-import {AssemblyInterfacesInterface} from "../RcsbCollectTools/Translators/AssemblyInterfacesCollector";
+import {AssemblyInterfacesInterface} from "../../RcsbCollectTools/Translators/AssemblyInterfacesCollector";
 
 export class AssemblyInterfacesTranslate {
 

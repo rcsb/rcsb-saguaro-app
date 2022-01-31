@@ -615,7 +615,7 @@
     "display": "block-area",
     "color": {
       "colors": "#8484FF",
-      "thresholds": [0.00001,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+      "thresholds": [0.00001,0.2,0.4,0.6,0.8]
     },
     "title": "BURIAL FRACTION"
   },{

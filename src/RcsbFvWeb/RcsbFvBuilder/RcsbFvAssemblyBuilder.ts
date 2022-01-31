@@ -4,7 +4,7 @@ import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/Entry
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
+import {EntryAssemblyTranslate} from "../../RcsbUtils/Translators/EntryAssemblyTranslate";
 
 export class RcsbFvAssemblyBuilder {
 

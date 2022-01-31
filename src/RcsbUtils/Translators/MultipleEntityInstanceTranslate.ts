@@ -1,7 +1,7 @@
 import {PolymerEntityInstanceTranslate} from "./PolymerEntityInstanceTranslate";
-import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
-import {TagDelimiter} from "./TagDelimiter";
-import {Operator} from "../Helpers/Operator";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {TagDelimiter} from "../TagDelimiter";
+import {Operator} from "../../Helpers/Operator";
 
 export class MultipleEntityInstanceTranslate {
 

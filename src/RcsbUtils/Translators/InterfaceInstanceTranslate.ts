@@ -1,4 +1,4 @@
-import {InterfaceInstanceInterface} from "../RcsbCollectTools/Translators/InterfaceInstanceCollector";
+import {InterfaceInstanceInterface} from "../../RcsbCollectTools/Translators/InterfaceInstanceCollector";
 
 export class InterfaceInstanceTranslate {
 

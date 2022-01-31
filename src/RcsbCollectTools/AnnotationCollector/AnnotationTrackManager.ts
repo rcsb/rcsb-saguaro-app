@@ -2,7 +2,7 @@ import {AnnotationTrack} from "./AnnotationTrack";
 import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {AnnotationCollectConfig} from "./AnnotationCollectorInterface";
 
 export class AnnotationTrackManager {

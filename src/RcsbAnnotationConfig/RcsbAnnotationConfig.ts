@@ -69,7 +69,7 @@ export class RcsbAnnotationConfig {
         const type: string = d.type;
         const a: DynamicKeyAnnotationInterface = d;
         const addToTypeSuffix: ArraySuffix<string> =  new ArraySuffix<string>();
-        addToTypeSuffix.push(typeSuffix,titleSuffix);
+        addToTypeSuffix.push(titleSuffix,typeSuffix);
         if(Array.isArray(this.annotationMap.get(type)?.addToType)){
             this.annotationMap.get(type).addToType.forEach(field=>{
                 if(a[field]!=null)
@@ -152,9 +152,9 @@ export class RcsbAnnotationConfig {
 
     public sortAndIncludeNewTypes(): void{
         //this.cleanAddedTypes();
-        const addedTypesKeys: Array<string> = Array.from(this.addedTypes.keys()).sort((a,b)=>a.localeCompare(b));
+        const addedTypesKeys: Array<string> = Array.from(this.addedTypes.keys()).sort((a,b)=>b.localeCompare(a));
         addedTypesKeys.forEach(type=>{
-            const newTypes: Array<string> = this.addedTypes.get(type).sort((a,b)=>a.localeCompare(b));
+            const newTypes: Array<string> = this.addedTypes.get(type).sort((a,b)=>b.localeCompare(a));
             newTypes.forEach(newT=>{
                 this.checkAndIncludeNewType(newT,type);
             });
