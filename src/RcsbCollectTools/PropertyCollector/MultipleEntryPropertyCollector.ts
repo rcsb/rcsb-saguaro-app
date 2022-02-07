@@ -6,6 +6,8 @@ export interface EntryPropertyIntreface {
     entryId: string;
     experimentalMethod: string;
     resolution: number;
+    name: string;
+    taxNames: Array<string>;
 }
 
 export class MultipleEntryPropertyCollector {
@@ -18,7 +20,10 @@ export class MultipleEntryPropertyCollector {
                 rcsbId: r.rcsb_id,
                 entryId: r.rcsb_id,
                 experimentalMethod:r.rcsb_entry_info.experimental_method ,
-                resolution: r.rcsb_entry_info.resolution_combined ? r.rcsb_entry_info.resolution_combined[0] : null
+                resolution: r.rcsb_entry_info.resolution_combined ? r.rcsb_entry_info.resolution_combined[0] : null,
+                name: r.struct.title,
+                description: r.pdbx_molecule_features?.map(mf=>mf.details),
+                taxNames: r.polymer_entities.map((entity)=>(entity.rcsb_entity_source_organism.map((so)=>(so.ncbi_scientific_name)))).flat()
             })
         );
     }

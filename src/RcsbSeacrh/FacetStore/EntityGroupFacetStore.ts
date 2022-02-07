@@ -101,6 +101,20 @@ class EntityGroupFacetStore implements FacetStoreInterface{
                 }]
             }]
         }
+    },{
+        id: "ligands",
+        title: "SMALL MOLECULES",
+        attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
+        chartType: ChartType.barplot,
+        chartConfig: {
+            mostPopulatedGroups: 20,
+            mergeName: "OTHER MOLECULES"
+        },
+        facet: {
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
+            min_interval_population: 1
+        }
     }];
 
     private readonly entityFacet: FacetMemberInterface[] = [{
@@ -155,6 +169,20 @@ class EntityGroupFacetStore implements FacetStoreInterface{
                 attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
                 aggregation_type: AggregationType.Terms
             }]
+        }
+    }, {
+        id:"entiy_names",
+        title: null,
+        attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbPolymerNameCombined.Names.path,
+        chartType: ChartType.barplot,
+        chartConfig: {
+            mostPopulatedGroups: 5,
+            mergeName: "OTHER NAMES"
+        },
+        facet:{
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbPolymerNameCombined.Names.path,
+            min_interval_population: 1
         }
     }];
 

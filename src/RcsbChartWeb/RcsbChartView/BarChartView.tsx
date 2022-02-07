@@ -3,6 +3,7 @@ import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
+import {TickLabelComponent} from "../RcsbChartTools/TickLabelComponent";
 
 type BarData = {x: string, y:number};
 export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
@@ -72,7 +73,7 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData)}
-                    <VictoryAxis style={{tickLabels:{fontSize:12}}}/>
+                    <VictoryAxis style={{tickLabels:{fontSize:12}}} tickLabelComponent={<TickLabelComponent/>}/>
                 </VictoryChart>
             </div>
         );

@@ -1,7 +1,7 @@
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
-enum ExtendedGroupReference {
+export enum ExtendedGroupReference {
    MatchingDepositionGroupId = "matching_deposit_group_id"
 }
 

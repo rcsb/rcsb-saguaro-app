@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Tab, Tabs} from "react-bootstrap";
-import * as classes from "./scss/group-display.module.scss";
+import classes from "./scss/group-display.module.scss";
 
 export interface RcsbTabsInterface<T extends string> {
     tabList: Array<{key:T, title:string}>;

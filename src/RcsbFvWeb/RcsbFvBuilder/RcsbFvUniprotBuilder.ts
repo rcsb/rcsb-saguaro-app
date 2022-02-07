@@ -40,8 +40,8 @@ export class RcsbFvUniprotBuilder {
                                 );
                                 RcsbFvCoreBuilder.addSelectButton(elementFvId, elementSelectId,result.map(instance=>{
                                     return{
-                                        name: instance.taxIds.length > 0 ? instance.names+" - "+instance.taxIds.join(", ") : instance.names,
-                                        label: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`)+" - "+instance.names,
+                                        name: instance.taxNames.length > 0 ? instance.name+" - "+instance.taxNames.join(", ") : instance.name,
+                                        label: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`)+" - "+instance.name,
                                         shortLabel: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`),
                                         onChange: async ()=>{
                                             await RcsbFvUniprotBuilder.buildUniprotEntityInstanceFv(

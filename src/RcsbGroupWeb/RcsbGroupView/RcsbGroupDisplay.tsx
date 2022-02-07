@@ -3,7 +3,7 @@ import * as ReactDom from "react-dom";
 import {RcsbChartLayout} from "../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
 import {FacetTools, RcsbChartInterface} from "../../RcsbSeacrh/FacetTools";
 import React from "react";
-import * as classes from "./scss/group-display.module.scss";
+import classes from "./RcsbGroupMembers/Components/scss/group-display.module.scss";
 import {Container} from "react-bootstrap";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbGroupMembers} from "./RcsbGroupMembers";
@@ -16,8 +16,6 @@ import {
 } from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
 import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
 import cloneDeep from 'lodash/cloneDeep';
-import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {entityGroupFacetStore} from "../../RcsbSeacrh/FacetStore/EntityGroupFacetStore";
 import {GroupAggregationUnifiedType} from "../../RcsbUtils/GroupProvenanceToAggregationType";
 
 
@@ -44,11 +42,11 @@ export class RcsbGroupDisplay {
         );
     }
 
-    public static async displaySearchAttributes(elementId: string, groupGranularity: GroupAggregationUnifiedType, searchQuery?:SearchQuery, groupId?: string): Promise<void>{
-        const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupGranularity);
+    public static async displaySearchAttributes(elementId: string, groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:[string,string?][]): Promise<void>{
+        const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupAggregationType);
         let facets: Array<Facet> = [];
         for(const service of facetStore.getServices()){
-            const groupQuery: SearchQueryType = await searchGroupQuery(groupGranularity, groupId, service);
+            const groupQuery: SearchQueryType = await searchGroupQuery(groupAggregationType, groupId, service);
             const groupProperties: QueryResult | null = await rcsbFvCtxManager.getSearchQueryResult(
                 groupQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
@@ -61,7 +59,7 @@ export class RcsbGroupDisplay {
         let chartData: Array<RcsbChartInterface> = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets);
         let subData: Array<RcsbChartInterface> | undefined = undefined;
         if(searchQuery) {
-            const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, groupGranularity, groupId, searchQuery);
+            const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, groupAggregationType, groupId, searchQuery);
             chartData = searchData.chartData;
             subData = searchData.subData;
         }
@@ -69,28 +67,28 @@ export class RcsbGroupDisplay {
         ReactDom.render(
             <div className={classes.bootstrapGroupComponentScope}>
                 <Container fluid={"lg"}>
-                    <RcsbChartLayout layout={facetStore.facetLayoutGrid} charts={chartData} subCharts={subData}/>
+                    <RcsbChartLayout layout={facetLayoutGrid ?? facetStore.facetLayoutGrid} charts={chartData} subCharts={subData}/>
                 </Container>
             </div>,
             document.getElementById(elementId)
         );
     }
 
-    static displayGroupMembers(elementId: string, groupGranularity: GroupAggregationUnifiedType, groupId: string, nMembers: number, query?:SearchQuery){
+    static displayGroupMembers(elementId: string, groupAggregationType: GroupAggregationUnifiedType, groupId: string, nRows: number, nColumns: number, query?:SearchQuery){
         ReactDom.render(
-            <RcsbGroupMembers groupAggregationType={groupGranularity} groupId={groupId} searchQuery={query} nMembers={nMembers}/>,
+            <RcsbGroupMembers groupAggregationType={groupAggregationType} groupId={groupId} searchQuery={query} nRows={nRows} nColumns={nColumns}/>,
             document.getElementById(elementId)
         );
     }
 
 }
 
-async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupGranularity: GroupAggregationUnifiedType, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
-    const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupGranularity);
+async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+    const facetStore: FacetStoreInterface = getFacetStoreFromGroupType(groupAggregationType);
     let subData: Array<RcsbChartInterface> | undefined;
     let partialFacets: Array<Facet> = [];
     for (const service of facetStore.getServices()) {
-        const groupQuery: SearchQueryType = await addGroupNodeToSearchQuery(groupGranularity, groupId, searchQuery, service);
+        const groupQuery: SearchQueryType = await addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery, service);
         const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
             groupQuery,
             facetStore.getFacetService(service).map(f => f.facet),

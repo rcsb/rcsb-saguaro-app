@@ -43,7 +43,6 @@ export class EntryAssembliesCollector {
 
     private static parsePolymerEntityInstances(polymerEntityInstances: Array<CorePolymerEntityInstance>, asymInstanceMap: Map<string, PolymerEntityInstanceInterface>, out: Map<string,Array<PolymerEntityInstanceInterface>>){
         polymerEntityInstances.forEach(instance=>{
-            const name: string = instance.polymer_entity.rcsb_polymer_entity.pdbx_description;
             const taxIds: Set<string> = new Set<string>();
             if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
                 instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
@@ -57,8 +56,8 @@ export class EntryAssembliesCollector {
                 asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
                 authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
                 authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
-                names: name,
-                taxIds:Array.from(taxIds)
+                name: instance.polymer_entity.rcsb_polymer_entity.rcsb_polymer_name_combined?.names?.join(", ") ?? instance.polymer_entity.rcsb_polymer_entity.pdbx_description,
+                taxNames:Array.from(taxIds)
             };
             out.get(EntryAssembliesCollector.modelKey).push(d);
             asymInstanceMap.set(instance.rcsb_polymer_entity_instance_container_identifiers.asym_id, d);

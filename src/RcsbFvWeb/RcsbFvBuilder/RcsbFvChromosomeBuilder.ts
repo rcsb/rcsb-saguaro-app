@@ -44,8 +44,8 @@ export class RcsbFvChromosomeBuilder {
                             });
                         }
                         return{
-                            name: e.names + " - " + e.taxIds.join(", "),
-                            label: entityId + " - " + e.names,
+                            name: e.name + " - " + e.taxNames.join(", "),
+                            label: entityId + " - " + e.name,
                             shortLabel: entityId,
                             onChange:async ()=>{
                                 await RcsbFvChromosomeBuilder.buildEntityChromosome(elementFvId,chromosomeSelectId,entityId);

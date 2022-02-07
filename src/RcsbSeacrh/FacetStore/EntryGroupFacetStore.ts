@@ -101,6 +101,20 @@ class EntryGroupFacetStore implements FacetStoreInterface{
                 }]
             }]
         }
+    },{
+        id: "ligands",
+        title: "SMALL MOLECULES",
+        attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
+        chartType: ChartType.barplot,
+        chartConfig: {
+            mostPopulatedGroups: 20,
+            mergeName: "OTHER MOLECULES"
+        },
+        facet: {
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
+            min_interval_population: 1
+        }
     }];
 
     private readonly entityFacet: FacetMemberInterface[] = [{
@@ -164,7 +178,7 @@ class EntryGroupFacetStore implements FacetStoreInterface{
         attribute: RcsbSearchMetadata.ChemComp.Type.path,
         chartType: ChartType.barplot,
         chartConfig:{
-            mostPopulatedGroups: 5,
+            mostPopulatedGroups: 10,
             mergeName: "OTHER COMPS"
         },
         facet:{
@@ -199,7 +213,7 @@ class EntryGroupFacetStore implements FacetStoreInterface{
         [RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path],
     ];
 
-    readonly returnType: ReturnType = ReturnType.PolymerEntity;
+    readonly returnType: ReturnType = ReturnType.Entry;
 }
 
 export const entryGroupFacetStore: EntryGroupFacetStore = new EntryGroupFacetStore();

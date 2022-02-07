@@ -1,0 +1,13 @@
+.bootstrapGroupComponentScope {
+    @import "~bootstrap/scss/bootstrap";
+
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+}

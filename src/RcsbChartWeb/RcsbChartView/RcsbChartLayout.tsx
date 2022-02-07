@@ -52,7 +52,7 @@ function singleChartCell(chart: RcsbChartInterface, subChart?:RcsbChartInterface
     const nodeF: JSX.Element =  chart.chartType == ChartType.histogram ? histogramChart(chart, subChart) : barChart(chart, subChart);
     return (
         <Row className={"mt-lg-4"}>
-            {chartCell(nodeF, chart.title)}
+            {chartCell(nodeF, chart.title, 12)}
         </Row>
     );
 }
@@ -69,8 +69,8 @@ function barChart(chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.
     </div>);
 }
 
-function chartCell(chartNode:JSX.Element, title: string): JSX.Element{
-    return(<Col lg={6} >
+function chartCell(chartNode:JSX.Element, title: string, colSize?:number): JSX.Element{
+    return(<Col lg={colSize ?? 6} >
         <Row className={"h-100 align-items-end"}>
             <Row className={"align-self-start mb-lg-2"}>
                 <Col lg={12} style={{paddingLeft:210}}>{title}</Col>

@@ -7,6 +7,9 @@ query QueryMultipleEntityInstances($entity_ids: [String!]!){
             polymer_entity{
                 rcsb_polymer_entity{
                     pdbx_description
+                    rcsb_polymer_name_combined{
+                        names
+                    }
                 }
                 entity_poly{
                     rcsb_entity_polymer_type

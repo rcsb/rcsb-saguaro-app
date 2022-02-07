@@ -21,6 +21,7 @@ import {
 import {QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {FacetType} from "../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {sha1} from "object-hash";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -34,6 +35,7 @@ class RcsbFvContextManager {
     private polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
     private groupPropertyMap: Map<string,DataStatusInterface<GroupPropertiesProvider>> = new Map<string, DataStatusInterface<GroupPropertiesProvider>>();
+    private searchRequestMap: Map<string,DataStatusInterface<QueryResult|null>> = new Map<string, DataStatusInterface<QueryResult|null>>();
 
 
     public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
@@ -141,8 +143,18 @@ class RcsbFvContextManager {
     }
 
     public async getSearchQueryResult(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null>{
-        const collector: SearchRequestProperty = new SearchRequestProperty();
-        return collector.request(query, facets, returnType);
+        const key: string = sha1(query)+"."+sha1(facets);
+        if(this.searchRequestMap.get(key)?.status === "available") {
+            return this.searchRequestMap.get(key)?.data;
+        }else if(this.searchRequestMap.get(key)?.status === "pending") {
+            return await mapResolve<QueryResult|null>(this.searchRequestMap.get(key));
+        }else{
+            mapPending<QueryResult|null>(key,this.searchRequestMap);
+            const collector: SearchRequestProperty = new SearchRequestProperty();
+            const searchResult: QueryResult | null = await collector.request(query, facets, returnType);
+            mapSet<QueryResult|null>(this.searchRequestMap.get(key), searchResult);
+            return searchResult;
+        }
     }
 
     public async getGroupProperties(groupQuery: QueryPolymer_Entity_GroupArgs): Promise<GroupPropertyInterface> {

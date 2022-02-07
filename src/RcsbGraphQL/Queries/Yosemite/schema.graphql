@@ -661,11 +661,11 @@ type CoreEntry {
     em_staining: [EmStaining]
     em_vitrification: [EmVitrification]
     entry: Entry
+    "Get all groups for this PDB entry."
+    entry_groups: [GroupEntry]
     exptl: [Exptl]
     exptl_crystal: [ExptlCrystal]
     exptl_crystal_grow: [ExptlCrystalGrow]
-    "Get all groups for this PDB entry."
-    groups: [GroupEntry]
     "Get all non-polymer (non-solvent) entities for this PDB entry."
     nonpolymer_entities: [CoreNonpolymerEntity]
     pdbx_SG_project: [PdbxSGProject]
@@ -843,11 +843,11 @@ type CorePolymerEntity {
     entity_src_nat: [EntitySrcNat]
     "Get PDB entry that contains this molecular entity."
     entry: CoreEntry
-    "Get all groups for this PDB entity."
-    groups: [GroupPolymerEntity]
     pdbx_entity_src_syn: [PdbxEntitySrcSyn]
     "Get all unique Pfam annotations associated with this molecular entity."
     pfams: [CorePfam]
+    "Get all groups for this PDB entity."
+    polymer_entity_groups: [GroupPolymerEntity]
     "Get all unique polymer instances (chains) for this molecular entity."
     polymer_entity_instances: [CorePolymerEntityInstance]
     "Get a BIRD chemical components described in this molecular entity."
@@ -3266,7 +3266,7 @@ type GeneName {
 
 type GroupEntry {
     "Get provenance associated with this group."
-    provenance: GroupProvenance
+    group_provenance: GroupProvenance
     rcsb_group_accession_info: RcsbGroupAccessionInfo
     rcsb_group_container_identifiers: RcsbGroupContainerIdentifiers!
     rcsb_group_info: RcsbGroupInfo!
@@ -3294,7 +3294,7 @@ type GroupMembersAlignmentScores {
 
 type GroupPolymerEntity {
     "Get provenance associated with this group."
-    provenance: GroupProvenance
+    group_provenance: GroupProvenance
     rcsb_group_accession_info: RcsbGroupAccessionInfo
     rcsb_group_container_identifiers: RcsbGroupContainerIdentifiers!
     rcsb_group_info: RcsbGroupInfo!
@@ -8961,7 +8961,13 @@ type RcsbEntryGroupMembership {
     matching_deposit_group_id
     """
     aggregation_method: String!
-    "Identifier for a group a given polymer entity belongs to"
+    """
+
+    A unique identifier for a group of entries
+
+    Examples:
+    G_1001001
+    """
     group_id: String!
 }
 
@@ -9266,7 +9272,7 @@ type RcsbGroupContainerIdentifiers {
 }
 
 type RcsbGroupInfo {
-    group_description: String!
+    group_description: String
     group_members_count: Int!
     """
 
@@ -9276,7 +9282,7 @@ type RcsbGroupInfo {
     assembly, entry, polymer_entity, polymer_entity_instance
     """
     group_members_granularity: String!
-    group_name: String!
+    group_name: String
 }
 
 type RcsbGroupProvenanceContainerIdentifiers {
@@ -10250,6 +10256,7 @@ type RcsbPolymerEntity {
     N, Y
     """
     rcsb_multiple_source_flag: String
+    rcsb_polymer_name_combined: RcsbPolymerEntityRcsbPolymerNameCombined
     """
 
     The number of biological sources for the polymer entity. Multiple source contributions
@@ -10606,7 +10613,13 @@ type RcsbPolymerEntityGroupMembership {
     sequence_identity, matching_uniprot_accession
     """
     aggregation_method: String!
-    "Identifier for a group a given polymer entity belongs to"
+    """
+
+    A unique identifier for a group of entities
+
+    Examples:
+    1_100, P00003
+    """
     group_id: String!
     "Degree of similarity expressed as a floating-point number"
     similarity_cutoff: Float
@@ -10751,6 +10764,13 @@ type RcsbPolymerEntityRcsbMacromolecularNamesCombined {
     Allowable values:
     PDB Preferred Name, PDB Synonym
     """
+    provenance_source: String
+}
+
+type RcsbPolymerEntityRcsbPolymerNameCombined {
+    "Protein name annotated by the UniProt or macromolecular name PDB assigned by the PDB"
+    names: [String]
+    "Allowable values: PDB Preferred Name, PDB Description, UniProt Name."
     provenance_source: String
 }
 

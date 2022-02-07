@@ -102,7 +102,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         return void 0;
     }
 
-    protected abstract async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
+    protected abstract protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
     protected abstract concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void;
 
     private async buildExternalTracks(externalTrackBuilder: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {

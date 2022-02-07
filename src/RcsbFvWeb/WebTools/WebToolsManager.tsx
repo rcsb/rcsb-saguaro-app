@@ -12,7 +12,7 @@ export interface SelectButtonConfigInterface {
     defaultValue?: string|undefined|null;
     width?: number;
     dropdownTitle?: string;
-    optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    optionProps?: (props: OptionProps<OptionPropsInterface,null>)=>JSX.Element;
     isAdditionalButton?: boolean;
 }
 export class WebToolsManager {

@@ -4,10 +4,6 @@ const commonConfig = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel-loader',
-                exclude: [/node_modules/]
-            },{
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
                 loader: 'raw-loader'

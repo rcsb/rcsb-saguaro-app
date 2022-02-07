@@ -38,7 +38,8 @@ export class FacetTools {
                     title: chart.title,
                     data: f.groups.filter(g => !g.drilldown).map((d)=>({
                         label: chart.chartType === ChartType.barplot ? d.label.toUpperCase() : d.label,
-                        population:d.population
+                        //label: d.label,
+                        population: d.population
                     }))
                 });
             }
@@ -58,7 +59,8 @@ export class FacetTools {
         partial.forEach(partialChart=>{
             partialChart.data.forEach(d=>{
                 const data: RcsbChartDataInterface = fullMap.get(partialChart.attribute)?.get(d.label);
-                data.population -= d.population;
+                if(data)
+                    data.population -= d.population;
             });
         });
         return fullCopy;

@@ -1,8 +1,10 @@
 import * as React from "react";
-import {CSSProperties} from "react";
-import Select, {Styles, components, ValueType, OptionsType, GroupedOptionsType} from 'react-select';
+import {ComponentType, CSSProperties, PropsWithChildren} from "react";
+import Select, {Styles, components, ValueType, OptionsType, GroupedOptionsType, PropsWithStyles} from 'react-select';
 import {SingleValueProps} from "react-select/src/components/SingleValue";
 import {OptionProps} from "react-select/src/components/Option";
+import {OptionTypeBase} from "react-select/src/types";
+import {StylesConfig} from "react-select/src/styles";
 
 export interface GroupedOptionsInterface {
     options: Array<SelectOptionInterface>;
@@ -26,7 +28,7 @@ interface SelectButtonInterface {
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
-    optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    optionProps?: (props: OptionProps<OptionPropsInterface, null>)=>JSX.Element;
     isAdditionalButton?: boolean;
 }
 
@@ -136,7 +138,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
         );
     }
 
-    private configStyle(): Styles{
+    private configStyle(): Partial<Styles<OptionPropsInterface, null>>{
         return {
             control: (base: CSSProperties) => ({
                 ...base,

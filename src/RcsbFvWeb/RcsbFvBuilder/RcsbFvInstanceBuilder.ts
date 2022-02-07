@@ -21,7 +21,7 @@ export interface InstanceSequenceConfig {
     onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
-    selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface, null>)=>JSX.Element;
 }
 
 export class RcsbFvInstanceBuilder {
@@ -59,9 +59,9 @@ export class RcsbFvInstanceBuilder {
                 groupedInstances.set(instance.entityId, new Array<SelectOptionInterface>());
             const label: string = instance.asymId === instance.authId ? instance.asymId : `${instance.asymId} [auth ${instance.authId}]`;
             groupedInstances.get(instance.entityId).push({
-                name: instance.names + " - " + instance.taxIds.join(", "),
+                name: instance.name + " - " + instance.taxNames.join(", "),
                 label: label,
-                groupLabel: `ENTITY ${instance.entityId} - ${instance.names}`,
+                groupLabel: `ENTITY ${instance.entityId} - ${instance.name}`,
                 shortLabel: config.displayAuthId === true ? instance.authId : label,
                 optId: instance.authId,
                 onChange: async () => {
