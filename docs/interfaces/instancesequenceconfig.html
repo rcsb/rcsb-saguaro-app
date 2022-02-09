@@ -81,10 +81,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#beforechangecallback" class="tsd-kind-icon">before<wbr>Change<wbr>Callback</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#defaultvalue" class="tsd-kind-icon">default<wbr>Value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#displayauthid" class="tsd-kind-icon">display<wbr>Auth<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#dropdowntitle" class="tsd-kind-icon">dropdown<wbr>Title</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#filterinstances" class="tsd-kind-icon">filter<wbr>Instances</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#module" class="tsd-kind-icon">module</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#onchangecallback" class="tsd-kind-icon">on<wbr>Change<wbr>Callback</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="instancesequenceconfig.html#selectbuttonoptionprops" class="tsd-kind-icon">select<wbr>Button<wbr>Option<wbr>Props</a></li>
 							</ul>
@@ -95,12 +97,43 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="beforechangecallback" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> before<wbr>Change<wbr>Callback</h3>
+					<div class="tsd-signature tsd-kind-icon">before<wbr>Change<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><a href="instancesequenceonchangeinterface.html" class="tsd-signature-type">InstanceSequenceOnchangeInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../globals.html#rcsbcontexttype" class="tsd-signature-type">RcsbContextType</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L23">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><a href="instancesequenceonchangeinterface.html" class="tsd-signature-type">InstanceSequenceOnchangeInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../globals.html#rcsbcontexttype" class="tsd-signature-type">RcsbContextType</a></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>x: <a href="instancesequenceonchangeinterface.html" class="tsd-signature-type">InstanceSequenceOnchangeInterface</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../globals.html#rcsbcontexttype" class="tsd-signature-type">RcsbContextType</a></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="defaultvalue" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> default<wbr>Value</h3>
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L20">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L22">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -110,7 +143,7 @@
 					<div class="tsd-signature tsd-kind-icon">display<wbr>Auth<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L23">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L26">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -120,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">dropdown<wbr>Title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L19">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L21">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -130,7 +163,17 @@
 					<div class="tsd-signature tsd-kind-icon">filter<wbr>Instances<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Set</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L22">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L25">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="module" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> module</h3>
+					<div class="tsd-signature tsd-kind-icon">module<span class="tsd-signature-symbol">:</span> <a href="../globals.html#instancemodule" class="tsd-signature-type">instanceModule</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L28">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -140,7 +183,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Change<wbr>Callback<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><a href="instancesequenceonchangeinterface.html" class="tsd-signature-type">InstanceSequenceOnchangeInterface</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L21">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L24">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -171,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">select<wbr>Button<wbr>Option<wbr>Props<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OptionProps</span><span class="tsd-signature-symbol">&lt;</span><a href="optionpropsinterface.html" class="tsd-signature-type">OptionPropsInterface</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Element</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/5962fc0f/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L24">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/rcsb/rcsb-saguaro-app/blob/eb3dbc90/src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts#L27">src/RcsbFvWeb/RcsbFvBuilder/RcsbFvInstanceBuilder.ts:27</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -214,6 +257,9 @@
 						<a href="instancesequenceconfig.html" class="tsd-kind-icon">Instance<wbr>Sequence<wbr>Config</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="instancesequenceconfig.html#beforechangecallback" class="tsd-kind-icon">before<wbr>Change<wbr>Callback</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="instancesequenceconfig.html#defaultvalue" class="tsd-kind-icon">default<wbr>Value</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -224,6 +270,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="instancesequenceconfig.html#filterinstances" class="tsd-kind-icon">filter<wbr>Instances</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="instancesequenceconfig.html#module" class="tsd-kind-icon">module</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="instancesequenceconfig.html#onchangecallback" class="tsd-kind-icon">on<wbr>Change<wbr>Callback</a>

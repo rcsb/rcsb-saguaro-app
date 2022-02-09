@@ -125,7 +125,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 					<li><p><strong>RcsbFvWebApp.getRcsbFv</strong>(elementId: string)</p>
 					</li>
 				</ul>
-				<p>###GraphQL configuration</p>
+				<a href="#graphql-configuration" id="graphql-configuration" style="color: inherit; text-decoration: none;">
+					<h3>GraphQL configuration</h3>
+				</a>
 				<a href="#building-typescript-interfaces" id="building-typescript-interfaces" style="color: inherit; text-decoration: none;">
 					<h5>Building TypeScript interfaces</h5>
 				</a>
@@ -140,6 +142,31 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 					</li>
 					<li>Config Files: [&quot;src/RcsbGraphQL/Queries/Borrego/.graphqlconfig&quot;, &quot;src/RcsbGraphQL/Queries/Yosemite/.graphqlconfig&quot;]</li>
 					<li>Generated Schemas: [&quot;src/RcsbGraphQL/Queries/Borrego/schema.graphql&quot;, &quot;src/RcsbGraphQL/Queries/Yosemite/schema.graphql&quot;]</li>
+				</ul>
+				<a href="#new-rcsb-data-api-request-method" id="new-rcsb-data-api-request-method" style="color: inherit; text-decoration: none;">
+					<h3>New RCSB data-api request method</h3>
+				</a>
+				<ul>
+					<li>A new graphql query defined in <code>src/RcsbGraphQL/Queries/Yosemite</code> (e.g. <code>QueryAssemblyInterfaces.graphql</code>)</li>
+					<li>A new request class using <code>rcsb-api-tools</code> defined in <code>src/RcsbGraphQL</code> (e.g. <code>RcsbQueryAssemblyInterfaces.ts</code>)</li>
+					<li>A new method in the <code>RcsbClient</code> class defined in <code>src/RcsbGraphQL/RcsbClient.ts</code> (e.g. <code>requestAssemblyInterfaces</code>)<ul>
+							<li>This method must used the request class defined above</li>
+						</ul>
+					</li>
+					<li>A new collector class based on the request class in <code>src/RcsbCollectTools/Translators</code> (e.g. <code>AssemblyInterfacesCollector</code>)<ul>
+							<li>This class must call the method defined above</li>
+							<li>This class may transform the RCSB data-api schema into a more convenient interface</li>
+						</ul>
+					</li>
+					<li>A new translator class defined in <code>src/RcsbUtils</code> (e.g. <code>AssemblyInterfacesTranslate</code>)<ul>
+							<li>The constructor gets the data collected by the above class</li>
+							<li>The class exposes the methods needs to provide the relationships between RCSB objects of different granularity</li>
+						</ul>
+					</li>
+					<li>A new method in the <code>RcsbFvContextManager</code> defined in <code>src/RcsbFvWeb/RcsbFvBuilder</code><ul>
+							<li>This method must avoid duplicate requests</li>
+						</ul>
+					</li>
 				</ul>
 				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
 					<h2>Contributing</h2>
@@ -188,6 +215,15 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 					<li class=" tsd-kind-class">
 						<a href="classes/annotationtrackmanager.html" class="tsd-kind-icon">Annotation<wbr>Track<wbr>Manager</a>
 					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/arraysuffix.html" class="tsd-kind-icon">Array<wbr>Suffix</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/assemblyinterfacescollector.html" class="tsd-kind-icon">Assembly<wbr>Interfaces<wbr>Collector</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/assemblyinterfacestranslate.html" class="tsd-kind-icon">Assembly<wbr>Interfaces<wbr>Translate</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/entryassembliescollector.html" class="tsd-kind-icon">Entry<wbr>Assemblies<wbr>Collector</a>
 					</li>
@@ -202,6 +238,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/grouppropertiesprovider.html" class="tsd-kind-icon">Group<wbr>Properties<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/interfaceinstancecollector.html" class="tsd-kind-icon">Interface<wbr>Instance<wbr>Collector</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/interfaceinstancetranslate.html" class="tsd-kind-icon">Interface<wbr>Instance<wbr>Translate</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="classes/loaderspinner.html" class="tsd-kind-icon">Loader<wbr>Spinner</a>
@@ -285,6 +327,9 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 						<a href="classes/rcsbfvinstancebuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvInstance<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/rcsbfvinterface.html" class="tsd-kind-icon">Rcsb<wbr>FvInterface</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/rcsbfvpairwisealigmentbuilder.html" class="tsd-kind-icon">Rcsb<wbr>FvPairwise<wbr>Aligment<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -318,7 +363,13 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 						<a href="classes/rcsbqueryannotations.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Annotations</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/rcsbqueryassemblyinterfaces.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Assembly<wbr>Interfaces</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/rcsbqueryentryinstances.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Entry<wbr>Instances</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rcsbqueryinterfaceinstances.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Interface<wbr>Instances</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/rcsbquerymultipleentityinstances.html" class="tsd-kind-icon">Rcsb<wbr>Query<wbr>Multiple<wbr>Entity<wbr>Instances</a>
@@ -363,6 +414,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 						<a href="interfaces/annotationsresultinterface.html" class="tsd-kind-icon">Annotations<wbr>Result<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/assemblyinterfacesinterface.html" class="tsd-kind-icon">Assembly<wbr>Interfaces<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/assemblyinterfacesresultinterface.html" class="tsd-kind-icon">Assembly<wbr>Interfaces<wbr>Result<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/b.html" class="tsd-kind-icon">B</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -385,9 +442,6 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/commonalignmentinterface.html" class="tsd-kind-icon">Common<wbr>Alignment<wbr>Interface</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/commonannotationinterface.html" class="tsd-kind-icon">Common<wbr>Annotation<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/corecollectorinterface.html" class="tsd-kind-icon">Core<wbr>Collector<wbr>Interface</a>
@@ -424,6 +478,12 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/instancesequenceonchangeinterface.html" class="tsd-kind-icon">Instance<wbr>Sequence<wbr>Onchange<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/interfaceinstanceinterface.html" class="tsd-kind-icon">Interface<wbr>Instance<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/interfaceinstancesresultinterface.html" class="tsd-kind-icon">Interface<wbr>Instances<wbr>Result<wbr>Interface</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/itempropertyinterface.html" class="tsd-kind-icon">Item<wbr>Property<wbr>Interface</a>
@@ -528,10 +588,31 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 						<a href="globals.html#annotationcollectconfig" class="tsd-kind-icon">Annotation<wbr>Collect<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#featuretype" class="tsd-kind-icon">Feature<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#increaseannotationvaluetype" class="tsd-kind-icon">Increase<wbr>Annotation<wbr>Value<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#mergedtype" class="tsd-kind-icon">Merged<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#rcsbcontexttype" class="tsd-kind-icon">Rcsb<wbr>Context<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#groupproperty" class="tsd-kind-icon">group<wbr>Property</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#instancemodule" class="tsd-kind-icon">instance<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#burial_fraction" class="tsd-kind-icon">BURIAL_<wbr>FRACTION</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#buried_residues" class="tsd-kind-icon">BURIED_<wbr>RESIDUES</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#featuretype" class="tsd-kind-icon">Feature<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#annotationconfigmap" class="tsd-kind-icon">annotation<wbr>Config<wbr>Map</a>
@@ -606,13 +687,31 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 						<a href="globals.html#builduniprotfv" class="tsd-kind-icon">build<wbr>Uniprot<wbr>Fv</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#burialfraction" class="tsd-kind-icon">burial<wbr>Fraction</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#burialfractionfilter" class="tsd-kind-icon">burial<wbr>Fraction<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buriedresidues" class="tsd-kind-icon">buried<wbr>Residues</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buriedresiduesfilter" class="tsd-kind-icon">buried<wbr>Residues<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#computefeaturegaps" class="tsd-kind-icon">compute<wbr>Feature<wbr>Gaps</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#filter" class="tsd-kind-icon">filter</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#findmismatch" class="tsd-kind-icon">find<wbr>Mismatch</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#gradient" class="tsd-kind-icon">gradient</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#interfaceannotations" class="tsd-kind-icon">interface<wbr>Annotations</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#mappending" class="tsd-kind-icon">map<wbr>Pending</a>
@@ -624,10 +723,22 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 						<a href="globals.html#mapset" class="tsd-kind-icon">map<wbr>Set</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#parseassemblyinterfaces" class="tsd-kind-icon">parse<wbr>Assembly<wbr>Interfaces</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#parseinterfaceinstances" class="tsd-kind-icon">parse<wbr>Interface<wbr>Instances</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#sequencedisplaydynamicupdate" class="tsd-kind-icon">sequence<wbr>Display<wbr>Dynamic<wbr>Update</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#unmount" class="tsd-kind-icon">unmount</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#extendedtypes" class="tsd-kind-icon">Extended<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#mergedtype" class="tsd-kind-icon">Merged<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-object-literal">
 						<a href="globals.html#rcsbannotationconstants" class="tsd-kind-icon">Rcsb<wbr>Annotation<wbr>Constants</a>

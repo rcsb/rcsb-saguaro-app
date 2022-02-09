@@ -3,6 +3,10 @@
 [Semantic Versioning](https://semver.org/)
 
 ## [4.0.0] - 2022-02-08
+### Dependency update
+- rcsb-api-tools v2.3.1
+
+## [4.0.0] - 2022-02-08
 ###  Annotation collector improvements 
 -  Added interface `CollectAnnotationsInterface` for generating new annotations internally (not exposed)
     - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
