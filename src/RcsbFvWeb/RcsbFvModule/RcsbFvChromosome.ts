@@ -351,7 +351,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
             }),member,reference);
         return lightTracks.map((t,index)=>{
             return {
-                trackId: "pdbTracks_" + Math.random().toString(36).substr(2),
+                trackId: "pdbTracks_" + Math.random().toString(36).substring(2),
                 displayType: RcsbFvDisplayTypes.COMPOSITE,
                 trackColor: "#F9F9F9",
                 rowTitle: "",
