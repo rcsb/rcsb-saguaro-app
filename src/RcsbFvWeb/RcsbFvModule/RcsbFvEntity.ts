@@ -37,13 +37,12 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
     }
 
     private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{
-        let targetId: string = ann.target_id;
         if( this.polymerEntityInstance != null && ann.source === Source.PdbInstance){
             const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
             const authAsymId: string = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
-            targetId = labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
+            return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
         }
-        return targetId;
+        return void 0;
     }
 
 }

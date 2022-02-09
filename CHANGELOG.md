@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.0.0-interfaces] - 2022-01-24
+## [4.0.0] - 2022-02-08
 ###  Annotation collector improvements 
 -  Added interface `CollectAnnotationsInterface` for generating new annotations internally (not exposed)
     - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
@@ -15,9 +15,6 @@
 - Added two new classes (`AssemblyInterfacesCollector` and `AssemblyInterfacesTranslate`) to collect and handle assembly and interface id relationships
 - Exposing all feature types in a single object `FeatureType` (file: `src/RcsbExport/FeatureType.ts`)
 - New package `RcsbExport` to expose classes and methods outside the library
-
-## [4.0.0-master] - 2021-12-07
-### Breaking change
 - `ExternalTrackBuilderInterface` methods return a promise and are executed asynchronous
 
 ## [3.4.0] - 2021-12-07
