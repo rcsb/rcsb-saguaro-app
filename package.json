@@ -57,7 +57,7 @@
     "del-cli": "^3.0.1",
     "lodash": "^4.17.21",
     "ncp": "^2.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "raw-loader": "^4.0.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
