@@ -1,57 +1,26 @@
 import * as React from "react";
-import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryContainer, VictoryHistogram, VictoryStack} from "victory";
+import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ReactNode} from "react";
-import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
+import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarData, EventBar} from "../RcsbChartTools/EventBar";
+import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 
 
 export class HistogramChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
     readonly state: ChartViewInterface = {...this.props};
+    readonly dataProvider: ChartDataInterface = new HistogramChartData(this.props.data, this.props.subData, this.props.config);
 
     constructor(props: ChartViewInterface) {
         super(props);
     }
 
-    private data(data: ChartObjectInterface[]): BarData[]{
-        if(!data)
-            return [];
-        let out: {x:number;y:number}[] = [];
-        if(this.props.config?.mergeDomainMaxValue) {
-            out = ChartTools.mergeDomainMaxValue(data, this.props.config.mergeDomainMaxValue);
-        }else{
-            out = ChartTools.labelsAsNumber(data);
-        }
-        return out.map(d=>({x:d.x+this.props.config.histogramBinIncrement*0.5,y:d.y, isLabel:true}));
-    }
-
-    private xDomain(): [number, number]{
-        return [
-            this.props.config.domainMinValue ?? Math.floor(Math.min(...this.data(this.state.data).map(d=>d.x as number),...this.data(this.state.subData).map(d=>d.x as number))),
-            this.props.config?.mergeDomainMaxValue ?
-                Math.ceil(this.props.config?.mergeDomainMaxValue+this.props.config.histogramBinIncrement)
-                :
-                Math.ceil(Math.max(...this.data(this.state.data).map(d=>d.x as number),...this.data(this.state.subData).map(d=>d.x as number))+this.props.config.histogramBinIncrement)
-        ]
-    }
-
-    private tickValues(): number[] | undefined {
-        if(this.props.config?.tickIncrement){
-            const tickValues: number[] = [];
-            for(let i: number=this.props.config.tickIncrement.origin;i<=this.xDomain()[1];i+=this.props.config.tickIncrement.increment){
-                tickValues.push(i);
-            }
-            return tickValues
-        }
-        return undefined;
-    }
-
     render():ReactNode {
-        const histData: BarData[] = this.data(this.state.data);
-        const subData: BarData[] = this.data(this.state.subData);
+        const {barData, subData}: { barData: BarData[]; subData: BarData[] } = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
-        const dom = this.xDomain();
+        const dom = this.dataProvider.xDomain();
         const nBins: number = (dom[1]-dom[0])/this.props.config.histogramBinIncrement;
         return (
             <div style={{width:width, height:ChartTools.constHeight}}>
@@ -59,11 +28,11 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
                     padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingBottom, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
                     height={ChartTools.constHeight}
                     width={width}
-                    domain={{x:this.xDomain()}}
+                    domain={{x:this.dataProvider.xDomain()}}
                 >
                     {CROSS_AXIS}
-                    {stack(histData, subData, nBins, this.props.config.barClickCallback)}
-                    <VictoryAxis tickValues={this.tickValues()} tickFormat={(t) => {
+                    {stack(barData, subData, nBins, this.props.config.barClickCallback)}
+                    <VictoryAxis tickValues={this.dataProvider.tickValues()} tickFormat={(t) => {
                         if(this.props.config?.mergeDomainMaxValue){
                             if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
                                 return t;

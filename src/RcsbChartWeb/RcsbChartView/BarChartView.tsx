@@ -5,62 +5,20 @@ import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {DynamicTickLabelComponent} from "../RcsbChartTools/DynamicTickLabelComponent";
 import {BarClickCallbackType, EventBar, BarData} from "../RcsbChartTools/EventBar";
+import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {BarChartData} from "../RcsbChartData/BarChartData";
 
 export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
     readonly state: ChartViewInterface = {...this.props};
+    readonly dataProvider: ChartDataInterface = new BarChartData(this.props.data, this.props.subData, this.props.config);
 
     constructor(props: ChartViewInterface) {
         super(props);
     }
 
-    private dataByCategory(): {barData: BarData[]; subData: BarData[];}{
-        const data: BarData[] = ChartTools.labelsAsString(this.state.data);
-        const subData: BarData[] = this.state.subData ? ChartTools.labelsAsString(this.state.subData) : [];
-
-        const mergedValues: Map<string|number, number> = new Map<string, number>();
-        data.concat(subData).forEach((d)=>{
-            if(mergedValues.has(d.x))
-                mergedValues.set(d.x, mergedValues.get(d.x)+d.y)
-            else
-                mergedValues.set(d.x,d.y);
-        });
-
-        const categories: Set<string|number> = new Set(data.map(d=>d.x));
-        const subCategories: Set<string|number> = new Set(subData.map(d=>d.x));
-        subCategories.forEach(c=>{
-            if(!categories.has(c))
-                data.push({x:c, y:0, isLabel:true});
-        });
-        categories.forEach(c=>{
-            if(!subCategories.has(c))
-                subData.push({x:c, y:0, isLabel:true});
-        });
-        const allowedCategories: Set<string|number> = new Set<string|number>([...mergedValues.entries()]
-            .sort((a,b)=>(b[1]-a[1]))
-            .filter(d=>(d[1]>0))
-            .slice(0,this.props.config?.mostPopulatedGroups ?? mergedValues.size)
-            .map(e=>e[0]));
-
-        const sort = (a: BarData, b: BarData) => {
-            return mergedValues.get(b.x)-mergedValues.get(a.x);
-        };
-        const barOut: BarData[] = data.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const barOther: number = data.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
-        const subOut: BarData[] = subData.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const subOther: number = subData.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
-        if(barOther>0 || subOther>0){
-            barOut.push({x:this.props.config?.mergeName, y:barOther, isLabel:false});
-            subOut.push({x:this.props.config?.mergeName, y:subOther, isLabel:false});
-        }
-        return {
-            barData: barOut,
-            subData: subOut
-        };
-    }
-
     render():ReactNode {
-        const {barData,subData}: {barData: BarData[]; subData: BarData[];} = this.dataByCategory();
+        const {barData,subData}: {barData: BarData[]; subData: BarData[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const height: number = ChartTools.paddingBottom + barData.length*ChartTools.xIncrement;
         return (
@@ -70,6 +28,7 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
                     padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingBottom, right:ChartTools.paddingRight}}
                     height={height}
                     width={width}
+                    scale={{y:"linear", x:"linear"}}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData,this.props.config.barClickCallback)}
