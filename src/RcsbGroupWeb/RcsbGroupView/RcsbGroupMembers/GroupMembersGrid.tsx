@@ -7,7 +7,7 @@ import {ExtendedGroupReference, GroupAggregationUnifiedType} from "../../../Rcsb
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {

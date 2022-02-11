@@ -12,6 +12,9 @@
   "rcsb_uniprot": {
     "url": "/uniprot/"
   },
+  "rcsb_search": {
+    "url": "/search?request="
+  },
   "uniprot": {
     "url": "https://www.uniprot.org/uniprot/"
   },

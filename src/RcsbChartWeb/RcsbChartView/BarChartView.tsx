@@ -1,11 +1,11 @@
 import * as React from "react";
-import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
+import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {DynamicTickLabelComponent} from "../RcsbChartTools/DynamicTickLabelComponent";
+import {BarClickCallbackType, EventBar, BarData} from "../RcsbChartTools/EventBar";
 
-type BarData = {x: string, y:number};
 export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
     readonly state: ChartViewInterface = {...this.props};
@@ -18,25 +18,25 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
         const data: BarData[] = ChartTools.labelsAsString(this.state.data);
         const subData: BarData[] = this.state.subData ? ChartTools.labelsAsString(this.state.subData) : [];
 
-        const mergedValues: Map<string, number> = new Map<string, number>();
-        data.concat(subData).forEach(d=>{
+        const mergedValues: Map<string|number, number> = new Map<string, number>();
+        data.concat(subData).forEach((d)=>{
             if(mergedValues.has(d.x))
                 mergedValues.set(d.x, mergedValues.get(d.x)+d.y)
             else
                 mergedValues.set(d.x,d.y);
         });
 
-        const categories: Set<string> = new Set(data.map(d=>d.x));
-        const subCategories: Set<string> = new Set(subData.map(d=>d.x));
+        const categories: Set<string|number> = new Set(data.map(d=>d.x));
+        const subCategories: Set<string|number> = new Set(subData.map(d=>d.x));
         subCategories.forEach(c=>{
             if(!categories.has(c))
-                data.push({x:c, y:0});
+                data.push({x:c, y:0, isLabel:true});
         });
         categories.forEach(c=>{
             if(!subCategories.has(c))
-                subData.push({x:c, y:0});
+                subData.push({x:c, y:0, isLabel:true});
         });
-        const allowedCategories: Set<string> = new Set<string>([...mergedValues.entries()]
+        const allowedCategories: Set<string|number> = new Set<string|number>([...mergedValues.entries()]
             .sort((a,b)=>(b[1]-a[1]))
             .filter(d=>(d[1]>0))
             .slice(0,this.props.config?.mostPopulatedGroups ?? mergedValues.size)
@@ -50,8 +50,8 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
         const subOut: BarData[] = subData.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         const subOther: number = subData.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
         if(barOther>0 || subOther>0){
-            barOut.push({x:this.props.config?.mergeName, y:barOther});
-            subOut.push({x:this.props.config?.mergeName, y:subOther});
+            barOut.push({x:this.props.config?.mergeName, y:barOther, isLabel:false});
+            subOut.push({x:this.props.config?.mergeName, y:subOther, isLabel:false});
         }
         return {
             barData: barOut,
@@ -72,7 +72,7 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
                     width={width}
                 >
                     {CROSS_AXIS}
-                    {stack(barData, subData)}
+                    {stack(barData, subData,this.props.config.barClickCallback)}
                     <VictoryAxis  tickLabelComponent={<DynamicTickLabelComponent/>}/>
                 </VictoryChart>
             </div>
@@ -92,14 +92,14 @@ const CROSS_AXIS = (<VictoryAxis
     }}
 />);
 
-function stack(histData:BarData[],subData:BarData[]): JSX.Element{
+function stack(histData:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack>
-        {bar(histData, "#5e94c3")}
-        {bar(subData, "#d0d0d0")}
+        {bar(histData, "#5e94c3", <EventBar barClick={barClick}/>)}
+        {bar(subData, "#d0d0d0", <EventBar />)}
     </VictoryStack>);
 }
 
-function bar(data:BarData[],color: string): JSX.Element {
+function bar(data:BarData[],color: string, barComp?: JSX.Element): JSX.Element {
     return data.length > 0 ? (<VictoryBar
         barWidth={ChartTools.xDomainPadding}
         style={{
@@ -109,5 +109,6 @@ function bar(data:BarData[],color: string): JSX.Element {
         }}
         horizontal={true}
         data={data}
+        dataComponent={barComp ?? <Bar />}
     />)  : null;
 }

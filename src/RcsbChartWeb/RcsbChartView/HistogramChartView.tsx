@@ -1,8 +1,9 @@
 import * as React from "react";
-import {VictoryAxis, VictoryBar, VictoryChart, VictoryContainer, VictoryHistogram, VictoryStack} from "victory";
+import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryContainer, VictoryHistogram, VictoryStack} from "victory";
 import {ReactNode} from "react";
 import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
+import {BarClickCallbackType, BarData, EventBar} from "../RcsbChartTools/EventBar";
 
 
 export class HistogramChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
@@ -13,7 +14,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
         super(props);
     }
 
-    private data(data: ChartObjectInterface[]): {x:number;y:number}[]{
+    private data(data: ChartObjectInterface[]): BarData[]{
         if(!data)
             return [];
         let out: {x:number;y:number}[] = [];
@@ -22,16 +23,16 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
         }else{
             out = ChartTools.labelsAsNumber(data);
         }
-        return out.map(d=>({x:d.x+this.props.config.histogramBinIncrement*0.5,y:d.y}));
+        return out.map(d=>({x:d.x+this.props.config.histogramBinIncrement*0.5,y:d.y, isLabel:true}));
     }
 
     private xDomain(): [number, number]{
         return [
-            this.props.config.domainMinValue ?? Math.floor(Math.min(...this.data(this.state.data).map(d=>d.x),...this.data(this.state.subData).map(d=>d.x))),
+            this.props.config.domainMinValue ?? Math.floor(Math.min(...this.data(this.state.data).map(d=>d.x as number),...this.data(this.state.subData).map(d=>d.x as number))),
             this.props.config?.mergeDomainMaxValue ?
                 Math.ceil(this.props.config?.mergeDomainMaxValue+this.props.config.histogramBinIncrement)
                 :
-                Math.ceil(Math.max(...this.data(this.state.data).map(d=>d.x),...this.data(this.state.subData).map(d=>d.x))+this.props.config.histogramBinIncrement)
+                Math.ceil(Math.max(...this.data(this.state.data).map(d=>d.x as number),...this.data(this.state.subData).map(d=>d.x as number))+this.props.config.histogramBinIncrement)
         ]
     }
 
@@ -47,8 +48,8 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
     }
 
     render():ReactNode {
-        const histData: {x:number;y:number}[] = this.data(this.state.data);
-        const subData: {x:number;y:number}[] = this.data(this.state.subData);
+        const histData: BarData[] = this.data(this.state.data);
+        const subData: BarData[] = this.data(this.state.subData);
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.xDomain();
         const nBins: number = (dom[1]-dom[0])/this.props.config.histogramBinIncrement;
@@ -61,7 +62,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
                     domain={{x:this.xDomain()}}
                 >
                     {CROSS_AXIS}
-                    {stack(histData, subData, nBins)}
+                    {stack(histData, subData, nBins, this.props.config.barClickCallback)}
                     <VictoryAxis tickValues={this.tickValues()} tickFormat={(t) => {
                         if(this.props.config?.mergeDomainMaxValue){
                             if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
@@ -79,14 +80,14 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
 
 }
 
-function stack(histData: {x:number;y:number}[], subData: {x:number;y:number}[], nBins: number): JSX.Element{
+function stack(histData: BarData[], subData: BarData[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
    return ( <VictoryStack>
-       {bar(histData,nBins, "#5e94c3")}
-       {bar(subData,nBins, "#d0d0d0")}
+       {bar(histData,nBins, "#5e94c3", <EventBar barClick={barClick}/>)}
+       {bar(subData,nBins, "#d0d0d0", <EventBar />)}
     </VictoryStack>);
 }
 
-function bar(data: {x:number;y:number}[], nBins: number, color: string): JSX.Element {
+function bar(data: BarData[], nBins: number, color: string, barComp?: JSX.Element): JSX.Element {
    return data.length > 0 ? (<VictoryBar
        barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
        alignment={"middle"}
@@ -96,6 +97,7 @@ function bar(data: {x:number;y:number}[], nBins: number, color: string): JSX.Ele
            }
        }}
        data={data}
+       dataComponent={barComp ?? <Bar />}
    />)  : null;
 }
 

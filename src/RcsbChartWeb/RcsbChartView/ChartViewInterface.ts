@@ -1,3 +1,4 @@
+import {BarClickCallbackType} from "../RcsbChartTools/EventBar";
 
 export interface ChartObjectInterface {
     label: string|number;
@@ -15,6 +16,7 @@ export interface ChartConfigInterface {
         origin: number;
         increment: number
     };
+    barClickCallback?:BarClickCallbackType;
 }
 
 export interface ChartViewInterface {

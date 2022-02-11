@@ -30,7 +30,7 @@ import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {
     addGroupNodeToSearchQuery,
     searchGroupQuery
-} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {Logo} from "./Logo";

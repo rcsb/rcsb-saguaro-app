@@ -1,4 +1,5 @@
 import {ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
+import {BarData} from "./EventBar";
 
 export class ChartTools {
 
@@ -55,10 +56,11 @@ export class ChartTools {
         return out;
     }
 
-    public static labelsAsString(data: ChartObjectInterface[]): {x:string;y:number;}[]{
+    public static labelsAsString(data: ChartObjectInterface[]): BarData[]{
         return data.map(d=>({
-            x:d.label  as string,
-            y:d.population
+            x:d.label as string,
+            y:d.population,
+            isLabel:true
         }));
     }
 

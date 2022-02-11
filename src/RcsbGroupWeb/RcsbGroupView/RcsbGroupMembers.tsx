@@ -5,7 +5,7 @@ import {GroupMembersGrid} from "./RcsbGroupMembers/GroupMembersGrid";
 import {ExtendedGroupReference, GroupAggregationUnifiedType} from "../../RcsbUtils/GroupProvenanceToAggregationType";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchGroupQuery";
+import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./RcsbGroupMembers/Components/Slider";
 

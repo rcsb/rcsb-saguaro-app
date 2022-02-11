@@ -3,16 +3,16 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {entityGranularityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore";
 import {SearchQueryType} from "../RcsbSeacrh/SearchRequestProperty";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {groupProvenanceToAggregationType} from "../RcsbUtils/GroupProvenanceToAggregationType";
+import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 
-export async function buildSearchRequest(elementId: string, searchQuery:SearchQueryType): Promise<void>{
-    await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery);
+export async function buildSearchRequest(elementId: string, searchQuery:SearchQueryType, returnType:ReturnType): Promise<void>{
+    await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery, returnType);
 }
 
 export async function buildGroup(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, query?:SearchQuery, facetLayoutGrid?:[string,string?][]): Promise<void>{
-    await RcsbGroupDisplay.displaySearchAttributes(elementId, groupProvenanceToAggregationType[groupProvenance], groupId, query, facetLayoutGrid);
+    await RcsbGroupDisplay.displaySearchAttributes(elementId, groupProvenance, groupId, query, facetLayoutGrid);
 }
 
 export function buildGroupMembers(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, nRows:number, nColumns:number, query?:SearchQuery): void {
-    RcsbGroupDisplay.displayGroupMembers(elementId, groupProvenanceToAggregationType[groupProvenance], groupId, nRows, nColumns, query);
+    RcsbGroupDisplay.displayGroupMembers(elementId, groupProvenance, groupId, nRows, nColumns, query);
 }
