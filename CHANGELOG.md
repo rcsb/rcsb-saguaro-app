@@ -1,11 +1,14 @@
 # RCSB Saguaro App Changelog
 
 [Semantic Versioning](https://semver.org/)
+## [4.0.3] - 2022-02-14
+### Bug fix
+- react-select type definition fixed
 
 ## [4.0.2] - 2022-02-14
 ### Dependency update
 - Multiple dependencies updated
-- 
+
 ## [4.0.1] - 2022-02-08
 ### Dependency update
 - rcsb-api-tools v2.3.1

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Select, {components} from 'react-select';
+import Select, {components, GroupBase} from 'react-select';
 import {SingleValueProps} from "react-select";
 import {OptionProps} from "react-select";
 import {CSSObjectWithLabel, OptionsOrGroups} from "react-select/dist/declarations/src/types";
@@ -18,7 +18,7 @@ interface SelectButtonInterface {
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
-    optionProps?: (props: OptionProps<OptionPropsInterface,false,null>)=>JSX.Element;
+    optionProps?: (props: OptionProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>JSX.Element;
     isAdditionalButton?: boolean;
 }
 
@@ -35,7 +35,8 @@ export interface OptionPropsInterface extends SelectOptionInterface{
     value: number;
 }
 
-interface GroupOptionPropsInterface extends OptionPropsInterface{
+interface GroupOptionPropsInterface {
+    label: string;
     options:OptionPropsInterface[];
 }
 
@@ -98,7 +99,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private innerSelectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
-        const SingleValue:(props:SingleValueProps<OptionPropsInterface,false,null>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface,false,null>) => {
+        const SingleValue:(props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
                 <components.SingleValue {...props}>
@@ -119,9 +120,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 options: group.options.map(opt=>({
                     ...opt,
                     value:i++
-                })),
-                value:n,
-                onChange:undefined
+                }))
             }))
         }
         const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
@@ -129,7 +128,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             <div style={{display:"inline-block"}}>
                 {title}
                 <div >
-                    <Select
+                    <Select<OptionPropsInterface,false,GroupOptionPropsInterface>
                         options={options}
                         isSearchable={false}
                         onChange={this.change.bind(this)}
