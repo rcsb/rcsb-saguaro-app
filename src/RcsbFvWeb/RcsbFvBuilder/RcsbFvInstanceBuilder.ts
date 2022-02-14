@@ -7,7 +7,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {OptionProps} from "react-select/src/components/Option";
+import {OptionProps} from "react-select/dist/declarations/src/components/Option";
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 
 export interface InstanceSequenceOnchangeInterface {

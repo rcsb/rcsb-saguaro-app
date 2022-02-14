@@ -1,22 +1,14 @@
 import * as React from "react";
-import {CSSProperties} from "react";
-import Select, {Styles, components, ValueType, OptionsType, GroupedOptionsType} from 'react-select';
-import {SingleValueProps} from "react-select/src/components/SingleValue";
-import {OptionProps} from "react-select/src/components/Option";
+import Select, {components} from 'react-select';
+import {SingleValueProps} from "react-select";
+import {OptionProps} from "react-select";
+import {CSSObjectWithLabel, OptionsOrGroups} from "react-select/dist/declarations/src/types";
 
 export interface GroupedOptionsInterface {
     options: Array<SelectOptionInterface>;
     label: string;
 }
 
-export interface SelectOptionInterface {
-    optId?: string;
-    label: string;
-    groupLabel?: string;
-    name?: string;
-    shortLabel?: string;
-    onChange: ()=>void;
-}
 
 interface SelectButtonInterface {
     elementId: string;
@@ -26,12 +18,25 @@ interface SelectButtonInterface {
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
-    optionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    optionProps?: (props: OptionProps<OptionPropsInterface,false,null>)=>JSX.Element;
     isAdditionalButton?: boolean;
+}
+
+export interface SelectOptionInterface {
+    optId?: string;
+    groupLabel?: string;
+    name?: string;
+    shortLabel?: string;
+    label: string;
+    onChange: ()=>void;
 }
 
 export interface OptionPropsInterface extends SelectOptionInterface{
     value: number;
+}
+
+interface GroupOptionPropsInterface extends OptionPropsInterface{
+    options:OptionPropsInterface[];
 }
 
 interface SelectButtonState {
@@ -93,7 +98,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private innerSelectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
-        const SingleValue:(n:SingleValueProps<OptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface>) => {
+        const SingleValue:(props:SingleValueProps<OptionPropsInterface,false,null>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface,false,null>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
                 <components.SingleValue {...props}>
@@ -101,7 +106,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 </components.SingleValue>
             )
         };
-        let options: OptionsType<OptionPropsInterface> | GroupedOptionsType<OptionPropsInterface>;
+        let options: OptionsOrGroups<OptionPropsInterface,GroupOptionPropsInterface>;
         if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null){
             options = (this.props.options as Array<SelectOptionInterface>).map((opt,index)=>{
                 const props: OptionPropsInterface = {...opt,value:index};
@@ -109,12 +114,14 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             });
         }else{
             let i: number = 0;
-            options = (this.props.options as Array<GroupedOptionsInterface>).map(group=>({
+            options = (this.props.options as Array<GroupedOptionsInterface>).map((group,n)=>({
                 label: group.label,
                 options: group.options.map(opt=>({
                     ...opt,
                     value:i++
-                }))
+                })),
+                value:n,
+                onChange:undefined
             }))
         }
         const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
@@ -135,9 +142,9 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
         );
     }
 
-    private configStyle(): Styles{
+    private configStyle() {
         return {
-            control: (base: CSSProperties) => ({
+            control: (base: CSSObjectWithLabel) => ({
                 ...base,
                 width: this.props.width ?? 120,
                 border: '1px solid #ddd',
@@ -147,11 +154,11 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }
 
             }),
-            menu: (base: CSSProperties) => ({
+            menu: (base: CSSObjectWithLabel) => ({
                 ...base,
                 width:500
             }),
-            option: (base:CSSProperties)=>({
+            option: (base: CSSObjectWithLabel)=>({
                 ...base
             })
         };

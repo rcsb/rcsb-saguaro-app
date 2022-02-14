@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
-import {OptionProps} from "react-select/src/components/Option";
+import {OptionProps} from "react-select/dist/declarations/src/components/Option";
 import {LoaderSpinner} from "./LoaderSpinner";
 
 export interface SelectButtonConfigInterface {
