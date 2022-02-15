@@ -1,5 +1,5 @@
 import * as React from "react";
-import Select, {components, GroupBase} from 'react-select';
+import Select, {components} from 'react-select';
 import {SingleValueProps} from "react-select";
 import {OptionProps} from "react-select";
 import {CSSObjectWithLabel, OptionsOrGroups} from "react-select/dist/declarations/src/types";
@@ -8,7 +8,6 @@ export interface GroupedOptionsInterface {
     options: Array<SelectOptionInterface>;
     label: string;
 }
-
 
 interface SelectButtonInterface {
     elementId: string;
@@ -35,7 +34,7 @@ export interface OptionPropsInterface extends SelectOptionInterface{
     value: number;
 }
 
-interface GroupOptionPropsInterface {
+export interface GroupOptionPropsInterface {
     label: string;
     options:OptionPropsInterface[];
 }
