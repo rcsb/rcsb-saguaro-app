@@ -5,7 +5,7 @@ import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
+import {GroupOptionPropsInterface, OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {OptionProps} from "react-select/dist/declarations/src/components/Option";
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
@@ -24,7 +24,7 @@ export interface InstanceSequenceConfig {
     onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
-    selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface>)=>JSX.Element;
+    selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>JSX.Element;
     module?: instanceModule;
 }
 

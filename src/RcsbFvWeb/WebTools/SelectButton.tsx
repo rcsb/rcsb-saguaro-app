@@ -132,7 +132,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                         isSearchable={false}
                         onChange={this.change.bind(this)}
                         styles={this.configStyle()}
-                        components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props}/>)) }}
+                        components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props} />)) }}
                         defaultValue={{...defaultValue,value:index}}
                     />
                 </div>
