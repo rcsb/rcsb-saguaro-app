@@ -2,6 +2,21 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.0.6] - 2022-02-15
+### Minor bug fix
+- Minor type fix in react-select. New select option type `SelectOptionProps`
+- `InstanceSequenceConfig` external methods defined in `selectButtonOptionProps` 
+do not need to import `components.Option` from react-select.
+The `SelectButton` class will include it as a children component
+
+## [4.0.5] - 2022-02-15
+### Minor bug fix
+- Minor type fix in react-select
+
+## [4.0.4] - 2022-02-15
+### Minor bug fix
+- Minor type fix
+
 ## [4.0.4] - 2022-02-15
 ### Minor bug fix
 - Minor type fix

@@ -2,12 +2,9 @@ import * as React from "react";
 import * as ReactDom from "react-dom";
 import {
     GroupedOptionsInterface,
-    GroupOptionPropsInterface,
-    OptionPropsInterface,
     SelectButton,
-    SelectOptionInterface
+    SelectOptionInterface, SelectOptionProps
 } from "./SelectButton";
-import {OptionProps} from "react-select/dist/declarations/src/components/Option";
 import {LoaderSpinner} from "./LoaderSpinner";
 
 export interface SelectButtonConfigInterface {
@@ -15,7 +12,7 @@ export interface SelectButtonConfigInterface {
     defaultValue?: string|undefined|null;
     width?: number;
     dropdownTitle?: string;
-    optionProps?: (props: OptionProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>JSX.Element;
+    optionProps?: (props: SelectOptionProps)=>JSX.Element;
     isAdditionalButton?: boolean;
 }
 export class WebToolsManager {

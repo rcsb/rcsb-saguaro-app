@@ -9,6 +9,8 @@ export interface GroupedOptionsInterface {
     label: string;
 }
 
+export type SelectOptionProps = OptionProps<OptionPropsInterface,false,GroupOptionPropsInterface>
+
 interface SelectButtonInterface {
     elementId: string;
     options?: Array<SelectOptionInterface> | Array<GroupedOptionsInterface>;
@@ -17,7 +19,7 @@ interface SelectButtonInterface {
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
-    optionProps?: (props: OptionProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>JSX.Element;
+    optionProps?: (props: SelectOptionProps)=>JSX.Element;
     isAdditionalButton?: boolean;
 }
 
@@ -132,7 +134,9 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                         isSearchable={false}
                         onChange={this.change.bind(this)}
                         styles={this.configStyle()}
-                        components={{ SingleValue, Option: this.props.optionProps ?? ((props)=>(<components.Option {...props} />)) }}
+                        components={{ SingleValue, Option: this.props.optionProps ? (props)=>{
+                                return this.props.optionProps({...props,children:<components.Option {...props} />});
+                            } : ((props)=>(<components.Option {...props} />)) }}
                         defaultValue={{...defaultValue,value:index}}
                     />
                 </div>

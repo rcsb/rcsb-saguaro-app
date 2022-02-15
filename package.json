@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
@@ -59,7 +59,6 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
-    "react-select": "^5.2.2",
     "sass": "^1.43.5",
     "sass-loader": "^12.3.0",
     "style-loader": "^3.3.1",
@@ -76,6 +75,7 @@
     "@rcsb/rcsb-api-tools": "^3.0.0",
     "@rcsb/rcsb-saguaro": "^2.0.1",
     "ideogram": "^1.33.0",
+    "react-select": "^5.2.2",
     "rxjs": "^6.6.0"
   },
   "bugs": {
