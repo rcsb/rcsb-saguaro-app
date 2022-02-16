@@ -24,8 +24,8 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                 <div>
                     <a href={memberSummaryUrl(this.props.item, this.props.groupAggregationType)}>{memberSummaryUrlText(this.props.item, this.props.groupAggregationType)}</a>
                 </div>
-                <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.name}>{this.props.item.name}</div>
-                <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}>{this.props.item.taxNames.join(", ")}</div>
+                <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.name}><strong>Name: </strong>{this.props.item.name}</div>
+                <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Taxonomy: </strong>{this.props.item.taxNames.join(", ")}</div>
             </div>
         );
     }

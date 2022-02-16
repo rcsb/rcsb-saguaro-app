@@ -7,12 +7,13 @@ import {
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {SearchQuery,Range} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery, Range, GroupNode} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {entityGroupFacetStore} from "../FacetStore/EntityGroupFacetStore";
 import {FacetStoreInterface} from "../FacetStore/FacetStoreInterface";
 import {entryGroupFacetStore} from "../FacetStore/EntryGroupFacetStore";
 import {GroupAggregationUnifiedType} from "../../RcsbUtils/GroupProvenanceToAggregationType";
+import cloneDeep from 'lodash/cloneDeep';
 
 export function searchGroupQuery(groupGranularity: GroupAggregationUnifiedType, groupId:string, service?: Service): SearchQueryType {
     const groupSearchAttr: GroupSearchAttribute = getSearchAttribute(groupGranularity);
@@ -75,8 +76,9 @@ export function getFacetStoreFromGroupType(groupAggregationType: GroupAggregatio
 
 function addNodeToSearchQuery(node:SearchQueryType, searchQuery: SearchQueryType, logicalOperator = LogicalOperator.And): SearchQueryType{
     if(searchQuery.type === Type.Group && searchQuery.logical_operator === logicalOperator) {
-        searchQuery.nodes.push(node)
-        return searchQuery
+        const query: SearchQueryType = cloneDeep(searchQuery);
+        query.nodes.push(node);
+        return query;
     }
     return {
         type: Type.Group,
