@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.0.0-groups.17",
+  "version": "4.0.0-groups.18",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [

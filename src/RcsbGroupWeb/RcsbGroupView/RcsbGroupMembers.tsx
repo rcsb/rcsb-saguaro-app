@@ -46,6 +46,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
                             nRows={this.props.nRows}
                             nColumns={this.props.nColumns}
                             index={this.state.selectedIndex}
+                            searchQuery={this.props.searchQuery}
                         />
                     </Slider>
                 </div>
