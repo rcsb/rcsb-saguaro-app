@@ -108,7 +108,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
 async function searchRequest(groupAggregationType: GroupAggregationUnifiedType, groupId: string, start:number, rows: number, searchQuery?: SearchQuery): Promise<QueryResult> {
     const search: SearchRequest = new SearchRequest();
     return  await search.request({
-        query: searchQuery ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery) : searchGroupQuery(groupAggregationType, groupId),
+        query: searchQuery ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery.query) : searchGroupQuery(groupAggregationType, groupId),
         request_options:{
             pager:{
                 start: start,

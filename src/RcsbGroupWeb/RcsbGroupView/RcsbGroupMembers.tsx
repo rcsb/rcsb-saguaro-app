@@ -98,7 +98,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
 async function searchRequest(groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult> {
     const search: SearchRequest = new SearchRequest();
     return  await search.request({
-        query: searchQuery ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery) : searchGroupQuery(groupAggregationType, groupId),
+        query: searchQuery ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery.query) : searchGroupQuery(groupAggregationType, groupId),
         request_options:{
             return_counts: true
         },

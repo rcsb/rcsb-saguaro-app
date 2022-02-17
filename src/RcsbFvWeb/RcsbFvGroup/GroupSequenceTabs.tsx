@@ -64,11 +64,11 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
     private onMount() {
         if(this.props.searchQuery) {
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupReference, this.props.groupId, this.props.searchQuery), return_type: ReturnType.PolymerEntity}).then(targets=> {
+            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupReference, this.props.groupId, this.props.searchQuery.query), return_type: ReturnType.PolymerEntity}).then(targets=> {
                 this.filterEntities = targets
                 search.requestMembers({
                     ...this.props.searchQuery,
-                    query: addGroupNodeToSearchQuery(this.props.groupReference, this.props.groupId, this.props.searchQuery),
+                    query: addGroupNodeToSearchQuery(this.props.groupReference, this.props.groupId, this.props.searchQuery.query),
                     return_type: ReturnType.PolymerInstance
                 }).then(targets => {
                     this.filterInstances = targets;

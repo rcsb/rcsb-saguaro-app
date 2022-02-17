@@ -45,7 +45,11 @@ export async function groupDisplayChart(groupProvenance: GroupProvenanceId, grou
         subData = searchData.subData;
     }
     chartData.forEach((chart=>{
-        addBarClickCallback(chart,searchQuery?.query ?? searchGroupQuery(groupAggregationType, groupId, Service.Text),groupProvenanceToReturnType[groupProvenance])
+        addBarClickCallback(
+            chart,
+            searchQuery?.query ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery.query) : searchGroupQuery(groupAggregationType, groupId, Service.Text),
+            groupProvenanceToReturnType[groupProvenance]
+        )
     }));
 
     return chartData.reduce<ChartMapType>((prev,current)=>{
@@ -58,7 +62,7 @@ async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupAg
     let subData: Array<RcsbChartInterface> | undefined;
     let partialFacets: Array<Facet> = [];
     for (const service of facetStore.getServices()) {
-        const groupQuery: SearchQueryType = addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery, service);
+        const groupQuery: SearchQueryType = addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery.query, service);
         const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
             groupQuery,
             facetStore.getFacetService(service).map(f => f.facet),

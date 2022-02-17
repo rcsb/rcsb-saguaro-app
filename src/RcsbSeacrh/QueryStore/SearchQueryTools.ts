@@ -7,7 +7,7 @@ import {
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {SearchQuery, Range, GroupNode} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery, Range} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {entityGroupFacetStore} from "../FacetStore/EntityGroupFacetStore";
 import {FacetStoreInterface} from "../FacetStore/FacetStoreInterface";
@@ -29,8 +29,8 @@ export function searchGroupQuery(groupGranularity: GroupAggregationUnifiedType, 
     }
 }
 
-export function addGroupNodeToSearchQuery(groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery: SearchQuery, service?: Service): SearchQueryType {
-    return addNodeToSearchQuery(searchGroupQuery(groupAggregationType, groupId, service),searchQuery.query);
+export function addGroupNodeToSearchQuery(groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery: SearchQueryType, service?: Service): SearchQueryType {
+    return addNodeToSearchQuery(searchGroupQuery(groupAggregationType, groupId, service),searchQuery);
 }
 
 export function buildAttributeSearchQuery(attribute: string, value: string|number|Range, operator: Operator, searchQuery: SearchQueryType, returnType:ReturnType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQuery {
@@ -53,11 +53,15 @@ export function buildAttributeSearchQuery(attribute: string, value: string|numbe
     }
 }
 
-export function addNewNodeToAttributeSearchQuery(attribute: string, value: string|number|Range, operator: Operator, searchQuery: SearchQueryType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
+export function getFacetStoreFromGroupType(groupAggregationType: GroupAggregationUnifiedType): FacetStoreInterface {
+    return (groupAggregationType === GroupReference.MatchingUniprotAccession || groupAggregationType === GroupReference.SequenceIdentity) ? entityGroupFacetStore : entryGroupFacetStore;
+}
+
+function addNewNodeToAttributeSearchQuery(attribute: string, value: string|number|Range, operator: Operator, searchQuery: SearchQueryType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
     return addNodeToSearchQuery(searchAttributeQuery(attribute, value, operator, service,negation),searchQuery);
 }
 
-export function searchAttributeQuery(attribute: string, value: string|number|Range, operator: Operator, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
+function searchAttributeQuery(attribute: string, value: string|number|Range, operator: Operator, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
     return {
         type: Type.Terminal,
         service: service,
@@ -68,10 +72,6 @@ export function searchAttributeQuery(attribute: string, value: string|number|Ran
             value: value
         }
     }
-}
-
-export function getFacetStoreFromGroupType(groupAggregationType: GroupAggregationUnifiedType): FacetStoreInterface {
-    return (groupAggregationType === GroupReference.MatchingUniprotAccession || groupAggregationType === GroupReference.SequenceIdentity) ? entityGroupFacetStore : entryGroupFacetStore;
 }
 
 function addNodeToSearchQuery(node:SearchQueryType, searchQuery: SearchQueryType, logicalOperator = LogicalOperator.And): SearchQueryType{
