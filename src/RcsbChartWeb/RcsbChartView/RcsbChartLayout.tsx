@@ -11,9 +11,8 @@ export interface RcsbChartLayoutInterface {
     chartMap: ChartMapType;
 }
 
-export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,RcsbChartLayoutInterface> {
+export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{}> {
 
-    readonly state: RcsbChartLayoutInterface = {...this.props};
     constructor(props: RcsbChartLayoutInterface) {
         super(props);
     }
@@ -29,25 +28,28 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,R
     }
 
     private renderRow(attrF: string, attrG: string): JSX.Element {
-        const chartF: RcsbChartInterface = this.state.chartMap.get(attrF).chart;
-        const subF: RcsbChartInterface = this.state.chartMap.get(attrF).subChart;
+        const chartF: RcsbChartInterface = this.props.chartMap.get(attrF)?.chart;
+        if (chartF) {
+            const subF: RcsbChartInterface = this.props.chartMap.get(attrF).subChart;
+            const chartG: RcsbChartInterface = attrG ? this.props.chartMap.get(attrG)?.chart : undefined;
+            const subG: RcsbChartInterface = attrG ? this.props.chartMap.get(attrG)?.subChart : undefined;
 
-        const chartG: RcsbChartInterface = attrG ? this.state.chartMap.get(attrG).chart : undefined;
-        const subG: RcsbChartInterface = attrG ? this.state.chartMap.get(attrG).subChart : undefined;
-
-        if(chartF && chartG){
-            const nodeF: JSX.Element =  chartF.chartType == ChartType.histogram ? histogramChart(chartF, subF) : barChart(chartF, subF);
-            const nodeG: JSX.Element =  chartG.chartType == ChartType.histogram ? histogramChart(chartG, subG) : barChart(chartG, subG);
-            return (
-                <Row className={"mt-lg-4"}>
-                    {chartCell(nodeF, chartF.title)}
-                    {chartCell(nodeG, chartG.title)}
-                </Row>
-            );
-        }else if(chartF || chartG){
-            return chartF ? singleChartCell(chartF, subF) : singleChartCell(chartG, subG);
+            if (chartF && chartG) {
+                const nodeF: JSX.Element = chartF.chartType == ChartType.histogram ? histogramChart(chartF, subF) : barChart(chartF, subF);
+                const nodeG: JSX.Element = chartG.chartType == ChartType.histogram ? histogramChart(chartG, subG) : barChart(chartG, subG);
+                return (
+                    <Row className={"mt-lg-4"}>
+                        {chartCell(nodeF, chartF.title)}
+                        {chartCell(nodeG, chartG.title)}
+                    </Row>
+                );
+            } else if (chartF || chartG) {
+                return chartF ? singleChartCell(chartF, subF) : singleChartCell(chartG, subG);
+            }
         }
+        return null;
     }
+
 
 }
 

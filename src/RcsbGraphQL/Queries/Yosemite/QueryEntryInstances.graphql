@@ -11,9 +11,16 @@ query QueryEntryInstance($entry_id: String!){
                     }
                     entity_poly{
                         rcsb_entity_polymer_type
+                        rcsb_sample_sequence_length
                     }
                     rcsb_entity_source_organism {
                         ncbi_scientific_name
+                    }
+                    entry {
+                        rcsb_entry_info{
+                            experimental_method
+                            resolution_combined
+                        }
                     }
                 }
                 rcsb_polymer_entity_instance_container_identifiers{

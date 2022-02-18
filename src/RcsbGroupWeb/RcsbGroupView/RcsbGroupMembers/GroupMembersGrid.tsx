@@ -45,7 +45,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                                             const ei: ItemFeaturesInterface = this.state.itemList[i*this.props.nColumns+j];
                                             if(ei)
                                                 return (
-                                                    <Col>
+                                                    <Col className={"p-0"}>
                                                         <GroupMemberItem item={ei} groupAggregationType={this.props.groupAggregationType}/>
                                                     </Col>
                                                 );
@@ -115,8 +115,8 @@ async function searchRequest(groupAggregationType: GroupAggregationUnifiedType, 
                 rows: rows
             },
             sort:[{
-                sort_by:RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
-                direction: SortDirection.Asc
+                sort_by: searchQuery.request_options?.group_by?.ranking_criteria_type?.sort_by ?? RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
+                direction: (searchQuery.request_options?.group_by?.ranking_criteria_type?.direction as SortDirection) ?? SortDirection.Asc
             }]
         },
         return_type: groupAggregationType === ExtendedGroupReference.MatchingDepositionGroupId ? ReturnType.Entry : ReturnType.PolymerEntity

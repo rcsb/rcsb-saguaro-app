@@ -13,20 +13,18 @@ export interface SliderInterface {
 export class Slider extends React.Component<SliderInterface,null> {
 
     render():JSX.Element {
-        return (<div>
-            <Container fluid={"lg"}>
-                <Row>
-                    <Col  lg={1} onClick={()=>{this.slide("prev")}}>{actionIcon("prev")}</Col>
-                    <Col className={"text-lg-end"}>{this.props.currentPage}</Col>
-                    <Col lg={1}>/</Col>
-                    <Col className={"text-lg-start"}>{this.props.pages}</Col>
-                    <Col lg={1} onClick={()=>{this.slide("next")}}>{actionIcon("next")}</Col>
-                </Row>
-            </Container>
-            <div>
+        return (
+            <div className={"border"}>
+                <Container fluid={"md"} >
+                    <Row className={"pt-md-4 pb-md-4 bg-secondary text-white"}>
+                        <Col md={1} className={"text-md-end"} onClick={()=>{this.slide("prev")}}>{actionIcon("prev")}</Col>
+                        <Col className={"text-md-center"}>Member {this.props.currentPage} of {this.props.pages}</Col>
+                        <Col md={1} className={"text-md-start"} onClick={()=>{this.slide("next")}}>{actionIcon("next")}</Col>
+                    </Row>
+                </Container>
                 <div>{this.props.children}</div>
             </div>
-        </div>);
+        );
     }
 
     private slide(action:SlideAction):void{

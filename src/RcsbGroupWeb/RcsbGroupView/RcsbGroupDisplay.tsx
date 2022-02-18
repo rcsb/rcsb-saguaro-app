@@ -18,6 +18,7 @@ import { ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnu
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {getFacetStoreFromGroupType} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {groupDisplayChart} from "./RcsbGroupDisplay/GroupDisplayChart";
+import {GroupDisplayAdditionalProperties} from "./RcsbGroupDisplay/GroupDisplayAdditionalProperties";
 
 
 export class RcsbGroupDisplay {
@@ -48,18 +49,29 @@ export class RcsbGroupDisplay {
         );
     }
 
-    public static async displaySearchAttributes(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:[string,string?][]): Promise<void>{
-        ReactDom.render(
-            <div className={classes.bootstrapGroupComponentScope}>
-                <Container fluid={"lg"}>
-                    <RcsbChartLayout
-                        layout={facetLayoutGrid ?? getFacetStoreFromGroupType(groupProvenanceToAggregationType[groupProvenance]).facetLayoutGrid}
-                        chartMap={await groupDisplayChart(groupProvenance,groupId,searchQuery)}
-                    />
-                </Container>
-            </div>,
-            document.getElementById(elementId)
-        );
+    public static async displaySearchAttributes(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:[string,string?][], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
+        const layout: [string,string?][] = facetLayoutGrid ?? getFacetStoreFromGroupType(groupProvenanceToAggregationType[groupProvenance]).facetLayoutGrid;
+        const chartMap: ChartMapType = await groupDisplayChart(groupProvenance,groupId,searchQuery);
+        if(layout.flat().filter((e)=>(chartMap.get(e)))){
+            ReactDom.render(
+                <div className={classes.bootstrapGroupComponentScope}>
+                    <Container fluid={"lg"}>
+                        <RcsbChartLayout
+                            layout={layout}
+                            chartMap={chartMap}
+                        />
+                    </Container>
+                </div>,
+                document.getElementById(elementId),
+                ()=>{
+                    if(typeof additionalProperties?.componentMountCallback === "function")
+                        additionalProperties.componentMountCallback(chartMap,layout);
+                }
+            );
+        }else{
+            if(typeof additionalProperties?.componentMountCallback === "function")
+                additionalProperties.componentMountCallback(chartMap,layout);
+        }
     }
 
     static displayGroupMembers(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, nRows: number, nColumns: number, query?:SearchQuery){

@@ -10,6 +10,9 @@ export interface PolymerEntityInstanceInterface {
     authResId: Array<string>;
     name: string;
     taxNames: Array<string>;
+    experimentalMethod: string;
+    resolution: number;
+    sequenceLength: number;
 }
 
 export class PolymerEntityInstancesCollector {
@@ -54,7 +57,10 @@ export class PolymerEntityInstancesCollector {
                 authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
                 authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
                 name: instance.polymer_entity.rcsb_polymer_entity.rcsb_polymer_name_combined?.names?.join(", ") ?? instance.polymer_entity.rcsb_polymer_entity.pdbx_description,
-                taxNames:Array.from(taxIds)
+                taxNames:Array.from(taxIds),
+                experimentalMethod: instance.polymer_entity.entry.rcsb_entry_info.experimental_method,
+                resolution: instance.polymer_entity.entry.rcsb_entry_info.resolution_combined[0],
+                sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length
             });
         });
     }
