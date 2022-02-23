@@ -13,6 +13,8 @@ export interface PolymerEntityInstanceInterface {
     experimentalMethod: string;
     resolution: number;
     sequenceLength: number;
+    entityMolecularWeight: number;
+    entryMolecularWeight: number;
 }
 
 export class PolymerEntityInstancesCollector {
@@ -59,8 +61,10 @@ export class PolymerEntityInstancesCollector {
                 name: instance.polymer_entity.rcsb_polymer_entity.rcsb_polymer_name_combined?.names?.join(", ") ?? instance.polymer_entity.rcsb_polymer_entity.pdbx_description,
                 taxNames:Array.from(taxIds),
                 experimentalMethod: instance.polymer_entity.entry.rcsb_entry_info.experimental_method,
-                resolution: instance.polymer_entity.entry.rcsb_entry_info.resolution_combined[0],
-                sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length
+                resolution: instance.polymer_entity.entry.rcsb_entry_info.resolution_combined ? instance.polymer_entity.entry.rcsb_entry_info.resolution_combined[0] : undefined,
+                sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length,
+                entityMolecularWeight: instance.polymer_entity.rcsb_polymer_entity.formula_weight,
+                entryMolecularWeight: instance.polymer_entity.entry.rcsb_entry_info.molecular_weight
             });
         });
     }

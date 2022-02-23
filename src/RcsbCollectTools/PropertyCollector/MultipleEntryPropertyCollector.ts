@@ -8,6 +8,7 @@ export interface EntryPropertyIntreface {
     resolution: number;
     name: string;
     taxNames: Array<string>;
+    entryMolecularWeight: number;
 }
 
 export class MultipleEntryPropertyCollector {
@@ -23,7 +24,8 @@ export class MultipleEntryPropertyCollector {
                 resolution: r.rcsb_entry_info.resolution_combined ? r.rcsb_entry_info.resolution_combined[0] : null,
                 name: r.struct.title,
                 description: r.pdbx_molecule_features?.map(mf=>mf.details),
-                taxNames: r.polymer_entities.map((entity)=>(entity.rcsb_entity_source_organism.map((so)=>(so.ncbi_scientific_name)))).flat()
+                taxNames: r.polymer_entities.map((entity)=>(entity.rcsb_entity_source_organism.map((so)=>(so.ncbi_scientific_name)))).flat(),
+                entryMolecularWeight: r.rcsb_entry_info.molecular_weight
             })
         );
     }

@@ -10,13 +10,9 @@ import {RcsbGroupMembers} from "./RcsbGroupMembers";
 import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterface";
 import {rcsbFvCtxManager} from "../../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
 import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
-import {
-    GroupAggregationUnifiedType,
-    groupProvenanceToAggregationType, groupProvenanceToReturnType
-} from "../../RcsbUtils/GroupProvenanceToAggregationType";
 import { ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {getFacetStoreFromGroupType} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
+import {getFacetStoreFromGroupProvenance} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {groupDisplayChart} from "./RcsbGroupDisplay/GroupDisplayChart";
 import {GroupDisplayAdditionalProperties} from "./RcsbGroupDisplay/GroupDisplayAdditionalProperties";
 
@@ -49,9 +45,9 @@ export class RcsbGroupDisplay {
         );
     }
 
-    public static async displaySearchAttributes(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:[string,string?][], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
-        const layout: [string,string?][] = facetLayoutGrid ?? getFacetStoreFromGroupType(groupProvenanceToAggregationType[groupProvenance]).facetLayoutGrid;
-        const chartMap: ChartMapType = await groupDisplayChart(groupProvenance,groupId,searchQuery);
+    public static async displaySearchAttributes(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:[string,string?][], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
+        const layout: [string,string?][] = facetLayoutGrid ?? getFacetStoreFromGroupProvenance(groupProvenanceId).facetLayoutGrid;
+        const chartMap: ChartMapType = await groupDisplayChart(groupProvenanceId,groupId,searchQuery);
         if(layout.flat().filter((e)=>(chartMap.get(e)))){
             ReactDom.render(
                 <div className={classes.bootstrapGroupComponentScope}>
@@ -74,10 +70,9 @@ export class RcsbGroupDisplay {
         }
     }
 
-    static displayGroupMembers(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, nRows: number, nColumns: number, query?:SearchQuery){
-        const groupAggregationType: GroupAggregationUnifiedType = groupProvenanceToAggregationType[groupProvenance];
+    static displayGroupMembers(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nRows: number, nColumns: number, query?:SearchQuery){
         ReactDom.render(
-            <RcsbGroupMembers groupAggregationType={groupAggregationType} groupId={groupId} searchQuery={query} nRows={nRows} nColumns={nColumns}/>,
+            <RcsbGroupMembers groupProvenanceId={groupProvenanceId} groupId={groupId} searchQuery={query} nRows={nRows} nColumns={nColumns}/>,
             document.getElementById(elementId)
         );
     }

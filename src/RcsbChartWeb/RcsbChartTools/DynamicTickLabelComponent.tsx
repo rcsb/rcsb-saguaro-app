@@ -11,7 +11,7 @@ export class DynamicTickLabelComponent extends React.Component <VictoryLabelProp
     private x: number = this.props.x;
     private textAnchor: "begin"|"end" = "end";
     private readonly originalText:string = this.props.text as string;
-    private readonly THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.95;
+    private readonly THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.83;
     private readonly hoverFill: (typeof WHITE) = WHITE;
     private readonly overflowSuffix: (typeof SUFFIX) = SUFFIX;
     private readonly id: string = this.props.id + "_" + Math.random().toString(36).substring(2);
@@ -31,7 +31,7 @@ export class DynamicTickLabelComponent extends React.Component <VictoryLabelProp
                               x={this.x}
                               backgroundStyle={{fill:this.hoverFill}}
                               events={this.events()}
-                              style={{textAnchor:this.textAnchor,fontSize:10}}
+                              style={{textAnchor:this.textAnchor,fontSize:12}}
         />);
     }
 
@@ -84,8 +84,10 @@ export class DynamicTickLabelComponent extends React.Component <VictoryLabelProp
     private formatLabel(): void {
         let text: string = this.props.text as string;
         const style: React.CSSProperties = this.props.style as React.CSSProperties;
-        while(displayTextWidth(text,style.fontFamily, style.fontSize as number, this.overflowSuffix) > this.THR){
-            text = text.substring(0, text.length - 1);
+        if(displayTextWidth(text,style.fontFamily, style.fontSize as number) > this.THR) {
+            while (displayTextWidth(text, style.fontFamily, style.fontSize as number, this.overflowSuffix) > this.THR) {
+                text = text.substring(0, text.length - 1);
+            }
         }
         if(text !== this.originalText) {
             text = text + this.overflowSuffix;

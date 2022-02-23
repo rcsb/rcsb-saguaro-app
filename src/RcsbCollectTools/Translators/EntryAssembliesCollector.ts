@@ -60,7 +60,9 @@ export class EntryAssembliesCollector {
                 taxNames:Array.from(taxIds),
                 experimentalMethod: instance.polymer_entity.entry.rcsb_entry_info.experimental_method,
                 resolution: instance.polymer_entity.entry.rcsb_entry_info.resolution_combined[0],
-                sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length
+                sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length,
+                entityMolecularWeight: instance.polymer_entity.rcsb_polymer_entity.formula_weight,
+                entryMolecularWeight: instance.polymer_entity.entry.rcsb_entry_info.molecular_weight
             };
             out.get(EntryAssembliesCollector.modelKey).push(d);
             asymInstanceMap.set(instance.rcsb_polymer_entity_instance_container_identifiers.asym_id, d);

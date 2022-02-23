@@ -2,15 +2,15 @@ import * as React from "react";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import classes from "./RcsbGroupMembers/Components/scss/group-display.module.scss";
 import {GroupMembersGrid} from "./RcsbGroupMembers/GroupMembersGrid";
-import {ExtendedGroupReference, GroupAggregationUnifiedType} from "../../RcsbUtils/GroupProvenanceToAggregationType";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./RcsbGroupMembers/Components/Slider";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
 interface RcsbGroupMembersInterface {
-    groupAggregationType: GroupAggregationUnifiedType;
+    groupProvenanceId: GroupProvenanceId;
     groupId: string;
     searchQuery?: SearchQuery;
     nRows: number;
@@ -41,7 +41,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
                 <div id={this.groupMembersDiv} className={classes.bootstrapGroupComponentScope}>
                     <Slider slide={this.slide.bind(this)} pages={this.state.nPages} currentPage={this.state.selectedIndex+1}>
                         <GroupMembersGrid
-                            groupAggregationType={this.props.groupAggregationType}
+                            groupProvenanceId={this.props.groupProvenanceId}
                             groupId={this.props.groupId}
                             nRows={this.props.nRows}
                             nColumns={this.props.nColumns}
@@ -77,7 +77,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
 
     private async searchRequest(): Promise<QueryResult> {
         return await searchRequest(
-            this.props.groupAggregationType,
+            this.props.groupProvenanceId,
             this.props.groupId,
             this.props.searchQuery
         );
@@ -95,14 +95,14 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
     }
 }
 
-async function searchRequest(groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult> {
+async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult> {
     const search: SearchRequest = new SearchRequest();
     return  await search.request({
-        query: searchQuery ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery.query) : searchGroupQuery(groupAggregationType, groupId),
+        query: searchQuery ? addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
             return_counts: true
         },
-        return_type: groupAggregationType === ExtendedGroupReference.MatchingDepositionGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
+        return_type: groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
     });
 }
 

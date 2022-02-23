@@ -8,6 +8,10 @@ query QueryEntryInstance($entry_id: String!){
                 polymer_entity{
                     rcsb_polymer_entity{
                         pdbx_description
+                        rcsb_polymer_name_combined{
+                            names
+                        }
+                        formula_weight
                     }
                     entity_poly{
                         rcsb_entity_polymer_type
@@ -20,6 +24,7 @@ query QueryEntryInstance($entry_id: String!){
                         rcsb_entry_info{
                             experimental_method
                             resolution_combined
+                            molecular_weight
                         }
                     }
                 }

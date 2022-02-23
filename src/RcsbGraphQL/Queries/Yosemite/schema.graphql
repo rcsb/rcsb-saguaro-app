@@ -6607,7 +6607,7 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-DCC_Rfree".
+    the attributeName "relative-percentile-DCC_Rfree".
     Note that the "high_resol_relative_percentile_DCC_Rfree" value is numerically smaller than the
     corresponding low-* value.
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
@@ -6616,10 +6616,10 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-RNAsuiteness".
+    the attributeName "relative-percentile-RNAsuiteness".
     Note that the "high_resol_relative_percentile_RNA_suiteness" value is numerically smaller than the
     corresponding low value.
-    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attribute),
+    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attributeName),
     and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
@@ -6627,17 +6627,17 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-clashscore".
+    the attributeName "relative-percentile-clashscore".
     Note that the "high_resol_relative_percentile_clashscore" value is numerically smaller than the
     corresponding low value.
-    Example:            Specific to that have a clashscore attribute and have been determined by X-ray crystallography.
+    Example:            Specific to that have a clashscore attributeName and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
     high_resol_relative_percentile_clashscore: Float
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-percent-RSRZ-outliers".
+    the attributeName "relative-percentile-percent-RSRZ-outliers".
     Note that the "high_resol_relative_percentile_percent_RSRZ_outliers" value is numerically smaller than the
     corresponding low-* value.
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
@@ -6646,20 +6646,20 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-percent-rama-outliers".
+    the attributeName "relative-percentile-percent-rama-outliers".
     Note that the "high_resol_relative_percentile_percent_ramachandran_outliers" value is numerically smaller than the
     corresponding low value.
-    Example:            Specific to structures that have a percent_ramachandran_outliers attribute and have been determined by X-ray crystallography.
+    Example:            Specific to structures that have a percent_ramachandran_outliers attributeName and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
     high_resol_relative_percentile_percent_ramachandran_outliers: Float
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-percent-rota-outliers".
+    the attributeName "relative-percentile-percent-rota-outliers".
     Note that the "high_resol_relative_percentile_percent_rotamer_outliers" value is numerically smaller than the
     corresponding low value.
-    Example:            Specific to that have a percent_rotamer_outliers attribute and have been determined by X-ray crystallography.
+    Example:            Specific to that have a percent_rotamer_outliers attributeName and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
     high_resol_relative_percentile_percent_rotamer_outliers: Float
@@ -6674,7 +6674,7 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-DCC_Rfree".
+    the attributeName "relative-percentile-DCC_Rfree".
     Note that the "low_resol_relative_percentile_DCC_Rfree" value is numerically greater than the
     corresponding high value.
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
@@ -6683,10 +6683,10 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-RNAsuiteness".
+    the attributeName "relative-percentile-RNAsuiteness".
     Note that the "low_resol_relative_percentile_RNA_suiteness" value is numerically greater than the
     corresponding high value.
-    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attribute),
+    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attributeName),
     and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
@@ -6694,17 +6694,17 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-clashscore".
+    the attributeName "relative-percentile-clashscore".
     Note that the "low_resol_relative_percentile_clashscore" value is numerically greater than the
     corresponding high value.
-    Example:            Specific to that have a clashscore attribute and have been determined by X-ray crystallography.
+    Example:            Specific to that have a clashscore attributeName and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
     low_resol_relative_percentile_clashscore: Float
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-percent-RSRZ-outliers".
+    the attributeName "relative-percentile-percent-RSRZ-outliers".
     Note that the "low_resol_relative_percentile_percent_RSRZ_outliers" value is numerically greater than the
     corresponding high value.
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
@@ -6713,20 +6713,20 @@ type PdbxVrptSummary {
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-percent-rama-outliers".
+    the attributeName "relative-percentile-percent-rama-outliers".
     Note that the "low_resol_relative_percentile_percent_ramachandran_outliers" value is numerically greater than the
     corresponding high value.
-    Example:            Specific to that have a percent_ramachandran_outliers attribute and have been determined by X-ray crystallography.
+    Example:            Specific to that have a percent_ramachandran_outliers attributeName and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
     low_resol_relative_percentile_percent_ramachandran_outliers: Float
     """
 
     The resolution bin limit in Angstroms for PDB depositions used in the comparison when calculating
-    the attribute "relative-percentile-percent-rota-outliers".
+    the attributeName "relative-percentile-percent-rota-outliers".
     Note that the "low_resol_relative_percentile_percent_rotamer_outliers" value is numerically greater than the
     corresponding high value.
-    Example:            Specific to that have a percent_rotamer_outliers attribute and have been determined by X-ray crystallography.
+    Example:            Specific to that have a percent_rotamer_outliers attributeName and have been determined by X-ray crystallography.
     Produced by the percentiles step of the validation pipeline software.
     """
     low_resol_relative_percentile_percent_rotamer_outliers: Float
@@ -6779,7 +6779,7 @@ type PdbxVrptSummary {
     """
 
     Will be set to "true" if no property was found to do percentile analysis on.
-    Please note that currently due to a bug that this attribute is "true" erronously for NMR structures.
+    Please note that currently due to a bug that this attributeName is "true" erronously for NMR structures.
     """
     no_percentile_property: String
     """
@@ -6790,86 +6790,86 @@ type PdbxVrptSummary {
     num_H_reduce: Float
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "absolute-percentile-DCC_Rfree".
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_DCC_Rfree: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "absolute-percentile-RNAsuiteness".
-    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attribute).
+    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attributeName).
     Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_RNA_suiteness: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "absolute-percentile-clashscore"
     Example:             Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_clashscore: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "absolute-percentile-percent-RSRZ-outliers".
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_percent_RSRZ_outliers: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "absolute-percentile-percent-rama-outliers"
     Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_percent_ramachandran_outliers: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "absolute-percentile-percent-rota-outliers"
     Example:             Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_percent_rotamer_outliers: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "relative-percentile-DCC_Rfree".
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_DCC_Rfree: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "relative-percentile-RNAsuiteness".
-    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attribute).
+    Example:            Specific to entries that contain RNA polymers (and have a RNA_suiteness attributeName).
     Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_RNA_suiteness: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "relative-percentile-clashscore"
     Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_clashscore: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "relative-percentile-percent-RSRZ-outliers".
     Example:            X-ray entry specific, produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_percent_RSRZ_outliers: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "relative-percentile-percent-rama-outliers"
     Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_percent_ramachandran_outliers: Int
     """
 
-    The number of PDB depositions used in the comparison when calculating the attribute
+    The number of PDB depositions used in the comparison when calculating the attributeName
     "relative-percentile-percent-rota-outliers"
     Example:            Produced by the percentiles step of the validation pipeline software.
     """
@@ -11874,14 +11874,14 @@ type RcsbUniprotProtein {
 
 type RcsbUniprotProteinEc {
     number: String
-    "Historical record of the data attribute."
+    "Historical record of the data attributeName."
     provenance_code: String
 }
 
 type RcsbUniprotProteinFunction {
     "General function(s) of a protein."
     details: String
-    "Historical record of the data attribute."
+    "Historical record of the data attributeName."
     provenance_code: String
 }
 
@@ -11890,7 +11890,7 @@ type RcsbUniprotProteinGene {
 }
 
 type RcsbUniprotProteinName {
-    "Historical record of the data attribute."
+    "Historical record of the data attributeName."
     provenance_code: String!
     """
 
@@ -11903,7 +11903,7 @@ type RcsbUniprotProteinName {
 }
 
 type RcsbUniprotProteinSourceOrganism {
-    "Historical record of the data attribute."
+    "Historical record of the data attributeName."
     provenance_code: String!
     "The scientific name of the organism in which a protein occurs."
     scientific_name: String!

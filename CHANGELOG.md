@@ -15,13 +15,13 @@
 
 ## [3.3.0] - 2021-11-30
 ### Annotations configuration improvements
-- Removed interface `CollectAnnotationsInterface` attribute `addTargetInTitle`
+- Removed interface `CollectAnnotationsInterface` attributeName `addTargetInTitle`
 - Added `titleSuffix` and `trackTitle` attributes to `CollectAnnotationsInterface`
      - These new attributes are defined as async functions (ann: AnnotationFeatures, d: Feature) => Promise<string|undefined> to provide or modify track titles based on the features content
 
 ## [3.2.1] - 2021-11-10
 ### Minor configuration
-- Dropdown title configuration is exposed in `InstanceSequenceConfig` attribute `dropdownTitle` 
+- Dropdown title configuration is exposed in `InstanceSequenceConfig` attributeName `dropdownTitle` 
 
 ## [3.1.1] - 2021-11-02
 ### Bug fix
@@ -151,7 +151,7 @@ Changed `setTimeout` calls to 'rxjs' `asyncScheduler`
 
 ## [1.4.2] - 2021-06-03
 ### Bug fix
-- ignore annotation type attribute bug fixed 
+- ignore annotation type attributeName bug fixed 
 
 ## [1.4.1] - 2021-06-02
 ### Bug fix
@@ -176,7 +176,7 @@ Dependency update
 ## [1.3.0] - 2021-05-18
 ### Improvements
 - Displaying nucleic (non-protein) entities/instances
-- Track configuration attribute "ignore" can be used to ignore annotations based on its type 
+- Track configuration attributeName "ignore" can be used to ignore annotations based on its type 
 
 ## [1.2.3] - 2021-05-13
 ### Dependency update
@@ -184,7 +184,7 @@ Dependency update
 
 ## [1.2.2] - 2021-04-30
 ### Bug fix
-- open_end attribute bug fixed 
+- open_end attributeName bug fixed 
 - Instance default value bug fixed
 
 ## [1.2.1] - 2021-04-28

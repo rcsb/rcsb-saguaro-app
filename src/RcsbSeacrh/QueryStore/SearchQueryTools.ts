@@ -7,16 +7,20 @@ import {
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {SearchQuery, Range} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {entityGroupFacetStore} from "../FacetStore/EntityGroupFacetStore";
+import {
+    SearchQuery,
+    Range,
+    AttributeTextQueryParameters
+} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetStoreInterface} from "../FacetStore/FacetStoreInterface";
-import {entryGroupFacetStore} from "../FacetStore/EntryGroupFacetStore";
-import {GroupAggregationUnifiedType} from "../../RcsbUtils/GroupProvenanceToAggregationType";
 import cloneDeep from 'lodash/cloneDeep';
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {depositionGroupFacetStore} from "../FacetStore/DepositionGroupFacetStore";
+import {sequenceGroupFacetStore} from "../FacetStore/SequenceGroupFacetStore";
+import {uniprotGroupFacetStore} from "../FacetStore/UniprotGroupFacetStore";
 
-export function searchGroupQuery(groupGranularity: GroupAggregationUnifiedType, groupId:string, service?: Service): SearchQueryType {
-    const groupSearchAttr: GroupSearchAttribute = getSearchAttribute(groupGranularity);
+export function searchGroupQuery(groupProvenance: GroupProvenanceId, groupId:string, service?: Service): SearchQueryType {
+    const groupSearchAttr: GroupSearchAttribute = getSearchAttribute(groupProvenance);
     return {
         type: Type.Terminal,
         service: service ?? Service.Text,
@@ -29,11 +33,11 @@ export function searchGroupQuery(groupGranularity: GroupAggregationUnifiedType, 
     }
 }
 
-export function addGroupNodeToSearchQuery(groupAggregationType: GroupAggregationUnifiedType, groupId: string, searchQuery: SearchQueryType, service?: Service): SearchQueryType {
-    return addNodeToSearchQuery(searchGroupQuery(groupAggregationType, groupId, service),searchQuery);
+export function addGroupNodeToSearchQuery(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery: SearchQueryType, service?: Service): SearchQueryType {
+    return addNodeToSearchQuery(searchGroupQuery(groupProvenanceId, groupId, service),searchQuery);
 }
 
-export function buildAttributeSearchQuery(attribute: string, value: string|number|Range, operator: Operator, searchQuery: SearchQueryType, returnType:ReturnType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQuery {
+export function buildAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, returnType:ReturnType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQuery {
     return {
         query: addNewNodeToAttributeSearchQuery(attribute,value,operator,searchQuery,service,negation),
         return_type: returnType,
@@ -53,15 +57,38 @@ export function buildAttributeSearchQuery(attribute: string, value: string|numbe
     }
 }
 
-export function getFacetStoreFromGroupType(groupAggregationType: GroupAggregationUnifiedType): FacetStoreInterface {
-    return (groupAggregationType === GroupReference.MatchingUniprotAccession || groupAggregationType === GroupReference.SequenceIdentity) ? entityGroupFacetStore : entryGroupFacetStore;
+export function buildNodeSearchQuery(node: SearchQueryType, searchQuery: SearchQueryType, returnType:ReturnType, logicalOperator = LogicalOperator.And): SearchQuery {
+    return {
+        query: {
+            type: Type.Group,
+            logical_operator: logicalOperator,
+            nodes: [
+                searchQuery,
+                node
+            ]
+        },
+        return_type: returnType,
+        request_options: {
+            pager: {
+                start: 0,
+                rows: 25
+            },
+            scoring_strategy: ScoringStrategy.Combined,
+            sort: [
+                {
+                    sort_by: RelevanceScoreRankingOption.Score,
+                    direction: SortDirection.Desc
+                }
+            ]
+        }
+    }
 }
 
-function addNewNodeToAttributeSearchQuery(attribute: string, value: string|number|Range, operator: Operator, searchQuery: SearchQueryType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
+export function addNewNodeToAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
     return addNodeToSearchQuery(searchAttributeQuery(attribute, value, operator, service,negation),searchQuery);
 }
 
-function searchAttributeQuery(attribute: string, value: string|number|Range, operator: Operator, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
+export function searchAttributeQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
     return {
         type: Type.Terminal,
         service: service,
@@ -74,7 +101,7 @@ function searchAttributeQuery(attribute: string, value: string|number|Range, ope
     }
 }
 
-function addNodeToSearchQuery(node:SearchQueryType, searchQuery: SearchQueryType, logicalOperator = LogicalOperator.And): SearchQueryType{
+export function addNodeToSearchQuery(node:SearchQueryType, searchQuery: SearchQueryType, logicalOperator = LogicalOperator.And): SearchQueryType{
     if(searchQuery.type === Type.Group && searchQuery.logical_operator === logicalOperator) {
         const query: SearchQueryType = cloneDeep(searchQuery);
         query.nodes.push(node);
@@ -90,10 +117,26 @@ function addNodeToSearchQuery(node:SearchQueryType, searchQuery: SearchQueryType
     }
 }
 
+export function getFacetStoreFromGroupProvenance(groupProvenanceId: GroupProvenanceId): FacetStoreInterface {
+    switch (groupProvenanceId){
+        case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
+            return depositionGroupFacetStore;
+        case GroupProvenanceId.ProvenanceSequenceIdentity:
+            return sequenceGroupFacetStore;
+        case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
+            return uniprotGroupFacetStore;
+    }
+}
+
 type GroupSearchAttribute = (typeof RcsbSearchMetadata.RcsbEntryGroupMembership.GroupId) | (typeof RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId);
-function getSearchAttribute(groupAggregationType: GroupAggregationUnifiedType): GroupSearchAttribute {
-    return (groupAggregationType === GroupReference.MatchingUniprotAccession || groupAggregationType === GroupReference.SequenceIdentity) ?
-        RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId :
-        RcsbSearchMetadata.RcsbEntryGroupMembership.GroupId;
+function getSearchAttribute(groupProvenanceId: GroupProvenanceId): GroupSearchAttribute {
+    switch (groupProvenanceId){
+        case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
+            return RcsbSearchMetadata.RcsbEntryGroupMembership.GroupId;
+        case GroupProvenanceId.ProvenanceSequenceIdentity:
+            return RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId;
+        case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
+            return RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId;
+    }
 }
 

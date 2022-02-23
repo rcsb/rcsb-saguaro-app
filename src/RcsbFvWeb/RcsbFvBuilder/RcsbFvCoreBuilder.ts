@@ -11,6 +11,7 @@ import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebTools
 import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
 export interface CreateFvInterface {
     elementId: string;
@@ -104,10 +105,8 @@ export class RcsbFvCoreBuilder {
         document.getElementById(elementId).append(domElement);
     }
 
-    static buildGroupTabs(elementId: string, groupReference: GroupReference, groupId: string, query?:SearchQuery) {
-        if(!groupReference)
-            throw "Unknown group reference"
-        WebToolsManager.buildGroupTabs(elementId, groupReference, groupId, query);
+    static buildGroupTabs(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery) {
+        WebToolsManager.buildGroupTabs(elementId, groupProvenanceId, groupId, query);
     }
 
 }

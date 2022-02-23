@@ -10,6 +10,7 @@ query QueryMultipleEntityInstances($entity_ids: [String!]!){
                     rcsb_polymer_name_combined{
                         names
                     }
+                    formula_weight
                 }
                 entity_poly{
                     rcsb_entity_polymer_type

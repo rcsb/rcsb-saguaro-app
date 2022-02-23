@@ -13,10 +13,7 @@ import {
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {
-    AnnotationTrack,
-    FeaturePositionGaps
-} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTrack";
+import {AnnotationTrack, FeaturePositionGaps} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTrack";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
     InterpolationTypes,
@@ -27,25 +24,25 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {
-    addGroupNodeToSearchQuery,
-    searchGroupQuery
-} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
+import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {Logo} from "./Logo";
 import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {RcsbFvUniprotBuilder} from "../RcsbFvBuilder/RcsbFvUniprotBuilder";
 
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
+const alignmentSelect: "alignment-select" = "alignment-select";
 //TODO make this class dependent of a GroupReference parameter
-export class GroupSequenceTabs extends React.Component <{groupReference: GroupReference, groupId: string, searchQuery?: SearchQuery}, {}> {
+export class GroupSequenceTabs extends React.Component <{groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery}, {}> {
 
     private readonly rendered: Set<EventKey> = new Set<EventKey>();
     private filterInstances: Array<string> = undefined;
     private filterEntities: Array<string> = undefined;
 
-    constructor(props:{groupReference: GroupReference, groupId: string, searchQuery: SearchQuery}) {
+    constructor(props:{groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery: SearchQuery}) {
         super(props);
     }
 
@@ -53,7 +50,7 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
         return (<>
             <RcsbTabs<EventKey>
                 id={"group-id"}
-                tabList={[{key: "alignment", title: "ALIGNMENTS"}, {key: "structural-features", title: "STRUCTURAL FEATURES"}, {key: "binding-sites", title: "BINDING SITES"}]}
+                tabList={[{key: "alignment", title: "ALIGNMENTS", selectId:alignmentSelect}, {key: "structural-features", title: "STRUCTURAL FEATURES"}, {key: "binding-sites", title: "BINDING SITES"}]}
                 default={"alignment"}
                 onMount={this.onMount.bind(this)}
                 onSelect={this.onSelect.bind(this)}
@@ -64,11 +61,11 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
     private onMount() {
         if(this.props.searchQuery) {
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupReference, this.props.groupId, this.props.searchQuery.query), return_type: ReturnType.PolymerEntity}).then(targets=> {
+            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query), return_type: ReturnType.PolymerEntity}).then(targets=> {
                 this.filterEntities = targets
                 search.requestMembers({
                     ...this.props.searchQuery,
-                    query: addGroupNodeToSearchQuery(this.props.groupReference, this.props.groupId, this.props.searchQuery.query),
+                    query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                     return_type: ReturnType.PolymerInstance
                 }).then(targets => {
                     this.filterInstances = targets;
@@ -78,7 +75,7 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
         }else{
             this.onSelect("alignment");
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({query: searchGroupQuery(this.props.groupReference, this.props.groupId), return_type: ReturnType.PolymerInstance}).then(targets=> {
+            search.requestMembers({query: searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance}).then(targets=> {
                 this.filterInstances = targets
                 this.onSelect("alignment");
             });
@@ -91,11 +88,11 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
         this.rendered.add(eventKey);
         switch (eventKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.groupReference, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities});
+                alignment(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, {page:{first:25, after:"0"}, alignmentFilter: this.filterEntities});
                 break;
             case "binding-sites":
                 if (this.props.searchQuery){
-                    bindingSites(eventKey.toString(), this.props.groupReference, this.props.groupId, this.filterInstances.length, {
+                    bindingSites(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {
                         page:{first:0,after: "0"},
                         alignmentFilter: this.filterEntities,
                         filters: [{
@@ -105,12 +102,12 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
                         }]
                     });
                 }else{
-                    bindingSites(eventKey.toString(), this.props.groupReference, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
+                    bindingSites(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
                 }
                 break;
             case "structural-features":
                 if(this.props.searchQuery){
-                    structure(eventKey.toString(), this.props.groupReference, this.props.groupId, this.filterInstances.length, {
+                    structure(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {
                         page:{first:0,after: "0"},
                         alignmentFilter: this.filterEntities,
                         filters:[{
@@ -120,7 +117,7 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
                         }]
                     });
                 }else{
-                    structure(eventKey.toString(), this.props.groupReference, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
+                    structure(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
                 }
                 break;
         }
@@ -129,19 +126,25 @@ export class GroupSequenceTabs extends React.Component <{groupReference: GroupRe
 }
 
 const rowTitleWidth: number = 190;
-function alignment(elementId: string, groupReference:GroupReference, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildGroupAlignmentFv(elementId, groupReference, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
-        {
-            ...additionalConfig,
-            boardConfig:{
-                rowTitleWidth
-            },
-            externalTrackBuilder: buildAlignmentVariation()
-        });
+function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    switch (groupProvenanceId){
+        case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
+            return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,alignmentSelect,groupId)
+        default:
+            return RcsbFvGroupBuilder.buildGroupAlignmentFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
+                {
+                    ...additionalConfig,
+                    boardConfig:{
+                        rowTitleWidth
+                    },
+                    externalTrackBuilder: buildAlignmentVariation()
+                });
+    }
+
 }
 
-function bindingSites(elementId: string, groupReference:GroupReference, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, groupReference, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
+function bindingSites(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
         boardConfig:{
@@ -159,8 +162,8 @@ function bindingSites(elementId: string, groupReference:GroupReference, groupId:
     });
 }
 
-function structure(elementId: string, groupReference: GroupReference, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, groupReference, groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
+function structure(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
         boardConfig:{
@@ -181,6 +184,17 @@ function structure(elementId: string, groupReference: GroupReference, groupId: s
         annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
         externalTrackBuilder: buildAlignmentVariation()
     });
+}
+
+function getReferenceFromGroupProvenance(groupProvenanceId: GroupProvenanceId): GroupReference {
+    switch (groupProvenanceId){
+        case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
+            throw `Undefined reference for provenance ${groupProvenanceId}`;
+        case GroupProvenanceId.ProvenanceSequenceIdentity:
+            return GroupReference.SequenceIdentity;
+        case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
+            return GroupReference.MatchingUniprotAccession;
+    }
 }
 
 function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProcessingInterface {

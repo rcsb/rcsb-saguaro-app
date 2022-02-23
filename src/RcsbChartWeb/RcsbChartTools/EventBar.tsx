@@ -7,7 +7,7 @@ export interface BarData {
     isLabel:boolean;
 }
 
-export type BarClickCallbackType = (datum:BarData,data:BarData[])=>void;
+export type BarClickCallbackType = (datum:BarData,data:BarData[],e:React.MouseEvent<any>)=>void;
 export class EventBar extends React.Component <BarProps & {barClick?:BarClickCallbackType, x0?:number;},{fillColor:string;}> {
 
 
@@ -39,9 +39,9 @@ export class EventBar extends React.Component <BarProps & {barClick?:BarClickCal
 
     private events():React.DOMAttributes<any> {
         return {
-            onClick:()=>{
+            onClick:(e)=>{
                 if(typeof this.props.barClick === "function")
-                    this.props.barClick(this.props.datum, this.props.data)
+                    this.props.barClick(this.props.datum, this.props.data, e)
             },
             onMouseEnter:()=>{
                 if(typeof this.props.barClick === "function")

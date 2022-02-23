@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.0.0-groups.22",
+  "version": "4.0.0-groups.23",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
@@ -8,7 +8,8 @@
   ],
   "scripts": {
     "buildAll": "npm run buildApp && npm run buildAllDoc",
-    "buildApp": "npm run cleanAll && npm run checkQueries && npm run tsc && npm run copyQueries && npm run copyCss && npm run build && npm run copyConfig && npm run clean",
+    "buildOnlyApp": "npm run tsc && npm run copyQueries && npm run copyCss && npm run build && npm run copyConfig",
+    "buildApp": "npm run cleanAll && npm run checkQueries && npm run buildOnlyApp && npm run clean",
     "build": "webpack --config ./webpack.config.js",
     "checkQueries": "ts-node src/RcsbGraphQL/Queries/QueryCheck.ts",
     "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
@@ -49,7 +50,7 @@
     "@types/lodash": "^4.14.176",
     "@types/object-hash": "^2.2.1",
     "@types/randomstring": "^1.1.8",
-    "@types/react": "^17.0.37",
+    "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "@types/react-select": "^3.0.11",
     "ajv": "^6.12.2",
@@ -77,7 +78,7 @@
     "worker-loader": "^3.0.2"
   },
   "dependencies": {
-    "@rcsb/rcsb-api-tools": "^2.2.1-groups.17",
+    "@rcsb/rcsb-api-tools": "^3.0.0-groups.1",
     "@rcsb/rcsb-saguaro": "^2.0.0",
     "ideogram": "^1.27.0",
     "rxjs": "^6.6.0",

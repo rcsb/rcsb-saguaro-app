@@ -3,8 +3,9 @@ import {Tab, Tabs} from "react-bootstrap";
 import classes from "./scss/group-display.module.scss";
 
 export interface RcsbTabsInterface<T extends string> {
-    tabList: Array<{key:T, title:string}>;
+    tabList: Array<{key:T; title:string; selectId?:string;}>;
     default: T;
+
     id: string;
     onSelect(t: T): void;
     onMount(t: T): void;
@@ -26,8 +27,11 @@ export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterfa
                 }}
             >
                 {
-                    this.props.tabList.map(tab=>(
+                    this.props.tabList.map((tab,n)=>(
                         <Tab eventKey={tab.key} title={tab.title}>
+                            {
+                                tab.selectId ? (<div id={tab.selectId}/>) : null
+                            }
                             <div id={tab.key}/>
                         </Tab>
                     ))

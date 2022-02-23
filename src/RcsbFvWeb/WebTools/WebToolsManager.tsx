@@ -6,6 +6,7 @@ import {GroupSequenceTabs} from "../RcsbFvGroup/GroupSequenceTabs";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {LoaderSpinner} from "./LoaderSpinner";
 import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -72,9 +73,9 @@ export class WebToolsManager {
         }
     }
 
-    static buildGroupTabs(elementId: string, groupReference:GroupReference, groupId: string, query?:SearchQuery){
+    static buildGroupTabs(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery){
         ReactDom.render(
-            <GroupSequenceTabs groupReference={groupReference} groupId={groupId} searchQuery={query}/>,
+            <GroupSequenceTabs groupProvenanceId={groupProvenanceId} groupId={groupId} searchQuery={query}/>,
             document.getElementById(elementId)
         )
     }

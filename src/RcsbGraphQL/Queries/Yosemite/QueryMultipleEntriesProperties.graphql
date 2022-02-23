@@ -9,6 +9,7 @@ query multiple_entries_properties($entry_ids: [String!]!){
         rcsb_entry_info{
             experimental_method
             resolution_combined
+            molecular_weight
         }
         struct {
             title

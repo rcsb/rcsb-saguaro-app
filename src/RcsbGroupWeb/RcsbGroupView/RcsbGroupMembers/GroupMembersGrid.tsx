@@ -3,7 +3,6 @@ import {Col, Container, Row} from "react-bootstrap";
 import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
-import {ExtendedGroupReference, GroupAggregationUnifiedType} from "../../../RcsbUtils/GroupProvenanceToAggregationType";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
@@ -11,11 +10,14 @@ import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/Q
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
+    EntryPropertyIntreface,
     MultipleEntryPropertyCollector
 } from "../../../RcsbCollectTools/PropertyCollector/MultipleEntryPropertyCollector";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 
 interface GroupMembersGridInterface {
-    groupAggregationType: GroupAggregationUnifiedType;
+    groupProvenanceId: GroupProvenanceId;
     groupId: string;
     searchQuery?: SearchQuery;
     index:number;
@@ -46,7 +48,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                                             if(ei)
                                                 return (
                                                     <Col className={"p-0"}>
-                                                        <GroupMemberItem item={ei} groupAggregationType={this.props.groupAggregationType}/>
+                                                        <GroupMemberItem item={ei} groupProvenanceId={this.props.groupProvenanceId}/>
                                                     </Col>
                                                 );
                                             else
@@ -75,10 +77,10 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
 
     private async getMembersData(): Promise<void> {
         const searchResult: QueryResult = await this.searchRequest();
-        const itemList: Array<ItemFeaturesInterface> = this.props.groupAggregationType === ExtendedGroupReference.MatchingDepositionGroupId ?
+        const itemList: Array<ItemFeaturesInterface> = parseItems(this.props.groupProvenanceId, this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
             (await (new MultipleEntryPropertyCollector()).collect({entry_ids:searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)}))
             :
-            (await (new MultipleEntityInstancesCollector()).collect({entity_ids:searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)}));
+            (await (new MultipleEntityInstancesCollector()).collect({entity_ids:searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)})));
         const visited: Set<string> = new Set<string>();
         this.setState({
             itemList: itemList
@@ -96,7 +98,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
 
     private async searchRequest(): Promise<QueryResult> {
         return await searchRequest(
-            this.props.groupAggregationType,
+            this.props.groupProvenanceId,
             this.props.groupId,
             this.props.nRows*this.props.nColumns*this.props.index,
             this.props.nRows*this.props.nColumns,
@@ -105,20 +107,27 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
     }
 }
 
-async function searchRequest(groupAggregationType: GroupAggregationUnifiedType, groupId: string, start:number, rows: number, searchQuery?: SearchQuery): Promise<QueryResult> {
+async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, start:number, rows: number, searchQuery?: SearchQuery): Promise<QueryResult> {
     const search: SearchRequest = new SearchRequest();
     return  await search.request({
-        query: searchQuery ? addGroupNodeToSearchQuery(groupAggregationType, groupId, searchQuery.query) : searchGroupQuery(groupAggregationType, groupId),
+        query: searchQuery ? addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
             pager:{
                 start: start,
                 rows: rows
             },
             sort:[{
-                sort_by: searchQuery.request_options?.group_by?.ranking_criteria_type?.sort_by ?? RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
-                direction: (searchQuery.request_options?.group_by?.ranking_criteria_type?.direction as SortDirection) ?? SortDirection.Asc
+                sort_by: searchQuery?.request_options?.group_by?.ranking_criteria_type?.sort_by ?? RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
+                direction: (searchQuery?.request_options?.group_by?.ranking_criteria_type?.direction as SortDirection) ?? SortDirection.Asc
             }]
         },
-        return_type: groupAggregationType === ExtendedGroupReference.MatchingDepositionGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
+        return_type: groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
     });
+}
+
+function parseItems(groupProvenanceId: GroupProvenanceId, propsList:Array<EntryPropertyIntreface>|Array<PolymerEntityInstanceInterface>): Array<ItemFeaturesInterface>{
+    return groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
+        (propsList as Array<EntryPropertyIntreface>).map((o)=>({...o, molecularWeight:o.entryMolecularWeight}))
+        :
+        (propsList as Array<PolymerEntityInstanceInterface>).map((o)=>({...o, molecularWeight: o.entityMolecularWeight}));
 }
