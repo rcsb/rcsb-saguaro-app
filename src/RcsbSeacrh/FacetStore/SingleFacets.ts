@@ -375,6 +375,88 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
     }
 }
 
+export const GO_PROCESS_FACET: FacetMemberInterface = {
+    id:"go_process_class",
+    title:"GO biological process",
+    attributeName: "GO_PROCESS_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+    contentType:"string",
+    chartType: ChartType.barplot,
+    facet:{
+        filter:{
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters:{
+                operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+                value: "GO"
+            }
+        },
+        facets:[{
+            name:"GO_PROCESS_FACET",
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            facets:[{
+                aggregation_type: AggregationType.Terms,
+                min_interval_population: 1,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+            }]
+        }]
+    },
+    filterSearchResultFacets(facet: Facet): Facet {
+        return {
+            attribute: facet.attribute,
+            groups: facet.groups.filter((g)=>(
+                g.drilldown.filter((d)=>((d as Facet).groups.filter((dg)=>(dg.label === "biological_process"))).length>0).length > 0
+            )).map((g)=>({
+                label:g.label,
+                population:g.population
+            })) as Facet['groups']
+        };
+    }
+}
+
+export const GO_COMPONENT_FACET: FacetMemberInterface = {
+    id:"go_component_class",
+    title:"GO cellular component",
+    attributeName: "GO_COMPONENT_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+    contentType:"string",
+    chartType: ChartType.barplot,
+    facet:{
+        filter:{
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters:{
+                operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+                value: "GO"
+            }
+        },
+        facets:[{
+            name:"GO_COMPONENT_FACET",
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            facets:[{
+                aggregation_type: AggregationType.Terms,
+                min_interval_population: 1,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+            }]
+        }]
+    },
+    filterSearchResultFacets(facet: Facet): Facet {
+        return {
+            attribute: facet.attribute,
+            groups: facet.groups.filter((g)=>(
+                g.drilldown.filter((d)=>((d as Facet).groups.filter((dg)=>(dg.label === "cellular_component"))).length>0).length > 0
+            )).map((g)=>({
+                label:g.label,
+                population:g.population
+            })) as Facet['groups']
+        };
+    }
+}
+
 export const SearchFacets = {
     EXPERIMENTAL_METHOD_FACET,
     RESOLUTION_FACET,
@@ -389,5 +471,7 @@ export const SearchFacets = {
     ECOD_FACET,
     CATH_FACET,
     ENZYME_CLASS_FACET,
-    GO_FUNCTION_FACET
+    GO_FUNCTION_FACET,
+    GO_PROCESS_FACET,
+    GO_COMPONENT_FACET
 };

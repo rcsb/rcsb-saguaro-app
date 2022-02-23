@@ -9,16 +9,25 @@ import {
     CHEM_COMP_FACET,
     ENTITY_NAME_FACET,
     EXPERIMENTAL_METHOD_FACET,
-    LIGAND_FACET, ORGANISM_FACET, PFAM_FACET,
+    LIGAND_FACET,
+    ORGANISM_FACET,
+    PFAM_FACET,
     RELEASE_DATE_FACET,
     RESOLUTION_FACET,
-    SCOP_FACET, TAXONOMY_FACET, CATH_FACET, ECOD_FACET, ENZYME_CLASS_FACET, GO_FUNCTION_FACET
+    SCOP_FACET,
+    TAXONOMY_FACET,
+    CATH_FACET,
+    ECOD_FACET,
+    ENZYME_CLASS_FACET,
+    GO_FUNCTION_FACET,
+    GO_PROCESS_FACET,
+    GO_COMPONENT_FACET
 } from "./SingleFacets";
 
 class SequenceGroupFacetStore implements FacetStoreInterface{
     private readonly entryFacet: FacetMemberInterface[] = [EXPERIMENTAL_METHOD_FACET,RESOLUTION_FACET,RELEASE_DATE_FACET,ENZYME_CLASS_FACET];
     private readonly instanceFacet: FacetMemberInterface[] = [SCOP_FACET,CATH_FACET,ECOD_FACET,LIGAND_FACET];
-    private readonly entityFacet: FacetMemberInterface[] = [ORGANISM_FACET, TAXONOMY_FACET, PFAM_FACET, ENTITY_NAME_FACET,GO_FUNCTION_FACET];
+    private readonly entityFacet: FacetMemberInterface[] = [ORGANISM_FACET, TAXONOMY_FACET, PFAM_FACET, ENTITY_NAME_FACET,GO_FUNCTION_FACET,GO_PROCESS_FACET,GO_COMPONENT_FACET];
     private readonly nonPolymerFacet: FacetMemberInterface[] = [CHEM_COMP_FACET];
 
     getServices(): Service[] {

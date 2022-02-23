@@ -37,12 +37,14 @@ export class BarChartData implements ChartDataInterface{
         });
         const allowedCategories: Set<string|number> = new Set<string|number>([...mergedValues.entries()]
             .sort((a,b)=>(b[1]-a[1]))
-            .filter(d=>(d[1]>0))
             .slice(0,this.config?.mostPopulatedGroups ?? mergedValues.size)
             .map(e=>e[0]));
 
         const sort = (a: BarData, b: BarData) => {
-            return mergedValues.get(b.x)-mergedValues.get(a.x);
+            if(mergedValues.get(b.x) != mergedValues.get(a.x))
+                return mergedValues.get(b.x)-mergedValues.get(a.x);
+            else
+                return a.x.toString().localeCompare(b.x.toString())
         };
         const barOut: BarData[] = data.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         const barOther: number = data.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);

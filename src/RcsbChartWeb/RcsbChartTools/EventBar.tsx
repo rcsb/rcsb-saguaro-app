@@ -31,10 +31,9 @@ export class EventBar extends React.Component <BarProps & {barClick?:BarClickCal
     }
 
     x(): number {
-        if(this.props.x && this.props.x0 && (this.props.x-this.props.x0) > 0 && (this.props.x-this.props.x0) < this.MIN_THR)
+        if(this.props.x && this.props.x0 && this.props.datum.y > 0 && (this.props.x-this.props.x0) < this.MIN_THR)
             return this.props.x0+this.MIN_THR
         return this.props.x;
-
     }
 
     private events():React.DOMAttributes<any> {
