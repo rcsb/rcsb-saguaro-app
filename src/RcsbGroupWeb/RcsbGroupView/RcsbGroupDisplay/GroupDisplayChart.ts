@@ -87,6 +87,8 @@ async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupPr
 }
 
 function addBarClickCallback(chart: RcsbChartInterface, searchQuery:SearchQueryType, returnType:ReturnType): void{
+    if(!chart.chartConfig)
+        chart.chartConfig = {}
     switch (chart.chartType){
         case ChartType.barplot:
             addBarChartClick(chart,searchQuery,returnType);

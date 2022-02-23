@@ -31,29 +31,30 @@ export interface RcsbChartInterface {
 
 export class FacetTools {
 
-    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], facets: Array<Facet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
-        const out: Array<RcsbChartInterface> = new Array<RcsbChartInterface>();
-        facets.forEach(f=> {
-            if(f.groups.filter(g=>g.drilldown).length > 0){
-                f.groups.filter(g=>g.drilldown).forEach(g=>{
+    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<Facet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
+        const out: Array<RcsbChartInterface> = recursiveOut ?? new Array<RcsbChartInterface>();
+        searchResultFacets.forEach(f=> {
+            const facet:Facet = FacetTools.getFacetFromName(facetMembers,f.attribute).filterSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.attribute).filterSearchResultFacets(f) : f;
+            if(facet.groups.filter(g=>g.drilldown).length > 0){
+                facet.groups.filter(g=>g.drilldown).forEach(g=>{
                     FacetTools.getResultDrilldowns(facetMembers, g.drilldown as Facet[], labelList ? labelList.concat(g.label) : [g.label], out);
                 });
             }
-            if(f.groups.filter(g=>!g.drilldown).length > 0) {
-                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, f.attribute);
+            if(facet.groups.filter(g=>!g.drilldown).length > 0) {
+                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, facet.attribute);
                 out.push({
                     chartType: chart.chartType,
                     chartConfig: chart.chartConfig,
                     labelList: labelList,
-                    attributeName: f.attribute,
-                    attribute: FacetTools.getFacetFromName(facetMembers, f.attribute).attribute,
+                    attributeName: facet.attribute,
+                    attribute: FacetTools.getFacetFromName(facetMembers, facet.attribute).attribute,
                     title: chart.title,
-                    data: f.groups.filter(g => !g.drilldown).map((d)=>({
+                    data: facet.groups.filter(g => !g.drilldown).map((d)=>({
                         label: d.label,
                         population: d.population
                     })),
-                    filters:FacetTools.getFacetFiltersFromName(facetMembers, f.attribute),
-                    contentType: FacetTools.getFacetFromName(facetMembers,f.attribute).contentType
+                    filters:FacetTools.getFacetFiltersFromName(facetMembers, facet.attribute),
+                    contentType: FacetTools.getFacetFromName(facetMembers,facet.attribute).contentType
                 });
             }
         });

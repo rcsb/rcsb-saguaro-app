@@ -2,6 +2,7 @@ import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/Se
 import {ChartType} from "../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
+import {Facet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 
 export const EXPERIMENTAL_METHOD_FACET:FacetMemberInterface = {
     id: "method",
@@ -78,10 +79,6 @@ export const SCOP_FACET:FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
-    chartConfig: {
-    mostPopulatedGroups: 5,
-        mergeName: "Other domains"
-    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -119,10 +116,6 @@ export const CATH_FACET:FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
-    chartConfig: {
-        mostPopulatedGroups: 5,
-        mergeName: "Other domains"
-    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -160,10 +153,6 @@ export const ECOD_FACET:FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
-    chartConfig: {
-        mostPopulatedGroups: 5,
-        mergeName: "Other domains"
-    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -221,7 +210,7 @@ export const ORGANISM_FACET:FacetMemberInterface = {
     contentType:"string",
     chartType: ChartType.barplot,
     chartConfig: {
-    mostPopulatedGroups: 5,
+    mostPopulatedGroups: 9,
         mergeName: "Other organisms"
 },
     facet:{
@@ -258,10 +247,6 @@ export const PFAM_FACET: FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
     contentType:"string",
     chartType: ChartType.barplot,
-        chartConfig: {
-        mostPopulatedGroups: 5,
-            mergeName: "Other domains"
-    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -322,7 +307,7 @@ export const CHEM_COMP_FACET:FacetMemberInterface = {
 export const ENZYME_CLASS_FACET: FacetMemberInterface = {
     id:"enzyme_class",
     title:"Enzyme classification",
-    attributeName: "ENZYME_CLASS",
+    attributeName: "ENZYME_CLASS_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbEcLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
@@ -341,7 +326,7 @@ export const ENZYME_CLASS_FACET: FacetMemberInterface = {
             }
         },
         facets:[{
-            name:"ENZYME_CLASS",
+            name:"ENZYME_CLASS_FACET",
             aggregation_type: AggregationType.Terms,
             attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbEcLineage.Name.path,
             min_interval_population: 1
@@ -349,18 +334,60 @@ export const ENZYME_CLASS_FACET: FacetMemberInterface = {
     }
 }
 
+export const GO_FUNCTION_FACET: FacetMemberInterface = {
+    id:"go_function_class",
+    title:"GO molecular function",
+    attributeName: "GO_FUNCTION_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+    contentType:"string",
+    chartType: ChartType.barplot,
+    facet:{
+        filter:{
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters:{
+                operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+                value: "GO"
+            }
+        },
+        facets:[{
+            name:"GO_FUNCTION_FACET",
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            facets:[{
+                aggregation_type: AggregationType.Terms,
+                min_interval_population: 1,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+            }]
+        }]
+    },
+    filterSearchResultFacets(facet: Facet): Facet {
+        return {
+            attribute: facet.attribute,
+            groups: facet.groups.filter((g)=>(
+                g.drilldown.filter((d)=>((d as Facet).groups.filter((dg)=>(dg.label === "molecular_function"))).length>0).length > 0
+            )).map((g)=>({
+                label:g.label,
+                population:g.population
+            })) as Facet['groups']
+        };
+    }
+}
+
 export const SearchFacets = {
-    EXPERIMENTAL_METHOD_FACET: EXPERIMENTAL_METHOD_FACET,
-    RESOLUTION_FACET: RESOLUTION_FACET,
-    RELEASE_DATE_FACET: RELEASE_DATE_FACET,
-    SCOP_FACET: SCOP_FACET,
-    LIGAND_FACET: LIGAND_FACET,
-    ORGANISM_FACET: ORGANISM_FACET,
-    TAXONOMY_FACET: TAXONOMY_FACET,
-    PFAM_FACET: PFAM_FACET,
-    ENTITY_NAME_FACET: ENTITY_NAME_FACET,
-    CHEM_COMP_FACET: CHEM_COMP_FACET,
-    ECOD_FACET: ECOD_FACET,
-    CATH_FACET: CATH_FACET,
-    ENZYME_CLASS_FACET: ENZYME_CLASS_FACET
+    EXPERIMENTAL_METHOD_FACET,
+    RESOLUTION_FACET,
+    RELEASE_DATE_FACET,
+    SCOP_FACET,
+    LIGAND_FACET,
+    ORGANISM_FACET,
+    TAXONOMY_FACET,
+    PFAM_FACET,
+    ENTITY_NAME_FACET,
+    CHEM_COMP_FACET,
+    ECOD_FACET,
+    CATH_FACET,
+    ENZYME_CLASS_FACET,
+    GO_FUNCTION_FACET
 };

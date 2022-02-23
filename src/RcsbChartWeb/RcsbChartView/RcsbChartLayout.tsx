@@ -28,50 +28,24 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{
     }
 
     private renderRow(attrF: string, attrG: string): JSX.Element {
-        const chartF: RcsbChartInterface = this.props.chartMap.get(attrF)?.chart;
-        if (chartF) {
-            const subF: RcsbChartInterface = this.props.chartMap.get(attrF).subChart;
-            const chartG: RcsbChartInterface = attrG ? this.props.chartMap.get(attrG)?.chart : undefined;
-            const subG: RcsbChartInterface = attrG ? this.props.chartMap.get(attrG)?.subChart : undefined;
+        return (
+            <Row className={"mt-lg-4"}>
+                {this.renderCell(attrF)}
+                {this.renderCell(attrG)}
+            </Row>
+        );
+    }
 
-            if (chartF && chartG) {
-                const nodeF: JSX.Element = chartF.chartType == ChartType.histogram ? histogramChart(chartF, subF) : barChart(chartF, subF);
-                const nodeG: JSX.Element = chartG.chartType == ChartType.histogram ? histogramChart(chartG, subG) : barChart(chartG, subG);
-                return (
-                    <Row className={"mt-lg-4"}>
-                        {chartCell(nodeF, chartF.title)}
-                        {chartCell(nodeG, chartG.title)}
-                    </Row>
-                );
-            } else if (chartF || chartG) {
-                return chartF ? singleChartCell(chartF, subF) : singleChartCell(chartG, subG);
-            }
+    private renderCell(attr: string): JSX.Element {
+        const chart: RcsbChartInterface = this.props.chartMap.get(attr)?.chart;
+        if(chart){
+            const subChart: RcsbChartInterface = this.props.chartMap.get(attr).subChart;
+            const node: JSX.Element = chart.chartType == ChartType.histogram ? histogramChart(chart, subChart) : barChart(chart, subChart);
+            return chartCell(node,chart.title);
         }
         return null;
     }
 
-
-}
-
-function singleChartCell(chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
-    const nodeF: JSX.Element =  chart.chartType == ChartType.histogram ? histogramChart(chart, subChart) : barChart(chart, subChart);
-    return (
-        <Row className={"mt-lg-4"}>
-            {chartCell(nodeF, chart.title, 12)}
-        </Row>
-    );
-}
-
-function histogramChart(chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
-    return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <HistogramChartView data={chart.data} subData={subChart?.data} config={chart.chartConfig}/>
-    </div>);
-}
-
-function barChart(chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
-    return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <BarChartView data={chart.data} subData={subChart?.data} config={chart.chartConfig}/>
-    </div>);
 }
 
 function chartCell(chartNode:JSX.Element, title: string, colSize?:number): JSX.Element{
@@ -85,4 +59,16 @@ function chartCell(chartNode:JSX.Element, title: string, colSize?:number): JSX.E
             </Row>
         </Row>
     </Col>);
+}
+
+function histogramChart(chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
+    return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
+        <HistogramChartView data={chart.data} subData={subChart?.data} config={chart.chartConfig}/>
+    </div>);
+}
+
+function barChart(chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
+    return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
+        <BarChartView data={chart.data} subData={subChart?.data} config={chart.chartConfig}/>
+    </div>);
 }
