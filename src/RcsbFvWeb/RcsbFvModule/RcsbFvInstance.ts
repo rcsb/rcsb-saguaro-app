@@ -11,7 +11,9 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
         this.alignmentTracks = await this.sequenceCollector.collect({
             queryId: instanceId,
             from: SequenceReference.PdbInstance,
-            to: SequenceReference.Uniprot});
+            to: SequenceReference.Uniprot},
+            buildConfig.additionalConfig?.alignmentFilter
+        );
 
         this.annotationTracks = await this.annotationCollector.collect({
                 queryId: instanceId,

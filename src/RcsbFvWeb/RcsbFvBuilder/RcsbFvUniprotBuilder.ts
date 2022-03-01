@@ -11,10 +11,10 @@ import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface
 
 export class RcsbFvUniprotBuilder {
 
-    static async buildUniprotMultipleEntitySequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): Promise<RcsbFvModulePublicInterface> {
+    static async buildUniprotMultipleEntitySequenceFv(elementFvId: string, elementSelectId:string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         const ALL:string = "ALL";
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
-            const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {boardConfig:{rowTitleWidth:210}});
+            const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {...additionalConfig, boardConfig:{rowTitleWidth:210}});
             resolve(rcsbFvUniprot);
             const targets: Array<string>  = await rcsbFvUniprot.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
@@ -25,7 +25,7 @@ export class RcsbFvUniprotBuilder {
                         onChange: async () => {
                             RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                             if (entityId === ALL) {
-                                await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc);
+                                await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, additionalConfig);
                             } else {
                                 const entryId: string = entityId.split(TagDelimiter.entity)[0];
                                 const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
@@ -36,7 +36,8 @@ export class RcsbFvUniprotBuilder {
                                     elementFvId,
                                     upAcc,
                                     result[0].entryId+TagDelimiter.entity+result[0].entityId,
-                                    result[0].entryId+TagDelimiter.instance+result[0].asymId
+                                    result[0].entryId+TagDelimiter.instance+result[0].asymId,
+                                    additionalConfig
                                 );
                                 RcsbFvCoreBuilder.addSelectButton(elementFvId, elementSelectId,result.map(instance=>{
                                     return{
@@ -48,7 +49,8 @@ export class RcsbFvUniprotBuilder {
                                                 elementFvId,
                                                 upAcc,
                                                 instance.entryId+TagDelimiter.entity+instance.entityId,
-                                                instance.entryId+TagDelimiter.instance+instance.asymId
+                                                instance.entryId+TagDelimiter.instance+instance.asymId,
+                                                additionalConfig
                                             );
                                         }
                                     }

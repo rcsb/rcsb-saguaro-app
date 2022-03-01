@@ -16,7 +16,7 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
             queryId: entityId,
             from: SequenceReference.PdbEntity,
             to: SequenceReference.Uniprot
-        });
+        }, buildConfig.additionalConfig?.alignmentFilter);
         this.annotationTracks = await this.annotationCollector.collect({
                 queryId: entityId,
                 reference: SequenceReference.PdbEntity,

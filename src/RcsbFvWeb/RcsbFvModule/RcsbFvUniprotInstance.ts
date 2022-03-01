@@ -37,7 +37,7 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             to: SequenceReference.PdbInstance,
             filterByTargetContains: instanceId,
             excludeFirstRowLink: true
-        });
+        }, buildConfig.additionalConfig?.alignmentFilter);
         this.annotationTracks = await this.annotationCollector.collect({
             queryId: upAcc,
             reference: SequenceReference.Uniprot,

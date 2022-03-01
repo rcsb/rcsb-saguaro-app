@@ -29,7 +29,7 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             to: SequenceReference.PdbEntity,
             filterByTargetContains: entityId,
             excludeAlignmentLinks: true
-        });
+        }, buildConfig.additionalConfig?.alignmentFilter);
         this.annotationTracks = await this.annotationCollector.collect({
             queryId: upAcc,
             reference: SequenceReference.Uniprot,

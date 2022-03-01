@@ -129,7 +129,7 @@ const rowTitleWidth: number = 190;
 function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
     switch (groupProvenanceId){
         case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
-            return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,alignmentSelect,groupId)
+            return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,alignmentSelect,groupId,additionalConfig)
         default:
             return RcsbFvGroupBuilder.buildGroupAlignmentFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
                 {

@@ -24,7 +24,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true
-        });
+        }, buildConfig.additionalConfig?.alignmentFilter);
         this.annotationTracks = await this.annotationCollector.collect({
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
