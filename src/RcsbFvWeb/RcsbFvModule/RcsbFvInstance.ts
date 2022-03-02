@@ -1,6 +1,11 @@
-import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    AnnotationFeatures,
+    SequenceReference,
+    Source
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
 
 export class RcsbFvInstance extends RcsbFvAbstractModule {
 
@@ -16,9 +21,11 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
         );
 
         this.annotationTracks = await this.annotationCollector.collect({
-                queryId: instanceId,
-                reference: SequenceReference.PdbInstance,
-                sources:source
+            queryId: instanceId,
+            reference: SequenceReference.PdbInstance,
+            annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
+            annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
+            sources:source
         });
 
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();

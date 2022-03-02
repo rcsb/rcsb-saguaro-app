@@ -1,7 +1,7 @@
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {CollectAlignmentInterface, SequenceCollectorInterface} from "./SequenceCollectorInterface";
 import {SequenceCollectorDataInterface} from "./SequenceCollector";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 

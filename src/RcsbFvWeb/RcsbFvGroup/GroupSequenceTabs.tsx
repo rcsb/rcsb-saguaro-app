@@ -248,7 +248,8 @@ function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
             addConservation.processAlignmentAndFeatures(data);
             return void 0;
         },
-        filterFeatures(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
+            const annotations: Array<AnnotationFeatures> = data.annotations;
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>f.name.includes("ligand"));
             })
@@ -333,7 +334,8 @@ function buildAlignmentVariation(): ExternalTrackBuilderInterface {
             processAlignments(data.alignments);
             return void 0;
         },
-        filterFeatures(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
+            const annotations: Array<AnnotationFeatures> = data.annotations;
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>(f.name != "automated matches"));
             })

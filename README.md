@@ -8,7 +8,7 @@ Feature Summaries. The package allows access to RCSB Saguaro methods to add or c
 <!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@3.4.0/build/dist/app.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app/build/dist/app.js"></script>
 <script type="text/javascript">
 RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
     boardConfig:{
@@ -23,7 +23,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 `npm install @rcsb/rcsb-saguaro-app`
 
 ### CDN JavaScript
-`<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@3.4.0/build/dist/app.js" type="text/javascript"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app/build/dist/app.js" type="text/javascript"></script>`
 
 ### JavaScript Examples
 * [PDB Instance Chain View](https://rcsb.github.io/rcsb-saguaro-app/examples/instance.html)
@@ -49,7 +49,7 @@ click events.
 - **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/rcsbfvboardconfiginterface.html))
 - **RcsbFvWebApp.getRcsbFv**(elementId: string)
 
-###GraphQL configuration
+### GraphQL configuration
 ##### Building TypeScript interfaces
 - Files ["src/RcsbServerConfig/codegen.borrego.json", "src/RcsbServerConfig/codegen.yosemite.json"]
 - Borrego Interfaces: graphql-codegen --config src/RcsbServerConfig/codegen.borrego.json
@@ -58,6 +58,20 @@ click events.
 ##### IntelliJ schemas
 - Config Files: ["src/RcsbGraphQL/Queries/Borrego/.graphqlconfig", "src/RcsbGraphQL/Queries/Yosemite/.graphqlconfig"]
 - Generated Schemas: ["src/RcsbGraphQL/Queries/Borrego/schema.graphql", "src/RcsbGraphQL/Queries/Yosemite/schema.graphql"]
+
+### New RCSB data-api request method
+- A new graphql query defined in `src/RcsbGraphQL/Queries/Yosemite` (e.g. `QueryAssemblyInterfaces.graphql`)
+- A new request class using `rcsb-api-tools` defined in `src/RcsbGraphQL` (e.g. `RcsbQueryAssemblyInterfaces.ts`)
+- A new method in the `RcsbClient` class defined in `src/RcsbGraphQL/RcsbClient.ts` (e.g. `requestAssemblyInterfaces`)
+    - This method must used the request class defined above
+- A new collector class based on the request class in `src/RcsbCollectTools/Translators` (e.g. `AssemblyInterfacesCollector`)
+    - This class must call the method defined above
+    - This class may transform the RCSB data-api schema into a more convenient interface
+- A new translator class defined in `src/RcsbUtils` (e.g. `AssemblyInterfacesTranslate`)
+    - The constructor gets the data collected by the above class
+    - The class exposes the methods needs to provide the relationships between RCSB objects of different granularity
+- A new method in the `RcsbFvContextManager` defined in `src/RcsbFvWeb/RcsbFvBuilder`
+    - This method must avoid duplicate requests
 
 Contributing
 ---

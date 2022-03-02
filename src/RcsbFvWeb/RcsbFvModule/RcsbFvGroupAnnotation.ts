@@ -6,8 +6,7 @@ import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/An
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
 import {
-    SequenceCollector,
-    SequenceCollectorDataInterface
+    SequenceCollector
 } from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 

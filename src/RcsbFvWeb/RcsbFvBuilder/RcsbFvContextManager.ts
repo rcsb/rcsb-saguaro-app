@@ -1,9 +1,9 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {PolymerEntityInstancesCollector} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
-import {EntryAssemblyTranslate} from "../../RcsbUtils/EntryAssemblyTranslate";
+import {EntryAssemblyTranslate} from "../../RcsbUtils/Translators/EntryAssemblyTranslate";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
-import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/PolymerEntityChromosomeTranslate";
+import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/Translators/PolymerEntityChromosomeTranslate";
 import {PolymerEntityChromosomeCollector} from "../../RcsbCollectTools/Translators/PolymerEntityChromosomeCollector";
 import {GroupMemberCollector} from "../../RcsbCollectTools/Translators/GroupMemberCollector";
 import {
@@ -22,6 +22,11 @@ import {QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGrap
 import {FacetType} from "../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
+import {InterfaceInstanceTranslate} from "../../RcsbUtils/Translators/InterfaceInstanceTranslate";
+import {InterfaceInstanceCollector} from "../../RcsbCollectTools/Translators/InterfaceInstanceCollector";
+import {AssemblyInterfacesCollector} from "../../RcsbCollectTools/Translators/AssemblyInterfacesCollector";
+import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {AssemblyInterfacesTranslate} from "../../RcsbUtils/Translators/AssemblyInterfacesTranslate";
 
 interface DataStatusInterface<T>{
     data:T;
@@ -36,7 +41,8 @@ class RcsbFvContextManager {
     private entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
     private groupPropertyMap: Map<string,DataStatusInterface<GroupPropertiesProvider>> = new Map<string, DataStatusInterface<GroupPropertiesProvider>>();
     private searchRequestMap: Map<string,DataStatusInterface<QueryResult|null>> = new Map<string, DataStatusInterface<QueryResult|null>>();
-
+    private interfaceToInstanceMap: Map<string,DataStatusInterface<InterfaceInstanceTranslate>> = new Map<string, DataStatusInterface<InterfaceInstanceTranslate>>();
+    private assemblyInterfacesMap: Map<string,DataStatusInterface<AssemblyInterfacesTranslate>> = new Map<string, DataStatusInterface<AssemblyInterfacesTranslate>>();
 
     public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
         if( this.rcsbFvManager.has(elementFvId)) {
@@ -160,6 +166,52 @@ class RcsbFvContextManager {
     public async getGroupProperties(groupQuery: QueryPolymer_Entity_GroupArgs): Promise<GroupPropertyInterface> {
         const groupPropertyCollector: GroupPropertyCollector = new GroupPropertyCollector();
         return await groupPropertyCollector.collect(groupQuery);
+    }
+
+    public async getInterfaceToInstance(interfaceId:string): Promise<InterfaceInstanceTranslate>{
+        const key: string = interfaceId;
+        const assemblyId = interfaceId.split(TagDelimiter.instance)[0];
+        if(this.interfaceToInstanceMap.get(key)?.status === "available"){
+            return this.interfaceToInstanceMap.get(key).data;
+        } else if(this.interfaceToInstanceMap.get(key)?.status === "pending"){
+            return await mapResolve<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(key));
+        }else if (this.assemblyInterfacesMap.get(assemblyId)?.status === "pending"){
+            mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
+            return await mapResolve<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(key));
+        }else{
+            mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
+            const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
+            const interfaceCollector: InterfaceInstanceCollector = new InterfaceInstanceCollector();
+            const result = await interfaceCollector.collect({interface_ids: assemblyInterfaces.getInterfaces(assemblyId)});
+            const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
+            for(const id of assemblyInterfaces.getInterfaces(assemblyId)){
+                if(this.interfaceToInstanceMap.get(id)?.status === "pending")
+                    mapSet<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(id),translator);
+                else
+                    this.interfaceToInstanceMap.set(id,{
+                        data: translator,
+                        status: "available",
+                        resolveList: []
+                    });
+            }
+            return translator;
+        }
+    }
+
+    private async getAssemblyInterfaces(assemblyId:string): Promise<AssemblyInterfacesTranslate> {
+        const key: string = assemblyId;
+        if(this.assemblyInterfacesMap.get(key)?.status === "available"){
+            return this.assemblyInterfacesMap.get(key).data;
+        }else if(this.assemblyInterfacesMap.get(key)?.status === "pending"){
+            return await mapResolve<AssemblyInterfacesTranslate>(this.assemblyInterfacesMap.get(key));
+        }else{
+            mapPending<AssemblyInterfacesTranslate>(key, this.assemblyInterfacesMap);
+            const assemblyInterfacesCollector: AssemblyInterfacesCollector = new AssemblyInterfacesCollector();
+            const result = await assemblyInterfacesCollector.collect({assembly_ids:[assemblyId]});
+            const translator: AssemblyInterfacesTranslate = new AssemblyInterfacesTranslate(result);
+            mapSet<AssemblyInterfacesTranslate>(this.assemblyInterfacesMap.get(key), translator);
+            return translator;
+        }
     }
 
 }

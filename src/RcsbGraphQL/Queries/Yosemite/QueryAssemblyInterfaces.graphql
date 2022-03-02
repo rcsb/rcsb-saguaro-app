@@ -1,0 +1,10 @@
+query QueryAssemblyInterfaces($assembly_ids: [String!]!){
+    assemblies(
+        assembly_ids: $assembly_ids
+    ){
+        rcsb_id
+        interfaces{
+            rcsb_id
+        }
+    }
+}

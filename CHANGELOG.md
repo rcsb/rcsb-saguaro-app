@@ -2,8 +2,50 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.0.0-master] - 2021-12-07
-### Breaking change
+## [4.0.6] - 2022-02-15
+### Minor bug fix
+- Minor type fix in react-select. New select option type `SelectOptionProps`
+- `InstanceSequenceConfig` external methods defined in `selectButtonOptionProps` 
+do not need to import `components.Option` from react-select.
+The `SelectButton` class will include it as a children component
+
+## [4.0.5] - 2022-02-15
+### Minor bug fix
+- Minor type fix in react-select
+
+## [4.0.4] - 2022-02-15
+### Minor bug fix
+- Minor type fix
+
+## [4.0.4] - 2022-02-15
+### Minor bug fix
+- Minor type fix
+
+## [4.0.3] - 2022-02-14
+### Minor bug fix
+- react-select type definition fixed
+
+## [4.0.2] - 2022-02-14
+### Dependency update
+- Multiple dependencies updated
+
+## [4.0.1] - 2022-02-08
+### Dependency update
+- rcsb-api-tools v2.3.1
+
+## [4.0.0] - 2022-02-08
+###  Annotation collector improvements 
+-  Added interface `CollectAnnotationsInterface` for generating new annotations internally (not exposed)
+    - `annotationGenerator?(annotations: Array<AnnotationFeatures>)` generates new annotations from the collected ones
+    - `annotationFilter?(annotations: Array<AnnotationFeatures>)` filter the collected annotations
+    - Both methods are called before annotations processing and thus, they should be configured in `RcsbAnnotationConfig.ac.json` or equivalent config file
+    - Checking content before adding generated features
+    - New callback attribute `InstanceSequenceConfig` > `beforeChangeCallback`. This function is called when instance 
+    dropdown menu changes and before rendering the new 1D RcsbFv. 
+    The callback may return a `RcsbContextType` object that will be included in the `additionalConfig`
+- Added two new classes (`AssemblyInterfacesCollector` and `AssemblyInterfacesTranslate`) to collect and handle assembly and interface id relationships
+- Exposing all feature types in a single object `FeatureType` (file: `src/RcsbExport/FeatureType.ts`)
+- New package `RcsbExport` to expose classes and methods outside the library
 - `ExternalTrackBuilderInterface` methods return a promise and are executed asynchronous
 
 ## [3.4.0] - 2021-12-07
@@ -18,6 +60,10 @@
 - Removed interface `CollectAnnotationsInterface` attributeName `addTargetInTitle`
 - Added `titleSuffix` and `trackTitle` attributes to `CollectAnnotationsInterface`
      - These new attributes are defined as async functions (ann: AnnotationFeatures, d: Feature) => Promise<string|undefined> to provide or modify track titles based on the features content
+- New `RcsbFvInterface` module
+     - Interface `InstanceSequenceConfig` provides a new attribute `module` to choose between the `RcsbFvInstance` or RcsbFvInterface` modules
+- New classes to collect and translate instance/interface ids relationships from data api
+    - `RcsbQueryInterfaceInstances`, `InterfaceInstanceCollector` and  `InterfaceInstanceTranslate`
 
 ## [3.2.1] - 2021-11-10
 ### Minor configuration

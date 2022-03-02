@@ -1,4 +1,4 @@
-import {PolymerEntityInstanceTranslate} from "../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbClient} from "../RcsbGraphQL/RcsbClient";
 import {ExternalTrackBuilderInterface} from "./FeatureTools/ExternalTrackBuilderInterface";
 

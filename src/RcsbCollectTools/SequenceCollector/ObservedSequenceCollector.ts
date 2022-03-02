@@ -10,8 +10,8 @@ import {
     SequenceCollector,
     SequenceCollectorDataInterface
 } from "./SequenceCollector";
-import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
-import {MultipleEntityInstanceTranslate} from "../../RcsbUtils/MultipleEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {MultipleEntityInstanceTranslate} from "../../RcsbUtils/Translators/MultipleEntityInstanceTranslate";
 import {MultipleEntityInstancesCollector} from "../Translators/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";

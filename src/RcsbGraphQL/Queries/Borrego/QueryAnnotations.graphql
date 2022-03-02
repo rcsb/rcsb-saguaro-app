@@ -8,6 +8,15 @@ query QueryAnnotations($queryId: String!, $reference: SequenceReference, $source
     ){
         source
         target_id
+        target_identifiers{
+            target_id
+            entry_id
+            assembly_id
+            entity_id
+            asym_id
+            interface_id
+            interface_partner_index
+        }
         features {
             type
             provenance_source

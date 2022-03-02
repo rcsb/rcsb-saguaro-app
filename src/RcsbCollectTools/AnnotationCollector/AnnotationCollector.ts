@@ -8,7 +8,7 @@ import {
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {
     AnnotationCollectConfig,
     AnnotationCollectorInterface
@@ -45,7 +45,16 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         this.annotationFeatures = await this.requestAnnotations(requestConfig);
         if (requestConfig.collectSwissModel === true) {
             const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
-            this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
+            if(swissModelData && swissModelData.length > 0)
+                this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
+        }
+        if(typeof requestConfig?.annotationGenerator === "function") {
+            const generatedFeatures: Array<AnnotationFeatures> = await requestConfig.annotationGenerator(this.annotationFeatures)
+            if(generatedFeatures && generatedFeatures.filter((f)=>(f!=null)).length > 0)
+                this.annotationFeatures = this.annotationFeatures.concat(generatedFeatures.filter((f)=>(f!=null)));
+        }
+        if(typeof requestConfig?.annotationFilter === "function") {
+            this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);
         }
         await this.processRcsbPdbAnnotations({externalAnnotationTrackBuilder: this.externalTrackBuilder, ...requestConfig});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));

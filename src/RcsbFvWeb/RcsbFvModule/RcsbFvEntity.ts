@@ -42,7 +42,7 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
             const authAsymId: string = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
             return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
         }
-        return;
+        return void 0;
     }
 
 }

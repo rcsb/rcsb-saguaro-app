@@ -1,9 +1,8 @@
 import {AnnotationTrack} from "./AnnotationTrack";
-import {AnnotationFeatures, Feature, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {AnnotationCollectConfig} from "./AnnotationCollectorInterface";
 
 export class AnnotationTrackManager {
@@ -19,7 +18,10 @@ export class AnnotationTrackManager {
     public async processRcsbPdbAnnotations(data: Array<AnnotationFeatures>, requestConfig: AnnotationCollectConfig): Promise<void>{
         await this.addAnnotationToTracks(
             requestConfig,
-            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ? await requestConfig.externalAnnotationTrackBuilder?.filterFeatures(data) : data
+            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ?
+                await requestConfig.externalAnnotationTrackBuilder?.filterFeatures({annotations: data, rcsbContext: requestConfig.rcsbContext})
+                :
+                data
         );
         requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
         this.mergeTracks();
@@ -37,27 +39,6 @@ export class AnnotationTrackManager {
         this.polymerEntityInstanceTranslator = p;
     }
 
-    private mergeTracks(): void{
-        this.annotationTracks.forEach((locationAnn,type)=>{
-            if(this.rcsbAnnotationConfig.isMergedType(type)) {
-                const newType: string = this.rcsbAnnotationConfig.getMergedType(type);
-                const color: string  | RcsbFvColorGradient = this.rcsbAnnotationConfig.getConfig(type).color as string;
-                if(!this.annotationTracks.has(newType))
-                    this.annotationTracks.set(newType, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
-                this.annotationTracks.get(newType).addAll(this.annotationTracks.get(type),color);
-                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType).getTrackProvenance()));
-                this.annotationTracks.delete(type);
-            }
-        });
-    }
-
-    private async buildType(requestConfig: AnnotationCollectConfig, ann: AnnotationFeatures, d: Feature): Promise<string>{
-        return this.rcsbAnnotationConfig.buildAndAddType(
-            d,
-            typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,d)) : undefined,
-            typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,d)) : undefined
-        );
-    }
 
     /*private addAnnotationToTracks(requestConfig: AnnotationCollectConfig, data: Array<AnnotationFeatures>): void {
         data.forEach(ann => {
@@ -106,6 +87,29 @@ export class AnnotationTrackManager {
                 feature: feature
             }, requestConfig.annotationProcessing
         )
+    }
+
+    private async buildType(requestConfig: AnnotationCollectConfig, ann: AnnotationFeatures, d: Feature): Promise<string>{
+        return this.rcsbAnnotationConfig.buildAndAddType(
+            d,
+            typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,d)) : undefined,
+            typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,d)) : undefined,
+            typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,d)) : undefined
+        );
+    }
+
+    private mergeTracks(): void{
+        this.annotationTracks.forEach((locationAnn,type)=>{
+            if(this.rcsbAnnotationConfig.isMergedType(type)) {
+                const newType: string = this.rcsbAnnotationConfig.getMergedType(type);
+                const color: string  | RcsbFvColorGradient = this.rcsbAnnotationConfig.getConfig(type).color as string;
+                if(!this.annotationTracks.has(newType))
+                    this.annotationTracks.set(newType, new AnnotationTrack(type, this.rcsbAnnotationConfig.getConfig(type), this.getPolymerEntityInstanceTranslator()));
+                this.annotationTracks.get(newType).addAll(this.annotationTracks.get(type),color);
+                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType).getTrackProvenance()));
+                this.annotationTracks.delete(type);
+            }
+        });
     }
 
 }

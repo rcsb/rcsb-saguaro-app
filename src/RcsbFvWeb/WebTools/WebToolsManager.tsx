@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import {GroupedOptionsInterface, OptionPropsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
-import {OptionProps} from "react-select/src/components/Option";
 import {GroupSequenceTabs} from "../RcsbFvGroup/GroupSequenceTabs";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {
+    GroupedOptionsInterface,
+    SelectButton,
+    SelectOptionInterface, SelectOptionProps
+} from "./SelectButton";
 import {LoaderSpinner} from "./LoaderSpinner";
-import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
 export interface SelectButtonConfigInterface {
@@ -13,7 +15,7 @@ export interface SelectButtonConfigInterface {
     defaultValue?: string|undefined|null;
     width?: number;
     dropdownTitle?: string;
-    optionProps?: (props: OptionProps<OptionPropsInterface,null>)=>JSX.Element;
+    optionProps?: (props: SelectOptionProps)=>JSX.Element;
     isAdditionalButton?: boolean;
 }
 export class WebToolsManager {

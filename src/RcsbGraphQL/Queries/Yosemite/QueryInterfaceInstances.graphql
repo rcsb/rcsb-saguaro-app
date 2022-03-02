@@ -1,0 +1,18 @@
+query QueryInterfaceInstance($interface_ids: [String!]!){
+    interfaces(
+        interface_ids:$interface_ids
+    ){
+        rcsb_interface_container_identifiers{
+            rcsb_id
+            interface_id
+            assembly_id
+            entry_id
+        }
+        rcsb_interface_partner{
+            interface_partner_identifier{
+                asym_id
+            }
+        }
+        rcsb_interface_operator
+    }
+}

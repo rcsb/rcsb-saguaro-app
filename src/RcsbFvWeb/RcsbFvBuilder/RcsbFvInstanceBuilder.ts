@@ -1,13 +1,16 @@
-import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/PolymerEntityInstanceTranslate";
+import {RcsbContextType, RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvInstance} from "../RcsbFvModule/RcsbFvInstance";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {OptionPropsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
+import {
+    SelectOptionInterface,
+    SelectOptionProps
+} from "../WebTools/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {OptionProps} from "react-select/src/components/Option";
+import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 
 export interface InstanceSequenceOnchangeInterface {
     pdbId: string;
@@ -15,13 +18,16 @@ export interface InstanceSequenceOnchangeInterface {
     asymId: string;
 }
 
+type instanceModule = "interface"|"instance";
 export interface InstanceSequenceConfig {
     dropdownTitle?: string;
     defaultValue?: string|undefined|null;
+    beforeChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>undefined|RcsbContextType;
     onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
-    selectButtonOptionProps?: (props: OptionProps<OptionPropsInterface, null>)=>JSX.Element;
+    selectButtonOptionProps?: (props: SelectOptionProps)=>JSX.Element;
+    module?: instanceModule;
 }
 
 export class RcsbFvInstanceBuilder {
@@ -65,11 +71,23 @@ export class RcsbFvInstanceBuilder {
                 shortLabel: config.displayAuthId === true ? instance.authId : label,
                 optId: instance.authId,
                 onChange: async () => {
+                    let externalContext: RcsbContextType | undefined;
+                    if (typeof config.beforeChangeCallback === "function")
+                        externalContext = config.beforeChangeCallback({
+                            pdbId: instance.entryId,
+                            authId: instance.authId,
+                            asymId: instance.asymId
+                        });
+                    const rcsbContext:RcsbContextType = {
+                        ...additionalConfig?.rcsbContext,
+                        ...externalContext,
+                        ...instance
+                    };
                     await RcsbFvInstanceBuilder.buildInstanceFv(
                         elementFvId,
                         instance.rcsbId,
-                        additionalConfig,
-                        instance
+                        {...additionalConfig, rcsbContext: rcsbContext},
+                        config.module
                     );
                     if (typeof config.onChangeCallback === "function")
                         config.onChangeCallback({
@@ -94,7 +112,19 @@ export class RcsbFvInstanceBuilder {
             label: group[0].groupLabel,
             options: group
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
-        const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, additionalConfig, filteredInstanceList[index]);
+        let externalContext: RcsbContextType | undefined;
+        if (typeof config.beforeChangeCallback === "function")
+            externalContext = config.beforeChangeCallback({
+                pdbId: filteredInstanceList[index].entryId,
+                authId: filteredInstanceList[index].authId,
+                asymId: filteredInstanceList[index].asymId
+            });
+        const rcsbContext:RcsbContextType = {
+            ...additionalConfig?.rcsbContext,
+            ...externalContext,
+            ...filteredInstanceList[index]
+        };
+        const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, {...additionalConfig, rcsbContext: rcsbContext}, config.module);
         if (typeof config.onChangeCallback === "function")
             config.onChangeCallback({
                 pdbId: filteredInstanceList[index].entryId,
@@ -104,17 +134,17 @@ export class RcsbFvInstanceBuilder {
         return out;
     }
 
-    static async buildInstanceFv(elementId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig, rcsbContext?: PolymerEntityInstanceInterface): Promise<RcsbFvModulePublicInterface> {
+    static async buildInstanceFv(elementId:string, instanceId:string, additionalConfig?:RcsbFvAdditionalConfig, module?:instanceModule): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=>{
             try {
                 const entryId: string = instanceId.split(TagDelimiter.instance)[0];
                 const asymId: string = instanceId.split(TagDelimiter.instance)[1];
-                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvInstance, {
+                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, module === "interface" ? RcsbFvInterface : RcsbFvInstance, {
                     instanceId: instanceId,
                     additionalConfig: {
                         ...additionalConfig,
                         rcsbContext: {
-                            authId: rcsbContext.authId,
+                            ...additionalConfig?.rcsbContext,
                             entryId: entryId,
                             asymId: asymId
                         }
