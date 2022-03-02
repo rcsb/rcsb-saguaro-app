@@ -312,7 +312,7 @@ export const ENZYME_CLASS_FACET: FacetMemberInterface = {
     contentType:"string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 5,
+        mostPopulatedGroups: 10,
         mergeName: "Other classes"
     },
     facet:{
@@ -362,7 +362,7 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
             }]
         }]
     },
-    filterSearchResultFacets(facet: Facet): Facet {
+    transformSearchResultFacets(facet: Facet): Facet {
         return {
             attribute: facet.attribute,
             groups: facet.groups.filter((g)=>(
@@ -403,7 +403,7 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
             }]
         }]
     },
-    filterSearchResultFacets(facet: Facet): Facet {
+    transformSearchResultFacets(facet: Facet): Facet {
         return {
             attribute: facet.attribute,
             groups: facet.groups.filter((g)=>(
@@ -444,7 +444,7 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
             }]
         }]
     },
-    filterSearchResultFacets(facet: Facet): Facet {
+    transformSearchResultFacets(facet: Facet): Facet {
         return {
             attribute: facet.attribute,
             groups: facet.groups.filter((g)=>(

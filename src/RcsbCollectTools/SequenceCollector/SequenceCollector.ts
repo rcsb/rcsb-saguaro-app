@@ -124,12 +124,12 @@ export class SequenceCollector implements SequenceCollectorInterface{
     private complete(){
         this.requestStatus = "complete";
         this.targetsSubject.next(this.targets);
+        console.log("Alignment Processing Complete");
     }
 
     private buildAlignments(alignmentData: BuildAlignementsInterface): Array<RcsbFvRowConfigInterface> {
         const {alignments, targets}:{alignments: Array<RcsbFvRowConfigInterface>, targets: Array<string>} = this.helper.buildAlignments(alignmentData, this.dynamicDisplay, this.tagObservedRegions);
         this.targets = targets;
-        console.log("Alignment Processing Complete");
         return alignments;
     }
 

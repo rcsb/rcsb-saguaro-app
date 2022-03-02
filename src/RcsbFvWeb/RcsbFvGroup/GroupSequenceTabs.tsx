@@ -31,6 +31,8 @@ import {Logo} from "./Logo";
 import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../RcsbFvBuilder/RcsbFvUniprotBuilder";
+import {alignmentVariation} from "../../RcsbUtils/AnnotationGenerators/AlignmentVariation";
+import {alignmentGlobalLigandBindingSite} from "../../RcsbUtils/AnnotationGenerators/AlignmentGlobalBindingSite";
 
 type EventKey = "alignment"|"structural-features"|"binding-sites";
 
@@ -137,7 +139,7 @@ function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, grou
                     boardConfig:{
                         rowTitleWidth
                     },
-                    externalTrackBuilder: buildAlignmentVariation()
+                    externalTrackBuilder: alignmentVariation()
                 });
     }
 
@@ -158,7 +160,7 @@ function bindingSites(elementId: string, groupProvenanceId: GroupProvenanceId, g
         }],
         sources: [Source.PdbInstance],
         annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-        externalTrackBuilder: buildGlobalLigandBindingSite()
+        externalTrackBuilder: alignmentGlobalLigandBindingSite()
     });
 }
 
@@ -182,7 +184,7 @@ function structure(elementId: string, groupProvenanceId: GroupProvenanceId, grou
         }],
         sources: [Source.PdbInstance, Source.PdbEntity],
         annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-        externalTrackBuilder: buildAlignmentVariation()
+        externalTrackBuilder: alignmentVariation()
     });
 }
 
@@ -220,139 +222,4 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
     }
 }
 
-function buildGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
-    const trackName: string = "GLOBAL BINDINGS";
-    const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
-    let max: number = 0;
-    const addConservation: ExternalTrackBuilderInterface = buildAlignmentVariation();
 
-    return {
-        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): Promise<void> {
-            tracks.annotationTracks.unshift({
-                trackId: "annotationTrack_GLOBAL_BINDINGS",
-                trackHeight: 40,
-                displayType: RcsbFvDisplayTypes.AREA,
-                trackColor: "#F9F9F9",
-                displayColor: "#c4124b",
-                titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                rowTitle: trackName,
-                displayDomain: [0, max],
-                interpolationType: InterpolationTypes.STEP,
-                trackData: Array.from(bindingSiteMap.values())
-            });
-            addConservation.addTo(tracks);
-            return void 0;
-        },
-        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
-            processFeatures(data.annotations);
-            addConservation.processAlignmentAndFeatures(data);
-            return void 0;
-        },
-        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = data.annotations;
-            annotations.forEach(ann=>{
-                ann.features = ann.features.filter(f=>f.name.includes("ligand"));
-            })
-            return new Promise<Array<AnnotationFeatures>>((resolve => {
-                resolve(annotations);
-            }));
-        }
-    };
-
-    function processFeatures(annotations: Array<AnnotationFeatures>){
-        annotations.forEach(ann => {
-            ann.features.forEach(d => {
-                d.feature_positions.forEach(p=>{
-                    p.values.forEach((v,n)=>{
-                        const key: string = (p.beg_seq_id+n).toString();
-                        if(!bindingSiteMap.has(key)){
-                            bindingSiteMap.set(key,{
-                                begin: p.beg_seq_id+n,
-                                type: trackName,
-                                value: v
-                            })
-                            if(max == 0)
-                                max = v;
-                        }else{
-                            (bindingSiteMap.get(key).value as number) += v;
-                            if((bindingSiteMap.get(key).value as number) > max)
-                                max = (bindingSiteMap.get(key).value as number);
-                        }
-                    });
-                });
-            });
-        });
-    }
-
-}
-
-function buildAlignmentVariation(): ExternalTrackBuilderInterface {
-    const seqName: string = "ALIGNMENT MODE";
-    const conservationName: string = "CONSERVATION";
-    let querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
-
-    return {
-        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): Promise<void> {
-            if(!tracks.alignmentTracks.sequence)
-                tracks.alignmentTracks.sequence = [{
-                    trackId: "annotationTrack_ALIGNMENT_MODE",
-                    displayType: RcsbFvDisplayTypes.SEQUENCE,
-                    trackColor: "#F9F9F9",
-                    titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                    rowTitle: seqName,
-                    nonEmptyDisplay: true,
-                    trackData: querySequenceLogo.map((s,n)=>({
-                        begin: n+1,
-                        value: s.mode(),
-                        description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
-                    }))
-                },{
-                    trackId: "annotationTrack_ALIGNMENT_FREQ",
-                    displayType: RcsbFvDisplayTypes.MULTI_AREA,
-                    trackColor: "#F9F9F9",
-                    displayColor: {
-                        thresholds:[],
-                        colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#f9f9f9"]
-                    },
-                    trackHeight: 20,
-                    titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                    rowTitle: conservationName,
-                    trackData: querySequenceLogo.map((s,n)=>{
-                        const nFreq: number = 5;
-                        const maxFreqList: Array<number> = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);
-                        const gapFreq: number  = Math.trunc(s.frequency().filter(f=>f.symbol=="-")[0].value*100)/100;
-                        return {
-                            begin: n+1,
-                            values: maxFreqList.map((f,n)=>maxFreqList.slice(0,(n+1)).reduce((v,n)=>v+n)).concat([1-gapFreq,1]),
-                            value: s.frequency()[0].symbol != "-" ? Math.trunc(s.frequency()[0].value*100)/100 : 0
-                        };
-                    })
-                }];
-            return void 0;
-        },
-        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
-            processAlignments(data.alignments);
-            return void 0;
-        },
-        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = data.annotations;
-            annotations.forEach(ann=>{
-                ann.features = ann.features.filter(f=>(f.name != "automated matches"));
-            })
-            return new Promise<Array<AnnotationFeatures>>((resolve)=>{
-                resolve(annotations);
-            });
-        }
-    };
-
-    function processAlignments(alignment: AlignmentResponse){
-        if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo.length)
-            throw "ERROR Alignment length and logo should match"
-        alignment.alignment_logo?.forEach(al=>{
-            querySequenceLogo.push(new Logo<aaType>(al));
-        });
-    }
-
-}
-
-type aaType = "A"|"R"|"N"|"D"|"C"|"E"|"Q"|"G"|"H"|"I"|"L"|"K"|"M"|"F"|"P"|"S"|"T"|"W"|"Y"|"V"|"-"|"X";

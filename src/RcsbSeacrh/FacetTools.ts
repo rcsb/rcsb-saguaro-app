@@ -34,7 +34,7 @@ export class FacetTools {
     public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<Facet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
         const out: Array<RcsbChartInterface> = recursiveOut ?? new Array<RcsbChartInterface>();
         searchResultFacets.forEach(f=> {
-            const facet:Facet = FacetTools.getFacetFromName(facetMembers,f.attribute).filterSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.attribute).filterSearchResultFacets(f) : f;
+            const facet:Facet = FacetTools.getFacetFromName(facetMembers,f.attribute).transformSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.attribute).transformSearchResultFacets(f) : f;
             if(facet.groups.filter(g=>g.drilldown).length > 0){
                 facet.groups.filter(g=>g.drilldown).forEach(g=>{
                     FacetTools.getResultDrilldowns(facetMembers, g.drilldown as Facet[], labelList ? labelList.concat(g.label) : [g.label], out);

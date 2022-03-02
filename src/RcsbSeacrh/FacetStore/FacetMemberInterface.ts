@@ -18,5 +18,5 @@ export interface FacetMemberInterface {
     chartConfig?: ChartConfigInterface;
     facet: FacetType;
     contentType:"date"|"number"|"string";
-    filterSearchResultFacets?(facets: Facet):Facet;
+    transformSearchResultFacets?(facets: Facet):Facet;
 }

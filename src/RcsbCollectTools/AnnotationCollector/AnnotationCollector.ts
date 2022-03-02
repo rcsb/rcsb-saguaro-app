@@ -147,6 +147,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         this.annotationsConfigDataSubject.next(this.annotationsConfigData);
         this.annotationFeaturesSubject.next(this.annotationFeatures);
         this.rawFeaturesSubject.next(this.rawFeatures);
+        console.log("Features Processing Complete");
     }
 
 }
