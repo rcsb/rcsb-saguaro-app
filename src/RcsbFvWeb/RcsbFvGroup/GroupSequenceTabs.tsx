@@ -2,8 +2,6 @@ import * as React from "react";
 import {RcsbFvGroupBuilder} from "../RcsbFvBuilder/RcsbFvGroupBuilder";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
     Feature,
     FieldName,
     GroupReference,
@@ -14,35 +12,26 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationTrack, FeaturePositionGaps} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTrack";
-import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
-import {
-    InterpolationTypes,
-    RcsbFvDisplayTypes,
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
-import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
-import {Logo} from "./Logo";
-import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {alignmentVariation} from "../../RcsbUtils/AnnotationGenerators/AlignmentVariation";
 import {alignmentGlobalLigandBindingSite} from "../../RcsbUtils/AnnotationGenerators/AlignmentGlobalBindingSite";
+import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
 
-type EventKey = "alignment"|"structural-features"|"binding-sites";
+type TabKey = "alignment"|"structural-features"|"binding-sites";
 
 const alignmentSelect: "alignment-select" = "alignment-select";
-//TODO make this class dependent of a GroupReference parameter
 export class GroupSequenceTabs extends React.Component <{groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery}, {}> {
 
-    private readonly rendered: Set<EventKey> = new Set<EventKey>();
+    private readonly featureViewers: Map<TabKey,RcsbFvModulePublicInterface> = new Map<TabKey, RcsbFvModulePublicInterface>();
     private filterInstances: Array<string> = undefined;
     private filterEntities: Array<string> = undefined;
+    private currentTab: TabKey = "alignment";
 
     constructor(props:{groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery: SearchQuery}) {
         super(props);
@@ -50,7 +39,7 @@ export class GroupSequenceTabs extends React.Component <{groupProvenanceId: Grou
 
     render(): JSX.Element {
         return (<>
-            <RcsbTabs<EventKey>
+            <RcsbTabs<TabKey>
                 id={"group-id"}
                 tabList={[{key: "alignment", title: "ALIGNMENTS", selectId:alignmentSelect}, {key: "structural-features", title: "STRUCTURAL FEATURES"}, {key: "binding-sites", title: "BINDING SITES"}]}
                 default={"alignment"}
@@ -60,66 +49,109 @@ export class GroupSequenceTabs extends React.Component <{groupProvenanceId: Grou
         </>);
     }
 
-    private onMount() {
+    private async onMount() {
         if(this.props.searchQuery) {
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({...this.props.searchQuery, query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query), return_type: ReturnType.PolymerEntity}).then(targets=> {
-                this.filterEntities = targets
-                search.requestMembers({
-                    ...this.props.searchQuery,
-                    query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
-                    return_type: ReturnType.PolymerInstance
-                }).then(targets => {
-                    this.filterInstances = targets;
-                    this.onSelect("alignment");
-                });
+            this.filterEntities = await search.requestMembers({
+                ...this.props.searchQuery,
+                query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
+                return_type: ReturnType.PolymerEntity
             });
+            this.filterInstances = await search.requestMembers({
+                ...this.props.searchQuery,
+                query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
+                return_type: ReturnType.PolymerInstance
+            });
+            await this.onSelect(this.currentTab);
         }else{
-            this.onSelect("alignment");
             const search: SearchRequestProperty = new SearchRequestProperty();
-            search.requestMembers({query: searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance}).then(targets=> {
-                this.filterInstances = targets
-                this.onSelect("alignment");
-            });
+            this.filterInstances = await search.requestMembers({query: searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
+            await this.onSelect(this.currentTab);
         }
     }
 
-    private onSelect(eventKey: EventKey): void {
-        if(this.rendered.has(eventKey))
-            return;
-        this.rendered.add(eventKey);
-        switch (eventKey) {
+    private syncPositionAndHighlight(tabKey: TabKey): void {
+        if(tabKey !== this.currentTab){
+            const dom: [number,number] = this.featureViewers.get(this.currentTab)?.getFv().getDomain();
+            this.featureViewers.get(tabKey).getFv().setDomain(dom);
+            const sel: Array<SelectionInterface> = this.featureViewers.get(this.currentTab)?.getFv().getSelection("select");
+            if(sel?.length > 0){
+                this.featureViewers.get(tabKey).getFv().clearSelection("select");
+                this.featureViewers.get(tabKey).getFv().setSelection({
+                    elements:sel.map((s)=>({
+                        begin:s.rcsbFvTrackDataElement.begin,
+                        end:s.rcsbFvTrackDataElement.end
+                    })),
+                    mode:"select"
+                });
+            }else{
+                this.featureViewers.get(tabKey).getFv().clearSelection("select");
+            }
+        }
+    }
+
+    private async onSelect(tabKey: TabKey): Promise<void> {
+        if(!this.featureViewers.has(tabKey))
+            await this.renderPositionalFeatureViewer(tabKey);
+        this.syncPositionAndHighlight(tabKey);
+        this.currentTab= tabKey;
+    }
+
+    private async renderPositionalFeatureViewer(tabKey: TabKey): Promise<void> {
+        switch (tabKey) {
             case "alignment":
-                alignment(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, {page:{first:25, after:"0"}, alignmentFilter: this.filterEntities});
+                this.featureViewers.set(
+                    tabKey,
+                    await alignment(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, {page:{first:25, after:"0"}, alignmentFilter: this.filterEntities})
+                );
                 break;
             case "binding-sites":
                 if (this.props.searchQuery){
-                    bindingSites(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {
-                        page:{first:0,after: "0"},
-                        alignmentFilter: this.filterEntities,
-                        filters: [{
-                            field: FieldName.TargetId,
-                            operation: OperationType.Equals,
-                            values: this.filterInstances
-                        }]
-                    });
+                    this.featureViewers.set(
+                        tabKey,
+                        await bindingSites(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {
+                            page:{first:0,after: "0"},
+                            alignmentFilter: this.filterEntities,
+                            filters: [{
+                                source: Source.PdbInstance,
+                                field: FieldName.TargetId,
+                                operation: OperationType.Equals,
+                                values: this.filterInstances
+                            }]
+                        })
+                    );
                 }else{
-                    bindingSites(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
+                    this.featureViewers.set(
+                        tabKey,
+                        await bindingSites(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}})
+                    );
                 }
                 break;
             case "structural-features":
                 if(this.props.searchQuery){
-                    structure(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {
-                        page:{first:0,after: "0"},
-                        alignmentFilter: this.filterEntities,
-                        filters:[{
-                            field: FieldName.TargetId,
-                            operation: OperationType.Equals,
-                            values: this.filterInstances
-                        }]
-                    });
+                    this.featureViewers.set(
+                        tabKey,
+                        await structure(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {
+                            page:{first:0,after: "0"},
+                            alignmentFilter: this.filterEntities,
+                            filters:[{
+                                source: Source.PdbInstance,
+                                field: FieldName.TargetId,
+                                operation: OperationType.Equals,
+                                values: this.filterInstances
+                            },{
+                                source: Source.PdbEntity,
+                                field: FieldName.TargetId,
+                                operation: OperationType.Equals,
+                                values: this.filterEntities
+                            }]
+                        })
+                    );
                 }else{
-                    structure(eventKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}});
+                    this.featureViewers.set(
+                        tabKey,
+                        await structure(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, this.filterInstances.length, {page:{first:0, after:"0"}})
+                    );
                 }
                 break;
         }
@@ -182,7 +214,7 @@ function structure(elementId: string, groupProvenanceId: GroupProvenanceId, grou
             operation: OperationType.Equals,
             source: Source.PdbEntity
         }],
-        sources: [Source.PdbInstance, Source.PdbEntity],
+        sources: [Source.PdbInstance, Source.PdbEntity, Source.PdbInterface],
         annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
         externalTrackBuilder: alignmentVariation()
     });
@@ -201,7 +233,6 @@ function getReferenceFromGroupProvenance(groupProvenanceId: GroupProvenanceId): 
 
 function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProcessingInterface {
     const targets: Map<string,number> = new Map<string,number>();
-    const n: number = nTargets;
     return {
         getAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; p: FeaturePositionGaps}) => {
             if (!targets.has(feature.type)) {
@@ -213,9 +244,10 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
         },
         computeAnnotationValue: (annotationTracks: Map<string, AnnotationTrack>) => {
             annotationTracks.forEach((at,type)=>{
-                const nTargets: number = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite)) ? targets.get(type) : n;
+                const N: number = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite) || type.includes(Type.Pfam)) ? targets.get(type) : nTargets;
                 at.forEach((ann,positionKey)=>{
-                    ann.value = Math.ceil(1000*(ann.value as number) / nTargets)/1000;
+                    if(ann.source != Source.PdbInterface)
+                        ann.value = Math.ceil(1000*(ann.value as number) / N)/1000;
                 });
             });
         }

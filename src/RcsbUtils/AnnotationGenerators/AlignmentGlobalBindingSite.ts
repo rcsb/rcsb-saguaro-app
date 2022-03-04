@@ -18,20 +18,20 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
 
     return {
         async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): Promise<void> {
-            tracks.annotationTracks.unshift({
-                trackId: "annotationTrack_GLOBAL_BINDINGS",
-                trackHeight: 40,
-                displayType: RcsbFvDisplayTypes.AREA,
-                trackColor: "#F9F9F9",
-                displayColor: "#c4124b",
-                titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                rowTitle: trackName,
-                displayDomain: [0, max],
-                interpolationType: InterpolationTypes.STEP,
-                trackData: Array.from(bindingSiteMap.values())
-            });
-            if(bindingSiteMap.size > 0)
-                await addConservation.addTo(tracks);
+            if(Array.from(bindingSiteMap.values()).length > 0)
+                tracks.annotationTracks.unshift({
+                    trackId: "annotationTrack_GLOBAL_BINDINGS",
+                    trackHeight: 40,
+                    displayType: RcsbFvDisplayTypes.AREA,
+                    trackColor: "#F9F9F9",
+                    displayColor: "#c4124b",
+                    titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    rowTitle: trackName,
+                    displayDomain: [0, max],
+                    interpolationType: InterpolationTypes.STEP,
+                    trackData: Array.from(bindingSiteMap.values())
+                });
+            await addConservation.addTo(tracks);
             return void 0;
         },
         async processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {

@@ -71,6 +71,15 @@
     "display": "block-area",
     "key": "name",
     "transformToNumerical": true
+  },{
+    "type": "PROTEIN_BINDING",
+    "title": "PROTEIN BINDING",
+    "color": {
+      "colors": "#33e472",
+      "thresholds": [0.00001,0.25,0.5,0.75]
+    },
+    "display": "block-area",
+    "transformToNumerical": true
   }],
   "external_data_order": [
     "CATH",
@@ -78,6 +87,7 @@
     "PFAM"
   ],
   "instance_order": [
+    "PROTEIN_BINDING",
     "HELIX_P",
     "SHEET",
     "UNOBSERVED_RESIDUE_XYZ",

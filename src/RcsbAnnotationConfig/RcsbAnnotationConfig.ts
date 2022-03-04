@@ -2,6 +2,7 @@ import * as acm from "./RcsbAnnotationConfig.ac.json";
 import {Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvColorGradient, RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
 import {AnnotationConfigInterface, RcsbAnnotationConfigInterface} from "./AnnotationConfigInterface";
+import stc from "string-to-color";
 
 export interface RcsbMergedTypesInterface {
     merged_types: Array<string>;
@@ -202,20 +203,7 @@ export class RcsbAnnotationConfig {
     }
 
     static randomRgba(str?: string): string{
-        if(typeof str === "string"){
-            let hash: number = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            const rgb = [0, 0, 0];
-            for (let i = 0; i < 3; i++) {
-                rgb[i] = (hash >> (i * 8)) & 255;
-            }
-            return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-        }else{
-            var o = Math.round, r = Math.random, s = 255;
-            return 'rgb(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ')';
-        }
+        return stc(str);
     }
 
     addProvenance(type:string, provenanceName: string): void {

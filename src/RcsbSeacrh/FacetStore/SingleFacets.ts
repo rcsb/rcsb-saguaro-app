@@ -242,19 +242,19 @@ export const TAXONOMY_FACET:FacetMemberInterface = {
 
 export const PFAM_FACET: FacetMemberInterface = {
     id:"Pfam",
-        title:"PFAM domain",
-        attributeName: "PFAM_FACET",
-    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+    title:"PFAM domain",
+    attributeName: "PFAM_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
     facet:{
         filter:{
             type: Type.Terminal,
-                service: Service.Text,
-                parameters:{
+            service: Service.Text,
+            parameters:{
                 operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
-                    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
-                    value: 'Pfam'
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+                value: 'Pfam'
             }
         },
         facets:[{
