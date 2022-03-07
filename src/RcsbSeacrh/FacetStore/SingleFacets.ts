@@ -79,6 +79,10 @@ export const SCOP_FACET:FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other domains"
+    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -95,7 +99,7 @@ export const SCOP_FACET:FacetMemberInterface = {
                 service: Service.Text,
                 parameters:{
                     operator: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth.operator.Equals,
-                    value: 4,
+                    value: 5,
                     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Depth.path
                 }
             },
@@ -116,6 +120,10 @@ export const CATH_FACET:FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other domains"
+    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -153,6 +161,10 @@ export const ECOD_FACET:FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other domains"
+    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -247,6 +259,10 @@ export const PFAM_FACET: FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other domains"
+    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -341,6 +357,10 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other functions"
+    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -355,10 +375,23 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
             name:"GO_FUNCTION_FACET",
             aggregation_type: AggregationType.Terms,
             attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            max_num_intervals:1000,
+            min_interval_population:1,
             facets:[{
-                aggregation_type: AggregationType.Terms,
-                min_interval_population: 1,
-                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+                filter:{
+                    type: Type.Terminal,
+                    service: Service.Text,
+                    parameters:{
+                        operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                        attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path,
+                        value: "molecular_function"
+                    }
+                },
+                facets:[{
+                    aggregation_type: AggregationType.Terms,
+                    min_interval_population: 1,
+                    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+                }]
             }]
         }]
     },
@@ -396,10 +429,23 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
             name:"GO_PROCESS_FACET",
             aggregation_type: AggregationType.Terms,
             attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            max_num_intervals:1000,
+            min_interval_population:1,
             facets:[{
-                aggregation_type: AggregationType.Terms,
-                min_interval_population: 1,
-                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+                filter:{
+                    type: Type.Terminal,
+                    service: Service.Text,
+                    parameters:{
+                        operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                        attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path,
+                        value: "biological_process"
+                    }
+                },
+                facets:[{
+                    aggregation_type: AggregationType.Terms,
+                    min_interval_population: 1,
+                    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+                }]
             }]
         }]
     },
@@ -437,10 +483,23 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
             name:"GO_COMPONENT_FACET",
             aggregation_type: AggregationType.Terms,
             attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            max_num_intervals:1000,
+            min_interval_population:1,
             facets:[{
-                aggregation_type: AggregationType.Terms,
-                min_interval_population: 1,
-                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+                filter:{
+                    type: Type.Terminal,
+                    service: Service.Text,
+                    parameters:{
+                        operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                        attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path,
+                        value: "cellular_component"
+                    }
+                },
+                facets:[{
+                    aggregation_type: AggregationType.Terms,
+                    min_interval_population: 1,
+                    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
+                }]
             }]
         }]
     },

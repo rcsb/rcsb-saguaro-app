@@ -214,7 +214,7 @@ function structure(elementId: string, groupProvenanceId: GroupProvenanceId, grou
             operation: OperationType.Equals,
             source: Source.PdbEntity
         }],
-        sources: [Source.PdbInstance, Source.PdbEntity, Source.PdbInterface],
+        sources: [Source.PdbInstance, Source.PdbEntity],
         annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
         externalTrackBuilder: alignmentVariation()
     });

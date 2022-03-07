@@ -105,9 +105,10 @@ function addBarChartClick(chart: RcsbChartInterface, searchQuery:SearchQueryType
         if(datum.isLabel){
             query= searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
         }else{
-            data.filter(d=>d.isLabel).forEach(d=>{
+            /*data.filter(d=>d.isLabel).forEach(d=>{
                 query =  typeof query === "undefined" ? searchAttributeQuery(chart.attribute, d.x, Operator.ExactMatch, Service.Text, true) : addNewNodeToAttributeSearchQuery(chart.attribute, d.x, Operator.ExactMatch, query, Service.Text, true);
-            });
+            });*/
+            query = searchAttributeQuery(chart.attribute, data.filter(d=>d.isLabel).map(d=>d.x) as any, Operator.In, Service.Text, true);
         }
         if(chart.filters)
             chart.filters.forEach(f=>{
