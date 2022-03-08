@@ -8,6 +8,7 @@ import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/Quer
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./RcsbGroupMembers/Components/Slider";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {FlipCard, FlipCardBack, FlipCardFront} from "./RcsbGroupMembers/Components/FlipCard";
 
 interface RcsbGroupMembersInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -39,16 +40,32 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
         if(this.state.nPages>0)
             return (
                 <div id={this.groupMembersDiv} className={classes.bootstrapGroupComponentScope}>
-                    <Slider slide={this.slide.bind(this)} pages={this.state.nPages} currentPage={this.state.selectedIndex+1}>
-                        <GroupMembersGrid
-                            groupProvenanceId={this.props.groupProvenanceId}
-                            groupId={this.props.groupId}
-                            nRows={this.props.nRows}
-                            nColumns={this.props.nColumns}
-                            index={this.state.selectedIndex}
-                            searchQuery={this.props.searchQuery}
-                        />
-                    </Slider>
+                    <FlipCard>
+                        <FlipCardFront>
+                            <Slider slide={this.slide.bind(this)} pages={this.state.nPages} currentPage={this.state.selectedIndex+1}>
+                                <GroupMembersGrid
+                                    groupProvenanceId={this.props.groupProvenanceId}
+                                    groupId={this.props.groupId}
+                                    nRows={this.props.nRows}
+                                    nColumns={this.props.nColumns}
+                                    index={this.state.selectedIndex}
+                                    searchQuery={this.props.searchQuery}
+                                />
+                            </Slider>
+                        </FlipCardFront>
+                        <FlipCardBack>
+                            <Slider slide={this.slide.bind(this)} pages={this.state.nPages} currentPage={this.state.selectedIndex+1}>
+                                <GroupMembersGrid
+                                    groupProvenanceId={this.props.groupProvenanceId}
+                                    groupId={this.props.groupId}
+                                    nRows={this.props.nRows}
+                                    nColumns={this.props.nColumns}
+                                    index={this.state.selectedIndex}
+                                />
+                            </Slider>
+                        </FlipCardBack>
+                    </FlipCard>
+
                 </div>
             );
         else
