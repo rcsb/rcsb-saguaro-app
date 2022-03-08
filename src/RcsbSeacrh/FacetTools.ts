@@ -97,8 +97,10 @@ export class FacetTools {
         if( (facet.facet as FilterFacet).filter ){
             filters.push((facet.facet as FilterFacet).filter as FilterQueryTerminalNode);
         }
-        /*if( (facet.facet as TermsFacet | HistogramFacet | DateHistogramFacet | RangeFacet | DateRangeFacet | FilterFacet).facets ){
-            (facet.facet as TermsFacet | HistogramFacet | DateHistogramFacet | RangeFacet | DateRangeFacet | FilterFacet).facets.forEach(facet=>{
+        //TODO second level filters should be considered. However, when included, in some cases e.g. SCOP, the search service returns empty results
+        /*const facets = (facet.facet as TermsFacet | HistogramFacet | DateHistogramFacet | RangeFacet | DateRangeFacet | FilterFacet).facets;
+        if( facets ){
+           facets.forEach(facet=>{
                 if((facet as FilterFacet).filter ){
                     filters.push((facet as FilterFacet).filter as FilterQueryTerminalNode);
                 }
