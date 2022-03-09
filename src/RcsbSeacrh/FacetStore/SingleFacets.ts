@@ -415,6 +415,10 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other processes"
+    },
     facet:{
         filter:{
             type: Type.Terminal,
@@ -469,6 +473,10 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType:"string",
     chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10,
+        mergeName: "Other locations"
+    },
     facet:{
         filter:{
             type: Type.Terminal,

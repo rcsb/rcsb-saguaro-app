@@ -51,21 +51,29 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
     };
 
     function processFeatures(annotations: Array<AnnotationFeatures>){
+        // position > ligand name
+        const ligandMap: Map<string,Set<string>> = new Map<string, Set<string>>();
         annotations.forEach(ann => {
             ann.features.forEach(d => {
                 d.feature_positions.forEach(p=>{
                     p.values.forEach((v,n)=>{
                         const key: string = (p.beg_seq_id+n).toString();
+                        if(!ligandMap.has(key))
+                            ligandMap.set(key, new Set<string>());
+                        else if(!ligandMap.get(key).has(d.name))
+                            ligandMap.get(key).add(d.name)
+                        else
+                            return;
                         if(!bindingSiteMap.has(key)){
                             bindingSiteMap.set(key,{
                                 begin: p.beg_seq_id+n,
                                 type: trackName,
-                                value: v
+                                value: 1
                             })
                             if(max == 0)
-                                max = v;
+                                max = 1;
                         }else{
-                            (bindingSiteMap.get(key).value as number) += v;
+                            (bindingSiteMap.get(key).value as number) += 1;
                             if((bindingSiteMap.get(key).value as number) > max)
                                 max = (bindingSiteMap.get(key).value as number);
                         }

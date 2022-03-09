@@ -102,7 +102,7 @@ export class GroupSequenceTabs extends React.Component <{groupProvenanceId: Grou
             case "alignment":
                 this.featureViewers.set(
                     tabKey,
-                    await alignment(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, {page:{first:25, after:"0"}, alignmentFilter: this.filterEntities})
+                    await alignment(tabKey.toString(), this.props.groupProvenanceId, this.props.groupId, {page:{first:100, after:"0"}, alignmentFilter: this.filterEntities})
                 );
                 break;
             case "binding-sites":
@@ -165,6 +165,7 @@ function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, grou
         case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
             return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,alignmentSelect,groupId,additionalConfig)
         default:
+            // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
             return RcsbFvGroupBuilder.buildGroupAlignmentFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
                 {
                     ...additionalConfig,
@@ -178,6 +179,7 @@ function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, grou
 }
 
 function bindingSites(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
     return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
@@ -197,6 +199,7 @@ function bindingSites(elementId: string, groupProvenanceId: GroupProvenanceId, g
 }
 
 function structure(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
     return RcsbFvGroupBuilder.buildGroupAnnotationFv(elementId, getReferenceFromGroupProvenance(groupProvenanceId), groupId, SequenceReference.PdbEntity, SequenceReference.Uniprot,
         {
         ...additionalConfig,
