@@ -3,9 +3,10 @@ import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory"
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarClickCallbackType, BarData, EventBar} from "../RcsbChartTools/EventBar";
+import {BarClickCallbackType, BarData, EventBarComponent} from "../RcsbChartTools/EventBarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
+import {TooltipComponent} from "../RcsbChartTools/TooltipComponent";
 
 
 export class HistogramChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
@@ -51,12 +52,12 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
 
 function stack(histData: BarData[], subData: BarData[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
    return ( <VictoryStack>
-       {bar(histData,nBins, "#5e94c3", <EventBar barClick={barClick}/>)}
-       {bar(subData,nBins, "#d0d0d0", <EventBar />)}
+       {bar(histData,nBins, "#5e94c3", <EventBarComponent barClick={barClick}/>, <TooltipComponent dy={-15}/>)}
+       {bar(subData,nBins, "#d0d0d0", <EventBarComponent />)}
     </VictoryStack>);
 }
 
-function bar(data: BarData[], nBins: number, color: string, barComp?: JSX.Element): JSX.Element {
+function bar(data: BarData[], nBins: number, color: string, barComp?: JSX.Element, labelComponent?: JSX.Element): JSX.Element {
    return data.length > 0 ? (<VictoryBar
        barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
        alignment={"middle"}
@@ -67,6 +68,8 @@ function bar(data: BarData[], nBins: number, color: string, barComp?: JSX.Elemen
        }}
        data={data}
        dataComponent={barComp ?? <Bar />}
+       labels={labelComponent ? ()=>undefined : undefined}
+       labelComponent={labelComponent}
    />)  : null;
 }
 

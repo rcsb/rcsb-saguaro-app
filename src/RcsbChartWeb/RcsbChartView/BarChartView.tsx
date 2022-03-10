@@ -1,12 +1,13 @@
 import * as React from "react";
-import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
+import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack, VictoryTooltip} from "victory";
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {DynamicTickLabelComponent} from "../RcsbChartTools/DynamicTickLabelComponent";
-import {BarClickCallbackType, EventBar, BarData} from "../RcsbChartTools/EventBar";
+import {BarClickCallbackType, EventBarComponent, BarData} from "../RcsbChartTools/EventBarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
+import {TooltipComponent} from "../RcsbChartTools/TooltipComponent";
 
 export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
@@ -51,14 +52,14 @@ const CROSS_AXIS = (<VictoryAxis
     }}
 />);
 
-function stack(histData:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
+function stack(data:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack>
-        {bar(histData, "#5e94c3", <EventBar barClick={barClick}/>)}
-        {bar(subData, "#d0d0d0", <EventBar />)}
+        {bar(data, "#5e94c3", <EventBarComponent barClick={barClick}/>, <TooltipComponent dx={25} />)}
+        {bar(subData, "#d0d0d0", <EventBarComponent />)}
     </VictoryStack>);
 }
 
-function bar(data:BarData[],color: string, barComp?: JSX.Element): JSX.Element {
+function bar(data:BarData[],color: string, barComp: JSX.Element, labelComponent?:JSX.Element): JSX.Element {
     return data.length > 0 ? (<VictoryBar
         barWidth={ChartTools.xDomainPadding}
         style={{
@@ -69,5 +70,7 @@ function bar(data:BarData[],color: string, barComp?: JSX.Element): JSX.Element {
         horizontal={true}
         data={data}
         dataComponent={barComp ?? <Bar />}
+        labels={labelComponent ? ()=>undefined : undefined}
+        labelComponent={labelComponent}
     />)  : null;
 }

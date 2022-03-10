@@ -1,4 +1,4 @@
-import {BarData} from "../RcsbChartTools/EventBar";
+import {BarData} from "../RcsbChartTools/EventBarComponent";
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {ChartDataInterface} from "./ChartDataInterface";
@@ -54,6 +54,7 @@ export class BarChartData implements ChartDataInterface{
             barOut.push({x:this.config?.mergeName, y:barOther, isLabel:false});
             subOut.push({x:this.config?.mergeName, y:subOther, isLabel:false});
         }
+        ChartTools.addComplementaryData(barOut,subOut);
         return {
             barData: barOut,
             subData: subOut

@@ -1,6 +1,6 @@
 import {ChartDataInterface} from "./ChartDataInterface";
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "../RcsbChartTools/EventBar";
+import {BarData} from "../RcsbChartTools/EventBarComponent";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 export class HistogramChartData implements ChartDataInterface{
@@ -16,7 +16,10 @@ export class HistogramChartData implements ChartDataInterface{
     }
 
     public getChartData(): { barData: BarData[]; subData: BarData[] } {
-        return {barData: this.transformData(this.data), subData: this.transformData(this.subData)};
+        const barData: BarData[] = this.transformData(this.data)
+        const subData: BarData[] = this.transformData(this.subData)
+        ChartTools.addComplementaryData(barData,subData);
+        return {barData: barData, subData: subData};
     }
 
     public xDomain(): [number, number]{

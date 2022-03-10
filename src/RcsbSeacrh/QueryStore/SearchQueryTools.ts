@@ -13,7 +13,7 @@ import {
     AttributeTextQueryParameters
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetStoreInterface} from "../FacetStore/FacetStoreInterface";
-import cloneDeep from 'lodash/cloneDeep';
+import {cloneDeep} from 'lodash';
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {depositionGroupFacetStore} from "../FacetStore/DepositionGroupFacetStore";
 import {sequenceGroupFacetStore} from "../FacetStore/SequenceGroupFacetStore";

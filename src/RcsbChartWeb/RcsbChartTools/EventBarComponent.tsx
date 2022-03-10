@@ -4,11 +4,20 @@ import {Bar, BarProps} from "victory";
 export interface BarData {
     x:string|number;
     y:number;
+    yc?:number;
+    label?:string;
     isLabel:boolean;
 }
 
+export interface EventBarComponentInterface extends BarProps{
+    barClick?:BarClickCallbackType;
+    barHover?:BarClickCallbackType;
+    barLeave?:BarClickCallbackType;
+    x0?:number;
+}
+
 export type BarClickCallbackType = (datum:BarData,data:BarData[],e:React.MouseEvent<any>)=>void;
-export class EventBar extends React.Component <BarProps & {barClick?:BarClickCallbackType, x0?:number;},{fillColor:string;}> {
+export class EventBarComponent extends React.Component <EventBarComponentInterface,{fillColor:string;}> {
 
 
     private readonly MIN_THR: number = 3
@@ -36,19 +45,24 @@ export class EventBar extends React.Component <BarProps & {barClick?:BarClickCal
         return this.props.x;
     }
 
-    private events():React.DOMAttributes<any> {
+    private events():React.DOMAttributes<unknown> {
         return {
+            ...this.props.events,
             onClick:(e)=>{
                 if(typeof this.props.barClick === "function")
                     this.props.barClick(this.props.datum, this.props.data, e)
             },
-            onMouseEnter:()=>{
+            onMouseEnter:(e)=>{
                 if(typeof this.props.barClick === "function")
                     this.setState({fillColor:"#b2d4f1"});
+                if(typeof this.props.barHover === "function")
+                    this.props.barHover(this.props.datum, this.props.data, e);
             },
-            onMouseLeave:()=>{
+            onMouseLeave:(e)=>{
                 if(typeof this.props.barClick === "function")
                     this.setState({fillColor:this.props.style.fill});
+                if(typeof this.props.barLeave === "function")
+                    this.props.barLeave(this.props.datum, this.props.data, e);
             }
         }
     }

@@ -1,5 +1,6 @@
 import {ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "./EventBar";
+import {BarData} from "./EventBarComponent";
+import {zip} from "lodash";
 
 export class ChartTools {
 
@@ -66,5 +67,12 @@ export class ChartTools {
 
     public static labelsAsNumber(data: ChartObjectInterface[]): {x:number;y:number;}[]{
         return data.map(d=>({x: parseFloat(d.label as string), y:d.population}));
+    }
+
+    public static addComplementaryData(data: BarData[], subData: BarData[]): void{
+        const dataMap: Map<string|number, number> = new Map<string | number, number>( data.map<[string|number,number]>((d)=>[d.x,d.y]) );
+        const subMap: Map<string|number, number> = new Map<string | number, number>( subData.map<[string|number,number]>((d)=>[d.x,d.y]) );
+        data.forEach((d=>{d.yc = subMap.get(d.x)}));
+        subData.forEach((d=>{d.yc = dataMap.get(d.x)}));
     }
 }
