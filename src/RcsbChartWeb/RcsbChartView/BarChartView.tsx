@@ -9,9 +9,8 @@ import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 
-export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
+export class BarChartView extends React.Component <ChartViewInterface,{}> {
 
-    readonly state: ChartViewInterface = {...this.props};
     private dataProvider: ChartDataInterface;
 
     constructor(props: ChartViewInterface) {
@@ -19,15 +18,15 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
     }
 
     render():ReactNode {
-        this.dataProvider = new BarChartData(this.state.data, this.state.subData, this.props.config);
+        this.dataProvider = new BarChartData(this.props.data, this.props.subData, this.props.config);
         const {barData,subData}: {barData: BarData[]; subData: BarData[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
-        const height: number = ChartTools.paddingBottom + barData.length*ChartTools.xIncrement;
+        const height: number = ChartTools.paddingTopLarge + barData.length*ChartTools.xIncrement;
         return (
             <div style={{width:width, height:height}}>
                 <VictoryChart
                     domainPadding={{ x: ChartTools.xDomainPadding }}
-                    padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingBottom, right:ChartTools.paddingRight}}
+                    padding={{left:ChartTools.paddingLeft, top:ChartTools.paddingTopLarge, right:ChartTools.paddingRight}}
                     height={height}
                     width={width}
                     scale={{y:"linear", x:"linear"}}
@@ -46,6 +45,7 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
 const CROSS_AXIS = (<VictoryAxis
     dependentAxis={true}
     crossAxis={true}
+    orientation="top"
     style={{
         grid: {
             stroke: "#999999",

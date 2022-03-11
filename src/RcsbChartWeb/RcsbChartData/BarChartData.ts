@@ -40,7 +40,7 @@ export class BarChartData implements ChartDataInterface{
             .slice(0,this.config?.mostPopulatedGroups ?? mergedValues.size)
             .map(e=>e[0]));
 
-        const sort = (a: BarData, b: BarData) => {
+        const sort = (b: BarData, a: BarData) => {
             if(mergedValues.get(b.x) != mergedValues.get(a.x))
                 return mergedValues.get(b.x)-mergedValues.get(a.x);
             else
@@ -51,8 +51,8 @@ export class BarChartData implements ChartDataInterface{
         const subOut: BarData[] = subData.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         const subOther: number = subData.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
         if(barOther>0 || subOther>0){
-            barOut.push({x:this.config?.mergeName, y:barOther, isLabel:false});
-            subOut.push({x:this.config?.mergeName, y:subOther, isLabel:false});
+            barOut.unshift({x:this.config?.mergeName, y:barOther, isLabel:false});
+            subOut.unshift({x:this.config?.mergeName, y:subOther, isLabel:false});
         }
         ChartTools.addComplementaryData(barOut,subOut);
         return {

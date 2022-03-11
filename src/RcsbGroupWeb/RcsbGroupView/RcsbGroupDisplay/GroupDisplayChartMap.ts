@@ -19,8 +19,10 @@ import {ChartMapType} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartLayout"
 import {ChartType} from "../../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {BarData} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartComponents/BarComponent";
+import {searchQueryContextManager} from "./SearchQueryContextManager";
+import {asyncScheduler} from "rxjs";
 
-export async function groupDisplayChart(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): Promise<ChartMapType>{
+export async function groupDisplayChartMap(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQueryType): Promise<ChartMapType>{
     const facetStore: FacetStoreInterface = getFacetStoreFromGroupProvenance(groupProvenanceId);
     let facets: Array<Facet> = [];
     for(const service of facetStore.getServices()){
@@ -43,7 +45,9 @@ export async function groupDisplayChart(groupProvenanceId: GroupProvenanceId, gr
     chartData.forEach((chart=>{
         addBarClickCallback(
             chart,
-            searchQuery?.query ? addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : searchGroupQuery(groupProvenanceId, groupId, Service.Text),
+            groupProvenanceId,
+            groupId,
+            searchQuery ? addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery) : searchGroupQuery(groupProvenanceId, groupId, Service.Text),
             groupProvenanceToReturnType[groupProvenanceId]
         )
     }));
@@ -54,12 +58,12 @@ export async function groupDisplayChart(groupProvenanceId: GroupProvenanceId, gr
 
 }
 
-async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQueryType): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
     const facetStore: FacetStoreInterface = getFacetStoreFromGroupProvenance(groupProvenanceId);
     let subData: Array<RcsbChartInterface> | undefined;
     let partialFacets: Array<Facet> = [];
     for (const service of facetStore.getServices()) {
-        const groupQuery: SearchQueryType = addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query, service);
+        const groupQuery: SearchQueryType = addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery, service);
         const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
             groupQuery,
             facetStore.getFacetService(service).map(f => f.facet),
@@ -86,12 +90,12 @@ async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupPr
     return {chartData: partialData, subData: subData};
 }
 
-function addBarClickCallback(chart: RcsbChartInterface, searchQuery:SearchQueryType, returnType:ReturnType): void{
+function addBarClickCallback(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQueryType, returnType:ReturnType): void{
     if(!chart.chartConfig)
         chart.chartConfig = {}
     switch (chart.chartType){
         case ChartType.barplot:
-            addBarChartClick(chart,searchQuery,returnType);
+            addBarChartClick(chart,groupProvenanceId, groupId,searchQuery,returnType);
             break;
         case ChartType.histogram:
             addHistogramChartClick(chart,searchQuery,returnType);
@@ -99,8 +103,8 @@ function addBarClickCallback(chart: RcsbChartInterface, searchQuery:SearchQueryT
     }
 }
 
-function addBarChartClick(chart: RcsbChartInterface, searchQuery:SearchQueryType, returnType:ReturnType): void{
-    chart.chartConfig.barClickCallback = (datum:BarData, data: BarData[],e: React.MouseEvent) => {
+function addBarChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQueryType, returnType:ReturnType): void{
+    chart.chartConfig.barClickCallback = async (datum:BarData, data: BarData[],e: React.MouseEvent) => {
         let query: SearchQueryType|undefined = undefined;
         if(datum.isLabel){
             query= searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
@@ -111,10 +115,16 @@ function addBarChartClick(chart: RcsbChartInterface, searchQuery:SearchQueryType
             chart.filters.forEach(f=>{
                 query = addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
             })
-        if(e.shiftKey)
-            location.href = resource.rcsb_search.url+encodeURI(JSON.stringify(buildNodeSearchQuery(query,searchQuery,returnType)));
-        else
+        if(e.shiftKey) {
+            location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(buildNodeSearchQuery(query, searchQuery, returnType)));
+        }else{
             location.href = location.pathname + "?request="+encodeURI(JSON.stringify(buildNodeSearchQuery(query,searchQuery,returnType)));
+            /*asyncScheduler.schedule(async ()=>{
+                const chartMap: ChartMapType = await groupDisplayChartMap(groupProvenanceId,groupId,buildNodeSearchQuery(query, searchQuery, returnType).query);
+                searchQueryContextManager.next({chartMap});
+            });*/
+        }
+
     };
 }
 

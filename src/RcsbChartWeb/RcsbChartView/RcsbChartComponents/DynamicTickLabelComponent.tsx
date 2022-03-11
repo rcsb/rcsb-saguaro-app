@@ -11,7 +11,7 @@ export class DynamicTickLabelComponent extends React.Component <VictoryLabelProp
     private x: number = this.props.x;
     private textAnchor: "begin"|"end" = "end";
     private readonly originalText:string = this.props.text as string;
-    private readonly THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.8;
+    private readonly THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.75;
     private readonly hoverFill: (typeof WHITE) = WHITE;
     private readonly overflowSuffix: (typeof SUFFIX) = SUFFIX;
     private readonly id: string = this.props.id + "_" + Math.random().toString(36).substring(2);
@@ -31,7 +31,7 @@ export class DynamicTickLabelComponent extends React.Component <VictoryLabelProp
                               x={this.x}
                               backgroundStyle={{fill:this.hoverFill}}
                               events={this.events()}
-                              style={{textAnchor:this.textAnchor,fontSize:12}}
+                              style={{textAnchor:this.textAnchor,fontSize:12,fontFamily:"\"Helvetica Neue\",Helvetica,Arial,sans-serif"}}
         />);
     }
 

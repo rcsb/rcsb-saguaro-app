@@ -13,7 +13,7 @@ import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
 import { ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {getFacetStoreFromGroupProvenance} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
-import {groupDisplayChart} from "./RcsbGroupDisplay/GroupDisplayChart";
+import {groupDisplayChartMap} from "./RcsbGroupDisplay/GroupDisplayChartMap";
 import {GroupDisplayAdditionalProperties} from "./RcsbGroupDisplay/GroupDisplayAdditionalProperties";
 
 
@@ -47,7 +47,7 @@ export class RcsbGroupDisplay {
 
     public static async displaySearchAttributes(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:[string,string?][], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
         const layout: [string,string?][] = facetLayoutGrid ?? getFacetStoreFromGroupProvenance(groupProvenanceId).facetLayoutGrid;
-        const chartMap: ChartMapType = await groupDisplayChart(groupProvenanceId,groupId,searchQuery);
+        const chartMap: ChartMapType = await groupDisplayChartMap(groupProvenanceId,groupId,searchQuery?.query);
         if(layout.flat().filter((e)=>(chartMap.get(e)))){
             ReactDom.render(
                 <div className={classes.bootstrapGroupComponentScope}>

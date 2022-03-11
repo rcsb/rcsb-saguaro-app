@@ -4,6 +4,13 @@ import {HistogramChartView} from "./HistogramChartView";
 import {BarChartView} from "./BarChartView";
 import {Col, Row} from "react-bootstrap";
 import {RcsbChartInterface} from "../../RcsbSeacrh/FacetTools";
+import {Subject} from "rxjs";
+import {
+    searchQueryContextManager,
+    SearchQueryContextManagerSubjectInterface
+} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupDisplay/SearchQueryContextManager";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 export type ChartMapType = Map<string,{chart:RcsbChartInterface;subChart?:RcsbChartInterface;}>;
 export interface RcsbChartLayoutInterface {
@@ -11,10 +18,15 @@ export interface RcsbChartLayoutInterface {
     chartMap: ChartMapType;
 }
 
-export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{}> {
+export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{chartMap: ChartMapType;}> {
+
+    readonly state: {chartMap: ChartMapType} = {
+        chartMap: this.props.chartMap
+    };
 
     constructor(props: RcsbChartLayoutInterface) {
         super(props);
+
     }
 
     render():JSX.Element {
@@ -27,9 +39,13 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{
         );
     }
 
+    componentDidMount() {
+        this.subscribe();
+    }
+
     private renderRow(attrF: string, attrG: string): JSX.Element {
         return (
-            <Row className={"mt-lg-4"}>
+            <Row className={"mt-lg-5 mb-lg-5"}>
                 {this.renderCell(attrF)}
                 {this.renderCell(attrG)}
             </Row>
@@ -37,26 +53,40 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{
     }
 
     private renderCell(attr: string): JSX.Element {
-        const chart: RcsbChartInterface = this.props.chartMap.get(attr)?.chart;
+        const chart: RcsbChartInterface = this.state.chartMap.get(attr)?.chart;
         if(chart){
-            const subChart: RcsbChartInterface = this.props.chartMap.get(attr).subChart;
+            const subChart: RcsbChartInterface = this.state.chartMap.get(attr).subChart;
             const node: JSX.Element = chart.chartType == ChartType.histogram ? histogramChart(chart, subChart) : barChart(chart, subChart);
             return chartCell(node,chart.title);
         }
         return null;
     }
 
+    private subscribe(): void{
+        searchQueryContextManager.subscribe({
+            next:(o)=>{
+                this.updateChartMap(o.chartMap);
+            }
+        })
+    }
+
+    private updateChartMap(chartMap: ChartMapType): void{
+        this.setState({chartMap:chartMap});
+    }
+
 }
 
-function chartCell(chartNode:JSX.Element, title: string, colSize?:number): JSX.Element{
-    return(<Col lg={colSize ?? 6} >
-        <Row className={"h-100 align-items-end"}>
-            <Row className={"align-self-start mb-lg-2"}>
-                <Col lg={12} style={{paddingLeft:210}}>{title}</Col>
-            </Row>
-            <Row>
-                <Col lg={12}>{chartNode}</Col>
-            </Row>
+function chartCell(chartNode:JSX.Element, title: string, colSize:number = 6): JSX.Element{
+    return(<Col lg={colSize} >
+        <Row className={"h-100"}>
+            <Col lg={12}>
+                <Row className={"mb-lg-2"}>
+                    <Col lg={12} style={{paddingLeft:ChartTools.paddingLeft + ChartTools.xDomainPadding}}><strong>{title}</strong></Col>
+                </Row>
+                <Row>
+                    <Col lg={12}>{chartNode}</Col>
+                </Row>
+            </Col>
         </Row>
     </Col>);
 }

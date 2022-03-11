@@ -9,9 +9,8 @@ import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 
 
-export class HistogramChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
+export class HistogramChartView extends React.Component <ChartViewInterface,{}> {
 
-    readonly state: ChartViewInterface = {...this.props};
     private dataProvider: ChartDataInterface;
 
     constructor(props: ChartViewInterface) {
@@ -19,7 +18,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
     }
 
     render():ReactNode {
-        this.dataProvider = new HistogramChartData(this.state.data, this.state.subData, this.props.config);
+        this.dataProvider = new HistogramChartData(this.props.data, this.props.subData, this.props.config);
         const {barData, subData}: { barData: BarData[]; subData: BarData[] } = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.dataProvider.xDomain();
@@ -27,11 +26,11 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
         return (
             <div style={{width:width, height:ChartTools.constHeight}}>
                 <VictoryChart
-                    padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingBottom, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
+                    padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingTopLarge, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
                     height={ChartTools.constHeight}
                     width={width}
                     domain={{x:this.dataProvider.xDomain()}}
-                    animate={{duration: 500}}
+                    animate={{duration: 1000}}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData, nBins, this.props.config.barClickCallback)}
