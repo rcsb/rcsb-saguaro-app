@@ -14,11 +14,11 @@ import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSear
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {DateRange, Range, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
-import {BarData} from "../../../RcsbChartWeb/RcsbChartTools/EventBarComponent";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
 import {ChartMapType} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
 import {ChartType} from "../../../RcsbChartWeb/RcsbChartView/ChartViewInterface";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
+import {BarData} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartComponents/BarComponent";
 
 export async function groupDisplayChart(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): Promise<ChartMapType>{
     const facetStore: FacetStoreInterface = getFacetStoreFromGroupProvenance(groupProvenanceId);

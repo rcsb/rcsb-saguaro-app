@@ -3,22 +3,23 @@ import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack, VictoryTooltip
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {DynamicTickLabelComponent} from "../RcsbChartTools/DynamicTickLabelComponent";
-import {BarClickCallbackType, EventBarComponent, BarData} from "../RcsbChartTools/EventBarComponent";
+import {DynamicTickLabelComponent} from "./RcsbChartComponents/DynamicTickLabelComponent";
+import {BarClickCallbackType, BarComponent, BarData} from "./RcsbChartComponents/BarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
-import {TooltipComponent} from "../RcsbChartTools/TooltipComponent";
+import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 
 export class BarChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
     readonly state: ChartViewInterface = {...this.props};
-    readonly dataProvider: ChartDataInterface = new BarChartData(this.props.data, this.props.subData, this.props.config);
+    private dataProvider: ChartDataInterface;
 
     constructor(props: ChartViewInterface) {
         super(props);
     }
 
     render():ReactNode {
+        this.dataProvider = new BarChartData(this.state.data, this.state.subData, this.props.config);
         const {barData,subData}: {barData: BarData[]; subData: BarData[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const height: number = ChartTools.paddingBottom + barData.length*ChartTools.xIncrement;
@@ -30,6 +31,7 @@ export class BarChartView extends React.Component <ChartViewInterface,ChartViewI
                     height={height}
                     width={width}
                     scale={{y:"linear", x:"linear"}}
+                    animate={{duration: 1000}}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData,this.props.config.barClickCallback)}
@@ -54,8 +56,8 @@ const CROSS_AXIS = (<VictoryAxis
 
 function stack(data:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack>
-        {bar(data, "#5e94c3", <EventBarComponent barClick={barClick}/>, <TooltipComponent dx={25} />)}
-        {bar(subData, "#d0d0d0", <EventBarComponent />)}
+        {bar(data, "#5e94c3", <BarComponent barClick={barClick}/>, <TooltipComponent dx={25} />)}
+        {bar(subData, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }
 

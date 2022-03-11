@@ -1,4 +1,4 @@
-import {BarClickCallbackType} from "../RcsbChartTools/EventBarComponent";
+import {BarClickCallbackType} from "./RcsbChartComponents/BarComponent";
 
 export interface ChartObjectInterface {
     label: string|number;

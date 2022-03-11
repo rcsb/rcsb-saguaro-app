@@ -1,7 +1,7 @@
 import {ChartDataInterface} from "./ChartDataInterface";
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "../RcsbChartTools/EventBarComponent";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
+import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
 
 export class HistogramChartData implements ChartDataInterface{
 
@@ -18,6 +18,15 @@ export class HistogramChartData implements ChartDataInterface{
     public getChartData(): { barData: BarData[]; subData: BarData[] } {
         const barData: BarData[] = this.transformData(this.data)
         const subData: BarData[] = this.transformData(this.subData)
+        const mergedDomain: Set<number> = new Set<number>( barData.map(d=>d.x as number).concat(subData.map(d=>d.x as number)) );
+        const barDomain: Set<number> = new Set<number>( barData.map(d=>d.x as number) );
+        const subDomain: Set<number> = new Set<number>( subData.map(d=>d.x as number) );
+        mergedDomain.forEach(x=>{
+            if(!subDomain.has(x))
+                subData.push({x:x,y:0,isLabel:true})
+            if(!barDomain.has(x))
+                barData.push({x:x,y:0,isLabel:true});
+        });
         ChartTools.addComplementaryData(barData,subData);
         return {barData: barData, subData: subData};
     }

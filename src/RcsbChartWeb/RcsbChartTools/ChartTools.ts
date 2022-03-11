@@ -1,6 +1,5 @@
 import {ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "./EventBarComponent";
-import {zip} from "lodash";
+import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
 
 export class ChartTools {
 

@@ -3,22 +3,23 @@ import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory"
 import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarClickCallbackType, BarData, EventBarComponent} from "../RcsbChartTools/EventBarComponent";
+import {BarClickCallbackType, BarData, BarComponent} from "./RcsbChartComponents/BarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
-import {TooltipComponent} from "../RcsbChartTools/TooltipComponent";
+import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 
 
 export class HistogramChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
 
     readonly state: ChartViewInterface = {...this.props};
-    readonly dataProvider: ChartDataInterface = new HistogramChartData(this.props.data, this.props.subData, this.props.config);
+    private dataProvider: ChartDataInterface;
 
     constructor(props: ChartViewInterface) {
         super(props);
     }
 
     render():ReactNode {
+        this.dataProvider = new HistogramChartData(this.state.data, this.state.subData, this.props.config);
         const {barData, subData}: { barData: BarData[]; subData: BarData[] } = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.dataProvider.xDomain();
@@ -30,6 +31,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
                     height={ChartTools.constHeight}
                     width={width}
                     domain={{x:this.dataProvider.xDomain()}}
+                    animate={{duration: 500}}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData, nBins, this.props.config.barClickCallback)}
@@ -52,8 +54,8 @@ export class HistogramChartView extends React.Component <ChartViewInterface,Char
 
 function stack(histData: BarData[], subData: BarData[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
    return ( <VictoryStack>
-       {bar(histData,nBins, "#5e94c3", <EventBarComponent barClick={barClick}/>, <TooltipComponent dy={-15}/>)}
-       {bar(subData,nBins, "#d0d0d0", <EventBarComponent />)}
+       {bar(histData,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, <TooltipComponent dy={-15}/>)}
+       {bar(subData,nBins, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }
 

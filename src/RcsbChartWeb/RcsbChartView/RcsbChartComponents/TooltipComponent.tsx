@@ -1,6 +1,6 @@
 import {VictoryTooltip} from "victory";
 import * as React from "react";
-import {BarData} from "./EventBarComponent";
+import {BarData} from "./BarComponent";
 
 export class TooltipComponent extends VictoryTooltip {
 

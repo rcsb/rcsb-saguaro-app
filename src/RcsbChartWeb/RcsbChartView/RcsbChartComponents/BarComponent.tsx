@@ -9,7 +9,7 @@ export interface BarData {
     isLabel:boolean;
 }
 
-export interface EventBarComponentInterface extends BarProps{
+export interface BarComponentInterface extends BarProps{
     barClick?:BarClickCallbackType;
     barHover?:BarClickCallbackType;
     barLeave?:BarClickCallbackType;
@@ -17,8 +17,7 @@ export interface EventBarComponentInterface extends BarProps{
 }
 
 export type BarClickCallbackType = (datum:BarData,data:BarData[],e:React.MouseEvent<any>)=>void;
-export class EventBarComponent extends React.Component <EventBarComponentInterface,{fillColor:string;}> {
-
+export class BarComponent extends React.Component <BarComponentInterface,{fillColor:string;}> {
 
     private readonly MIN_THR: number = 3
 

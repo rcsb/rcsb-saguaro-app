@@ -1,6 +1,6 @@
 import {VictoryLabel, VictoryLabelProps} from "victory";
 import * as React from "react";
-import {ChartTools} from "./ChartTools";
+import {ChartTools} from "../../RcsbChartTools/ChartTools";
 
 const WHITE: "#FFF" = "#FFF";
 const SUFFIX: " ..." = " ...";

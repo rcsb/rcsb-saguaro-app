@@ -1,7 +1,7 @@
-import {BarData} from "../RcsbChartTools/EventBarComponent";
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {ChartDataInterface} from "./ChartDataInterface";
+import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
 
 export class BarChartData implements ChartDataInterface{
     readonly data: ChartObjectInterface[] ;
