@@ -10,7 +10,7 @@ export async function buildSearchRequest(elementId: string, searchQuery:SearchQu
     await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery, returnType);
 }
 
-export async function buildGroup(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, query?:SearchQuery, facetLayoutGrid?:[string,string?][], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
+export async function buildGroup(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, query?:SearchQuery, facetLayoutGrid?:string[], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
     await RcsbGroupDisplay.displaySearchAttributes(elementId, groupProvenance, groupId, query, facetLayoutGrid, additionalProperties);
 }
 

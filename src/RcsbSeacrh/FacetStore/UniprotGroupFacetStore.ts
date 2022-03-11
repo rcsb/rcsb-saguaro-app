@@ -45,12 +45,12 @@ class UniprotGroupFacetStore implements FacetStoreInterface{
         }
     }
 
-    readonly facetLayoutGrid: [string,string?][] = [
-        [RcsbSearchMetadata.RcsbAccessionInfo.DepositDate.path],
-        [RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path, RcsbSearchMetadata.Exptl.Method.path],
-        [RcsbSearchMetadata.ChemComp.Type.path],
-        [RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path],
-        [RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path],
+    readonly facetLayoutGrid: string[] = [
+        RcsbSearchMetadata.RcsbAccessionInfo.DepositDate.path,
+        RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path, RcsbSearchMetadata.Exptl.Method.path,
+        RcsbSearchMetadata.ChemComp.Type.path,
+        RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path,
+        RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path
     ];
 
     readonly returnType: ReturnType = ReturnType.PolymerEntity;

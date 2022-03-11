@@ -118,11 +118,11 @@ function addBarChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupPro
         if(e.shiftKey) {
             location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(buildNodeSearchQuery(query, searchQuery, returnType)));
         }else{
-            location.href = location.pathname + "?request="+encodeURI(JSON.stringify(buildNodeSearchQuery(query,searchQuery,returnType)));
-            /*asyncScheduler.schedule(async ()=>{
+            //location.href = location.pathname + "?request="+encodeURI(JSON.stringify(buildNodeSearchQuery(query,searchQuery,returnType)));
+            asyncScheduler.schedule(async ()=>{
                 const chartMap: ChartMapType = await groupDisplayChartMap(groupProvenanceId,groupId,buildNodeSearchQuery(query, searchQuery, returnType).query);
                 searchQueryContextManager.next({chartMap});
-            });*/
+            });
         }
 
     };

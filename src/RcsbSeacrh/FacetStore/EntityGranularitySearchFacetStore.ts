@@ -37,10 +37,10 @@ class EntityGranularitySearchFacetStore implements FacetStoreInterface{
         }
     }
 
-    readonly facetLayoutGrid: [string,string?][] = [
-        [RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path],
-        [RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path],
-        [RcsbSearchMetadata.Exptl.Method.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path],
+    readonly facetLayoutGrid: string[] = [
+        RcsbSearchMetadata.RcsbEntryInfo.DiffrnResolutionHigh.Value.path,
+        RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path,
+        RcsbSearchMetadata.Exptl.Method.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path
     ];
 
     readonly returnType: ReturnType = ReturnType.PolymerEntity;

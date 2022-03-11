@@ -14,7 +14,7 @@ import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 export type ChartMapType = Map<string,{chart:RcsbChartInterface;subChart?:RcsbChartInterface;}>;
 export interface RcsbChartLayoutInterface {
-    layout: [string,string?][];
+    layout: string[];
     chartMap: ChartMapType;
 }
 
@@ -31,25 +31,16 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{
 
     render():JSX.Element {
         return (
-            <>
+            <Row className={"mt-lg-5 mb-lg-5"}>
                 {
-                    this.props.layout.map(([attrF,attrG])=>this.renderRow(attrF,attrG))
+                    this.props.layout.map((attr)=>this.renderCell(attr))
                 }
-            </>
+            </Row>
         );
     }
 
     componentDidMount() {
         this.subscribe();
-    }
-
-    private renderRow(attrF: string, attrG: string): JSX.Element {
-        return (
-            <Row className={"mt-lg-5 mb-lg-5"}>
-                {this.renderCell(attrF)}
-                {this.renderCell(attrG)}
-            </Row>
-        );
     }
 
     private renderCell(attr: string): JSX.Element {
@@ -78,7 +69,7 @@ export class RcsbChartLayout extends React.Component <RcsbChartLayoutInterface,{
 
 function chartCell(chartNode:JSX.Element, title: string, colSize:number = 6): JSX.Element{
     return(<Col lg={colSize} >
-        <Row className={"h-100"}>
+        <Row className={"h-100 mt-lg-5 mb-lg-5"}>
             <Col lg={12}>
                 <Row className={"mb-lg-2"}>
                     <Col lg={12} style={{paddingLeft:ChartTools.paddingLeft + ChartTools.xDomainPadding}}><strong>{title}</strong></Col>
