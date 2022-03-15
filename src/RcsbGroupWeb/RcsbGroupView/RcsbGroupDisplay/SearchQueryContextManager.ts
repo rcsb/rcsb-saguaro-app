@@ -9,22 +9,22 @@ export interface SearchQueryContextManagerSubjectInterface {
     searchQuery?:SearchQuery;
 }
 
-export namespace SearchQueryContextManager {
-    const searchQueryObservable: Subject<SearchQueryContextManagerSubjectInterface> = new Subject<SearchQueryContextManagerSubjectInterface>();
-    export function subscribe(f:(x:SearchQueryContextManagerSubjectInterface)=>void, attr:string|null):void{
+export class SearchQueryContextManager {
+    private static readonly searchQueryObservable: Subject<SearchQueryContextManagerSubjectInterface> = new Subject<SearchQueryContextManagerSubjectInterface>();
+    private static readonly attributeList: string[] = [];
+    public static subscribe(f:(x:SearchQueryContextManagerSubjectInterface)=>void, attr:string|null):void{
         if(typeof attr === "string")
-            attributeList.push(attr);
-        searchQueryObservable.subscribe({
+            this.attributeList.push(attr);
+        this.searchQueryObservable.subscribe({
             next:(o:SearchQueryContextManagerSubjectInterface)=>{
                 f(o);
             }
         })
     }
-    export function next(o:SearchQueryContextManagerSubjectInterface): void{
-        searchQueryObservable.next(o);
+    public static next(o:SearchQueryContextManagerSubjectInterface): void{
+        this.searchQueryObservable.next(o);
     }
-    const attributeList: string[] = [];
-    export function getAttributeList(): string[] {
-        return cloneDeep<string[]>(attributeList);
+    public static getAttributeList(): string[] {
+        return cloneDeep<string[]>(this.attributeList);
     }
 }

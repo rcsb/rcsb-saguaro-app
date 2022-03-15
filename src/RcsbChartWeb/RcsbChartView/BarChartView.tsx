@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
-import {ReactNode} from "react";
 import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarComponent, BarData} from "./RcsbChartComponents/BarComponent";
