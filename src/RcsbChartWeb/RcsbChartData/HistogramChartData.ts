@@ -5,11 +5,11 @@ import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
 
 export class HistogramChartData implements ChartDataInterface{
 
-    readonly config: ChartConfigInterface;
-    readonly data: ChartObjectInterface[];
-    readonly subData: ChartObjectInterface[];
+    private config: ChartConfigInterface;
+    private data: ChartObjectInterface[];
+    private subData: ChartObjectInterface[];
 
-    constructor(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface) {
+    public setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface):void {
         this.data = data;
         this.subData = subData;
         this.config = config;

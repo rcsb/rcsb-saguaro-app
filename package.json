@@ -81,7 +81,7 @@
     "react-select": "^5.2.2",
     "rxjs": "^6.6.0",
     "string-to-color": "^2.2.2",
-    "victory": "^35.9.0"
+    "victory": "^36.3.0"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"

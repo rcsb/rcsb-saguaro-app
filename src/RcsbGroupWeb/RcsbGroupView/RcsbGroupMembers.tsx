@@ -8,6 +8,10 @@ import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/Quer
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./RcsbGroupMembers/Components/Slider";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {
+    searchQueryContextManager,
+    SearchQueryContextManagerSubjectInterface
+} from "./RcsbGroupDisplay/SearchQueryContextManager";
 
 interface RcsbGroupMembersInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -20,13 +24,15 @@ interface RcsbGroupMembersInterface {
 interface RcsbGroupMembersState {
     nPages: number;
     selectedIndex: number;
+    searchQuery?: SearchQuery;
 }
 
 export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface,RcsbGroupMembersState> {
 
     readonly state: RcsbGroupMembersState = {
         nPages: 0,
-        selectedIndex: 0
+        selectedIndex: 0,
+        searchQuery: this.props.searchQuery
     }
 
     readonly groupMembersDiv: string = "groupMembersDiv";
@@ -46,7 +52,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
                             nRows={this.props.nRows}
                             nColumns={this.props.nColumns}
                             index={this.state.selectedIndex}
-                            searchQuery={this.props.searchQuery}
+                            searchQuery={this.state.searchQuery}
                         />
                     </Slider>
                 </div>
@@ -55,9 +61,28 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
             return null;
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        this.subscribe();
         if(this.state.nPages === 0)
-            this.loadPages();
+            await this.loadPages();
+    }
+
+    async componentDidUpdate(prevProps: Readonly<RcsbGroupMembersInterface>, prevState: Readonly<RcsbGroupMembersState>, snapshot?: any) {
+        if(this.state.nPages === 0)
+            await this.loadPages();
+    }
+
+    private subscribe(): void{
+        searchQueryContextManager.subscribe({
+            next:(o)=>{
+                this.updateSearchQuery(o);
+            }
+        })
+    }
+
+    private updateSearchQuery(sqData: SearchQueryContextManagerSubjectInterface): void{
+        if(sqData.searchQuery)
+            this.setState({searchQuery:sqData.searchQuery, nPages:0, selectedIndex:0});
     }
 
     private async loadPages(): Promise<void>{
@@ -79,7 +104,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
         return await searchRequest(
             this.props.groupProvenanceId,
             this.props.groupId,
-            this.props.searchQuery
+            this.state.searchQuery
         );
     }
 

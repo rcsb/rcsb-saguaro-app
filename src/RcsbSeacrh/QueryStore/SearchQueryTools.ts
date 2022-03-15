@@ -84,6 +84,26 @@ export function buildNodeSearchQuery(node: SearchQueryType, searchQuery: SearchQ
     }
 }
 
+export function buildSearchQuery(searchQuery: SearchQueryType, returnType:ReturnType, logicalOperator = LogicalOperator.And): SearchQuery {
+    return {
+        query: searchQuery,
+        return_type: returnType,
+        request_options: {
+            pager: {
+                start: 0,
+                rows: 25
+            },
+            scoring_strategy: ScoringStrategy.Combined,
+            sort: [
+                {
+                    sort_by: RelevanceScoreRankingOption.Score,
+                    direction: SortDirection.Desc
+                }
+            ]
+        }
+    }
+}
+
 export function addNewNodeToAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, service: Service.Text|Service.TextChem, negation: boolean = false): SearchQueryType {
     return addNodeToSearchQuery(searchAttributeQuery(attribute, value, operator, service,negation),searchQuery);
 }

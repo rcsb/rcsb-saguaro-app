@@ -65,14 +65,14 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
             return null;
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if(this.state.itemList.length == 0)
-            this.getMembersData();
+            await this.getMembersData();
     }
 
-    componentDidUpdate(prevProps: GroupMembersGridInterface, prevState: GroupMembersGridState, snapshot?: any) {
+    async componentDidUpdate(prevProps: GroupMembersGridInterface, prevState: GroupMembersGridState, snapshot?: any) {
         if(prevProps.index != this.props.index)
-            this.getMembersData();
+            await this.getMembersData();
     }
 
     private async getMembersData(): Promise<void> {

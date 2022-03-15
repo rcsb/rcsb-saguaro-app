@@ -1,24 +1,38 @@
 import * as React from "react";
 import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ReactNode} from "react";
-import {ChartViewInterface} from "./ChartViewInterface";
+import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarData, BarComponent} from "./RcsbChartComponents/BarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
+import {
+    searchQueryContextManager,
+    SearchQueryContextManagerSubjectInterface
+} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupDisplay/SearchQueryContextManager";
+import {asyncScheduler} from "rxjs";
+import {random} from "lodash";
 
+interface HisChatViewInterface {
+    data: ChartObjectInterface[];
+    subData: ChartObjectInterface[];
+}
 
-export class HistogramChartView extends React.Component <ChartViewInterface,{}> {
+export class HistogramChartView extends React.Component <ChartViewInterface & {attributeName:string}, HisChatViewInterface> {
 
-    private dataProvider: ChartDataInterface;
+    private readonly dataProvider: ChartDataInterface = new HistogramChartData();
+    readonly state: HisChatViewInterface = {
+        data: this.props.data,
+        subData: this.props.subData
+    };
 
-    constructor(props: ChartViewInterface) {
+    constructor(props: ChartViewInterface & {attributeName:string}) {
         super(props);
     }
 
     render():ReactNode {
-        this.dataProvider = new HistogramChartData(this.props.data, this.props.subData, this.props.config);
+        this.dataProvider.setData(this.state.data, this.state.subData, this.props.config);
         const {barData, subData}: { barData: BarData[]; subData: BarData[] } = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.dataProvider.xDomain();
@@ -30,7 +44,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface,{}> 
                     height={ChartTools.constHeight}
                     width={width}
                     domain={{x:this.dataProvider.xDomain()}}
-                    animate={{duration: 1000}}
+                    animate={{duration: ChartTools.animationDuration}}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData, nBins, this.props.config.barClickCallback)}
@@ -47,6 +61,30 @@ export class HistogramChartView extends React.Component <ChartViewInterface,{}> 
                 </VictoryChart>
             </div>
         );
+    }
+
+    componentDidMount() {
+        this.subscribe();
+    }
+
+    private subscribe(): void{
+        searchQueryContextManager.subscribe({
+            next:(o)=>{
+                this.updateChartMap(o);
+            }
+        })
+    }
+
+    private updateChartMap(sqData: SearchQueryContextManagerSubjectInterface): void{
+        if(!sqData.chartMap.get(this.props.attributeName))
+            return;
+        asyncScheduler.schedule(()=>{
+            this.setState({
+                data:sqData.chartMap.get(this.props.attributeName).chart.data,
+                subData:sqData.chartMap.get(this.props.attributeName).subChart?.data,
+            });
+        }, this.props.attributeName === sqData.attributeName ? 0 : random(300,600));
+
     }
 
 }

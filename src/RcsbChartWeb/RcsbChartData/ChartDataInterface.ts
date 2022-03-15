@@ -2,10 +2,8 @@ import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/Chart
 import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
 
 export interface ChartDataInterface {
-    readonly data: ChartObjectInterface[] ;
-    readonly subData: ChartObjectInterface[];
-    readonly config: ChartConfigInterface;
     getChartData(): {barData: BarData[]; subData: BarData[];}
+    setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface): void;
     xDomain?(): [number, number];
-    tickValues?(): number[] | undefined
+    tickValues?(): string[] | number[] | undefined
 }

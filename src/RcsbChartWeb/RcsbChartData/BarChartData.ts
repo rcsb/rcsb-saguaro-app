@@ -4,11 +4,12 @@ import {ChartDataInterface} from "./ChartDataInterface";
 import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
 
 export class BarChartData implements ChartDataInterface{
-    readonly data: ChartObjectInterface[] ;
-    readonly subData: ChartObjectInterface[];
-    readonly config: ChartConfigInterface;
+    private data: ChartObjectInterface[] ;
+    private subData: ChartObjectInterface[];
+    private config: ChartConfigInterface;
+    private stringTicks: string[];
 
-    constructor(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface) {
+    public setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface):void {
         this.data = data;
         this.subData = subData;
         this.config = config;
@@ -55,9 +56,14 @@ export class BarChartData implements ChartDataInterface{
             subOut.unshift({x:this.config?.mergeName, y:subOther, isLabel:false});
         }
         ChartTools.addComplementaryData(barOut,subOut);
+        this.stringTicks = barOut.map(d=>d.x as string);
         return {
             barData: barOut,
             subData: subOut
         };
+    }
+
+    public tickValues(): string[] {
+        return this.stringTicks;
     }
 }
