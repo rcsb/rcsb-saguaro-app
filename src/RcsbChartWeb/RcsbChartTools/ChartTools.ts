@@ -13,7 +13,7 @@ export class ChartTools {
     public static readonly xDomainPadding: number = 10;
     public static readonly barWidth: number = 10;
 
-    public static readonly animationDuration: number = 300;
+    public static readonly animationDuration: number = 600;
 
     public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): {x:string;y:number;}[]{
         const out: {x:string;y:number;}[] = data.filter(d=>( d.population>size)).map(d=>({

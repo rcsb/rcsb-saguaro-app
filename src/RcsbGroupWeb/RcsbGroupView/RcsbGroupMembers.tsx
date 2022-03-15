@@ -9,7 +9,7 @@ import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnum
 import {SlideAction, Slider} from "./RcsbGroupMembers/Components/Slider";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {
-    searchQueryContextManager,
+    SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
 } from "./RcsbGroupDisplay/SearchQueryContextManager";
 
@@ -73,11 +73,12 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
     }
 
     private subscribe(): void{
-        searchQueryContextManager.subscribe({
-            next:(o)=>{
+        SQCM.subscribe(
+            (o:SearchQueryContextManagerSubjectInterface)=>{
                 this.updateSearchQuery(o);
-            }
-        })
+            },
+            null
+        );
     }
 
     private updateSearchQuery(sqData: SearchQueryContextManagerSubjectInterface): void{

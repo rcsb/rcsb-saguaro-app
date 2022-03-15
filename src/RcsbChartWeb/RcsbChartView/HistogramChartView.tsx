@@ -7,19 +7,14 @@ import {BarClickCallbackType, BarData, BarComponent} from "./RcsbChartComponents
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
-import {
-    searchQueryContextManager,
-    SearchQueryContextManagerSubjectInterface
-} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupDisplay/SearchQueryContextManager";
-import {asyncScheduler} from "rxjs";
-import {random} from "lodash";
+import {AbstractChartView} from "./AbstractChartView";
 
 interface HisChatViewInterface {
     data: ChartObjectInterface[];
     subData: ChartObjectInterface[];
 }
 
-export class HistogramChartView extends React.Component <ChartViewInterface & {attributeName:string}, HisChatViewInterface> {
+export class HistogramChartView extends AbstractChartView {
 
     private readonly dataProvider: ChartDataInterface = new HistogramChartData();
     readonly state: HisChatViewInterface = {
@@ -31,7 +26,7 @@ export class HistogramChartView extends React.Component <ChartViewInterface & {a
         super(props);
     }
 
-    render():ReactNode {
+    render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.props.config);
         const {barData, subData}: { barData: BarData[]; subData: BarData[] } = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
@@ -65,26 +60,6 @@ export class HistogramChartView extends React.Component <ChartViewInterface & {a
 
     componentDidMount() {
         this.subscribe();
-    }
-
-    private subscribe(): void{
-        searchQueryContextManager.subscribe({
-            next:(o)=>{
-                this.updateChartMap(o);
-            }
-        })
-    }
-
-    private updateChartMap(sqData: SearchQueryContextManagerSubjectInterface): void{
-        if(!sqData.chartMap.get(this.props.attributeName))
-            return;
-        asyncScheduler.schedule(()=>{
-            this.setState({
-                data:sqData.chartMap.get(this.props.attributeName).chart.data,
-                subData:sqData.chartMap.get(this.props.attributeName).subChart?.data,
-            });
-        }, this.props.attributeName === sqData.attributeName ? 0 : random(300,600));
-
     }
 
 }

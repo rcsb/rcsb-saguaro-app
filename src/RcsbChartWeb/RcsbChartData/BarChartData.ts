@@ -66,4 +66,5 @@ export class BarChartData implements ChartDataInterface{
     public tickValues(): string[] {
         return this.stringTicks;
     }
+
 }
