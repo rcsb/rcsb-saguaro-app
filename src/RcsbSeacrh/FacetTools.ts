@@ -62,22 +62,33 @@ export class FacetTools {
     }
 
     public static subtractDrilldowns(partial: Array<RcsbChartInterface>, full: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
-        const fullCopy: Array<RcsbChartInterface> = cloneDeep<Array<RcsbChartInterface>>(full);
-        const fullMap: Map<string,Map<string|number,RcsbChartDataInterface>> = new Map<string, Map<string, RcsbChartDataInterface>>();
-        fullCopy.forEach(fullChart=>{
-            fullMap.set( fullChart.attributeName, new Map<string, RcsbChartDataInterface>() );
+        const diff: Array<RcsbChartInterface> = cloneDeep<Array<RcsbChartInterface>>(full);
+        const dataMap: Map<string,Map<string|number,RcsbChartDataInterface>> = new Map<string, Map<string, RcsbChartDataInterface>>();
+        diff.forEach(fullChart=>{
+            dataMap.set( fullChart.attributeName, new Map<string, RcsbChartDataInterface>() );
             fullChart.data.forEach(d=>{
-                fullMap.get(fullChart.attributeName).set(d.label,d);
+                dataMap.get(fullChart.attributeName).set(d.label,d);
             });
         });
         partial.forEach(partialChart=>{
             partialChart.data.forEach(d=>{
-                const data: RcsbChartDataInterface = fullMap.get(partialChart.attributeName)?.get(d.label);
+                const data: RcsbChartDataInterface = dataMap.get(partialChart.attributeName)?.get(d.label);
                 if(data)
                     data.population -= d.population;
             });
         });
-        return fullCopy;
+        FacetTools.includeMissingFacets(partial, diff);
+        return diff;
+    }
+
+    private static includeMissingFacets(partial: Array<RcsbChartInterface>,full: Array<RcsbChartInterface>): void {
+        const partialFacetNameSet: Set<string> = new Set<string>(partial.map(f=>f.attributeName));
+        const fullFacetNameSet: Map<string, RcsbChartInterface> = new Map<string,RcsbChartInterface>(full.map(f=>[f.attributeName,f]));
+        fullFacetNameSet.forEach((v,k)=>{
+            if(!partialFacetNameSet.has(k)){
+                partial.push( {...cloneDeep<RcsbChartInterface>(v), data:[]} );
+            }
+        });
     }
 
     private static getFacetChartTypeFromAttribute(facetMembers: FacetMemberInterface[], attribute: string): {chartType: ChartType, chartConfig?: ChartConfigInterface, title: string} {
