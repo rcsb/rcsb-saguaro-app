@@ -7,7 +7,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {
     AnnotationCollectConfig,
@@ -24,7 +24,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     private readonly rcsbAnnotationConfig: RcsbAnnotationConfig;
     private readonly annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
-    readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    readonly rcsbFvQuery: RcsbClient = rcsbClient;
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
     private requestStatus: "pending"|"complete" = "complete";
     private rawFeatures: Array<Feature>;

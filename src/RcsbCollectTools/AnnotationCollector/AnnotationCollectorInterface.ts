@@ -10,7 +10,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AnnotationTrack, FeaturePositionGaps} from "./AnnotationTrack";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
-import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
 export interface AnnotationProcessingInterface {

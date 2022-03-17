@@ -4,7 +4,7 @@ import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupDisplay/SearchQueryContextManager";
-import {asyncScheduler} from "rxjs";
+import {asyncScheduler, Subscription} from "rxjs";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 interface AbstractChartViewInterface {
@@ -12,10 +12,17 @@ interface AbstractChartViewInterface {
     subData: ChartObjectInterface[];
 }
 
-export class AbstractChartView extends React.Component <ChartViewInterface & {attributeName:string}, AbstractChartViewInterface> {
+export class AbstractObserverChartView extends React.Component <ChartViewInterface & {attributeName:string}, AbstractChartViewInterface> {
+
+    private asyncSubscription: Subscription;
+    private subscription: Subscription;
+
+    protected unsubscribe(): void {
+        this.subscription.unsubscribe();
+    }
 
     protected subscribe(): void{
-        SQCM.subscribe(
+        this.subscription = SQCM.subscribe(
             (o:SearchQueryContextManagerSubjectInterface)=>{
                 this.updateChartMap(o);
             },
@@ -32,7 +39,9 @@ export class AbstractChartView extends React.Component <ChartViewInterface & {at
                 subData:sqData.chartMap.get(this.props.attributeName).subChart?.data,
             });
         }else{
-            asyncScheduler.schedule(()=>{
+            if(this.asyncSubscription)
+                this.asyncSubscription.unsubscribe();
+            this.asyncSubscription = asyncScheduler.schedule(()=>{
                 this.setState({
                     data:sqData.chartMap.get(this.props.attributeName).chart.data,
                     subData:sqData.chartMap.get(this.props.attributeName).subChart?.data,

@@ -70,7 +70,7 @@ click events.
 - A new translator class defined in `src/RcsbUtils` (e.g. `AssemblyInterfacesTranslate`)
     - The constructor gets the data collected by the above class
     - The class exposes the methods needs to provide the relationships between RCSB objects of different granularity
-- A new method in the `RcsbFvContextManager` defined in `src/RcsbFvWeb/RcsbFvBuilder`
+- A new method in the `RcsbRequestContextManager` defined in `src/RcsbFvWeb/RcsbFvBuilder`
     - This method must avoid duplicate requests
 
 Contributing

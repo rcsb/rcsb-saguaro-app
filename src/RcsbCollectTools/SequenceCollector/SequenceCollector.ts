@@ -11,7 +11,7 @@ import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 
 import {BuildAlignementsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     AlignmentCollectConfig,
     SequenceCollectorInterface
@@ -39,7 +39,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
     private dynamicDisplay: boolean = false;
 
     private readonly helper: SequenceCollectorHelper = new SequenceCollectorHelper();
-    readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    readonly rcsbFvQuery: RcsbClient = rcsbClient;
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
     private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
     private alignmentResponse: AlignmentResponse;

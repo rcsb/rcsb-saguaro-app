@@ -33,11 +33,11 @@ export class Slider extends React.Component<SliderInterface,null> {
 
 }
 
-const actionIcon:(action:SlideAction) => JSX.Element = (action)=>(
-    <div
-        style={{display:"inline-block", width:6, height:6, marginBottom: 4, marginRight:5}}
-        className={(action == "prev" ? classes.sliderPrev : classes.sliderNext)+" "+classes.sliderIcon}
-    >
-        <div/>
-    </div>
-);
+export function actionIcon(action:SlideAction): JSX.Element{
+    return(<div
+            style={{display:"inline-block", width:6, height:6, marginBottom: 4, marginRight:5}}
+            className={(action == "prev" ? classes.sliderPrev : classes.sliderNext)+" "+classes.sliderIcon}
+        >
+            <div/>
+        </div>);
+}

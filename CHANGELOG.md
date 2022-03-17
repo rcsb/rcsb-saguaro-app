@@ -2,6 +2,16 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.1.0] - 2022-03-16
+### New features
+- Histogram visualization through Victory
+- `RcsbSearch` is a new package to communicate with RCSB Search API
+
+### Code refactoring
+- Context manager `rcsbFvCtxManager` is only responsible for handling PFVs
+- New Context manager `rcsbRequestCtxManager` responsible for API requests
+  - All API requests should be done through this class (currently, not happening)
+
 ## [4.0.6] - 2022-02-15
 ### Minor bug fix
 - Minor type fix in react-select. New select option type `SelectOptionProps`
@@ -172,7 +182,7 @@ Changed `setTimeout` calls to 'rxjs' `asyncScheduler`
 
 ## [1.4.8] - 2021-06-15
 ### Optimization
-- RcsbFvContextManager never duplicates requests. It tracks individual request status ("available"|"pending")
+- RcsbRequestContextManager never duplicates requests. It tracks individual request status ("available"|"pending")
 
 ## [1.4.7] - 2021-06-14
 ### Dependency update

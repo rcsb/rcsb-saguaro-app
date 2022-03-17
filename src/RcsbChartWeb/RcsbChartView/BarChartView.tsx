@@ -7,14 +7,14 @@ import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 import {TickLabelFactory as TLF} from "./RcsbChartComponents/TickLabelFactory";
-import {AbstractChartView} from "./AbstractChartView";
+import {AbstractObserverChartView} from "./AbstractObserverChartView";
 
 interface BarChatViewInterface {
     data: ChartObjectInterface[];
     subData: ChartObjectInterface[];
 }
 
-export class BarChartView extends AbstractChartView {
+export class BarChartView extends AbstractObserverChartView {
 
     private readonly dataProvider: ChartDataInterface = new BarChartData();
     readonly state: BarChatViewInterface = {

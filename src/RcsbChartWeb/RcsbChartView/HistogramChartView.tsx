@@ -7,14 +7,14 @@ import {BarClickCallbackType, BarData, BarComponent} from "./RcsbChartComponents
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
-import {AbstractChartView} from "./AbstractChartView";
+import {AbstractObserverChartView} from "./AbstractObserverChartView";
 
 interface HisChatViewInterface {
     data: ChartObjectInterface[];
     subData: ChartObjectInterface[];
 }
 
-export class HistogramChartView extends AbstractChartView {
+export class HistogramChartView extends AbstractObserverChartView {
 
     private readonly dataProvider: ChartDataInterface = new HistogramChartData();
     readonly state: HisChatViewInterface = {

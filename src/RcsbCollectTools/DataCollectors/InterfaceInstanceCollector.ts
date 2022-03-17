@@ -1,4 +1,4 @@
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     CoreInterface,
     QueryInterfacesArgs
@@ -13,7 +13,7 @@ export interface InterfaceInstanceInterface {
 }
 
 export class InterfaceInstanceCollector {
-    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
     public async collect(requestConfig: QueryInterfacesArgs): Promise<Array<InterfaceInstanceInterface>> {
         try {

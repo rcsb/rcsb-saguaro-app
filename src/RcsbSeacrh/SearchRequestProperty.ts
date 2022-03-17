@@ -10,7 +10,7 @@ export class SearchRequestProperty {
 
     private searchRequest: SearchRequest = new SearchRequest();
 
-    private async _request(config: {query: SearchQueryType; facets: FacetType[]; returnType: ReturnType;}): Promise<QueryResult | null> {
+    private async _requestFacets(config: {query: SearchQueryType; facets: FacetType[]; returnType: ReturnType;}): Promise<QueryResult | null> {
         return await this.searchRequest.request({
             query: config.query,
             request_options: config.facets.length > 0 ? {
@@ -29,8 +29,8 @@ export class SearchRequestProperty {
         });
     }
 
-    public async request(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null> {
-        return this._request({query:query, facets:facets, returnType:returnType});
+    public async requestFacets(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null> {
+        return this._requestFacets({query:query, facets:facets, returnType:returnType});
     }
 
     public async requestMembers(query: SearchQuery): Promise<Array<string>> {
@@ -41,6 +41,10 @@ export class SearchRequestProperty {
             },
             return_type: query.return_type
         })).result_set.map(item=>typeof item === "string" ? item : item.identifier);
+    }
+
+    public async request(query: SearchQuery): Promise<QueryResult | null> {
+        return await this.searchRequest.request(query);
     }
 
 }

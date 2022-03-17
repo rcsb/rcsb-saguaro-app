@@ -20,7 +20,7 @@ import {RcsbQueryInterfaceInstances} from "./RcsbQueryInterfaceInstances";
 import {RcsbQueryAssemblyInterfaces} from "./RcsbQueryAssemblyInterfaces";
 
 //TODO Implement a cache to store requests and avoid duplication
-export class RcsbClient {
+class RcsbClientClass {
     private rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryAnnotations();
     private rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryGroupAnnotations();
     private rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse> = new RcsbQueryAlignment();
@@ -72,3 +72,6 @@ export class RcsbClient {
         return await this.rcsbQueryAssemblyInterfaces.request(requestConfig);
     }
 }
+
+export const rcsbClient: RcsbClientClass = new RcsbClientClass();
+export type RcsbClient = typeof rcsbClient;

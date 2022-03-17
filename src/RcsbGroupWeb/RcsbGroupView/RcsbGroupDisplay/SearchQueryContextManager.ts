@@ -1,4 +1,4 @@
-import {Subject} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 import {ChartMapType} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
@@ -12,10 +12,10 @@ export interface SearchQueryContextManagerSubjectInterface {
 export class SearchQueryContextManager {
     private static readonly searchQueryObservable: Subject<SearchQueryContextManagerSubjectInterface> = new Subject<SearchQueryContextManagerSubjectInterface>();
     private static readonly attributeList: string[] = [];
-    public static subscribe(f:(x:SearchQueryContextManagerSubjectInterface)=>void, attr:string|null):void{
+    public static subscribe(f:(x:SearchQueryContextManagerSubjectInterface)=>void, attr?:string): Subscription {
         if(typeof attr === "string")
             this.attributeList.push(attr);
-        this.searchQueryObservable.subscribe({
+        return this.searchQueryObservable.subscribe({
             next:(o:SearchQueryContextManagerSubjectInterface)=>{
                 f(o);
             }

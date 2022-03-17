@@ -2,15 +2,15 @@ import {RcsbContextType, RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvMod
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvInstance} from "../RcsbFvModule/RcsbFvInstance";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
-import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
-import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {
     SelectOptionInterface,
     SelectOptionProps
 } from "../WebTools/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export interface InstanceSequenceOnchangeInterface {
     pdbId: string;
@@ -47,7 +47,7 @@ export class RcsbFvInstanceBuilder {
     }
 
     static async buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
-        const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
+        const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
         const result: Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData();
         if(result.length == 0){
             RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");

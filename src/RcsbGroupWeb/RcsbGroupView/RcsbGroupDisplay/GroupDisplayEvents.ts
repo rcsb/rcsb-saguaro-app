@@ -6,11 +6,7 @@ import {ChartType} from "../../../RcsbChartWeb/RcsbChartView/ChartViewInterface"
 import {BarData} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartComponents/BarComponent";
 import React from "react";
 import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
-import {
-    addNewNodeToAttributeSearchQuery,
-    buildNodeSearchQuery,
-    searchAttributeQuery
-} from "../../../RcsbSeacrh/QueryStore/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
 import {ChartMapType} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
@@ -36,13 +32,13 @@ export namespace GroupDisplayEvents {
         chart.chartConfig.barClickCallback = async (datum:BarData, data: BarData[],e: React.MouseEvent) => {
             let query: SearchQueryType|undefined = undefined;
             if(datum.isLabel){
-                query= searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
+                query= SQT.searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
             }else{
-                query = searchAttributeQuery(chart.attribute, data.filter(d=>d.isLabel).map(d=>d.x) as any, Operator.In, Service.Text, true);
+                query = SQT.searchAttributeQuery(chart.attribute, data.filter(d=>d.isLabel).map(d=>d.x) as any, Operator.In, Service.Text, true);
             }
             if(chart.filters)
                 chart.filters.forEach(f=>{
-                    query = addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
+                    query = SQT.addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
                 })
             await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
         };
@@ -51,16 +47,16 @@ export namespace GroupDisplayEvents {
     function addHistogramChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
         chart.chartConfig.barClickCallback = async (datum:BarData, data: BarData[],e: React.MouseEvent) => {
             const range: Range|DateRange = formatRange(chart, datum);
-            const query: SearchQueryType = addNewNodeToAttributeSearchQuery(chart.attribute, range, Operator.Range, searchQuery.query, Service.Text);
+            const query: SearchQueryType = SQT.addNewNodeToAttributeSearchQuery(chart.attribute, range, Operator.Range, searchQuery.query, Service.Text);
             await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
         };
     }
 
     async function clickEvent(e: React.MouseEvent, chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, query: SearchQueryType, returnType:ReturnType ): Promise<void> {
         if(e.shiftKey) {
-            location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(buildNodeSearchQuery(query, searchQuery.query, returnType)));
+            location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(SQT.buildNodeSearchQuery(query, searchQuery.query, returnType)));
         }else{
-            const fullQuery = buildNodeSearchQuery(searchQuery.query, query, returnType);
+            const fullQuery = SQT.buildNodeSearchQuery(searchQuery.query, query, returnType);
             const chartMap: ChartMapType = await GDCM.groupDisplayChartMap(groupProvenanceId,groupId,fullQuery);
             SQCM.next({chartMap:chartMap, attributeName: chart.attributeName, searchQuery:fullQuery});
         }

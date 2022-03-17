@@ -1,4 +1,4 @@
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     CoreAssembly,
     CoreEntry,
@@ -9,7 +9,7 @@ import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector"
 
 export class EntryAssembliesCollector {
 
-    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = rcsbClient;
     static readonly modelKey: string = "Model";
 
     public async collect(requestConfig: QueryEntryArgs): Promise<Map<string,Array<PolymerEntityInstanceInterface>>> {

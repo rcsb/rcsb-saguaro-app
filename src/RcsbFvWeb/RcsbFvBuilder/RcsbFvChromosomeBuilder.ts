@@ -1,14 +1,14 @@
-import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/Translators/PolymerEntityChromosomeTranslate";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
-import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {
     RcsbFvAdditionalConfig,
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export class RcsbFvChromosomeBuilder {
 
@@ -18,7 +18,7 @@ export class RcsbFvChromosomeBuilder {
 
     static async buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<RcsbFvModulePublicInterface>{
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
-            const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
+            const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
             const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData();
             const entitySet: Set<string> = new Set<string>();
             result.sort((a,b)=>{
@@ -26,7 +26,7 @@ export class RcsbFvChromosomeBuilder {
             }).forEach(r=>{
                 entitySet.add(r.entryId+TagDelimiter.entity+r.entityId);
             });
-            const entityChrTranslate: PolymerEntityChromosomeTranslate = await rcsbFvCtxManager.getEntityToChromosome(Array.from(entitySet));
+            const entityChrTranslate: PolymerEntityChromosomeTranslate = await rcsbRequestCtxManager.getEntityToChromosome(Array.from(entitySet));
             const entityMap: Map<string, Array<string>> = entityChrTranslate.getData();
             if(entityMap.size == 0){
                 RcsbFvCoreBuilder.showMessage(elementFvId, "No genome alignments are available");

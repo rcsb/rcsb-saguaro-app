@@ -10,8 +10,8 @@ import {
 import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
 import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {GroupReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export interface CreateFvInterface {
     elementId: string;
@@ -30,7 +30,7 @@ export class RcsbFvCoreBuilder {
      * @param createFvBuilder This is the function used to create the PFV. Cases where buttons are needed will be created in custom definitions of createFvBuilder. The PFV should be always created calling RcsbFvCoreBuilder.createFv
      * */
     static async getPolymerEntityInstanceMapAndCustomBuildFv(entryId: string, createFvBuilder:(p: PolymerEntityInstanceTranslate)=>Promise<RcsbFvModulePublicInterface>): Promise<RcsbFvModulePublicInterface>{
-        const entityToInstance: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
+        const entityToInstance: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
         return await createFvBuilder(entityToInstance);
     }
 
@@ -43,7 +43,7 @@ export class RcsbFvCoreBuilder {
         fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface,
         config: RcsbFvModuleBuildInterface
     ): Promise<RcsbFvModulePublicInterface> {
-        const entityToInstance: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
+        const entityToInstance: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
         return await RcsbFvCoreBuilder.createFv({
             elementId:elementId,
             fvModuleI:fvModuleI,

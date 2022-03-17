@@ -1,11 +1,11 @@
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {GroupPolymerEntity, QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 import {MultipleEntityInstancesCollector} from "./MultipleEntityInstancesCollector";
 
 export class GroupMemberCollector {
 
-    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
     public async collect(requestConfig: QueryPolymer_Entity_GroupArgs): Promise<Array<PolymerEntityInstanceInterface>> {
         try {

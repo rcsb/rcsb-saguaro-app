@@ -4,10 +4,10 @@ import {RcsbFvUniprotEntity} from "../RcsbFvModule/RcsbFvUniprotEntity";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {RcsbFvUniprotInstance} from "../RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvUniprot} from "../RcsbFvModule/RcsbFvUniprot";
-import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
-import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export class RcsbFvUniprotBuilder {
 
@@ -28,7 +28,7 @@ export class RcsbFvUniprotBuilder {
                                 await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, additionalConfig);
                             } else {
                                 const entryId: string = entityId.split(TagDelimiter.entity)[0];
-                                const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbFvCtxManager.getEntityToInstance(entryId);
+                                const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
                                 const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData().filter(r=>{
                                     return r.entityId === entityId.split(TagDelimiter.entity)[1];
                                 });

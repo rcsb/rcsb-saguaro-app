@@ -1,4 +1,4 @@
-import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
 export class EntryAssemblyTranslate {
     private readonly rawData: Map<string,Array<PolymerEntityInstanceInterface>>;

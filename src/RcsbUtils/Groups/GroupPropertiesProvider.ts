@@ -1,4 +1,4 @@
-import {EntryPropertyIntreface} from "../RcsbCollectTools/PropertyCollector/MultipleEntryPropertyCollector";
+import {EntryPropertyIntreface} from "../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 
 export interface GroupPropertiesProviderInterface{
     entryProperties: Array<EntryPropertyIntreface>;

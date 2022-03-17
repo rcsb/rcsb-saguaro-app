@@ -14,7 +14,6 @@ import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCo
 import {AnnotationTrack, FeaturePositionGaps} from "../../RcsbCollectTools/AnnotationCollector/AnnotationTrack";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
@@ -22,6 +21,7 @@ import {RcsbFvUniprotBuilder} from "../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {alignmentVariation} from "../../RcsbUtils/AnnotationGenerators/AlignmentVariation";
 import {alignmentGlobalLigandBindingSite} from "../../RcsbUtils/AnnotationGenerators/AlignmentGlobalBindingSite";
 import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
+import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 
 type TabKey = "alignment"|"structural-features"|"binding-sites";
 
@@ -54,18 +54,18 @@ export class GroupSequenceTabs extends React.Component <{groupProvenanceId: Grou
             const search: SearchRequestProperty = new SearchRequestProperty();
             this.filterEntities = await search.requestMembers({
                 ...this.props.searchQuery,
-                query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
+                query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                 return_type: ReturnType.PolymerEntity
             });
             this.filterInstances = await search.requestMembers({
                 ...this.props.searchQuery,
-                query: addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
+                query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                 return_type: ReturnType.PolymerInstance
             });
             await this.onSelect(this.currentTab);
         }else{
             const search: SearchRequestProperty = new SearchRequestProperty();
-            this.filterInstances = await search.requestMembers({query: searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
+            this.filterInstances = await search.requestMembers({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
             await this.onSelect(this.currentTab);
         }
     }

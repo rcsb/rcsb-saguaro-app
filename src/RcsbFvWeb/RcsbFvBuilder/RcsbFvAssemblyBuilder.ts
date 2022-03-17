@@ -1,15 +1,15 @@
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
-import {rcsbFvCtxManager} from "./RcsbFvContextManager";
-import {EntryAssembliesCollector} from "../../RcsbCollectTools/Translators/EntryAssembliesCollector";
+import {EntryAssembliesCollector} from "../../RcsbCollectTools/DataCollectors/EntryAssembliesCollector";
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
-import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {EntryAssemblyTranslate} from "../../RcsbUtils/Translators/EntryAssemblyTranslate";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export class RcsbFvAssemblyBuilder {
 
     static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<RcsbFvModulePublicInterface> {
-        const assemblyTranslate: EntryAssemblyTranslate = await rcsbFvCtxManager.getEntryToAssembly(entryId);
+        const assemblyTranslate: EntryAssemblyTranslate = await rcsbRequestCtxManager.getEntryToAssembly(entryId);
         const assemblyMap:Map<string,Array<PolymerEntityInstanceInterface>>  = assemblyTranslate.getData();
         if(assemblyMap.size == 0){
             RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");

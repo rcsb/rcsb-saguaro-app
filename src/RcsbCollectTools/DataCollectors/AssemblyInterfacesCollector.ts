@@ -1,4 +1,4 @@
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     CoreAssembly, QueryAssembliesArgs,
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
@@ -10,7 +10,7 @@ export interface AssemblyInterfacesInterface {
 
 export class AssemblyInterfacesCollector {
 
-    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = rcsbClient;
     public async collect(requestConfig: QueryAssembliesArgs): Promise<Array<AssemblyInterfacesInterface>> {
         try {
             const result: Array<CoreAssembly> = await this.rcsbFvQuery.requestAssemblyInterfaces(requestConfig);

@@ -1,5 +1,5 @@
 import {PolymerEntityInstanceTranslate} from "./PolymerEntityInstanceTranslate";
-import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {TagDelimiter} from "../TagDelimiter";
 import {Operator} from "../../Helpers/Operator";
 

@@ -1,9 +1,9 @@
 import {AlignmentResponse, QueryAlignmentArgs, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class PolymerEntityChromosomeCollector {
 
-    private readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
     public async collect( entityIds: Array<string>): Promise<Map<string, Array<string>>> {
         const entityMap: Map<string, Array<string>> = new Map<string, Array<string>>();

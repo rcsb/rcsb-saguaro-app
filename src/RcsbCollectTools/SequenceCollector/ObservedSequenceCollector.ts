@@ -12,14 +12,14 @@ import {
 } from "./SequenceCollector";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {MultipleEntityInstanceTranslate} from "../../RcsbUtils/Translators/MultipleEntityInstanceTranslate";
-import {MultipleEntityInstancesCollector} from "../Translators/MultipleEntityInstancesCollector";
+import {MultipleEntityInstancesCollector} from "../DataCollectors/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
-import {RcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     AlignmentCollectConfig,
     SequenceCollectorInterface
 } from "./SequenceCollectorInterface";
-import {PolymerEntityInstanceInterface} from "../Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
 import {Operator} from "../../Helpers/Operator";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
@@ -28,7 +28,7 @@ export class ObservedSequenceCollector implements SequenceCollectorInterface {
     private entityInstanceMap: MultipleEntityInstanceTranslate = new MultipleEntityInstanceTranslate();
     private unObservedMap: Map<string,Set<number>> = new Map<string, Set<number>>();
     private sequenceCollector: SequenceCollector = new SequenceCollector();
-    readonly rcsbFvQuery: RcsbClient = new RcsbClient();
+    readonly rcsbFvQuery: RcsbClient = rcsbClient;
     private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
     private externalTrackBuilder: ExternalTrackBuilderInterface;
 

@@ -1,3 +1,4 @@
+
 export {
     buildEntryChromosome,
     buildFullChromosome,
@@ -20,6 +21,7 @@ export {
     unmount
 } from "./RcsbFvWeb/RcsbFvBuilder";
 
-export {RcsbFvContextManager} from "./RcsbExport/RcsbFvContextManager";
+import {rcsbRequestCtxManager} from "./RcsbRequest/RcsbRequestContextManager";
+export {rcsbRequestCtxManager as RcsbRequestContextManager};
 export {RcsbFvUI} from "./RcsbExport/RcsbFvUI";
 export {FeatureType} from "./RcsbExport/FeatureType";

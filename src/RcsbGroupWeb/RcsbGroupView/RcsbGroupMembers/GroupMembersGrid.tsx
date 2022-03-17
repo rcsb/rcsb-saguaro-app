@@ -1,20 +1,21 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/Translators/MultipleEntityInstancesCollector";
+import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../../RcsbSeacrh/QueryStore/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
     EntryPropertyIntreface,
     MultipleEntryPropertyCollector
-} from "../../../RcsbCollectTools/PropertyCollector/MultipleEntryPropertyCollector";
+} from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/Translators/PolymerEntityInstancesCollector";
+import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
+import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 
 interface GroupMembersGridInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -77,10 +78,12 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
 
     private async getMembersData(): Promise<void> {
         const searchResult: QueryResult = await this.searchRequest();
-        const itemList: Array<ItemFeaturesInterface> = parseItems(this.props.groupProvenanceId, this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
-            (await (new MultipleEntryPropertyCollector()).collect({entry_ids:searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)}))
-            :
-            (await (new MultipleEntityInstancesCollector()).collect({entity_ids:searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)})));
+        const itemList: Array<ItemFeaturesInterface> = parseItems(
+            this.props.groupProvenanceId, this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
+                (await rcsbRequestCtxManager.getEntryProperties(searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)))
+                    :
+                (await rcsbRequestCtxManager.getEntityProperties(searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)))
+        );
         const visited: Set<string> = new Set<string>();
         this.setState({
             itemList: itemList
@@ -108,9 +111,8 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
 }
 
 async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, start:number, rows: number, searchQuery?: SearchQuery): Promise<QueryResult> {
-    const search: SearchRequest = new SearchRequest();
-    return  await search.request({
-        query: searchQuery ? addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : searchGroupQuery(groupProvenanceId, groupId),
+    return await rcsbRequestCtxManager.getSearchQuery({
+        query: searchQuery ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
             pager:{
                 start: start,

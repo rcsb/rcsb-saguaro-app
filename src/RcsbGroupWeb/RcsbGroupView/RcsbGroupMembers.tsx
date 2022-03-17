@@ -4,7 +4,7 @@ import classes from "./RcsbGroupMembers/Components/scss/group-display.module.scs
 import {GroupMembersGrid} from "./RcsbGroupMembers/GroupMembersGrid";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {addGroupNodeToSearchQuery, searchGroupQuery} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./RcsbGroupMembers/Components/Slider";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
@@ -12,6 +12,7 @@ import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
 } from "./RcsbGroupDisplay/SearchQueryContextManager";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 interface RcsbGroupMembersInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -76,8 +77,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
         SQCM.subscribe(
             (o:SearchQueryContextManagerSubjectInterface)=>{
                 this.updateSearchQuery(o);
-            },
-            null
+            }
         );
     }
 
@@ -122,9 +122,8 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
 }
 
 async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult> {
-    const search: SearchRequest = new SearchRequest();
-    return  await search.request({
-        query: searchQuery ? addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : searchGroupQuery(groupProvenanceId, groupId),
+    return await rcsbRequestCtxManager.getSearchQuery({
+        query: searchQuery ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
             return_counts: true
         },

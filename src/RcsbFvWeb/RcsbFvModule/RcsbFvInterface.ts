@@ -12,11 +12,11 @@ import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/An
 
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {rcsbFvCtxManager} from "../RcsbFvBuilder/RcsbFvContextManager";
 import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
 import {burialFraction, burialFractionFilter} from "../../RcsbUtils/AnnotationGenerators/BurialFraction";
 import {FeatureType} from "../../RcsbExport/FeatureType";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 
@@ -69,11 +69,11 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     private titleSuffix(rcsbContext: RcsbContextType): ((ann: AnnotationFeatures, d: Feature)=>Promise<string>) {
         return (async (ann: AnnotationFeatures, d: Feature) => {
             if (ann.source === Source.PdbInterface) {
-                const interfaceTranslate = await rcsbFvCtxManager.getInterfaceToInstance(ann.target_id);
+                const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
                 const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
                 const chPair: [string, string] = interfaceTranslate.getInstances(ann.target_id);
                 const asym: string = chPair[0] == chain ? chPair[1] : chPair[0]
-                const auth: string = (await rcsbFvCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
+                const auth: string = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
                 const operators: [Array<Array<string>>, Array<Array<string>>] = interfaceTranslate.getOperatorIds(ann.target_id);
                 let partnerOperator: string = "";
                 if(Array.isArray(rcsbContext.operatorIds)){

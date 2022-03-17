@@ -8,13 +8,14 @@ import {Container} from "react-bootstrap";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbGroupMembers} from "./RcsbGroupMembers";
 import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterface";
-import {rcsbFvCtxManager} from "../../RcsbFvWeb/RcsbFvBuilder/RcsbFvContextManager";
 import {SearchQueryType} from "../../RcsbSeacrh/SearchRequestProperty";
 import { ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {getFacetStoreFromGroupProvenance} from "../../RcsbSeacrh/QueryStore/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {GroupDisplayAdditionalProperties} from "./RcsbGroupDisplay/GroupDisplayAdditionalProperties";
 import {GroupDisplayChartMap as GDCM} from "./RcsbGroupDisplay/GroupDisplayChartMap";
+import {RcsbGroupSearchQueryComponentFactory} from "./RcsbGroupQuerySeacrh/RcsbGroupSearchQueryComponentFactory";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 
 export class RcsbGroupDisplay {
@@ -22,7 +23,7 @@ export class RcsbGroupDisplay {
     public static async displayRcsbSearchStats(elementId: string, facetStore: FacetStoreInterface, searchQuery:SearchQueryType, returnType: ReturnType): Promise<void>{
         let facets: Array<Facet> = [];
         for(const service of facetStore.getServices()){
-            const groupProperties: QueryResult = await rcsbFvCtxManager.getSearchQueryResult(
+            const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
                 searchQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
                 facetStore.returnType
@@ -46,11 +47,12 @@ export class RcsbGroupDisplay {
     }
 
     public static async displaySearchAttributes(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:string[], additionalProperties?: GroupDisplayAdditionalProperties): Promise<void>{
-        const layout: string[] = facetLayoutGrid ?? getFacetStoreFromGroupProvenance(groupProvenanceId).facetLayoutGrid;
+        const layout: string[] = facetLayoutGrid ?? SQT.getFacetStoreFromGroupProvenance(groupProvenanceId).facetLayoutGrid;
         const chartMap: ChartMapType = await GDCM.groupDisplayChartMap(groupProvenanceId,groupId,searchQuery);
         if(layout.flat().filter((e)=>(chartMap.get(e)))){
             ReactDom.render(
                 <div className={classes.bootstrapGroupComponentScope}>
+                    {RcsbGroupSearchQueryComponentFactory.getGroupSearchComponent(groupProvenanceId, groupId, searchQuery)}
                     <Container fluid={"lg"}>
                         <RcsbChartLayout
                             layout={layout}
