@@ -82,8 +82,7 @@ export class RcsbGroupMembers extends React.Component <RcsbGroupMembersInterface
     }
 
     private updateSearchQuery(sqData: SearchQueryContextManagerSubjectInterface): void{
-        if(sqData.searchQuery)
-            this.setState({searchQuery:sqData.searchQuery, nPages:0, selectedIndex:0});
+        this.setState({searchQuery:sqData.searchQuery, nPages:0, selectedIndex:0});
     }
 
     private async loadPages(): Promise<void>{

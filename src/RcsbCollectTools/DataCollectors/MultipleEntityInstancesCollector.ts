@@ -4,7 +4,7 @@ import {
     QueryPolymer_EntitiesArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstancesCollector, PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
-import {MultipleDocumentPropertyCollectorInterface} from "./CollectorInterface";
+import {MultipleDocumentPropertyCollectorInterface} from "./DataCollectorInterface";
 
 export class MultipleEntityInstancesCollector implements MultipleDocumentPropertyCollectorInterface<"entity_ids",PolymerEntityInstanceInterface>{
 
