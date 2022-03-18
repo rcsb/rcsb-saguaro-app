@@ -18,7 +18,7 @@
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
-    "buildDoc": "npx typedoc ./src/app.ts && sed -i '' '/---/d' docs/index.html",
+    "buildDoc": "typedoc ./src/app.ts && sed -i '' '/---/d' docs/index.html",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -75,7 +75,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@rcsb/rcsb-api-tools": "^3.0.0-groups.2",
+    "@rcsb/rcsb-api-tools": "^3.0.1-groups.5",
     "@rcsb/rcsb-saguaro": "^2.0.2",
     "ideogram": "^1.33.0",
     "react-select": "^5.2.2",
