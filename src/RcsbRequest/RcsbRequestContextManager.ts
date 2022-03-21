@@ -127,7 +127,7 @@ class RcsbRequestContextManager {
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            ()=>(this.searchRequest.request(searchQuery))
+            async ()=>(await this.searchRequest.request(searchQuery))
         );
     }
 
@@ -136,7 +136,7 @@ class RcsbRequestContextManager {
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            ()=>(this.searchRequest.requestFacets(query, facets, returnType))
+            async ()=>(await this.searchRequest.requestFacets(query, facets, returnType))
         );
     }
 

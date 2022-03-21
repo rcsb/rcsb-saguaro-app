@@ -11,7 +11,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
-} from "./RcsbGroupDisplay/SearchQueryContextManager";
+} from "./RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 interface RcsbGroupMembersInterface {

@@ -11,7 +11,7 @@ import * as resource from "../../../RcsbServerConfig/web.resources.json";
 import {ChartMapType} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {GroupDisplayChartMap as GDCM} from "./GroupDisplayChartMap";
-import {SearchQueryContextManager as SQCM} from "./SearchQueryContextManager";
+import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
 
 export namespace GroupDisplayEvents {
 
@@ -58,7 +58,13 @@ export namespace GroupDisplayEvents {
         }else{
             const fullQuery = SQT.buildNodeSearchQuery(searchQuery.query, query, returnType);
             const chartMap: ChartMapType = await GDCM.groupDisplayChartMap(groupProvenanceId,groupId,fullQuery);
-            SQCM.next({chartMap:chartMap, attributeName: chart.attributeName, searchQuery:fullQuery});
+            SQCM.next({
+                chartMap:chartMap,
+                attributeName: chart.attributeName,
+                searchQuery:fullQuery,
+                groupId:groupId,
+                groupProvenanceId:groupProvenanceId
+            });
         }
     }
 

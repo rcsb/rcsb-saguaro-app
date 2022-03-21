@@ -8,6 +8,7 @@ import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 import {TickLabelFactory as TLF} from "./RcsbChartComponents/TickLabelFactory";
 import {AbstractObserverChartView} from "./AbstractObserverChartView";
+import {DependentAxisFactory} from "./RcsbChartComponents/DependentAxisFactory";
 
 interface BarChatViewInterface {
     data: ChartObjectInterface[];
@@ -57,17 +58,7 @@ export class BarChartView extends AbstractObserverChartView {
 
 }
 
-const CROSS_AXIS = (<VictoryAxis
-    dependentAxis={true}
-    crossAxis={true}
-    orientation="top"
-    style={{
-        grid: {
-            stroke: "#999999",
-            strokeDasharray: "1 3"
-        }
-    }}
-/>);
+const CROSS_AXIS: JSX.Element = DependentAxisFactory.getAxis({orientation:"top"});
 
 function stack(data:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack>

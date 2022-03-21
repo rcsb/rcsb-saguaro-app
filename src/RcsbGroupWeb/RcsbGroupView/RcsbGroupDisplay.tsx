@@ -14,7 +14,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {GroupDisplayAdditionalProperties} from "./RcsbGroupDisplay/GroupDisplayAdditionalProperties";
 import {GroupDisplayChartMap as GDCM} from "./RcsbGroupDisplay/GroupDisplayChartMap";
-import {RcsbGroupSearchQueryComponentFactory} from "./RcsbGroupQuerySeacrh/RcsbGroupSearchQueryComponentFactory";
+import {SearchQueryComponentFactory} from "./RcsbGroupSeacrhQuery/SearchQueryComponentFactory";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 
@@ -52,7 +52,7 @@ export class RcsbGroupDisplay {
         if(layout.flat().filter((e)=>(chartMap.get(e)))){
             ReactDom.render(
                 <div className={classes.bootstrapGroupComponentScope}>
-                    {RcsbGroupSearchQueryComponentFactory.getGroupSearchComponent(groupProvenanceId, groupId, searchQuery)}
+                    {SearchQueryComponentFactory.getGroupSearchComponent(groupProvenanceId, groupId, searchQuery)}
                     <Container fluid={"lg"}>
                         <RcsbChartLayout
                             layout={layout}

@@ -3,7 +3,7 @@ import * as React from "react";
 import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
-} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupDisplay/SearchQueryContextManager";
+} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 

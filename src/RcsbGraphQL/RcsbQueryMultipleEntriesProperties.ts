@@ -2,13 +2,14 @@ import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import query from "./Queries/Yosemite/QueryMultipleEntriesProperties.graphql";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface EntryInstancesResultInterface {
     entries: Array<CoreEntry>;
 }
 
 export class RcsbQueryMultipleEntriesProperties implements RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>>{
-    readonly client: GraphQLRequest = new GraphQLRequest("yosemite");
+    readonly client: GraphQLRequest = rcsbRequestClient.yosemite;
     public async request(requestConfig: QueryEntriesArgs): Promise<Array<CoreEntry>> {
         try {
             const response:EntryInstancesResultInterface = await this.client.request<QueryEntriesArgs, EntryInstancesResultInterface>(

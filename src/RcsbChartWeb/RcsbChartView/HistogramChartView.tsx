@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
-import {ReactNode} from "react";
 import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarData, BarComponent} from "./RcsbChartComponents/BarComponent";
@@ -8,6 +7,7 @@ import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
 import {AbstractObserverChartView} from "./AbstractObserverChartView";
+import {DependentAxisFactory} from "./RcsbChartComponents/DependentAxisFactory";
 
 interface HisChatViewInterface {
     data: ChartObjectInterface[];
@@ -87,13 +87,4 @@ function bar(data: BarData[], nBins: number, color: string, barComp?: JSX.Elemen
    />)  : null;
 }
 
-const CROSS_AXIS = (<VictoryAxis
-    dependentAxis={true}
-    crossAxis={true}
-    style={{
-        grid: {
-            stroke: "#999999",
-            strokeDasharray: "1 3"
-        }
-    }}
-/>);
+const CROSS_AXIS = DependentAxisFactory.getAxis();

@@ -92,5 +92,23 @@ const webConstants = {
     devtool: 'source-map'
 };
 
-module.exports =[webWorker, webBuilder, webChart, webConstants];
+const webRequest = {
+    ...commonConfig,
+    //mode: "development",
+    mode:"production",
+    entry: {
+        'request':'./build/src/request.js'
+    },
+    output: {
+        filename: '[name].js',
+        library: 'RcsbRequest',
+        libraryTarget: 'umd',
+        umdNamedDefine: true,
+        globalObject: 'this',
+        path: path.resolve(__dirname, 'build/dist')
+    },
+    devtool: 'source-map'
+};
+
+module.exports =[webWorker, webBuilder, webChart, webConstants, webRequest];
 

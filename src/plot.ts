@@ -1,5 +1,6 @@
 export {
     buildSearchRequest,
     buildGroup,
-    buildGroupMembers
+    buildGroupMembers,
+    searchQueryContextManager
 } from "./RcsbGroupWeb/RcsbGroupBuilder";

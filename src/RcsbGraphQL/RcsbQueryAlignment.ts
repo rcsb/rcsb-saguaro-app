@@ -7,6 +7,7 @@ import queryAlignment from "./Queries/Borrego/QueryAlignments.graphql";
 import queryGroupAlignment from "./Queries/Borrego/QueryGroupAlignments.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface AlignmentResponseInterface{
     alignment: AlignmentResponse;
@@ -16,9 +17,8 @@ interface GroupAlignmentResponseInterface{
     group_alignment: AlignmentResponse;
 }
 
-
 export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse>{
-    readonly client: GraphQLRequest = new GraphQLRequest("borrego");
+    readonly client: GraphQLRequest = rcsbRequestClient.borrego;
     public async request(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse> {
         try {
             const result: AlignmentResponseInterface = await this.client.request<QueryAlignmentArgs,AlignmentResponseInterface>({

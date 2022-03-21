@@ -7,6 +7,7 @@ import queryAnnotations from "./Queries/Borrego/QueryAnnotations.graphql";
 import queryGroupAnnotations from "./Queries/Borrego/QueryGroupAnnotations.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface AnnotationsResultInterface {
     annotations: Array<AnnotationFeatures>;
@@ -17,7 +18,7 @@ interface GroupAnnotationsResultInterface {
 }
 
 export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>>{
-    readonly client: GraphQLRequest = new GraphQLRequest("borrego");
+    readonly client: GraphQLRequest = rcsbRequestClient.borrego;
     public async request(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>> {
         try {
             const annotationsResponse: AnnotationsResultInterface = await this.client.request<QueryAnnotationsArgs,AnnotationsResultInterface>(
