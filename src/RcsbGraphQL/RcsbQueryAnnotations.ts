@@ -39,7 +39,7 @@ export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotat
 }
 
 export class RcsbQueryGroupAnnotations implements RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>>{
-    readonly client: GraphQLRequest = new GraphQLRequest("borrego");
+    readonly client: GraphQLRequest = rcsbRequestClient.borrego;
     public async request(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>> {
         try {
             const annotationsResponse: GroupAnnotationsResultInterface = await this.client.request<QueryGroup_AnnotationsArgs,GroupAnnotationsResultInterface>(

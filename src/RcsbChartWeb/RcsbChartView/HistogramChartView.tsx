@@ -1,13 +1,13 @@
 import * as React from "react";
-import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
+import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryStack} from "victory";
 import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarClickCallbackType, BarData, BarComponent} from "./RcsbChartComponents/BarComponent";
+import {BarClickCallbackType, BarData, BarComponent} from "./ChartComponents/BarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
-import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
+import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractObserverChartView} from "./AbstractObserverChartView";
-import {DependentAxisFactory} from "./RcsbChartComponents/DependentAxisFactory";
+import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
 
 interface HisChatViewInterface {
     data: ChartObjectInterface[];
@@ -43,30 +43,32 @@ export class HistogramChartView extends AbstractObserverChartView {
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData, nBins, this.props.config.barClickCallback)}
-                    <VictoryAxis tickValues={this.dataProvider.tickValues()} tickFormat={(t) => {
-                        if(this.props.config?.mergeDomainMaxValue){
-                            if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
-                                return t;
-                            else
-                                return "";
-                        }
-                        return t;
-                    }}/>
-
+                    <VictoryAxis
+                        tickFormat={(t) => {
+                            if(this.props.config?.mergeDomainMaxValue){
+                                if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
+                                    return t;
+                                else
+                                    return "";
+                            }
+                            return t;
+                        }}
+                        tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily}} />}
+                    />
                 </VictoryChart>
             </div>
         );
     }
 
     componentDidMount() {
-        this.subscribe();
+        super.subscribe();
     }
 
 }
 
 function stack(histData: BarData[], subData: BarData[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
    return ( <VictoryStack>
-       {bar(histData,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, <TooltipComponent dy={-15}/>)}
+       {bar(histData,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:-15}))}
        {bar(subData,nBins, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }

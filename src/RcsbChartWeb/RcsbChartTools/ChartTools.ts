@@ -1,5 +1,5 @@
 import {ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
+import {BarData} from "../RcsbChartView/ChartComponents/BarComponent";
 
 export class ChartTools {
 
@@ -12,6 +12,7 @@ export class ChartTools {
     public static readonly xIncrement: number = 22;
     public static readonly xDomainPadding: number = 10;
     public static readonly barWidth: number = 10;
+    public static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
 
     public static readonly animationDuration: number = 600;
 
@@ -76,4 +77,5 @@ export class ChartTools {
         data.forEach((d=>{d.yc = subMap.get(d.x)}));
         subData.forEach((d=>{d.yc = dataMap.get(d.x)}));
     }
+
 }

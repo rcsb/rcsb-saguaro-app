@@ -1,5 +1,5 @@
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "../RcsbChartView/RcsbChartComponents/BarComponent";
+import {BarData} from "../RcsbChartView/ChartComponents/BarComponent";
 
 export interface ChartDataInterface {
     getChartData(): {barData: BarData[]; subData: BarData[];}

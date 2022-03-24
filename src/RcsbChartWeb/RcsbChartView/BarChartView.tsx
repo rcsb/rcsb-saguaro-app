@@ -1,14 +1,16 @@
 import * as React from "react";
-import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
+import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryStack} from "victory";
 import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarClickCallbackType, BarComponent, BarData} from "./RcsbChartComponents/BarComponent";
+import {BarClickCallbackType, BarComponent, BarData} from "./ChartComponents/BarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
-import {TooltipComponent} from "./RcsbChartComponents/TooltipComponent";
-import {TickLabelFactory as TLF} from "./RcsbChartComponents/TickLabelFactory";
+import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractObserverChartView} from "./AbstractObserverChartView";
-import {DependentAxisFactory} from "./RcsbChartComponents/DependentAxisFactory";
+import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
+import {LabelTextComponent} from "./ChartComponents/LabelTextComponent";
+import {LabelBackgroundComponent} from "./ChartComponents/LabelBackgroundComponent";
+import {LabelComponent} from "./ChartComponents/LabelComponent";
 
 interface BarChatViewInterface {
     data: ChartObjectInterface[];
@@ -46,14 +48,17 @@ export class BarChartView extends AbstractObserverChartView {
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData,this.props.config.barClickCallback)}
-                    <VictoryAxis tickValues={this.dataProvider.tickValues()} tickLabelComponent={TLF.getTickLabel()}/>
+                    <VictoryAxis
+                        tickLabelComponent={<LabelComponent/>}
+
+                    />
                 </VictoryChart>
             </div>
         );
     }
 
     componentDidMount() {
-        this.subscribe();
+        super.subscribe();
     }
 
 }
@@ -62,7 +67,7 @@ const CROSS_AXIS: JSX.Element = DependentAxisFactory.getAxis({orientation:"top"}
 
 function stack(data:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack>
-        {bar(data, "#5e94c3", <BarComponent barClick={barClick}/>, <TooltipComponent dx={25} />)}
+        {bar(data, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:25}))}
         {bar(subData, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }

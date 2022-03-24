@@ -1,5 +1,5 @@
 import {Subject, Subscription} from "rxjs";
-import {ChartMapType} from "../../../RcsbChartWeb/RcsbChartView/RcsbChartLayout";
+import {ChartMapType} from "../RcsbGroupChart/GroupChartLayout";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
