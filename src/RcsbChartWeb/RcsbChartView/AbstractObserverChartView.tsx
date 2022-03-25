@@ -6,7 +6,6 @@ import {
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {random} from "lodash";
 
 interface AbstractChartViewInterface {
     data: ChartObjectInterface[];
@@ -37,7 +36,7 @@ export class AbstractObserverChartView extends React.Component <ChartViewInterfa
         if(this.props.attributeName === sqData.attributeName){
             this.asyncUpdate(sqData);
         }else{
-            this.asyncUpdate(sqData,random(ChartTools.animationDuration*0.6,ChartTools.animationDuration*0.9))
+            this.asyncUpdate(sqData,300)
         }
     }
 

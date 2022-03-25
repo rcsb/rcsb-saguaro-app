@@ -2,7 +2,6 @@ import {VictoryAxis, VictoryLabel} from "victory";
 import * as React from "react";
 import {VictoryAxisProps} from "victory-axis";
 import {ChartTools} from "../../RcsbChartTools/ChartTools";
-import {LabelTextComponent} from "./LabelTextComponent";
 
 export class DependentAxisFactory {
 

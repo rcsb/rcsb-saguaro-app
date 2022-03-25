@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Bar, BarProps} from "victory";
+import {CanvasBar} from "victory-canvas";
 
 export interface BarData {
     x:string|number;
@@ -27,6 +28,16 @@ export class BarComponent extends React.Component <BarComponentInterface,{fillCo
 
     render(): JSX.Element {
         return (<Bar  {...this.props} x={this.x()} events={this.events()} style={{...this.props.style, ...this.style()}}/>);
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<BarComponentInterface>, nextState: Readonly<{ fillColor: string }>, nextContext: any): boolean {
+        return (
+            this.props.x !== nextProps.x ||
+            this.props.y !== nextProps.y ||
+            this.props.x0 !== nextProps.x0 ||
+            this.props.y0 !== nextProps.y0 ||
+            this.state.fillColor !== nextState.fillColor
+        );
     }
 
     private style(): React.CSSProperties{

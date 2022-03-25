@@ -83,7 +83,8 @@
     "ideogram": "^1.33.0",
     "react-select": "^5.2.2",
     "rxjs": "^6.6.0",
-    "victory": "^36.3.1"
+    "victory": "^36.3.1",
+    "victory-canvas": "^36.3.0"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"

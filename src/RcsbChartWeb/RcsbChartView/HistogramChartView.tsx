@@ -8,6 +8,7 @@ import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractObserverChartView} from "./AbstractObserverChartView";
 import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
+import {CanvasBar, CanvasGroup} from "victory-canvas";
 
 interface HisChatViewInterface {
     data: ChartObjectInterface[];
@@ -39,7 +40,7 @@ export class HistogramChartView extends AbstractObserverChartView {
                     height={ChartTools.constHeight}
                     width={width}
                     domain={{x:this.dataProvider.xDomain()}}
-                    animate={{duration: ChartTools.animationDuration}}
+                    animate={true}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData, nBins, this.props.config.barClickCallback)}

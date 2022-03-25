@@ -14,8 +14,6 @@ export class ChartTools {
     public static readonly barWidth: number = 10;
     public static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
 
-    public static readonly animationDuration: number = 600;
-
     public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): {x:string;y:number;}[]{
         const out: {x:string;y:number;}[] = data.filter(d=>( d.population>size)).map(d=>({
             x:d.label  as string,

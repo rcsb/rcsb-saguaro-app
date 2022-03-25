@@ -8,9 +8,8 @@ import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractObserverChartView} from "./AbstractObserverChartView";
 import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
-import {LabelTextComponent} from "./ChartComponents/LabelTextComponent";
-import {LabelBackgroundComponent} from "./ChartComponents/LabelBackgroundComponent";
 import {LabelComponent} from "./ChartComponents/LabelComponent";
+import {CanvasBar, CanvasGroup} from "victory-canvas";
 
 interface BarChatViewInterface {
     data: ChartObjectInterface[];
@@ -42,16 +41,11 @@ export class BarChartView extends AbstractObserverChartView {
                     height={height}
                     width={width}
                     scale={{y:"linear", x:"linear"}}
-                    animate={{
-                        duration: ChartTools.animationDuration
-                    }}
+                    animate={true}
                 >
                     {CROSS_AXIS}
                     {stack(barData, subData,this.props.config.barClickCallback)}
-                    <VictoryAxis
-                        tickLabelComponent={<LabelComponent/>}
-
-                    />
+                    <VictoryAxis tickLabelComponent={<LabelComponent/>} />
                 </VictoryChart>
             </div>
         );
