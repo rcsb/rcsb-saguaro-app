@@ -197,8 +197,8 @@ export const ECOD_FACET:FacetMemberInterface = {
 
 export const LIGAND_FACET:FacetMemberInterface = {
     id: "ligands",
-        title: "Small Molecules",
-        attributeName: "LIGAND_FACET",
+    title: "Small molecules",
+    attributeName: "LIGAND_FACET",
     attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
     contentType:"string",
     chartType: ChartType.barplot,
@@ -211,6 +211,36 @@ export const LIGAND_FACET:FacetMemberInterface = {
         aggregation_type: AggregationType.Terms,
             attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
             min_interval_population: 1
+    }
+}
+
+export const LIGAND_OF_INTEREST_FACET:FacetMemberInterface = {
+    id: "ligands",
+    title: "Ligands of interest",
+    attributeName: "LIGAND_OF_INTEREST_FACET",
+    attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
+    contentType:"string",
+    chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 20,
+        mergeName: "Other molecules"
+    },
+    facet: {
+        filter:{
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters: {
+                attribute: RcsbSearchMetadata.RcsbNonpolymerEntityAnnotation.Type.path,
+                operator: RcsbSearchMetadata.RcsbNonpolymerEntityAnnotation.Type.operator.ExactMatch,
+                value: "SUBJECT_OF_INVESTIGATION"
+            }
+        },
+        facets:[{
+            name:"LIGAND_OF_INTEREST_FACET",
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbNonpolymerEntityAnnotation.CompId.path,
+            min_interval_population: 1
+        }]
     }
 }
 
@@ -540,5 +570,6 @@ export const SearchFacets = {
     ENZYME_CLASS_FACET,
     GO_FUNCTION_FACET,
     GO_PROCESS_FACET,
-    GO_COMPONENT_FACET
+    GO_COMPONENT_FACET,
+    LIGAND_OF_INTEREST_FACET
 };
