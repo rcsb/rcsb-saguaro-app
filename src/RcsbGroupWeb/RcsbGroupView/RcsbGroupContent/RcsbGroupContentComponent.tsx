@@ -53,7 +53,7 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
 
     render() {
         if(this.state.subGroupMembers === this.state.fullGroupMembers)
-            return (<span>{this.props.completeGroupText ?? ""} {this.state.fullGroupMembers}</span>);
+            return (<span>{this.props.completeGroupText ?? ""} <a href={this.href().fullGroup}>{this.state.fullGroupMembers}</a></span>);
         else
             return (<span>{this.props.subGroupText ? this.props.subGroupText+" " : ""}
                 <a href={this.href().subGroup}>{this.state.subGroupMembers}</a>
