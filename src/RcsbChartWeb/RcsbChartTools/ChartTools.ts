@@ -1,5 +1,5 @@
-import {ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
-import {BarData} from "../RcsbChartView/ChartComponents/BarComponent";
+import {ChartObjectInterface} from "../RcsbChartComponent/ChartViewInterface";
+import {BarData} from "../RcsbChartComponent/ChartComponents/BarComponent";
 
 export class ChartTools {
 

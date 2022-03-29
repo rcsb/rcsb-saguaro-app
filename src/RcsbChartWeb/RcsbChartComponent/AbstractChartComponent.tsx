@@ -5,14 +5,13 @@ import {
     SearchQueryContextManagerSubjectInterface
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
-import {ChartTools} from "../RcsbChartTools/ChartTools";
 
 interface AbstractChartViewInterface {
     data: ChartObjectInterface[];
     subData: ChartObjectInterface[];
 }
 
-export class AbstractObserverChartView extends React.Component <ChartViewInterface & {attributeName:string}, AbstractChartViewInterface> {
+export class AbstractChartComponent extends React.Component <ChartViewInterface & {attributeName:string}, AbstractChartViewInterface> {
 
     private asyncSubscription: Subscription;
     private subscription: Subscription;

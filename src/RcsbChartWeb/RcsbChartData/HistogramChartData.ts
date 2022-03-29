@@ -1,7 +1,7 @@
 import {ChartDataInterface} from "./ChartDataInterface";
-import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartView/ChartViewInterface";
+import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartViewInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarData} from "../RcsbChartView/ChartComponents/BarComponent";
+import {BarData} from "../RcsbChartComponent/ChartComponents/BarComponent";
 
 export class HistogramChartData implements ChartDataInterface{
 

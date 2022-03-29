@@ -28,14 +28,12 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
     render(): JSX.Element{
         if(this.state?.facets)
             return (<div className={classes.bootstrapGroupComponentScope}>
-                <Container fluid={"lg"}>
                     <GroupChartLayout
                         layout={this.props.facetStore.facetLayoutGrid}
                         chartMap={FacetTools.getResultDrilldowns(this.props.facetStore.getFacetService("all"), this.state.facets).reduce<ChartMapType>((prev,current)=>{
                             return prev.set(current.attribute,{chart: current})
                         },new Map())}
                     />
-                </Container>
             </div>);
     }
 

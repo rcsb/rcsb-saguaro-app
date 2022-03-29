@@ -6,7 +6,7 @@ import {BarClickCallbackType, BarData, BarComponent} from "./ChartComponents/Bar
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
-import {AbstractObserverChartView} from "./AbstractObserverChartView";
+import {AbstractChartComponent} from "./AbstractChartComponent";
 import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
 import {CanvasBar, CanvasGroup} from "victory-canvas";
 
@@ -15,7 +15,7 @@ interface HisChatViewInterface {
     subData: ChartObjectInterface[];
 }
 
-export class HistogramChartView extends AbstractObserverChartView {
+export class HistogramChartComponent extends AbstractChartComponent {
 
     private readonly dataProvider: ChartDataInterface = new HistogramChartData();
     readonly state: HisChatViewInterface = {

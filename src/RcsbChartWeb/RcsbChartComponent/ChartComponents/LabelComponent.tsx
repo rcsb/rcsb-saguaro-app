@@ -3,6 +3,7 @@ import {VictoryLabel, VictoryLabelProps} from "victory";
 import uniqid from 'uniqid';
 
 import {ChartTools} from "../../RcsbChartTools/ChartTools";
+import {asyncScheduler, Subscription} from "rxjs";
 
 interface LabelComponentState {
     text:string;
@@ -15,6 +16,7 @@ export class LabelComponent extends React.Component<VictoryLabelProps, LabelComp
     public static readonly THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.75;
     public static readonly OVERFLOW_POSTFIX: " ..." = " ...";
     private static readonly BACKGROUND_COLOR: string = "#FFF";
+    private asyncSubscription: Subscription;
 
     readonly state: LabelComponentState = {
         text: this.props.text  as string,
@@ -52,10 +54,15 @@ export class LabelComponent extends React.Component<VictoryLabelProps, LabelComp
     }
 
     expandText(): void {
-        this.setState({label:this.state.text}, );
+        this.setState({label:this.state.text});
+        this.asyncSubscription = asyncScheduler.schedule(()=>{
+            this.collapseText();
+        }, 2600 );
     }
 
     collapseText(): void {
+        if(this.asyncSubscription)
+            this.asyncSubscription.unsubscribe();
         this.setState({label:this.state.collapsed});
     }
 
@@ -79,19 +86,3 @@ function displayTextWidth(text: string, suffix?: string): number {
     let metrics = context.measureText(suffix ? text+suffix : text);
     return Math.ceil(metrics.width);
 }
-
-/*    private mouseOver(): void {
-        const rect: SVGRectElement = document.getElementById(this.props.id as string)?.previousSibling as SVGRectElement;
-        if (rect) {
-            const x: string = rect.getAttribute("x");
-            if(x != "0") this.x = x;
-            rect.setAttribute("x", "0");
-        }
-    }
-
-    private mouseLeave(): void {
-        const rect: SVGRectElement = document.getElementById(this.props.id as string)?.previousSibling as SVGRectElement;
-        if (rect) {
-            rect.setAttribute("x", this.x);
-        }
-    }*/

@@ -2,7 +2,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import React from "react";
 import {Subscription} from "rxjs";
-import {Col, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import {actionIcon} from "../RcsbGroupMembers/Components/Slider";
 import {
     SearchQueryContextManager as SQCM,
@@ -11,6 +11,7 @@ import {
 import {UrlTools} from "../../../Helpers/UrlTools";
 import {ChartMapType} from "../RcsbGroupChart/GroupChartLayout";
 import {GroupChartMap as GDCM} from "../RcsbGroupChart/GroupChartTools";
+import Draggable from 'react-draggable';
 
 interface RcsbGroupQuerySearchComponentInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -40,13 +41,22 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
     render():JSX.Element {
         RcsbGroupSearchQueryComponent.unique = false;
         return (
-            <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 750px)"}}>
-                <Row>
-                    <Col onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</Col>
-                    <Col className={"text-nowrap"}>{this.state.index+1} / {this.state.searchQueryList.length}</Col>
-                    <Col onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</Col>
-                </Row>
-            </div>
+            <Draggable>
+                <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 760px)", width:180}}>
+                    <Container fluid={"md"} className={"border px-3 py-1 shadow bg-white"}>
+                        <Row >
+                            <Col className={"text-md-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
+                                Query History
+                            </Col>
+                        </Row>
+                        <Row style={{height:25}} >
+                            <Col md={2} className={"text-md-center my-auto"} onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</Col>
+                            <Col className={"text-md-center text-nowrap my-auto"}>{this.state.index+1} / {this.state.searchQueryList.length}</Col>
+                            <Col md={2} className={"text-md-center my-auto"} onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</Col>
+                        </Row>
+                    </Container>
+                </div>
+            </Draggable>
         );
     }
 

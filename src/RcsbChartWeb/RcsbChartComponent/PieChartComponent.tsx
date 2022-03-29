@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 import {ChartViewInterface} from "./ChartViewInterface";
 
 type pieData = {categories: string[];values:{x:string, y:number}[];};
-export class PieChartView extends React.Component <ChartViewInterface,ChartViewInterface> {
+export class PieChartComponent extends React.Component <ChartViewInterface,ChartViewInterface> {
 
     readonly state: ChartViewInterface = {...this.props};
 

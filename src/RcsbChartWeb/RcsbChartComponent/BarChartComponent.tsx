@@ -6,7 +6,7 @@ import {BarClickCallbackType, BarComponent, BarData} from "./ChartComponents/Bar
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
-import {AbstractObserverChartView} from "./AbstractObserverChartView";
+import {AbstractChartComponent} from "./AbstractChartComponent";
 import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
 import {LabelComponent} from "./ChartComponents/LabelComponent";
 import {CanvasBar, CanvasGroup} from "victory-canvas";
@@ -16,7 +16,7 @@ interface BarChatViewInterface {
     subData: ChartObjectInterface[];
 }
 
-export class BarChartView extends AbstractObserverChartView {
+export class BarChartComponent extends AbstractChartComponent {
 
     private readonly dataProvider: ChartDataInterface = new BarChartData();
     readonly state: BarChatViewInterface = {

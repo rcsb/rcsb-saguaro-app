@@ -63,8 +63,9 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",
     "react-dom": "^17.0.2",
-    "sass": "^1.43.5",
-    "sass-loader": "^12.3.0",
+    "react-draggable": "^4.4.4",
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0",
     "string-to-color": "^2.2.2",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.6",
@@ -73,6 +74,7 @@
     "typedoc-plugin-missing-exports": "^0.22.6",
     "typescript": "^4.5.5",
     "uniqid": "^5.4.0",
+    "victory": "^36.3.1",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
     "worker-loader": "^3.0.8"
@@ -82,9 +84,7 @@
     "@rcsb/rcsb-saguaro": "^2.0.2",
     "ideogram": "^1.33.0",
     "react-select": "^5.2.2",
-    "rxjs": "^6.6.0",
-    "victory": "^36.3.1",
-    "victory-canvas": "^36.3.0"
+    "rxjs": "^6.6.0"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"

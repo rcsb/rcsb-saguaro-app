@@ -1,5 +1,4 @@
 import * as React from "react";
-import classes from "../RcsbGroupMembers/Components/scss/group-display.module.scss";
 import {SearchQueryComponentFactory} from "../RcsbGroupSeacrhQuery/SearchQueryComponentFactory";
 import {Container} from "react-bootstrap";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
@@ -8,6 +7,7 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {GroupChartAdditionalProperties} from "./GroupChartAdditionalProperties";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
+import classes from "../RcsbGroupMembers/Components/scss/group-display.module.scss";
 
 interface RcsbGroupChartInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -32,7 +32,7 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
         if(this.state?.layout?.flat().filter((e)=>(this.state?.chartMap?.get(e)))) {
             return (<div className={classes.bootstrapGroupComponentScope}>
                 {SearchQueryComponentFactory.getGroupSearchComponent(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery)}
-                <Container fluid={"lg"}>
+                <Container fluid={"md"}>
                     <GroupChartLayout
                         layout={this.state.layout}
                         chartMap={this.state.chartMap}

@@ -39,7 +39,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
     render():JSX.Element {
         if(this.state.itemList.length >0){
             return (
-                    <Container fluid={"lg"}>
+                    <Container fluid={"md"}>
                         {
                             Array(this.props.nRows).fill(null).map((none,i)=>(
                                 <Row>
