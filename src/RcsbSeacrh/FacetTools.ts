@@ -81,6 +81,10 @@ export class FacetTools {
         return diff;
     }
 
+    public static getFacetFromName(facetMembers: FacetMemberInterface[], name: string): FacetMemberInterface {
+        return facetMembers.find((facet)=>(facet.attributeName === name));
+    }
+
     private static includeMissingFacets(partial: Array<RcsbChartInterface>,full: Array<RcsbChartInterface>): void {
         const partialFacetNameSet: Set<string> = new Set<string>(partial.map(f=>f.attributeName));
         const fullFacetNameSet: Map<string, RcsbChartInterface> = new Map<string,RcsbChartInterface>(full.map(f=>[f.attributeName,f]));
@@ -94,10 +98,6 @@ export class FacetTools {
     private static getFacetChartTypeFromAttribute(facetMembers: FacetMemberInterface[], attribute: string): {chartType: ChartType, chartConfig?: ChartConfigInterface, title: string} {
         const facet: FacetMemberInterface = facetMembers.find((facet)=>(facet.attributeName === attribute));
         return {chartType: facet.chartType, chartConfig:facet.chartConfig, title: facet.title};
-    }
-
-    private static getFacetFromName(facetMembers: FacetMemberInterface[], name: string): FacetMemberInterface {
-        return facetMembers.find((facet)=>(facet.attributeName === name));
     }
 
     private static getFacetFiltersFromName(facetMembers: FacetMemberInterface[], name: string): SearchFilter[] {

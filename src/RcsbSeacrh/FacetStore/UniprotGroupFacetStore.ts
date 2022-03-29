@@ -21,12 +21,33 @@ import {
     ENZYME_CLASS_FACET,
     GO_FUNCTION_FACET, GO_PROCESS_FACET, GO_COMPONENT_FACET
 } from "./SingleFacets";
+import {cloneDeep} from "lodash";
 
 class UniprotGroupFacetStore implements FacetStoreInterface{
-    private readonly entryFacet: FacetMemberInterface[] = [EXPERIMENTAL_METHOD_FACET,RESOLUTION_FACET,RELEASE_DATE_FACET,ENZYME_CLASS_FACET];
-    private readonly instanceFacet: FacetMemberInterface[] = [SCOP_FACET,CATH_FACET,ECOD_FACET,LIGAND_FACET];
-    private readonly entityFacet: FacetMemberInterface[] = [ORGANISM_FACET, TAXONOMY_FACET, PFAM_FACET, ENTITY_NAME_FACET,GO_FUNCTION_FACET,GO_PROCESS_FACET,GO_COMPONENT_FACET];
-    private readonly nonPolymerFacet: FacetMemberInterface[] = [CHEM_COMP_FACET];
+    private readonly entryFacet: FacetMemberInterface[] = [
+        cloneDeep<FacetMemberInterface>(EXPERIMENTAL_METHOD_FACET),
+        cloneDeep<FacetMemberInterface>(RESOLUTION_FACET),
+        cloneDeep<FacetMemberInterface>(RELEASE_DATE_FACET),
+        cloneDeep<FacetMemberInterface>(ENZYME_CLASS_FACET)
+    ];
+    private readonly instanceFacet: FacetMemberInterface[] = [
+        cloneDeep<FacetMemberInterface>(SCOP_FACET),
+        cloneDeep<FacetMemberInterface>(CATH_FACET),
+        cloneDeep<FacetMemberInterface>(ECOD_FACET),
+        cloneDeep<FacetMemberInterface>(LIGAND_FACET)
+    ];
+    private readonly entityFacet: FacetMemberInterface[] = [
+        cloneDeep<FacetMemberInterface>(ORGANISM_FACET),
+        cloneDeep<FacetMemberInterface>(TAXONOMY_FACET),
+        cloneDeep<FacetMemberInterface>(PFAM_FACET),
+        cloneDeep<FacetMemberInterface>(ENTITY_NAME_FACET),
+        cloneDeep<FacetMemberInterface>(GO_FUNCTION_FACET),
+        cloneDeep<FacetMemberInterface>(GO_PROCESS_FACET),
+        cloneDeep<FacetMemberInterface>(GO_COMPONENT_FACET)
+    ];
+    private readonly nonPolymerFacet: FacetMemberInterface[] = [
+        cloneDeep<FacetMemberInterface>(CHEM_COMP_FACET)
+    ];
 
     getServices(): Service[] {
         return [Service.Text];
