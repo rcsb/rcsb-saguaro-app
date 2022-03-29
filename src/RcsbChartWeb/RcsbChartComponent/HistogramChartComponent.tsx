@@ -7,8 +7,7 @@ import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractChartComponent} from "./AbstractChartComponent";
-import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
-import {CanvasBar, CanvasGroup} from "victory-canvas";
+import {AxisFactory} from "./ChartComponents/AxisFactory";
 
 interface HisChatViewInterface {
     data: ChartObjectInterface[];
@@ -42,20 +41,9 @@ export class HistogramChartComponent extends AbstractChartComponent {
                     domain={{x:this.dataProvider.xDomain()}}
                     animate={true}
                 >
-                    {CROSS_AXIS}
+                    {AxisFactory.getDependentAxis()}
                     {stack(barData, subData, nBins, this.props.config.barClickCallback)}
-                    <VictoryAxis
-                        tickFormat={(t) => {
-                            if(this.props.config?.mergeDomainMaxValue){
-                                if(parseFloat(t)<=this.props.config.mergeDomainMaxValue)
-                                    return t;
-                                else
-                                    return "";
-                            }
-                            return t;
-                        }}
-                        tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily}} />}
-                    />
+                    {AxisFactory.getAxis(this.props.config)}
                 </VictoryChart>
             </div>
         );
@@ -90,4 +78,3 @@ function bar(data: BarData[], nBins: number, color: string, barComp?: JSX.Elemen
    />)  : null;
 }
 
-const CROSS_AXIS = DependentAxisFactory.getAxis();

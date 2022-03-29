@@ -6,6 +6,9 @@
   "rcsb_entry": {
     "url": "/structure/"
   },
+  "rcsb_3d_view": {
+    "url": "/3d-view/"
+  },
   "rcsb_ligand": {
     "url": "/ligand/"
   },

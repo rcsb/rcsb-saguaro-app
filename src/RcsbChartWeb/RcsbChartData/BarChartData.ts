@@ -51,9 +51,9 @@ export class BarChartData implements ChartDataInterface{
         const barOther: number = data.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
         const subOut: BarData[] = subData.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         const subOther: number = subData.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
-        if(barOther>0 || subOther>0){
-            barOut.unshift({x:this.config?.mergeName, y:barOther, isLabel:false});
-            subOut.unshift({x:this.config?.mergeName, y:subOther, isLabel:false});
+        if( (barOther>0 || subOther>0) && this.config?.mergeName){
+            barOut.unshift({x:this.config.mergeName, y:barOther, isLabel:false});
+            subOut.unshift({x:this.config.mergeName, y:subOther, isLabel:false});
         }
         ChartTools.addComplementaryData(barOut,subOut);
         this.stringTicks = barOut.map(d=>d.x as string);

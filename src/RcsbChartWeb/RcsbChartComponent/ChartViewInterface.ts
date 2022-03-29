@@ -16,6 +16,7 @@ export interface ChartConfigInterface {
         origin: number;
         increment: number
     };
+    axisLabel?:string
     barClickCallback?:BarClickCallbackType;
 }
 

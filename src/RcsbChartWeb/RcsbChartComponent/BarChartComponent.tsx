@@ -7,9 +7,8 @@ import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractChartComponent} from "./AbstractChartComponent";
-import {DependentAxisFactory} from "./ChartComponents/DependentAxisFactory";
+import {AxisFactory} from "./ChartComponents/AxisFactory";
 import {LabelComponent} from "./ChartComponents/LabelComponent";
-import {CanvasBar, CanvasGroup} from "victory-canvas";
 
 interface BarChatViewInterface {
     data: ChartObjectInterface[];
@@ -43,7 +42,7 @@ export class BarChartComponent extends AbstractChartComponent {
                     scale={{y:"linear", x:"linear"}}
                     animate={true}
                 >
-                    {CROSS_AXIS}
+                    {AxisFactory.getDependentAxis({orientation:"top"})}
                     {stack(barData, subData,this.props.config.barClickCallback)}
                     <VictoryAxis tickLabelComponent={<LabelComponent/>} />
                 </VictoryChart>
@@ -57,7 +56,6 @@ export class BarChartComponent extends AbstractChartComponent {
 
 }
 
-const CROSS_AXIS: JSX.Element = DependentAxisFactory.getAxis({orientation:"top"});
 
 function stack(data:BarData[],subData:BarData[],barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack>

@@ -27,7 +27,11 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                 <div><img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/></div>
                 <div className={"bg-light border-top p-md-4"}>
                     <div>
-                        <a href={memberSummaryUrl(this.props.item, this.props.groupProvenanceId)}>{memberSummaryUrlText(this.props.item, this.props.groupProvenanceId)}</a>
+                        <strong>{memberSummaryUrlText(this.props.item, this.props.groupProvenanceId)} </strong>
+                        <span> - </span>
+                        <a href={memberSummaryUrl(this.props.item, this.props.groupProvenanceId)}>Summary</a>
+                        <span> | </span>
+                        <a href={member3DViewUrl(this.props.item, this.props.groupProvenanceId)}>Structure</a>
                     </div>
                     <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.name}><strong>Name: </strong>{this.props.item.name}</div>
                     <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Organism: </strong>{this.props.item.taxNames.join(", ")}</div>
@@ -54,6 +58,10 @@ function memberSummaryUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupPro
     if(groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId)
         return resource.rcsb_entry.url + ei.entryId.toLowerCase();
     return resource.rcsb_entry.url + ei.entryId.toLowerCase() + "#entity-" + ei.entityId;
+}
+
+function member3DViewUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvenanceId): string{
+    return resource.rcsb_3d_view.url + ei.entryId.toLowerCase();
 }
 
 function memberSummaryUrlText(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvenanceId): string{
