@@ -15,7 +15,7 @@ export class HistogramChartData implements ChartDataInterface{
         this.config = config;
     }
 
-    public getChartData(): { barData: BarData[]; subData: BarData[] } {
+    public getChartData(): { barData: BarData[]; } {
         const barData: BarData[] = this.transformData(this.data)
         const subData: BarData[] = this.transformData(this.subData)
         const mergedDomain: Set<number> = new Set<number>( barData.map(d=>d.x as number).concat(subData.map(d=>d.x as number)) );
@@ -28,7 +28,7 @@ export class HistogramChartData implements ChartDataInterface{
                 barData.push({x:x,y:0,isLabel:true});
         });
         ChartTools.addComplementaryData(barData,subData);
-        return {barData: barData, subData: subData};
+        return {barData: barData};
     }
 
     public xDomain(): [number, number]{

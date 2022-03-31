@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Bar, BarProps} from "victory";
-import {CanvasBar} from "victory-canvas";
 
 export interface BarData {
     x:string|number;

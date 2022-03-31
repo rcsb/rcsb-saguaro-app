@@ -29,7 +29,7 @@ export class LabelComponent extends React.Component<VictoryLabelProps, LabelComp
             {...this.props}
             textAnchor={this.state.textAnchor ?? this.props.textAnchor}
             x={this.state.x ?? this.props.x}
-            style={{fontSize: 12, fontFamily: ChartTools.fontFamily}}
+            style={{fontSize: ChartTools.fontSize, fontFamily: ChartTools.fontFamily}}
             text={this.state.label}
             id={this.id}
             backgroundStyle={{fill:LabelComponent.BACKGROUND_COLOR}}
@@ -41,14 +41,18 @@ export class LabelComponent extends React.Component<VictoryLabelProps, LabelComp
     }
 
     componentDidMount() {
-        expandObserver.subscribe((label)=>{
+        this.subscription = expandObserver.subscribe((label)=>{
             if(label.id!==this.id)
                 this.collapseText();
         })
     }
 
     shouldComponentUpdate(nextProps: Readonly<VictoryLabelProps>, nextState: Readonly<LabelComponentState>, nextContext: any): boolean {
-        return (nextProps.text != this.props.text || nextState.label != this.state.label);
+        return (
+            nextProps.text !== this.props.text ||
+            nextState.label !== this.state.label ||
+            (nextProps.text === this.props.text && nextProps.y != this.props.y)
+        );
     }
 
     componentDidUpdate(prevProps: Readonly<VictoryLabelProps>, prevState: Readonly<LabelComponentState>, snapshot?: any) {

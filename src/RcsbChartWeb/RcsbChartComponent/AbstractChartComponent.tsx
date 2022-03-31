@@ -1,20 +1,40 @@
-import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
+import {ChartConfigInterface, ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
 import * as React from "react";
 import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
+import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 
-interface AbstractChartViewInterface {
+interface AbstractChartState {
     data: ChartObjectInterface[];
     subData: ChartObjectInterface[];
+    chartConfig:ChartConfigInterface;
 }
 
-export class AbstractChartComponent extends React.Component <ChartViewInterface & {attributeName:string}, AbstractChartViewInterface> {
+interface AbstractChartInterface extends ChartViewInterface {
+    attributeName:string;
+}
 
+export abstract class AbstractChartComponent extends React.Component <AbstractChartInterface, AbstractChartState> {
+
+    protected readonly dataProvider: ChartDataInterface;
     private asyncSubscription: Subscription;
     private subscription: Subscription;
+    readonly state: AbstractChartState = {
+        data: this.props.data,
+        subData: this.props.subData,
+        chartConfig: this.props.chartConfig
+    };
+
+    componentDidMount() {
+        this.subscribe();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
 
     protected unsubscribe(): void {
         this.subscription.unsubscribe();

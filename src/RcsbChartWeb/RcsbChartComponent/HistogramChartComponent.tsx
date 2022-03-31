@@ -1,6 +1,5 @@
 import * as React from "react";
-import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryStack} from "victory";
-import {ChartObjectInterface, ChartViewInterface} from "./ChartViewInterface";
+import {Bar, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarData, BarComponent} from "./ChartComponents/BarComponent";
 import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
@@ -9,56 +8,39 @@ import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AxisFactory} from "./ChartComponents/AxisFactory";
 
-interface HisChatViewInterface {
-    data: ChartObjectInterface[];
-    subData: ChartObjectInterface[];
-}
 
 export class HistogramChartComponent extends AbstractChartComponent {
 
-    private readonly dataProvider: ChartDataInterface = new HistogramChartData();
-    readonly state: HisChatViewInterface = {
-        data: this.props.data,
-        subData: this.props.subData
-    };
-
-    constructor(props: ChartViewInterface & {attributeName:string}) {
-        super(props);
-    }
+    protected readonly dataProvider: ChartDataInterface = new HistogramChartData();
 
     render():JSX.Element {
-        this.dataProvider.setData(this.state.data, this.state.subData, this.props.config);
-        const {barData, subData}: { barData: BarData[]; subData: BarData[] } = this.dataProvider.getChartData();
+        this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
+        const {barData}: { barData: BarData[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.dataProvider.xDomain();
-        const nBins: number = (dom[1]-dom[0])/this.props.config.histogramBinIncrement;
+        const nBins: number = (dom[1]-dom[0])/this.props.chartConfig.histogramBinIncrement;
         return (
-            <div style={{width:width, height:ChartTools.constHeight}}>
+            <div style={{width:width}}>
                 <VictoryChart
                     padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingTopLarge, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
                     height={ChartTools.constHeight}
                     width={width}
                     domain={{x:this.dataProvider.xDomain()}}
-                    animate={true}
                 >
                     {AxisFactory.getDependentAxis()}
-                    {stack(barData, subData, nBins, this.props.config.barClickCallback)}
-                    {AxisFactory.getAxis(this.props.config)}
+                    {stack(barData, nBins, this.props.chartConfig.barClickCallback)}
+                    {AxisFactory.getRegularAxis(this.props.chartConfig)}
                 </VictoryChart>
             </div>
         );
     }
 
-    componentDidMount() {
-        super.subscribe();
-    }
-
 }
 
-function stack(histData: BarData[], subData: BarData[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
-   return ( <VictoryStack>
-       {bar(histData,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:-15}))}
-       {bar(subData,nBins, "#d0d0d0", <BarComponent />)}
+function stack(data: BarData[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
+   return ( <VictoryStack animate={true}>
+       {bar(data,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:-15}))}
+       {bar(data.map(d=>({...d,y:d.yc,yc:d.y})),nBins, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }
 

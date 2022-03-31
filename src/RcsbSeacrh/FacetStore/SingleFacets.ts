@@ -391,7 +391,7 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
     chartType: ChartType.barplot,
     chartConfig: {
         mostPopulatedGroups: 10,
-        //mergeName: "Other functions"
+        mergeName: "Other functions"
     },
     facet: {
         filter: {
@@ -449,7 +449,7 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
     chartType: ChartType.barplot,
     chartConfig: {
         mostPopulatedGroups: 10,
-        //mergeName: "Other processes"
+        mergeName: "Other processes"
     },
     facet: {
         filter: {
@@ -507,7 +507,7 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
     chartType: ChartType.barplot,
     chartConfig: {
         mostPopulatedGroups: 10,
-        //mergeName: "Other locations"
+        mergeName: "Other locations"
     },
     facet: {
         filter: {

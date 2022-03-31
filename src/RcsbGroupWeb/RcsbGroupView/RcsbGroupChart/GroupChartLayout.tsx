@@ -60,12 +60,12 @@ function chartCell(chartNode:JSX.Element, title: string, colSize:number = 6): JS
 
 function histogramChart(attributeName: string, chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
     return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <HistogramChartComponent data={chart.data} subData={subChart?.data} config={chart.chartConfig} attributeName={attributeName}/>
+        <HistogramChartComponent data={chart.data} subData={subChart?.data} chartConfig={chart.chartConfig} attributeName={attributeName}/>
     </div>);
 }
 
 function barChart(attributeName: string, chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
     return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <BarChartComponent data={chart.data} subData={subChart?.data} config={chart.chartConfig} attributeName={attributeName}/>
+        <BarChartComponent data={chart.data} subData={subChart?.data} chartConfig={chart.chartConfig} attributeName={attributeName}/>
     </div>);
 }

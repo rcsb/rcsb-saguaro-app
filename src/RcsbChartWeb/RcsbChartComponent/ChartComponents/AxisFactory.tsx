@@ -2,7 +2,7 @@ import {VictoryAxis, VictoryLabel} from "victory";
 import * as React from "react";
 import {VictoryAxisProps} from "victory-axis";
 import {ChartTools} from "../../RcsbChartTools/ChartTools";
-import {ChartConfigInterface, ChartViewInterface} from "../ChartViewInterface";
+import {ChartConfigInterface} from "../ChartViewInterface";
 
 export class AxisFactory {
 
@@ -26,7 +26,7 @@ export class AxisFactory {
         />);
     }
 
-    public static getAxis(config: ChartConfigInterface): JSX.Element {
+    public static getRegularAxis(config: ChartConfigInterface): JSX.Element {
         return (<VictoryAxis
             tickFormat={(t) => {
                 if(config.mergeDomainMaxValue){
@@ -39,7 +39,7 @@ export class AxisFactory {
             }}
             label={config.axisLabel}
             labelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily}} />}
-            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily}} />}
+            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily}}/>}
         />);
     }
 

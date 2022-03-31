@@ -8,6 +8,7 @@ export class BarChartData implements ChartDataInterface{
     private subData: ChartObjectInterface[];
     private config: ChartConfigInterface;
     private stringTicks: string[];
+    private excludedData: BarData[];
 
     public setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface):void {
         this.data = data;
@@ -15,7 +16,7 @@ export class BarChartData implements ChartDataInterface{
         this.config = config;
     }
 
-    public getChartData(): {barData: BarData[]; subData: BarData[];}{
+    public getChartData(): {barData: BarData[]; excludedData: BarData[];}{
         const data: BarData[] = ChartTools.labelsAsString(this.data);
         const subData: BarData[] = this.subData ? ChartTools.labelsAsString(this.subData) : [];
 
@@ -48,23 +49,22 @@ export class BarChartData implements ChartDataInterface{
                 return a.x.toString().localeCompare(b.x.toString())
         };
         const barOut: BarData[] = data.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const barOther: number = data.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
         const subOut: BarData[] = subData.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const subOther: number = subData.filter(d=>(!allowedCategories.has(d.x))).reduce((N,d)=> N+d.y ,0);
-        if( (barOther>0 || subOther>0) && this.config?.mergeName){
-            barOut.unshift({x:this.config.mergeName, y:barOther, isLabel:false});
-            subOut.unshift({x:this.config.mergeName, y:subOther, isLabel:false});
-        }
+        const excludedOut: BarData[] = data.filter(d=>(!allowedCategories.has(d.x)));
         ChartTools.addComplementaryData(barOut,subOut);
         this.stringTicks = barOut.map(d=>d.x as string);
         return {
             barData: barOut,
-            subData: subOut
+            excludedData: excludedOut
         };
     }
 
     public tickValues(): string[] {
         return this.stringTicks;
+    }
+
+    public getMissingCategories(): BarData[]{
+        return this.excludedData;
     }
 
 }

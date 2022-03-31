@@ -23,7 +23,7 @@ export interface ChartConfigInterface {
 export interface ChartViewInterface {
     data: ChartObjectInterface[];
     subData?: ChartObjectInterface[];
-    config?:ChartConfigInterface;
+    chartConfig?:ChartConfigInterface;
 }
 
 export enum ChartType {
