@@ -14,7 +14,7 @@ export namespace UrlTools {
     }
 
     export function decodeUrlParameters(): {key: string, value: any}[] | undefined {
-        return parseUrlParameters()?.map(param=>({key:param.key, value:JSON.parse(decodeURI(param.value))}));
+        return parseUrlParameters()?.map(param=>({key:param.key, value:JSON.parse(decodeURIComponent(param.value))}));
     }
 
     function parseUrlParameters(): Array<{key:string;value:any;}> | undefined {
@@ -27,7 +27,7 @@ export namespace UrlTools {
     }
 
     function encode(p: any): string {
-        return encodeURI(JSON.stringify(p));
+        return encodeURIComponent(JSON.stringify(p));
     }
 
 }

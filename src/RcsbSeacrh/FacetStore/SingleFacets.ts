@@ -76,7 +76,7 @@ export const RELEASE_DATE_FACET: FacetMemberInterface = {
 
 export const SCOP_FACET: FacetMemberInterface = {
     id: "scop_class",
-    title: "SCOP/SCOPe domain",
+    title: "SCOP/SCOPe Domain",
     attributeName: "SCOP_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType: "string",
@@ -117,7 +117,7 @@ export const SCOP_FACET: FacetMemberInterface = {
 
 export const CATH_FACET: FacetMemberInterface = {
     id: "cath_class",
-    title: "CATH domain",
+    title: "CATH Domain",
     attributeName: "CATH_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType: "string",
@@ -158,7 +158,7 @@ export const CATH_FACET: FacetMemberInterface = {
 
 export const ECOD_FACET: FacetMemberInterface = {
     id: "ecod_class",
-    title: "ECOD domain",
+    title: "ECOD Domain",
     attributeName: "ECOD_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path,
     contentType: "string",
@@ -199,7 +199,7 @@ export const ECOD_FACET: FacetMemberInterface = {
 
 export const LIGAND_FACET: FacetMemberInterface = {
     id: "ligands",
-    title: "Small molecules",
+    title: "Small Molecules",
     attributeName: "LIGAND_FACET",
     attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
     contentType: "string",
@@ -218,7 +218,7 @@ export const LIGAND_FACET: FacetMemberInterface = {
 
 export const LIGAND_OF_INTEREST_FACET: FacetMemberInterface = {
     id: "ligands",
-    title: "Ligands of interest",
+    title: "Ligands of Interest",
     attributeName: "LIGAND_OF_INTEREST_FACET",
     attribute: RcsbSearchMetadata.RcsbNonpolymerEntityInstanceContainerIdentifiers.CompId.path,
     contentType: "string",
@@ -286,7 +286,7 @@ export const TAXONOMY_FACET: FacetMemberInterface = {
 
 export const PFAM_FACET: FacetMemberInterface = {
     id: "Pfam",
-    title: "PFAM domain",
+    title: "PFAM Domain",
     attributeName: "PFAM_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
@@ -354,7 +354,7 @@ export const CHEM_COMP_FACET: FacetMemberInterface = {
 
 export const ENZYME_CLASS_FACET: FacetMemberInterface = {
     id: "enzyme_class",
-    title: "Enzyme classification",
+    title: "Enzyme Classification",
     attributeName: "ENZYME_CLASS_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbEcLineage.Name.path,
     contentType: "string",
@@ -384,7 +384,7 @@ export const ENZYME_CLASS_FACET: FacetMemberInterface = {
 
 export const GO_FUNCTION_FACET: FacetMemberInterface = {
     id: "go_function_class",
-    title: "GO molecular function",
+    title: "GO Molecular Function",
     attributeName: "GO_FUNCTION_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
@@ -442,7 +442,7 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
 
 export const GO_PROCESS_FACET: FacetMemberInterface = {
     id: "go_process_class",
-    title: "GO biological process",
+    title: "GO Biological Process",
     attributeName: "GO_PROCESS_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
@@ -500,7 +500,7 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
 
 export const GO_COMPONENT_FACET: FacetMemberInterface = {
     id: "go_component_class",
-    title: "GO cellular component",
+    title: "GO Cellular Component",
     attributeName: "GO_COMPONENT_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
