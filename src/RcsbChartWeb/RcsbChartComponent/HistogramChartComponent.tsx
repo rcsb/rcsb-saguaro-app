@@ -2,7 +2,7 @@ import * as React from "react";
 import {Bar, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarData, BarComponent} from "./ChartComponents/BarComponent";
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
 import {HistogramChartData} from "../RcsbChartData/HistogramChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractChartComponent} from "./AbstractChartComponent";
@@ -11,11 +11,11 @@ import {AxisFactory} from "./ChartComponents/AxisFactory";
 
 export class HistogramChartComponent extends AbstractChartComponent {
 
-    protected readonly dataProvider: ChartDataInterface = new HistogramChartData();
+    protected readonly dataProvider: ChartDataProviderInterface = new HistogramChartData();
 
     render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
-        const {barData}: { barData: BarData[];} = this.dataProvider.getChartData();
+        const {data}: { data: BarData[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.dataProvider.xDomain();
         const nBins: number = (dom[1]-dom[0])/this.props.chartConfig.histogramBinIncrement;
@@ -28,7 +28,7 @@ export class HistogramChartComponent extends AbstractChartComponent {
                     domain={{x:this.dataProvider.xDomain()}}
                 >
                     {AxisFactory.getDependentAxis()}
-                    {stack(barData, nBins, this.props.chartConfig.barClickCallback)}
+                    {stack(data, nBins, this.props.chartConfig.barClickCallback)}
                     {AxisFactory.getRegularAxis(this.props.chartConfig)}
                 </VictoryChart>
             </div>

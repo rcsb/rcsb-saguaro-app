@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartViewInterface";
+import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {HistogramChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/HistogramChartComponent";
 import {BarChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/BarChartComponent";
 import {Col, Container, Row} from "react-bootstrap";

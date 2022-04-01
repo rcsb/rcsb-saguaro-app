@@ -1,5 +1,5 @@
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartViewInterface";
+import {ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {Facet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";

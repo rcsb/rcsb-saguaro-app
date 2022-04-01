@@ -1,5 +1,5 @@
 import {Facet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {ChartConfigInterface, ChartType} from "../RcsbChartWeb/RcsbChartComponent/ChartViewInterface";
+import {ChartConfigInterface, ChartType} from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {FacetMemberInterface, FacetType} from "./FacetStore/FacetMemberInterface";
 import {cloneDeep} from "lodash";
 import {

@@ -1,9 +1,9 @@
-import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartViewInterface";
+import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {ChartDataInterface} from "./ChartDataInterface";
+import {ChartDataProviderInterface} from "./ChartDataProviderInterface";
 import {BarData} from "../RcsbChartComponent/ChartComponents/BarComponent";
 
-export class BarChartData implements ChartDataInterface{
+export class BarChartData implements ChartDataProviderInterface{
     private data: ChartObjectInterface[] ;
     private subData: ChartObjectInterface[];
     private config: ChartConfigInterface;
@@ -16,7 +16,7 @@ export class BarChartData implements ChartDataInterface{
         this.config = config;
     }
 
-    public getChartData(): {barData: BarData[]; excludedData: BarData[];}{
+    public getChartData(): {data: BarData[]; excludedData: BarData[];}{
         const data: BarData[] = ChartTools.labelsAsString(this.data);
         const subData: BarData[] = this.subData ? ChartTools.labelsAsString(this.subData) : [];
 
@@ -54,7 +54,7 @@ export class BarChartData implements ChartDataInterface{
         ChartTools.addComplementaryData(barOut,subOut);
         this.stringTicks = barOut.map(d=>d.x as string);
         return {
-            barData: barOut,
+            data: barOut,
             excludedData: excludedOut
         };
     }
@@ -65,6 +65,10 @@ export class BarChartData implements ChartDataInterface{
 
     public getMissingCategories(): BarData[]{
         return this.excludedData;
+    }
+
+    xDomain(): [number, number] {
+        return [0, 0];
     }
 
 }

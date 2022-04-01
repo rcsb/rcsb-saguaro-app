@@ -20,11 +20,6 @@ export interface ChartConfigInterface {
     barClickCallback?:BarClickCallbackType;
 }
 
-export interface ChartViewInterface {
-    data: ChartObjectInterface[];
-    subData?: ChartObjectInterface[];
-    chartConfig?:ChartConfigInterface;
-}
 
 export enum ChartType {
     pie = "pie",

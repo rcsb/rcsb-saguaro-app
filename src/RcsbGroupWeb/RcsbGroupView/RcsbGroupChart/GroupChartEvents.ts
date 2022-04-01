@@ -2,7 +2,7 @@ import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {DateRange, Range, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartViewInterface";
+import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {BarData} from "../../../RcsbChartWeb/RcsbChartComponent/ChartComponents/BarComponent";
 import React from "react";
 import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";

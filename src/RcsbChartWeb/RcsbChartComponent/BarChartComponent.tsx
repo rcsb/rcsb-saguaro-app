@@ -2,7 +2,7 @@ import * as React from "react";
 import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {BarClickCallbackType, BarComponent, BarData} from "./ChartComponents/BarComponent";
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
 import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractChartComponent} from "./AbstractChartComponent";
@@ -11,14 +11,14 @@ import {LabelComponent} from "./ChartComponents/LabelComponent";
 
 export class BarChartComponent extends AbstractChartComponent {
 
-    protected readonly dataProvider: ChartDataInterface = new BarChartData();
+    protected readonly dataProvider: ChartDataProviderInterface = new BarChartData();
     private readonly EXPAND_NUMBER: number = 10;
 
     render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
-        const {barData,excludedData}: {barData: BarData[]; excludedData?:BarData[];} = this.dataProvider.getChartData();
+        const {data,excludedData}: {data: BarData[]; excludedData?:BarData[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
-        const height: number = ChartTools.paddingTopLarge + barData.length*ChartTools.xIncrement;
+        const height: number = ChartTools.paddingTopLarge + data.length*ChartTools.xIncrement;
         return (
             <div style={{width:width}}>
                 <VictoryChart
@@ -29,7 +29,7 @@ export class BarChartComponent extends AbstractChartComponent {
                     scale={{y:"linear", x:"linear"}}
                 >
                     {AxisFactory.getDependentAxis({orientation:"top"})}
-                    {stack(barData, this.props.chartConfig.barClickCallback)}
+                    {stack(data, this.props.chartConfig.barClickCallback)}
                     <VictoryAxis tickLabelComponent={<LabelComponent/>} />
                 </VictoryChart>
                 {
