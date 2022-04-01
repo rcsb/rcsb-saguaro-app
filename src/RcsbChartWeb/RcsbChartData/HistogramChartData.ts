@@ -1,23 +1,21 @@
 import {ChartDataProviderInterface} from "./ChartDataProviderInterface";
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarData} from "../RcsbChartComponent/ChartComponents/BarComponent";
+import {ChartDataInterface} from "./ChartDataInterface";
 
 export class HistogramChartData implements ChartDataProviderInterface{
 
     private config: ChartConfigInterface;
-    private data: ChartObjectInterface[];
-    private subData: ChartObjectInterface[];
+    private data: ChartDataInterface[];
+    private chartSubData: ChartObjectInterface[];
+    private chartData: ChartObjectInterface[];
 
-    public setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface):void {
-        this.data = data;
-        this.subData = subData;
+    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config: ChartConfigInterface):void {
+        this.chartData = chartData;
+        this.chartSubData = chartSubData;
         this.config = config;
-    }
-
-    public getChartData(): { data: BarData[]; } {
-        const barData: BarData[] = this.transformData(this.data)
-        const subData: BarData[] = this.transformData(this.subData)
+        const barData: ChartDataInterface[] = this.transformData(chartData)
+        const subData: ChartDataInterface[] = this.transformData(chartSubData)
         const mergedDomain: Set<number> = new Set<number>( barData.map(d=>d.x as number).concat(subData.map(d=>d.x as number)) );
         const barDomain: Set<number> = new Set<number>( barData.map(d=>d.x as number) );
         const subDomain: Set<number> = new Set<number>( subData.map(d=>d.x as number) );
@@ -28,16 +26,20 @@ export class HistogramChartData implements ChartDataProviderInterface{
                 barData.push({x:x,y:0,isLabel:true});
         });
         ChartTools.addComplementaryData(barData,subData);
-        return {data: barData};
+        this.data = barData;
+    }
+
+    public getChartData(): { data: ChartDataInterface[]; } {
+        return {data: this.data};
     }
 
     public xDomain(): [number, number]{
         return [
-            this.config.domainMinValue ?? Math.floor(Math.min(...this.transformData(this.data).map(d=>d.x as number),...this.transformData(this.subData).map(d=>d.x as number))),
+            this.config.domainMinValue ?? Math.floor(Math.min(...this.transformData(this.chartData).map(d=>d.x as number),...this.transformData(this.chartSubData).map(d=>d.x as number))),
             this.config?.mergeDomainMaxValue ?
                 Math.ceil(this.config?.mergeDomainMaxValue+this.config.histogramBinIncrement)
                 :
-                Math.ceil(Math.max(...this.transformData(this.data).map(d=>d.x as number),...this.transformData(this.subData).map(d=>d.x as number))+this.config.histogramBinIncrement)
+                Math.ceil(Math.max(...this.transformData(this.chartData).map(d=>d.x as number),...this.transformData(this.chartSubData).map(d=>d.x as number))+this.config.histogramBinIncrement)
         ]
     }
 
@@ -52,7 +54,7 @@ export class HistogramChartData implements ChartDataProviderInterface{
         return undefined;
     }
 
-    private transformData(data: ChartObjectInterface[]): BarData[]{
+    private transformData(data: ChartObjectInterface[]): ChartDataInterface[]{
         if(!data)
             return [];
         let out: {x:number;y:number}[] = [];
@@ -63,4 +65,5 @@ export class HistogramChartData implements ChartDataProviderInterface{
         }
         return out.map(d=>({x:d.x+this.config.histogramBinIncrement*0.5,y:d.y, isLabel:true}));
     }
+
 }

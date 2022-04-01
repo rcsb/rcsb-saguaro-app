@@ -1,8 +1,8 @@
 import {VictoryTooltip} from "victory";
 import * as React from "react";
-import {BarData} from "./BarComponent";
 import {VictoryTooltipProps} from "victory-tooltip";
-import {ChartTools} from "../../RcsbChartTools/ChartTools";
+import {ChartTools} from "../../../RcsbChartTools/ChartTools";
+import {ChartDataInterface} from "../../../RcsbChartData/ChartDataInterface";
 
 export class TooltipFactory extends React.Component<VictoryTooltipProps, any> {
 
@@ -20,7 +20,7 @@ export class TooltipFactory extends React.Component<VictoryTooltipProps, any> {
     }
 
     private static text(props:VictoryTooltipProps):string {
-        const d: BarData = (props.datum as BarData);
+        const d: ChartDataInterface = (props.datum as ChartDataInterface);
         return d.y.toString() + (d.yc > 0? (" of " + (d.y+d.yc).toString()) : "") + " group members\n" +
             "Click to refine group\n" +
             "Shift-click to search";

@@ -6,6 +6,7 @@ import {
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
 import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
+import {AbstractChartImplementationType} from "./AbstractChartImplementation";
 
 interface AbstractChartState {
     data: ChartObjectInterface[];
@@ -18,6 +19,7 @@ interface AbstractChartInterface {
     subData?: ChartObjectInterface[];
     chartConfig?:ChartConfigInterface;
     attributeName:string;
+    chartComponentImplementation: AbstractChartImplementationType;
 }
 
 export abstract class AbstractChartComponent extends React.Component <AbstractChartInterface, AbstractChartState> {

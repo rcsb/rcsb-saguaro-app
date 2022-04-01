@@ -1,24 +1,17 @@
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {ChartDataProviderInterface} from "./ChartDataProviderInterface";
-import {BarData} from "../RcsbChartComponent/ChartComponents/BarComponent";
+import {ChartDataInterface} from "./ChartDataInterface";
 
 export class BarChartData implements ChartDataProviderInterface{
-    private data: ChartObjectInterface[] ;
-    private subData: ChartObjectInterface[];
-    private config: ChartConfigInterface;
+
     private stringTicks: string[];
-    private excludedData: BarData[];
+    private excludedData: ChartDataInterface[];
+    private data: ChartDataInterface[];
 
-    public setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface):void {
-        this.data = data;
-        this.subData = subData;
-        this.config = config;
-    }
-
-    public getChartData(): {data: BarData[]; excludedData: BarData[];}{
-        const data: BarData[] = ChartTools.labelsAsString(this.data);
-        const subData: BarData[] = this.subData ? ChartTools.labelsAsString(this.subData) : [];
+    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config: ChartConfigInterface):void {
+        const data: ChartDataInterface[] = ChartTools.labelsAsString(chartData);
+        const subData: ChartDataInterface[] = chartSubData ? ChartTools.labelsAsString(chartSubData) : [];
 
         const mergedValues: Map<string|number, number> = new Map<string, number>();
         subData.forEach((d)=>{
@@ -39,23 +32,27 @@ export class BarChartData implements ChartDataProviderInterface{
         });
         const allowedCategories: Set<string|number> = new Set<string|number>([...mergedValues.entries()]
             .sort((a,b)=>(b[1]-a[1]))
-            .slice(0,this.config?.mostPopulatedGroups ?? mergedValues.size)
+            .slice(0,config?.mostPopulatedGroups ?? mergedValues.size)
             .map(e=>e[0]));
 
-        const sort = (b: BarData, a: BarData) => {
+        const sort = (b: ChartDataInterface, a: ChartDataInterface) => {
             if(mergedValues.get(b.x) != mergedValues.get(a.x))
                 return mergedValues.get(b.x)-mergedValues.get(a.x);
             else
                 return a.x.toString().localeCompare(b.x.toString())
         };
-        const barOut: BarData[] = data.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const subOut: BarData[] = subData.sort((a,b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const excludedOut: BarData[] = data.filter(d=>(!allowedCategories.has(d.x)));
+        const barOut: ChartDataInterface[] = data.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
+        const subOut: ChartDataInterface[] = subData.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         ChartTools.addComplementaryData(barOut,subOut);
         this.stringTicks = barOut.map(d=>d.x as string);
+        this.excludedData = data.filter(d=>(!allowedCategories.has(d.x)));
+        this.data = barOut;
+    }
+
+    public getChartData(): {data: ChartDataInterface[]; excludedData: ChartDataInterface[];}{
         return {
-            data: barOut,
-            excludedData: excludedOut
+            data: this.data,
+            excludedData: this.excludedData
         };
     }
 
@@ -63,12 +60,12 @@ export class BarChartData implements ChartDataProviderInterface{
         return this.stringTicks;
     }
 
-    public getMissingCategories(): BarData[]{
+    public getMissingCategories(): ChartDataInterface[]{
         return this.excludedData;
     }
 
     xDomain(): [number, number] {
-        return [0, 0];
+        return;
     }
 
 }

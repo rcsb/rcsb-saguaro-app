@@ -1,8 +1,8 @@
 import {VictoryAxis, VictoryLabel} from "victory";
 import * as React from "react";
 import {VictoryAxisProps} from "victory-axis";
-import {ChartTools} from "../../RcsbChartTools/ChartTools";
-import {ChartConfigInterface} from "../ChartConfigInterface";
+import {ChartTools} from "../../../RcsbChartTools/ChartTools";
+import {ChartConfigInterface} from "../../ChartConfigInterface";
 
 export class AxisFactory {
 

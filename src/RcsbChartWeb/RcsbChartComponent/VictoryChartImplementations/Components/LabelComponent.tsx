@@ -1,7 +1,7 @@
 import * as React from "react";
 import {VictoryLabel, VictoryLabelProps} from "victory";
 import uniqid from 'uniqid';
-import {ChartTools} from "../../RcsbChartTools/ChartTools";
+import {ChartTools} from "../../../RcsbChartTools/ChartTools";
 import {Subject, Subscription} from "rxjs";
 
 interface LabelComponentState {

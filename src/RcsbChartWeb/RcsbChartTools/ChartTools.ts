@@ -1,5 +1,5 @@
 import {ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
-import {BarData} from "../RcsbChartComponent/ChartComponents/BarComponent";
+import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 
 export class ChartTools {
 
@@ -58,7 +58,7 @@ export class ChartTools {
         return out;
     }
 
-    public static labelsAsString(data: ChartObjectInterface[]): BarData[]{
+    public static labelsAsString(data: ChartObjectInterface[]): ChartDataInterface[]{
         return data.map(d=>({
             x:d.label as string,
             y:d.population,
@@ -70,7 +70,7 @@ export class ChartTools {
         return data.map(d=>({x: parseFloat(d.label as string), y:d.population}));
     }
 
-    public static addComplementaryData(data: BarData[], subData: BarData[]): void{
+    public static addComplementaryData(data: ChartDataInterface[], subData: ChartDataInterface[]): void{
         const dataMap: Map<string|number, number> = new Map<string | number, number>( data.map<[string|number,number]>((d)=>[d.x,d.y]) );
         const subMap: Map<string|number, number> = new Map<string | number, number>( subData.map<[string|number,number]>((d)=>[d.x,d.y]) );
         data.forEach((d=>{d.yc = subMap.get(d.x)}));

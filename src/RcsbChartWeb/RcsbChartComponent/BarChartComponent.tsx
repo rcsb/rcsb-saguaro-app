@@ -1,13 +1,10 @@
 import * as React from "react";
-import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {BarClickCallbackType, BarComponent, BarData} from "./ChartComponents/BarComponent";
 import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
 import {BarChartData} from "../RcsbChartData/BarChartData";
-import {TooltipFactory} from "./ChartComponents/TooltipFactory";
 import {AbstractChartComponent} from "./AbstractChartComponent";
-import {AxisFactory} from "./ChartComponents/AxisFactory";
-import {LabelComponent} from "./ChartComponents/LabelComponent";
+import {AbstractChartImplementationType} from "./AbstractChartImplementation";
+import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
 
 export class BarChartComponent extends AbstractChartComponent {
 
@@ -16,22 +13,13 @@ export class BarChartComponent extends AbstractChartComponent {
 
     render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
-        const {data,excludedData}: {data: BarData[]; excludedData?:BarData[];} = this.dataProvider.getChartData();
+        const {data,excludedData}: {data: ChartDataInterface[]; excludedData?:ChartDataInterface[];} = this.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const height: number = ChartTools.paddingTopLarge + data.length*ChartTools.xIncrement;
+        const ChartComponent: AbstractChartImplementationType = this.props.chartComponentImplementation;
         return (
             <div style={{width:width}}>
-                <VictoryChart
-                    domainPadding={{ x: ChartTools.xDomainPadding }}
-                    padding={{left:ChartTools.paddingLeft, top:ChartTools.paddingTopLarge, right:ChartTools.paddingRight}}
-                    height={height}
-                    width={width}
-                    scale={{y:"linear", x:"linear"}}
-                >
-                    {AxisFactory.getDependentAxis({orientation:"top"})}
-                    {stack(data, this.props.chartConfig.barClickCallback)}
-                    <VictoryAxis tickLabelComponent={<LabelComponent/>} />
-                </VictoryChart>
+                <ChartComponent width={width} height={height} chartConfig={this.props.chartConfig} dataProvider={this.dataProvider}/>
                 {
                     excludedData.length > 0  || this.state.chartConfig.mostPopulatedGroups > this.props.chartConfig.mostPopulatedGroups ?
                          this.chartUI(excludedData.length): <></>
@@ -109,28 +97,4 @@ export class BarChartComponent extends AbstractChartComponent {
     }
 
 
-}
-
-function stack(data:BarData[],barClick:BarClickCallbackType): JSX.Element{
-    return ( <VictoryStack animate={true}>
-        {bar(data, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:25}))}
-        {bar(data.map(d=>({...d,y:d.yc,yc:d.y})), "#d0d0d0", <BarComponent />)}
-    </VictoryStack>);
-}
-
-function bar(data:BarData[],color: string, barComp: JSX.Element, labelComponent?:JSX.Element): JSX.Element {
-    return data.length > 0 ? (<VictoryBar
-        barWidth={ChartTools.xDomainPadding}
-        style={{
-            data: {
-                fill: color
-            }
-        }}
-        horizontal={true}
-        data={data}
-        categories={{x:data.map(d=>d.x.toString())}}
-        dataComponent={barComp ?? <Bar />}
-        labels={labelComponent ? ()=>undefined : undefined}
-        labelComponent={labelComponent}
-    />)  : null;
 }

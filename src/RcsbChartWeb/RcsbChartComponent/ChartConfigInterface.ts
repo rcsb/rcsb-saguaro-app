@@ -1,10 +1,12 @@
-import {BarClickCallbackType} from "./ChartComponents/BarComponent";
+import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import * as React from "react";
 
 export interface ChartObjectInterface {
     label: string|number;
     population: number;
 }
 
+export type BarClickCallbackType = (datum:ChartDataInterface, data:ChartDataInterface[], e:React.MouseEvent<any>)=>void;
 export interface ChartConfigInterface {
     mergeGroupSize?: number;
     mergeDomainMaxValue?:number;
@@ -19,7 +21,6 @@ export interface ChartConfigInterface {
     axisLabel?:string
     barClickCallback?:BarClickCallbackType;
 }
-
 
 export enum ChartType {
     pie = "pie",

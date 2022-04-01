@@ -3,7 +3,6 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {DateRange, Range, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
-import {BarData} from "../../../RcsbChartWeb/RcsbChartComponent/ChartComponents/BarComponent";
 import React from "react";
 import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
@@ -12,6 +11,7 @@ import {ChartMapType} from "./GroupChartLayout";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
+import {ChartDataInterface} from "../../../RcsbChartWeb/RcsbChartData/ChartDataInterface";
 
 export namespace GroupChartEvents {
 
@@ -29,7 +29,7 @@ export namespace GroupChartEvents {
     }
 
     function addBarChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
-        chart.chartConfig.barClickCallback = async (datum:BarData, data: BarData[],e: React.MouseEvent) => {
+        chart.chartConfig.barClickCallback = async (datum:ChartDataInterface, data: ChartDataInterface[], e: React.MouseEvent) => {
             let query: SearchQueryType|undefined = undefined;
             if(datum.isLabel){
                 query= SQT.searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
@@ -45,7 +45,7 @@ export namespace GroupChartEvents {
     }
 
     function addHistogramChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
-        chart.chartConfig.barClickCallback = async (datum:BarData, data: BarData[],e: React.MouseEvent) => {
+        chart.chartConfig.barClickCallback = async (datum:ChartDataInterface, data: ChartDataInterface[], e: React.MouseEvent) => {
             const range: Range|DateRange = formatRange(chart, datum);
             const query: SearchQueryType = SQT.addNewNodeToAttributeSearchQuery(chart.attribute, range, Operator.Range, searchQuery.query, Service.Text);
             await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
@@ -68,7 +68,7 @@ export namespace GroupChartEvents {
         }
     }
 
-    function formatRange(chart: RcsbChartInterface, datum:BarData):Range|DateRange {
+    function formatRange(chart: RcsbChartInterface, datum:ChartDataInterface):Range|DateRange {
         switch (chart.contentType) {
             case "date":
                 return  {

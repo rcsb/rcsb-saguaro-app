@@ -1,13 +1,7 @@
 import * as React from "react";
 import {Bar, BarProps} from "victory";
+import {BarClickCallbackType} from "../../ChartConfigInterface";
 
-export interface BarData {
-    x:string|number;
-    y:number;
-    yc?:number;
-    label?:string;
-    isLabel:boolean;
-}
 
 export interface BarComponentInterface extends BarProps{
     barClick?:BarClickCallbackType;
@@ -16,7 +10,6 @@ export interface BarComponentInterface extends BarProps{
     x0?:number;
 }
 
-export type BarClickCallbackType = (datum:BarData,data:BarData[],e:React.MouseEvent<any>)=>void;
 export class BarComponent extends React.Component <BarComponentInterface,{fillColor:string;}> {
 
     private readonly MIN_THR: number = 3
