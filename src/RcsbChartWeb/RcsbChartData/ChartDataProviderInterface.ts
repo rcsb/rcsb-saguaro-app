@@ -7,6 +7,6 @@ export interface ChartDataProviderInterface extends ChartDataReaderInterface {
 
 export interface ChartDataReaderInterface {
     getChartData(): {data: ChartDataInterface[]; excludedData?:ChartDataInterface[]}
-    xDomain(): [number, number];
+    xDomain(): [number, number] | undefined;
     tickValues(): string[] | number[] | undefined
 }

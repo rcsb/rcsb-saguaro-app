@@ -60,11 +60,7 @@ export class BarChartData implements ChartDataProviderInterface{
         return this.stringTicks;
     }
 
-    public getMissingCategories(): ChartDataInterface[]{
-        return this.excludedData;
-    }
-
-    xDomain(): [number, number] {
+    xDomain(): undefined {
         return;
     }
 
