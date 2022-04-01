@@ -7,12 +7,8 @@ export class HistogramChartData implements ChartDataProviderInterface{
 
     private config: ChartConfigInterface;
     private data: ChartDataInterface[];
-    private chartSubData: ChartObjectInterface[];
-    private chartData: ChartObjectInterface[];
 
     public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config: ChartConfigInterface):void {
-        this.chartData = chartData;
-        this.chartSubData = chartSubData;
         this.config = config;
         const barData: ChartDataInterface[] = this.transformData(chartData)
         const subData: ChartDataInterface[] = this.transformData(chartSubData)
@@ -26,7 +22,7 @@ export class HistogramChartData implements ChartDataProviderInterface{
                 barData.push({x:x,y:0,isLabel:true});
         });
         ChartTools.addComplementaryData(barData,subData);
-        this.data = barData;
+        this.data = barData.sort((r,s)=>((r.x as number)-(s.x as number)));
     }
 
     public getChartData(): { data: ChartDataInterface[]; } {
@@ -35,11 +31,11 @@ export class HistogramChartData implements ChartDataProviderInterface{
 
     public xDomain(): [number, number]{
         return [
-            this.config.domainMinValue ?? Math.floor(Math.min(...this.transformData(this.chartData).map(d=>d.x as number),...this.transformData(this.chartSubData).map(d=>d.x as number))),
+            this.config.domainMinValue ?? Math.floor(Math.min(...this.data.map(d=>d.x as number))),
             this.config?.mergeDomainMaxValue ?
                 Math.ceil(this.config?.mergeDomainMaxValue+this.config.histogramBinIncrement)
                 :
-                Math.ceil(Math.max(...this.transformData(this.chartData).map(d=>d.x as number),...this.transformData(this.chartSubData).map(d=>d.x as number))+this.config.histogramBinIncrement)
+                Math.ceil(Math.max(...this.data.map(d=>d.x as number))+this.config.histogramBinIncrement)
         ]
     }
 
