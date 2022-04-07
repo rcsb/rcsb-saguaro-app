@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.0.7] - 2022-04-07
+### Dependency update
+- rcsb-saguaro update 2.0.4
+- rcsb-api-tools update 3.0.2
+- Auditing vulnerabilities
+
 ## [4.0.6] - 2022-02-15
 ### Minor bug fix
 - Minor type fix in react-select. New select option type `SelectOptionProps`

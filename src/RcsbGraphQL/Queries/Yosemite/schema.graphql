@@ -707,6 +707,7 @@ type CoreEntry {
     rcsb_associated_holdings: CurrentEntry
     rcsb_binding_affinity: [RcsbBindingAffinity]
     rcsb_entry_container_identifiers: RcsbEntryContainerIdentifiers!
+    rcsb_entry_group_membership: [RcsbEntryGroupMembership]
     rcsb_entry_info: RcsbEntryInfo!
     rcsb_external_references: [RcsbExternalReferences]
     """
@@ -732,8 +733,6 @@ type CoreEntry {
 
 type CoreInterface {
     rcsb_id: String!
-    "Global interface properties (e.g. number of interface residues, interface accessibility, etc.)"
-    rcsb_interface_annotation: [RcsbInterfaceAnnotation]
     rcsb_interface_container_identifiers: RcsbInterfaceContainerIdentifiers!
     rcsb_interface_info: RcsbInterfaceInfo
     "List of operations for each interface partner."
@@ -893,6 +892,7 @@ type CorePolymerEntity {
     rcsb_polymer_entity_container_identifiers: RcsbPolymerEntityContainerIdentifiers!
     rcsb_polymer_entity_feature: [RcsbPolymerEntityFeature]
     rcsb_polymer_entity_feature_summary: [RcsbPolymerEntityFeatureSummary]
+    rcsb_polymer_entity_group_membership: [RcsbPolymerEntityGroupMembership]
     rcsb_polymer_entity_keywords: RcsbPolymerEntityKeywords
     rcsb_polymer_entity_name_com: [RcsbPolymerEntityNameCom]
     rcsb_polymer_entity_name_sys: [RcsbPolymerEntityNameSys]
@@ -6444,7 +6444,7 @@ type PdbxVrptSummary {
 
     The steps that were attempted by the validation pipeline software.
     A step typically involves running a 3rd party validation tool, for instance "mogul"
-  Each step that was successfully completed will result in a pdbx_vrpt_software element in the pdbx_vrpt_sotfware_notused list.
+    Each step that was successfully completed will result in a pdbx_vrpt_software element in the pdbx_vrpt_sotfware_notused list.
     """
     attempted_validation_steps: String
     "The resolution from the intersection of the author provided fsc and the indicator curve halfbit."
@@ -6566,7 +6566,7 @@ type PdbxVrptSummary {
 
     An identifier for the map
     For released or annotated structures this will be the EMDB ID EMD-\d{4-5} eg "EMD-1001", "EMD-12325"
-  """
+    """
     emdb_id: String
     """
 
@@ -6771,7 +6771,7 @@ type PdbxVrptSummary {
 
     The number of PDB depositions used in the comparison when calculating the attribute
     "absolute-percentile-clashscore"
-  Example:             Produced by the percentiles step of the validation pipeline software.
+    Example:             Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_clashscore: Int
     """
@@ -6785,14 +6785,14 @@ type PdbxVrptSummary {
 
     The number of PDB depositions used in the comparison when calculating the attribute
     "absolute-percentile-percent-rama-outliers"
-  Example:            Produced by the percentiles step of the validation pipeline software.
+    Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_percent_ramachandran_outliers: Int
     """
 
     The number of PDB depositions used in the comparison when calculating the attribute
     "absolute-percentile-percent-rota-outliers"
-  Example:             Produced by the percentiles step of the validation pipeline software.
+    Example:             Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_absolute_percentile_percent_rotamer_outliers: Int
     """
@@ -6814,7 +6814,7 @@ type PdbxVrptSummary {
 
     The number of PDB depositions used in the comparison when calculating the attribute
     "relative-percentile-clashscore"
-  Example:            Produced by the percentiles step of the validation pipeline software.
+    Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_clashscore: Int
     """
@@ -6828,14 +6828,14 @@ type PdbxVrptSummary {
 
     The number of PDB depositions used in the comparison when calculating the attribute
     "relative-percentile-percent-rama-outliers"
-  Example:            Produced by the percentiles step of the validation pipeline software.
+    Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_percent_ramachandran_outliers: Int
     """
 
     The number of PDB depositions used in the comparison when calculating the attribute
     "relative-percentile-percent-rota-outliers"
-  Example:            Produced by the percentiles step of the validation pipeline software.
+    Example:            Produced by the percentiles step of the validation pipeline software.
     """
     num_PDBids_relative_percentile_percent_rotamer_outliers: Int
     """
@@ -6999,7 +6999,7 @@ type PdbxVrptSummary {
 
     A sentence giving the result of Xtriage&#8217;s analysis on translational NCS.
     Example: largest off-origin peak in the Patterson function is 8.82% of the height of the origin peak. No significant pseudotranslation is detected."
-  X-ray entry specific, obtained from the Xtriage program.
+    X-ray entry specific, obtained from the Xtriage program.
     """
     trans_NSC: String
     """
@@ -7281,6 +7281,24 @@ type RcsbAssemblyInfo {
     This is the total count of non-polymer entity instances generated in the assembly coordinate data.
     """
     nonpolymer_entity_instance_count: Int
+    "Number of heterologous (both binding sites are different) interface entities"
+    num_heterologous_interface_entities: Int
+    "Number of heteromeric (both partners are different polymeric entities) interface entities"
+    num_heteromeric_interface_entities: Int
+    "Number of homomeric (both partners are the same polymeric entity) interface entities"
+    num_homomeric_interface_entities: Int
+    "Number of polymer-polymer interface entities, grouping equivalent interfaces at the entity level (i.e. same entity_ids on either side, with similar but not identical binding sites)"
+    num_interface_entities: Int
+    "Number of geometrically equivalent (i.e. same asym_ids on either side) polymer-polymer interfaces in the assembly"
+    num_interfaces: Int
+    "Number of isologous (both binding sites are same, i.e. interface is symmetric) interface entities"
+    num_isologous_interface_entities: Int
+    "Number of nucleic acid-nucleic acid interface entities"
+    num_na_interface_entities: Int
+    "Number of protein-nucleic acid interface entities"
+    num_prot_na_interface_entities: Int
+    "Number of protein-protein interface entities"
+    num_protein_interface_entities: Int
     "The assembly non-hydrogen polymer entity atomic coordinate count."
     polymer_atom_count: Int
     """
@@ -7364,6 +7382,10 @@ type RcsbAssemblyInfo {
     This is the total count of solvent entity instances generated in the assembly coordinate data.
     """
     solvent_entity_instance_count: Int
+    "Total buried surface area calculated as the sum of buried surface areas over all interfaces"
+    total_assembly_buried_surface_area: Float
+    "Total number of interfacing residues in the assembly, calculated as the sum of interfacing residues over all interfaces"
+    total_number_interface_residues: Int
     """
 
     The number of unmodeled polymer monomers in the assembly coordinate data. This is
@@ -8907,6 +8929,25 @@ type RcsbEntryContainerIdentifiers {
     water_entity_ids: [String]
 }
 
+type RcsbEntryGroupMembership {
+    """
+
+    Method used to establish group membership
+
+    Allowable values:
+    matching_deposit_group_id
+    """
+    aggregation_method: String!
+    """
+
+    A unique identifier for a group of entries
+
+    Examples:
+    G_1001001
+    """
+    group_id: String!
+}
+
 type RcsbEntryInfo {
     "The number of assemblies defined for this entry including the deposited assembly."
     assembly_count: Int
@@ -9139,48 +9180,6 @@ type RcsbGenomicLineage {
     name: String
 }
 
-type RcsbInterfaceAnnotation {
-    """
-
-    Identifies the version of the feature assignment.
-
-    Examples:
-    V4_0_2
-    """
-    assignment_version: String
-    "A description for the feature."
-    description: String
-    "A name for the feature."
-    name: String
-    "An identifier for the feature."
-    property_id: String
-    """
-
-    Code identifying the individual, organization or program that
-    assigned the feature.
-
-    Examples:
-    NACCESS
-    """
-    provenance_source: String
-    """
-
-    A type or category of the feature.
-
-    Allowable values:
-    TOTAL_ASA, HOMO_IOU
-    """
-    type: String
-    """
-
-    The value of the property.
-
-    Examples:
-    hetero, 2.54, 300
-    """
-    value: ObjectScalar
-}
-
 type RcsbInterfaceContainerIdentifiers {
     "This item references an assembly in pdbx_struct_assembly"
     assembly_id: String!
@@ -9196,7 +9195,7 @@ type RcsbInterfaceContainerIdentifiers {
     interface_entity_id: String
     """
 
-    Identifier for the geometrically equivalent (same asym_ids on both sides) interfaces within the assembly
+    Identifier for the geometrically equivalent (same asym_ids on either side) interfaces within the assembly
 
     Examples:
     1, 2
@@ -9213,11 +9212,18 @@ type RcsbInterfaceContainerIdentifiers {
 }
 
 type RcsbInterfaceInfo {
+    "Total interface buried surface area"
+    interface_area: Float
     "Allowable values: homo, hetero."
     interface_character: String
+    "Number of core interface residues, defined as those that bury >90% accessible surface area with respect to the unbound state"
+    num_core_interface_residues: Int
+    "Number of interface residues, defined as those with burial fraction > 0"
+    num_interface_residues: Int
     "Allowable values: Nucleic acid (only), Protein (only), Protein/NA."
     polymer_composition: String
-    residue_count: Int
+    "The Jaccard score (intersection over union) of interface contacts in homomeric interfaces, comparing contact sets left-right vs right-left. High values indicate isologous (symmetric) interfaces, with value=1 if perfectly symmetric (e.g. crystallographic symmetry)"
+    self_jaccard_contact_score: Float
 }
 
 type RcsbInterfacePartner {
@@ -9244,8 +9250,7 @@ type RcsbInterfacePartnerInterfacePartnerFeature {
     name: String
     """
 
-    Code identifying the individual, organization or program that
-    assigned the feature.
+    Code identifying the individual, organization or program that assigned the feature.
 
     Examples:
     NACCESS
@@ -9256,7 +9261,7 @@ type RcsbInterfacePartnerInterfacePartnerFeature {
     A type or category of the feature.
 
     Allowable values:
-    ASA_UNBOUND, ASA_BOUND, BURIAL_FRACTION
+    ASA_UNBOUND, ASA_BOUND
     """
     type: String
 }
@@ -10200,6 +10205,7 @@ type RcsbPolymerEntity {
     N, Y
     """
     rcsb_multiple_source_flag: String
+    rcsb_polymer_name_combined: RcsbPolymerEntityRcsbPolymerNameCombined
     """
 
     The number of biological sources for the polymer entity. Multiple source contributions
@@ -10527,6 +10533,27 @@ type RcsbPolymerEntityFeatureSummary {
     type: String
 }
 
+type RcsbPolymerEntityGroupMembership {
+    """
+
+    Method used to establish group membership
+
+    Allowable values:
+    sequence_identity, matching_uniprot_accession
+    """
+    aggregation_method: String!
+    """
+
+    A unique identifier for a group of entities
+
+    Examples:
+    1_100, P00003
+    """
+    group_id: String!
+    "Degree of similarity expressed as a floating-point number"
+    similarity_cutoff: Float
+}
+
 type RcsbPolymerEntityInstanceContainerIdentifiers {
     "Instance identifier for this container."
     asym_id: String!
@@ -10647,6 +10674,13 @@ type RcsbPolymerEntityRcsbMacromolecularNamesCombined {
     provenance_source: String
 }
 
+type RcsbPolymerEntityRcsbPolymerNameCombined {
+    "Protein name annotated by the UniProtKB or macromolecular name assigned by the PDB"
+    names: [String]
+    "Allowable values: PDB Preferred Name, PDB Description, UniProt Name."
+    provenance_source: String
+}
+
 type RcsbPolymerInstanceAnnotation {
     "An identifier for the annotation."
     annotation_id: String
@@ -10734,7 +10768,7 @@ type RcsbPolymerInstanceFeature {
     A type or category of the feature.
 
     Allowable values:
-    ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, C-MANNOSYLATION_SITE, CATH, CIS-PEPTIDE, ECOD, HELIX_P, MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, N-GLYCOSYLATION_SITE, O-GLYCOSYLATION_SITE, RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, S-GLYCOSYLATION_SITE, SABDAB_ANTIBODY_HEAVY_CHAIN_SUBCLASS, SABDAB_ANTIBODY_LIGHT_CHAIN_SUBCLASS, SABDAB_ANTIBODY_LIGHT_CHAIN_TYPE, SCOP, SCOP2B_SUPERFAMILY, SCOP2_FAMILY, SCOP2_SUPERFAMILY, SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ
+    ANGLE_OUTLIER, BINDING_SITE, BOND_OUTLIER, C-MANNOSYLATION_SITE, CATH, CIS-PEPTIDE, ECOD, HELIX_P, MEMBRANE_SEGMENT, MOGUL_ANGLE_OUTLIER, MOGUL_BOND_OUTLIER, N-GLYCOSYLATION_SITE, O-GLYCOSYLATION_SITE, RAMACHANDRAN_OUTLIER, ROTAMER_OUTLIER, RSCC_OUTLIER, RSRZ_OUTLIER, S-GLYCOSYLATION_SITE, SABDAB_ANTIBODY_HEAVY_CHAIN_SUBCLASS, SABDAB_ANTIBODY_LIGHT_CHAIN_SUBCLASS, SABDAB_ANTIBODY_LIGHT_CHAIN_TYPE, SCOP, SCOP2B_SUPERFAMILY, SCOP2_FAMILY, SCOP2_SUPERFAMILY, SHEET, STEREO_OUTLIER, UNASSIGNED_SEC_STRUCT, UNOBSERVED_ATOM_XYZ, UNOBSERVED_RESIDUE_XYZ, ZERO_OCCUPANCY_ATOM_XYZ, ZERO_OCCUPANCY_RESIDUE_XYZ, ASA
     """
     type: String
 }
@@ -11608,11 +11642,11 @@ type RcsbUniprotAlignments {
 
 type RcsbUniprotAlignmentsCoreEntityAlignments {
     "Aligned region"
-    aligned_regions: [CoreEntityAlignmentsAlignedRegions]
+    aligned_regions: [CoreEntityAlignmentsAlignedRegions]!
     "core_entity identifiers"
     core_entity_identifiers: CoreEntityAlignmentsCoreEntityIdentifiers
     "Alignment scores"
-    scores: CoreEntityAlignmentsScores
+    scores: CoreEntityAlignmentsScores!
 }
 
 type RcsbUniprotAnnotation {
@@ -13759,7 +13793,6 @@ type Symmetry {
     """
     space_group_name_Hall: String
 }
-
 
 "Built-in scalar representing an instant in time"
 scalar Date

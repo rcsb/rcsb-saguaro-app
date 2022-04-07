@@ -214,11 +214,11 @@ enum Type {
     ACTIVE_SITE
     ANGLE_OUTLIER
     ARTIFACT
+    ASA
     ASA_BOUND
     ASA_UNBOUND
     BINDING_SITE
     BOND_OUTLIER
-    BURIAL_FRACTION
     CALCIUM_BINDING_REGION
     CARD_MODEL
     CATH
@@ -319,16 +319,15 @@ enum operationType {
     equals
 }
 
+"Built-in scalar for dynamic values"
+scalar ObjectScalar
+
+"Use SPQR's SchemaPrinter to remove this from SDL"
+scalar UNREPRESENTABLE
+
 input FilterInput {
     field: fieldName
     operation: operationType
     source: Source
     values: [String]
 }
-
-
-"Built-in scalar for dynamic values"
-scalar ObjectScalar
-
-"Use SPQR's SchemaPrinter to remove this from SDL"
-scalar UNREPRESENTABLE
