@@ -13,7 +13,7 @@
     "url": "/ligand/"
   },
   "rcsb_uniprot": {
-    "url": "/uniprot/"
+    "url": "/groups/sequence/polymer_entity/"
   },
   "rcsb_search": {
     "url": "/search?request="

@@ -14,6 +14,7 @@ import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder
 import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {RcsbFvGroupTabsBuilder} from "./RcsbFvGroup/RcsbFvGroupTabsBuilder";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -89,5 +90,5 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
 }
 
 export function buildGroupFv(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig): void {
-    RcsbFvCoreBuilder.buildGroupTabs(elementId, groupProvenanceId, groupId, query);
+    RcsbFvGroupTabsBuilder.buildGroupTabs(elementId, groupProvenanceId, groupId, query);
 }

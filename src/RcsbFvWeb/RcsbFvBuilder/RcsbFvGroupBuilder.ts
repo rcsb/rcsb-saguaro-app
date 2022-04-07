@@ -6,7 +6,6 @@ import {
     SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvGroupAlignment} from "../RcsbFvModule/RcsbFvGroupAlignment";
-import {ObservedSequenceCollector} from "../../RcsbCollectTools/SequenceCollector/ObservedSequenceCollector";
 
 export class RcsbFvGroupBuilder {
 

@@ -105,8 +105,4 @@ export class RcsbFvCoreBuilder {
         document.getElementById(elementId).append(domElement);
     }
 
-    static buildGroupTabs(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery) {
-        WebToolsManager.buildGroupTabs(elementId, groupProvenanceId, groupId, query);
-    }
-
 }

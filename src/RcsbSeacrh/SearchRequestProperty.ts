@@ -43,6 +43,16 @@ export class SearchRequestProperty {
         })).result_set.map(item=>typeof item === "string" ? item : item.identifier);
     }
 
+    public async requestCount(query: SearchQuery): Promise<number> {
+        return (await this.searchRequest.request({
+            query: query.query,
+            request_options: {
+                return_counts:true
+            },
+            return_type: query.return_type
+        })).total_count;
+    }
+
     public async request(query: SearchQuery): Promise<QueryResult | null> {
         return await this.searchRequest.request(query);
     }

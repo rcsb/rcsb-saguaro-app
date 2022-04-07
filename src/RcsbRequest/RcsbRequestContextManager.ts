@@ -19,7 +19,7 @@ import {
     EntryPropertyIntreface,
     MultipleEntryPropertyCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
-import {Operator} from "../Helpers/Operator";
+import {Operator} from "../RcsbUtils/Helpers/Operator";
 import {SearchQueryType, SearchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
 import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";

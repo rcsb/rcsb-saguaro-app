@@ -63,8 +63,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
 
         this.alignmentResponse = await this.requestAlignment(requestConfig);
         if(this.alignmentResponse.query_sequence == null || this.alignmentResponse.query_sequence.length == 0) {
-            console.warn(this.alignmentResponse);
-            console.log("Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId);
+            console.warn("Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId);
         }
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
         const querySequence: string = this.alignmentResponse.query_sequence;

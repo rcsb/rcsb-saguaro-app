@@ -8,7 +8,7 @@ import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
 } from "./SearchQueryContextManager";
-import {UrlTools} from "../../../Helpers/UrlTools";
+import {UrlTools} from "../../../RcsbUtils/Helpers/UrlTools";
 import {ChartMapType} from "../RcsbGroupChart/GroupChartLayout";
 import {GroupChartMap as GDCM} from "../RcsbGroupChart/GroupChartTools";
 import Draggable from 'react-draggable';

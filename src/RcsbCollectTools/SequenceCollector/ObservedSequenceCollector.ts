@@ -20,7 +20,7 @@ import {
     SequenceCollectorInterface
 } from "./SequenceCollectorInterface";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
-import {Operator} from "../../Helpers/Operator";
+import {Operator} from "../../RcsbUtils/Helpers/Operator";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export class ObservedSequenceCollector implements SequenceCollectorInterface {

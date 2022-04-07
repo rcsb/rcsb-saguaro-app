@@ -1,4 +1,5 @@
 import {
+    AlignmentResponse,
     Feature,
     FilterInput,
     GroupReference,
@@ -57,6 +58,7 @@ export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
 
 export interface RcsbFvModulePublicInterface {
     getTargets(): Promise<Array<string>>;
+    getAlignmentResponse():Promise<AlignmentResponse>;
     getFeatures(): Promise<Array<Feature>>;
     getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
     getFv(): RcsbFv;

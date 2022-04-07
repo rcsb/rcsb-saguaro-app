@@ -3,6 +3,9 @@ import {ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterf
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {Facet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {RcsbEntityPolymerType} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {CorePolymerEntity} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/CorePolymerEntityInterface";
+import {CorePolymerEntityInstance} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/CorePaths";
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
     id: "method",

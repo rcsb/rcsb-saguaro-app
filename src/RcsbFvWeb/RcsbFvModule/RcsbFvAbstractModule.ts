@@ -13,7 +13,7 @@ import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/Polyme
 import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentResponse, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
@@ -76,6 +76,10 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     public async getTargets(): Promise<Array<string>>{
         return await this.sequenceCollector.getTargets();
+    }
+
+    public async getAlignmentResponse():Promise<AlignmentResponse> {
+        return await this.sequenceCollector.getAlignmentResponse();
     }
 
     public async getFeatures(): Promise<Array<Feature>>{

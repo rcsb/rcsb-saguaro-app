@@ -1,9 +1,10 @@
 import * as React from "react";
 import {Tab, Tabs} from "react-bootstrap";
 import classes from "./scss/group-display.module.scss";
+import uniqid from "uniqid";
 
 export interface RcsbTabsInterface<T extends string> {
-    tabList: Array<{key:T; title:string; selectId?:string;}>;
+    tabList: Array<{key:T; title:string; additionalComponent?:JSX.Element;}>;
     default: T;
 
     id: string;
@@ -13,6 +14,8 @@ export interface RcsbTabsInterface<T extends string> {
 
 export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterface<T>, {}> {
 
+    public static readonly UI_SUFFIX: string = "_"+uniqid()+"_UI_DIV";
+    public static readonly SELECT_SUFFIX: string = "_"+uniqid()+"_SELECT_DIV";
     constructor(props:RcsbTabsInterface<T>) {
         super(props);
     }
@@ -30,8 +33,9 @@ export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterfa
                     this.props.tabList.map((tab,n)=>(
                         <Tab eventKey={tab.key} title={tab.title}>
                             {
-                                tab.selectId ? (<div id={tab.selectId}/>) : null
+                               tab.additionalComponent
                             }
+                            <div id={tab.key+RcsbTabs.UI_SUFFIX} style={{height:20}}/>
                             <div id={tab.key}/>
                         </Tab>
                     ))

@@ -6,6 +6,7 @@
 ### New features
 - Histogram visualization through Victory
 - `RcsbSearch` is a new package to communicate with RCSB Search API
+- `RcsbFvUI` is a new package to build UI menus
 
 ### Code refactoring
 - Context manager `rcsbFvCtxManager` is only responsible for handling PFVs

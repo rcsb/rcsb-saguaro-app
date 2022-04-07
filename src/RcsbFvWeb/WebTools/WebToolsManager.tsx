@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
-import {GroupSequenceTabs} from "../RcsbFvGroup/GroupSequenceTabs";
+import {GroupPfvTabs} from "../RcsbFvGroup/GroupPfvTabs";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {
     GroupedOptionsInterface,
@@ -73,13 +73,6 @@ export class WebToolsManager {
             ReactDom.unmountComponentAtNode(document.getElementById(id));
             document.getElementById(id)?.remove();
         }
-    }
-
-    static buildGroupTabs(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery){
-        ReactDom.render(
-            <GroupSequenceTabs groupProvenanceId={groupProvenanceId} groupId={groupId} searchQuery={query}/>,
-            document.getElementById(elementId)
-        )
     }
 
     static buildLoaderSpinner(elementId: string){
