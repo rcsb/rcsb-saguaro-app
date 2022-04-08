@@ -2,6 +2,7 @@ declare module '*.css';
 declare module '*.scss';
 declare module '*.sass';
 declare module '@d3fc/d3fc-sample';
+declare module 'search-request';
 
 declare module '*.graphql' {
     const value: string;
