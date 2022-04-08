@@ -6,7 +6,7 @@ import {FilterItemComponent} from "./Components/FilterItemComponent";
 
 export class MenuItemFactory {
 
-    public static getPaginationItem<T extends unknown[]>(elementId: string, pfvMethod:PfvMethodType<T>, count:number, additionalConfig: RcsbFvAdditionalConfig, ...x:T): JSX.Element {
+    public static getPaginationItem<T extends unknown[]>(elementId: string, pfvMethod:PfvMethodType<T>, pfv:RcsbFvModulePublicInterface, count:number, additionalConfig: RcsbFvAdditionalConfig, ...x:T): JSX.Element {
        return(
             <PaginationItemComponent<T>
                 elementId={elementId}
@@ -15,6 +15,7 @@ export class MenuItemFactory {
                     pfvParams:x,
                     additionalConfig:additionalConfig
                 }}
+                pfv={pfv}
                 count={count}
             />
        );

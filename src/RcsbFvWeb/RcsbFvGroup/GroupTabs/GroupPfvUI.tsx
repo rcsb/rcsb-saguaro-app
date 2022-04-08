@@ -19,7 +19,7 @@ export class GroupPfvUI {
     public static alignmentUI<T extends unknown[]>(elementId: string, pfvMethod:PfvMethodType<T>, config:AlignmentUIConfigInterface, additionalConfig: RcsbFvAdditionalConfig, ...x:T): void {
         ReactDom.render(
             <>
-                <span>{MenuItemFactory.getPaginationItem<T>(elementId, pfvMethod, config.alignmentCount, additionalConfig, ...x)}</span>
+                <span>{MenuItemFactory.getPaginationItem<T>(elementId, pfvMethod, config.pfv, config.alignmentCount, additionalConfig, ...x)}</span>
             </>
             , GroupPfvUI.htmlElementUI(elementId)
         );

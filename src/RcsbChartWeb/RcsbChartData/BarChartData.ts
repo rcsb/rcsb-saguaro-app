@@ -14,8 +14,10 @@ export class BarChartData implements ChartDataProviderInterface{
         const subData: ChartDataInterface[] = chartSubData ? ChartTools.labelsAsString(chartSubData) : [];
 
         const mergedValues: Map<string|number, number> = new Map<string, number>();
+        const subValues: Map<string|number, number> = new Map<string, number>();
         subData.forEach((d)=>{
             mergedValues.set(d.x,0);
+            subValues.set(d.x,d.y);
         });
         data.forEach((d)=>{
             mergedValues.set(d.x,d.y);
@@ -38,8 +40,10 @@ export class BarChartData implements ChartDataProviderInterface{
         const sort = (b: ChartDataInterface, a: ChartDataInterface) => {
             if(mergedValues.get(b.x) != mergedValues.get(a.x))
                 return mergedValues.get(b.x)-mergedValues.get(a.x);
-            else
+            else if(mergedValues.get(b.x) > 0)
                 return a.x.toString().localeCompare(b.x.toString())
+            else
+                return subValues.get(b.x)-subValues.get(a.x);
         };
         const barOut: ChartDataInterface[] = data.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         const subOut: ChartDataInterface[] = subData.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
