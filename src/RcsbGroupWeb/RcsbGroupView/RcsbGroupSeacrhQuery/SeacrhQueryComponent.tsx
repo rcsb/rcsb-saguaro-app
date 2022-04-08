@@ -42,19 +42,17 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
         RcsbGroupSearchQueryComponent.unique = false;
         return (
             <Draggable>
-                <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 760px)", width:180}}>
-                    <Container fluid={"md"} className={"border px-3 py-1 shadow bg-white"}>
-                        <Row >
-                            <Col className={"text-md-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
-                                Query History
-                            </Col>
-                        </Row>
-                        <Row style={{height:25}} >
-                            <Col md={2} className={"text-md-center my-auto"} onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</Col>
-                            <Col className={"text-md-center text-nowrap my-auto"}>{this.state.index+1} / {this.state.searchQueryList.length}</Col>
-                            <Col md={2} className={"text-md-center my-auto"} onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</Col>
-                        </Row>
-                    </Container>
+                <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 700px)", width:120, top:"50%"}}>
+                    <div className={"border px-1 pt-1 shadow bg-white"}>
+                        <div className={"text-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
+                            Query History
+                        </div>
+                        <div className={"d-flex flex-row"} style={{height:30}} >
+                            <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</div>
+                            <div className={"text-center text-nowrap flex-grow-1 my-auto"}>{this.state.index+1} / {this.state.searchQueryList.length}</div>
+                            <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</div>
+                        </div>
+                    </div>
                 </div>
             </Draggable>
         );

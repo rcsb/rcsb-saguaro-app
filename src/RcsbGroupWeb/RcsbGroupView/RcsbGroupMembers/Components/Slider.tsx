@@ -33,7 +33,7 @@ export class Slider extends React.Component<SliderInterface,null> {
 }
 
 export function actionIcon(action:SlideAction): JSX.Element{
-    return(<div><span style={{cursor:"pointer"}} className={"h1 user-select-none"}>
+    return(<span style={{cursor:"pointer"}} className={"h1 user-select-none"}>
         { action == "prev" ?   "❮" : "❯" }
-    </span></div>);
+    </span>);
 }
