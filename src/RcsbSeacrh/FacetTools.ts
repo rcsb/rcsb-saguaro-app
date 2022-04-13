@@ -1,12 +1,11 @@
-import {Facet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {ChartConfigInterface, ChartType} from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {FacetMemberInterface, FacetType} from "./FacetStore/FacetMemberInterface";
 import {cloneDeep} from "lodash";
 import {
     AttributeTextQueryParameters,
-    DateHistogramFacet, DateRangeFacet,
     FilterFacet,
-    FilterQueryTerminalNode, HistogramFacet, RangeFacet, TermsFacet
+    FilterQueryTerminalNode
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 
@@ -31,30 +30,30 @@ export interface RcsbChartInterface {
 
 export class FacetTools {
 
-    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<Facet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
+    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<BucketFacet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
         const out: Array<RcsbChartInterface> = recursiveOut ?? new Array<RcsbChartInterface>();
         searchResultFacets.forEach(f=> {
-            const facet:Facet = FacetTools.getFacetFromName(facetMembers,f.attribute).transformSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.attribute).transformSearchResultFacets(f) : f;
-            if(facet.groups.filter(g=>g.drilldown).length > 0){
-                facet.groups.filter(g=>g.drilldown).forEach(g=>{
-                    FacetTools.getResultDrilldowns(facetMembers, g.drilldown as Facet[], labelList ? labelList.concat(g.label) : [g.label], out);
+            const facet:BucketFacet = FacetTools.getFacetFromName(facetMembers,f.name).transformSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.name).transformSearchResultFacets(f) : f;
+            if(facet.buckets.filter(g=>g.drilldown).length > 0){
+                facet.buckets.filter(g=>g.drilldown).forEach(g=>{
+                    FacetTools.getResultDrilldowns(facetMembers, g.drilldown as BucketFacet[], labelList ? labelList.concat(g.label) : [g.label], out);
                 });
             }
-            if(facet.groups.filter(g=>!g.drilldown).length > 0) {
-                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, facet.attribute);
+            if(facet.buckets.filter(g=>!g.drilldown).length > 0) {
+                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, facet.name);
                 out.push({
                     chartType: chart.chartType,
                     chartConfig: chart.chartConfig,
                     labelList: labelList,
-                    attributeName: facet.attribute,
-                    attribute: FacetTools.getFacetFromName(facetMembers, facet.attribute).attribute,
+                    attributeName: facet.name,
+                    attribute: FacetTools.getFacetFromName(facetMembers, facet.name).attribute,
                     title: chart.title,
-                    data: facet.groups.filter(g => !g.drilldown).map((d)=>({
+                    data: facet.buckets.filter(g => !g.drilldown).map((d)=>({
                         label: d.label,
                         population: d.population
                     })),
-                    filters:FacetTools.getFacetFiltersFromName(facetMembers, facet.attribute),
-                    contentType: FacetTools.getFacetFromName(facetMembers,facet.attribute).contentType
+                    filters:FacetTools.getFacetFiltersFromName(facetMembers, facet.name),
+                    contentType: FacetTools.getFacetFromName(facetMembers,facet.name).contentType
                 });
             }
         });

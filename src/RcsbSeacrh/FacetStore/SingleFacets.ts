@@ -2,7 +2,7 @@ import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/Se
 import {ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
-import {Facet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {RcsbEntityPolymerType} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {CorePolymerEntity} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/CorePolymerEntityInterface";
 import {CorePolymerEntityInstance} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/CorePaths";
@@ -423,6 +423,7 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
                     }
                 },
                 facets: [{
+                    name:`GO_FUNCTION_FACET/${RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path}`,
                     aggregation_type: AggregationType.Terms,
                     min_interval_population: 1,
                     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
@@ -430,15 +431,15 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
             }]
         }]
     },
-    transformSearchResultFacets(facet: Facet): Facet {
+    transformSearchResultFacets(facet: BucketFacet): BucketFacet {
         return {
-            attribute: facet.attribute,
-            groups: facet.groups.filter((g) => (
-                g.drilldown.filter((d) => ((d as Facet).groups.filter((dg) => (dg.label === "molecular_function"))).length > 0).length > 0
+            name: facet.name,
+            buckets: facet.buckets.filter((g) => (
+                g.facets.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "molecular_function"))).length > 0).length > 0
             )).map((g) => ({
                 label: g.label,
                 population: g.population
-            })) as Facet['groups']
+            })) as BucketFacet['buckets']
         };
     }
 }
@@ -481,6 +482,7 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
                     }
                 },
                 facets: [{
+                    name:`GO_PROCESS_FACET/${RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path}`,
                     aggregation_type: AggregationType.Terms,
                     min_interval_population: 1,
                     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
@@ -488,15 +490,15 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
             }]
         }]
     },
-    transformSearchResultFacets(facet: Facet): Facet {
+    transformSearchResultFacets(facet: BucketFacet): BucketFacet {
         return {
-            attribute: facet.attribute,
-            groups: facet.groups.filter((g) => (
-                g.drilldown.filter((d) => ((d as Facet).groups.filter((dg) => (dg.label === "biological_process"))).length > 0).length > 0
+            name: facet.name,
+            buckets: facet.buckets.filter((g) => (
+                g.facets.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "biological_process"))).length > 0).length > 0
             )).map((g) => ({
                 label: g.label,
                 population: g.population
-            })) as Facet['groups']
+            })) as BucketFacet['buckets']
         };
     }
 }
@@ -539,6 +541,7 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
                     }
                 },
                 facets: [{
+                    name:`GO_COMPONENT_FACET/${RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path}`,
                     aggregation_type: AggregationType.Terms,
                     min_interval_population: 1,
                     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path
@@ -546,15 +549,15 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
             }]
         }]
     },
-    transformSearchResultFacets(facet: Facet): Facet {
+    transformSearchResultFacets(facet: BucketFacet): BucketFacet {
         return {
-            attribute: facet.attribute,
-            groups: facet.groups.filter((g) => (
-                g.drilldown.filter((d) => ((d as Facet).groups.filter((dg) => (dg.label === "cellular_component"))).length > 0).length > 0
+            name: facet.name,
+            buckets: facet.buckets.filter((g) => (
+                g.facets.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "cellular_component"))).length > 0).length > 0
             )).map((g) => ({
                 label: g.label,
                 population: g.population
-            })) as Facet['groups']
+            })) as BucketFacet['buckets']
         };
     }
 }

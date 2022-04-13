@@ -14,13 +14,13 @@ export class SearchRequestProperty {
         return await this.searchRequest.request({
             query: config.query,
             request_options: config.facets.length > 0 ? {
-                pager:{
+                paginate:{
                     start: 0,
                     rows: 0
                 },
                 facets: [config.facets.shift(), ...config.facets]
             } : {
-                pager:{
+                paginate:{
                     start: 0,
                     rows: 0
                 }

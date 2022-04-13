@@ -43,7 +43,7 @@ export namespace SearchQueryTools {
             query: addNewNodeToAttributeSearchQuery(attribute, value, operator, searchQuery, service, negation),
             return_type: returnType,
             request_options: {
-                pager: {
+                paginate: {
                     start: 0,
                     rows: 25
                 },
@@ -70,7 +70,7 @@ export namespace SearchQueryTools {
             },
             return_type: returnType,
             request_options: {
-                pager: {
+                paginate: {
                     start: 0,
                     rows: 25
                 },
@@ -90,7 +90,7 @@ export namespace SearchQueryTools {
             query: searchQuery,
             return_type: returnType,
             request_options: {
-                pager: {
+                paginate: {
                     start: 0,
                     rows: 25
                 },

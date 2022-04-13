@@ -3,7 +3,11 @@ import {Col, Container, Row} from "react-bootstrap";
 import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {
+    GroupByDepositID,
+    GroupBySequenceIdentity,
+    SearchQuery, SortOptionAttributes
+} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
@@ -114,13 +118,13 @@ async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: stri
     return await rcsbRequestCtxManager.getSearchQuery({
         query: searchQuery ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
-            pager:{
+            paginate:{
                 start: start,
                 rows: rows
             },
             sort:[{
                 sort_by: searchQuery?.request_options?.group_by?.ranking_criteria_type?.sort_by ?? RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
-                direction: (searchQuery?.request_options?.group_by?.ranking_criteria_type?.direction as SortDirection) ?? SortDirection.Asc
+                direction: ((searchQuery?.request_options?.group_by?.ranking_criteria_type as SortOptionAttributes)?.direction as SortDirection) ?? SortDirection.Asc
             }]
         },
         return_type: groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
