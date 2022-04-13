@@ -8,7 +8,14 @@ export namespace SearchRequestModule {
     export function addNode(searchQuery: SearchQuery, node:SearchQueryType): SearchQuery {
         const query: SearchQuery = cloneDeep<SearchQuery>(searchQuery)
         searchRequest.addRefinement(query, node);
-        console.log(query);
+        return query;
+    }
+
+    export type RefinementType = {attribute: string, values:(string|number)[]};
+    export function addRefinements(searchQuery: SearchQuery, refinement: RefinementType|RefinementType[]): SearchQuery {
+        if(!Array.isArray(refinement)) refinement= [refinement];
+        const query: SearchQuery = cloneDeep<SearchQuery>(searchQuery)
+        searchRequest.addRefinements(query, refinement);
         return query;
     }
 

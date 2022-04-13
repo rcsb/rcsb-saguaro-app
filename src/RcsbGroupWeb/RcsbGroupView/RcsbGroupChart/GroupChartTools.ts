@@ -40,7 +40,7 @@ export namespace GroupChartMap{
                 groupProvenanceId,
                 groupId,
                 searchQuery ? {
-                    query: SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query),
+                    query: SQT.addGroupIdToSearchRequest(searchQuery, groupProvenanceId, groupId).query,
                     return_type:groupProvenanceToReturnType[groupProvenanceId]
                 } : {
                     query: SQT.searchGroupQuery(groupProvenanceId, groupId, Service.Text),

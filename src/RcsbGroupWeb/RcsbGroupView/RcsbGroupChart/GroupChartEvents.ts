@@ -1,6 +1,12 @@
 import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {DateRange, Range, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {
+    AttributeTextQueryParameters,
+    DateRange,
+    Range,
+    SearchQuery,
+    TerminalNode
+} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import React from "react";
@@ -12,7 +18,6 @@ import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberIn
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {ChartDataInterface} from "../../../RcsbChartWeb/RcsbChartData/ChartDataInterface";
-import {SearchRequestModule as SRM} from "../../../RcsbSeacrh/SearchRequestModule";
 
 export namespace GroupChartEvents {
 
@@ -58,7 +63,11 @@ export namespace GroupChartEvents {
             location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(SQT.buildNodeSearchQuery(query, searchQuery.query, returnType)));
         }else{
             //const fullQuery = SQT.buildNodeSearchQuery(searchQuery.query, query, returnType);
-            const fullQuery = SRM.addNode(searchQuery, query);
+            const fullQuery = SQT.addNodeToSearchRequest(searchQuery, query);
+            /*const fullQuery = SQT.addRefinements(searchQuery, {
+                attribute:((query as TerminalNode).parameters as AttributeTextQueryParameters).attribute,
+                values: [((query as TerminalNode).parameters as AttributeTextQueryParameters).value as string|number]
+            });*/
             const chartMap: ChartMapType = await GDCM.getChartMap(groupProvenanceId,groupId,fullQuery);
             SQCM.next({
                 chartMap:chartMap,

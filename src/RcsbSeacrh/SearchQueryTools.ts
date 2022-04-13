@@ -9,7 +9,7 @@ import {
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {
     SearchQuery,
-    AttributeTextQueryParameters
+    AttributeTextQueryParameters, GroupNode
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetStoreInterface} from "./FacetStore/FacetStoreInterface";
 import {cloneDeep} from 'lodash';
@@ -17,8 +17,11 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {depositionGroupFacetStore} from "./FacetStore/DepositionGroupFacetStore";
 import {sequenceGroupFacetStore} from "./FacetStore/SequenceGroupFacetStore";
 import {uniprotGroupFacetStore} from "./FacetStore/UniprotGroupFacetStore";
+import {SearchRequestModule, SearchRequestModule as SRM} from "./SearchRequestModule";
 
 export namespace SearchQueryTools {
+
+    import RefinementType = SearchRequestModule.RefinementType;
 
     export function searchGroupQuery(groupProvenance: GroupProvenanceId, groupId: string, service?: Service): SearchQueryType {
         const groupSearchAttr: GroupSearchAttribute = getSearchAttribute(groupProvenance);
@@ -56,6 +59,19 @@ export namespace SearchQueryTools {
                 ]
             }
         }
+    }
+
+    export function addNodeToSearchRequest(searchQuery: SearchQuery, node:SearchQueryType): SearchQuery {
+       return SRM.addNode(searchQuery, node);
+    }
+
+    export function addGroupIdToSearchRequest(searchQuery: SearchQuery, groupProvenanceId: GroupProvenanceId, groupId: string): SearchQuery {
+        console.log(SRM.addNode(searchQuery, searchGroupQuery(groupProvenanceId, groupId)));
+        return SRM.addNode(searchQuery, searchGroupQuery(groupProvenanceId, groupId));
+    }
+
+    export function addRefinements(searchQuery: SearchQuery, refinement: RefinementType|RefinementType[]): SearchQuery {
+        return SRM.addRefinements(searchQuery, refinement);
     }
 
     export function buildNodeSearchQuery(node: SearchQueryType, searchQuery: SearchQueryType, returnType: ReturnType, logicalOperator = LogicalOperator.And): SearchQuery {

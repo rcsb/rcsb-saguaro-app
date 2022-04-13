@@ -11,13 +11,67 @@
 
 <script>
 
-    const query = {"query":{"type":"terminal","label":"text","service":"text","parameters":{"attribute":"rcsb_entry_info.resolution_combined","operator":"less","negation":false,"value":3}},"return_type":"polymer_entity","request_options":{"pager":{"start":0,"rows":25},"scoring_strategy":"combined","sort":[{"sort_by":"score","direction":"desc"}]}};
+    const query = {
+        "query": {
+            "type": "group",
+            "logical_operator": "and",
+            "nodes": [
+                {
+                    "type": "terminal",
+                    "service": "text",
+                    "parameters": {
+                        "attribute": "rcsb_entity_source_organism.taxonomy_lineage.name",
+                        "operator": "exact_match",
+                        "negation": false,
+                        "value": "Homo sapiens"
+                    }
+                },
+                {
+                    "type": "terminal",
+                    "service": "text",
+                    "parameters": {
+                        "attribute": "exptl.method",
+                        "value": "X-RAY DIFFRACTION",
+                        "operator": "exact_match"
+                    }
+                }
+            ],
+            "label": "text"
+        },
+        "return_type": "polymer_entity",
+        "request_options": {
+            "group_by_return_type": "groups",
+            "group_by": {
+                "aggregation_method": "sequence_identity",
+                "ranking_criteria_type": {
+                    "sort_by": "rcsb_entry_info.resolution_combined",
+                    "direction": "asc"
+                },
+                "similarity_cutoff": 70
+            },
+            "pager": {
+                "start": 0,
+                "rows": 25
+            },
+            "sort": [
+                {
+                    "sort_by": "score",
+                    "direction": "desc"
+                },
+                {
+                    "sort_by": "size",
+                    "direction": "desc"
+                }
+            ],
+            "scoring_strategy": "combined"
+        }
+    };
     //RcsbChartWebApp.plot("chart1", "uniprot_entity", "P01112", "barplot", "experimental_method");
     //RcsbChartWebApp.plot("chart2", "uniprot_entity", "P01112", "histogram", "resolution");
 
     //RcsbChartWebApp.buildGroupMembers("chart_panel", "provenance_sequence_identity", "5_70", 1, 1);
     //RcsbChartWebApp.buildGroup("chart_panel", "provenance_sequence_identity", "1_30", undefined, undefined);
-    RcsbChartWebApp.buildGroup("chart_panel", "provenance_sequence_identity", "5_30", undefined, ["RESOLUTION_FACET"]);
+    RcsbChartWebApp.buildGroup("chart_panel", "provenance_sequence_identity", "1_30", query, ["RESOLUTION_FACET"]);
     //RcsbChartWebApp.buildGroup("entity_names", "provenance_sequence_identity", "5_30");
     //RcsbChartWebApp.buildGroup("chart_panel", "matching_uniprot_accession", "P01112", query);
     //RcsbChartWebApp.buildGroup("chart_panel", "matching_deposit_group_id", "G_1002048", query);
