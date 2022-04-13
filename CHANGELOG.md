@@ -4,9 +4,12 @@
 
 ## [4.1.0] - 2022-03-16
 ### New features
-- Histogram visualization through Victory
-- `RcsbSearch` is a new package to communicate with RCSB Search API
-- `RcsbFvUI` is a new package to build UI menus
+- Histogram visualization of RCSB PDB search API
+  - `RcsbSearch` new package to communicate with RCSB Search API
+  - `RcsbFvUI` new package to build UI menus
+  - `RcsbChartWeb` new package to display histogram charts
+  - `RcsbGroupWeb` new package to display RCSB PDB Group web components 
+- rcsb-api-tools v4.0.0
 
 ### Code refactoring
 - Context manager `rcsbFvCtxManager` is only responsible for handling PFVs
