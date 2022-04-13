@@ -12,6 +12,7 @@
 
 ### Dependency update
 - rcsb-api-tools v4.0.0
+- rcsb-saguaro v2.0.5
 
 ### Code refactoring
 - Context manager `rcsbFvCtxManager` is only responsible for handling PFVs
