@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.1.0] - 2022-03-16
+## [4.1.0] - 2022-04-13
 ### New features
 - Histogram visualization of RCSB PDB search API
   - `RcsbSearch` new package to communicate with RCSB Search API
