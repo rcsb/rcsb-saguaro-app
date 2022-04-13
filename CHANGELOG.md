@@ -9,12 +9,20 @@
   - `RcsbFvUI` new package to build UI menus
   - `RcsbChartWeb` new package to display histogram charts
   - `RcsbGroupWeb` new package to display RCSB PDB Group web components 
+
+### Dependency update
 - rcsb-api-tools v4.0.0
 
 ### Code refactoring
 - Context manager `rcsbFvCtxManager` is only responsible for handling PFVs
 - New Context manager `rcsbRequestCtxManager` responsible for API requests
   - All API requests should be done through this class (currently, not happening)
+
+## [4.0.7] - 2022-04-07
+### Dependency update
+- rcsb-saguaro update 2.0.4
+- rcsb-api-tools update 3.0.2
+- Auditing vulnerabilities
 
 ## [4.0.6] - 2022-02-15
 ### Minor bug fix
