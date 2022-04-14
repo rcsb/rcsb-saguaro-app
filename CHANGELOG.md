@@ -4,7 +4,7 @@
 
 ## [4.1.2] - 2022-04-14
 ### Dependency update
-- rrcsb-api-tools v4.0.1
+- rcsb-api-tools v4.0.1
 
 ## [4.1.1] - 2022-04-14
 ### Dependency update
