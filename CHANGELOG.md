@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.1.1] - 2022-04-14
+### Dependency update
+- rcsb-saguaro v2.0.6
+
 ## [4.1.0] - 2022-04-13
 ### New features
 - Histogram visualization of RCSB PDB search API
