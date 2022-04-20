@@ -1,4 +1,5 @@
 import {
+    AnnotationFeatures,
     FieldName,
     FilterInput,
     OperationType,
@@ -7,6 +8,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
+import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
 
 export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
 
@@ -43,6 +45,8 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             reference: SequenceReference.Uniprot,
             sources:sources,
             filters:filters,
+            annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
+            annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
             collectSwissModel:true
         });
         this.boardConfigData.length = this.sequenceCollector.getSequenceLength();

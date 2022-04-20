@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.1.3] - 2022-04-20
+### Display improvement
+- Including ASA buried filter in UniProt instance module
+
 ## [4.1.2] - 2022-04-14
 ### Dependency update
 - rcsb-api-tools v4.0.1
