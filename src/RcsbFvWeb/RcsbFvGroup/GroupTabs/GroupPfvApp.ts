@@ -22,7 +22,7 @@ export namespace GroupPfvApp {
     export async function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, entityCount:number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
         switch (groupProvenanceId){
             case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
-                return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,elementId+RcsbTabs.SELECT_SUFFIX,groupId,additionalConfig)
+                return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,elementId+RcsbTabs.SELECT_SUFFIX,groupId,{},additionalConfig)
             default:
                 additionalConfig = {
                     ...additionalConfig,

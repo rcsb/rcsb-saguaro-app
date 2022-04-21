@@ -7,7 +7,7 @@ import {
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 
 import {BuildAlignementsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
@@ -17,7 +17,7 @@ import {
     SequenceCollectorInterface
 } from "./SequenceCollectorInterface";
 import {Subject} from "rxjs";
-import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export interface AlignedObservedRegion extends AlignedRegion {

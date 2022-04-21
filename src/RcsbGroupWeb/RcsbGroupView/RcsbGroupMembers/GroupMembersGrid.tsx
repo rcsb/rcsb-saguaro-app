@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
-import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
 import {
     GroupByDepositID,

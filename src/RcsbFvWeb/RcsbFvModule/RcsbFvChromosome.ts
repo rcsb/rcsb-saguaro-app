@@ -22,7 +22,7 @@ import {RcsbQueryAlignment} from "../../RcsbGraphQL/RcsbQueryAlignment";
 import {NcbiGenomeSequenceData} from "../../ExternalResources/NcbiData/NcbiGenomeSequenceData";
 import {ChromosomeMetadataInterface, NcbiSummary} from "../../ExternalResources/NcbiData/NcbiSummary";
 import Ideogram from 'ideogram';
-import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
 
 function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>){
     return (where: RcsbFvLocationViewInterface) => {

@@ -5,7 +5,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 
 export class RcsbFvEntity extends RcsbFvAbstractModule {
 

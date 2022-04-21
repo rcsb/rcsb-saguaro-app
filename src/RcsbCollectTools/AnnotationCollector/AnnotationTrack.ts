@@ -5,7 +5,7 @@ import {
 } from "@rcsb/rcsb-saguaro";
 import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "./AnnotationCollectorInterface";

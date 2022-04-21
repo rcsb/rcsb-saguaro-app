@@ -12,7 +12,7 @@ import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/An
 
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
 import {burialFraction, burialFractionFilter} from "../../RcsbUtils/AnnotationGenerators/BurialFraction";
 import {FeatureType} from "../../RcsbExport/FeatureType";

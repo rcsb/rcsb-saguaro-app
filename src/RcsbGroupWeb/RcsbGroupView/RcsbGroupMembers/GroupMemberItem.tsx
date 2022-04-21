@@ -1,5 +1,5 @@
 import * as React from "react";
-import {TagDelimiter} from "../../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 

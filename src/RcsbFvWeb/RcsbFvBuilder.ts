@@ -3,7 +3,7 @@ import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlign
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
 import {RcsbFvChromosomeBuilder} from "./RcsbFvBuilder/RcsbFvChromosomeBuilder";
 import {RcsbFvPairwiseAligmentBuilder} from "./RcsbFvBuilder/RcsbFvPairwiseAligmentBuilder";
-import {RcsbFvUniprotBuilder} from "./RcsbFvBuilder/RcsbFvUniprotBuilder";
+import {RcsbFvUniprotBuilder, UniprotSequenceConfig} from "./RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {RcsbFvEntityBuilder} from "./RcsbFvBuilder/RcsbFvEntityBuilder";
 import {
     InstanceSequenceConfig,
@@ -20,8 +20,8 @@ export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
 }
 
-export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementFvId, elementSelectId, upAcc);
+export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string, config:UniprotSequenceConfig = {}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementFvId, elementSelectId, upAcc, config, additionalConfig);
 }
 
 export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): Promise<RcsbFvModulePublicInterface> {

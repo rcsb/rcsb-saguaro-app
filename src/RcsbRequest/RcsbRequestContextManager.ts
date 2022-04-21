@@ -24,7 +24,7 @@ import {SearchQueryType, SearchRequestProperty} from "../RcsbSeacrh/SearchReques
 import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
-import {TagDelimiter} from "../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../RcsbUtils/Helpers/TagDelimiter";
 import {
     InterfaceInstanceCollector,
     InterfaceInstanceInterface

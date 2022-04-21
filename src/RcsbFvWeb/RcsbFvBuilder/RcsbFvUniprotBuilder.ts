@@ -1,7 +1,7 @@
-import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbContextType, RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvUniprotEntity} from "../RcsbFvModule/RcsbFvUniprotEntity";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {RcsbFvUniprotInstance} from "../RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvUniprot} from "../RcsbFvModule/RcsbFvUniprot";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
@@ -9,10 +9,22 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
+export interface UniprotSequenceOnchangeInterface {
+    pdbId?:string;
+    authId?:string;
+    asymId?:string;
+    upAcc:string;
+}
+
+export interface UniprotSequenceConfig {
+    beforeChangeCallback?:(x: UniprotSequenceOnchangeInterface)=>undefined|RcsbContextType;
+    onChangeCallback?:(x: UniprotSequenceOnchangeInterface)=>void;
+}
+
+const ALL:string = "ALL";
 export class RcsbFvUniprotBuilder {
 
-    static async buildUniprotMultipleEntitySequenceFv(elementFvId: string, elementSelectId:string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
-        const ALL:string = "ALL";
+    static async buildUniprotMultipleEntitySequenceFv(elementFvId:string, elementSelectId:string, upAcc:string, config:UniprotSequenceConfig = {}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
             const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {...additionalConfig, boardConfig:{rowTitleWidth:210}});
             resolve(rcsbFvUniprot);
@@ -25,33 +37,84 @@ export class RcsbFvUniprotBuilder {
                         onChange: async () => {
                             RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                             if (entityId === ALL) {
-                                await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, additionalConfig);
+                                let externalContext: RcsbContextType | undefined;
+                                if (typeof config.beforeChangeCallback === "function")
+                                    externalContext = config.beforeChangeCallback({
+                                        upAcc
+                                    });
+                                await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {
+                                    ...additionalConfig,
+                                    rcsbContext: {
+                                        ...additionalConfig?.rcsbContext,
+                                        ...externalContext
+                                    }
+                                });
+                                if (typeof config.onChangeCallback === "function")
+                                    config.onChangeCallback({
+                                        upAcc
+                                    });
                             } else {
                                 const entryId: string = entityId.split(TagDelimiter.entity)[0];
                                 const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
                                 const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData().filter(r=>{
                                     return r.entityId === entityId.split(TagDelimiter.entity)[1];
                                 });
+                                let externalContext: RcsbContextType | undefined;
+                                if (typeof config.beforeChangeCallback === "function")
+                                    externalContext = config.beforeChangeCallback({
+                                        ...result[0],
+                                        upAcc
+                                    });
                                 await RcsbFvUniprotBuilder.buildUniprotEntityInstanceFv(
                                     elementFvId,
                                     upAcc,
                                     result[0].entryId+TagDelimiter.entity+result[0].entityId,
                                     result[0].entryId+TagDelimiter.instance+result[0].asymId,
-                                    additionalConfig
+                                    {
+                                        ...additionalConfig,
+                                        rcsbContext:{
+                                            ...additionalConfig.rcsbContext,
+                                            ...externalContext
+                                        }
+                                    }
                                 );
+                                if (typeof config.onChangeCallback === "function")
+                                    config.onChangeCallback({
+                                        ...result[0],
+                                        upAcc
+                                    });
                                 RcsbFvCoreBuilder.addSelectButton(elementFvId, elementSelectId,result.map(instance=>{
                                     return{
                                         name: instance.taxNames.length > 0 ? instance.name+" - "+instance.taxNames.join(", ") : instance.name,
                                         label: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`)+" - "+instance.name,
                                         shortLabel: (instance.authId === instance.asymId ? instance.authId : `${instance.asymId} [auth ${instance.authId}]`),
                                         onChange: async ()=>{
+                                            let externalContext: RcsbContextType | undefined;
+                                            if (typeof config.beforeChangeCallback === "function")
+                                                externalContext = config.beforeChangeCallback({
+                                                    pdbId:instance.entryId,
+                                                    ...instance,
+                                                    upAcc
+                                                });
                                             await RcsbFvUniprotBuilder.buildUniprotEntityInstanceFv(
                                                 elementFvId,
                                                 upAcc,
                                                 instance.entryId+TagDelimiter.entity+instance.entityId,
                                                 instance.entryId+TagDelimiter.instance+instance.asymId,
-                                                additionalConfig
+                                                {
+                                                    ...additionalConfig,
+                                                    rcsbContext:{
+                                                        ...additionalConfig.rcsbContext,
+                                                        ...externalContext
+                                                    }
+                                                }
                                             );
+                                            if (typeof config.onChangeCallback === "function")
+                                                config.onChangeCallback({
+                                                    pdbId:instance.entryId,
+                                                    ...instance,
+                                                    upAcc
+                                                });
                                         }
                                     }
                                 }),{addTitle:true});

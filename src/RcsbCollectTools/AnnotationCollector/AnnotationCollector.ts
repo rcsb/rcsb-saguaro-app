@@ -15,7 +15,7 @@ import {
 } from "./AnnotationCollectorInterface";
 import {AnnotationCollectorHelper} from "./AnnotationCollectorHelper";
 import {Subject} from "rxjs";
-import {ObservableHelper} from "../../RcsbUtils/ObservableHelper";
+import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationTrackManager} from "./AnnotationTrackManager";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";

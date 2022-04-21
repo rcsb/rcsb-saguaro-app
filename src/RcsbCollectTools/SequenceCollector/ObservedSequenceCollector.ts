@@ -13,7 +13,7 @@ import {
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {MultipleEntityInstanceTranslate} from "../../RcsbUtils/Translators/MultipleEntityInstanceTranslate";
 import {MultipleEntityInstancesCollector} from "../DataCollectors/MultipleEntityInstancesCollector";
-import {TagDelimiter} from "../../RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     AlignmentCollectConfig,

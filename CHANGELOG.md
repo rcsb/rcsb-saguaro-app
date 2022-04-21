@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.2.1] - 2022-04-20
+### Improvement
+- Exposing optional parameter `UniprotSequenceConfig` in `buildMultipleAlignmentSequenceFv` method to define dropdown changes callbacks
+- Exposing optional parameter `RcsbFvAdditionalConfig` in `buildMultipleAlignmentSequenceFv` method
+
 ## [4.1.3] - 2022-04-20
 ### Display improvement
 - Including ASA buried filter in UniProt instance module
