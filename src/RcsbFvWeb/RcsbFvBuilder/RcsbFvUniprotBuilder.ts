@@ -22,11 +22,29 @@ export interface UniprotSequenceConfig {
 }
 
 const ALL:string = "ALL";
+
+//TODO Find a better structure for change callbacks
 export class RcsbFvUniprotBuilder {
 
     static async buildUniprotMultipleEntitySequenceFv(elementFvId:string, elementSelectId:string, upAcc:string, config:UniprotSequenceConfig = {}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
-            const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {...additionalConfig, boardConfig:{rowTitleWidth:210}});
+            let externalContext: RcsbContextType | undefined;
+            if (typeof config.beforeChangeCallback === "function")
+                externalContext = config.beforeChangeCallback({
+                    upAcc
+                });
+            const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {
+                ...additionalConfig,
+                rcsbContext: {
+                    ...additionalConfig?.rcsbContext,
+                    ...externalContext
+                },
+                boardConfig:{rowTitleWidth:210}
+            });
+            if (typeof config.onChangeCallback === "function")
+                config.onChangeCallback({
+                    upAcc
+                });
             resolve(rcsbFvUniprot);
             const targets: Array<string>  = await rcsbFvUniprot.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
@@ -73,7 +91,7 @@ export class RcsbFvUniprotBuilder {
                                     {
                                         ...additionalConfig,
                                         rcsbContext:{
-                                            ...additionalConfig.rcsbContext,
+                                            ...additionalConfig?.rcsbContext,
                                             ...externalContext
                                         }
                                     }
@@ -104,7 +122,7 @@ export class RcsbFvUniprotBuilder {
                                                 {
                                                     ...additionalConfig,
                                                     rcsbContext:{
-                                                        ...additionalConfig.rcsbContext,
+                                                        ...additionalConfig?.rcsbContext,
                                                         ...externalContext
                                                     }
                                                 }

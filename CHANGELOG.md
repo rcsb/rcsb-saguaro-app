@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.2.2] - 2022-04-20
+### Bug fixes
+- Checking undefined `RcsbFvAdditionalConfig` in `buildUniprotMultipleEntitySequenceFv`
+
 ## [4.2.1] - 2022-04-20
 ### Improvement
 - Exposing optional parameter `UniprotSequenceConfig` in `buildMultipleAlignmentSequenceFv` method to define dropdown changes callbacks

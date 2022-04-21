@@ -30,6 +30,7 @@ export interface InstanceSequenceConfig {
     module?: instanceModule;
 }
 
+//TODO Find a better structure for change callbacks
 export class RcsbFvInstanceBuilder {
 
     static async buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig={}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {

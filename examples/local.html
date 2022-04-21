@@ -59,8 +59,7 @@
     ).then(()=>{
         console.log(RcsbFvWebApp.getRcsbFv("pfv").getBoardConfig());
     })*/
-    const args = getJsonFromUrl();
-<<<<<<< HEAD
+    //const args = getJsonFromUrl();
     /*const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{});
     const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{});
     const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
@@ -76,16 +75,15 @@
         }],
         sources: ["PDB_INSTANCE"]
     }, "feature-targets");*/
-    const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
+    //const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
     //const module = RcsbFvWebApp.buildGroupFv("pfv", "matching_uniprot_accession", "P01112");
     /*module.then(result=>{
         console.log(result);
     });*/
-    /*const args = getJsonFromUrl();
-=======
 
->>>>>>> master
-    //RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
+    RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r)=>{console.log(r)}});
+    /*const args = getJsonFromUrl();
+
     const anchor = window.location.hash.substr(1);
     const defaultValue =  anchor.length > 0 ? anchor : undefined;
     const dropdownTitle = "CHAIN"
