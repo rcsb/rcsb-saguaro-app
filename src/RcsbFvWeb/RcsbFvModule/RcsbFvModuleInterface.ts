@@ -23,7 +23,6 @@ export interface RcsbFvAdditionalConfig{
     boardConfig?: Partial<RcsbFvBoardConfigInterface>;
     sequencePrefix?:string;
     annotationProcessing?: AnnotationProcessingInterface;
-    sequenceCollector?: SequenceCollectorInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
     page?:{first:number,after:string};
     rcsbContext?:RcsbContextType;

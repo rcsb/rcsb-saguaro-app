@@ -81,7 +81,8 @@
         console.log(result);
     });*/
 
-    RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r)=>{console.log(r)}});
+    const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r)=>{console.log(r)}});
+    module.then(m=>console.log(m));
     /*const args = getJsonFromUrl();
 
     const anchor = window.location.hash.substr(1);

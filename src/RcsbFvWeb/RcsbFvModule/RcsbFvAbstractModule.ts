@@ -17,8 +17,7 @@ import {AlignmentResponse, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL
 import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
-
-
+import {SingletonMap} from "../../RcsbUtils/Helpers/SingletonMap";
 
 export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
@@ -96,6 +95,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>{
+        SingletonMap.update(this.elementId, this);
         if(buildConfig.additionalConfig?.externalTrackBuilder)
             this.setExternalTrackBuilder(buildConfig.additionalConfig?.externalTrackBuilder);
         await this.protectedBuild(buildConfig);
