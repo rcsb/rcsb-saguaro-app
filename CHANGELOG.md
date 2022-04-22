@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+
+## [4.3.0] - 2022-04-22
+### Improvements
+- Builder methods returned objets `RcsbFvModulePublicInterface` update their attributes when dropdown changes update PFV content
+- Dropdown change callbacks pass the whole `PolymerEntityInstanceInterface` object 
+
 ## [4.2.2] - 2022-04-20
 ### Bug fixes
 - Checking undefined `RcsbFvAdditionalConfig` in `buildUniprotMultipleEntitySequenceFv`

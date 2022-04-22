@@ -12,13 +12,11 @@ import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
-export interface InstanceSequenceOnchangeInterface {
-    pdbId: string;
-    authId: string;
-    asymId: string;
+export interface InstanceSequenceOnchangeInterface extends PolymerEntityInstanceInterface {
+
 }
 
-type instanceModule = "interface"|"instance";
+type InstanceModuleType = "interface"|"instance";
 export interface InstanceSequenceConfig {
     dropdownTitle?: string;
     defaultValue?: string|undefined|null;
@@ -27,7 +25,7 @@ export interface InstanceSequenceConfig {
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
     selectButtonOptionProps?: (props: SelectOptionProps)=>JSX.Element;
-    module?: instanceModule;
+    module?: InstanceModuleType;
 }
 
 //TODO Find a better structure for change callbacks
@@ -74,11 +72,7 @@ export class RcsbFvInstanceBuilder {
                 onChange: async () => {
                     let externalContext: RcsbContextType | undefined;
                     if (typeof config.beforeChangeCallback === "function")
-                        externalContext = config.beforeChangeCallback({
-                            pdbId: instance.entryId,
-                            authId: instance.authId,
-                            asymId: instance.asymId
-                        });
+                        externalContext = config.beforeChangeCallback(instance);
                     const rcsbContext:RcsbContextType = {
                         ...additionalConfig?.rcsbContext,
                         ...externalContext,
@@ -91,11 +85,7 @@ export class RcsbFvInstanceBuilder {
                         config.module
                     );
                     if (typeof config.onChangeCallback === "function")
-                        config.onChangeCallback({
-                            pdbId: instance.entryId,
-                            authId: instance.authId,
-                            asymId: instance.asymId
-                        });
+                        config.onChangeCallback(instance);
                 }
             })
         });
@@ -115,11 +105,7 @@ export class RcsbFvInstanceBuilder {
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
         let externalContext: RcsbContextType | undefined;
         if (typeof config.beforeChangeCallback === "function")
-            externalContext = config.beforeChangeCallback({
-                pdbId: filteredInstanceList[index].entryId,
-                authId: filteredInstanceList[index].authId,
-                asymId: filteredInstanceList[index].asymId
-            });
+            externalContext = config.beforeChangeCallback(filteredInstanceList[index]);
         const rcsbContext:RcsbContextType = {
             ...additionalConfig?.rcsbContext,
             ...externalContext,
@@ -127,15 +113,11 @@ export class RcsbFvInstanceBuilder {
         };
         const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, {...additionalConfig, rcsbContext: rcsbContext}, config.module);
         if (typeof config.onChangeCallback === "function")
-            config.onChangeCallback({
-                pdbId: filteredInstanceList[index].entryId,
-                authId: filteredInstanceList[index].authId,
-                asymId: filteredInstanceList[index].asymId
-            });
+            config.onChangeCallback(filteredInstanceList[index]);
         return out;
     }
 
-    static async buildInstanceFv(elementId:string, instanceId:string, additionalConfig?:RcsbFvAdditionalConfig, module?:instanceModule): Promise<RcsbFvModulePublicInterface> {
+    static async buildInstanceFv(elementId:string, instanceId:string, additionalConfig?:RcsbFvAdditionalConfig, module?:InstanceModuleType): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=>{
             try {
                 const entryId: string = instanceId.split(TagDelimiter.instance)[0];

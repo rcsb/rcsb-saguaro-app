@@ -9,10 +9,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
-export interface UniprotSequenceOnchangeInterface {
-    pdbId?:string;
-    authId?:string;
-    asymId?:string;
+export interface UniprotSequenceOnchangeInterface extends Partial<PolymerEntityInstanceInterface> {
     upAcc:string;
 }
 
@@ -110,7 +107,6 @@ export class RcsbFvUniprotBuilder {
                                             let externalContext: RcsbContextType | undefined;
                                             if (typeof config.beforeChangeCallback === "function")
                                                 externalContext = config.beforeChangeCallback({
-                                                    pdbId:instance.entryId,
                                                     ...instance,
                                                     upAcc
                                                 });
@@ -129,7 +125,6 @@ export class RcsbFvUniprotBuilder {
                                             );
                                             if (typeof config.onChangeCallback === "function")
                                                 config.onChangeCallback({
-                                                    pdbId:instance.entryId,
                                                     ...instance,
                                                     upAcc
                                                 });
