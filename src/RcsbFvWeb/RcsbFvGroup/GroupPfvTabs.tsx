@@ -104,7 +104,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
     private async renderPositionalFeatureViewer(tabKey: TabKey): Promise<void> {
         switch (tabKey) {
             case ALIGNMENT:
-                this.featureViewers.set(
+                /*this.featureViewers.set(
                     tabKey,
                     await GPA.alignment(
                         tabKey.toString(),
@@ -116,7 +116,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
                             alignmentFilter: this.filterEntities
                         }
                     )
-                );
+                );*/
                 break;
             case BINDING_SITES:
                 this.featureViewers.set(

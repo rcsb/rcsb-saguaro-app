@@ -1,4 +1,8 @@
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
+import {
+    RcsbFvAdditionalConfig,
+    RcsbFvModuleContainerPublicInterface,
+    RcsbFvModulePublicInterface
+} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
 import {RcsbFvChromosomeBuilder} from "./RcsbFvBuilder/RcsbFvChromosomeBuilder";
@@ -7,7 +11,6 @@ import {RcsbFvUniprotBuilder, UniprotSequenceConfig} from "./RcsbFvBuilder/RcsbF
 import {RcsbFvEntityBuilder} from "./RcsbFvBuilder/RcsbFvEntityBuilder";
 import {
     InstanceSequenceConfig,
-    InstanceSequenceOnchangeInterface,
     RcsbFvInstanceBuilder
 } from "./RcsbFvBuilder/RcsbFvInstanceBuilder";
 import {PfvBuilderInterface, RcsbFvProteinSequenceBuilder} from "./RcsbFvBuilder/RcsbFvProteinSequenceBuilder";
@@ -15,12 +18,13 @@ import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvGroupTabsBuilder} from "./RcsbFvGroup/RcsbFvGroupTabsBuilder";
+import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
 }
 
-export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string, config:UniprotSequenceConfig = {}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSelectId:string, upAcc: string, config:UniprotSequenceConfig = {}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModuleContainerPublicInterface> {
     return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementFvId, elementSelectId, upAcc, config, additionalConfig);
 }
 
@@ -32,15 +36,15 @@ export function buildSingleEntitySummaryFv(elementId: string, entityId: string):
     return RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementId, entityId);
 }
 
-export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+export function buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModuleContainerPublicInterface> {
     return RcsbFvInstanceBuilder.buildInstanceSequenceFv(elementFvId, elementSelectId, entryId, config, additionalConfig);
 }
 
-export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+export function buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModuleContainerPublicInterface> {
     return RcsbFvInstanceBuilder.buildMultipleInstanceSequenceFv(elementFvId, elementEntrySelectId, elementInstanceSelectId, entryIdList, config, additionalConfig);
 }
 
-export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<RcsbFvModulePublicInterface> {
+export function buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: PolymerEntityInstanceInterface)=>void): Promise<RcsbFvModuleContainerPublicInterface> {
     return RcsbFvAssemblyBuilder.buildAssemblySequenceFv(elementFvId, elementSelectAssemblyId, elementSelectInstanceId, entryId, onAsseblyChangeCallback, onInstanceChangeCallback);
 }
 

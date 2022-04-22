@@ -23,7 +23,6 @@ export interface RcsbFvAdditionalConfig{
     boardConfig?: Partial<RcsbFvBoardConfigInterface>;
     sequencePrefix?:string;
     annotationProcessing?: AnnotationProcessingInterface;
-    sequenceCollector?: SequenceCollectorInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
     page?:{first:number,after:string};
     rcsbContext?:RcsbContextType;
@@ -62,4 +61,8 @@ export interface RcsbFvModulePublicInterface {
     getFeatures(): Promise<Array<Feature>>;
     getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
     getFv(): RcsbFv;
+}
+
+export interface RcsbFvModuleContainerPublicInterface {
+    get(): Promise<RcsbFvModulePublicInterface>;
 }

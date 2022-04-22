@@ -18,8 +18,6 @@ import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
-
-
 export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     protected readonly rcsbFv: RcsbFv;

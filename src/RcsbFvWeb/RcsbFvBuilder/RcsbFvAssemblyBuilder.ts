@@ -1,14 +1,15 @@
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {EntryAssembliesCollector} from "../../RcsbCollectTools/DataCollectors/EntryAssembliesCollector";
-import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
+import {RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
-import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvModuleContainerPublicInterface, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {EntryAssemblyTranslate} from "../../RcsbUtils/Translators/EntryAssemblyTranslate";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {PromiseContainer} from "../../RcsbUtils/Helpers/DataContainer";
 
 export class RcsbFvAssemblyBuilder {
 
-    static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<RcsbFvModulePublicInterface> {
+    static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: PolymerEntityInstanceInterface)=>void): Promise<RcsbFvModuleContainerPublicInterface> {
         const assemblyTranslate: EntryAssemblyTranslate = await rcsbRequestCtxManager.getEntryToAssembly(entryId);
         const assemblyMap:Map<string,Array<PolymerEntityInstanceInterface>>  = assemblyTranslate.getData();
         if(assemblyMap.size == 0){
@@ -25,7 +26,7 @@ export class RcsbFvAssemblyBuilder {
                     }
                 }
             }), {dropdownTitle:"ASSEMBLY"});
-            const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildSelectorInstanceFv(assemblyMap.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
+            const out:Promise<RcsbFvModuleContainerPublicInterface> = RcsbFvInstanceBuilder.buildSelectorInstanceFv(assemblyMap.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
             if(typeof onAsseblyChangeCallback === "function")
                 onAsseblyChangeCallback(EntryAssembliesCollector.modelKey);
             return out;

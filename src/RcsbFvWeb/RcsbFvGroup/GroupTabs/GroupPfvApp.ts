@@ -1,4 +1,8 @@
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../../RcsbFvModule/RcsbFvModuleInterface";
+import {
+    RcsbFvAdditionalConfig,
+    RcsbFvModuleContainerPublicInterface,
+    RcsbFvModulePublicInterface
+} from "../../RcsbFvModule/RcsbFvModuleInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {alignmentVariation} from "../../../RcsbUtils/AnnotationGenerators/AlignmentVariation";
@@ -19,7 +23,7 @@ import {GroupPfvUI} from "./GroupPfvUI";
 
 export namespace GroupPfvApp {
 
-    export async function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, entityCount:number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    export async function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, entityCount:number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface|RcsbFvModuleContainerPublicInterface>{
         switch (groupProvenanceId){
             case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
                 return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,elementId+RcsbTabs.SELECT_SUFFIX,groupId,{},additionalConfig)

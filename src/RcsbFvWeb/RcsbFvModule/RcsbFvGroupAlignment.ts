@@ -1,29 +1,14 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
-import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-
-import {RcsbFv} from "@rcsb/rcsb-saguaro";
+import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
-import {
-    SequenceCollector
-} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
-import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector(annotationConfigMap);
-    protected readonly sequenceCollector: SequenceCollectorInterface;
-
-    constructor(elementId: string, rcsbFv: RcsbFv, additionalConfig?: RcsbFvAdditionalConfig) {
-        super(elementId, rcsbFv);
-        if(additionalConfig?.sequenceCollector)
-            this.sequenceCollector = additionalConfig.sequenceCollector;
-        else
-            this.sequenceCollector = new SequenceCollector();
-    }
 
     protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
 
