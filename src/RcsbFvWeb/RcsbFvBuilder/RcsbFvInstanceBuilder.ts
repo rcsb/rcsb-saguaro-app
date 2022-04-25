@@ -20,8 +20,8 @@ type InstanceModuleType = "interface"|"instance";
 export interface InstanceSequenceConfig {
     dropdownTitle?: string;
     defaultValue?: string|undefined|null;
-    beforeChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>undefined|RcsbContextType;
-    onChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void;
+    beforeChangeCallback?:(x: InstanceSequenceOnchangeInterface, module:RcsbFvModulePublicInterface|undefined)=>undefined|RcsbContextType;
+    onChangeCallback?:(x: InstanceSequenceOnchangeInterface, module:RcsbFvModulePublicInterface)=>void;
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
     selectButtonOptionProps?: (props: SelectOptionProps)=>JSX.Element;
@@ -72,7 +72,7 @@ export class RcsbFvInstanceBuilder {
                 onChange: async () => {
                     let externalContext: RcsbContextType | undefined;
                     if (typeof config.beforeChangeCallback === "function")
-                        externalContext = config.beforeChangeCallback(instance);
+                        externalContext = config.beforeChangeCallback(instance, out);
                     const rcsbContext:RcsbContextType = {
                         ...additionalConfig?.rcsbContext,
                         ...externalContext,
@@ -85,7 +85,7 @@ export class RcsbFvInstanceBuilder {
                         config.module
                     );
                     if (typeof config.onChangeCallback === "function")
-                        config.onChangeCallback(instance);
+                        config.onChangeCallback(instance, out);
                 }
             })
         });
@@ -105,7 +105,7 @@ export class RcsbFvInstanceBuilder {
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
         let externalContext: RcsbContextType | undefined;
         if (typeof config.beforeChangeCallback === "function")
-            externalContext = config.beforeChangeCallback(filteredInstanceList[index]);
+            externalContext = config.beforeChangeCallback(filteredInstanceList[index], undefined);
         const rcsbContext:RcsbContextType = {
             ...additionalConfig?.rcsbContext,
             ...externalContext,
@@ -113,7 +113,7 @@ export class RcsbFvInstanceBuilder {
         };
         const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildInstanceFv(elementFvId, filteredInstanceList[index].rcsbId, {...additionalConfig, rcsbContext: rcsbContext}, config.module);
         if (typeof config.onChangeCallback === "function")
-            config.onChangeCallback(filteredInstanceList[index]);
+            config.onChangeCallback(filteredInstanceList[index], out);
         return out;
     }
 

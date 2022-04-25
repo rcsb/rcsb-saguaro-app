@@ -14,8 +14,8 @@ export interface UniprotSequenceOnchangeInterface extends Partial<PolymerEntityI
 }
 
 export interface UniprotSequenceConfig {
-    beforeChangeCallback?:(x: UniprotSequenceOnchangeInterface)=>undefined|RcsbContextType;
-    onChangeCallback?:(x: UniprotSequenceOnchangeInterface)=>void;
+    beforeChangeCallback?:(x: UniprotSequenceOnchangeInterface, module:RcsbFvModulePublicInterface|undefined)=>undefined|RcsbContextType;
+    onChangeCallback?:(x: UniprotSequenceOnchangeInterface, module:RcsbFvModulePublicInterface)=>void;
 }
 
 const ALL:string = "ALL";
@@ -29,7 +29,7 @@ export class RcsbFvUniprotBuilder {
             if (typeof config.beforeChangeCallback === "function")
                 externalContext = config.beforeChangeCallback({
                     upAcc
-                });
+                },undefined);
             const rcsbFvUniprot: RcsbFvModulePublicInterface = await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {
                 ...additionalConfig,
                 rcsbContext: {
@@ -41,7 +41,7 @@ export class RcsbFvUniprotBuilder {
             if (typeof config.onChangeCallback === "function")
                 config.onChangeCallback({
                     upAcc
-                });
+                }, rcsbFvUniprot);
             resolve(rcsbFvUniprot);
             const targets: Array<string>  = await rcsbFvUniprot.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
@@ -56,7 +56,7 @@ export class RcsbFvUniprotBuilder {
                                 if (typeof config.beforeChangeCallback === "function")
                                     externalContext = config.beforeChangeCallback({
                                         upAcc
-                                    });
+                                    }, rcsbFvUniprot);
                                 await RcsbFvUniprotBuilder.buildUniprotFv(elementFvId, upAcc, {
                                     ...additionalConfig,
                                     rcsbContext: {
@@ -67,7 +67,7 @@ export class RcsbFvUniprotBuilder {
                                 if (typeof config.onChangeCallback === "function")
                                     config.onChangeCallback({
                                         upAcc
-                                    });
+                                    }, rcsbFvUniprot);
                             } else {
                                 const entryId: string = entityId.split(TagDelimiter.entity)[0];
                                 const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
@@ -79,7 +79,7 @@ export class RcsbFvUniprotBuilder {
                                     externalContext = config.beforeChangeCallback({
                                         ...result[0],
                                         upAcc
-                                    });
+                                    }, rcsbFvUniprot);
                                 await RcsbFvUniprotBuilder.buildUniprotEntityInstanceFv(
                                     elementFvId,
                                     upAcc,
@@ -97,7 +97,7 @@ export class RcsbFvUniprotBuilder {
                                     config.onChangeCallback({
                                         ...result[0],
                                         upAcc
-                                    });
+                                    }, rcsbFvUniprot);
                                 RcsbFvCoreBuilder.addSelectButton(elementFvId, elementSelectId,result.map(instance=>{
                                     return{
                                         name: instance.taxNames.length > 0 ? instance.name+" - "+instance.taxNames.join(", ") : instance.name,
@@ -109,7 +109,7 @@ export class RcsbFvUniprotBuilder {
                                                 externalContext = config.beforeChangeCallback({
                                                     ...instance,
                                                     upAcc
-                                                });
+                                                }, rcsbFvUniprot);
                                             await RcsbFvUniprotBuilder.buildUniprotEntityInstanceFv(
                                                 elementFvId,
                                                 upAcc,
@@ -127,7 +127,7 @@ export class RcsbFvUniprotBuilder {
                                                 config.onChangeCallback({
                                                     ...instance,
                                                     upAcc
-                                                });
+                                                }, rcsbFvUniprot);
                                         }
                                     }
                                 }),{addTitle:true});

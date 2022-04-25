@@ -2,6 +2,9 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.3.1] - 2022-04-25
+### Improvements
+- Dropdown change callbacks include the module object (`RcsbFvModulePublicInterface`)
 
 ## [4.3.0] - 2022-04-22
 ### Improvements
