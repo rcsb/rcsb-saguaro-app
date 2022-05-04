@@ -20,6 +20,7 @@ export interface BuildAlignementsInterface {
     filterByTargetContains?: string;
     to: SequenceReference;
     from: SequenceReference;
+    sortAlignments?: (a: TargetAlignment, b: TargetAlignment) => number;
     excludeAlignmentLinks?: boolean;
     fitTitleWidth?: boolean;
 }
@@ -44,9 +45,7 @@ export class SequenceCollectorHelper {
         const targets: Array<string> = new Array<string>();
         const alignmentsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
         if(alignmentData.targetAlignmentList instanceof Array) {
-            alignmentData.targetAlignmentList.sort((a: TargetAlignment, b: TargetAlignment) => {
-                return a.target_id.localeCompare(b.target_id);
-            }).forEach(targetAlignment => {
+            (alignmentData.sortAlignments ? alignmentData.targetAlignmentList.sort(alignmentData.sortAlignments) : alignmentData.targetAlignmentList).forEach(targetAlignment => {
                 if (alignmentData.filterByTargetContains != null && !targetAlignment.target_id.includes(alignmentData.filterByTargetContains))
                     return;
                 if (targetAlignment.target_sequence == null)
