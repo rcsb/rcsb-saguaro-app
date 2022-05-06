@@ -76,12 +76,12 @@
         sources: ["PDB_INSTANCE"]
     }, "feature-targets");*/
     //const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
-    //const module = RcsbFvWebApp.buildGroupFv("pfv", "matching_uniprot_accession", "P01112");
+    const module = RcsbFvWebApp.buildGroupFv("pfv", "matching_uniprot_accession", "P01112");
     /*module.then(result=>{
         console.log(result);
     });*/
 
-    const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r,s)=>{console.log(r,s)}});
+    //const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r,s)=>{console.log(r,s)}});
     //module.then(m=>console.log(m));
     /*const args = getJsonFromUrl();
 

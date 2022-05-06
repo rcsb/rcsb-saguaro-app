@@ -13,7 +13,7 @@ import {FeatureTools} from "../FeatureTools/FeatureTools";
 import {AlignedObservedRegion} from "./SequenceCollector";
 import {AlignmentCollectConfig} from "./SequenceCollectorInterface";
 
-export interface BuildAlignementsInterface {
+export interface BuildAlignmentsInterface {
     targetAlignmentList: Array<TargetAlignment>;
     queryId: string;
     querySequence: string;
@@ -37,7 +37,7 @@ export class SequenceCollectorHelper {
     private entityInstanceTranslator: PolymerEntityInstanceTranslate;
 
     public buildAlignments(
-        alignmentData: BuildAlignementsInterface,
+        alignmentData: BuildAlignmentsInterface,
         dynamicDisplayFlag: boolean,
         tagObservedRegions: (region: AlignedRegion, commonContext: TranslateContextInterface, noQuerySequenceFlag?:boolean)=>Array<AlignedObservedRegion>
     ): {alignments: Array<RcsbFvRowConfigInterface>, targets: Array<string>} {
@@ -209,7 +209,7 @@ export class SequenceCollectorHelper {
         return rowTitle;
     }
 
-    public buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignementsInterface ): string | RcsbFvLink {
+    public buildAlignmentRowTitle(targetAlignment: TargetAlignment, alignmentData: BuildAlignmentsInterface ): string | RcsbFvLink {
         let rowTitle: string | RcsbFvLink;
         if (alignmentData.to === SequenceReference.PdbInstance && this.entityInstanceTranslator != null) {
             const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(targetAlignment.target_id.split(TagDelimiter.instance)[1]);

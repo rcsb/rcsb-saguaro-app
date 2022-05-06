@@ -10,7 +10,7 @@ import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotation
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 
-import {BuildAlignementsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
+import {BuildAlignmentsInterface, SequenceCollectorHelper} from "./SequenceCollectorHelper";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     AlignmentCollectConfig,
@@ -72,7 +72,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         if(typeof entityInstanceMapCollector === "function" && alignmentData){
             await entityInstanceMapCollector(alignmentData.map(a=>{return a.target_id}));
         }
-        const buildAlignmentConfig: BuildAlignementsInterface = {
+        const buildAlignmentConfig: BuildAlignmentsInterface = {
             targetAlignmentList: alignmentData,
             queryId:requestConfig.queryId ?? requestConfig.groupId,
             querySequence: querySequence,
@@ -126,7 +126,7 @@ export class SequenceCollector implements SequenceCollectorInterface{
         console.log("Alignment Processing Complete");
     }
 
-    private buildAlignments(alignmentData: BuildAlignementsInterface): Array<RcsbFvRowConfigInterface> {
+    private buildAlignments(alignmentData: BuildAlignmentsInterface): Array<RcsbFvRowConfigInterface> {
         const {alignments, targets}:{alignments: Array<RcsbFvRowConfigInterface>, targets: Array<string>} = this.helper.buildAlignments(alignmentData, this.dynamicDisplay, this.tagObservedRegions);
         this.targets = targets;
         return alignments;

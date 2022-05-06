@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.3.2] - 2022-05-05
+### Improvements
+- Alignments are not sorted by default. `BuildAlignmentsInterface` provides configuration for sorting.
+
 ## [4.3.1] - 2022-04-25
 ### Improvements
 - Dropdown change callbacks include the module object (`RcsbFvModulePublicInterface`)
