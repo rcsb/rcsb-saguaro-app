@@ -37,13 +37,16 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
     }
 
     render(): JSX.Element {
+        const additionalComponent = {
+            additionalComponent: this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingUniprotAccession ? <div id={ALIGNMENT+RcsbTabs.SELECT_SUFFIX} style={{height:38}}/> : undefined
+        };
         return (<>
             <RcsbTabs<TabKey>
                 id={"group-id"}
                 tabList={[
-                    {key: ALIGNMENT, title: "ALIGNMENTS", additionalComponent: this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingUniprotAccession ? <div id={ALIGNMENT+RcsbTabs.SELECT_SUFFIX} /> : undefined},
-                    {key: STRUCTURAL_FEATURES, title: "STRUCTURAL FEATURES"},
-                    {key: BINDING_SITES, title: "BINDING SITES"}
+                    {key: ALIGNMENT, title: "ALIGNMENTS", ...additionalComponent},
+                    {key: STRUCTURAL_FEATURES, title: "STRUCTURAL FEATURES", ...additionalComponent},
+                    {key: BINDING_SITES, title: "BINDING SITES", ...additionalComponent}
                 ]}
                 default={"alignment"}
                 onMount={this.onMount.bind(this)}

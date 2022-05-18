@@ -62,24 +62,18 @@
     //const args = getJsonFromUrl();
     /*const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{});
     const module = RcsbFvWebApp.buildInstanceSequenceFv("pfv","select",args.pdb,{});
-    const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
     module.then(result=>{
         console.log(result);
     });*/
-    /*const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P01112",{
-        filters: [{
-            field: "type",
-            values: ["BINDING_SITE"],
-            operation: "equals",
-            source: "PDB_INSTANCE"
-        }],
-        sources: ["PDB_INSTANCE"]
-    }, "feature-targets");*/
-    //const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
-    const module = RcsbFvWebApp.buildGroupFv("pfv", "matching_uniprot_accession", "P01112");
-    /*module.then(result=>{
-        console.log(result);
+
+    /*const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112");
+    module.then(module=>{
+        console.log(module);
+        module.wait().then(()=>console.log("READY!!!"));
     });*/
+    //RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
+    const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_matching_uniprot_accession", "P01112");
+    console.log(module);
 
     //const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r,s)=>{console.log(r,s)}});
     //module.then(m=>console.log(m));

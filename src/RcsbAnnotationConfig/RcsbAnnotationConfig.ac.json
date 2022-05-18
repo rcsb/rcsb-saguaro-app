@@ -92,6 +92,7 @@
     "PEPTIDE"
   ],
   "instance_order": [
+    "MA_QA_METRIC_LOCAL_TYPE_OTHER",
     "SECONDARY_STRUCTURE",
     "HELIX_P",
     "SHEET",
@@ -626,5 +627,13 @@
       "thresholds": [0.000001]
     },
     "title": "BURIED RESIDUES"
+  },{
+    "type": "MA_QA_METRIC_LOCAL_TYPE_OTHER",
+    "display": "block-area",
+    "color": {
+      "colors": ["#ff7d45","#ffdb13","#65cbf3","#0053d6"],
+      "thresholds": [50,70,90]
+    },
+    "title": "pLDDT"
   }]
 }

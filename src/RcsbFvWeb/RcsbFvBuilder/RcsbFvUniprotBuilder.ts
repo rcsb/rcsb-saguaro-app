@@ -44,9 +44,7 @@ export class RcsbFvUniprotBuilder {
                 }, rcsbFvUniprot);
             resolve(rcsbFvUniprot);
             const targets: Array<string>  = await rcsbFvUniprot.getTargets();
-            RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets.sort((a: string,b: string)=>{
-                    return a.localeCompare(b);
-                })).map(entityId => {
+            RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets).map(entityId => {
                     return {
                         label: entityId === ALL ? entityId+" ("+targets.length+")": entityId,
                         onChange: async () => {
@@ -69,10 +67,10 @@ export class RcsbFvUniprotBuilder {
                                         upAcc
                                     }, rcsbFvUniprot);
                             } else {
-                                const entryId: string = entityId.split(TagDelimiter.entity)[0];
+                                const entryId: string = TagDelimiter.parseEntity(entityId).entryId;
                                 const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
                                 const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData().filter(r=>{
-                                    return r.entityId === entityId.split(TagDelimiter.entity)[1];
+                                    return r.entityId === TagDelimiter.parseEntity(entityId).entityId;
                                 });
                                 let externalContext: RcsbContextType | undefined;
                                 if (typeof config.beforeChangeCallback === "function")
@@ -165,14 +163,13 @@ export class RcsbFvUniprotBuilder {
     static async buildUniprotEntityFv(elementId: string, upAcc: string, entityId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
             try {
-                const entryId: string = entityId.split(TagDelimiter.entity)[0];
-                RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvUniprotEntity, {
+                const entryId: string = TagDelimiter.parseEntity(entityId).entryId;
+                await RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvUniprotEntity, {
                     upAcc: upAcc,
                     entityId: entityId,
                     additionalConfig: {
                         rcsbContext:{
-                            entryId: entityId.split(TagDelimiter.entity)[0],
-                            entityId: entityId.split(TagDelimiter.entity)[1],
+                            ...TagDelimiter.parseEntity(entityId),
                             upAcc: upAcc,
                         },
                         ...additionalConfig
@@ -188,15 +185,14 @@ export class RcsbFvUniprotBuilder {
     static async buildUniprotEntityInstanceFv(elementId: string, upAcc: string, entityId: string, instanceId: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>(async (resolve,reject)=> {
             try {
-                const entryId: string = entityId.split(TagDelimiter.entity)[0];
+                const entryId: string = TagDelimiter.parseEntity(entityId).entryId;
                 await RcsbFvCoreBuilder.getPolymerEntityInstanceMapAndBuildFv(elementId, entryId, RcsbFvUniprotInstance, {
                     upAcc: upAcc,
                     entityId: entityId,
                     instanceId: instanceId,
                     additionalConfig: {
                         rcsbContext:{
-                            entryId: entityId.split(TagDelimiter.entity)[0],
-                            entityId: entityId.split(TagDelimiter.entity)[1],
+                            ...TagDelimiter.parseEntity(entityId),
                             asymId: instanceId,
                             upAcc: upAcc,
                         },

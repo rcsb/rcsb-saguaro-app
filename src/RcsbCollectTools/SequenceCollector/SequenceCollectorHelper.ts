@@ -222,10 +222,10 @@ export class SequenceCollectorHelper {
                 }
             };
         } else if (alignmentData.to === SequenceReference.PdbEntity && !alignmentData.excludeAlignmentLinks ) {
-            const entityId: string = targetAlignment.target_id.split(TagDelimiter.entity)[1];
+            const entityId: string = TagDelimiter.parseEntity(targetAlignment.target_id).entityId;
             rowTitle = {
                 visibleTex:targetAlignment.target_id,
-                url:(resource as any).rcsb_entry.url+targetAlignment.target_id.split(TagDelimiter.entity)[0]+"#entity-"+entityId,
+                url:(resource as any).rcsb_entry.url+TagDelimiter.parseEntity(targetAlignment.target_id).entryId+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
                     color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb

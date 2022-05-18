@@ -82,7 +82,7 @@
   },
   "dependencies": {
     "@rcsb/rcsb-api-tools": "^4.0.1",
-    "@rcsb/rcsb-saguaro": "^2.0.6",
+    "@rcsb/rcsb-saguaro": "file:../rcsb-saguaro",
     "ideogram": "^1.33.0",
     "react-select": "^5.2.2",
     "rxjs": "^6.6.0"

@@ -52,7 +52,6 @@ export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     display(): void;
     build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
     setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
-    updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void;
 }
 
 export interface RcsbFvModulePublicInterface {
@@ -61,4 +60,5 @@ export interface RcsbFvModulePublicInterface {
     getFeatures(): Promise<Array<Feature>>;
     getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
     getFv(): RcsbFv;
+    wait(): Promise<void>;
 }

@@ -30,7 +30,7 @@ export class MultipleEntityInstanceTranslate {
 
     public getEntries(): Array<string>{
         return Operator.uniqueValues<string>(
-            Array.from<string>(this.entityInstanceTranslateMap.keys()).map(entityId=>entityId.split(TagDelimiter.entity)[0])
+            Array.from<string>(this.entityInstanceTranslateMap.keys()).map(entityId=>TagDelimiter.parseEntity(entityId).entryId)
         );
     }
 

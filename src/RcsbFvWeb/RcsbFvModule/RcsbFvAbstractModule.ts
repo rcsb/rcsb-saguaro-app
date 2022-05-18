@@ -35,6 +35,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected alignmentTracks: SequenceCollectorDataInterface;
     protected annotationTracks: Array<RcsbFvRowConfigInterface>;
 
+    private rcsbFvRowUpdatePromise: Promise<void>;
     private activeDisplayFlag: boolean = false;
 
     constructor(elementId: string, rcsbFv: RcsbFv) {
@@ -59,6 +60,9 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
                     WebToolsManager.unmountLoaderSpinner(this.elementId);
                 }
             },
+            rowConfigData:[]
+        });
+        this.rcsbFvRowUpdatePromise = this.rcsbFv.updateBoardConfig({
             rowConfigData:this.rowConfigData
         });
         this.activeDisplayFlag = true;
@@ -90,10 +94,6 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         return await this.annotationCollector.getAnnotationConfigData();
     }
 
-    public updateBoardConfig(config: Partial<RcsbFvBoardConfigInterface>): void {
-        this.boardConfigData = {...this.boardConfigData, ...config};
-    }
-
     public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>{
         SingletonMap.update(this.elementId, this);
         if(buildConfig.additionalConfig?.externalTrackBuilder)
@@ -104,6 +104,10 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         this.concatAlignmentAndAnnotationTracks(buildConfig);
         await this.display();
         return void 0;
+    }
+
+    public wait(): Promise<void> {
+        return this.rcsbFvRowUpdatePromise;
     }
 
     protected abstract protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
