@@ -39,6 +39,9 @@ import {
 } from "../RcsbCollectTools/DataCollectors/DataCollectorInterface";
 import {RcsbRequestTools as RRT} from "./RcsbRequestTools";
 import DataStatusInterface = RRT.DataStatusInterface;
+import {rcsbRequestClient} from "./RcsbRequestClient";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 
 class RcsbRequestContextManager {
 
@@ -177,6 +180,18 @@ class RcsbRequestContextManager {
                 new AssemblyInterfacesTranslate(await this.assemblyInterfacesCollector.collect({assembly_ids:[assemblyId]}))
             )
         );
+    }
+
+    public initializeBorregoClient(config: {api?:string, requestConfig?:RequestInit}): void {
+        rcsbRequestClient.borrego = new GraphQLRequest(config.api ?? "1d-coordinates", config.requestConfig);
+    }
+
+    public initializeYosemiteClient(config: {api?:string, requestConfig?:RequestInit}): void {
+        rcsbRequestClient.yosemite = new GraphQLRequest(config.api ?? "data-api", config.requestConfig);
+    }
+
+    public initializeArchesClient(config: {uri?:string, fetch?:(input: RequestInfo, requestConfig?: RequestInit) => Promise<Response>, requestConfig?:RequestInit}){
+        rcsbRequestClient.arches = new SearchRequest(config.uri, config.fetch, config.requestConfig);
     }
 
 }
