@@ -21,7 +21,7 @@
       "title": "MOLECULE PROCESSING",
       "display": "block"
     },{
-      "merged_types": ["HELIX_P", "SHEET"],
+      "merged_types": ["HELIX_P", "HELX_LH_PP_P", "HELX_RH_AL_P", "HELX_RH_3_T_P", "BEND", "TURN_TY_1_P", "SHEET", "STRN"],
       "type": "SECONDARY_STRUCTURE",
       "title": "SECONDARY STRUCTURE",
       "display": "block"
@@ -427,7 +427,37 @@
     "color": "#e43372",
     "title": "HELIX"
   },{
+    "type": "HELX_LH_PP_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "HELX_RH_AL_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "HELX_RH_3_T_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "BEND",
+    "display": "block",
+    "color": "#65cbf3",
+    "title": "BEND"
+  },{
+    "type": "TURN_TY_1_P",
+    "display": "block",
+    "color": "#0053d6",
+    "title": "TURN"
+  },{
     "type": "SHEET",
+    "display": "block",
+    "color": "#f1d23b",
+    "title": "BETA STRAND"
+  },{
+    "type": "STRN",
     "display": "block",
     "color": "#f1d23b",
     "title": "BETA STRAND"
