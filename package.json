@@ -81,7 +81,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@rcsb/rcsb-api-tools": "^4.0.2",
+    "@rcsb/rcsb-api-tools": "^4.0.3",
     "@rcsb/rcsb-saguaro": "^2.1.0",
     "ideogram": "^1.33.0",
     "react-select": "^5.2.2",
