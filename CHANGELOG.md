@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.3.4] - 2022-05-20
+### Improvements
+- Moving request configuration methods `initializeBorregoClient`, `initializeYosemiteClient` and `initializeArchesClient` into `RcsbRequestContextManager`
+
 ## [4.3.3] - 2022-05-18
 ### Improvements
 - Exposing request configuration methods `initializeBorregoClient`, `initializeYosemiteClient` and `initializeArchesClient`
