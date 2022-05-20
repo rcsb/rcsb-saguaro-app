@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.3.5] - 2022-05-20
+### Dependency update
+- rcsb-api-tools v4.0.4
+
 ## [4.3.4] - 2022-05-20
 ### Improvements
 - Moving request configuration methods `initializeBorregoClient`, `initializeYosemiteClient` and `initializeArchesClient` into `RcsbRequestContextManager`
