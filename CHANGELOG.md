@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.3.6] - 2022-05-23
+## [4.3.6] - 2022-05-26
 ### Bug fixes
 - Client initializers were not overwriting `rcsbRequestClient` attributes
 - `RcsbCoreQueryInterface::client` attribute has been converted to `getClient` function that returns the actual client. The function is passed as a constructor parameter
