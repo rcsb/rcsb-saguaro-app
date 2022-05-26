@@ -5,17 +5,19 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
-import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface EntryInstancesResultInterface {
     polymer_entities: Array<CorePolymerEntity>;
 }
 
 export class RcsbQueryMultipleEntityInstances implements RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>>{
-    readonly client: GraphQLRequest = rcsbRequestClient.yosemite;
+    readonly getClient: ()=>GraphQLRequest;
+    constructor(getClient:()=>GraphQLRequest){
+        this.getClient = getClient;
+    }
     public async request(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>> {
         try {
-            const result:EntryInstancesResultInterface = await this.client.request<QueryPolymer_EntitiesArgs, EntryInstancesResultInterface>(
+            const result:EntryInstancesResultInterface = await this.getClient().request<QueryPolymer_EntitiesArgs, EntryInstancesResultInterface>(
                 {
                     entity_ids: requestConfig.entity_ids,
                 },

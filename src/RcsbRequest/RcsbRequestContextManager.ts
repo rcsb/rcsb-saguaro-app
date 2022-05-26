@@ -20,7 +20,7 @@ import {
     MultipleEntryPropertyCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Operator} from "../RcsbUtils/Helpers/Operator";
-import {SearchQueryType, SearchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
+import {SearchQueryType, searchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
 import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
@@ -55,7 +55,6 @@ class RcsbRequestContextManager {
     private readonly entryPropertyMap: Map<string,DataStatusInterface<EntryPropertyIntreface>> = new Map<string, DataStatusInterface<EntryPropertyIntreface>>();
     private readonly entityPropertyMap: Map<string,DataStatusInterface<PolymerEntityInstanceInterface>> = new Map<string, DataStatusInterface<PolymerEntityInstanceInterface>>();
 
-    private readonly searchRequest: SearchRequestProperty = new SearchRequestProperty();
     private readonly instanceCollector: PolymerEntityInstancesCollector = new PolymerEntityInstancesCollector();
     private readonly assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
     private readonly entityChrCollector: PolymerEntityChromosomeCollector = new PolymerEntityChromosomeCollector();
@@ -130,7 +129,7 @@ class RcsbRequestContextManager {
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            async ()=>(await this.searchRequest.request(searchQuery))
+            async ()=>(await searchRequestProperty.request(searchQuery))
         );
     }
 
@@ -139,7 +138,7 @@ class RcsbRequestContextManager {
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            async ()=>(await this.searchRequest.requestFacets(query, facets, returnType))
+            async ()=>(await searchRequestProperty.requestFacets(query, facets, returnType))
         );
     }
 

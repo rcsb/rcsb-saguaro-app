@@ -7,7 +7,6 @@ import queryAnnotations from "./Queries/Borrego/QueryAnnotations.graphql";
 import queryGroupAnnotations from "./Queries/Borrego/QueryGroupAnnotations.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
-import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface AnnotationsResultInterface {
     annotations: Array<AnnotationFeatures>;
@@ -18,10 +17,13 @@ interface GroupAnnotationsResultInterface {
 }
 
 export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>>{
-    readonly client: GraphQLRequest = rcsbRequestClient.borrego;
+    readonly getClient: ()=>GraphQLRequest;
+    constructor(getClient:()=>GraphQLRequest){
+        this.getClient = getClient;
+    }
     public async request(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>> {
         try {
-            const annotationsResponse: AnnotationsResultInterface = await this.client.request<QueryAnnotationsArgs,AnnotationsResultInterface>(
+            const annotationsResponse: AnnotationsResultInterface = await this.getClient().request<QueryAnnotationsArgs,AnnotationsResultInterface>(
                 {
                     queryId: requestConfig.queryId,
                     reference: requestConfig.reference,
@@ -39,10 +41,13 @@ export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotat
 }
 
 export class RcsbQueryGroupAnnotations implements RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>>{
-    readonly client: GraphQLRequest = rcsbRequestClient.borrego;
+    readonly getClient: ()=>GraphQLRequest;
+    constructor(getClient:()=>GraphQLRequest){
+        this.getClient = getClient;
+    }
     public async request(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>> {
         try {
-            const annotationsResponse: GroupAnnotationsResultInterface = await this.client.request<QueryGroup_AnnotationsArgs,GroupAnnotationsResultInterface>(
+            const annotationsResponse: GroupAnnotationsResultInterface = await this.getClient().request<QueryGroup_AnnotationsArgs,GroupAnnotationsResultInterface>(
                 {
                     group: requestConfig.group,
                     groupId: requestConfig.groupId,
