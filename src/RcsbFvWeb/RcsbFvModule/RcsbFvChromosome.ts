@@ -18,11 +18,11 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvAlignmentCollectorQueue} from "../RcsbFvWorkers/RcsbFvAlignmentCollectorQueue";
-import {RcsbQueryAlignment} from "../../RcsbGraphQL/RcsbQueryAlignment";
 import {NcbiGenomeSequenceData} from "../../ExternalResources/NcbiData/NcbiGenomeSequenceData";
 import {ChromosomeMetadataInterface, NcbiSummary} from "../../ExternalResources/NcbiData/NcbiSummary";
 import Ideogram from 'ideogram';
 import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
+import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>){
     return (where: RcsbFvLocationViewInterface) => {
@@ -34,8 +34,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
                     ids.push(id);
             });
             return Promise.all(ids.map(id => {
-                const queryAlignment: RcsbQueryAlignment = new RcsbQueryAlignment();
-                return queryAlignment.request({
+                return rcsbClient.requestAlignment({
                     queryId: id,
                     from: reference,
                     to: SequenceReference.NcbiGenome
@@ -110,9 +109,8 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
 
     private buildPdbGenomeFv(pdbEntityId: string, chrId?: string){
         this.entityId = pdbEntityId;
-        const queryAlignment: RcsbQueryAlignment = new RcsbQueryAlignment();
         Promise.all([SequenceReference.NcbiProtein, SequenceReference.Uniprot].map(to=>{
-            return queryAlignment.request({
+            return rcsbClient.requestAlignment({
                 queryId: pdbEntityId,
                 from: SequenceReference.PdbEntity,
                 to: to

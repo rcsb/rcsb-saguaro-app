@@ -5,17 +5,19 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import query from "./Queries/Yosemite/QueryAssemblyInterfaces.graphql";
-import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface AssemblyInterfacesResultInterface {
     assemblies: Array<CoreAssembly>;
 }
 
 export class RcsbQueryAssemblyInterfaces implements RcsbCoreQueryInterface<QueryAssembliesArgs,Array<CoreAssembly>>{
-    readonly client: GraphQLRequest = rcsbRequestClient.yosemite;
+    readonly getClient: ()=>GraphQLRequest;
+    constructor(getClient:()=>GraphQLRequest){
+        this.getClient = getClient;
+    }
     public async request(requestConfig: QueryAssembliesArgs): Promise<Array<CoreAssembly>> {
         try {
-            const response:AssemblyInterfacesResultInterface = await this.client.request<QueryAssembliesArgs,AssemblyInterfacesResultInterface>(
+            const response:AssemblyInterfacesResultInterface = await this.getClient().request<QueryAssembliesArgs,AssemblyInterfacesResultInterface>(
                 requestConfig,
                 query
             );

@@ -3,15 +3,20 @@ import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchRes
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupNode, SearchQuery, TerminalNode} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetType} from "./FacetStore/FacetMemberInterface";
+import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 export type SearchQueryType = GroupNode | TerminalNode;
 
-export class SearchRequestProperty {
+class SearchRequestProperty {
 
-    private searchRequest: SearchRequest = new SearchRequest();
+    private readonly getClient: ()=>SearchRequest;
+
+    constructor(getClient: ()=>SearchRequest){
+        this.getClient = getClient;
+    }
 
     private async _requestFacets(config: {query: SearchQueryType; facets: FacetType[]; returnType: ReturnType;}): Promise<QueryResult | null> {
-        return await this.searchRequest.request({
+        return await this.getClient().request({
             query: config.query,
             request_options: config.facets.length > 0 ? {
                 paginate:{
@@ -34,7 +39,7 @@ export class SearchRequestProperty {
     }
 
     public async requestMembers(query: SearchQuery): Promise<Array<string>> {
-        return (await this.searchRequest.request({
+        return (await this.getClient().request({
             query: query.query,
             request_options: {
                 return_all_hits: true
@@ -44,7 +49,7 @@ export class SearchRequestProperty {
     }
 
     public async requestCount(query: SearchQuery): Promise<number> {
-        return (await this.searchRequest.request({
+        return (await this.getClient().request({
             query: query.query,
             request_options: {
                 return_counts:true
@@ -54,7 +59,9 @@ export class SearchRequestProperty {
     }
 
     public async request(query: SearchQuery): Promise<QueryResult | null> {
-        return await this.searchRequest.request(query);
+        return await this.getClient().request(query);
     }
 
 }
+
+export const searchRequestProperty = new SearchRequestProperty(()=>rcsbRequestClient.arches);

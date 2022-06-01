@@ -70,6 +70,41 @@
     module.then(module=>{
         console.log(module);
         module.wait().then(()=>console.log("READY!!!"));
+    /*const module = RcsbFvWebApp.buildUniprotEntityGroupFv("pfv","P01112",{
+        filters: [{
+            field: "type",
+            values: ["BINDING_SITE"],
+            operation: "equals",
+            source: "PDB_INSTANCE"
+        }],
+        sources: ["PDB_INSTANCE"]
+    }, "feature-targets");*/
+    //const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
+    /*var headers = {
+        "Rcsb-Analytics-Traffic-Origin": "internal",
+        "Rcsb-Analytics-Traffic-Stage": "saguaro"
+    };
+
+    RcsbFvWebApp.RcsbRequestContextManager.initializeBorregoClient({
+        requestConfig: {
+            headers
+        }
+    });
+
+    RcsbFvWebApp.RcsbRequestContextManager.initializeYosemiteClient({
+        requestConfig: {
+            headers
+        }
+    });
+
+    RcsbFvWebApp.RcsbRequestContextManager.initializeArchesClient({
+        requestConfig: {
+            headers
+        }
+    });*/
+    //const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_matching_uniprot_accession", "P01112");
+    /*module.then(result=>{
+        console.log(result);
     });*/
     //RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
     const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_matching_uniprot_accession", "P38398");

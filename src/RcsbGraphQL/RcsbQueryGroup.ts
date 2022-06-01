@@ -2,17 +2,19 @@ import query from "./Queries/Yosemite/QueryGroup.graphql";
 import {GroupPolymerEntity, QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
-import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 
 interface GroupResultInterface {
     group: GroupPolymerEntity;
 }
 
 export class RcsbQueryGroup implements RcsbCoreQueryInterface<QueryPolymer_Entity_GroupArgs,GroupPolymerEntity>{
-    readonly client: GraphQLRequest = rcsbRequestClient.yosemite;
+    readonly getClient: ()=>GraphQLRequest;
+    constructor(getClient:()=>GraphQLRequest){
+        this.getClient = getClient;
+    }
     public async request(requestConfig: QueryPolymer_Entity_GroupArgs): Promise<GroupPolymerEntity> {
         try {
-            const response:GroupResultInterface = await this.client.request<QueryPolymer_Entity_GroupArgs, GroupResultInterface>(
+            const response:GroupResultInterface = await this.getClient().request<QueryPolymer_Entity_GroupArgs, GroupResultInterface>(
                 {
                     group_id: requestConfig.group_id
                 },

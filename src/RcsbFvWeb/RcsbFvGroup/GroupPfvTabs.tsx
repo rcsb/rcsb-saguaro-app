@@ -6,7 +6,7 @@ import {
     Source,
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {SearchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
+import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../WebTools/RcsbTabs";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
@@ -56,23 +56,22 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
     }
 
     private async onMount() {
-        const search: SearchRequestProperty = new SearchRequestProperty();
         if(this.props.searchQuery) {
-            this.filterEntities = await search.requestMembers({
+            this.filterEntities = await searchRequestProperty.requestMembers({
                 ...this.props.searchQuery,
                 query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                 return_type: ReturnType.PolymerEntity
             });
             this.entityCount = this.filterEntities.length;
-            this.filterInstances = await search.requestMembers({
+            this.filterInstances = await searchRequestProperty.requestMembers({
                 ...this.props.searchQuery,
                 query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                 return_type: ReturnType.PolymerInstance
             });
             await this.onSelect(this.currentTab);
         }else{
-            this.filterInstances = await search.requestMembers({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
-            this.entityCount = await search.requestCount({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerEntity});
+            this.filterInstances = await searchRequestProperty.requestMembers({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
+            this.entityCount = await searchRequestProperty.requestCount({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerEntity});
             await this.onSelect(this.currentTab);
         }
     }

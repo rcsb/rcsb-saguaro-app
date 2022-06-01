@@ -2,6 +2,30 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.0-models] - 2022-06-01
+### Improvements
+- `TagDelimiter` exposes methods to parse RCSB PDB object identifiers
+- Removed alignment element sorting
+- Large alignments lists do not block dropdown buttons
+
+## [4.3.6] - 2022-05-26
+### Bug fixes
+- Client initializers were not overwriting `rcsbRequestClient` attributes
+- `RcsbCoreQueryInterface::client` attribute has been converted to `getClient` function that returns the actual client. The function is passed as a constructor parameter
+- `SearchRequestProperty::client` attribute has been converted to `getClient` function that returns the actual client. The function is passed as a constructor parameter
+
+## [4.3.5] - 2022-05-20
+### Dependency update
+- rcsb-api-tools v4.0.4
+
+## [4.3.4] - 2022-05-20
+### Improvements
+- Moving request configuration methods `initializeBorregoClient`, `initializeYosemiteClient` and `initializeArchesClient` into `RcsbRequestContextManager`
+
+## [4.3.3] - 2022-05-18
+### Improvements
+- Exposing request configuration methods `initializeBorregoClient`, `initializeYosemiteClient` and `initializeArchesClient`
+
 ## [4.3.2] - 2022-05-05
 ### Improvements
 - Alignments are not sorted by default. `BuildAlignmentsInterface` provides configuration for sorting.

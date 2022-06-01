@@ -18,18 +18,35 @@ import {RcsbQueryGroup} from "./RcsbQueryGroup";
 import {RcsbQueryMultipleEntriesProperties} from "./RcsbQueryMultipleEntriesProperties";
 import {RcsbQueryInterfaceInstances} from "./RcsbQueryInterfaceInstances";
 import {RcsbQueryAssemblyInterfaces} from "./RcsbQueryAssemblyInterfaces";
+import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools";
 
 //TODO Implement a cache to store requests and avoid duplication
 class RcsbClientClass {
-    private rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryAnnotations();
-    private rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>> = new RcsbQueryGroupAnnotations();
-    private rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse> = new RcsbQueryAlignment();
-    private rcsbQueryGroupAlignment: RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments,AlignmentResponse> = new RcsbQueryGroupAlignment();
-    private rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry> = new RcsbQueryEntryInstances();
-    private rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>> = new RcsbQueryMultipleEntityInstances();
-    private rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>> = new RcsbQueryMultipleEntriesProperties();
-    private rcsbQueryInterfaceInstances: RcsbCoreQueryInterface<QueryInterfacesArgs,Array<CoreInterface>> = new RcsbQueryInterfaceInstances();
-    private rcsbQueryAssemblyInterfaces: RcsbCoreQueryInterface<QueryAssembliesArgs,Array<CoreAssembly>> = new RcsbQueryAssemblyInterfaces();
+
+    private readonly rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> ;
+    private readonly rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>>;
+    private readonly rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse>;
+    private readonly rcsbQueryGroupAlignment: RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments,AlignmentResponse>;
+    private readonly rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry>;
+    private readonly rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>>;
+    private readonly rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>>;
+    private readonly rcsbQueryInterfaceInstances: RcsbCoreQueryInterface<QueryInterfacesArgs,Array<CoreInterface>>;
+    private readonly rcsbQueryAssemblyInterfaces: RcsbCoreQueryInterface<QueryAssembliesArgs,Array<CoreAssembly>>;
+    private readonly rcsbQueryGroup: RcsbCoreQueryInterface<QueryPolymer_Entity_GroupArgs,GroupPolymerEntity>;
+
+    constructor(get:{borrego: ()=>GraphQLRequest, yosemite: ()=>GraphQLRequest}){
+        this.rcsbQueryAnnotations = new RcsbQueryAnnotations(get.borrego);
+        this.rcsbQueryGroupAnnotations = new RcsbQueryGroupAnnotations(get.borrego);
+        this.rcsbQueryAlignment = new RcsbQueryAlignment(get.borrego);
+        this.rcsbQueryGroupAlignment = new RcsbQueryGroupAlignment(get.borrego);
+        this.rcsbQueryEntityInstances = new RcsbQueryEntryInstances(get.yosemite);
+        this.rcsbQueryMutipleEntityInstances = new RcsbQueryMultipleEntityInstances(get.yosemite);
+        this.rcsbQueryEntryProperties = new RcsbQueryMultipleEntriesProperties(get.yosemite);
+        this.rcsbQueryInterfaceInstances = new RcsbQueryInterfaceInstances(get.yosemite);
+        this.rcsbQueryAssemblyInterfaces = new RcsbQueryAssemblyInterfaces(get.yosemite);
+        this.rcsbQueryGroup = new RcsbQueryGroup(get.yosemite);
+    }
 
     public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
         return await this.rcsbQueryAnnotations.request(requestConfig);
@@ -56,8 +73,7 @@ class RcsbClientClass {
     }
 
     public async requestGroupInfo(requestConfig: QueryPolymer_Entity_GroupArgs): Promise<GroupPolymerEntity>{
-        const rcsbQueryGroup: RcsbCoreQueryInterface<QueryPolymer_Entity_GroupArgs,GroupPolymerEntity> = new RcsbQueryGroup();
-        return await rcsbQueryGroup.request(requestConfig);
+        return await this.rcsbQueryGroup.request(requestConfig);
     }
 
     public async requestMultipleEntriesProperties(requestConfig: QueryEntriesArgs): Promise<Array<CoreEntry>>{
@@ -73,5 +89,5 @@ class RcsbClientClass {
     }
 }
 
-export const rcsbClient: RcsbClientClass = new RcsbClientClass();
+export const rcsbClient: RcsbClientClass = new RcsbClientClass({borrego: ()=>rcsbRequestClient.borrego, yosemite: ()=>rcsbRequestClient.yosemite});
 export type RcsbClient = typeof rcsbClient;
