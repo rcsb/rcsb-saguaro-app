@@ -12,4 +12,12 @@ export class TagDelimiter {
         const entryId: string =  ids.join(TagDelimiter.entity)
         return {entryId, entityId};
     }
+
+    public static parseInstance(rcsbId:string): {instanceId: string;entryId:string;} {
+        const ids: string[] = rcsbId.split(TagDelimiter.instance);
+        const instanceId: string = ids.pop();
+        const entryId: string =  ids.join(TagDelimiter.instance)
+        return {instanceId, entryId};
+    }
+
 }

@@ -1,6 +1,7 @@
 <html lang="en" class=""><head>
     <meta charset="UTF-8">
     <title>CodePen Demo</title>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
 <body>
 
@@ -107,8 +108,8 @@
         console.log(result);
     });*/
     //RcsbFvWebApp.buildGroupFv("pfv", "provenance_sequence_identity", "1_30");
-    const module = RcsbFvWebApp.buildGroupFv("pfv", "provenance_matching_uniprot_accession", "P38398");
-    console.log(module);
+    RcsbFvWebApp.buildGroupFv("pfv", "provenance_matching_uniprot_accession", "P38398");
+
 
     //const module = RcsbFvWebApp.buildMultipleAlignmentSequenceFv("pfv","select","P01112", {onChangeCallback:(r,s)=>{console.log(r,s)}});
     //module.then(m=>console.log(m));

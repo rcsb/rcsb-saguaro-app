@@ -1,5 +1,3 @@
-import {CoreCollectorInterface} from "../CoreCollectorInterface";
-import {SequenceCollectorDataInterface} from "./SequenceCollector";
 import {
     AlignmentResponse,
     QueryAlignmentArgs
@@ -24,12 +22,11 @@ export interface CollectGroupAlignmentInterface extends RcsbQueryGroupAlignmentA
 
 export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & CollectGroupAlignmentInterface>;
 
-export interface SequenceCollectorInterface extends CoreCollectorInterface {
+export interface AlignmentCollectorInterface {
     getTargets():Promise<Array<string>>;
-    getAlignmentResponse():Promise<AlignmentResponse>;
-    getSequenceLength(): number;
+    getAlignment():Promise<AlignmentResponse>;
+    getAlignmentLength(): Promise<number>;
     collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface,
             filter?:Array<string>,
-            entityInstanceMapCollector?: (instanceIds: Array<string>)=>Promise<void>,
-    ): Promise<SequenceCollectorDataInterface>;
+    ): Promise<AlignmentResponse>;
 }

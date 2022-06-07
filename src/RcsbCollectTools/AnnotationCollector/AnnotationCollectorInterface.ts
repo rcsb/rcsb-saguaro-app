@@ -1,21 +1,20 @@
-import {CoreCollectorInterface} from "../CoreCollectorInterface";
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {
-    AlignmentResponse,
     AnnotationFeatures,
     Feature,
     QueryAnnotationsArgs,
-    QueryGroup_AnnotationsArgs,
-    Source
+    QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AnnotationTrack, FeaturePositionGaps} from "./AnnotationTrack";
+import {FeaturePositionGaps} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
+import {
+    TrackManagerInterface
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 
 export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
 export interface AnnotationProcessingInterface {
     getAnnotationValue?:IncreaseAnnotationValueType;
-    computeAnnotationValue?:(annotationTracks: Map<string, AnnotationTrack>)=>void;
+    computeAnnotationValue?:(annotationTracks: Map<string, TrackManagerInterface>)=>void;
     addTrackElementCallback?:IncreaseAnnotationValueType;
 }
 
@@ -37,12 +36,10 @@ export interface CollectAnnotationsInterface extends QueryAnnotationsArgs, Commo
 export interface CollectGroupAnnotationsInterface extends QueryGroup_AnnotationsArgs, CommonAnnotationInterface {
 }
 
-export type AnnotationCollectConfig = Partial<CollectAnnotationsInterface & CollectGroupAnnotationsInterface>;
+export type AnnotationRequestContext = Partial<CollectAnnotationsInterface & CollectGroupAnnotationsInterface>;
 
-export interface AnnotationCollectorInterface extends CoreCollectorInterface {
-    collect(requestConfig: CollectAnnotationsInterface | CollectGroupAnnotationsInterface): Promise<Array<RcsbFvRowConfigInterface>>;
-    getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
-    //TODO this two methods are redundant Array<Feature> can be collected from Array<AnnotationFeatures>
-    getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>
+export interface AnnotationCollectorInterface {
+    collect(requestConfig: CollectAnnotationsInterface | CollectGroupAnnotationsInterface): Promise<Array<AnnotationFeatures>>;
+    getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>;
     getFeatures(): Promise<Array<Feature>>;
 }

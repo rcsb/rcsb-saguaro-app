@@ -5,7 +5,6 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {SequenceCollectorDataInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {alignmentVariation} from "./AlignmentVariation";
@@ -17,7 +16,7 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
     const addConservation: ExternalTrackBuilderInterface = alignmentVariation();
 
     return {
-        async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: SequenceCollectorDataInterface}): Promise<void> {
+        async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
             if(Array.from(bindingSiteMap.values()).length > 0)
                 tracks.annotationTracks.unshift({
                     trackId: "annotationTrack_GLOBAL_BINDINGS",

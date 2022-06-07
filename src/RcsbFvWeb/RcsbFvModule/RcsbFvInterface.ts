@@ -1,28 +1,29 @@
 import {
+    AlignmentResponse,
     AnnotationFeatures,
     Feature,
     SequenceReference,
-    Source,
-    Type
+    Source
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbContextType, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
+import {
+    CollectAnnotationsInterface
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
-import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
-import {burialFraction, burialFractionFilter} from "../../RcsbUtils/AnnotationGenerators/BurialFraction";
+import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
+import {burialFraction, burialFractionFilter} from "../../RcsbUtils/TrackGenerators/BurialFraction";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 
 export class RcsbFvInterface extends RcsbFvAbstractModule {
 
-    protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector(annotationConfigMap);
     private instanceId: string;
 
     protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
@@ -30,12 +31,15 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         this.instanceId = instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
 
-        this.alignmentTracks = await this.sequenceCollector.collect({
+        const alignmentRequestContext = {
             queryId: instanceId,
             from: SequenceReference.PdbInstance,
-            to: SequenceReference.Uniprot});
+            to: SequenceReference.Uniprot
+        };
+        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
-        this.annotationTracks = await this.annotationCollector.collect({
+        const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
             titleSuffix: this.titleSuffix(buildConfig?.additionalConfig?.rcsbContext).bind(this),
@@ -45,9 +49,11 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             annotationGenerator: interfaceAnnotations,
             annotationFilter: buildConfig.additionalConfig?.externalTrackBuilder?.filterFeatures ? undefined : filter,
             rcsbContext: buildConfig.additionalConfig?.rcsbContext
-        });
+        };
+        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
 
-        this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
+        this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;
         return void 0;
     }
@@ -55,9 +61,9 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     protected concatAlignmentAndAnnotationTracks(buildConfig:RcsbFvModuleBuildInterface): void {
         this.rowConfigData =
             !buildConfig.additionalConfig?.hideAlignments ?
-                this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks)
+                [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks)
                 :
-                this.alignmentTracks.sequence.concat(this.annotationTracks);
+                this.alignmentTracks.concat(this.annotationTracks);
     }
 
     private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string> {

@@ -10,7 +10,6 @@ import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/Polyme
 import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PairwiseAlignmentInterface} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
@@ -52,6 +51,7 @@ export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     display(): void;
     build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
     setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate): void;
+    getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate;
 }
 
 export interface RcsbFvModulePublicInterface {

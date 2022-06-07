@@ -31,7 +31,7 @@ export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterfa
             >
                 {
                     this.props.tabList.map((tab,n)=>(
-                        <Tab eventKey={tab.key} title={tab.title}>
+                        <Tab key={uniqid(`${tab.key}_`)} eventKey={tab.key} title={tab.title}>
                             {
                                tab.additionalComponent
                             }

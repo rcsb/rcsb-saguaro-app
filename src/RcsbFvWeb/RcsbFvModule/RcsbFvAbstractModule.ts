@@ -4,20 +4,42 @@ import {
     RcsbFvRowConfigInterface
 } from '@rcsb/rcsb-saguaro';
 
-import {
-    SequenceCollector,
-    SequenceCollectorDataInterface
-} from "../../RcsbCollectTools/SequenceCollector/SequenceCollector";
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {SequenceCollectorInterface} from "../../RcsbCollectTools/SequenceCollector/SequenceCollectorInterface";
-import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {
+    AlignmentCollectorInterface,
+} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {
+    AnnotationRequestContext,
+    AnnotationCollectorInterface,
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
-import {AlignmentResponse, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    AlignmentResponse,
+    AnnotationFeatures,
+    Feature, TargetAlignment
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {WebToolsManager} from "../WebTools/WebToolsManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {SingletonMap} from "../../RcsbUtils/Helpers/SingletonMap";
+import {AlignmentCollector} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollector";
+import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
+import {
+    AlignmentRequestContextType,
+    AlignmentTrackFactory
+} from "../RcsbFvFactories/RcsbFvTrackFactory/AlignmentTrackFactory";
+import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/SequenceTrackFactory";
+import {BlockFactoryInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockFactoryInterface";
+import {AlignmentBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AlignmentBlockFactory";
+import {AnnotationsBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AnnotationsBlockFactory";
+import {AnnotationsTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/AnnotationsTrackFactory";
+import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
+import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
+import {AnnotationBlockManager} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationBlockManager";
+import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
+import {AnnotationTrackManagerFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
+
 
 export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
@@ -29,11 +51,12 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
     protected polymerEntityInstance: PolymerEntityInstanceTranslate;
-    protected readonly sequenceCollector: SequenceCollectorInterface = new SequenceCollector();
+    protected readonly alignmentCollector: AlignmentCollectorInterface = new AlignmentCollector();
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
-    protected alignmentTracks: SequenceCollectorDataInterface;
-    protected annotationTracks: Array<RcsbFvRowConfigInterface>;
+    protected referenceTrack: RcsbFvRowConfigInterface;
+    protected alignmentTracks: Array<RcsbFvRowConfigInterface> = [];
+    protected annotationTracks: Array<RcsbFvRowConfigInterface> = [];
 
     private rcsbFvRowUpdatePromise: Promise<void>;
     private activeDisplayFlag: boolean = false;
@@ -46,8 +69,10 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     public setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate){
         this.polymerEntityInstance = polymerEntityInstance;
-        this.annotationCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance);
-        this.sequenceCollector.setPolymerEntityInstanceTranslator(polymerEntityInstance)
+    }
+
+    public getPolymerEntityInstanceTranslator(){
+        return this.polymerEntityInstance;
     }
 
     public async display(): Promise<void>{
@@ -78,11 +103,11 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async getTargets(): Promise<Array<string>>{
-        return await this.sequenceCollector.getTargets();
+        return await this.alignmentCollector.getTargets();
     }
 
     public async getAlignmentResponse():Promise<AlignmentResponse> {
-        return await this.sequenceCollector.getAlignmentResponse();
+        return await this.alignmentCollector.getAlignment();
     }
 
     public async getFeatures(): Promise<Array<Feature>>{
@@ -91,16 +116,13 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
-        return await this.annotationCollector.getAnnotationConfigData();
+        return this.annotationTracks;
     }
 
     public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>{
         SingletonMap.update(this.elementId, this);
-        if(buildConfig.additionalConfig?.externalTrackBuilder)
-            this.setExternalTrackBuilder(buildConfig.additionalConfig?.externalTrackBuilder);
         await this.protectedBuild(buildConfig);
-        if(buildConfig.additionalConfig?.externalTrackBuilder)
-            await this.buildExternalTracks(buildConfig.additionalConfig.externalTrackBuilder, buildConfig.additionalConfig?.rcsbContext);
+        await this.buildExternalTracks(buildConfig.additionalConfig?.externalTrackBuilder, buildConfig.additionalConfig?.rcsbContext);
         this.concatAlignmentAndAnnotationTracks(buildConfig);
         await this.display();
         return void 0;
@@ -113,11 +135,40 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected abstract protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
     protected abstract concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void;
 
-    private async buildExternalTracks(externalTrackBuilder: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {
+    protected async buildAlignmentTracks(
+        alignmentRequestContext: AlignmentRequestContextType,
+        alignmentResponse: AlignmentResponse,
+        trackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>
+    ): Promise<void>{
+        const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
+        if(alignmentResponse.query_sequence)
+            this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
+        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse]> = new AlignmentBlockFactory(
+            trackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
+        );
+        this.alignmentTracks = await alignmentBlockFactory.getBlock(alignmentRequestContext,alignmentResponse);
+    }
+
+    protected async buildAnnotationsTrack(annotationsRequestContext: AnnotationRequestContext, annotationsFeatures: AnnotationFeatures[], annotationConfigMap?: AnnotationConfigInterface): Promise<void> {
+        const defaultAnnotationConfigMap: AnnotationConfigInterface = annotationConfigMap ?? acm as unknown as AnnotationConfigInterface;
+        const annotationsBlockFactory: BlockFactoryInterface<[AnnotationRequestContext, AnnotationFeatures[]]> = new AnnotationsBlockFactory(
+            new AnnotationBlockManager(
+                new AnnotationTrackManagerFactory(),
+                new RcsbAnnotationConfig(defaultAnnotationConfigMap),
+                this.getPolymerEntityInstanceTranslator()
+            ),
+            new AnnotationsTrackFactory()
+        );
+        this.annotationTracks = await annotationsBlockFactory.getBlock(annotationsRequestContext, annotationsFeatures);
+    }
+
+    private async buildExternalTracks(externalTrackBuilder?: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {
+        if(!externalTrackBuilder)
+            return;
         if(typeof externalTrackBuilder.processAlignmentAndFeatures === "function")
             await externalTrackBuilder.processAlignmentAndFeatures({
                 annotations:await this.annotationCollector.getAnnotationFeatures(),
-                alignments: await this.sequenceCollector.getAlignmentResponse(),
+                alignments: await this.alignmentCollector.getAlignment(),
                 rcsbContext: rcsbContext
             });
         if(typeof externalTrackBuilder.addTo === "function")
@@ -127,11 +178,6 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
                 rcsbContext: rcsbContext
             });
         return void 0;
-    }
-
-    private setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
-        this.annotationCollector.setExternalTrackBuilder(externalTrackBuilder);
-        this.sequenceCollector.setExternalTrackBuilder(externalTrackBuilder);
     }
 
 }

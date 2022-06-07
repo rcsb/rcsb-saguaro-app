@@ -1,46 +1,25 @@
 import {
-    RcsbFvRowConfigInterface
-} from '@rcsb/rcsb-saguaro';
-
-import {
     AnnotationFeatures, Feature
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {
-    AnnotationCollectConfig,
+    AnnotationRequestContext,
     AnnotationCollectorInterface
 } from "./AnnotationCollectorInterface";
-import {AnnotationCollectorHelper} from "./AnnotationCollectorHelper";
 import {Subject} from "rxjs";
 import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
-import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {AnnotationTrackManager} from "./AnnotationTrackManager";
-import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 export class AnnotationCollector implements AnnotationCollectorInterface{
 
-    private readonly rcsbAnnotationConfig: RcsbAnnotationConfig;
-    private readonly annotationsConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
     readonly rcsbFvQuery: RcsbClient = rcsbClient;
-    private polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
     private requestStatus: "pending"|"complete" = "complete";
     private rawFeatures: Array<Feature>;
-    private readonly rawFeaturesSubject: Subject<Array<Feature>> = new Subject<Array<Feature>>();
-    private readonly annotationsConfigDataSubject: Subject<Array<RcsbFvRowConfigInterface>> = new Subject<Array<RcsbFvRowConfigInterface>>();
-    private readonly annotationTrackManager: AnnotationTrackManager;
     private annotationFeatures: Array<AnnotationFeatures>;
+    private readonly rawFeaturesSubject: Subject<Array<Feature>> = new Subject<Array<Feature>>();
     private readonly annotationFeaturesSubject: Subject<Array<AnnotationFeatures>> = new Subject<Array<AnnotationFeatures>>();
-    private externalTrackBuilder: ExternalTrackBuilderInterface;
 
-    constructor(acm?: AnnotationConfigInterface) {
-        this.rcsbAnnotationConfig = new RcsbAnnotationConfig(acm);
-        this.annotationTrackManager = new AnnotationTrackManager(this.rcsbAnnotationConfig);
-    }
-
-    public async collect(requestConfig: AnnotationCollectConfig): Promise<Array<RcsbFvRowConfigInterface>> {
+    public async collect(requestConfig: AnnotationRequestContext): Promise<Array<AnnotationFeatures>> {
         this.requestStatus = "pending";
         this.annotationFeatures = await this.requestAnnotations(requestConfig);
         if (requestConfig.collectSwissModel === true) {
@@ -56,19 +35,9 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         if(typeof requestConfig?.annotationFilter === "function") {
             this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);
         }
-        await this.processRcsbPdbAnnotations({externalAnnotationTrackBuilder: this.externalTrackBuilder, ...requestConfig});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();
-        return this.annotationsConfigData;
-    }
-
-    public setPolymerEntityInstanceTranslator(p: PolymerEntityInstanceTranslate): void {
-        this.annotationTrackManager.setPolymerEntityInstanceTranslator(p);
-        this.polymerEntityInstanceTranslator = p;
-    }
-
-    public setExternalTrackBuilder(externalTrackBuilder: ExternalTrackBuilderInterface): void {
-        this.externalTrackBuilder = externalTrackBuilder;
+        return this.annotationFeatures;
     }
 
     public async getFeatures(): Promise<Array<Feature>>{
@@ -81,16 +50,6 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         });
     }
 
-    public async getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
-        return new Promise<Array<RcsbFvRowConfigInterface>>((resolve, reject)=>{
-            if(this.requestStatus === "complete"){
-                resolve(this.annotationsConfigData);
-            }else{
-                ObservableHelper.oneTimeSubscription<Array<RcsbFvRowConfigInterface>>(resolve, this.annotationsConfigDataSubject);
-            }
-        })
-    }
-
     public async getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>{
         return new Promise<Array<AnnotationFeatures>>((resolve, reject)=>{
             if(this.requestStatus === "complete"){
@@ -101,30 +60,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         })
     }
 
-    private async processRcsbPdbAnnotations(requestConfig: AnnotationCollectConfig): Promise<void>{
-        await this.annotationTrackManager.processRcsbPdbAnnotations(this.annotationFeatures, requestConfig);
-        this.rcsbAnnotationConfig.sortAndIncludeNewTypes();
-        [
-            this.rcsbAnnotationConfig.instanceOrder(),
-            this.rcsbAnnotationConfig.entityOrder(),
-            this.rcsbAnnotationConfig.uniprotOrder(),
-            Array.from(this.annotationTrackManager.getAnnotationTracks().keys()).filter(type=>!this.rcsbAnnotationConfig.allTypes().has(type))
-        ].forEach(annotationGroup=>{
-            annotationGroup.forEach(type => {
-                if (this.annotationTrackManager.getAnnotationTracks().has(type) && this.annotationTrackManager.getAnnotationTracks().get(type).size() > 0)
-                    this.annotationsConfigData.push(
-                        AnnotationCollectorHelper.buildAnnotationTrack(
-                            this.annotationTrackManager.getAnnotationTracks().get(type),
-                            type,
-                            this.rcsbAnnotationConfig.getConfig(type),
-                            this.rcsbAnnotationConfig.getProvenanceList(type)
-                        )
-                    );
-            });
-        });
-    }
-
-    private async requestAnnotations(requestConfig: AnnotationCollectConfig): Promise<Array<AnnotationFeatures>> {
+    private async requestAnnotations(requestConfig: AnnotationRequestContext): Promise<Array<AnnotationFeatures>> {
         return requestConfig.queryId ?
             await this.rcsbFvQuery.requestRcsbPdbAnnotations({
                 queryId: requestConfig.queryId,
@@ -144,7 +80,6 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     private complete(): void {
         this.requestStatus = "complete";
-        this.annotationsConfigDataSubject.next(this.annotationsConfigData);
         this.annotationFeaturesSubject.next(this.annotationFeatures);
         this.rawFeaturesSubject.next(this.rawFeatures);
         console.log("Features Processing Complete");

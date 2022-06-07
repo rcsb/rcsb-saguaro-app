@@ -4,17 +4,24 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
-import {PolymerEntityInstanceTranslate, TranslateContextInterface} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {RcsbAnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "./AnnotationCollectorInterface";
+import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
+import {PolymerEntityInstanceTranslate, AlignmentContextInterface} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
+import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {TrackManagerFactoryInterface, TrackManagerInterface} from "./TrackManagerInterface";
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
 }
 
-export class AnnotationTrack {
+export class AnnotationTrackManagerFactory implements TrackManagerFactoryInterface<[string, RcsbAnnotationConfigInterface, PolymerEntityInstanceTranslate]> {
+    getTrackManager(trackId: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator: PolymerEntityInstanceTranslate): TrackManagerInterface {
+        return new AnnotationTrackManager(trackId, annotationConfig, entityInstanceTranslator);
+    }
+}
+
+class AnnotationTrackManager implements TrackManagerInterface {
     private valueRange: {min:number;max:number} = {max:Number.MIN_SAFE_INTEGER, min:Number.MAX_SAFE_INTEGER};
     private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate;
     private readonly type: string;
@@ -25,6 +32,14 @@ export class AnnotationTrack {
         this.entityInstanceTranslator = entityInstanceTranslator;
         this.type = type;
         this.annotationConfig = annotationConfig;
+    }
+
+    public getTrackId(): string {
+        return this.type;
+    }
+
+    public getConfig(): RcsbAnnotationConfigInterface {
+        return this.annotationConfig;
     }
 
     public getRange(): {min:number;max:number}{
@@ -51,7 +66,7 @@ export class AnnotationTrack {
         });
     }
 
-    public addAll(trackElementsMap: AnnotationTrack, color?: string ): void{
+    public addAll(trackElementsMap: TrackManagerInterface, color?: string ): void{
         trackElementsMap.forEach((ann,loc)=>{
             ann.color = color ?? ann.color;
             this.trackElementMap.set(loc,ann);
@@ -60,10 +75,6 @@ export class AnnotationTrack {
 
     public getTrackProvenance(): Set<string> {
         return new Set<string>( Array.from(this.trackElementMap.values()).map(e=>e.provenanceName) );
-    }
-
-    public set(loc:string, ann:RcsbFvTrackDataElementInterface): void {
-        this.trackElementMap.set(loc,ann);
     }
 
     public values(): Array<RcsbFvTrackDataElementInterface>{
@@ -128,7 +139,7 @@ export class AnnotationTrack {
                 this.transformToNumerical(targetId, rangeKey, key, a, d, p, annotationProcessing?.getAnnotationValue);
             if(typeof annotationProcessing?.addTrackElementCallback === "function")
                 annotationProcessing?.addTrackElementCallback({type:this.type,targetId:targetId,positionKey:key,d:d,p:p})
-            const translateContext: TranslateContextInterface = {
+            const translateContext: AlignmentContextInterface = {
                 from:reference,
                 to:source,
                 queryId:queryId,
@@ -157,7 +168,7 @@ export class AnnotationTrack {
         a.end = rangeKey[0];
     }
 
-    private expandValues(e: RcsbFvTrackDataElementInterface, values: Array<number>, translateContext: TranslateContextInterface): void{
+    private expandValues(e: RcsbFvTrackDataElementInterface, values: Array<number>, translateContext: AlignmentContextInterface): void{
         values.forEach((v,i)=>{
             if(i>0){
                 const key:string = (e.begin+i).toString();
@@ -168,7 +179,7 @@ export class AnnotationTrack {
         });
     }
 
-    private addAuthorResIds(e:RcsbFvTrackDataElementInterface, annotationContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+    private addAuthorResIds(e:RcsbFvTrackDataElementInterface, annotationContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
         if(this.entityInstanceTranslator!=null && annotationContext.from){
             this.entityInstanceTranslator.addAuthorResIds(o,annotationContext);

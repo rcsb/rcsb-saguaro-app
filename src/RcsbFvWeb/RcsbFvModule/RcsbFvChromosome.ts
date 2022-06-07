@@ -1,4 +1,4 @@
-import {Observable, Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
     AlignedRegion,
@@ -74,7 +74,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
 }
 
 //TODO This class needs a lot of improvements
-//TODO this Module is not collecting alignments through SequenceCollector
+//TODO this Module is not collecting alignments through AlignmentCollector
 export class RcsbFvChromosome extends RcsbFvAbstractModule {
     private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
         [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
