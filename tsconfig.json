@@ -11,7 +11,7 @@
     "jsx": "react",
     "lib": [ "dom", "es2020" ],
     "allowJs": true,
-    "sourceMap": false,
+    "sourceMap": true,
     //"noUnusedLocals": true,
     //"strictNullChecks": true,
     "strictFunctionTypes": true,

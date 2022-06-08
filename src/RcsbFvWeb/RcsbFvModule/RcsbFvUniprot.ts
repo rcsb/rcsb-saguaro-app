@@ -4,16 +4,14 @@ import {
     FieldName,
     OperationType,
     SequenceReference,
-    Source, TargetAlignment,
+    Source,
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {ObservedAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/ObservedAlignmentTrackFactory";
-import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
-import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/AlignmentTrackFactory";
+import {UniprotAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/UniprotAlignmentTrackFactory";
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
@@ -30,8 +28,8 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
                 excludeFirstRowLink: true
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
-        const trackFactory: ObservedAlignmentTrackFactory = new ObservedAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
-        await trackFactory.prepareFeatures(await collectUnobservedRegions(upAcc));
+        const trackFactory: UniprotAlignmentTrackFactory = new UniprotAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
+        await trackFactory.prepareFeatures(await collectUnobservedRegions(upAcc), await  collectLocalScores(upAcc));
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, trackFactory);
 
         const annotationsRequestContext: CollectAnnotationsInterface = {
@@ -67,6 +65,20 @@ async function collectUnobservedRegions(upAcc: string): Promise<Array<Annotation
             operation: OperationType.Equals,
             field:FieldName.Type,
             values:[Type.UnobservedResidueXyz]
+        }]
+    });
+}
+
+async function collectLocalScores(upAcc: string): Promise<Array<AnnotationFeatures>> {
+    return await rcsbClient.requestRcsbPdbAnnotations({
+        queryId: upAcc,
+        reference: SequenceReference.Uniprot,
+        sources: [Source.PdbInstance],
+        filters: [{
+            source:Source.PdbInstance,
+            operation: OperationType.Equals,
+            field:FieldName.Type,
+            values:[Type.MaQaMetricLocalTypeOther]
         }]
     });
 }

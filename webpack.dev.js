@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const commonConfig = {
     mode: "development",
@@ -36,60 +37,50 @@ const commonConfig = {
     devtool: 'source-map'
 };
 
-const webWorker = {
+const groupSeqId = {
     ...commonConfig,
     entry: {
-        'worker':'src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.ts'
+        'sequence-id-group-fv':'./src/RcsbFvExamples/SequenceIdentityGroupFv.ts'
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist')
+        path: path.resolve(__dirname, 'build/dist/examples')
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
+const groupUniprot = {
+    ...commonConfig,
+    entry: {
+        'uniprot-group-fv':'./src/RcsbFvExamples/UniprotGroupFv.ts',
+    },
+    output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'build/dist/examples')
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
+const server = {
+    ...commonConfig,
+    entry: {
+        ...groupSeqId.entry,
+        ...groupUniprot.entry
+    },
+    devServer: {
+        static: {
+            directory: path.join(__dirname, 'build/dist/examples'),
+        },
+        compress: true,
+        port: 9000,
     }
 };
 
-const webBuilder = {
-    ...commonConfig,
-    entry: {
-        'app':'./src/app.ts'
-    },
-    output: {
-        filename: '[name].js',
-        library: 'RcsbFvWebApp',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
-    }
-};
-
-const webChart = {
-    ...commonConfig,
-    entry: {
-        'plot':'./src/plot.ts'
-    },
-    output: {
-        filename: '[name].js',
-        library: 'RcsbChartWebApp',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
-    },
-    devtool: 'source-map'
-};
-
-const webConstants = {
-    ...commonConfig,
-    entry: {
-        'constants':'./src/constants.ts'
-    },
-    output: {
-        filename: '[name].js',
-        library: 'RcsbChartConstants',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        globalObject: 'this',
-        path: path.resolve(__dirname, 'build/dist')
-    },
-};
-
-module.exports =[webWorker, webBuilder, webChart, webConstants];
+module.exports =[groupUniprot, groupSeqId, server];
 

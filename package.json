@@ -10,7 +10,7 @@
     "buildAll": "npm run buildApp && npm run buildAllDoc",
     "buildOnlyApp": "npm run tsc && npm run copyQueries && npm run copyCss && npm run build && npm run copyConfig",
     "buildApp": "npm run cleanAll && npm run checkQueries && npm run buildOnlyApp && npm run clean",
-    "buildAppDev": "npm run cleanAll && npm run checkQueries && npm run buildDev && npm run copyConfig",
+    "buildAppDev": "npm run cleanAll && npm run checkQueries && npm run buildDev",
     "build": "webpack --config ./webpack.config.js",
     "buildDev": "webpack --config ./webpack.dev.js",
     "checkQueries": "ts-node src/RcsbGraphQL/Queries/QueryCheck.ts",
@@ -59,6 +59,7 @@
     "bootstrap-icons": "^1.8.1",
     "css-loader": "^6.5.1",
     "del-cli": "^4.0.1",
+    "html-webpack-plugin": "^5.5.0",
     "lodash": "^4.17.21",
     "ncp": "^2.0.0",
     "object-hash": "^3.0.0",
@@ -80,6 +81,7 @@
     "victory": "^36.3.1",
     "webpack": "^5.64.4",
     "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.9.2",
     "worker-loader": "^3.0.8"
   },
   "dependencies": {

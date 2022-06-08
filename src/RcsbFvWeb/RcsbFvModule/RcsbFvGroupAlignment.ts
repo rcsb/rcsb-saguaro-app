@@ -1,7 +1,7 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {PlainAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/PlainAlignmentTrackFactory";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -21,7 +21,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
-        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, new PlainAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator()));
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;
