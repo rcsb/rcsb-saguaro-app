@@ -189,9 +189,9 @@ export class RcsbAnnotationConfig {
         return this.mergedTypes.has(type);
     }
 
-    getMergedType(type: string): string {
+    getMergeConfig(type: string): RcsbMergedTypesInterface {
         if(this.mergedTypes.has(type))
-            return this.mergedTypes.get(type).type;
+            return this.mergedTypes.get(type);
         return null;
     }
 

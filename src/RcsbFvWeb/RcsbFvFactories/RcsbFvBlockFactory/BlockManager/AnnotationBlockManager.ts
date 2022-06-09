@@ -93,10 +93,13 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     private mergeTracks(): void{
         this.annotationTracks.forEach((locationAnn,type)=>{
             if(this.rcsbAnnotationConfig.isMergedType(type)) {
-                const newType: string = this.rcsbAnnotationConfig.getMergedType(type);
+                const newType: string = this.rcsbAnnotationConfig.getMergeConfig(type).type;
                 const color: string  | RcsbFvColorGradient = this.rcsbAnnotationConfig.getConfig(type).color as string;
                 if(!this.annotationTracks.has(newType))
-                    this.annotationTracks.set(newType, this.trackManagerFactory.getTrackManager(type, this.rcsbAnnotationConfig.getConfig(type), this.polymerEntityInstanceTranslator));
+                    this.annotationTracks.set(
+                        newType,
+                        this.trackManagerFactory.getTrackManager(type,{...this.rcsbAnnotationConfig.getConfig(type),title:this.rcsbAnnotationConfig.getMergeConfig(type).title}, this.polymerEntityInstanceTranslator)
+                    );
                 this.annotationTracks.get(newType).addAll(this.annotationTracks.get(type),color);
                 this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType).getTrackProvenance()));
                 this.annotationTracks.delete(type);
