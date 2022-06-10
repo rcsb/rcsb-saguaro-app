@@ -6,6 +6,9 @@ export class TagDelimiter {
     public static readonly operatorComposition: string = "-";
     public static readonly assembly: string = "-";
 
+    private static rcsbEntityRegExp = new RegExp('^(\\d)(\\w{3})(\_)(\\d+)$');
+    private static rcsbInstanceRegExp = new RegExp('^(\\d)(\\w{3})(\.)(\\w+)$');
+
     public static parseEntity(rcsbId:string): {entryId: string;entityId:string;} {
         const ids: string[] = rcsbId.split(TagDelimiter.entity);
         const entityId: string = ids.pop();
@@ -18,6 +21,10 @@ export class TagDelimiter {
         const instanceId: string = ids.pop();
         const entryId: string =  ids.join(TagDelimiter.instance)
         return {instanceId, entryId};
+    }
+
+    public static isEntityOrInstanceId(rcsb:string): boolean {
+        return this.rcsbEntityRegExp.test(rcsb) || this.rcsbInstanceRegExp.test(rcsb);
     }
 
 }

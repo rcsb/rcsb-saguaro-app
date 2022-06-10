@@ -27,7 +27,6 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     public async setData(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
         await this.processAnnotations(requestConfig, data);
         this.mergeTracks();
-        this.rcsbAnnotationConfig.sortAndIncludeNewTypes();
     }
 
     public getTracks(): Array<TrackManagerInterface>{
@@ -62,11 +61,11 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     private async addFeature(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<void> {
         if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
             return;
-        const type: string = await this.buildType(requestConfig, ann, feature);
-        if (!this.annotationTracks.has(type)) {
+
+        const type: string = await this.rcsbAnnotationConfig.getAnnotationType(requestConfig, ann, feature);
+        if (!this.annotationTracks.has(type))
             this.annotationTracks.set(type, this.trackManagerFactory.getTrackManager(type, this.rcsbAnnotationConfig.getConfig(type), this.polymerEntityInstanceTranslator));
-        }
-        this.rcsbAnnotationConfig.addProvenance(type, feature.provenance_source);
+
         this.annotationTracks.get(type).addFeature({
                 reference: requestConfig.reference,
                 queryId: requestConfig.queryId,
@@ -74,15 +73,6 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
                 targetId: ann.target_id,
                 feature: feature
             }, requestConfig.annotationProcessing
-        );
-    }
-
-    private async buildType(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, d: Feature): Promise<string>{
-        return this.rcsbAnnotationConfig.buildAndAddType(
-            d,
-            typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,d)) : undefined,
-            typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,d)) : undefined,
-            typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,d)) : undefined
         );
     }
 

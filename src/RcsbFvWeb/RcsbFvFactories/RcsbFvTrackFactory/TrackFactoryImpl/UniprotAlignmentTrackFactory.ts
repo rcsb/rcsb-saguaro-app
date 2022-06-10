@@ -5,6 +5,7 @@ import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PositionalScoreAlignmentTrackFactory} from "./PositionalScoreAlignmentTrackFactory";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {PlainObservedAlignmentTrackFactory} from "./PlainObservedAlignmentTrackFactory";
+import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 
 export class UniprotAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
@@ -17,7 +18,7 @@ export class UniprotAlignmentTrackFactory implements TrackFactoryInterface<[Alig
     }
 
     public async getTrack(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<RcsbFvRowConfigInterface> {
-        if(targetAlignment.target_id.length == 6)
+        if(TagDelimiter.isEntityOrInstanceId(targetAlignment.target_id))
             return this.observedAlignmentTrackFactory.getTrack(alignmentQueryContext,targetAlignment);
         else
             return this.positionalScoreAlignmentTrackFactory.getTrack(alignmentQueryContext,targetAlignment);

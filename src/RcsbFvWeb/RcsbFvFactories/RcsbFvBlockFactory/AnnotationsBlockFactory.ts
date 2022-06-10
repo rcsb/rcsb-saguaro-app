@@ -23,11 +23,7 @@ export class AnnotationsBlockFactory implements BlockFactoryInterface<[Annotatio
     async getBlock(annotationsRequestContext: AnnotationRequestContext, annotations:AnnotationFeatures[]): Promise<RcsbFvRowConfigInterface[]>{
         await this.annotationBlockManager.setData(annotationsRequestContext,annotations);
         await Promise.all(this.annotationBlockManager.getTracks().map(async track=>{
-            this.annotationsBlockData.push(
-                await this.trackFactory.getTrack(
-                    track
-                )
-            );
+            this.annotationsBlockData.push( await this.trackFactory.getTrack(track) );
         }));
         return this.annotationsBlockData;
     }

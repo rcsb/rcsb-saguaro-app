@@ -1,4 +1,3 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const commonConfig = {
@@ -42,10 +41,6 @@ const groupSeqId = {
     entry: {
         'sequence-id-group-fv':'./src/RcsbFvExamples/SequenceIdentityGroupFv.ts'
     },
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist/examples')
-    },
     plugins: [new HtmlWebpackPlugin({
         filename:'[name].html',
         template:'./src/RcsbFvExamples/index.html'
@@ -56,10 +51,6 @@ const groupUniprot = {
     ...commonConfig,
     entry: {
         'uniprot-group-fv':'./src/RcsbFvExamples/UniprotGroupFv.ts',
-    },
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist/examples')
     },
     plugins: [new HtmlWebpackPlugin({
         filename:'[name].html',
@@ -74,9 +65,6 @@ const server = {
         ...groupUniprot.entry
     },
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'build/dist/examples'),
-        },
         compress: true,
         port: 9000,
     }
