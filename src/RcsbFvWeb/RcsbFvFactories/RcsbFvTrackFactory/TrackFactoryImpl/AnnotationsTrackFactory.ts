@@ -17,7 +17,7 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
     async getTrack(annotations: TrackManagerInterface): Promise<RcsbFvRowConfigInterface> {
         let out: RcsbFvRowConfigInterface;
         const type: string = annotations.getId();
-        const rcsbAnnotationConfig:RcsbAnnotationConfigInterface = annotations.getConfig();
+        const rcsbAnnotationConfig:RcsbAnnotationConfigInterface|undefined = annotations.getConfig();
         let displayType: string;
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
         if (annConfig !== null) {
@@ -35,7 +35,7 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
         if(annConfig!=null && typeof annConfig.height === "number"){
             out.trackHeight = annConfig.height;
         }
-        const provenance: string[] = Array.from(rcsbAnnotationConfig.provenanceList);
+        const provenance: string[] = Array.from(rcsbAnnotationConfig?.provenanceList ?? []);
         if(
             Array.isArray(provenance)
             &&

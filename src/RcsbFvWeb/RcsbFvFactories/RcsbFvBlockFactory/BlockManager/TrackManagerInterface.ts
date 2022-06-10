@@ -11,7 +11,7 @@ export interface TrackManagerFactoryInterface<T extends any[]> {
 
 export interface TrackManagerInterface {
     getId(): string;
-    getConfig(): RcsbAnnotationConfigInterface;
+    getConfig(): RcsbAnnotationConfigInterface | undefined;
     getRange(): {min:number;max:number};
     addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void;
     size(): number;

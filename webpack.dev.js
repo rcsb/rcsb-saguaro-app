@@ -58,11 +58,35 @@ const groupUniprot = {
     })],
 };
 
+const entitySummary = {
+    ...commonConfig,
+    entry: {
+        'entity-summary-fv':'./src/RcsbFvExamples/EntitySummaryFv.ts',
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
+const instanceSequence = {
+    ...commonConfig,
+    entry: {
+        'instance-sequence-fv':'./src/RcsbFvExamples/InstanceSequenceFv.ts',
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
 const server = {
     ...commonConfig,
     entry: {
         ...groupSeqId.entry,
-        ...groupUniprot.entry
+        ...groupUniprot.entry,
+        ...entitySummary.entry,
+        ...instanceSequence.entry
     },
     devServer: {
         compress: true,
@@ -70,5 +94,5 @@ const server = {
     }
 };
 
-module.exports =[groupUniprot, groupSeqId, server];
+module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence];
 

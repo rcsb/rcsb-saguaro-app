@@ -21,7 +21,7 @@
       "title": "MOLECULE PROCESSING",
       "display": "block"
     },{
-      "merged_types": ["HELIX_P", "HELX_LH_PP_P", "HELX_RH_AL_P", "HELX_RH_3_T_P", "BEND", "TURN_TY_1_P", "SHEET", "STRN"],
+      "merged_types": ["HELIX_P", "HELX_LH_PP_P", "HELX_RH_AL_P", "HELX_RH_3_T_P", "HELX_RH_PI_P", "BEND", "TURN_TY_1_P", "SHEET", "STRN"],
       "type": "SECONDARY_STRUCTURE",
       "title": "SECONDARY STRUCTURE",
       "display": "block"
@@ -438,6 +438,11 @@
     "title": "HELIX"
   },{
     "type": "HELX_RH_3_T_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "HELX_RH_PI_P",
     "display": "block",
     "color": "#e43372",
     "title": "HELIX"
