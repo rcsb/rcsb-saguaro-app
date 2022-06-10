@@ -1,12 +1,13 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.4.0-models.2",
+  "version": "4.4.0-models.3",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
     "build/dist"
   ],
   "scripts": {
+    "devServer": "webpack-dev-server --config webpack.dev.js",
     "buildAll": "npm run buildApp && npm run buildAllDoc",
     "buildOnlyApp": "npm run tsc && npm run copyQueries && npm run copyCss && npm run build && npm run copyConfig",
     "buildApp": "npm run cleanAll && npm run checkQueries && npm run buildOnlyApp && npm run clean",

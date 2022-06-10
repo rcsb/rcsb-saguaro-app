@@ -1,7 +1,7 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {PlainAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/PlainAlignmentTrackFactory";
+import {PlainAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/PlainAlignmentTrackFactory";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 

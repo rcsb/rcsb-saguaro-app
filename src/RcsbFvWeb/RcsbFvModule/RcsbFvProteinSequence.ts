@@ -9,9 +9,9 @@ import {BlockFactoryInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/Block
 import {
     AlignmentRequestContextType,
     AlignmentTrackFactory
-} from "../RcsbFvFactories/RcsbFvTrackFactory/AlignmentTrackFactory";
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {AlignmentBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AlignmentBlockFactory";
-import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/SequenceTrackFactory";
+import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 export class RcsbFvProteinSequence extends RcsbFvAbstractModule {

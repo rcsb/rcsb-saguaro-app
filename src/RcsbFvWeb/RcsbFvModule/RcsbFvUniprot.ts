@@ -11,7 +11,7 @@ import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {UniprotAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/UniprotAlignmentTrackFactory";
+import {UniprotAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/UniprotAlignmentTrackFactory";
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 

@@ -7,8 +7,8 @@ import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationCo
 import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
-import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/AlignmentTrackFactory";
-import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/SequenceTrackFactory";
+import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
+import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {

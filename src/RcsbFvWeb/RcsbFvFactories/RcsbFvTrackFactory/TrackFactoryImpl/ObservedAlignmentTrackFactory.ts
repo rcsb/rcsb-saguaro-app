@@ -6,18 +6,18 @@ import {
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
-} from "../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
-import {TrackFactoryInterface} from "./TrackFactoryInterface";
+} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
+import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 import {AlignmentRequestContextType, AlignmentTrackFactory} from "./AlignmentTrackFactory";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {Operator} from "../../../RcsbUtils/Helpers/Operator";
+import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 
 import {
     EntryPropertyIntreface,
     MultipleEntryPropertyCollector
-} from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
+} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 
 interface AlignedObservedRegion extends AlignedRegion {
     unModelled?:boolean;

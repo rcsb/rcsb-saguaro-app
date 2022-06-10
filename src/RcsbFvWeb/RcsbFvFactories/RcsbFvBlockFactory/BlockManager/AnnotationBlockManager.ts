@@ -25,14 +25,7 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     }
 
     public async setData(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
-        await this.addAnnotationToTracks(
-            requestConfig,
-            typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function" ?
-                await requestConfig.externalAnnotationTrackBuilder?.filterFeatures({annotations: data, rcsbContext: requestConfig.rcsbContext})
-                :
-                data
-        );
-        requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
+        await this.processAnnotations(requestConfig, data);
         this.mergeTracks();
         this.rcsbAnnotationConfig.sortAndIncludeNewTypes();
     }
@@ -54,12 +47,15 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         ].flat();
     }
 
-    private async addAnnotationToTracks(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
+    private async processAnnotations(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
+        if(typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function")
+            data = await requestConfig.externalAnnotationTrackBuilder?.filterFeatures({annotations: data, rcsbContext: requestConfig.rcsbContext});
         await Promise.all(data.map<Promise<void>[]>(ann=>{
             return ann.features.map<Promise<void>>(async feature=>{
                 return  await this.addFeature(requestConfig,ann,feature);
             });
         }).flat());
+        requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
         return void 0;
     }
 

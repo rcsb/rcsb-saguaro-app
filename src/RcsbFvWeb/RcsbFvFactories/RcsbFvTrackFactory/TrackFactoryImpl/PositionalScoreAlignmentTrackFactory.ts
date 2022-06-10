@@ -7,22 +7,22 @@ import {
 import {
     AlignmentContextInterface,
     PolymerEntityInstanceTranslate
-} from "../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
-import {TrackFactoryInterface} from "./TrackFactoryInterface";
+} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
+import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {Operator} from "../../../RcsbUtils/Helpers/Operator";
+import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 import {range} from "lodash";
 
 import {
     EntryPropertyIntreface,
     MultipleEntryPropertyCollector
-} from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
+} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {PlainAlignmentTrackFactory} from "./PlainAlignmentTrackFactory";
 
 export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{

@@ -28,17 +28,18 @@ import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/Track
 import {
     AlignmentRequestContextType,
     AlignmentTrackFactory
-} from "../RcsbFvFactories/RcsbFvTrackFactory/AlignmentTrackFactory";
-import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/SequenceTrackFactory";
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
+import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
 import {BlockFactoryInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockFactoryInterface";
 import {AlignmentBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AlignmentBlockFactory";
 import {AnnotationsBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AnnotationsBlockFactory";
-import {AnnotationsTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/AnnotationsTrackFactory";
+import {AnnotationsTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AnnotationsTrackFactory";
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationBlockManager} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationBlockManager";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {AnnotationTrackManagerFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
+import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 
 
 export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
@@ -143,7 +144,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
         if(alignmentResponse.query_sequence)
             this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
-        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse]> = new AlignmentBlockFactory(
+        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment]> = new AlignmentBlockFactory(
             trackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
         );
         this.alignmentTracks = await alignmentBlockFactory.getBlock(alignmentRequestContext,alignmentResponse);
@@ -151,7 +152,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     protected async buildAnnotationsTrack(annotationsRequestContext: AnnotationRequestContext, annotationsFeatures: AnnotationFeatures[], annotationConfigMap?: AnnotationConfigInterface): Promise<void> {
         const defaultAnnotationConfigMap: AnnotationConfigInterface = annotationConfigMap ?? acm as unknown as AnnotationConfigInterface;
-        const annotationsBlockFactory: BlockFactoryInterface<[AnnotationRequestContext, AnnotationFeatures[]]> = new AnnotationsBlockFactory(
+        const annotationsBlockFactory: BlockFactoryInterface<[AnnotationRequestContext, AnnotationFeatures[]],[TrackManagerInterface]> = new AnnotationsBlockFactory(
             new AnnotationBlockManager(
                 new AnnotationTrackManagerFactory(),
                 new RcsbAnnotationConfig(defaultAnnotationConfigMap),

@@ -34,7 +34,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         this.annotationConfig = annotationConfig;
     }
 
-    public getTrackId(): string {
+    public getId(): string {
         return this.type;
     }
 

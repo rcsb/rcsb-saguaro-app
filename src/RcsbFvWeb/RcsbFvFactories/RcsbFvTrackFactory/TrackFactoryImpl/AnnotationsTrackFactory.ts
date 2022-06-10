@@ -1,4 +1,4 @@
-import {TrackFactoryInterface} from "./TrackFactoryInterface";
+import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {
     InterpolationTypes,
     RcsbFvColorGradient, RcsbFvDisplayConfigInterface,
@@ -6,17 +6,17 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {RcsbAnnotationConfigInterface} from "../../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {RcsbAnnotationConfig} from "../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {FeatureTools} from "../../../RcsbCollectTools/FeatureTools/FeatureTools";
-import {TrackManagerInterface} from "../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
+import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
+import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureTools";
+import {TrackManagerInterface} from "../../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 
 export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackManagerInterface]>{
 
     async getTrack(annotations: TrackManagerInterface): Promise<RcsbFvRowConfigInterface> {
         let out: RcsbFvRowConfigInterface;
-        const type: string = annotations.getTrackId();
+        const type: string = annotations.getId();
         const rcsbAnnotationConfig:RcsbAnnotationConfigInterface = annotations.getConfig();
         let displayType: string;
         const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;

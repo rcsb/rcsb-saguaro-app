@@ -1,19 +1,19 @@
-import {AlignmentCollectConfig} from "../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {
     RcsbFvDisplayTypes,
     RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
+import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
-} from "../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import * as resource from "../../../RcsbServerConfig/web.resources.json";
-import {TrackFactoryInterface} from "./TrackFactoryInterface";
+} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import * as resource from "../../../../RcsbServerConfig/web.resources.json";
+import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 
 interface BuildSequenceDataInterface extends AlignmentContextInterface {

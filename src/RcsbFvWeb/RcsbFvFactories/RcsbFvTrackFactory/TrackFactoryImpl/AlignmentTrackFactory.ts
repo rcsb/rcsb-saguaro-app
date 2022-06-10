@@ -5,22 +5,22 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
+import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {
     AlignedRegion,
-    SequenceReference,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
-} from "../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {FeatureTools} from "../../../RcsbCollectTools/FeatureTools/FeatureTools";
+} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureTools";
 import {SequenceTrackFactory} from "./SequenceTrackFactory";
-import * as resource from "../../../RcsbServerConfig/web.resources.json";
-import {TrackFactoryInterface} from "./TrackFactoryInterface";
-import {AlignmentCollectConfig} from "../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {TrackFactoryInterface} from "../TrackFactoryInterface";
+import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
+import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {querySequence?:string;};
 
@@ -28,10 +28,12 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
     private readonly sequenceTrackFactory: SequenceTrackFactory;
     private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
+    private readonly trackTitleFactory: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>;
 
     constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
         this.sequenceTrackFactory = new SequenceTrackFactory(entityInstanceTranslator);
         this.entityInstanceTranslator = entityInstanceTranslator;
+        this.trackTitleFactory = new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
     public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
@@ -57,7 +59,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
             rowPrefix: rowPrefix,
-            rowTitle: this.buildAlignmentRowTitle(alignmentRequestContext,targetAlignment),
+            rowTitle: await this.buildAlignmentRowTitle(alignmentRequestContext,targetAlignment),
             fitTitleWidth: alignmentRequestContext.fitTitleWidth,
             titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
             displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
@@ -65,43 +67,8 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
     }
 
-    public buildAlignmentRowTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): string | RcsbFvLink {
-        let rowTitle: string | RcsbFvLink;
-        if(alignmentQueryContext.excludeAlignmentLinks){
-            rowTitle = targetAlignment.target_id;
-        } else if (alignmentQueryContext.to === SequenceReference.PdbInstance && this.entityInstanceTranslator != null) {
-            const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(TagDelimiter.parseInstance(targetAlignment.target_id).instanceId);
-            rowTitle = {
-                visibleTex:this.buildInstanceId(targetAlignment.target_id),
-                url:(resource as any).rcsb_entry.url+TagDelimiter.parseInstance(targetAlignment.target_id).entryId+"#entity-"+entityId,
-                style: {
-                    fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
-                }
-            };
-        } else if (alignmentQueryContext.to === SequenceReference.PdbEntity) {
-            const entityId: string = TagDelimiter.parseEntity(targetAlignment.target_id).entityId;
-            rowTitle = {
-                visibleTex:targetAlignment.target_id,
-                url:(resource as any).rcsb_entry.url+TagDelimiter.parseEntity(targetAlignment.target_id).entryId+"#entity-"+entityId,
-                style: {
-                    fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
-                }
-            };
-        } else if( alignmentQueryContext.to === SequenceReference.Uniprot ){
-            rowTitle = {
-                visibleTex: targetAlignment.target_id,
-                url: (resource as any).rcsb_uniprot.url+targetAlignment.target_id,
-                style: {
-                    fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
-                }
-            };
-        } else {
-            rowTitle = targetAlignment.target_id;
-        }
-        return rowTitle;
+    public async buildAlignmentRowTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string | RcsbFvLink> {
+        return await this.trackTitleFactory.getTrackTitle(alignmentQueryContext,targetAlignment);
     }
 
     private getAlignmentTrackConfiguration(
@@ -155,12 +122,6 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         });
         FeatureTools.mergeBlocks(alignedBlocks);
         return {alignedBlocks, mismatchData, sequenceData};
-    }
-
-    private buildInstanceId(targetId: string): string{
-        const labelAsymId: string = targetId.split(TagDelimiter.instance)[1]
-        const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
-        return (labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]");
     }
 
     public alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface):  Array<RcsbFvTrackDataElementInterface>{
