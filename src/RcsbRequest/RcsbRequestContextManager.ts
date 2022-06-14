@@ -42,6 +42,7 @@ import DataStatusInterface = RRT.DataStatusInterface;
 import {rcsbRequestClient} from "./RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
+import { RequestInit as GraphqlRequestInit} from "graphql-request/src/types.dom";
 
 class RcsbRequestContextManager {
 
@@ -181,11 +182,11 @@ class RcsbRequestContextManager {
         );
     }
 
-    public initializeBorregoClient(config: {api?:string, requestConfig?:RequestInit}): void {
+    public initializeBorregoClient(config: {api?:string, requestConfig?:GraphqlRequestInit}): void {
         rcsbRequestClient.borrego = new GraphQLRequest(config.api ?? "1d-coordinates", config.requestConfig);
     }
 
-    public initializeYosemiteClient(config: {api?:string, requestConfig?:RequestInit}): void {
+    public initializeYosemiteClient(config: {api?:string, requestConfig?:GraphqlRequestInit}): void {
         rcsbRequestClient.yosemite = new GraphQLRequest(config.api ?? "data-api", config.requestConfig);
     }
 

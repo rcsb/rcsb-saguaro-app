@@ -1,14 +1,11 @@
 import * as React from "react";
-import * as ReactDom from "react-dom";
-import {GroupPfvTabs} from "../RcsbFvGroup/GroupPfvTabs";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {
     GroupedOptionsInterface,
     SelectButton,
     SelectOptionInterface, SelectOptionProps
 } from "./SelectButton";
 import {LoaderSpinner} from "./LoaderSpinner";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {createRoot, Root} from "react-dom/client";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
@@ -20,9 +17,10 @@ export interface SelectButtonConfigInterface {
 }
 export class WebToolsManager {
 
-    private static suffix: string = "_buttonDiv";
-    private static suffixAdditionalButton: string = "_additionalButton";
-    private static loaderSpinner: string = "_loaderSpinner";
+    private static readonly suffix: string = "_buttonDiv";
+    private static readonly suffixAdditionalButton: string = "_additionalButton";
+    private static readonly loaderSpinner: string = "_loaderSpinner";
+    private static readonly nodeMap: Map<string, Root> = new Map<string, Root>();
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         WebToolsManager.clearSelectButton(elementId);
@@ -36,13 +34,12 @@ export class WebToolsManager {
 
     private static innerBuildSelectButton(elementId: string, suffix: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         const div: HTMLDivElement = document.createElement<"div">("div");
-        div.setAttribute("id", elementId+suffix);
+        const id: string = elementId+suffix;
+        div.setAttribute("id", id);
         div.style.display = "inline-block";
         document.getElementById(elementId).append(div);
-        ReactDom.render(
-            this.jsxButton(elementId, options,config),
-            div
-        );
+        this.nodeMap.set(id, createRoot(div));
+        this.nodeMap.get(id).render(this.jsxButton(elementId, options,config));
     }
 
     private static jsxButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?: SelectButtonConfigInterface):JSX.Element{
@@ -69,30 +66,31 @@ export class WebToolsManager {
 
     static innerClearSelectButton(elementId: string, suffix: string){
         const id: string = elementId+suffix;
-        if( document.getElementById(id) != null){
-            ReactDom.unmountComponentAtNode(document.getElementById(id));
+        if( this.nodeMap.has(id) ){
+            this.nodeMap.get(id).unmount();
             document.getElementById(id)?.remove();
+            this.nodeMap.delete(id);
         }
     }
 
     static buildLoaderSpinner(elementId: string){
         WebToolsManager.hideElement(elementId);
         const div: HTMLDivElement = document.createElement<"div">("div");
-        div.setAttribute("id", elementId+WebToolsManager.loaderSpinner);
+        const id: string = elementId+WebToolsManager.loaderSpinner;
+        div.setAttribute("id", id);
         document.getElementById(elementId).prepend(div);
-        ReactDom.render(
-            <LoaderSpinner/>,
-            div
-        );
+        this.nodeMap.set(id, createRoot(div));
+        this.nodeMap.get(id).render(<LoaderSpinner/>);
     }
 
     static unmountLoaderSpinner(elementId: string){
         var id: string = elementId+WebToolsManager.loaderSpinner;
-        if( document.getElementById(id) != null){
-            ReactDom.unmountComponentAtNode(document.getElementById(id));
+        if( this.nodeMap.has(id) ){
+            this.nodeMap.get(id).unmount();
             document.getElementById(id)?.remove();
+            this.nodeMap.delete(id);
+            WebToolsManager.showElement(elementId);
         }
-        WebToolsManager.showElement(elementId);
     }
 
     private static hideElement(elementId:string): void{

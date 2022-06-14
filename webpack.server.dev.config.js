@@ -6,11 +6,14 @@ const commonConfig = {
         rules: [{
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
+                options:{
+                    configFile:'tsconfig.server.dev.json'
+                },
                 exclude: /node_modules/
             },{
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                exclude: [/node_modules/]
+                exclude: /node_modules/
             },
             {
                 test: /\.(graphql|gql)$/,
@@ -31,7 +34,14 @@ const commonConfig = {
         ]
     },
     resolve: {
-        extensions: [ '.tsx', '.ts', '.js', 'jsx' ]
+        extensions: [ '.tsx', '.ts', '.js', '.jsx' ],
+        fallback: {
+            fs: false,
+            buffer: require.resolve('buffer'),
+            crypto: require.resolve('crypto-browserify'),
+            path: require.resolve('path-browserify'),
+            stream: require.resolve('stream-browserify')
+        }
     },
     devtool: 'source-map'
 };
@@ -69,10 +79,32 @@ const entitySummary = {
     })],
 };
 
+const singleEntitySummary = {
+    ...commonConfig,
+    entry: {
+        'single-entity-summary-fv':'./src/RcsbFvExamples/SingleEntitySummaryFv.ts',
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
 const instanceSequence = {
     ...commonConfig,
     entry: {
         'instance-sequence-fv':'./src/RcsbFvExamples/InstanceSequenceFv.ts',
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
+const groupHistogram = {
+    ...commonConfig,
+    entry: {
+        'group-histogram':'./src/RcsbFvExamples/GroupHistogram.ts',
     },
     plugins: [new HtmlWebpackPlugin({
         filename:'[name].html',
@@ -86,7 +118,9 @@ const server = {
         ...groupSeqId.entry,
         ...groupUniprot.entry,
         ...entitySummary.entry,
-        ...instanceSequence.entry
+        ...instanceSequence.entry,
+        ...singleEntitySummary.entry,
+        ...groupHistogram.entry
     },
     devServer: {
         compress: true,
@@ -94,5 +128,5 @@ const server = {
     }
 };
 
-module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence];
+module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence, singleEntitySummary,groupHistogram];
 

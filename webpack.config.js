@@ -5,6 +5,11 @@ const commonConfig = {
     module: {
         rules: [
             {
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: [/node_modules/]
+            },
+            {
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
                 loader: 'raw-loader'
@@ -23,7 +28,14 @@ const commonConfig = {
         ]
     },
     resolve: {
-        extensions: ['.js', 'jsx' ]
+        extensions: ['.js', '.jsx' ],
+        fallback: {
+            fs: false,
+            buffer: require.resolve('buffer'),
+            crypto: require.resolve('crypto-browserify'),
+            path: require.resolve('path-browserify'),
+            stream: require.resolve('stream-browserify')
+        }
     }
 };
 

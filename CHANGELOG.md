@@ -15,6 +15,10 @@
 - `RcsvFvBlockFactoryInterface` functional interface that defines a block factory
   - `BlockManager` package defines the logic of how positional features are organized into tracks
 - `RcsvFvTrackFactoryInterface` functional interface that defines a track factory
+### Dependency update
+- rcsb-saguaro v2.1.2
+- React 18
+- Multiple dependencies updated 
 
 ## [4.3.6] - 2022-05-26
 ### Bug fixes

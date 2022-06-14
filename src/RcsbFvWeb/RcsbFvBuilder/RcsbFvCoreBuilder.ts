@@ -58,6 +58,9 @@ export class RcsbFvCoreBuilder {
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
         const rcsbFv: RcsbFv = rcsbFvCtxManager.getFv(elementId, createFvI.config.additionalConfig?.boardConfig);
+        await rcsbFv.then(()=>{
+            console.info(`PFV ${elementId} render complete`);
+        });
         const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFv);
         if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
         await rcsbFvInstance.build(config);

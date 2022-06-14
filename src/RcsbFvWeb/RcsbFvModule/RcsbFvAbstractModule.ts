@@ -89,6 +89,9 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
             rowConfigData:[]
         });
         this.rcsbFvRowUpdatePromise = this.rcsbFv.updateBoardConfig({
+            boardConfigData: {
+                onFvRenderStartsCallback: undefined
+            },
             rowConfigData:this.rowConfigData
         });
         this.activeDisplayFlag = true;

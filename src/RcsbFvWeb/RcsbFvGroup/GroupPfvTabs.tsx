@@ -40,8 +40,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
         const additionalComponent = {
             additionalComponent: this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingUniprotAccession ? <div id={ALIGNMENT+RcsbTabs.SELECT_SUFFIX} style={{height:38}}/> : undefined
         };
-        return (<>
-            <RcsbTabs<TabKey>
+        return (<RcsbTabs<TabKey>
                 id={"group-id"}
                 tabList={[
                     {key: ALIGNMENT, title: "ALIGNMENTS", ...additionalComponent},
@@ -51,8 +50,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
                 default={"alignment"}
                 onMount={this.onMount.bind(this)}
                 onSelect={this.onSelect.bind(this)}
-            />
-        </>);
+            />);
     }
 
     private async onMount() {

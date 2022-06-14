@@ -1,8 +1,9 @@
 import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 
 class RcsbFvContextManager {
-    private rcsbFvManager: Map<string, RcsbFv> = new Map<string, RcsbFv>();
-    private rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
+
+    private readonly rcsbFvManager: Map<string, RcsbFv> = new Map<string, RcsbFv>();
+    private readonly rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
 
     public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
         if( this.rcsbFvManager.has(elementFvId)) {

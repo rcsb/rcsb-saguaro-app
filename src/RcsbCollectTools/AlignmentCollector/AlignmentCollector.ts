@@ -25,9 +25,6 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
     ): Promise<AlignmentResponse> {
         this.requestStatus = "pending";
         this.alignmentResponse = await this.requestAlignment(requestConfig);
-        if(this.alignmentResponse.query_sequence == null || this.alignmentResponse.query_sequence.length == 0) {
-            console.warn("Sequence not found in alignments from " + requestConfig.from + " to " + requestConfig.to + " queryId " + requestConfig.queryId);
-        }
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
         const targetAlignment: Array<TargetAlignment> = this.alignmentResponse.target_alignment ?? this.alignmentResponse.target_alignment_subset.edges.map(e=>e.node);
         this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id));

@@ -1,11 +1,13 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
+import {ReactNode} from "react";
 
 export type SlideAction = "next"|"prev";
 export interface SliderInterface {
     slide(action:SlideAction):void;
     pages:number;
     currentPage:number;
+    children: ReactNode
 }
 
 

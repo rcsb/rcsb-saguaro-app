@@ -48,7 +48,6 @@ export class RcsbFvUniprotBuilder {
                     return {
                         label: entityId === ALL ? entityId+" ("+targets.length+")": entityId,
                         onChange: async () => {
-                            RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                             if (entityId === ALL) {
                                 let externalContext: RcsbContextType | undefined;
                                 if (typeof config.beforeChangeCallback === "function")
@@ -62,6 +61,7 @@ export class RcsbFvUniprotBuilder {
                                         ...externalContext
                                     }
                                 });
+                                RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, elementSelectId);
                                 if (typeof config.onChangeCallback === "function")
                                     config.onChangeCallback({
                                         upAcc
@@ -133,7 +133,7 @@ export class RcsbFvUniprotBuilder {
                         }
                     }
                 })
-            )
+            );
         });
     }
 

@@ -187,13 +187,13 @@ export class RcsbAnnotationConfig {
     }
 
     private initTypes(): void {
-        this.annotationConfigMap.external_data_order.forEach(type=>{
+        this.annotationConfigMap.external_data_order?.forEach(type=>{
             this.annotationTypes.external.set(type, [type]);
         });
-        this.annotationConfigMap.instance_order.forEach(type=>{
+        this.annotationConfigMap.instance_order?.forEach(type=>{
             this.annotationTypes.instance.set(type, [type]);
         });
-        this.annotationConfigMap.entity_order.forEach(type=>{
+        this.annotationConfigMap.entity_order?.forEach(type=>{
             this.annotationTypes.entity.set(type, [type]);
         });
         this.annotationConfigMap.merge?.forEach(m=>{
