@@ -11,7 +11,7 @@ import {
     CollectAnnotationsInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
-import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
+import * as acm from "../../RcsbAnnotationConfig/RcsbInterfaceConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
