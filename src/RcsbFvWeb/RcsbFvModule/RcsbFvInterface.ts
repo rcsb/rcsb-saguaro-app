@@ -47,7 +47,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             typeSuffix: this.typeSuffix.bind(this),
             sources:source,
             annotationGenerator: interfaceAnnotations,
-            annotationFilter: buildConfig.additionalConfig?.externalTrackBuilder?.filterFeatures ? undefined : filter,
+            annotationFilter: filter,
             rcsbContext: buildConfig.additionalConfig?.rcsbContext
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
