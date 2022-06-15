@@ -158,6 +158,13 @@ class RcsbRequestContextManager {
             const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
             const result: Array<InterfaceInstanceInterface> = await this.interfaceCollector.collect({interface_ids: assemblyInterfaces.getInterfaces(assemblyId)});
             const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
+            if (assemblyInterfaces.getInterfaces(assemblyId).length == 0){
+                this.interfaceToInstanceMap.set(key,{
+                    data: translator,
+                    status: "available",
+                    resolveList: []
+                });
+            }
             for(const id of assemblyInterfaces.getInterfaces(assemblyId)){
                 if(this.interfaceToInstanceMap.get(id)?.status === "pending")
                     RRT.mapSet<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(id),translator);

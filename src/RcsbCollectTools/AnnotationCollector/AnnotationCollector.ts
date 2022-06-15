@@ -82,7 +82,7 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         this.requestStatus = "complete";
         this.annotationFeaturesSubject.next(this.annotationFeatures);
         this.rawFeaturesSubject.next(this.rawFeatures);
-        console.log("Features Processing Complete");
+        console.info("Features Processing Complete");
     }
 
 }

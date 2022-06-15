@@ -87,7 +87,7 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         this.targetsSubject.next(this.alignmentResponse.target_alignment.map(ta=>ta.target_id));
         this.alignmentResponseSubject.next(this.alignmentResponse);
         this.alignmentLengthSubject.next(this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length);
-        console.log("Alignment Processing Complete");
+        console.info("Alignment Processing Complete");
     }
 
 }

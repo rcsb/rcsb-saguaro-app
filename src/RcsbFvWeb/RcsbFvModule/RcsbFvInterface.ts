@@ -11,7 +11,7 @@ import {
     CollectAnnotationsInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
-import * as acm from "../../RcsbAnnotationConfig/RcsbInterfaceConfig.ac.json";
+import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
@@ -78,6 +78,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
                 const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
                 const chPair: [string, string] = interfaceTranslate.getInstances(ann.target_id);
+                if(!chPair) return "";
                 const asym: string = chPair[0] == chain ? chPair[1] : chPair[0]
                 const auth: string = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
                 const operators: [Array<Array<string>>, Array<Array<string>>] = interfaceTranslate.getOperatorIds(ann.target_id);
