@@ -17,7 +17,7 @@ import {
 } from "../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {FeaturePositionGaps} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
 import {alignmentGlobalLigandBindingSite} from "../../../RcsbUtils/TrackGenerators/AlignmentGlobalBindingSite";
-import {RcsbTabs} from "../../WebTools/RcsbTabs";
+import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
 import {GroupPfvUI} from "./GroupPfvUI";
 import {TrackManagerInterface} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 

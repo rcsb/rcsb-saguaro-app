@@ -7,7 +7,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {
     SelectOptionInterface,
     SelectOptionProps
-} from "../WebTools/SelectButton";
+} from "../RcsbFvComponents/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";

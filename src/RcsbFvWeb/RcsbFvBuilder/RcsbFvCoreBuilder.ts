@@ -6,8 +6,8 @@ import {
     RcsbFvModuleInterface,
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
-import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
-import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
+import {SelectButtonConfigInterface, ComponentsManager} from "../RcsbFvComponents/ComponentsManager";
+import {GroupedOptionsInterface, SelectOptionInterface} from "../RcsbFvComponents/SelectButton";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export interface CreateFvInterface {
@@ -74,7 +74,7 @@ export class RcsbFvCoreBuilder {
         if (rcsbFvCtxManager.hasFv(elementId)) {
             if(rcsbFvCtxManager.getButtonList(elementId)!=null){
                 rcsbFvCtxManager.getButtonList(elementId).forEach(buttonId=>{
-                    WebToolsManager.clearSelectButton(buttonId);
+                    ComponentsManager.clearSelectButton(buttonId);
                 });
             }
             rcsbFvCtxManager.getFv(elementId).unmount();
@@ -84,19 +84,19 @@ export class RcsbFvCoreBuilder {
 
     static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
-        WebToolsManager.buildSelectButton(selectButtonId, options, config);
+        ComponentsManager.buildSelectButton(selectButtonId, options, config);
     }
 
     static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string){
         if(rcsbFvCtxManager.getButtonList(elementFvId)?.has(selectButtonId)){
             rcsbFvCtxManager.getButtonList(elementFvId).delete(selectButtonId);
         }
-        WebToolsManager.clearAdditionalSelectButton(selectButtonId);
+        ComponentsManager.clearAdditionalSelectButton(selectButtonId);
     }
 
     static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
-        WebToolsManager.addSelectButton(selectButtonId, options, config);
+        ComponentsManager.addSelectButton(selectButtonId, options, config);
     }
 
     static showMessage(elementId: string, message: string){

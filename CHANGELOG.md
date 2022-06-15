@@ -7,6 +7,7 @@
 - `TagDelimiter` exposes methods to parse RCSB PDB object identifiers
 - Removed alignment element sorting
 - Large alignments lists do not block dropdown buttons
+
 ### Code refactoring
 - `AnnottaionCollector` class does not format collected data anymore. The only responsibility of this class is to dispatch positional features
 - `SeqeunceCollector` class has been renamed to `AlignmentCollector` and it does not format data anymore. The only responsibility of this class is to dispatch alignment data
@@ -15,6 +16,9 @@
 - `RcsvFvBlockFactoryInterface` functional interface that defines a block factory
   - `BlockManager` package defines the logic of how positional features are organized into tracks
 - `RcsvFvTrackFactoryInterface` functional interface that defines a track factory
+- `WebTools` package renamed to `RcsbFvComponents`
+- Class `SelectButtonManager` abstracts creation of select dropdown menus
+- 
 ### Dependency update
 - rcsb-saguaro v2.1.2
 - React 18

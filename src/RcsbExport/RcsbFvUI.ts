@@ -1,6 +1,6 @@
 import {RcsbFvCoreBuilder} from "../RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder";
-import {GroupedOptionsInterface, SelectOptionInterface} from "../RcsbFvWeb/WebTools/SelectButton";
-import {SelectButtonConfigInterface} from "../RcsbFvWeb/WebTools/WebToolsManager";
+import {GroupedOptionsInterface, SelectOptionInterface} from "../RcsbFvWeb/RcsbFvComponents/SelectButton";
+import {SelectButtonConfigInterface} from "../RcsbFvWeb/RcsbFvComponents/ComponentsManager";
 
 export class RcsbFvUI {
 

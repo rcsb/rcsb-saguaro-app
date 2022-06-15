@@ -19,7 +19,7 @@ import {
     AnnotationFeatures,
     Feature, TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {WebToolsManager} from "../WebTools/WebToolsManager";
+import {ComponentsManager} from "../RcsbFvComponents/ComponentsManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {SingletonMap} from "../../RcsbUtils/Helpers/SingletonMap";
@@ -65,7 +65,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
         this.elementId = elementId;
-        WebToolsManager.buildLoaderSpinner(elementId);
+        ComponentsManager.buildLoaderSpinner(elementId);
     }
 
     public setPolymerEntityInstanceTranslator(polymerEntityInstance: PolymerEntityInstanceTranslate){
@@ -83,7 +83,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
                 rowTitleWidth:190,
                 ...this.boardConfigData,
                 onFvRenderStartsCallback:()=>{
-                    WebToolsManager.unmountLoaderSpinner(this.elementId);
+                    ComponentsManager.unmountLoaderSpinner(this.elementId);
                 }
             },
             rowConfigData:[]

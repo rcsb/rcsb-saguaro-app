@@ -1,6 +1,6 @@
 import React from "react";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../../RcsbFvModule/RcsbFvModuleInterface";
-import {RcsbTabs} from "../../WebTools/RcsbTabs";
+import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
 import {PfvMethodType} from "../../../RcsbFvUI/AbstractMenuItemComponent";
 import {MenuItemFactory} from "../../../RcsbFvUI/MenuItemFactory";
 import {createRoot} from "react-dom/client";

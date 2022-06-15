@@ -8,7 +8,7 @@ import {
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {RcsbTabs} from "../WebTools/RcsbTabs";
+import {RcsbTabs} from "../RcsbFvComponents/RcsbTabs";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
