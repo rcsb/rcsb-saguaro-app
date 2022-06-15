@@ -6,6 +6,7 @@ import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
+import {UnknownTypeSerializer} from "typedoc/dist/lib/serialization";
 
 export class RcsbFvEntityBuilder {
 
@@ -89,7 +90,7 @@ function additionalConfig(f?: FilterInput): RcsbFvAdditionalConfig{
         field: FieldName.Type,
         operation:OperationType.Equals,
         source:Source.PdbInstance,
-        values:[Type.UnobservedResidueXyz,Type.UnobservedAtomXyz]
+        values:[Type.UnobservedResidueXyz,Type.UnobservedAtomXyz,Type.MaQaMetricLocalTypeOther,Type.MaQaMetricLocalTypePlddt]
     }];
     if(f) filters.push(f);
     return {

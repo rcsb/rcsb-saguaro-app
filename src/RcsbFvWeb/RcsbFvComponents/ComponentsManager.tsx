@@ -23,34 +23,24 @@ export class ComponentsManager {
     private static readonly nodeMap: Map<string, Root> = new Map<string, Root>();
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
-        ComponentsManager.clearSelectButton(elementId);
-        ComponentsManager.innerBuildSelectButton(elementId, options, config);
+        this.selectButtonMap.set(elementId, new SelectButtonManager(elementId));
+        this.selectButtonMap.get(elementId).createButton(options, config);
     }
 
     static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
-        ComponentsManager.clearAdditionalSelectButton(elementId);
-        ComponentsManager.innerBuildSelectButton(elementId+SelectButton.ADDITIONAL_BUTTON_CONTAINER_DIV_SUFFIX, options, {...config, isAdditionalButton:true});
-    }
-
-    private static innerBuildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
-        this.selectButtonMap.set(elementId, new SelectButtonManager(elementId, options, config));
-        this.selectButtonMap.get(elementId).createButton();
+        this.selectButtonMap.get(elementId)?.addButton(options, config);
     }
 
     static clearSelectButton(elementId: string){
-        ComponentsManager.innerClearSelectButton(elementId);
-        ComponentsManager.clearAdditionalSelectButton(elementId);
-    }
-
-    static clearAdditionalSelectButton(elementId: string){
-        ComponentsManager.innerClearSelectButton(elementId+SelectButton.ADDITIONAL_BUTTON_CONTAINER_DIV_SUFFIX);
-    }
-
-    static innerClearSelectButton(elementId: string){
         if( this.selectButtonMap.has(elementId) ){
             this.selectButtonMap.get(elementId).unmountButton();
             this.selectButtonMap.delete(elementId);
         }
+
+    }
+
+    static clearAdditionalSelectButton(elementId: string){
+        this.selectButtonMap.get(elementId)?.unmountAdditionalButton();
     }
 
     static buildLoaderSpinner(elementId: string){

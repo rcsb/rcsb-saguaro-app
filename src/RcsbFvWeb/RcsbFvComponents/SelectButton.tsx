@@ -16,6 +16,7 @@ interface SelectButtonInterface {
     elementId: string;
     options?: Array<SelectOptionInterface> | Array<GroupedOptionsInterface>;
     addTitle: boolean;
+    renderTitle:(title:string)=>void;
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
@@ -48,9 +49,9 @@ interface SelectButtonState {
 export class SelectButton extends React.Component <SelectButtonInterface, SelectButtonState> {
 
     private static readonly BUTTON_CONTAINER_DIV_SUFFIX = "_buttonContainerDiv";
-    public static readonly ADDITIONAL_BUTTON_CONTAINER_DIV_SUFFIX = "_additionalButtonContainerDiv";
-
     private defaultValue: string|undefined|null;
+    private currentOption: {selectOpt: SelectOptionInterface; index: number;};
+
     readonly state: SelectButtonState = {
         selectedOption: ((this.props.options as Array<GroupedOptionsInterface>)[0].options) == null ? {...((this.props.options as Array<SelectOptionInterface>)[0]), value:0} : {...((this.props.options as Array<GroupedOptionsInterface>)[0].options[0]), value: 0}
     };
@@ -65,10 +66,12 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     componentDidUpdate(prevProps: Readonly<SelectButtonInterface>, prevState: Readonly<SelectButtonState>): void {
+        this.renderTitle();
         this.state.selectedOption.onChange();
     }
 
     componentDidMount(): void {
+        this.renderTitle();
         this.defaultValue = null;
     }
 
@@ -80,11 +83,9 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private selectRender():JSX.Element {
-        const {selectOpt, index}: {selectOpt: SelectOptionInterface; index: number;} = this.getSelectOpt();
+        this.currentOption = this.getSelectOpt();
         return(<div>
-            <div style={{display:"inline-block"}}>{this.selectButtonRender(selectOpt, index)}</div>
-            <div style={{display:"inline-block"}} id={this.props.elementId+SelectButton.ADDITIONAL_BUTTON_CONTAINER_DIV_SUFFIX}></div>
-            {this.props.addTitle ? <div style={{display:"inline-block", marginLeft:"20px"}}>{selectOpt.name}</div> : null}
+            <div style={{display:"inline-block"}}>{this.selectButtonRender(this.currentOption.selectOpt, this.currentOption.index)}</div>
         </div>);
     }
 
@@ -196,5 +197,9 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             });
         }
         return {selectOpt: selectOpt, index: index};
+    }
+
+    private renderTitle(): void {
+        if(this.props.addTitle) this.props.renderTitle(this.currentOption.selectOpt.name);
     }
 }

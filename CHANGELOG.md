@@ -18,7 +18,8 @@
 - `RcsvFvTrackFactoryInterface` functional interface that defines a track factory
 - `WebTools` package renamed to `RcsbFvComponents`
 - Class `SelectButtonManager` abstracts creation of select dropdown menus
-- 
+  - Dropdowns menu are fake-unmounted using `Root::render(undefined)`
+  
 ### Dependency update
 - rcsb-saguaro v2.1.2
 - React 18

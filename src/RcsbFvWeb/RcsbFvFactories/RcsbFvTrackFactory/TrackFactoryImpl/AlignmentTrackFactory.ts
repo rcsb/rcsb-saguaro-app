@@ -53,7 +53,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
             displayColor: "#9999FF",
             displayData: alignedBlocks
         };
-        let rowPrefix: string = alignmentRequestContext.to ? alignmentRequestContext.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle : "";
+        let rowPrefix: string = alignmentRequestContext.to && !alignmentRequestContext.to.includes("PDB")? alignmentRequestContext.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle : "";
         return {
             trackId: "targetSequenceTrack_"+targetAlignment.target_id,
             displayType: RcsbFvDisplayTypes.COMPOSITE,

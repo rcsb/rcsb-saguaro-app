@@ -77,7 +77,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     public async display(): Promise<void>{
-        console.log("Starting display");
+        console.info(`Starting display ${this.elementId}`);
         await this.rcsbFv.updateBoardConfig({
             boardConfigData:{
                 rowTitleWidth:190,

@@ -31,7 +31,7 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
     }
 
     public async getTrack(alignmentQueryContext: AlignmentRequestContextType, querySequence: string): Promise<RcsbFvRowConfigInterface> {
-        let rowPrefix:string|RcsbFvLink = alignmentQueryContext.from ? alignmentQueryContext.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle : alignmentQueryContext.sequencePrefix;
+        let rowPrefix:string|RcsbFvLink = alignmentQueryContext.from && !alignmentQueryContext.from.includes("PDB") ? alignmentQueryContext.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle : alignmentQueryContext.sequencePrefix;
         let rowTitle:string|RcsbFvLink = this.buildSequenceRowTitle(alignmentQueryContext);
         const sequenceTrack: RcsbFvRowConfigInterface = {
             trackId: "mainSequenceTrack_" + alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
