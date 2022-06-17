@@ -3,13 +3,13 @@ import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {ChartDataProviderInterface} from "./ChartDataProviderInterface";
 import {ChartDataInterface} from "./ChartDataInterface";
 
-export class BarChartData implements ChartDataProviderInterface{
+export class BarChartDataProvider implements ChartDataProviderInterface{
 
     private stringTicks: string[];
     private excludedData: ChartDataInterface[];
     private data: ChartDataInterface[];
 
-    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config: ChartConfigInterface):void {
+    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config?: ChartConfigInterface):void {
         const data: ChartDataInterface[] = ChartTools.labelsAsString(chartData);
         const subData: ChartDataInterface[] = chartSubData ? ChartTools.labelsAsString(chartSubData) : [];
 

@@ -11,6 +11,7 @@ import {
 import {
     VictoryHistogramChartComponent
 } from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryHistogramChartComponent";
+import uniqid from "uniqid";
 
 export type ChartMapType = Map<string,{chart:RcsbChartInterface;subChart?:RcsbChartInterface;}>;
 export interface RcsbChartLayoutInterface {
@@ -28,7 +29,7 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
     render():JSX.Element {
         return (
             <Container fluid={"md"}>
-                <Row className={"mt-md-5 mb-md-5"}>
+                <Row className={"mt-md-5 mb-md-5"} >
                     {
                         this.props.layout.map((attr)=>this.renderCell(attr))
                     }
@@ -50,7 +51,7 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
 }
 
 function chartCell(chartNode:JSX.Element, title: string, colSize:number = 6): JSX.Element{
-    return(<Col md={colSize}>
+    return(<Col md={colSize} key={`${title}_${uniqid()}`}>
         <Row className={"mb-md-5"}>
             <Col md={12}>
                 <Row className={"mb-md-2"}>

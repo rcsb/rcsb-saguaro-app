@@ -1,5 +1,6 @@
 import {RcsbFvColorGradient, RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro";
 
+//Positional annotation interfaces
 export interface AnnotationConfigInterface {
     provenance_color_code: {
         external: string;
@@ -32,4 +33,31 @@ export interface RcsbAnnotationConfigInterface {
     displayCooccurrence?: boolean;
     ignore?: boolean;
     fitTitleWidth?: boolean;
+}
+
+//Residue distribution interfaces
+export interface RcsbDistributionConfigInterface {
+    blockConfig: RcsbTrackBlockConfigInterface[];
+    trackConfig: RcsbTrackConfigInterface[];
+}
+
+export interface RcsbTrackBlockConfigInterface {
+    type: string;
+    title: string;
+    trackType: string[];
+    contentType: "binary"|"numerical";
+}
+
+export interface RcsbTrackConfigInterface {
+    type: string;
+    color?:string;
+    label?:string;
+    numericalCategories?: {
+        thresholds: number[];
+        categories:{
+            label:string;
+            color: string;
+            id: string;
+        }[]
+    };
 }

@@ -112,15 +112,27 @@ const groupHistogram = {
     })],
 };
 
+const residueDistribution = {
+    ...commonConfig,
+    entry: {
+        'residue-distribution':'./src/RcsbFvExamples/ResidueDistribution.ts',
+    },
+    plugins: [new HtmlWebpackPlugin({
+        filename:'[name].html',
+        template:'./src/RcsbFvExamples/index.html'
+    })],
+};
+
 const server = {
     ...commonConfig,
     entry: {
-        ...groupSeqId.entry,
-        ...groupUniprot.entry,
-        ...entitySummary.entry,
-        ...instanceSequence.entry,
-        ...singleEntitySummary.entry,
-        ...groupHistogram.entry
+        //...groupSeqId.entry,
+        //...groupUniprot.entry,
+        //...entitySummary.entry,
+        //...instanceSequence.entry,
+        //...singleEntitySummary.entry,
+        //...groupHistogram.entry,
+        ...residueDistribution.entry
     },
     devServer: {
         compress: true,
@@ -128,5 +140,6 @@ const server = {
     }
 };
 
-module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence, singleEntitySummary,groupHistogram];
+//module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence, singleEntitySummary,groupHistogram, residueDistribution];
+module.exports =[server, residueDistribution];
 

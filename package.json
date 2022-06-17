@@ -51,6 +51,7 @@
     "@babel/plugin-proposal-class-properties": "^7.17.12",
     "@babel/preset-env": "^7.18.2",
     "@types/lodash": "^4.14.182",
+    "@types/lodash.range": "^3.2.7",
     "@types/object-hash": "^2.2.1",
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",

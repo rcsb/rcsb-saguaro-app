@@ -1,5 +1,5 @@
 import React from "react";
-import {ChartDataReaderInterface} from "../RcsbChartData/ChartDataProviderInterface";
+import {ChartDataReaderInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import {ChartConfigInterface} from "./ChartConfigInterface";
 
 export interface AbstractChartImplementationInterface {

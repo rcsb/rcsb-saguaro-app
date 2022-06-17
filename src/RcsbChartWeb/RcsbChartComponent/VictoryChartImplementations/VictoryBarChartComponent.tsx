@@ -6,7 +6,7 @@ import {LabelComponent} from "./Components/LabelComponent";
 import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
-import {ChartDataInterface} from "../../RcsbChartData/ChartDataInterface";
+import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataInterface";
 import {BarClickCallbackType} from "../ChartConfigInterface";
 
 export class VictoryBarChartComponent extends AbstractChartImplementation {
@@ -20,7 +20,7 @@ export class VictoryBarChartComponent extends AbstractChartImplementation {
             scale={{y:"linear", x:"linear"}}
         >
             {AxisFactory.getDependentAxis({orientation:"top"})}
-            {stack(data, this.props.chartConfig.barClickCallback)}
+            {stack(data, this.props.chartConfig?.barClickCallback)}
             <VictoryAxis tickLabelComponent={<LabelComponent/>} />
         </VictoryChart>);
     }
@@ -38,7 +38,7 @@ function bar(data:ChartDataInterface[], color: string, barComp: JSX.Element, lab
         barWidth={ChartTools.xDomainPadding}
         style={{
             data: {
-                fill: color
+                fill: (d)=>(d.datum.color ?? color)
             }
         }}
         horizontal={true}

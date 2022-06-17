@@ -5,7 +5,7 @@ import {
     SearchQueryContextManagerSubjectInterface
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
-import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
+import {ChartDataProviderInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
 
 interface AbstractChartState {

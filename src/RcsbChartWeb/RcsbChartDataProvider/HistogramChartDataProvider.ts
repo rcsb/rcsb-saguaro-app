@@ -3,12 +3,12 @@ import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/
 import {ChartTools} from "../RcsbChartTools/ChartTools";
 import {ChartDataInterface} from "./ChartDataInterface";
 
-export class HistogramChartData implements ChartDataProviderInterface{
+export class HistogramChartDataProvider implements ChartDataProviderInterface{
 
     private config: ChartConfigInterface;
     private data: ChartDataInterface[];
 
-    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config: ChartConfigInterface):void {
+    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config?: ChartConfigInterface):void {
         this.config = config;
         const barData: ChartDataInterface[] = this.transformData(chartData)
         const subData: ChartDataInterface[] = this.transformData(chartSubData)
@@ -53,13 +53,13 @@ export class HistogramChartData implements ChartDataProviderInterface{
     private transformData(data: ChartObjectInterface[]): ChartDataInterface[]{
         if(!data)
             return [];
-        let out: {x:number;y:number}[] = [];
+        let out: ChartDataInterface[] = [];
         if(this.config?.mergeDomainMaxValue) {
             out = ChartTools.mergeDomainMaxValue(data, this.config.mergeDomainMaxValue);
         }else{
             out = ChartTools.labelsAsNumber(data);
         }
-        return out.map(d=>({x:d.x+this.config.histogramBinIncrement*0.5,y:d.y, isLabel:true}));
+        return out.map(d=>({x:(d.x as number)+this.config.histogramBinIncrement*0.5,y:d.y, isLabel:true}));
     }
 
 }

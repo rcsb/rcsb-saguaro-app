@@ -99,7 +99,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     }
 }
 
-function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+export function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
     const buried: Array<AnnotationFeatures> = buriedResidues(annotations);
     const burial: Array<AnnotationFeatures> = burialFraction(annotations);
     return new Promise<Array<AnnotationFeatures>>(resolve => {
@@ -112,7 +112,7 @@ function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<A
     })
 }
 
-function filter(ann: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+export function filter(ann: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
     return new Promise<Array<AnnotationFeatures>>(resolve => {
         resolve(burialFractionFilter(buriedResiduesFilter(ann)));
     })

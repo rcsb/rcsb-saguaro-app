@@ -3,5 +3,7 @@ export interface ChartDataInterface {
     y:number;
     yc?:number;
     label?:string;
-    isLabel:boolean;
+    isLabel?:boolean;
+    color?:string;
+    id?:string;
 }

@@ -1,5 +1,5 @@
 import {ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataInterface";
 
 export class ChartTools {
 
@@ -15,8 +15,8 @@ export class ChartTools {
     public static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
     public static readonly fontSize: number = 12;
 
-    public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): {x:string;y:number;}[]{
-        const out: {x:string;y:number;}[] = data.filter(d=>( d.population>size)).map(d=>({
+    public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): ChartDataInterface[]{
+        const out: ChartDataInterface[] = data.filter(d=>( d.population>size)).map(d=>({
             x:d.label  as string,
             y:d.population
         }));
@@ -29,9 +29,9 @@ export class ChartTools {
         return out;
     }
 
-    public static mostPopulatedGroups (data: ChartObjectInterface[], maxGroups: number, mergeName?: string): {x:string;y:number;}[]{
+    public static mostPopulatedGroups (data: ChartObjectInterface[], maxGroups: number, mergeName?: string): ChartDataInterface[]{
         const sorted :ChartObjectInterface[] = data.sort((a,b)=>(b.population-a.population));
-        const out: {x:string;y:number;}[] =  sorted.slice(0,maxGroups).map(d=>({
+        const out: ChartDataInterface[] =  sorted.slice(0,maxGroups).map(d=>({
             x:d.label  as string,
             y:d.population
         }));
@@ -44,8 +44,8 @@ export class ChartTools {
         return out;
     }
 
-    public static mergeDomainMaxValue(data: ChartObjectInterface[], maxValue: number): {x:number;y:number;}[]{
-        const out: {x:number;y:number;}[] =  data.filter(d => parseFloat(d.label as string) < maxValue).map(d => ({
+    public static mergeDomainMaxValue(data: ChartObjectInterface[], maxValue: number): ChartDataInterface[]{
+        const out: ChartDataInterface[] =  data.filter(d => parseFloat(d.label as string) < maxValue).map(d => ({
             x: parseFloat(d.label as string),
             y: d.population
         }));
@@ -62,11 +62,12 @@ export class ChartTools {
         return data.map(d=>({
             x:d.label as string,
             y:d.population,
+            color:d.objectConfig?.color,
             isLabel:true
         }));
     }
 
-    public static labelsAsNumber(data: ChartObjectInterface[]): {x:number;y:number;}[]{
+    public static labelsAsNumber(data: ChartObjectInterface[]): ChartDataInterface[]{
         return data.map(d=>({x: parseFloat(d.label as string), y:d.population}));
     }
 

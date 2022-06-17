@@ -1,9 +1,13 @@
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataInterface";
 import * as React from "react";
 
 export interface ChartObjectInterface {
     label: string|number;
     population: number;
+    objectConfig?:{
+        objectId?:string;
+        color?:string;
+    };
 }
 
 export type BarClickCallbackType = (datum:ChartDataInterface, data:ChartDataInterface[], e:React.MouseEvent<any>)=>void;

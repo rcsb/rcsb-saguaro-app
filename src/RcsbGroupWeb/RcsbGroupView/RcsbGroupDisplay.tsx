@@ -10,6 +10,8 @@ import {RcsbGroupContentComponent, RcsbGroupContentTextInterface} from "./RcsbGr
 import {RcsbGroupChartComponent} from "./RcsbGroupChart/RcsbGroupChartComponent";
 import {RcsbStatsChartComponent} from "./RcsbGroupChart/RcsbStatsChartComponent";
 import {createRoot} from "react-dom/client";
+import {ResidueChartInterface} from "./RcsbResidueChart/ResidueChartTools";
+import {RcsbResidueChartComponent} from "./RcsbResidueChart/RcsbResidueChartComponent";
 
 
 export class RcsbGroupDisplay {
@@ -37,6 +39,12 @@ export class RcsbGroupDisplay {
     static displayGroupContent(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery, textConfig?:RcsbGroupContentTextInterface): void {
         createRoot(document.getElementById(elementId)).render(
             <RcsbGroupContentComponent groupProvenanceId={groupProvenanceId} groupId={groupId} searchQuery={query} {...textConfig}/>
+        );
+    }
+
+    static displayResidueDistribution(elementId: string, granularity: ResidueChartInterface["granularity"], rcsbId:string): void {
+        createRoot(document.getElementById(elementId)).render(
+            <RcsbResidueChartComponent granularity={granularity} rcsbId={rcsbId}/>
         );
     }
 }

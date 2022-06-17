@@ -5,7 +5,7 @@ import {Bar, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
-import {ChartDataInterface} from "../../RcsbChartData/ChartDataInterface";
+import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataInterface";
 import {BarClickCallbackType} from "../ChartConfigInterface";
 
 export class VictoryHistogramChartComponent extends AbstractChartImplementation {
@@ -14,7 +14,7 @@ export class VictoryHistogramChartComponent extends AbstractChartImplementation 
         const {data}: { data: ChartDataInterface[];} = this.props.dataProvider.getChartData();
         const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
         const dom = this.props.dataProvider.xDomain();
-        const nBins: number = (dom[1]-dom[0])/this.props.chartConfig.histogramBinIncrement;
+        const nBins: number = (dom[1]-dom[0])/this.props.chartConfig?.histogramBinIncrement;
         return (<VictoryChart
             padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingTopLarge, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
             height={ChartTools.constHeight}
@@ -22,7 +22,7 @@ export class VictoryHistogramChartComponent extends AbstractChartImplementation 
             domain={{x:this.props.dataProvider.xDomain()}}
         >
             {AxisFactory.getDependentAxis()}
-            {stack(data, nBins, this.props.chartConfig.barClickCallback)}
+            {stack(data, nBins, this.props.chartConfig?.barClickCallback)}
             {AxisFactory.getRegularAxis(this.props.chartConfig)}
         </VictoryChart>);
     }
@@ -42,7 +42,7 @@ function bar(data: ChartDataInterface[], nBins: number, color: string, barComp?:
         alignment={"middle"}
         style={{
             data: {
-                fill: color
+                fill: (d)=>(d.datum.color ?? color)
             }
         }}
         data={data}

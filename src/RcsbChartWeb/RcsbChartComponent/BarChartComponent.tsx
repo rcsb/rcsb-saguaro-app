@@ -1,14 +1,14 @@
 import * as React from "react";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
-import {BarChartData} from "../RcsbChartData/BarChartData";
+import {ChartDataProviderInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
+import {BarChartDataProvider} from "../RcsbChartDataProvider/BarChartDataProvider";
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataInterface";
 
 export class BarChartComponent extends AbstractChartComponent {
 
-    protected readonly dataProvider: ChartDataProviderInterface = new BarChartData();
+    protected readonly dataProvider: ChartDataInterface = new BarChartDataProvider();
     private readonly EXPAND_NUMBER: number = 10;
 
     render():JSX.Element {
@@ -21,7 +21,7 @@ export class BarChartComponent extends AbstractChartComponent {
             <div style={{width:width}}>
                 <ChartComponent width={width} height={height} chartConfig={this.props.chartConfig} dataProvider={this.dataProvider}/>
                 {
-                    excludedData.length > 0  || this.state.chartConfig.mostPopulatedGroups > this.props.chartConfig.mostPopulatedGroups ?
+                    excludedData.length > 0  || this.state.chartConfig?.mostPopulatedGroups > this.props.chartConfig?.mostPopulatedGroups ?
                          this.chartUI(excludedData.length): <></>
                 }
             </div>
@@ -47,13 +47,13 @@ export class BarChartComponent extends AbstractChartComponent {
                 }
                 {
                     this.uiButton(
-                        this.state.chartConfig.mostPopulatedGroups > this.props.chartConfig.mostPopulatedGroups,
+                        this.state.chartConfig?.mostPopulatedGroups > this.props.chartConfig?.mostPopulatedGroups,
                         "bi-dash-circle",
                         (e)=>{
                             if(e.shiftKey){
                                 this.updateCategories(0);
                             }else{
-                                if(this.state.chartConfig.mostPopulatedGroups-this.EXPAND_NUMBER >= this.props.chartConfig.mostPopulatedGroups)
+                                if(this.state.chartConfig?.mostPopulatedGroups-this.EXPAND_NUMBER >= this.props.chartConfig?.mostPopulatedGroups)
                                     this.updateCategories(-this.EXPAND_NUMBER);
                                 else
                                     this.updateCategories(0);
@@ -84,14 +84,14 @@ export class BarChartComponent extends AbstractChartComponent {
             this.setState({
                 chartConfig:{
                     ...this.state.chartConfig,
-                    mostPopulatedGroups: this.props.chartConfig.mostPopulatedGroups
+                    mostPopulatedGroups: this.props.chartConfig?.mostPopulatedGroups
                 }
             });
-        else if(this.state.chartConfig.mostPopulatedGroups+n >= this.props.chartConfig.mostPopulatedGroups)
+        else if(this.state.chartConfig?.mostPopulatedGroups+n >= this.props.chartConfig?.mostPopulatedGroups)
             this.setState({
                 chartConfig:{
                     ...this.state.chartConfig,
-                    mostPopulatedGroups: this.state.chartConfig.mostPopulatedGroups + n
+                    mostPopulatedGroups: this.state.chartConfig?.mostPopulatedGroups + n
                 }
             });
     }
