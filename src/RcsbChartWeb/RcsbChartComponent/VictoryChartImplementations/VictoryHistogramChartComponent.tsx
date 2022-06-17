@@ -5,7 +5,7 @@ import {Bar, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
-import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataInterface";
+import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataProviderInterface";
 import {BarClickCallbackType} from "../ChartConfigInterface";
 
 export class VictoryHistogramChartComponent extends AbstractChartImplementation {

@@ -1,14 +1,13 @@
 import * as React from "react";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {ChartDataProviderInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartDataProviderInterface, ChartDataInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import {BarChartDataProvider} from "../RcsbChartDataProvider/BarChartDataProvider";
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
-import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataInterface";
 
 export class BarChartComponent extends AbstractChartComponent {
 
-    protected readonly dataProvider: ChartDataInterface = new BarChartDataProvider();
+    protected readonly dataProvider: ChartDataProviderInterface = new BarChartDataProvider();
     private readonly EXPAND_NUMBER: number = 10;
 
     render():JSX.Element {

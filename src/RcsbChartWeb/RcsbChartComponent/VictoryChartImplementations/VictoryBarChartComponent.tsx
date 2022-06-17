@@ -6,7 +6,7 @@ import {LabelComponent} from "./Components/LabelComponent";
 import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
-import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataInterface";
+import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataProviderInterface";
 import {BarClickCallbackType} from "../ChartConfigInterface";
 
 export class VictoryBarChartComponent extends AbstractChartImplementation {

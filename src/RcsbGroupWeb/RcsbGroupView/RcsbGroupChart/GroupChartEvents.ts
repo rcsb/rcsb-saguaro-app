@@ -11,7 +11,7 @@ import {ChartMapType} from "./GroupChartLayout";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
-import {ChartDataInterface} from "../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataInterface";
+import {ChartDataInterface} from "../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataProviderInterface";
 
 export namespace GroupChartEvents {
 

@@ -1,5 +1,14 @@
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
-import {ChartDataInterface} from "./ChartDataInterface";
+
+export interface ChartDataInterface {
+    x:string|number;
+    y:number;
+    yc?:number;
+    label?:string;
+    isLabel?:boolean;
+    color?:string;
+    id?:string;
+}
 
 export interface ChartDataProviderInterface extends ChartDataReaderInterface {
     setData(data: ChartObjectInterface[], subData: ChartObjectInterface[], config: ChartConfigInterface): void;

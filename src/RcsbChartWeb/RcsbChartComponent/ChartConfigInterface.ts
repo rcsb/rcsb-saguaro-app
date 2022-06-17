@@ -1,4 +1,4 @@
-import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataInterface";
+import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import * as React from "react";
 
 export interface ChartObjectInterface {

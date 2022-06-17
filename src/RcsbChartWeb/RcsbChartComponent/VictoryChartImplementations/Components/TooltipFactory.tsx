@@ -2,7 +2,7 @@ import {VictoryTooltip} from "victory";
 import * as React from "react";
 import {VictoryTooltipProps} from "victory-tooltip";
 import {ChartTools} from "../../../RcsbChartTools/ChartTools";
-import {ChartDataInterface} from "../../../RcsbChartDataProvider/ChartDataInterface";
+import {ChartDataInterface} from "../../../RcsbChartDataProvider/ChartDataProviderInterface";
 
 export class TooltipFactory extends React.Component<VictoryTooltipProps, any> {
 
