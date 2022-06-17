@@ -126,12 +126,12 @@ const residueDistribution = {
 const server = {
     ...commonConfig,
     entry: {
-        //...groupSeqId.entry,
-        //...groupUniprot.entry,
-        //...entitySummary.entry,
-        //...instanceSequence.entry,
-        //...singleEntitySummary.entry,
-        //...groupHistogram.entry,
+        ...groupSeqId.entry,
+        ...groupUniprot.entry,
+        ...entitySummary.entry,
+        ...instanceSequence.entry,
+        ...singleEntitySummary.entry,
+        ...groupHistogram.entry,
         ...residueDistribution.entry
     },
     devServer: {
@@ -140,6 +140,5 @@ const server = {
     }
 };
 
-//module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence, singleEntitySummary,groupHistogram, residueDistribution];
-module.exports =[server, residueDistribution];
+module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence, singleEntitySummary,groupHistogram, residueDistribution];
 

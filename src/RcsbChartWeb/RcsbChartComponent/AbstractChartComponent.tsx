@@ -41,11 +41,11 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
         this.unsubscribe();
     }
 
-    protected unsubscribe(): void {
+    private unsubscribe(): void {
         this.subscription.unsubscribe();
     }
 
-    protected subscribe(): void{
+    private subscribe(): void{
         this.subscription = SQCM.subscribe(
             (o:SearchQueryContextManagerSubjectInterface)=>{
                 this.updateChartMap(o);

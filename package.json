@@ -96,7 +96,8 @@
     "path-browserify": "^1.0.1",
     "react-select": "^5.3.2",
     "rxjs": "^7.5.5",
-    "stream-browserify": "^3.0.0"
+    "stream-browserify": "^3.0.0",
+    "victory": "^36.5.0"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"

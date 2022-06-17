@@ -20,6 +20,7 @@ import {
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
+import uniqid from "uniqid";
 
 interface GroupMembersGridInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -46,13 +47,13 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                     <Container fluid={"md"}>
                         {
                             Array(this.props.nRows).fill(null).map((none,i)=>(
-                                <Row>
+                                <Row key={`${uniqid("row_")}_${i}`}>
                                     {
                                         Array(this.props.nColumns).fill(null).map((none,j)=>{
                                             const ei: ItemFeaturesInterface = this.state.itemList[i*this.props.nColumns+j];
                                             if(ei)
                                                 return (
-                                                    <Col className={"p-0"}>
+                                                    <Col className={"p-0"} key={`${uniqid("col_")}_${j}`}>
                                                         <GroupMemberItem item={ei} groupProvenanceId={this.props.groupProvenanceId}/>
                                                     </Col>
                                                 );

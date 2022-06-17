@@ -31,7 +31,7 @@ export class VictoryHistogramChartComponent extends AbstractChartImplementation 
 
 function stack(data: ChartDataInterface[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
     return ( <VictoryStack animate={true}>
-        {bar(data,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:-15}))}
+        {bar(data,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dy:-15}))}
         {bar(data.map(d=>({...d,y:d.yc,yc:d.y})),nBins, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }
