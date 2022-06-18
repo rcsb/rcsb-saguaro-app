@@ -26,8 +26,9 @@ export class VictoryBarChartComponent extends AbstractChartImplementation {
     }
 }
 
+//TODO <VictoryStack animate={true}> BarComponent props fails in capturing updated data
 function stack(data:ChartDataInterface[], barClick:BarClickCallbackType): JSX.Element{
-    return ( <VictoryStack animate={true}>
+    return ( <VictoryStack >
         {bar(data, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dx:25}))}
         {bar(data.map(d=>({...d,y:d.yc,yc:d.y})), "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
