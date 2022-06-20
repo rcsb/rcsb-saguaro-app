@@ -1,10 +1,19 @@
 import {DistributionChartFactoryInterface, ResidueDistributionInterface} from "../ResidueDistributionFactoryInterface";
 import {RcsbChartInterface} from "../../../../../RcsbSeacrh/FacetTools";
 import {ChartObjectInterface, ChartType} from "../../../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
+import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
+import {ChartDataInterface} from "../../../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataProviderInterface";
 
 export class DistributionChartFactory implements DistributionChartFactoryInterface {
 
+    private readonly distributionConfig: RcsbDistributionConfig;
+
+    constructor(distributionConfig?: RcsbDistributionConfig) {
+        this.distributionConfig = distributionConfig ?? new RcsbDistributionConfig();
+    }
+
     getChart(residueDistribution: ResidueDistributionInterface): RcsbChartInterface {
+        const sort: string[] | undefined = this.distributionConfig.getBlockConfig(residueDistribution.attribute).sort;
         return {
             chartType: ChartType.barplot,
             attribute: residueDistribution.attribute,
@@ -19,7 +28,10 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
                 }
             })),
             title: residueDistribution.title,
-            //chartConfig:{}
+            chartConfig:{
+                sort: sort ? (a,b)=>(sort.findIndex(x=>x===a.id)-sort.findIndex(x=>x===b.id)) : undefined,
+                tooltipText: (d: ChartDataInterface)=>(`${d.y} residues`)
+            }
         };
     }
 

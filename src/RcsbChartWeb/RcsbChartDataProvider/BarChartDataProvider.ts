@@ -21,29 +21,29 @@ export class BarChartDataProvider implements ChartDataProviderInterface{
         data.forEach((d)=>{
             mergedValues.set(d.x,d.y);
         });
-        const categories: Set<string|number> = new Set(data.map(d=>d.x));
-        const subCategories: Set<string|number> = new Set(subData.map(d=>d.x));
+        const categories: Map<string|number,{x:string;id:string;}> = data.reduce((prev,curr)=>(prev.set(curr.x,curr)), new Map());
+        const subCategories: Map<string|number,{x:string;id:string;}> = subData.reduce((prev,curr)=>(prev.set(curr.x,curr)), new Map());
         subCategories.forEach(c=>{
-            if(!categories.has(c))
-                data.push({x:c, y:0, isLabel:true});
+            if(!categories.has(c.x))
+                data.push({x:c.x, y:0, id: c.id, isLabel:true});
         });
         categories.forEach(c=>{
-            if(!subCategories.has(c))
-                subData.push({x:c, y:0, isLabel:true});
+            if(!subCategories.has(c.x))
+                subData.push({x:c.x, y:0, id: c.id, isLabel:true});
         });
         const allowedCategories: Set<string|number> = new Set<string|number>([...mergedValues.entries()]
             .sort((a,b)=>(b[1]-a[1]))
             .slice(0,config?.mostPopulatedGroups ?? mergedValues.size)
             .map(e=>e[0]));
 
-        const sort = (b: ChartDataInterface, a: ChartDataInterface) => {
+        const sort = config.sort ?? ((b: ChartDataInterface, a: ChartDataInterface) => {
             if(mergedValues.get(b.x) != mergedValues.get(a.x))
                 return mergedValues.get(b.x)-mergedValues.get(a.x);
             else if(mergedValues.get(b.x) > 0)
                 return a.x.toString().localeCompare(b.x.toString())
             else
                 return subValues.get(b.x)-subValues.get(a.x);
-        };
+        });
         const barOut: ChartDataInterface[] = data.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         const subOut: ChartDataInterface[] = subData.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
         ChartTools.addComplementaryData(barOut,subOut);

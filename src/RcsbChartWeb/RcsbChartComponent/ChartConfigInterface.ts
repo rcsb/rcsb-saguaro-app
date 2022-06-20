@@ -24,6 +24,8 @@ export interface ChartConfigInterface {
     };
     axisLabel?:string
     barClickCallback?:BarClickCallbackType;
+    sort?:(b: ChartDataInterface, a: ChartDataInterface) => number;
+    tooltipText?:(a: ChartDataInterface) => string;
 }
 
 export enum ChartType {

@@ -45,7 +45,13 @@ export interface RcsbTrackBlockConfigInterface {
     type: string;
     title: string;
     trackType: string[];
+    sort: string[];
     contentType: "binary"|"numerical";
+    undefTrack?: {
+        label:string;
+        color:string;
+        id:string;
+    }
 }
 
 export interface RcsbTrackConfigInterface {

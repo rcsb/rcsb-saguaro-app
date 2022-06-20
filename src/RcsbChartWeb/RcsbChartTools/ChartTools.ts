@@ -63,6 +63,7 @@ export class ChartTools {
             x:d.label as string,
             y:d.population,
             color:d.objectConfig?.color,
+            id: d.objectConfig?.objectId,
             isLabel:true
         }));
     }
@@ -76,6 +77,15 @@ export class ChartTools {
         const subMap: Map<string|number, number> = new Map<string | number, number>( subData.map<[string|number,number]>((d)=>[d.x,d.y]) );
         data.forEach((d=>{d.yc = subMap.get(d.x)}));
         subData.forEach((d=>{d.yc = dataMap.get(d.x)}));
+    }
+
+    public static mergeData(data: ChartDataInterface[]): ChartDataInterface[] {
+        const domainList: (string|number)[] = Array.from(new Set(data.map(d=>d.x)));
+        return domainList.map(x=>({
+            ...data.find(d=>d.x===x),
+            y: data.filter(d=>d.x===x).reduce((prev,curr)=>(prev+curr.y),0),
+            yc: data.filter(d=>d.x===x).reduce((prev,curr)=>(prev+(curr.yc ?? 0) ),0),
+        }));
     }
 
 }

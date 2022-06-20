@@ -6,7 +6,7 @@ import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
 import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataProviderInterface";
-import {BarClickCallbackType} from "../ChartConfigInterface";
+import {BarClickCallbackType, ChartConfigInterface} from "../ChartConfigInterface";
 
 export class VictoryHistogramChartComponent extends AbstractChartImplementation {
 
@@ -22,7 +22,7 @@ export class VictoryHistogramChartComponent extends AbstractChartImplementation 
             domain={{x:this.props.dataProvider.xDomain()}}
         >
             {AxisFactory.getDependentAxis()}
-            {stack(data, nBins, this.props.chartConfig?.barClickCallback)}
+            {stack(data, nBins, this.props.chartConfig)}
             {AxisFactory.getRegularAxis(this.props.chartConfig)}
         </VictoryChart>);
     }
@@ -30,9 +30,9 @@ export class VictoryHistogramChartComponent extends AbstractChartImplementation 
 }
 
 //TODO <VictoryStack animate={true}> BarComponent props fails in capturing updated data
-function stack(data: ChartDataInterface[], nBins: number, barClick:BarClickCallbackType): JSX.Element{
+function stack(data: ChartDataInterface[], nBins: number,chartConfig?: ChartConfigInterface): JSX.Element{
     return ( <VictoryStack >
-        {bar(data,nBins, "#5e94c3", <BarComponent barClick={barClick}/>, TooltipFactory.getTooltip({dy:-15}))}
+        {bar(data,nBins, "#5e94c3", <BarComponent barClick={chartConfig?.barClickCallback}/>, TooltipFactory.getTooltip({dy:-15, tooltipText:chartConfig?.tooltipText}))}
         {bar(data.map(d=>({...d,y:d.yc,yc:d.y})),nBins, "#d0d0d0", <BarComponent />)}
     </VictoryStack>);
 }

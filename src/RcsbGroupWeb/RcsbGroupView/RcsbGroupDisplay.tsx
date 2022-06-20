@@ -10,7 +10,7 @@ import {RcsbGroupContentComponent, RcsbGroupContentTextInterface} from "./RcsbGr
 import {RcsbGroupChartComponent} from "./RcsbGroupChart/RcsbGroupChartComponent";
 import {RcsbStatsChartComponent} from "./RcsbGroupChart/RcsbStatsChartComponent";
 import {createRoot} from "react-dom/client";
-import {ResidueChartInterface} from "./RcsbResidueChart/ResidueChartTools";
+import {ResidueChartInterface} from "./RcsbResidueChart/ResidueChartTools/ResidueChartTools";
 import {RcsbResidueChartComponent} from "./RcsbResidueChart/RcsbResidueChartComponent";
 
 
@@ -42,9 +42,9 @@ export class RcsbGroupDisplay {
         );
     }
 
-    static displayResidueDistribution(elementId: string, granularity: ResidueChartInterface["granularity"], rcsbId:string): void {
+    static displayResidueDistribution(elementId: string, granularity: ResidueChartInterface["granularity"], rcsbId:string, facetLayoutGrid?:string[]): void {
         createRoot(document.getElementById(elementId)).render(
-            <RcsbResidueChartComponent granularity={granularity} rcsbId={rcsbId}/>
+            <RcsbResidueChartComponent granularity={granularity} rcsbId={rcsbId} facetLayoutGrid={facetLayoutGrid}/>
         );
     }
 }

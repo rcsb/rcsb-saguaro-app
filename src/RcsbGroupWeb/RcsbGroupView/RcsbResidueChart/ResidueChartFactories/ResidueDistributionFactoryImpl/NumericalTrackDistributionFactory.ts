@@ -7,8 +7,9 @@ import {
     TrackManagerInterface
 } from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
+import {range} from "lodash";
 
-export class NumericalTrackDistributionFactory implements ResidueDistributionFactoryInterface<[string]> {
+export class NumericalTrackDistributionFactory implements ResidueDistributionFactoryInterface<[string,number]> {
 
     private readonly distributionConfig: RcsbDistributionConfig;
 
@@ -16,10 +17,11 @@ export class NumericalTrackDistributionFactory implements ResidueDistributionFac
         this.distributionConfig = distributionConfig ?? new RcsbDistributionConfig();
     }
 
-    getDistribution(tracks:[TrackManagerInterface],blockType:string):ResidueDistributionInterface {
+    getDistribution(tracks:[TrackManagerInterface],blockType:string,numberResidues:number):ResidueDistributionInterface {
         const track: TrackManagerInterface = tracks[0];
         const numericalCategories = this.distributionConfig.getTrackConfig(track.getId()).numericalCategories;
         const bucketMap: Map<string,ResidueBucket> = new Map<string, ResidueBucket>();
+        const undefResidues: Set<number> = new Set(range(1,numberResidues+1));
         numericalCategories.categories.forEach(category=>{
             const label: string = category.label;
             bucketMap.set(label, {
@@ -32,11 +34,16 @@ export class NumericalTrackDistributionFactory implements ResidueDistributionFac
             if(index<0) index = numericalCategories.thresholds.length;
             const label: string = numericalCategories.categories[index].label;
             bucketMap.get(label).residueSet.add(ann.begin);
+            undefResidues.delete(ann.begin)
         });
+        const undefTrack = this.distributionConfig.getBlockConfig(blockType).undefTrack;
         return {
             attribute:this.distributionConfig.getBlockConfig(blockType).type,
             title:this.distributionConfig.getBlockConfig(blockType).title,
-            buckets: Array.from(bucketMap.values())
+            buckets: Array.from(bucketMap.values()).concat(undefTrack && undefResidues.size > 0 ? [{
+                ...undefTrack,
+                residueSet: undefResidues
+            }] : [])
         };
     }
 

@@ -7,6 +7,9 @@
 - `TagDelimiter` exposes methods to parse RCSB PDB object identifiers
 - Removed alignment element sorting
 - Large alignments lists do not block dropdown buttons
+- `RcsbGroupWeb.RcsbResidueChart` new package to display residue properties histograms
+  - It can display any positional feature at entry and instance level
+  - It cannot filter properties
 
 ### Code refactoring
 - `AnnottaionCollector` class does not format collected data anymore. The only responsibility of this class is to dispatch positional features

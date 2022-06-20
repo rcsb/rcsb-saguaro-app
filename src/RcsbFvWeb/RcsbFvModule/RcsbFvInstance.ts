@@ -15,6 +15,7 @@ import {
 import {AlignmentBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AlignmentBlockFactory";
 import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export class RcsbFvInstance extends RcsbFvAbstractModule {
 
@@ -22,7 +23,7 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
         const instanceId: string = buildConfig.instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
 
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: instanceId,
             from: SequenceReference.PdbInstance,
             to: SequenceReference.Uniprot

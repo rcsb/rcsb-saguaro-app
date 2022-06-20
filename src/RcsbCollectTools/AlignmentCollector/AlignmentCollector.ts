@@ -26,7 +26,7 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         this.requestStatus = "pending";
         this.alignmentResponse = await this.requestAlignment(requestConfig);
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
-        const targetAlignment: Array<TargetAlignment> = this.alignmentResponse.target_alignment ?? this.alignmentResponse.target_alignment_subset.edges.map(e=>e.node);
+        const targetAlignment: Array<TargetAlignment> = this.alignmentResponse?.target_alignment ?? this.alignmentResponse?.target_alignment_subset?.edges.map(e=>e.node);
         this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id));
         this.complete();
         return this.alignmentResponse;
@@ -84,7 +84,7 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
 
     private complete(){
         this.requestStatus = "complete";
-        this.targetsSubject.next(this.alignmentResponse.target_alignment.map(ta=>ta.target_id));
+        this.targetsSubject.next(this.alignmentResponse.target_alignment?.map(ta=>ta.target_id));
         this.alignmentResponseSubject.next(this.alignmentResponse);
         this.alignmentLengthSubject.next(this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length);
         console.info("Alignment Processing Complete");
