@@ -16,7 +16,7 @@ export class TooltipFactory extends React.Component<TooltipPropsType, any> {
             flyoutPadding={10}
             activateData={true}
             style={{
-                fontFamily: ChartTools.fontFamily,
+                fontFamily: ChartTools.getConfig<string>("fontFamily", {}),
             }}
         />);
     }

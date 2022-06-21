@@ -6,18 +6,19 @@ import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
 import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataProviderInterface";
-import {BarClickCallbackType, ChartConfigInterface} from "../ChartConfigInterface";
+import {BarClickCallbackType, ChartConfigInterface, ChartDisplayConfigInterface} from "../ChartConfigInterface";
 
 export class VictoryHistogramChartComponent extends AbstractChartImplementation {
 
     render() {
         const {data}: { data: ChartDataInterface[];} = this.props.dataProvider.getChartData();
-        const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
+        const displayConfig: Partial<ChartDisplayConfigInterface> = this.props.chartConfig.chartDisplayConfig
+        const width: number = ChartTools.getConfig<number>("paddingLeft", displayConfig) + ChartTools.getConfig<number>("constWidth", displayConfig) + ChartTools.getConfig<number>("paddingRight", displayConfig);
         const dom = this.props.dataProvider.xDomain();
         const nBins: number = (dom[1]-dom[0])/this.props.chartConfig?.histogramBinIncrement;
         return (<VictoryChart
-            padding={{left:ChartTools.paddingLeft, bottom:ChartTools.paddingTopLarge, top: ChartTools.paddingTop, right:ChartTools.paddingRight}}
-            height={ChartTools.constHeight}
+            padding={{left:ChartTools.getConfig<number>("paddingLeft", displayConfig), bottom:ChartTools.getConfig<number>("paddingTopLarge", displayConfig), top: ChartTools.getConfig<number>("paddingTop", displayConfig), right:ChartTools.getConfig<number>("paddingRight", displayConfig)}}
+            height={ChartTools.getConfig<number>("constHeight", displayConfig)}
             width={width}
             domain={{x:this.props.dataProvider.xDomain()}}
         >
@@ -32,14 +33,14 @@ export class VictoryHistogramChartComponent extends AbstractChartImplementation 
 //TODO <VictoryStack animate={true}> BarComponent props fails in capturing updated data
 function stack(data: ChartDataInterface[], nBins: number,chartConfig?: ChartConfigInterface): JSX.Element{
     return ( <VictoryStack >
-        {bar(data,nBins, "#5e94c3", <BarComponent barClick={chartConfig?.barClickCallback}/>, TooltipFactory.getTooltip({dy:-15, tooltipText:chartConfig?.tooltipText}))}
-        {bar(data.map(d=>({...d,y:d.yc,yc:d.y})),nBins, "#d0d0d0", <BarComponent />)}
+        {bar(data,nBins, "#5e94c3", <BarComponent barClick={chartConfig?.barClickCallback}/>, TooltipFactory.getTooltip({dy:-15, tooltipText:chartConfig?.tooltipText}), chartConfig?.chartDisplayConfig)}
+        {bar(data.map(d=>({...d,y:d.yc,yc:d.y})),nBins, "#d0d0d0", <BarComponent />, undefined, chartConfig?.chartDisplayConfig)}
     </VictoryStack>);
 }
 
-function bar(data: ChartDataInterface[], nBins: number, color: string, barComp?: JSX.Element, labelComponent?: JSX.Element): JSX.Element {
+function bar(data: ChartDataInterface[], nBins: number, color: string, barComp?: JSX.Element, labelComponent?: JSX.Element, chartDisplayConfig?:Partial<ChartDisplayConfigInterface>): JSX.Element {
     return data.length > 0 ? (<VictoryBar
-        barWidth={(Math.ceil(ChartTools.constWidth/nBins)-3)}
+        barWidth={(Math.ceil(ChartTools.getConfig<number>("constWidth", chartDisplayConfig)/nBins)-3)}
         alignment={"middle"}
         style={{
             data: {

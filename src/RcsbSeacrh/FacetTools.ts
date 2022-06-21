@@ -1,6 +1,6 @@
 import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {
-    ChartConfigInterface,
+    ChartConfigInterface, ChartDisplayConfigInterface,
     ChartObjectInterface,
     ChartType
 } from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
@@ -81,6 +81,16 @@ export class FacetTools {
 
     public static getFacetFromName(facetMembers: FacetMemberInterface[], name: string): FacetMemberInterface {
         return facetMembers.find((facet)=>(facet.attributeName === name));
+    }
+
+    public static addChartDisplayConfig(chart: RcsbChartInterface, chartDisplayConfig: Partial<ChartDisplayConfigInterface>) {
+        return {
+            ...chart,
+            chartConfig:{
+                ...chart.chartConfig,
+                chartDisplayConfig: chartDisplayConfig
+            }
+        }
     }
 
     private static includeMissingFacets(partial: Array<RcsbChartInterface>,full: Array<RcsbChartInterface>): void {

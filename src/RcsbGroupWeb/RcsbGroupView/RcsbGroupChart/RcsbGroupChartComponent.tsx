@@ -1,6 +1,5 @@
 import * as React from "react";
 import {SearchQueryComponentFactory} from "../RcsbGroupSeacrhQuery/SearchQueryComponentFactory";
-import {Container} from "react-bootstrap";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
@@ -22,6 +21,7 @@ interface RcsbGroupChartState {
     chartMap: ChartMapType;
 }
 
+//TODO include chartDisplayConfig?: Partial<ChartDisplayConfigInterface> in props and propagate it
 export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInterface, RcsbGroupChartState>{
 
     async componentDidMount(): Promise<void> {
@@ -32,12 +32,10 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
         if(this.state?.layout?.flat().filter((e)=>(this.state?.chartMap?.get(e)))) {
             return (<div className={classes.bootstrapGroupComponentScope}>
                 {SearchQueryComponentFactory.getGroupSearchComponent(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery)}
-                <Container fluid={"md"}>
-                    <GroupChartLayout
-                        layout={this.state.layout}
-                        chartMap={this.state.chartMap}
-                    />
-                </Container>
+                <GroupChartLayout
+                    layout={this.state.layout}
+                    chartMap={this.state.chartMap}
+                />
             </div>);
         }else{
             return null;

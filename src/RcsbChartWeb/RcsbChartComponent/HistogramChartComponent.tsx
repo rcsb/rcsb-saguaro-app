@@ -4,6 +4,7 @@ import {ChartDataProviderInterface} from "../RcsbChartDataProvider/ChartDataProv
 import {HistogramChartDataProvider} from "../RcsbChartDataProvider/HistogramChartDataProvider";
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
+import {ChartDisplayConfigInterface} from "./ChartConfigInterface";
 
 
 export class HistogramChartComponent extends AbstractChartComponent {
@@ -12,9 +13,10 @@ export class HistogramChartComponent extends AbstractChartComponent {
 
     render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
-        const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
+        const displayConfig: Partial<ChartDisplayConfigInterface> = this.props.chartConfig.chartDisplayConfig;
+        const width: number = ChartTools.getConfig<number>("paddingLeft", displayConfig) + ChartTools.getConfig<number>("constWidth", displayConfig) + ChartTools.getConfig<number>("paddingRight", displayConfig);
         const ChartComponent: AbstractChartImplementationType = this.props.chartComponentImplementation;
-        const height: number = ChartTools.constHeight;
+        const height: number = ChartTools.getConfig<number>("constHeight", displayConfig);
         return (
             <div style={{width:width}}>
                 <ChartComponent width={width} height={height} chartConfig={this.props.chartConfig} dataProvider={this.dataProvider}/>

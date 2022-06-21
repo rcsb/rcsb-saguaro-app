@@ -10,6 +10,7 @@
 - `RcsbGroupWeb.RcsbResidueChart` new package to display residue properties histograms
   - It can display any positional feature at entry and instance level
   - It cannot filter properties
+- `ChartConfigInterface.chartDisplayConfig` allows to overwrite `CharTools` display properties (sizes, padding, fontsize, ...)
 
 ### Code refactoring
 - `AnnottaionCollector` class does not format collected data anymore. The only responsibility of this class is to dispatch positional features
@@ -22,6 +23,8 @@
 - `WebTools` package renamed to `RcsbFvComponents`
 - Class `SelectButtonManager` abstracts creation of select dropdown menus
   - Dropdowns menu are fake-unmounted using `Root::render(undefined)`
+- `ChartTools` readonly static attributes are not public anymore.
+  - `ChartTools.getConfig` allows to get `CharTools` attributes
   
 ### Dependency update
 - rcsb-saguaro v2.1.2

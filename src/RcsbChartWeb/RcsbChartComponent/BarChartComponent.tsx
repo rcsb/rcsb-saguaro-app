@@ -4,6 +4,7 @@ import {ChartDataProviderInterface, ChartDataInterface} from "../RcsbChartDataPr
 import {BarChartDataProvider} from "../RcsbChartDataProvider/BarChartDataProvider";
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
+import {ChartDisplayConfigInterface} from "./ChartConfigInterface";
 
 export class BarChartComponent extends AbstractChartComponent {
 
@@ -12,9 +13,10 @@ export class BarChartComponent extends AbstractChartComponent {
 
     render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
+        const displayConfig: Partial<ChartDisplayConfigInterface> = this.props.chartConfig.chartDisplayConfig;
         const {data,excludedData}: {data: ChartDataInterface[]; excludedData?:ChartDataInterface[];} = this.dataProvider.getChartData();
-        const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
-        const height: number = ChartTools.paddingTopLarge + data.length*ChartTools.xIncrement;
+        const width: number = ChartTools.getConfig<number>("paddingLeft", displayConfig) + ChartTools.getConfig<number>("constWidth", displayConfig) + ChartTools.getConfig<number>("paddingRight", displayConfig);
+        const height: number = ChartTools.getConfig<number>("paddingTopLarge", displayConfig) + data.length*ChartTools.getConfig<number>("xIncrement", displayConfig);
         const ChartComponent: AbstractChartImplementationType = this.props.chartComponentImplementation;
         return (
             <div style={{width:width}}>
@@ -28,7 +30,7 @@ export class BarChartComponent extends AbstractChartComponent {
     }
 
     private chartUI(excluded: number): JSX.Element {
-        return (<div className={"mt-3 d-table"}  style={{height:22, fontFamily:ChartTools.fontFamily}}>
+        return (<div className={"mt-3 d-table"}  style={{height:22, fontFamily:ChartTools.getConfig<string>("fontFamily", this.props.chartConfig.chartDisplayConfig)}}>
             <div className={"d-table-row"}>
                 {
                     this.uiButton(
@@ -62,7 +64,7 @@ export class BarChartComponent extends AbstractChartComponent {
                         "Shift-click to collapse all"
                     )
                 }
-                <div className={"ps-1 text-muted text-opacity-50 align-middle d-table-cell"} style={{fontSize:ChartTools.fontSize}}>[ {excluded}+ ]</div>
+                <div className={"ps-1 text-muted text-opacity-50 align-middle d-table-cell"} style={{fontSize:ChartTools.getConfig<number>("fontSize",this.props.chartConfig.chartDisplayConfig)}}>[ {excluded}+ ]</div>
             </div>
         </div>);
     }

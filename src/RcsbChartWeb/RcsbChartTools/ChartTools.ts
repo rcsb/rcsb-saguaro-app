@@ -1,19 +1,26 @@
-import {ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
+import {
+    ChartDisplayConfigInterface,
+    ChartObjectInterface
+} from "../RcsbChartComponent/ChartConfigInterface";
 import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 
 export class ChartTools {
 
-    public static readonly paddingLeft: number = 150;
-    public static readonly paddingTopLarge: number = 50;
-    public static readonly paddingTop: number = 10;
-    public static readonly paddingRight: number = 15;
-    public static readonly constWidth: number = 350;
-    public static readonly constHeight: number = 225;
-    public static readonly xIncrement: number = 22;
-    public static readonly xDomainPadding: number = 10;
-    public static readonly barWidth: number = 10;
-    public static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
-    public static readonly fontSize: number = 12;
+    private static readonly paddingLeft: number = 150;
+    private static readonly paddingTopLarge: number = 50;
+    private static readonly paddingTop: number = 10;
+    private static readonly paddingRight: number = 15;
+    private static readonly constWidth: number = 350;
+    private static readonly constHeight: number = 225;
+    private static readonly xIncrement: number = 22;
+    private static readonly xDomainPadding: number = 10;
+    private static readonly barWidth: number = 10;
+    private static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
+    private static readonly fontSize: number = 12;
+
+    public static getConfig<T>(key: keyof ChartDisplayConfigInterface, chartDisplayConfig:Partial<ChartDisplayConfigInterface>): T {
+        return ((chartDisplayConfig && (typeof chartDisplayConfig[key] === "string" || typeof chartDisplayConfig[key] === "number")) ? chartDisplayConfig[key] : this[key]) as unknown as T;
+    }
 
     public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): ChartDataInterface[]{
         const out: ChartDataInterface[] = data.filter(d=>( d.population>size)).map(d=>({

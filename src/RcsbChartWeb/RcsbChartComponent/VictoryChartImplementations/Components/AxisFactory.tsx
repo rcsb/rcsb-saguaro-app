@@ -22,7 +22,7 @@ export class AxisFactory {
                     return (!t.toString().includes('.') ? t : "");
                 }
             }
-            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily, fontSize:ChartTools.fontSize}} />}
+            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<number>("fontSize",{})}} />}
         />);
     }
 
@@ -38,8 +38,8 @@ export class AxisFactory {
                 return t;
             }}
             label={config.axisLabel}
-            axisLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily, fontSize:ChartTools.fontSize}} />}
-            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.fontFamily, fontSize:ChartTools.fontSize}}/>}
+            axisLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<string>("fontSize", {})}} />}
+            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<string>("fontSize", {})}}/>}
         />);
     }
 

@@ -26,6 +26,20 @@ export interface ChartConfigInterface {
     barClickCallback?:BarClickCallbackType;
     sort?:(b: ChartDataInterface, a: ChartDataInterface) => number;
     tooltipText?:(a: ChartDataInterface) => string;
+    chartDisplayConfig?: Partial<ChartDisplayConfigInterface>;
+}
+export interface ChartDisplayConfigInterface {
+    paddingLeft: number;
+    paddingTopLarge: number;
+    paddingTop: number;
+    paddingRight: number;
+    constWidth: number;
+    constHeight: number;
+    xIncrement: number;
+    xDomainPadding: number;
+    barWidth: number;
+    fontFamily: string;
+    fontSize: number;
 }
 
 export enum ChartType {

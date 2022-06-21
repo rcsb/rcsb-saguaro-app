@@ -2,25 +2,23 @@ import * as React from "react";
 import {ChartMapType, GroupChartLayout} from "../RcsbGroupChart/GroupChartLayout";
 import {ResidueChartInterface, ResidueChartTools as RCT} from "./ResidueChartTools/ResidueChartTools";
 import classes from "../RcsbGroupMembers/Components/scss/group-display.module.scss";
-import {Container} from "react-bootstrap";
-import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
+import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
+import {ChartDisplayConfigInterface} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 
 interface RcsbResidueChartState {
     layout: string[];
     chartMap: ChartMapType;
 }
 
-export class RcsbResidueChartComponent extends React.Component <ResidueChartInterface & {facetLayoutGrid?:string[];}, RcsbResidueChartState> {
+export class RcsbResidueChartComponent extends React.Component <ResidueChartInterface & {facetLayoutGrid?:string[];chartDisplayConfig?: Partial<ChartDisplayConfigInterface>;}, RcsbResidueChartState> {
 
     render(): JSX.Element {
         if (this.state?.layout?.flat().filter((e) => (this.state?.chartMap?.get(e)))) {
             return (<div className={classes.bootstrapGroupComponentScope}>
-                <Container fluid={"md"}>
-                    <GroupChartLayout
-                        layout={this.state.layout}
-                        chartMap={this.state.chartMap}
-                    />
-                </Container>
+                <GroupChartLayout
+                    layout={this.state.layout}
+                    chartMap={this.state.chartMap}
+                />
             </div>);
         }
         return null;
@@ -31,7 +29,9 @@ export class RcsbResidueChartComponent extends React.Component <ResidueChartInte
     }
 
     private async updateState(): Promise<void> {
-        const charts: RcsbChartInterface[] = (await (await RCT.getResidueDistribution(this.props))).filter(chart=>(!this.props.facetLayoutGrid || this.props.facetLayoutGrid.includes(chart.attribute)));
+        const charts: RcsbChartInterface[] = (await (await RCT.getResidueDistribution(this.props)))
+            .filter(chart=>(!this.props.facetLayoutGrid || this.props.facetLayoutGrid.includes(chart.attribute)))
+            .map(ch=>FacetTools.addChartDisplayConfig(ch, this.props.chartDisplayConfig ?? {}));
         this.setState({
             layout: charts.map(c=>c.attribute),
             chartMap: charts.reduce<ChartMapType>((prev,curr)=>(prev.set(curr.attribute,{chart: curr})), new Map())
