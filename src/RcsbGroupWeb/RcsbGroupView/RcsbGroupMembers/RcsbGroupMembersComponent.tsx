@@ -123,7 +123,8 @@ export async function searchRequest(groupProvenanceId: GroupProvenanceId, groupI
     return await rcsbRequestCtxManager.getSearchQuery({
         query: searchQuery ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
-            return_counts: true
+            return_counts: true,
+            results_content_type: SQT.searchContentType(searchQuery)
         },
         return_type: groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
     });

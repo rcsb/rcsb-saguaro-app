@@ -9,7 +9,7 @@ import {
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {
     SearchQuery,
-    AttributeTextQueryParameters
+    AttributeTextQueryParameters, ResultsContentType
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetStoreInterface} from "./FacetStore/FacetStoreInterface";
 import {cloneDeep} from 'lodash';
@@ -58,7 +58,7 @@ export namespace SearchQueryTools {
         }
     }
 
-    export function buildNodeSearchQuery(node: SearchQueryType, searchQuery: SearchQueryType, returnType: ReturnType, logicalOperator = LogicalOperator.And): SearchQuery {
+    export function buildNodeSearchQuery(node: SearchQueryType, searchQuery: SearchQueryType, returnType: ReturnType, resultsContentType:ResultsContentType, logicalOperator = LogicalOperator.And): SearchQuery {
         return {
             query: {
                 type: Type.Group,
@@ -80,7 +80,8 @@ export namespace SearchQueryTools {
                         sort_by: RelevanceScoreRankingOption.Score,
                         direction: SortDirection.Desc
                     }
-                ]
+                ],
+                results_content_type: resultsContentType
             }
         }
     }
@@ -147,6 +148,10 @@ export namespace SearchQueryTools {
             case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
                 return uniprotGroupFacetStore;
         }
+    }
+
+    export function searchContentType(searchQuery?: SearchQuery): ResultsContentType{
+        return searchQuery?.request_options?.results_content_type ?? ["computational","experimental"];
     }
 
     type GroupSearchAttribute =

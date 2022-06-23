@@ -17,7 +17,7 @@ import {ChartDisplayConfigInterface} from "../../RcsbChartWeb/RcsbChartComponent
 
 export class RcsbGroupDisplay {
 
-    public static async displayRcsbSearchStats(elementId: string, facetStore: FacetStoreInterface, searchQuery:SearchQueryType, returnType: ReturnType): Promise<void>{
+    public static async displayRcsbSearchStats(elementId: string, facetStore: FacetStoreInterface, searchQuery:SearchQuery, returnType: ReturnType): Promise<void>{
 
         createRoot(document.getElementById(elementId)).render(
             <RcsbStatsChartComponent facetStore={facetStore} searchQuery={searchQuery} returnType={returnType}/>

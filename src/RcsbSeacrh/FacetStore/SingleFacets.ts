@@ -50,6 +50,25 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
     }
 };
 
+export const METHODOLOGY_FACET: FacetMemberInterface = {
+    id: "computed",
+    title: "Determination Methodology",
+    attributeName: "METHODOLOGY_FACET",
+    attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
+    chartType: ChartType.barplot,
+    contentType: "string",
+    chartConfig: {
+        mostPopulatedGroups: 3,
+        mergeName: "Other methods"
+    },
+    facet: {
+        name: "METHODOLOGY_FACET",
+        aggregation_type: AggregationType.Terms,
+        attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
+        min_interval_population: 1
+    }
+};
+
 export const RELEASE_DATE_FACET: FacetMemberInterface = {
     id: "release_date",
     title: null,
@@ -577,5 +596,6 @@ export const SearchFacets = {
     GO_FUNCTION_FACET,
     GO_PROCESS_FACET,
     GO_COMPONENT_FACET,
-    LIGAND_OF_INTEREST_FACET
+    LIGAND_OF_INTEREST_FACET,
+    METHODOLOGY_FACET
 };

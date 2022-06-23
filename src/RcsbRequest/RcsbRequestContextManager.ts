@@ -32,7 +32,7 @@ import {
 import {
     AssemblyInterfacesCollector
 } from "../RcsbCollectTools/DataCollectors/AssemblyInterfacesCollector";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {ResultsContentType, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {MultipleEntityInstancesCollector} from "../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
 import {
     MultipleDocumentPropertyCollectorInterface
@@ -134,12 +134,12 @@ class RcsbRequestContextManager {
         );
     }
 
-    public async getSearchQueryFacets(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null>{
+    public async getSearchQueryFacets(query: SearchQueryType, facets: FacetType[], returnType:ReturnType, resultsContentType:ResultsContentType): Promise<QueryResult | null>{
         const key: string = sha1(query)+"."+sha1(facets);
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            async ()=>(await searchRequestProperty.requestFacets(query, facets, returnType))
+            async ()=>(await searchRequestProperty.requestFacets(query, facets, returnType, resultsContentType))
         );
     }
 

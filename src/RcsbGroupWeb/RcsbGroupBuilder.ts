@@ -14,7 +14,7 @@ import {RcsbGroupContentTextInterface} from "./RcsbGroupView/RcsbGroupContent/Rc
 import {ResidueChartInterface} from "./RcsbGroupView/RcsbResidueChart/ResidueChartTools/ResidueChartTools";
 import {ChartDisplayConfigInterface} from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 
-export async function buildSearchRequest(elementId: string, searchQuery:SearchQueryType, returnType:ReturnType): Promise<void>{
+export async function buildSearchRequest(elementId: string, searchQuery:SearchQuery, returnType:ReturnType): Promise<void>{
     await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery, returnType);
 }
 

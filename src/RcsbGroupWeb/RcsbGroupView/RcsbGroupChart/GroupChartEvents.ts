@@ -54,9 +54,9 @@ export namespace GroupChartEvents {
 
     async function clickEvent(e: React.MouseEvent, chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, query: SearchQueryType, returnType:ReturnType ): Promise<void> {
         if(e.shiftKey) {
-            location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(SQT.buildNodeSearchQuery(query, searchQuery.query, returnType)));
+            location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(SQT.buildNodeSearchQuery(query, searchQuery.query, returnType, SQT.searchContentType(searchQuery))));
         }else{
-            const fullQuery = SQT.buildNodeSearchQuery(searchQuery.query, query, returnType);
+            const fullQuery = SQT.buildNodeSearchQuery(searchQuery.query, query, returnType, SQT.searchContentType(searchQuery));
             const chartMap: ChartMapType = await GDCM.getChartMap(groupProvenanceId,groupId,fullQuery);
             SQCM.next({
                 chartMap:chartMap,

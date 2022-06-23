@@ -6,6 +6,7 @@ export class TagDelimiter {
     public static readonly operatorComposition: string = "-";
     public static readonly assembly: string = "-";
 
+    private static rcsbEntryRegExp = new RegExp('^(\\d)(\\w{3})$');
     private static rcsbEntityRegExp = new RegExp('^(\\d)(\\w{3})(\_)(\\d+)$');
     private static rcsbInstanceRegExp = new RegExp('^(\\d)(\\w{3})(\.)(\\w+)$');
 
@@ -27,4 +28,7 @@ export class TagDelimiter {
         return this.rcsbEntityRegExp.test(rcsb) || this.rcsbInstanceRegExp.test(rcsb);
     }
 
+    public static isRcsbId(rcsb:string): boolean {
+        return this.rcsbEntityRegExp.test(rcsb) || this.rcsbInstanceRegExp.test(rcsb) || this.rcsbEntryRegExp.test(rcsb);
+    }
 }

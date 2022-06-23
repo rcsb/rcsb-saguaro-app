@@ -82,7 +82,8 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
                 SQT.buildNodeSearchQuery(
                     SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId, Service.Text),
                     this.state.searchQuery.query,
-                    groupProvenanceToReturnType[this.props.groupProvenanceId]
+                    groupProvenanceToReturnType[this.props.groupProvenanceId],
+                    SQT.searchContentType(this.state.searchQuery)
                 ),
             )) : "",
             fullGroup: resource.rcsb_search.url + JSON.stringify({
@@ -97,7 +98,8 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
                     sort:[{
                         sort_by: RelevanceScoreRankingOption.Score,
                         direction: SortDirection.Desc
-                    }]
+                    }],
+                    results_content_type: ["computational","experimental"]
                 }
             })
         };
