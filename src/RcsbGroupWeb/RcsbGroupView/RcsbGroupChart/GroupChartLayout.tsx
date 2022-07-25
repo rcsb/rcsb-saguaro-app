@@ -12,6 +12,7 @@ import {
     VictoryHistogramChartComponent
 } from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryHistogramChartComponent";
 import uniqid from "uniqid";
+import {ChartJsBarComponent} from "../../../RcsbChartWeb/RcsbChartComponent/ChatJsImplementations/ChartJsBarComponent";
 
 //TODO chart && subChart should be defined in RcsbChartInterface.data: ChartObjectInterface as RcsbChartInterface.data{XXX:ChartObjectInterface,subXXX:ChartObjectInterface}
 export type ChartMapType = Map<string,{chart:RcsbChartInterface;subChart?:RcsbChartInterface;}>;
@@ -74,6 +75,6 @@ function histogramChart(attributeName: string, chart: RcsbChartInterface, subCha
 
 function barChart(attributeName: string, chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
     return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <BarChartComponent data={chart.data} subData={subChart?.data} chartConfig={chart.chartConfig} attributeName={attributeName} chartComponentImplementation={VictoryBarChartComponent}/>
+        <BarChartComponent data={chart.data} subData={subChart?.data} chartConfig={chart.chartConfig} attributeName={attributeName} chartComponentImplementation={ChartJsBarComponent}/>
     </div>);
 }
