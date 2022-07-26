@@ -6,7 +6,6 @@ import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
-import {UnknownTypeSerializer} from "typedoc/dist/lib/serialization";
 
 export class RcsbFvEntityBuilder {
 
@@ -37,12 +36,15 @@ export class RcsbFvEntityBuilder {
                             if (t === entityId) {
                                 await RcsbFvEntityBuilder.buildSingleEntitySummaryFv(elementFvId, entityId);
                             } else {
-                                await RcsbFvUniprotBuilder.buildUniprotEntityFv(elementFvId, t, entityId, additionalConfig({
-                                        field:FieldName.TargetId,
-                                        operation:OperationType.Contains,
-                                        source:Source.PdbInstance,
-                                        values:[pdbId]
-                                    })
+                                await RcsbFvUniprotBuilder.buildUniprotEntityFv(elementFvId, t, entityId, {
+                                        alignmentFilter: [entityId],
+                                        ...additionalConfig({
+                                            field:FieldName.TargetId,
+                                            operation:OperationType.Contains,
+                                            source:Source.PdbInstance,
+                                            values:[pdbId]
+                                        })
+                                    }
                                 );
                             }
                         }

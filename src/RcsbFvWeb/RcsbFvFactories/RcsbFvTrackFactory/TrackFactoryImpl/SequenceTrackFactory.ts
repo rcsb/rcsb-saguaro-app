@@ -9,8 +9,8 @@ import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {
-    PolymerEntityInstanceTranslate,
-    AlignmentContextInterface
+    AlignmentContextInterface,
+    PolymerEntityInstanceTranslate
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
@@ -41,6 +41,7 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
             rowTitle: rowTitle,
             rowPrefix: rowPrefix,
             nonEmptyDisplay: true,
+            overlap:true,
             trackData: this.buildSequenceData({
                 sequence:querySequence,
                 begin:1,
