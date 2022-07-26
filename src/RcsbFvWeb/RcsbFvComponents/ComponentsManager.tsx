@@ -20,45 +20,47 @@ export class ComponentsManager {
 
     private static readonly loaderSpinner: string = "_loaderSpinner";
     private static readonly selectButtonMap: Map<string, SelectButtonManager> = new Map<string, SelectButtonManager>();
-    private static readonly nodeMap: Map<string, Root> = new Map<string, Root>();
+    private static readonly nodeMap: Map<string, {reactRoot:Root; htmlElement:HTMLElement}> = new Map<string, {reactRoot:Root; htmlElement:HTMLElement}>();
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
-        this.selectButtonMap.set(elementId, new SelectButtonManager(elementId));
-        this.selectButtonMap.get(elementId).createButton(options, config);
+        ComponentsManager.selectButtonMap.set(elementId, new SelectButtonManager(elementId));
+        ComponentsManager.selectButtonMap.get(elementId).createButton(options, config);
     }
 
     static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
-        this.selectButtonMap.get(elementId)?.addButton(options, config);
+        ComponentsManager.selectButtonMap.get(elementId)?.addButton(options, config);
     }
 
     static clearSelectButton(elementId: string){
-        if( this.selectButtonMap.has(elementId) ){
-            this.selectButtonMap.get(elementId).unmountButton();
-            this.selectButtonMap.delete(elementId);
+        if( ComponentsManager.selectButtonMap.has(elementId) ){
+            ComponentsManager.selectButtonMap.get(elementId).unmountButton();
+            ComponentsManager.selectButtonMap.delete(elementId);
         }
 
     }
 
     static clearAdditionalSelectButton(elementId: string){
-        this.selectButtonMap.get(elementId)?.unmountAdditionalButton();
+        ComponentsManager.selectButtonMap.get(elementId)?.unmountAdditionalButton();
     }
 
     static buildLoaderSpinner(elementId: string){
-        ComponentsManager.hideElement(elementId);
-        const div: HTMLDivElement = document.createElement<"div">("div");
         const id: string = elementId+ComponentsManager.loaderSpinner;
-        div.setAttribute("id", id);
-        document.getElementById(elementId).prepend(div);
-        this.nodeMap.set(id, createRoot(div));
-        this.nodeMap.get(id).render(<LoaderSpinner/>);
+        if(!ComponentsManager.nodeMap.has(id)){
+            ComponentsManager.hideElement(elementId);
+            const div: HTMLDivElement = document.createElement<"div">("div");
+            div.setAttribute("id", id);
+            document.getElementById(elementId).prepend(div);
+            ComponentsManager.nodeMap.set(id, {reactRoot:createRoot(div),htmlElement:div});
+            ComponentsManager.nodeMap.get(id).reactRoot.render(<LoaderSpinner/>);
+        }
     }
 
     static unmountLoaderSpinner(elementId: string){
-        var id: string = elementId+ComponentsManager.loaderSpinner;
-        if( this.nodeMap.has(id) ){
-            this.nodeMap.get(id).unmount();
-            document.getElementById(id)?.remove();
-            this.nodeMap.delete(id);
+        const id: string = elementId+ComponentsManager.loaderSpinner;
+        if( ComponentsManager.nodeMap.has(id) ){
+            ComponentsManager.nodeMap.get(id).reactRoot.unmount();
+            ComponentsManager.nodeMap.get(id).htmlElement.remove()
+            ComponentsManager.nodeMap.delete(id);
             ComponentsManager.showElement(elementId);
         }
     }
