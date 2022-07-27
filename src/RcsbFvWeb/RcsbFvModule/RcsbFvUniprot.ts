@@ -78,7 +78,7 @@ async function collectLocalScores(upAcc: string): Promise<Array<AnnotationFeatur
             source:Source.PdbInstance,
             operation: OperationType.Equals,
             field:FieldName.Type,
-            values:[Type.MaQaMetricLocalTypeOther]
+            values:[Type.MaQaMetricLocalTypePlddt]
         }]
     });
 }

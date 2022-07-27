@@ -10,16 +10,6 @@
       "color": "#cccccc"
     }
   },{
-    "type": "MA_QA_METRIC_LOCAL_TYPE_OTHER",
-    "trackType": ["MA_QA_METRIC_LOCAL_TYPE_OTHER"],
-    "sort": ["VERY_LOW", "LOW", "CONFIDENT", "VERY_HIGH"],
-    "contentType": "numerical",
-    "undefTrack": {
-      "label": "N/A",
-      "id": "UNDEF",
-      "color": "#cccccc"
-    }
-  },{
     "type": "SECONDARY_STRUCTURE",
     "title": "Secondary Structure Distribution",
     "trackType": ["HELIX", "SHEET", "TURN"],
@@ -31,28 +21,6 @@
     }
   }],
   "trackConfig": [{
-    "type": "MA_QA_METRIC_LOCAL_TYPE_OTHER",
-    "numericalCategories": {
-      "categories": [{
-        "color":"#ff7d45",
-        "label": "Very Low",
-        "id": "VERY_LOW"
-      },{
-        "color":"#ffdb13",
-        "label": "Low",
-        "id": "LOW"
-      },{
-        "color":"#65cbf3",
-        "label": "Confident",
-        "id": "CONFIDENT"
-      },{
-        "color":"#0053d6",
-        "label": "Very High",
-        "id": "VERY_HIGH"
-      }],
-      "thresholds": [50,70,90]
-    }
-  },{
     "type": "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
     "numericalCategories": {
       "categories": [{
