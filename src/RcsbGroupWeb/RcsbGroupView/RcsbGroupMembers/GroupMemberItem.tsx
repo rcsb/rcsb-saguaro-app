@@ -20,7 +20,9 @@ export interface ItemFeaturesInterface {
     molecularWeight:number;
 }
 
+const NA: string = "N/A";
 export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}>{
+
     render() {
         return (
             <div>
@@ -35,9 +37,9 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                     </div>
                     <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.name}><strong>Name: </strong>{this.props.item.name}</div>
                     <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Organism: </strong>{this.props.item.taxNames.join(", ")}</div>
-                    <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.experimentalMethod}><strong>Experimental Method: </strong>{this.props.item.experimentalMethod}</div>
+                    <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.experimentalMethod}><strong>Experimental Method: </strong>{this.props.item.experimentalMethod ?? NA}</div>
                     {
-                        (<div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Resolution: </strong>{this.props.item.resolution ?  `${this.props.item.resolution} Å` : "N/A"}</div>)
+                        (<div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Resolution: </strong>{this.props.item.resolution ?  `${this.props.item.resolution} Å` : NA}</div>)
                     }
                     {
                         this.props.item.molecularWeight ? (<div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Molecular Weight: </strong>{`${this.props.item.molecularWeight} kDa`}</div>) : null
