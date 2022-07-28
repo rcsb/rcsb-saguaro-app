@@ -1,5 +1,6 @@
 
 export class Operator {
+
     public static uniqueValues<T>(array: Array<T>){
         return Array.from<T>(new Set<T>(array));
     }
@@ -10,5 +11,9 @@ export class Operator {
             out.push(array.slice(i, i+size));
         }
         return out;
+    }
+
+    public static digitGrouping(x:string|number): string {
+        return parseFloat(x as string).toLocaleString();
     }
 }

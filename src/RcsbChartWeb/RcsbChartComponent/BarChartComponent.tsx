@@ -5,6 +5,7 @@ import {BarChartDataProvider} from "../RcsbChartDataProvider/BarChartDataProvide
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
 import {ChartDisplayConfigInterface} from "./ChartConfigInterface";
+import {Operator} from "../../RcsbUtils/Helpers/Operator";
 
 export class BarChartComponent extends AbstractChartComponent {
 
@@ -64,7 +65,9 @@ export class BarChartComponent extends AbstractChartComponent {
                         "Shift-click to collapse all"
                     )
                 }
-                <div className={"ps-1 text-muted text-opacity-50 align-middle d-table-cell"} style={{fontSize:ChartTools.getConfig<number>("fontSize",this.props.chartConfig.chartDisplayConfig)}}>[ {excluded}+ ]</div>
+                <div className={"ps-1 text-muted text-opacity-50 align-middle d-table-cell"} style={{fontSize:ChartTools.getConfig<number>("fontSize",this.props.chartConfig.chartDisplayConfig)}}>
+                    [ {Operator.digitGrouping(excluded)}+ ]
+                </div>
             </div>
         </div>);
     }

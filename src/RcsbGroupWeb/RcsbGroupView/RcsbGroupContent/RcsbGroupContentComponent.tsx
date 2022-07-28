@@ -16,6 +16,7 @@ import {
     ScoringStrategy,
     Service, SortDirection
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {Operator} from "../../../RcsbUtils/Helpers/Operator";
 
 interface RcsbGroupContentInterface extends RcsbGroupContentTextInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -28,6 +29,7 @@ export interface RcsbGroupContentTextInterface {
     delimiterText?: string;
     fullGroupText?: string;
     completeGroupText?: string;
+    displayNumber?(x:number): string;
 }
 
 interface RcsbGroupContentState {
@@ -53,12 +55,12 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
 
     render() {
         if(this.state.subGroupMembers === this.state.fullGroupMembers)
-            return (<span>{this.props.completeGroupText ?? ""} <a href={this.href().fullGroup}>{this.state.fullGroupMembers}</a></span>);
+            return (<span>{this.props.completeGroupText ?? ""} <a href={this.href().fullGroup}>{this.displayNumber(this.state.fullGroupMembers)}</a></span>);
         else
             return (<span>{this.props.subGroupText ? this.props.subGroupText+" " : ""}
-                <a href={this.href().subGroup}>{this.state.subGroupMembers}</a>
+                <a href={this.href().subGroup}>{this.displayNumber(this.state.subGroupMembers)}</a>
                 {this.props.delimiterText ? " "+this.props.delimiterText+" " : " / "}
-                <a href={this.href().fullGroup}>{this.state.fullGroupMembers}</a>
+                <a href={this.href().fullGroup}>{this.displayNumber(this.state.fullGroupMembers)}</a>
                 {this.props.fullGroupText ? " "+this.props.fullGroupText: ""}
             </span>);
     }
@@ -69,6 +71,10 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
                 await this.updateGroupContent(o);
             }
         );
+    }
+
+    private displayNumber(x:number): string {
+        return (this.props.displayNumber ?? Operator.digitGrouping)(x);
     }
 
     private async updateGroupContent(o:SearchQueryContextManagerSubjectInterface): Promise<void> {

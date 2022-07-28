@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ReactNode} from "react";
+import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 
 export type SlideAction = "next"|"prev";
 export interface SliderInterface {
@@ -8,6 +9,7 @@ export interface SliderInterface {
     pages:number;
     currentPage:number;
     children: ReactNode
+    displayNumber?(x:number): string;
 }
 
 
@@ -19,7 +21,7 @@ export class Slider extends React.Component<SliderInterface,null> {
                 <Container fluid={"md"}>
                     <Row className={"bg-secondary text-white"} style={{height:50}}>
                         <Col md={1} className={"text-md-end my-auto"} onClick={()=>{this.slide("prev")}}>{actionIcon("prev")}</Col>
-                        <Col className={"text-md-center my-auto"}>Member {this.props.currentPage} of {this.props.pages}</Col>
+                        <Col className={"text-md-center my-auto"}>Member {this.displayNumber(this.props.currentPage)} of {this.displayNumber(this.props.pages)}</Col>
                         <Col md={1} className={"text-md-start my-auto"} onClick={()=>{this.slide("next")}}>{actionIcon("next")}</Col>
                     </Row>
                 </Container>
@@ -30,6 +32,10 @@ export class Slider extends React.Component<SliderInterface,null> {
 
     private slide(action:SlideAction):void{
         this.props.slide(action);
+    }
+
+    private displayNumber(x:number): string {
+        return (this.props.displayNumber ?? Operator.digitGrouping)(x);
     }
 
 }
