@@ -22,11 +22,6 @@ export interface RcsbChartLayoutInterface {
 
 export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,{}> {
 
-    constructor(props: RcsbChartLayoutInterface) {
-        super(props);
-
-    }
-
     render():JSX.Element {
         return (
             <Container fluid={"md"}>

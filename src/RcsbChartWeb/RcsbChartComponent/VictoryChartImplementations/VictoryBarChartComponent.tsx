@@ -20,7 +20,7 @@ export class VictoryBarChartComponent extends AbstractChartImplementation {
             width={this.props.width}
             scale={{y:"linear", x:"linear"}}
         >
-            {AxisFactory.getDependentAxis({orientation:"top"})}
+            {AxisFactory.getDependentAxis({orientation:"top", label:this.props.chartConfig.axisLabel})}
             {stack(data, this.props.chartConfig)}
             <VictoryAxis tickLabelComponent={<LabelComponent/>} />
         </VictoryChart>);

@@ -52,6 +52,7 @@ export interface RcsbTrackBlockConfigInterface {
         color:string;
         id:string;
     }
+    axisLabel?:string;
 }
 
 export interface RcsbTrackConfigInterface {

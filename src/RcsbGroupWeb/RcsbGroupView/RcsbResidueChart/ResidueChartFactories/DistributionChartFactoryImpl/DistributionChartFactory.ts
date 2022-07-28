@@ -14,6 +14,7 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
 
     getChart(residueDistribution: ResidueDistributionInterface): RcsbChartInterface {
         const sort: string[] | undefined = this.distributionConfig.getBlockConfig(residueDistribution.attribute).sort;
+        const axisLabel: string | undefined = this.distributionConfig.getBlockConfig(residueDistribution.attribute).axisLabel;
         return {
             chartType: ChartType.barplot,
             attribute: residueDistribution.attribute,
@@ -28,9 +29,10 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
                 }
             })),
             title: residueDistribution.title,
-            chartConfig:{
+            chartConfig: {
                 sort: sort ? (a,b)=>(sort.findIndex(x=>x===a.id)-sort.findIndex(x=>x===b.id)) : undefined,
-                tooltipText: (d: ChartDataInterface)=>(`${d.y} residues`)
+                tooltipText: (d: ChartDataInterface)=>(`${d.y} residues`),
+                axisLabel
             }
         };
     }
