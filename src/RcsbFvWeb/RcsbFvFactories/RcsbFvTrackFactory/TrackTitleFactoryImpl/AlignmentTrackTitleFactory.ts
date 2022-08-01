@@ -59,9 +59,9 @@ export class AlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[A
     }
 
     private buildInstanceId(targetId: string): string{
-        const labelAsymId: string = targetId.split(TagDelimiter.instance)[1]
+        const labelAsymId: string = TagDelimiter.parseInstance(targetId).instanceId;
         const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
-        return (labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]");
+        return TagDelimiter.parseInstance(targetId).entryId+TagDelimiter.instance+(labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]");
     }
 
 }

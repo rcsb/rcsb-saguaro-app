@@ -42,7 +42,7 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             filterByTargetContains: instanceId,
             excludeFirstRowLink: true
         }
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [instanceId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
         const annotationsRequestContext: CollectAnnotationsInterface = {

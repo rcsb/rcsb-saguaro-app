@@ -32,7 +32,7 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             filterByTargetContains: entityId,
             excludeAlignmentLinks: true
         };
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [entityId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
         const annotationsRequestContext: CollectAnnotationsInterface = {
