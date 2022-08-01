@@ -142,13 +142,16 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected async buildAlignmentTracks(
         alignmentRequestContext: AlignmentRequestContextType,
         alignmentResponse: AlignmentResponse,
-        trackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>
+        trackFactories?:{
+            alignmentTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>,
+            sequenceTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, string]>
+        }
     ): Promise<void>{
-        const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
+        const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = trackFactories?.sequenceTrackFactory ?? new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
         if(alignmentResponse.query_sequence)
             this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
         const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment]> = new AlignmentBlockFactory(
-            trackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
+            trackFactories?.alignmentTrackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
         );
         this.alignmentTracks = await alignmentBlockFactory.getBlock(alignmentRequestContext,alignmentResponse);
     }

@@ -155,7 +155,6 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 d.description = [pdbEntityId];
         });
         this.addSequences([this.pdbEntityTrack],SequenceReference.PdbEntity);
-        this.pdbEntityTrack.rowPrefix = SequenceReference.PdbEntity.replace("_"," ");
         this.pdbEntityTrack.rowTitle = {
             visibleTex: pdbEntityId,
             style: {

@@ -22,7 +22,9 @@ import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentColl
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
 
-export type AlignmentRequestContextType = AlignmentCollectConfig & {querySequence?:string;};
+export type AlignmentRequestContextType = AlignmentCollectConfig & {
+    querySequence?:string;
+};
 
 export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]> {
 
@@ -30,10 +32,10 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
     private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
     private readonly trackTitleFactory: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>;
 
-    constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
+    constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate, trackTitleFactory?: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>) {
         this.sequenceTrackFactory = new SequenceTrackFactory(entityInstanceTranslator);
         this.entityInstanceTranslator = entityInstanceTranslator;
-        this.trackTitleFactory = new AlignmentTrackTitleFactory(entityInstanceTranslator);
+        this.trackTitleFactory = trackTitleFactory ?? new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
     public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
@@ -53,12 +55,11 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
             displayColor: "#9999FF",
             displayData: alignedBlocks
         };
-        let rowPrefix: string = alignmentRequestContext.to && !alignmentRequestContext.to.includes("PDB")? alignmentRequestContext.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle : "";
         return {
             trackId: "targetSequenceTrack_"+targetAlignment.target_id,
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
-            rowPrefix: rowPrefix,
+            rowPrefix: await this.buildAlignmentRowTitlePrefix(alignmentRequestContext,targetAlignment),
             rowTitle: await this.buildAlignmentRowTitle(alignmentRequestContext,targetAlignment),
             fitTitleWidth: alignmentRequestContext.fitTitleWidth,
             titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
@@ -69,6 +70,10 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
     public async buildAlignmentRowTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string | RcsbFvLink> {
         return await this.trackTitleFactory.getTrackTitle(alignmentQueryContext,targetAlignment);
+    }
+
+    public async buildAlignmentRowTitlePrefix(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string> {
+        return await this.trackTitleFactory.getTrackTitlePrefix(alignmentQueryContext,targetAlignment);
     }
 
     private getAlignmentTrackConfiguration(

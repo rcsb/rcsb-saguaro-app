@@ -54,6 +54,10 @@ export class AlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[A
         return rowTitle;
     }
 
+    public async getTrackTitlePrefix(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string> {
+        return alignmentQueryContext.to && !alignmentQueryContext.to.includes("PDB")? alignmentQueryContext.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle : "";
+    }
+
     private buildInstanceId(targetId: string): string{
         const labelAsymId: string = targetId.split(TagDelimiter.instance)[1]
         const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);

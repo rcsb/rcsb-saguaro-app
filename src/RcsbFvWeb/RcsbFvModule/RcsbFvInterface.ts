@@ -18,6 +18,10 @@ import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerat
 import {burialFraction, burialFractionFilter} from "../../RcsbUtils/TrackGenerators/BurialFraction";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
+import {
+    InstanceSequenceTrackTitleFactory
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackTitleFactoryImpl/InstanceSequenceTrackTitleFactory";
 
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
@@ -37,7 +41,9 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             to: SequenceReference.Uniprot
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
-        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
+            sequenceTrackFactory: new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator(),new InstanceSequenceTrackTitleFactory(this.getPolymerEntityInstanceTranslator()))
+        });
 
         const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: instanceId,

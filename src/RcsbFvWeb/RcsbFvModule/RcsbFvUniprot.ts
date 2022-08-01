@@ -30,7 +30,9 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: UniprotAlignmentTrackFactory = new UniprotAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
         await trackFactory.prepareFeatures(await collectUnobservedRegions(upAcc), await  collectLocalScores(upAcc));
-        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, trackFactory);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
+            alignmentTrackFactory: trackFactory
+        });
 
         const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: upAcc,

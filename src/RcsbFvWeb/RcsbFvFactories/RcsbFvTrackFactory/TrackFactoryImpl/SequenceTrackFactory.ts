@@ -1,4 +1,3 @@
-import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {
     RcsbFvDisplayTypes,
     RcsbFvLink,
@@ -6,15 +5,19 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
-import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {
+    SequenceReference,
+    Source
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {
     AlignmentContextInterface,
     PolymerEntityInstanceTranslate
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
+import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
+import {SequenceTrackTitleFactory} from "../TrackTitleFactoryImpl/SequenceTrackTitleFactory";
 
 interface BuildSequenceDataInterface extends AlignmentContextInterface {
     sequence: string;
@@ -25,14 +28,16 @@ interface BuildSequenceDataInterface extends AlignmentContextInterface {
 export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, string]> {
 
     private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
+    private readonly trackTitleFactory: TrackTitleFactoryInterface<[AlignmentRequestContextType]>;
 
-    constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
+    constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate, trackTitleFactory?: TrackTitleFactoryInterface<[AlignmentRequestContextType]>) {
         this.entityInstanceTranslator = entityInstanceTranslator;
+        this.trackTitleFactory = trackTitleFactory ?? new SequenceTrackTitleFactory(entityInstanceTranslator);
     }
 
     public async getTrack(alignmentQueryContext: AlignmentRequestContextType, querySequence: string): Promise<RcsbFvRowConfigInterface> {
-        let rowPrefix:string|RcsbFvLink = alignmentQueryContext.from && !alignmentQueryContext.from.includes("PDB") ? alignmentQueryContext.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle : alignmentQueryContext.sequencePrefix;
-        let rowTitle:string|RcsbFvLink = this.buildSequenceRowTitle(alignmentQueryContext);
+        let rowPrefix:string = await this.trackTitleFactory.getTrackTitlePrefix(alignmentQueryContext);
+        let rowTitle:string|RcsbFvLink = await this.trackTitleFactory.getTrackTitle(alignmentQueryContext);
         const sequenceTrack: RcsbFvRowConfigInterface = {
             trackId: "mainSequenceTrack_" + alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -101,41 +106,6 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
         if(alignmentContext.to == SequenceReference.PdbInstance && o.sourceId != null && this.entityInstanceTranslator!=null)
             o.sourceId = o.sourceId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(o.sourceId.split(TagDelimiter.instance)[1])
         return o;
-    }
-
-    public buildSequenceRowTitle(requestConfig: AlignmentCollectConfig): string|RcsbFvLink{
-        let rowTitle:string|RcsbFvLink;
-        if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.Uniprot){
-            rowTitle = {
-                visibleTex: requestConfig.queryId,
-                url: (resource as any).rcsb_uniprot.url+requestConfig.queryId,
-                style: {
-                    fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
-                }
-            };
-        }else if(!requestConfig.excludeFirstRowLink && requestConfig.from === SequenceReference.PdbInstance && this.entityInstanceTranslator!=null) {
-            rowTitle = {
-                visibleTex: this.buildInstanceId(requestConfig.queryId),
-                style: {
-                    fontWeight:"bold",
-                }
-            };
-        }else{
-            rowTitle = {
-                visibleTex: requestConfig.queryId ?? requestConfig.groupId,
-                style: {
-                    fontWeight:"bold",
-                }
-            };
-        }
-        return rowTitle;
-    }
-
-    private buildInstanceId(targetId: string): string{
-        const labelAsymId: string = targetId.split(TagDelimiter.instance)[1]
-        const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
-        return (labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]");
     }
 
 }

@@ -21,7 +21,9 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
-        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, new PlainAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator()));
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
+            alignmentTrackFactory: new PlainAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
+        });
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;

@@ -13,7 +13,7 @@
 - `ChartConfigInterface.chartDisplayConfig` allows to overwrite `CharTools` display properties (sizes, padding, fontsize, ...)
 
 ### Code refactoring
-- `AnnottaionCollector` class does not format collected data anymore. The only responsibility of this class is to dispatch positional features
+- `AnnotationCollector` class does not format collected data anymore. The only responsibility of this class is to dispatch positional features
 - `SeqeunceCollector` class has been renamed to `AlignmentCollector` and it does not format data anymore. The only responsibility of this class is to dispatch alignment data
 - `RcsbFvFactories` is a new package to format data from the 1d-coordinate sever into track configuration objects `RcsbFvRowConfigInterface`. 
   Tracks are grouped in blocks. In most cases one block represents alignments and a second block positional features
