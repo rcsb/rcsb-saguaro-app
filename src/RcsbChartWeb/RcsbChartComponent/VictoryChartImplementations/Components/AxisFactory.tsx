@@ -23,6 +23,7 @@ export class AxisFactory {
                     return (!t.toString().includes('.') ? Operator.digitGrouping(t) : "");
                 }
             }
+            axisLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<string>("fontSize",{})}} />}
             tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<number>("fontSize",{})}} />}
         />);
     }
@@ -40,7 +41,7 @@ export class AxisFactory {
             }}
             label={config.axisLabel}
             axisLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<string>("fontSize", {})}} />}
-            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<string>("fontSize", {})}}/>}
+            tickLabelComponent={<VictoryLabel style={{fontFamily: ChartTools.getConfig<string>("fontFamily", {}), fontSize:ChartTools.getConfig<string>("fontSize", {})}} />}
         />);
     }
 

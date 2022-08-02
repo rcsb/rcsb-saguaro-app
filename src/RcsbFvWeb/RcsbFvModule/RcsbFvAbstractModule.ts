@@ -81,17 +81,13 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         await this.rcsbFv.updateBoardConfig({
             boardConfigData:{
                 rowTitleWidth:190,
-                ...this.boardConfigData,
-                onFvRenderStartsCallback:()=>{
-                    ComponentsManager.unmountLoaderSpinner(this.elementId);
-                }
+                ...this.boardConfigData
             },
             rowConfigData:[]
         });
+        ComponentsManager.unmountLoaderSpinner(this.elementId);
+        console.info(`Rendering tracks ${this.elementId}`);
         this.rcsbFvRowUpdatePromise = this.rcsbFv.updateBoardConfig({
-            boardConfigData: {
-                onFvRenderStartsCallback: undefined
-            },
             rowConfigData:this.rowConfigData
         });
         this.activeDisplayFlag = true;
