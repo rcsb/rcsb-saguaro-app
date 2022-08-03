@@ -6,10 +6,8 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {
     AlignedRegion,
-    SequenceReference,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
@@ -17,9 +15,7 @@ import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureTools";
 import {SequenceTrackFactory} from "./SequenceTrackFactory";
-import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {range} from "lodash";
@@ -41,7 +37,11 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
     }
 
     public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>, alignmentColor?:RcsbFvColorGradient): Promise<RcsbFvRowConfigInterface> {
-        const {alignedBlocks, mismatchData, sequenceData} = this.getAlignmentTrackConfiguration(alignmentRequestContext, targetAlignment, alignedRegionToTrackElementList ?? this.alignedRegionToTrackElementList.bind(this));
+        const {alignedBlocks, mismatchData, sequenceData} = this.getAlignmentTrackConfiguration(
+            alignmentRequestContext,
+            targetAlignment,
+            alignedRegionToTrackElementList ?? this.alignedRegionToTrackElementList.bind(this)
+        );
         const sequenceDisplay: RcsbFvDisplayConfigInterface = {
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             displayColor: "#000000",

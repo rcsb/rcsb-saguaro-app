@@ -14,6 +14,6 @@ export class Operator {
     }
 
     public static digitGrouping(x:string|number): string {
-        return parseFloat(x as string).toLocaleString();
+        return parseFloat(x as string).toLocaleString( 'en-US');
     }
 }

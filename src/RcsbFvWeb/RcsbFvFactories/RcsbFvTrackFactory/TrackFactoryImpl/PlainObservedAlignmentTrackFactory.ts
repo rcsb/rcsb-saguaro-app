@@ -99,106 +99,20 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
     private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
         if(!this.unObservedResidues.has(alignmentContext.targetId) || this.unObservedResidues.get(alignmentContext.targetId).length == 0)
             return this.alignmentTrackFactory.alignedRegionToTrackElementList(region, alignmentContext);
-        const outRegions: Array<AlignedObservedRegion> = new Array<AlignedObservedRegion>();
-        const unModelledList: Array<number> =  this.unObservedResidues.get(alignmentContext.targetId);
-        if(unModelledList.length>0) {
-            let begin: number = unModelledList.shift();
-            let end: number = begin;
-            let delta: number = region.target_begin-region.query_begin;
-            const unModelledRegions: Array<AlignedObservedRegion> = new Array<AlignedObservedRegion>();
-            if(unModelledList.length == 0)
-                unModelledRegions.push({
-                    query_begin: begin,
-                    query_end: end,
-                    target_begin: begin+delta,
-                    target_end: end+delta,
-                    unModelled: true
-                });
-            unModelledList.forEach((n, i) => {
-                if (n == end + 1) {
-                    end = n;
-                } else {
-                    unModelledRegions.push({
-                        query_begin: begin,
-                        query_end: end,
-                        target_begin: begin+delta,
-                        target_end: end+delta,
-                        unModelled: true
-                    });
-                    begin = n;
-                    end = n;
-                    if(i==unModelledList.length-1)
-                        unModelledRegions.push({
-                            query_begin: begin,
-                            query_end: end,
-                            target_begin: begin+delta,
-                            target_end: end+delta,
-                            unModelled: true
-                        });
-                }
-            });
-            if(end>begin)
-                unModelledRegions.push({
-                    query_begin: begin,
-                    query_end: end,
-                    target_begin: begin+delta,
-                    target_end: end+delta,
-                    unModelled: true
-                });
-
-            if (region.query_begin < unModelledRegions[0].query_begin)
-                outRegions.push({
-                    query_begin: region.query_begin,
-                    query_end: (unModelledRegions[0].query_begin - 1),
-                    target_begin: region.target_begin,
-                    target_end: (unModelledRegions[0].target_begin - 1),
-                    openBegin: false,
-                    openEnd: false,
-                    unModelled: false
-                });
-            outRegions.push({...unModelledRegions.shift(), openBegin:false, openEnd:false});
-            unModelledRegions.forEach((ur, i) => {
-                const n: number = outRegions.length - 1;
-                outRegions.push({
-                    query_begin: outRegions[n].query_end + 1,
-                    query_end: ur.query_begin - 1,
-                    target_begin: outRegions[n].target_end + 1,
-                    target_end: ur.target_begin - 1,
-                    openBegin: false,
-                    openEnd: false,
-                    unModelled: false
-                });
-                outRegions.push({...ur, openBegin:false, openEnd:false});
-            });
-            const n: number = outRegions.length - 1;
-            if (outRegions[n].query_end < region.query_end) {
-                outRegions.push({
-                    query_begin: outRegions[n].query_end + 1,
-                    query_end: region.query_end,
-                    target_begin: outRegions[n].target_end + 1,
-                    target_end: region.target_end,
-                    openBegin: false,
-                    openEnd: false,
-                    unModelled:false
-                })
-            }
-            outRegions[0].openBegin = outRegions[0].target_begin != 1;
-            outRegions[outRegions.length-1].openEnd = (outRegions[outRegions.length-1].target_end != alignmentContext.targetSequenceLength && !alignmentContext.querySequenceLength);
-        }
-        return outRegions.map(r=>range(r.query_begin,r.query_end+1).map((p,n)=>this.alignmentTrackFactory.addAuthorResIds({
-            begin: p,
-            oriBegin: region.target_begin+n,
+        const unModelledSet: Set<number> =  new Set(this.unObservedResidues.get(alignmentContext.targetId));
+        const delta: number = region.target_begin-region.query_begin;
+        return range(region.query_begin, region.query_end+1).map((i)=>this.alignmentTrackFactory.addAuthorResIds({
+            begin: i,
+            oriBegin: i+delta,
             sourceId: alignmentContext.targetId,
             source: alignmentContext.to,
             provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
             provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-            openBegin: r.openBegin,
-            openEnd: r.openEnd,
             type: "ALIGNED_BLOCK",
-            title: r.unModelled ? "UNMODELED REGION" : "ALIGNED REGION",
-            value: r.unModelled ? 0: 100
+            title: unModelledSet.has(i) ? "UNMODELED REGION" : "ALIGNED REGION",
+            value: unModelledSet.has(i) ? 0: 100
+        }, alignmentContext));
 
-        }, alignmentContext))).flat();
     }
 
 }

@@ -66,8 +66,10 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     componentDidUpdate(prevProps: Readonly<SelectButtonInterface>, prevState: Readonly<SelectButtonState>): void {
-        this.renderTitle();
-        this.state.selectedOption.onChange();
+        if(this.state.selectedOption.label != prevState.selectedOption.label){
+            this.renderTitle();
+            this.state.selectedOption.onChange();
+        }
     }
 
     componentDidMount(): void {
