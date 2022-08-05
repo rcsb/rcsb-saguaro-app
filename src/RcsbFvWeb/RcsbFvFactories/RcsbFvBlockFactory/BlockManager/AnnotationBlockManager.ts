@@ -6,7 +6,6 @@ import {AnnotationRequestContext} from "../../../../RcsbCollectTools/AnnotationC
 import {BlockManagerInterface} from "./BlockManagerInterface";
 import {TrackManagerFactoryInterface, TrackManagerInterface} from "./TrackManagerInterface";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import uniqid from "uniqid";
 
 export class AnnotationBlockManager implements BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>{
 
@@ -78,20 +77,18 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     }
 
     private mergeTracks(): void{
-        const uniquePrefix: string = uniqid();
         const typeList: string[] = Array.from(this.annotationTracks.keys());
         typeList.forEach((type)=>{
             if(this.rcsbAnnotationConfig.isMergedType(type)) {
                 const newType: string = this.rcsbAnnotationConfig.getMergeConfig(type).type;
-                const uniqueKey: string = uniquePrefix+newType;
                 const color: string  | RcsbFvColorGradient = this.rcsbAnnotationConfig.getConfig(type).color as string;
-                if(!this.annotationTracks.has(uniqueKey))
+                if(!this.annotationTracks.has(newType))
                     this.annotationTracks.set(
-                        uniqueKey,
-                        this.trackManagerFactory.getTrackManager(newType,{...this.rcsbAnnotationConfig.getConfig(type),title:this.rcsbAnnotationConfig.getMergeConfig(type).title}, this.polymerEntityInstanceTranslator)
+                        newType,
+                        this.trackManagerFactory.getTrackManager(newType,{...this.rcsbAnnotationConfig.getConfig(newType)}, this.polymerEntityInstanceTranslator)
                     );
-                this.annotationTracks.get(uniqueKey).addAll(this.annotationTracks.get(type),color);
-                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(uniqueKey).getTrackProvenance()));
+                this.annotationTracks.get(newType).addAll(this.annotationTracks.get(type),color);
+                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType).getTrackProvenance()));
                 this.annotationTracks.delete(type);
             }
         });

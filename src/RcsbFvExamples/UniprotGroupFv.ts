@@ -67,4 +67,4 @@ const query: SearchQuery = {
         ]
     }
 }
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P04585", query);
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P01112");

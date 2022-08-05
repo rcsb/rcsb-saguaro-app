@@ -1,5 +1,4 @@
 import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 
-buildInstanceSequenceFv("pfv", "select", "MA_MABAKCEPC0005", {module:"interface"}).then((module)=>{
-    console.log(module);
+buildInstanceSequenceFv("pfv", "select", "2UZI", {module:"interface"}).then((module)=>{
 });

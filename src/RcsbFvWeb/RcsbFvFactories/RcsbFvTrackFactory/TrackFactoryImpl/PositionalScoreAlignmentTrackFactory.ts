@@ -15,7 +15,6 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 import {range} from "lodash";
 
@@ -24,6 +23,7 @@ import {
     MultipleEntryPropertyCollector
 } from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {PlainAlignmentTrackFactory} from "./PlainAlignmentTrackFactory";
+import {TrackUtils} from "./Helper/TrackUtils";
 
 export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
@@ -107,12 +107,12 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         if(entityPositionalScores.size>0) {
             range(region.query_begin,region.query_end+1).forEach((p,n)=>outRegions.push(this.alignmentTrackFactory.addAuthorResIds({
                 begin: p,
-                oriBegin: p+n,
+                oriBegin: region.target_begin+n,
                 value: entityPositionalScores.get(p),
                 sourceId: alignmentContext.targetId,
-                source: alignmentContext.to,
-                provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-                provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+                provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
                 type: Type.MaQaMetricLocalTypeOther,
             }, alignmentContext)));
         }

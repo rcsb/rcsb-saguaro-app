@@ -20,4 +20,8 @@ export class InstanceSequenceTrackTitleFactory implements TrackTitleFactoryInter
         return "CHAIN";
     }
 
+    public async getTrackTitleFlagColor(alignmentQueryContext: AlignmentRequestContextType): Promise<string> {
+        return this.trackTitleFactory.getTrackTitleFlagColor(alignmentQueryContext);
+    }
+
 }

@@ -6,6 +6,7 @@ import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Bo
 import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {TrackUtils} from "../TrackFactoryImpl/Helper/TrackUtils";
 
 export class SequenceTrackTitleFactory implements  TrackTitleFactoryInterface<[AlignmentRequestContextType]> {
 
@@ -46,6 +47,10 @@ export class SequenceTrackTitleFactory implements  TrackTitleFactoryInterface<[A
 
     public async getTrackTitlePrefix(alignmentQueryContext: AlignmentRequestContextType): Promise<string> {
         return (alignmentQueryContext.from && !alignmentQueryContext.from.includes("PDB")) ? alignmentQueryContext.from.replace("_"," ")+" "+TagDelimiter.sequenceTitle : alignmentQueryContext.sequencePrefix;
+    }
+
+    public async getTrackTitleFlagColor(alignmentQueryContext: AlignmentRequestContextType): Promise<string> {
+        return TrackUtils.getProvenanceConfigFormTarget(alignmentQueryContext.queryId,alignmentQueryContext.from).color;
     }
 
     private buildInstanceId(targetId: string): string{

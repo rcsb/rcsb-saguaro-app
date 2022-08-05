@@ -118,7 +118,7 @@ export class RcsbAnnotationConfig {
             }
         }else{
             newType = type+addToTypeSuffix.join(".");
-            if(!this.annotationMap.has(newType)) {
+            if(!this.annotationMap.has(newType) || this.mergedTypes.has(type)) {
                 this.addNewType(newType, type);
             }
         }
@@ -150,11 +150,11 @@ export class RcsbAnnotationConfig {
                 type: mergedType,
                 display: this.mergedTypes.get(type).display,
                 color: null,
-                title: newType != type ? this.annotationMap.get(newType).title : this.mergedTypes.get(type).title,
-                prefix: newType != type ? this.mergedTypes.get(type).title : undefined,
+                title: titleSuffix ?? this.mergedTypes.get(type).title,
+                prefix: titleSuffix ?  this.mergedTypes.get(type).title : undefined,
                 provenanceList: new Set<string>()
             });
-            this.checkAndIncludeNewType(mergedType, type);
+            this.checkAndIncludeNewType(mergedType, this.mergedTypes.get(type).type);
         }else{
             this.checkAndIncludeNewType(newType, type)
         }

@@ -1,15 +1,6 @@
-import {
-    RcsbFvDisplayTypes,
-    RcsbFvLink,
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
+import {RcsbFvDisplayTypes, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
-import {
-    SequenceReference,
-    Source
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignmentContextInterface,
     PolymerEntityInstanceTranslate
@@ -18,6 +9,7 @@ import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {SequenceTrackTitleFactory} from "../TrackTitleFactoryImpl/SequenceTrackTitleFactory";
+import {TrackUtils} from "./Helper/TrackUtils";
 
 interface BuildSequenceDataInterface extends AlignmentContextInterface {
     sequence: string;
@@ -36,63 +28,47 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
     }
 
     public async getTrack(alignmentQueryContext: AlignmentRequestContextType, querySequence: string): Promise<RcsbFvRowConfigInterface> {
-        let rowPrefix:string = await this.trackTitleFactory.getTrackTitlePrefix(alignmentQueryContext);
-        let rowTitle:string|RcsbFvLink = await this.trackTitleFactory.getTrackTitle(alignmentQueryContext);
-        const sequenceTrack: RcsbFvRowConfigInterface = {
+        return {
             trackId: "mainSequenceTrack_" + alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             trackColor: "#F9F9F9",
             displayColor: "#000000",
-            rowTitle: rowTitle,
-            rowPrefix: rowPrefix,
+            rowTitle: await this.trackTitleFactory.getTrackTitle(alignmentQueryContext),
+            rowPrefix: await this.trackTitleFactory.getTrackTitlePrefix(alignmentQueryContext),
+            titleFlagColor: await this.trackTitleFactory.getTrackTitleFlagColor(alignmentQueryContext),
             nonEmptyDisplay: true,
-            overlap:true,
+            overlap: true,
             trackData: this.buildSequenceData({
-                sequence:querySequence,
-                begin:1,
-                oriBegin:null,
-                queryId:alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
-                targetId:null,
-                from:alignmentQueryContext.from,
-                to:null},"from")
+                sequence: querySequence,
+                begin: 1,
+                oriBegin: null,
+                queryId: alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
+                targetId: null,
+                from: alignmentQueryContext.from,
+                to: null
+            }, "from")
         };
-        if(alignmentQueryContext.from === SequenceReference.PdbEntity || alignmentQueryContext.from === SequenceReference.PdbInstance ){
-            sequenceTrack.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
-        }else{
-            sequenceTrack.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.external;
-        }
-        return sequenceTrack;
     }
 
     public buildSequenceData(config: BuildSequenceDataInterface, source:"from"|"to"):Array<RcsbFvTrackDataElementInterface> {
-        let provenanceName: string = config[source];
-        let provenanceColor: string = RcsbAnnotationConstants.provenanceColorCode.external;
-        if(provenanceName == Source.PdbInstance || provenanceName == Source.PdbEntity) {
-            provenanceName = RcsbAnnotationConstants.provenanceName.pdb;
-            provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
-        }
         const sequenceData: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
+        const id: string = source === "from" ? config.queryId : config.targetId;
         config.sequence.split("").forEach((s, i) => {
             const o: RcsbFvTrackDataElementInterface = {
                 begin: (config.begin + i),
-                sourceId: config.targetId,
-                source: config.to,
-                provenanceName: provenanceName,
-                provenanceColor: provenanceColor,
+                oriBegin: typeof config.oriBegin === "number" ? config.oriBegin + i : undefined,
+                sourceId: id,
+                source: TrackUtils.transformSourceFromTarget(id, config[source]),
+                provenanceName: TrackUtils.getProvenanceConfigFormTarget(id,config[source]).name,
+                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(id,config[source]).color,
                 value: s
             };
-            if (typeof config.targetId === "string")
-                o.sourceId = config.targetId;
-            if (typeof config.oriBegin === "number")
-                o.oriBegin = config.oriBegin + i;
-
             sequenceData.push(this.addAuthorResIds(o, {
                 from:config.from,
                 to:config.to,
                 queryId:config.queryId,
                 targetId:config.targetId
             }));
-
         });
         return sequenceData;
     }

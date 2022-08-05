@@ -9,6 +9,8 @@ export class TagDelimiter {
     private static rcsbEntryRegExp = new RegExp('^(\\d)(\\w{3})$');
     private static rcsbEntityRegExp = new RegExp('^(\\d)(\\w{3})(\_)(\\d+)$');
     private static rcsbInstanceRegExp = new RegExp('^(\\d)(\\w{3})(\.)(\\w+)$');
+    private static alphaFoldRegExp = new RegExp('^(AF_AF)(\\w+)');
+    private static modelArchiveRegExp = new RegExp('^(MA_MABAKCEPC)(\\w+)');
 
     public static parseEntity(rcsbId:string): {entryId: string;entityId:string;} {
         const ids: string[] = rcsbId.split(TagDelimiter.entity);
@@ -30,5 +32,9 @@ export class TagDelimiter {
 
     public static isRcsbId(rcsb:string): boolean {
         return this.rcsbEntityRegExp.test(rcsb) || this.rcsbInstanceRegExp.test(rcsb) || this.rcsbEntryRegExp.test(rcsb);
+    }
+
+    public static isModel(rcsb:string): boolean {
+        return this.alphaFoldRegExp.test(rcsb) || this.modelArchiveRegExp.test(rcsb);
     }
 }

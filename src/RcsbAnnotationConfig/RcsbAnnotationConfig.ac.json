@@ -1,7 +1,8 @@
 {
   "provenance_color_code": {
     "external": "#DB9128",
-    "rcsb_pdb": "#5e94c3"
+    "rcsb_pdb": "#5e94c3",
+    "csm": "#1abdcf"
   },
   "merge": [
     {
@@ -36,10 +37,6 @@
     "PFAM",
     "CATH",
     "ALL_SCOP",
-    "SCOP",
-    "SCOP_2_B_SUPERFAMILY",
-    "SCOP2_FAMILY",
-    "SCOP2_SUPERFAMILY",
     "ECOD",
     "IMGT_ANTIBODY_DESCRIPTION",
     "IMGT_ANTIBODY_DOMAIN_NAME",
@@ -57,8 +54,7 @@
     "MOLECULE_PROCESSING",
     "MEMBRANE_TOPOLOGY",
     "MEMBRANE_SEGMENT",
-    "CHAIN",
-    "INITIATOR_METHIONINE",
+    "MOLECULE_PROCESSING",
     "SEQUENCE_VARIANT",
     "GLYCOSYLATION_SITE",
     "LIPID_MOIETY_BINDING_REGION",
@@ -75,9 +71,7 @@
     "SHORT_SEQUENCE_MOTIF",
     "ZINC_FINGER_REGION",
     "PROPEPTIDE",
-    "TRANSMEMBRANE_REGION",
-    "INTRAMEMBRANE_REGION",
-    "TOPOLOGICAL_DOMAIN",
+    "MEMBRANE_TOPOLOGY",
     "COILED_COIL_REGION",
     "REPEAT",
     "DOMAIN",
@@ -86,7 +80,6 @@
     "SPLICE_VARIANT",
     "NON_TERMINAL_RESIDUE",
     "TURN",
-    "SIGNAL_PEPTIDE",
     "CARD_MODEL",
     "CALCIUM_BINDING_REGION",
     "PEPTIDE"
@@ -94,11 +87,7 @@
   "instance_order": [
     "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
     "SECONDARY_STRUCTURE",
-    "HELIX_P",
-    "SHEET",
     "UNOBSERVED",
-    "UNOBSERVED_RESIDUE_XYZ",
-    "UNOBSERVED_ATOM_XYZ",
     "ZERO_OCCUPANCY_RESIDUE_XYZ",
     "ZERO_OCCUPANCY_ATOM_XYZ",
     "RAMACHANDRAN_OUTLIER",

@@ -21,6 +21,7 @@ import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentColl
 import {range} from "lodash";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
+import {TrackUtils} from "./Helper/TrackUtils";
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {querySequence?:string;};
 
@@ -64,16 +65,12 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
             trackId: "targetSequenceTrack_"+targetAlignment.target_id,
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
-            rowTitle: await this.buildAlignmentRowTitle(alignmentRequestContext,targetAlignment),
+            rowTitle: await this.trackTitleFactory.getTrackTitle(alignmentRequestContext,targetAlignment),
             fitTitleWidth: alignmentRequestContext.fitTitleWidth,
-            titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            titleFlagColor: await this.trackTitleFactory.getTrackTitleFlagColor(alignmentRequestContext,targetAlignment),
             displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
         };
 
-    }
-
-    public async buildAlignmentRowTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string | RcsbFvLink> {
-        return await this.trackTitleFactory.getTrackTitle(alignmentQueryContext,targetAlignment);
     }
 
     public getAlignmentTrackConfiguration(
@@ -117,9 +114,9 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
                         begin: (m + region.query_begin),
                         oriBegin: (m + region.target_begin),
                         sourceId: targetAlignment.target_id,
-                        source: alignmentQueryContext.to,
-                        provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-                        provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                        source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+                        provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+                        provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
                         type: "MISMATCH",
                         title: "MISMATCH"
                     }, alignmentContext));
@@ -140,9 +137,9 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
             begin: p,
             oriBegin: region.target_begin+n,
             sourceId: alignmentContext.targetId,
-            source: alignmentContext.to,
-            provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-            provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+            provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+            provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
             openBegin: openBegin,
             openEnd: openEnd,
             type: "ALIGNED_BLOCK",

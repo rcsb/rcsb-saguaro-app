@@ -5,12 +5,10 @@ import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {
     AlignedRegion,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
@@ -21,6 +19,7 @@ import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
+import {TrackUtils} from "./Helper/TrackUtils";
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {
     querySequence?:string;
@@ -59,21 +58,13 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
             trackId: "targetSequenceTrack_"+targetAlignment.target_id,
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
-            rowPrefix: await this.buildAlignmentRowTitlePrefix(alignmentRequestContext,targetAlignment),
-            rowTitle: await this.buildAlignmentRowTitle(alignmentRequestContext,targetAlignment),
+            rowPrefix: await this.trackTitleFactory.getTrackTitlePrefix(alignmentRequestContext,targetAlignment),
+            rowTitle: await this.trackTitleFactory.getTrackTitle(alignmentRequestContext,targetAlignment),
             fitTitleWidth: alignmentRequestContext.fitTitleWidth,
-            titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            titleFlagColor: await this.trackTitleFactory.getTrackTitleFlagColor(alignmentRequestContext,targetAlignment),
             displayConfig: [alignmentDisplay, mismatchDisplay, sequenceDisplay]
         };
 
-    }
-
-    public async buildAlignmentRowTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string | RcsbFvLink> {
-        return await this.trackTitleFactory.getTrackTitle(alignmentQueryContext,targetAlignment);
-    }
-
-    public async buildAlignmentRowTitlePrefix(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string> {
-        return await this.trackTitleFactory.getTrackTitlePrefix(alignmentQueryContext,targetAlignment);
     }
 
     private getAlignmentTrackConfiguration(
@@ -117,9 +108,9 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
                         begin: (m + region.query_begin),
                         oriBegin: (m + region.target_begin),
                         sourceId: targetAlignment.target_id,
-                        source: alignmentQueryContext.to,
-                        provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-                        provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                        source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId, alignmentContext.to),
+                        provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId, alignmentQueryContext.to).name,
+                        provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId, alignmentQueryContext.to).color,
                         type: "MISMATCH",
                         title: "MISMATCH"
                     }, alignmentContext));
@@ -143,9 +134,9 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
             oriBegin: region.target_begin,
             oriEnd: region.target_end,
             sourceId: alignmentContext.targetId,
-            source: alignmentContext.to,
-            provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-            provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId, alignmentContext.to),
+            provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+            provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
             openBegin: openBegin,
             openEnd: openEnd,
             type: "ALIGNED_BLOCK",

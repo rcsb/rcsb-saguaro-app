@@ -4,12 +4,12 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate, AlignmentContextInterface} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {TrackManagerFactoryInterface, TrackManagerInterface} from "./TrackManagerInterface";
+import {TrackUtils} from "../../RcsbFvTrackFactory/TrackFactoryImpl/Helper/TrackUtils";
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
@@ -104,11 +104,9 @@ class AnnotationTrackManager implements TrackManagerInterface {
                 this.valueRange.min = value
         }
 
-        let provenanceColor: string = RcsbAnnotationConstants.provenanceColorCode.external;
-        if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
-            provenanceColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
         const sourceId: string = source == Source.PdbInstance && this.entityInstanceTranslator != null ?
-            targetId.split(TagDelimiter.instance)[0] + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(targetId.split(TagDelimiter.instance)[1]) : targetId;
+            TagDelimiter.parseInstance(targetId).entryId + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(TagDelimiter.parseInstance(targetId).instanceId) : targetId;
+
         return {
             begin: p.beg_seq_id,
             end: p.end_seq_id ?? p.beg_seq_id,
@@ -123,9 +121,9 @@ class AnnotationTrackManager implements TrackManagerInterface {
             gValue: d.value,
             gaps: (p.gaps as Array<RcsbFvTrackDataElementGapInterface>),
             sourceId: sourceId,
-            source: source,
+            source: TrackUtils.transformSourceFromTarget(targetId, source),
             provenanceName: provenance,
-            provenanceColor: provenanceColor,
+            provenanceColor: TrackUtils.getProvenanceColorFromProvenance(provenance),
             openBegin: p.open_begin,
             openEnd: p.open_end
         };

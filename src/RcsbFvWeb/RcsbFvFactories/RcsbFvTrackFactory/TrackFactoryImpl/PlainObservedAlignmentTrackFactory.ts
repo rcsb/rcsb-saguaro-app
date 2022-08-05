@@ -10,8 +10,7 @@ import {
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
-import {AlignmentRequestContextType, AlignmentTrackFactory} from "./AlignmentTrackFactory";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 
 import {
@@ -20,12 +19,7 @@ import {
 } from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {range} from "lodash";
 import {PlainAlignmentTrackFactory} from "./PlainAlignmentTrackFactory";
-
-interface AlignedObservedRegion extends AlignedRegion {
-    unModelled?:boolean;
-    openBegin?:boolean;
-    openEnd?:boolean;
-}
+import {TrackUtils} from "./Helper/TrackUtils";
 
 export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
@@ -105,9 +99,9 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
             begin: i,
             oriBegin: i+delta,
             sourceId: alignmentContext.targetId,
-            source: alignmentContext.to,
-            provenanceName: RcsbAnnotationConstants.provenanceName.pdb,
-            provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+            provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+            provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
             type: "ALIGNED_BLOCK",
             title: unModelledSet.has(i) ? "UNMODELED REGION" : "ALIGNED REGION",
             value: unModelledSet.has(i) ? 0: 100
