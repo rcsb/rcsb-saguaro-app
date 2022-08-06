@@ -35,7 +35,9 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
             reference: SequenceReference.PdbInstance,
             annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
             annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
-            sources:source
+            sources:source,
+            annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);

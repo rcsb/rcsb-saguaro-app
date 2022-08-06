@@ -40,7 +40,9 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             reference: SequenceReference.Uniprot,
             sources:additionalConfig?.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],
             filters:additionalConfig?.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters,
-            titleSuffix: this.titleSuffix.bind(this)
+            titleSuffix: this.titleSuffix.bind(this),
+            annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);

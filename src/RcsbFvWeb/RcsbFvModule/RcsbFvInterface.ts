@@ -54,7 +54,8 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             sources:source,
             annotationGenerator: interfaceAnnotations,
             annotationFilter: filter,
-            rcsbContext: buildConfig.additionalConfig?.rcsbContext
+            rcsbContext: buildConfig.additionalConfig?.rcsbContext,
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
@@ -91,7 +92,12 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 let partnerOperator: string = "";
                 if(Array.isArray(rcsbContext.operatorIds)){
                     const opIndex: number = operators[ann.target_identifiers.interface_partner_index].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
-                    partnerOperator = TagDelimiter.operatorComposition+operators[1-ann.target_identifiers.interface_partner_index][opIndex].join(TagDelimiter.operatorComposition);
+                    if(opIndex < 0) {
+                        console.error(`Operator Id ${rcsbContext.operatorIds.join("-")} not found in [[${operators[0]}],[${operators[1]}]]`);
+                        console.error(ann.target_identifiers);
+                    } else {
+                        partnerOperator = TagDelimiter.operatorComposition + operators[1 - ann.target_identifiers.interface_partner_index][opIndex].join(TagDelimiter.operatorComposition);
+                    }
                 }
                 return (asym == auth ? asym : `${asym}[auth ${auth}]`)+partnerOperator;
             }
