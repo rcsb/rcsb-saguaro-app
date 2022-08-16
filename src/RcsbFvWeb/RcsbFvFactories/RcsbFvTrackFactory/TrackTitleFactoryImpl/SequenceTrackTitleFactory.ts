@@ -24,7 +24,7 @@ export class SequenceTrackTitleFactory implements  TrackTitleFactoryInterface<[A
                 url: (resource as any).rcsb_uniprot.url+alignmentQueryContext.queryId,
                 style: {
                     fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbLink
                 }
             };
         }else if(!alignmentQueryContext.excludeFirstRowLink && alignmentQueryContext.from === SequenceReference.PdbInstance && this.entityInstanceTranslator!=null) {

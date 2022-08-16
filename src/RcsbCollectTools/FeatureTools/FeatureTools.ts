@@ -31,7 +31,7 @@ export class FeatureTools {
                 visibleTex: match[3],
                 url: (resource as any).rcsb_ligand.url+match[3],
                 style:{
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbLink,
                     fontWeight:"bold"
                 }
             }

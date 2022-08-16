@@ -26,7 +26,7 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
                 url:(resource as any).rcsb_entry.url+TagDelimiter.parseInstance(targetAlignment.target_id).entryId+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbLink
                 }
             };
         } else if (alignmentQueryContext.to === SequenceReference.PdbEntity) {
@@ -36,7 +36,7 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
                 url:(resource as any).rcsb_entry.url+TagDelimiter.parseEntity(targetAlignment.target_id).entryId+"#entity-"+entityId,
                 style: {
                     fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbLink
                 }
             };
         } else if( alignmentQueryContext.to === SequenceReference.Uniprot ){
@@ -45,7 +45,7 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
                 url: (resource as any).rcsb_uniprot.url+targetAlignment.target_id,
                 style: {
                     fontWeight:"bold",
-                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                    color:RcsbAnnotationConstants.provenanceColorCode.rcsbLink
                 }
             };
         } else {

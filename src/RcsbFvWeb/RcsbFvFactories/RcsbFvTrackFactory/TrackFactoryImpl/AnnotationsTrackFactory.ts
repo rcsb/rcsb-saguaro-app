@@ -2,17 +2,23 @@ import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {
     InterpolationTypes,
     RcsbFvColorGradient, RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes, RcsbFvLink,
+    RcsbFvDisplayTypes,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureTools";
 import {TrackManagerInterface} from "../../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
+import {AnnotationsTrackTitleFactory} from "../TrackTitleFactoryImpl/AnnotationsTrackTitleFactory";
 
 export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackManagerInterface]>{
+
+    private readonly trackTitleFactory: TrackTitleFactoryInterface<[TrackManagerInterface]>;
+
+    constructor(trackTitleFactory?: TrackTitleFactoryInterface<[TrackManagerInterface]>) {
+        this.trackTitleFactory = trackTitleFactory ?? new AnnotationsTrackTitleFactory();
+    }
 
     async getTrack(annotations: TrackManagerInterface): Promise<RcsbFvRowConfigInterface> {
         let out: RcsbFvRowConfigInterface;
@@ -35,19 +41,12 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
         if(annConfig!=null && typeof annConfig.height === "number"){
             out.trackHeight = annConfig.height;
         }
-        const provenance: string[] = Array.from(rcsbAnnotationConfig?.provenanceList ?? []);
-        if(
-            Array.isArray(provenance)
-            &&
-            provenance.length == 1
-            &&
-            (provenance[0] === RcsbAnnotationConstants.provenanceName.pdb || provenance[0] === RcsbAnnotationConstants.provenanceName.promotif)
-        ){
-            out.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
-        }else{
-            out.titleFlagColor = RcsbAnnotationConstants.provenanceColorCode.external;
-        }
-        return out;
+        return {
+            ...out,
+            titleFlagColor: await this.trackTitleFactory.getTrackTitleFlagColor(annotations),
+            rowTitle: await  this.trackTitleFactory.getTrackTitle(annotations),
+            rowPrefix: await this.trackTitleFactory.getTrackTitlePrefix(annotations)
+        };
     }
 
 }
@@ -57,8 +56,6 @@ function buildRcsbFvRowConfigArea(annotationTrack: TrackManagerInterface, type: 
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     const displayType: RcsbFvDisplayTypes = annConfig.display;
     const displayColor:string|RcsbFvColorGradient = annConfig.color;
-    const rowTitle:string|RcsbFvLink = buildRowTitle(annConfig);
-    const rowPrefix:string = annConfig.prefix;
 
     let min: number = annotationTrack.getRange().min;
     let max: number = annotationTrack.getRange().max;
@@ -77,8 +74,6 @@ function buildRcsbFvRowConfigArea(annotationTrack: TrackManagerInterface, type: 
         displayType: displayType,
         trackColor: "#F9F9F9",
         displayColor: displayColor,
-        rowTitle: rowTitle,
-        rowPrefix: rowPrefix,
         displayDomain:domain,
         interpolationType: InterpolationTypes.STEP,
         trackData: data
@@ -90,8 +85,6 @@ function buildRcsbFvRowConfigBlockArea(annotationTrack: TrackManagerInterface, t
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     const displayType: RcsbFvDisplayTypes = annConfig.display;
     const displayColor:string|RcsbFvColorGradient = annConfig.color;
-    const rowTitle:string|RcsbFvLink = buildRowTitle(annConfig);
-    const rowPrefix:string = annConfig.prefix;
 
     return {
         ...rcsbAnnotationConfig,
@@ -99,8 +92,6 @@ function buildRcsbFvRowConfigBlockArea(annotationTrack: TrackManagerInterface, t
         displayType: displayType,
         trackColor: "#F9F9F9",
         displayColor: displayColor,
-        rowTitle: rowTitle,
-        rowPrefix: rowPrefix,
         displayDomain:[0,1],
         interpolationType: InterpolationTypes.STEP,
         trackData: data
@@ -119,8 +110,6 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
             d.isEmpty = true;
         });
     }
-    const rowTitle = buildRowTitle(annConfig);
-    const rowPrefix = annConfig.prefix;
     const displayColor = annConfig.color ?? RcsbAnnotationConfig.randomRgba();
 
     const pin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
@@ -149,8 +138,6 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
             trackId: "annotationTrack_" + type,
-            rowTitle: rowTitle,
-            rowPrefix: rowPrefix,
             displayConfig: displayConfig
         };
     } else if (pin.length > 0) {
@@ -162,8 +149,6 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
             displayType: altDisplayType,
             trackColor: "#F9F9F9",
             displayColor: displayColor,
-            rowTitle: rowTitle,
-            rowPrefix: rowPrefix,
             trackData: data
         };
     }
@@ -177,15 +162,11 @@ function buildRcsbFvRowConfigTrack(annotationTrack: TrackManagerInterface, type:
         displayType = RcsbFvDisplayTypes.PIN;
     }
     let displayColor: string|RcsbFvColorGradient = RcsbAnnotationConfig.randomRgba();
-    let rowTitle: RcsbFvLink | string = type;
-    let rowPrefix: string|undefined = undefined;
 
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     if (annConfig !== null) {
         displayType = annConfig.display;
-        rowTitle = buildRowTitle(annConfig);
         displayColor = annConfig.color;
-        rowPrefix = annConfig.prefix
     } else {
         console.warn("Annotation config type " + type + " not found. Using random config");
     }
@@ -195,12 +176,6 @@ function buildRcsbFvRowConfigTrack(annotationTrack: TrackManagerInterface, type:
         displayType: displayType,
         trackColor: "#F9F9F9",
         displayColor: displayColor,
-        rowTitle: rowTitle,
-        rowPrefix: rowPrefix,
         trackData: data
     };
-}
-
-function buildRowTitle(annConfig: RcsbAnnotationConfigInterface): string|RcsbFvLink {
-    return annConfig.prefix ? FeatureTools.parseLink(annConfig.title) : annConfig.title
 }

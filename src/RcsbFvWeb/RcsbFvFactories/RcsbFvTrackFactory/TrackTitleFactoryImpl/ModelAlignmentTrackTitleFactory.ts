@@ -22,7 +22,7 @@ export class ModelAlignmentTrackTitleFactory implements TrackTitleFactoryInterfa
             ...rowTitle,
             style: {
                 fontWeight:"bold",
-                color:RcsbAnnotationConstants.provenanceColorCode.rcsbPdb
+                color:RcsbAnnotationConstants.provenanceColorCode.rcsbLink
             }
         };
     }

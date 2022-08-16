@@ -1,7 +1,8 @@
 {
   "provenance_color_code": {
     "external": "#DB9128",
-    "rcsb_pdb": "#5e94c3",
+    "rcsb_pdb": "#325880",
+    "rcsb_link": "#5e94c3",
     "csm": "#1abdcf"
   },
   "merge": [

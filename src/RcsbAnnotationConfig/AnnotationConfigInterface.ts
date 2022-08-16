@@ -5,6 +5,7 @@ export interface AnnotationConfigInterface {
     provenance_color_code: {
         external: string;
         rcsb_pdb: string;
+        rcsb_link: string;
         csm: string;
     };
     merge?: Array<{
