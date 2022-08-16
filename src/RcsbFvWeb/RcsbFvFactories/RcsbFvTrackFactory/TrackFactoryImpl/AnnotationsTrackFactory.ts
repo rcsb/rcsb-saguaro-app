@@ -29,14 +29,22 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
         if (annConfig !== null) {
             displayType = annConfig.display;
         }
-        if (displayType === RcsbFvDisplayTypes.COMPOSITE || displayType === RcsbFvDisplayTypes.BOND || displayType === RcsbFvDisplayTypes.PIN) {
-            out = buildRcsbFvRowConfigComposite(annotations,type, rcsbAnnotationConfig);
-        }else if(displayType === RcsbFvDisplayTypes.AREA || displayType === RcsbFvDisplayTypes.LINE){
-            out = buildRcsbFvRowConfigArea(annotations,type, rcsbAnnotationConfig);
-        }else if(displayType === RcsbFvDisplayTypes.BLOCK_AREA){
-            out = buildRcsbFvRowConfigBlockArea(annotations,type, rcsbAnnotationConfig);
-        }else{
-            out = buildRcsbFvRowConfigTrack(annotations,type, rcsbAnnotationConfig);
+        switch (displayType){
+            case RcsbFvDisplayTypes.COMPOSITE:
+            case RcsbFvDisplayTypes.BOND:
+            case RcsbFvDisplayTypes.PIN:
+                out = buildRcsbFvRowConfigComposite(annotations,type, rcsbAnnotationConfig);
+                break;
+            case RcsbFvDisplayTypes.AREA:
+            case RcsbFvDisplayTypes.LINE:
+                out = buildRcsbFvRowConfigArea(annotations,type, rcsbAnnotationConfig);
+                break;
+            case RcsbFvDisplayTypes.BLOCK_AREA:
+                out = buildRcsbFvRowConfigBlockArea(annotations,type, rcsbAnnotationConfig);
+                break;
+            default:
+                out = buildRcsbFvRowConfigTrack(annotations,type, rcsbAnnotationConfig);
+                break;
         }
         if(annConfig!=null && typeof annConfig.height === "number"){
             out.trackHeight = annConfig.height;
