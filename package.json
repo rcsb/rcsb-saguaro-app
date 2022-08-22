@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.4.0-models.34",
+  "version": "4.4.0-models.35",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
@@ -94,7 +94,7 @@
   },
   "dependencies": {
     "@rcsb/rcsb-api-tools": "^4.1.0-models.1",
-    "@rcsb/rcsb-saguaro": "^2.1.7",
+    "@rcsb/rcsb-saguaro": "^2.2.0",
     "react-select": "^5.4.0",
     "rxjs": "^7.5.5",
     "victory": "^36.5.0"
