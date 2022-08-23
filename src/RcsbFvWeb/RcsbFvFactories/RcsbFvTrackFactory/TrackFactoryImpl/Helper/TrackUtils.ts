@@ -23,7 +23,7 @@ export namespace TrackUtils {
     }
 
     export function transformSourceFromTarget(targetId: string, source: SequenceReference|Source): string {
-        if(TagDelimiter.isModel(targetId))
+        if(TagDelimiter.isModel(targetId) && source.includes("PDB_"))
             return source.replace("PDB_","CSM ");
         else
             return source

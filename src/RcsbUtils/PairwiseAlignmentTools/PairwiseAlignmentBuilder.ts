@@ -3,6 +3,9 @@ import {RcsbFvTrackDataElementInterface, RcsbFvDisplayTypes, RcsbFvRowConfigInte
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {FeatureTools} from "../../RcsbCollectTools/FeatureTools/FeatureTools";
+import {
+    TrackUtils
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/Helper/TrackUtils";
 
 export interface PairwiseAlignmentInterface{
     querySequence: string;
@@ -29,6 +32,7 @@ const gradient: (x: number[], y: number[], z: number) => number[] = (color1, col
         Math.round(color1[2] * w1 + color2[2] * w2)];
 };
 
+//TODO This class is not using factories to build PFV row configurations
 export class PairwiseAlignmentBuilder {
     private querySequence: string;
     private targetSequence: string;
@@ -94,8 +98,8 @@ export class PairwiseAlignmentBuilder {
                     end: (currentQueryIndex-1),
                     oriBegin: blockTargetStart,
                     oriEnd: (currentTargetIndex-1),
-                    source:SequenceReference.PdbEntity,
-                    sourceId:this.targetId,
+                    source: this.isTargetExternal ? RcsbAnnotationConstants.provenanceName.userInput : TrackUtils.transformSourceFromTarget(this.targetId,SequenceReference.PdbEntity),
+                    sourceId: this.targetId,
                     provenanceName: RcsbAnnotationConstants.provenanceName.mmseqs,
                     provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                     type: "ALIGNED_BLOCK",
@@ -107,10 +111,10 @@ export class PairwiseAlignmentBuilder {
                 targetSequence.push({
                     begin: currentQueryIndex,
                     oriBegin: currentTargetIndex,
-                    source:SequenceReference.PdbEntity,
+                    source: this.isTargetExternal ? RcsbAnnotationConstants.provenanceName.userInput : TrackUtils.transformSourceFromTarget(this.targetId,SequenceReference.PdbEntity),
                     sourceId:this.targetId,
-                    provenanceName: RcsbAnnotationConstants.provenanceName.mmseqs,
-                    provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                    provenanceName: TrackUtils.getProvenanceConfigFormTarget(this.targetId,this.targetId as SequenceReference).name,
+                    provenanceColor: TrackUtils.getProvenanceConfigFormTarget(this.targetId,this.targetId as SequenceReference).color,
                     value: t,
                     type: "RESIDUE",
                     title: "RESIDUE"
@@ -119,7 +123,7 @@ export class PairwiseAlignmentBuilder {
                     mismatchData.push({
                         begin: currentQueryIndex,
                         oriBegin: currentTargetIndex,
-                        source:SequenceReference.PdbEntity,
+                        source: this.isTargetExternal ? RcsbAnnotationConstants.provenanceName.userInput : TrackUtils.transformSourceFromTarget(this.targetId,SequenceReference.PdbEntity),
                         sourceId:this.targetId,
                         provenanceName: RcsbAnnotationConstants.provenanceName.mmseqs,
                         provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
@@ -145,7 +149,7 @@ export class PairwiseAlignmentBuilder {
                 end: (currentQueryIndex-1),
                 oriBegin: blockTargetStart,
                 oriEnd: (currentTargetIndex-1),
-                source:SequenceReference.PdbEntity,
+                source: this.isTargetExternal ? RcsbAnnotationConstants.provenanceName.userInput : TrackUtils.transformSourceFromTarget(this.targetId,SequenceReference.PdbEntity),
                 sourceId:this.targetId,
                 provenanceName: RcsbAnnotationConstants.provenanceName.mmseqs,
                 provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
@@ -160,13 +164,17 @@ export class PairwiseAlignmentBuilder {
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             trackColor: "#F9F9F9",
             displayColor: "#000000",
-            titleFlagColor: this.isQueryExternal ? RcsbAnnotationConstants.provenanceColorCode.external : RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            titleFlagColor: TrackUtils.getProvenanceConfigFormTarget(this.queryId,SequenceReference.PdbEntity).color,
             rowTitle: this.queryId,
             nonEmptyDisplay: true,
-            trackData: [{
-                value:this.querySequence,
-                begin:1,
-            }]
+            trackData: this.querySequence.split('').map((s,n)=>({
+                source: this.isQueryExternal ? RcsbAnnotationConstants.provenanceName.userInput : TrackUtils.transformSourceFromTarget(this.queryId,SequenceReference.PdbEntity),
+                sourceId:this.queryId,
+                provenanceName: TrackUtils.getProvenanceConfigFormTarget(this.queryId,this.queryId as SequenceReference).name,
+                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(this.queryId,this.queryId as SequenceReference).color,
+                value:s,
+                begin:n+1
+            }))
         };
 
         const targetSequenceDisplay: RcsbFvDisplayConfigInterface = {
@@ -193,7 +201,7 @@ export class PairwiseAlignmentBuilder {
             rowTitle: this.targetId,
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
-            titleFlagColor: this.isTargetExternal ? RcsbAnnotationConstants.provenanceColorCode.external : RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            titleFlagColor: TrackUtils.getProvenanceConfigFormTarget(this.targetId,SequenceReference.PdbEntity).color,
             displayConfig: [alignmentDisplay,mismatchDisplay,targetSequenceDisplay]
         };
         return [queryTrack,alignmentTrack];
@@ -241,8 +249,8 @@ export class PairwiseAlignmentBuilder {
                 begin:i+1,
                 value:q,
                 source:RcsbAnnotationConstants.provenanceName.userInput,
-                sourceId:"QUERY SEQUENCE",
-                provenanceName: RcsbAnnotationConstants.provenanceName.userInput,
+                sourceId:this.queryId,
+                provenanceName: this.queryId,
                 provenanceColor: RcsbAnnotationConstants.provenanceColorCode.external,
                 oriBegin: q != "-" ? currentQueryIndex : undefined
 
@@ -253,10 +261,10 @@ export class PairwiseAlignmentBuilder {
             targetSeq.push({
                 begin:i+1,
                 value:t,
-                source:SequenceReference.PdbEntity,
+                source:TrackUtils.transformSourceFromTarget(this.targetId,SequenceReference.PdbEntity),
                 sourceId:this.targetId,
-                provenanceName: SequenceReference.PdbEntity,
-                provenanceColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+                provenanceName: TrackUtils.getProvenanceConfigFormTarget(this.targetId,SequenceReference.PdbEntity).name,
+                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(this.targetId,SequenceReference.PdbEntity).color,
                 oriBegin: t != "-" ? currentTargetIndex : undefined
 
             });
@@ -280,7 +288,8 @@ export class PairwiseAlignmentBuilder {
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             trackColor: "#F9F9F9",
             displayColor: "#000000",
-            rowTitle: "QUERY",
+            rowTitle: this.queryId,
+            titleFlagColor: TrackUtils.getProvenanceConfigFormTarget(this.queryId,SequenceReference.PdbEntity).color,
             nonEmptyDisplay: true,
             trackData: querySeq
         };
@@ -291,6 +300,7 @@ export class PairwiseAlignmentBuilder {
             trackColor: "#F9F9F9",
             displayColor: "#000000",
             rowTitle: this.targetId,
+            titleFlagColor: TrackUtils.getProvenanceConfigFormTarget(this.targetId,SequenceReference.PdbEntity).color,
             nonEmptyDisplay: true,
             trackData: targetSeq
         };
@@ -312,6 +322,7 @@ export class PairwiseAlignmentBuilder {
             trackId: "targetSequenceTrack",
             displayType: RcsbFvDisplayTypes.COMPOSITE,
             trackColor: "#F9F9F9",
+            rowTitle:" ",
             titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
             displayConfig: [alignmentDisplay,mismatchDisplay]
         };

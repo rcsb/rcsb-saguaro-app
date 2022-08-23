@@ -1,7 +1,7 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
-import {RcsbFvModuleBuildInterface, RcsbFvModulePublicInterface} from "./RcsbFvModuleInterface";
-import {PairwiseAlignmentBuilder} from "../PairwiseAlignmentTools/PairwiseAlignmentBuilder";
+import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
+import {PairwiseAlignmentBuilder} from "../../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 
 export class RcsbFvPairwiseAlignment extends RcsbFvAbstractModule {
 

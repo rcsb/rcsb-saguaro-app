@@ -1,7 +1,6 @@
 import {
     RcsbFvDisplayConfigInterface,
     RcsbFvDisplayTypes,
-    RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";

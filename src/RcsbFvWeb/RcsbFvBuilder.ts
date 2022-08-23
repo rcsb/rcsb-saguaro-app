@@ -1,5 +1,4 @@
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
-import {PairwiseAlignmentInterface} from "./PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
 import {RcsbFvChromosomeBuilder} from "./RcsbFvBuilder/RcsbFvChromosomeBuilder";
 import {RcsbFvPairwiseAligmentBuilder} from "./RcsbFvBuilder/RcsbFvPairwiseAligmentBuilder";
@@ -15,6 +14,7 @@ import {RcsbFvAssemblyBuilder} from "./RcsbFvBuilder/RcsbFvAssemblyBuilder";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvGroupTabsBuilder} from "./RcsbFvGroup/RcsbFvGroupTabsBuilder";
+import {PairwiseAlignmentInterface} from "../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
