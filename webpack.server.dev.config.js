@@ -46,99 +46,22 @@ const commonConfig = {
     devtool: 'source-map'
 };
 
-const groupSeqId = {
-    ...commonConfig,
-    entry: {
-        'sequence-id-group-fv':'./src/RcsbFvExamples/SequenceIdentityGroupFv.ts'
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
-
-const groupUniprot = {
-    ...commonConfig,
-    entry: {
-        'uniprot-group-fv':'./src/RcsbFvExamples/UniprotGroupFv.ts',
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
-
-const entitySummary = {
-    ...commonConfig,
-    entry: {
-        'entity-summary-fv':'./src/RcsbFvExamples/EntitySummaryFv.ts',
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
-
-const singleEntitySummary = {
-    ...commonConfig,
-    entry: {
-        'single-entity-summary-fv':'./src/RcsbFvExamples/SingleEntitySummaryFv.ts',
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
-
-const instanceSequence = {
-    ...commonConfig,
-    entry: {
-        'instance-sequence-fv':'./src/RcsbFvExamples/InstanceSequenceFv.ts',
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
-
-const groupHistogram = {
-    ...commonConfig,
-    entry: {
-        'group-histogram':'./src/RcsbFvExamples/GroupHistogram.ts',
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
-
-const residueDistribution = {
-    ...commonConfig,
-    entry: {
-        'residue-distribution':'./src/RcsbFvExamples/ResidueDistribution.ts',
-    },
-    plugins: [new HtmlWebpackPlugin({
-        filename:'[name].html',
-        template:'./src/RcsbFvExamples/index.html'
-    })],
-};
+const examples = ['ResidueDistribution','GroupHistogram','InstanceSequenceFv','SingleEntitySummaryFv','EntitySummaryFv','UniprotGroupFv','SequenceIdentityGroupFv'];
+const entries = examples.reduce((prev,current)=>{prev[current]=`./src/RcsbFvExamples/${current}.ts`;return prev;},{});
 
 const server = {
     ...commonConfig,
-    entry: {
-        ...groupSeqId.entry,
-        ...groupUniprot.entry,
-        ...entitySummary.entry,
-        ...instanceSequence.entry,
-        ...singleEntitySummary.entry,
-        ...groupHistogram.entry,
-        ...residueDistribution.entry
-    },
+    entry: entries,
     devServer: {
         compress: true,
         port: 9000,
-    }
-};
+    },
+    plugins: Object.keys(entries).map(key=>new HtmlWebpackPlugin({
+        filename:`${key}.html`,
+        template:'./src/RcsbFvExamples/index.html',
+        inject: true,
+        chunks:[key]
+    }))
+}
 
-module.exports =[groupUniprot, groupSeqId, entitySummary, server, instanceSequence, singleEntitySummary,groupHistogram, residueDistribution];
-
+module.exports = [server];
