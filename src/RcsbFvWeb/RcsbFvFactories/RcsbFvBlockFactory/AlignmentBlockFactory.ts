@@ -10,11 +10,14 @@ import {TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface
 export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment]> {
 
     readonly trackFactory: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>;
+    readonly trackConfigModifier: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment) => Promise<Partial<RcsbFvRowConfigInterface>>;
 
     constructor(
-        alignmentTrackFactory: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>
+        alignmentTrackFactory: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>,
+        trackModifier: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment) => Promise<Partial<RcsbFvRowConfigInterface>>
     ) {
         this.trackFactory = alignmentTrackFactory;
+        this.trackConfigModifier = trackModifier;
     }
 
     async getBlock(alignmentRequestContext: AlignmentRequestContextType, alignmentData: AlignmentResponse): Promise<RcsbFvRowConfigInterface[]> {
@@ -24,7 +27,10 @@ export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRe
                 return;
             if (alignment.target_sequence == null)
                 return;
-           return await this.trackFactory.getTrack(alignmentRequestContext, alignment);
+           return {
+               ... await this.trackFactory.getTrack(alignmentRequestContext, alignment),
+               ... await this.trackConfigModifier?.(alignmentRequestContext,alignment)
+           };
         }))).filter(x=>x!=undefined);
     }
 

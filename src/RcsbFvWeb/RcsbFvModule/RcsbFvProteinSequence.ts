@@ -9,7 +9,8 @@ import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationColl
 
 export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const queryId: string = buildConfig.queryId;
         const source: Array<Source> = buildConfig.sources ?? [Source.Uniprot];
         const alignmentRequestContext = {
@@ -37,7 +38,8 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         if(buildConfig.additionalConfig?.hideAlignments){
             this.rowConfigData = [this.referenceTrack].concat(this.annotationTracks);
         }else if(buildConfig.additionalConfig.bottomAlignments){

@@ -14,8 +14,8 @@ import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollect
 
 export class RcsbFvEntity extends RcsbFvAbstractModule {
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
-
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const alignmentRequestContext:CollectAlignmentInterface = {
             queryId: buildConfig.entityId,
             from: SequenceReference.PdbEntity,
@@ -41,7 +41,8 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ?
             [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks)
             :

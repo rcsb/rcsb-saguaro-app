@@ -13,8 +13,8 @@ import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackF
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
 
-    public async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
-
+    public async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const alignmentRequestContext = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -49,7 +49,8 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = this.referenceTrack ? [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks) : this.alignmentTracks.concat(this.annotationTracks);
     }
 }

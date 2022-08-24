@@ -58,6 +58,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected referenceTrack: RcsbFvRowConfigInterface;
     protected alignmentTracks: Array<RcsbFvRowConfigInterface> = [];
     protected annotationTracks: Array<RcsbFvRowConfigInterface> = [];
+    protected buildConfig: RcsbFvModuleBuildInterface;
 
     private rcsbFvRowUpdatePromise: Promise<void>;
     private activeDisplayFlag: boolean = false;
@@ -121,9 +122,10 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     public async build(buildConfig: RcsbFvModuleBuildInterface): Promise<void>{
         SingletonMap.update(this.elementId, this);
-        await this.protectedBuild(buildConfig);
-        await this.buildExternalTracks(buildConfig.additionalConfig?.externalTrackBuilder, buildConfig.additionalConfig?.rcsbContext);
-        this.concatAlignmentAndAnnotationTracks(buildConfig);
+        this.buildConfig = buildConfig;
+        await this.protectedBuild();
+        await this.buildExternalTracks();
+        this.concatAlignmentAndAnnotationTracks();
         await this.display();
         return void 0;
     }
@@ -132,8 +134,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         return this.rcsbFvRowUpdatePromise;
     }
 
-    protected abstract protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void>;
-    protected abstract concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void;
+    protected abstract protectedBuild(): Promise<void>;
+    protected abstract concatAlignmentAndAnnotationTracks(): void;
 
     protected async buildAlignmentTracks(
         alignmentRequestContext: AlignmentRequestContextType,
@@ -147,7 +149,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         if(alignmentResponse.query_sequence)
             this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
         const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment]> = new AlignmentBlockFactory(
-            trackFactories?.alignmentTrackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
+            trackFactories?.alignmentTrackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator()),
+            this.buildConfig.additionalConfig?.trackConfigModifier?.alignment
         );
         this.alignmentTracks = await alignmentBlockFactory.getBlock(alignmentRequestContext,alignmentResponse);
     }
@@ -160,12 +163,16 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
                 new RcsbAnnotationConfig(defaultAnnotationConfigMap),
                 this.getPolymerEntityInstanceTranslator()
             ),
-            new AnnotationsTrackFactory()
+            new AnnotationsTrackFactory(),
+            this.buildConfig.additionalConfig?.trackConfigModifier?.annotations
         );
         this.annotationTracks = await annotationsBlockFactory.getBlock(annotationsRequestContext, annotationsFeatures);
     }
 
-    private async buildExternalTracks(externalTrackBuilder?: ExternalTrackBuilderInterface, rcsbContext?:Partial<PolymerEntityInstanceInterface>): Promise<void> {
+    private async buildExternalTracks(): Promise<void> {
+        const externalTrackBuilder: ExternalTrackBuilderInterface = this.buildConfig.additionalConfig?.externalTrackBuilder;
+        const rcsbContext:Partial<PolymerEntityInstanceInterface> = this.buildConfig.additionalConfig?.rcsbContext;
+
         if(!externalTrackBuilder)
             return;
         if(typeof externalTrackBuilder.processAlignmentAndFeatures === "function")

@@ -30,7 +30,8 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
 
     private instanceId: string;
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const instanceId: string = buildConfig.instanceId;
         this.instanceId = instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
@@ -65,7 +66,8 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig:RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData =
             !buildConfig.additionalConfig?.hideAlignments ?
                 [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks)

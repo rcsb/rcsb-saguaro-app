@@ -5,7 +5,8 @@ import {PairwiseAlignmentBuilder} from "../../RcsbUtils/PairwiseAlignmentTools/P
 
 export class RcsbFvPairwiseAlignment extends RcsbFvAbstractModule {
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const pab: PairwiseAlignmentBuilder = new PairwiseAlignmentBuilder(buildConfig.psa);
         const config: RcsbFvBoardConfigInterface = {
             rowTitleWidth: 120,
@@ -19,7 +20,7 @@ export class RcsbFvPairwiseAlignment extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
     }
 
 }

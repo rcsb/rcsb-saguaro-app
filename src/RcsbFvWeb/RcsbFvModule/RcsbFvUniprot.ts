@@ -15,7 +15,8 @@ import {UniprotAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactor
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const upAcc: string = buildConfig.upAcc;
         const source: Array<Source> = [Source.Uniprot];
 
@@ -50,7 +51,8 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = !buildConfig.additionalConfig?.hideAlignments ?
             [this.referenceTrack].concat(this.annotationTracks).concat(this.alignmentTracks)
             :

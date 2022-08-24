@@ -4,13 +4,17 @@ import {
     FilterInput,
     GroupReference,
     SequenceReference,
-    Source
+    Source, TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PairwiseAlignmentInterface} from "../../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
+import {
+    AlignmentRequestContextType
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
+import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
 export interface RcsbFvAdditionalConfig{
@@ -25,6 +29,10 @@ export interface RcsbFvAdditionalConfig{
     externalTrackBuilder?: ExternalTrackBuilderInterface;
     page?:{first:number,after:string};
     rcsbContext?:RcsbContextType;
+    trackConfigModifier?:{
+        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment) => Promise<Partial<RcsbFvRowConfigInterface>>,
+        annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
+    };
 }
 
 //TODO move psa & elementSelectId into additional config

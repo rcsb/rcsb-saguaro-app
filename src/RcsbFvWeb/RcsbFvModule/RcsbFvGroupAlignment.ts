@@ -6,8 +6,8 @@ import {PlainAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
-
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const alignmentRequestContext = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -31,7 +31,8 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData =  this.referenceTrack ? [this.referenceTrack].concat(this.alignmentTracks) : this.alignmentTracks;
     }
 

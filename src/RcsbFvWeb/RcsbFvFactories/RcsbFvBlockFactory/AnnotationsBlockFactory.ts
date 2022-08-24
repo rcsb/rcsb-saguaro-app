@@ -10,20 +10,27 @@ export class AnnotationsBlockFactory implements BlockFactoryInterface<[Annotatio
 
     private readonly annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>;
     private readonly annotationsBlockData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+
     readonly trackFactory: TrackFactoryInterface<[TrackManagerInterface]>;
+    readonly trackConfigModifier: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>;
 
     constructor(
         annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>,
-        annotationTrackFactory: TrackFactoryInterface<[TrackManagerInterface]>
+        annotationTrackFactory: TrackFactoryInterface<[TrackManagerInterface]>,
+        trackModifier: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     ) {
         this.annotationBlockManager = annotationBlockManager;
         this.trackFactory = annotationTrackFactory;
+        this.trackConfigModifier = trackModifier;
     }
 
     async getBlock(annotationsRequestContext: AnnotationRequestContext, annotations:AnnotationFeatures[]): Promise<RcsbFvRowConfigInterface[]>{
         await this.annotationBlockManager.setData(annotationsRequestContext,annotations);
         await Promise.all(this.annotationBlockManager.getTracks().map(async track=>{
-            this.annotationsBlockData.push( await this.trackFactory.getTrack(track) );
+            this.annotationsBlockData.push( {
+                ... await this.trackFactory.getTrack(track),
+                ... await this.trackConfigModifier?.(track)
+            });
         }));
         return this.annotationsBlockData;
     }

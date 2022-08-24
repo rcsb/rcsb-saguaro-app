@@ -14,7 +14,8 @@ import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationColl
 
 export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const upAcc: string = buildConfig.upAcc;
         const entityId:string = buildConfig.entityId;
         const instanceId: string = buildConfig.instanceId;
@@ -64,7 +65,8 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks);
     }
 
