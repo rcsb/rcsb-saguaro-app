@@ -22,7 +22,8 @@ export namespace GroupChartMap{
             const groupProperties: QueryResult | null = await rcsbRequestCtxManager.getSearchQueryFacets(
                 groupQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
-                facetStore.returnType
+                facetStore.returnType,
+                SQT.searchContentType(searchQuery)
             );
             if(groupProperties)
                 facets = facets.concat(groupProperties.facets as BucketFacet[]);
@@ -65,7 +66,8 @@ export namespace GroupChartMap{
             const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
                 groupQuery,
                 facetStore.getFacetService(service).map(f => f.facet),
-                facetStore.returnType
+                facetStore.returnType,
+                searchQuery.request_options?.results_content_type ?? ["computational","experimental"]
             );
             if(groupProperties)
                 partialFacets = partialFacets.concat(groupProperties.facets as BucketFacet[]);

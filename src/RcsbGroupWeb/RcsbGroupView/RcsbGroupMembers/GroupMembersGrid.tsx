@@ -1,25 +1,21 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {MultipleEntityInstancesCollector} from "../../../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
 import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
 import {
-    GroupByDepositID,
-    GroupBySequenceIdentity,
     SearchQuery, SortOptionAttributes
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
-    EntryPropertyIntreface,
-    MultipleEntryPropertyCollector
+    EntryPropertyIntreface
 } from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
+import uniqid from "uniqid";
 
 interface GroupMembersGridInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -46,13 +42,13 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                     <Container fluid={"md"}>
                         {
                             Array(this.props.nRows).fill(null).map((none,i)=>(
-                                <Row>
+                                <Row key={`${uniqid("row_")}_${i}`}>
                                     {
                                         Array(this.props.nColumns).fill(null).map((none,j)=>{
                                             const ei: ItemFeaturesInterface = this.state.itemList[i*this.props.nColumns+j];
                                             if(ei)
                                                 return (
-                                                    <Col className={"p-0"}>
+                                                    <Col className={"p-0"} key={`${uniqid("col_")}_${j}`}>
                                                         <GroupMemberItem item={ei} groupProvenanceId={this.props.groupProvenanceId}/>
                                                     </Col>
                                                 );
@@ -125,7 +121,8 @@ async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: stri
             sort:[{
                 sort_by: searchQuery?.request_options?.group_by?.ranking_criteria_type?.sort_by ?? RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
                 direction: ((searchQuery?.request_options?.group_by?.ranking_criteria_type as SortOptionAttributes)?.direction as SortDirection) ?? SortDirection.Asc
-            }]
+            }],
+            results_content_type: SQT.searchContentType(searchQuery)
         },
         return_type: groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ? ReturnType.Entry : ReturnType.PolymerEntity
     });

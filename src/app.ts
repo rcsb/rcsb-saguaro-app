@@ -24,3 +24,4 @@ import {rcsbRequestCtxManager} from "./RcsbRequest/RcsbRequestContextManager";
 export {rcsbRequestCtxManager as RcsbRequestContextManager};
 export {RcsbFvUI} from "./RcsbExport/RcsbFvUI";
 export {FeatureType} from "./RcsbExport/FeatureType";
+export {TagDelimiter} from "./RcsbUtils/Helpers/TagDelimiter";

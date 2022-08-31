@@ -5,7 +5,7 @@ import {
     SearchQueryContextManagerSubjectInterface
 } from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {asyncScheduler, Subscription} from "rxjs";
-import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
+import {ChartDataProviderInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
 
 interface AbstractChartState {
@@ -41,11 +41,11 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
         this.unsubscribe();
     }
 
-    protected unsubscribe(): void {
+    private unsubscribe(): void {
         this.subscription.unsubscribe();
     }
 
-    protected subscribe(): void{
+    private subscribe(): void{
         this.subscription = SQCM.subscribe(
             (o:SearchQueryContextManagerSubjectInterface)=>{
                 this.updateChartMap(o);

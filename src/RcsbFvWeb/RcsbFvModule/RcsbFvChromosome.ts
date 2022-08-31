@@ -1,4 +1,4 @@
-import {Observable, Subject, Subscription} from "rxjs";
+import {Subject} from "rxjs";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
     AlignedRegion,
@@ -74,7 +74,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
 }
 
 //TODO This class needs a lot of improvements
-//TODO this Module is not collecting alignments through SequenceCollector
+//TODO this Module is not collecting alignments through AlignmentCollector
 export class RcsbFvChromosome extends RcsbFvAbstractModule {
     private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
         [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
@@ -155,7 +155,6 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 d.description = [pdbEntityId];
         });
         this.addSequences([this.pdbEntityTrack],SequenceReference.PdbEntity);
-        this.pdbEntityTrack.rowPrefix = SequenceReference.PdbEntity.replace("_"," ");
         this.pdbEntityTrack.rowTitle = {
             visibleTex: pdbEntityId,
             style: {
@@ -669,7 +668,8 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         return void 0;
     }
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         return new Promise<void>(((resolve, reject) => {
             ObservableHelper.oneTimeSubscription<void>(resolve, this.buildSubject);
             if(buildConfig.elementSelectId)
@@ -691,7 +691,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         });
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
     }
 
 }

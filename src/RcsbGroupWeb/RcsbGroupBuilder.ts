@@ -11,8 +11,10 @@ import {
 } from "./RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {Subscription} from "rxjs";
 import {RcsbGroupContentTextInterface} from "./RcsbGroupView/RcsbGroupContent/RcsbGroupContentComponent";
+import {ResidueChartInterface} from "./RcsbGroupView/RcsbResidueChart/ResidueChartTools/ResidueChartTools";
+import {ChartDisplayConfigInterface} from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 
-export async function buildSearchRequest(elementId: string, searchQuery:SearchQueryType, returnType:ReturnType): Promise<void>{
+export async function buildSearchRequest(elementId: string, searchQuery:SearchQuery, returnType:ReturnType): Promise<void>{
     await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery, returnType);
 }
 
@@ -26,6 +28,10 @@ export function buildGroupMembers(elementId: string, groupProvenance: GroupProve
 
 export function buildGroupContent(elementId: string, groupProvenance: GroupProvenanceId, groupId: string, query?:SearchQuery, textConfig?:RcsbGroupContentTextInterface): void {
     RcsbGroupDisplay.displayGroupContent(elementId, groupProvenance, groupId, query, textConfig);
+}
+
+export function buildResidueDistribution(elementId: string, granularity: ResidueChartInterface["granularity"], rcsbId:string, facetLayoutGrid?:string[], chartDisplayConfig?: Partial<ChartDisplayConfigInterface>): void {
+    RcsbGroupDisplay.displayResidueDistribution(elementId,granularity,rcsbId,facetLayoutGrid,chartDisplayConfig);
 }
 
 export const searchQueryContextManager = {

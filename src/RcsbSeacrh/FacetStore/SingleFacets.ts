@@ -3,9 +3,7 @@ import {ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterf
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {RcsbEntityPolymerType} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {CorePolymerEntity} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/CorePolymerEntityInterface";
-import {CorePolymerEntityInstance} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/CorePaths";
+
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
     id: "method",
@@ -48,6 +46,25 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
         aggregation_type: AggregationType.Histogram,
         attribute: RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path,
         interval: 0.5,
+        min_interval_population: 1
+    }
+};
+
+export const METHODOLOGY_FACET: FacetMemberInterface = {
+    id: "computed",
+    title: "Determination Methodology",
+    attributeName: "METHODOLOGY_FACET",
+    attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
+    chartType: ChartType.barplot,
+    contentType: "string",
+    chartConfig: {
+        mostPopulatedGroups: 3,
+        mergeName: "Other methods"
+    },
+    facet: {
+        name: "METHODOLOGY_FACET",
+        aggregation_type: AggregationType.Terms,
+        attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
         min_interval_population: 1
     }
 };
@@ -579,5 +596,6 @@ export const SearchFacets = {
     GO_FUNCTION_FACET,
     GO_PROCESS_FACET,
     GO_COMPONENT_FACET,
-    LIGAND_OF_INTEREST_FACET
+    LIGAND_OF_INTEREST_FACET,
+    METHODOLOGY_FACET
 };

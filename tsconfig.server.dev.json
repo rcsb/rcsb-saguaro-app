@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "resolveJsonModule": true,
+    "outDir": "./build/src",
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "noImplicitThis": true,
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react",
+    "lib": [ "dom", "es2020" ],
+    "allowJs": true,
+    "sourceMap": true,
+    //"noUnusedLocals": true,
+    //"strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "esModuleInterop": true
+  },
+  "include": [ "src/*", "src/**/*", "src/**/**/*", "src/**/**/**/*" ],
+  "exclude": [
+    "node_modules"
+  ]
+}

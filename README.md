@@ -19,11 +19,16 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 </script>
 --->
 
-### Node Module Instalation
+### Node Module Installation
 `npm install @rcsb/rcsb-saguaro-app`
 
 ### CDN JavaScript
 `<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app/build/dist/app.js" type="text/javascript"></script>`
+
+### Testing 
+- `npm install`
+- `npm run devServer`
+- Go to `http://localhost:9000/UniprotGroupFv.html`
 
 ### JavaScript Examples
 * [PDB Instance Chain View](https://rcsb.github.io/rcsb-saguaro-app/examples/instance.html)

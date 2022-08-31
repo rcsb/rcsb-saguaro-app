@@ -19,7 +19,8 @@ import {
     CATH_FACET,
     ECOD_FACET,
     ENZYME_CLASS_FACET,
-    GO_FUNCTION_FACET, GO_PROCESS_FACET, GO_COMPONENT_FACET
+    GO_FUNCTION_FACET, GO_PROCESS_FACET, GO_COMPONENT_FACET,
+    METHODOLOGY_FACET
 } from "./SingleFacets";
 import {cloneDeep} from "lodash";
 
@@ -27,6 +28,7 @@ class UniprotGroupFacetStore implements FacetStoreInterface{
     private readonly entryFacet: FacetMemberInterface[] = [
         cloneDeep<FacetMemberInterface>(EXPERIMENTAL_METHOD_FACET),
         cloneDeep<FacetMemberInterface>(RESOLUTION_FACET),
+        cloneDeep<FacetMemberInterface>(METHODOLOGY_FACET),
         cloneDeep<FacetMemberInterface>(RELEASE_DATE_FACET),
         cloneDeep<FacetMemberInterface>(ENZYME_CLASS_FACET)
     ];
@@ -68,7 +70,7 @@ class UniprotGroupFacetStore implements FacetStoreInterface{
 
     readonly facetLayoutGrid: string[] = [
         RcsbSearchMetadata.RcsbAccessionInfo.DepositDate.path,
-        RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path, RcsbSearchMetadata.Exptl.Method.path,
+        RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path, RcsbSearchMetadata.Exptl.Method.path, RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
         RcsbSearchMetadata.ChemComp.Type.path,
         RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiScientificName.path, RcsbSearchMetadata.RcsbEntitySourceOrganism.NcbiParentScientificName.path,
         RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path, RcsbSearchMetadata.RcsbPolymerInstanceAnnotation.AnnotationLineage.Name.path

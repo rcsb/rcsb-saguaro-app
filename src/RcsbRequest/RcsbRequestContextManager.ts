@@ -32,7 +32,7 @@ import {
 import {
     AssemblyInterfacesCollector
 } from "../RcsbCollectTools/DataCollectors/AssemblyInterfacesCollector";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {ResultsContentType, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {MultipleEntityInstancesCollector} from "../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
 import {
     MultipleDocumentPropertyCollectorInterface
@@ -42,6 +42,7 @@ import DataStatusInterface = RRT.DataStatusInterface;
 import {rcsbRequestClient} from "./RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
+import { RequestInit as GraphqlRequestInit} from "graphql-request/src/types.dom";
 
 class RcsbRequestContextManager {
 
@@ -133,12 +134,12 @@ class RcsbRequestContextManager {
         );
     }
 
-    public async getSearchQueryFacets(query: SearchQueryType, facets: FacetType[], returnType:ReturnType): Promise<QueryResult | null>{
+    public async getSearchQueryFacets(query: SearchQueryType, facets: FacetType[], returnType:ReturnType, resultsContentType:ResultsContentType): Promise<QueryResult | null>{
         const key: string = sha1(query)+"."+sha1(facets);
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            async ()=>(await searchRequestProperty.requestFacets(query, facets, returnType))
+            async ()=>(await searchRequestProperty.requestFacets(query, facets, returnType, resultsContentType))
         );
     }
 
@@ -157,6 +158,13 @@ class RcsbRequestContextManager {
             const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
             const result: Array<InterfaceInstanceInterface> = await this.interfaceCollector.collect({interface_ids: assemblyInterfaces.getInterfaces(assemblyId)});
             const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
+            if (assemblyInterfaces.getInterfaces(assemblyId).length == 0){
+                this.interfaceToInstanceMap.set(key,{
+                    data: translator,
+                    status: "available",
+                    resolveList: []
+                });
+            }
             for(const id of assemblyInterfaces.getInterfaces(assemblyId)){
                 if(this.interfaceToInstanceMap.get(id)?.status === "pending")
                     RRT.mapSet<InterfaceInstanceTranslate>(this.interfaceToInstanceMap.get(id),translator);
@@ -181,11 +189,11 @@ class RcsbRequestContextManager {
         );
     }
 
-    public initializeBorregoClient(config: {api?:string, requestConfig?:RequestInit}): void {
+    public initializeBorregoClient(config: {api?:string, requestConfig?:GraphqlRequestInit}): void {
         rcsbRequestClient.borrego = new GraphQLRequest(config.api ?? "1d-coordinates", config.requestConfig);
     }
 
-    public initializeYosemiteClient(config: {api?:string, requestConfig?:RequestInit}): void {
+    public initializeYosemiteClient(config: {api?:string, requestConfig?:GraphqlRequestInit}): void {
         rcsbRequestClient.yosemite = new GraphQLRequest(config.api ?? "data-api", config.requestConfig);
     }
 

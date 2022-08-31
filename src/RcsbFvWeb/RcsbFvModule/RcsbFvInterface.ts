@@ -1,41 +1,52 @@
 import {
+    AlignmentResponse,
     AnnotationFeatures,
     Feature,
     SequenceReference,
-    Source,
-    Type
+    Source
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbContextType, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
+import {
+    CollectAnnotationsInterface
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
-import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/AnnotationGenerators/BuriedResidues";
-import {burialFraction, burialFractionFilter} from "../../RcsbUtils/AnnotationGenerators/BurialFraction";
+import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
+import {burialFraction, burialFractionFilter} from "../../RcsbUtils/TrackGenerators/BurialFraction";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
+import {
+    InstanceSequenceTrackTitleFactory
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackTitleFactoryImpl/InstanceSequenceTrackTitleFactory";
+
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 
 export class RcsbFvInterface extends RcsbFvAbstractModule {
 
-    protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector(annotationConfigMap);
     private instanceId: string;
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const instanceId: string = buildConfig.instanceId;
         this.instanceId = instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
 
-        this.alignmentTracks = await this.sequenceCollector.collect({
+        const alignmentRequestContext = {
             queryId: instanceId,
             from: SequenceReference.PdbInstance,
-            to: SequenceReference.Uniprot});
+            to: SequenceReference.Uniprot
+        };
+        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
+            sequenceTrackFactory: new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator(),new InstanceSequenceTrackTitleFactory(this.getPolymerEntityInstanceTranslator()))
+        });
 
-        this.annotationTracks = await this.annotationCollector.collect({
+        const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
             titleSuffix: this.titleSuffix(buildConfig?.additionalConfig?.rcsbContext).bind(this),
@@ -43,21 +54,25 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             typeSuffix: this.typeSuffix.bind(this),
             sources:source,
             annotationGenerator: interfaceAnnotations,
-            annotationFilter: buildConfig.additionalConfig?.externalTrackBuilder?.filterFeatures ? undefined : filter,
-            rcsbContext: buildConfig.additionalConfig?.rcsbContext
-        });
+            annotationFilter: filter,
+            rcsbContext: buildConfig.additionalConfig?.rcsbContext,
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+        };
+        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
 
-        this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
+        this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig:RcsbFvModuleBuildInterface): void {
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData =
             !buildConfig.additionalConfig?.hideAlignments ?
-                this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks)
+                [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks)
                 :
-                this.alignmentTracks.sequence.concat(this.annotationTracks);
+                this.alignmentTracks.concat(this.annotationTracks);
     }
 
     private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string> {
@@ -72,13 +87,19 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
                 const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
                 const chPair: [string, string] = interfaceTranslate.getInstances(ann.target_id);
+                if(!chPair) return "";
                 const asym: string = chPair[0] == chain ? chPair[1] : chPair[0]
                 const auth: string = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
                 const operators: [Array<Array<string>>, Array<Array<string>>] = interfaceTranslate.getOperatorIds(ann.target_id);
                 let partnerOperator: string = "";
                 if(Array.isArray(rcsbContext.operatorIds)){
                     const opIndex: number = operators[ann.target_identifiers.interface_partner_index].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
-                    partnerOperator = TagDelimiter.operatorComposition+operators[1-ann.target_identifiers.interface_partner_index][opIndex].join(TagDelimiter.operatorComposition);
+                    if(opIndex < 0) {
+                        console.error(`Operator Id ${rcsbContext.operatorIds.join("-")} not found in [[${operators[0]}],[${operators[1]}]]`);
+                        console.error(ann.target_identifiers);
+                    } else {
+                        partnerOperator = TagDelimiter.operatorComposition + operators[1 - ann.target_identifiers.interface_partner_index][opIndex].join(TagDelimiter.operatorComposition);
+                    }
                 }
                 return (asym == auth ? asym : `${asym}[auth ${auth}]`)+partnerOperator;
             }
@@ -92,7 +113,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     }
 }
 
-function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+export function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
     const buried: Array<AnnotationFeatures> = buriedResidues(annotations);
     const burial: Array<AnnotationFeatures> = burialFraction(annotations);
     return new Promise<Array<AnnotationFeatures>>(resolve => {
@@ -105,7 +126,7 @@ function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<A
     })
 }
 
-function filter(ann: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
+export function filter(ann: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
     return new Promise<Array<AnnotationFeatures>>(resolve => {
         resolve(burialFractionFilter(buriedResiduesFilter(ann)));
     })

@@ -1,7 +1,9 @@
 {
   "provenance_color_code": {
     "external": "#DB9128",
-    "rcsb_pdb": "#5e94c3"
+    "rcsb_pdb": "#325880",
+    "rcsb_link": "#5e94c3",
+    "csm": "#1abdcf"
   },
   "merge": [
     {
@@ -21,7 +23,7 @@
       "title": "MOLECULE PROCESSING",
       "display": "block"
     },{
-      "merged_types": ["HELIX_P", "SHEET"],
+      "merged_types": ["HELIX_P", "HELX_LH_PP_P", "HELX_RH_AL_P", "HELX_RH_3_T_P", "HELX_RH_PI_P", "BEND", "TURN_TY_1_P", "SHEET", "STRN"],
       "type": "SECONDARY_STRUCTURE",
       "title": "SECONDARY STRUCTURE",
       "display": "block"
@@ -36,10 +38,6 @@
     "PFAM",
     "CATH",
     "ALL_SCOP",
-    "SCOP",
-    "SCOP_2_B_SUPERFAMILY",
-    "SCOP2_FAMILY",
-    "SCOP2_SUPERFAMILY",
     "ECOD",
     "IMGT_ANTIBODY_DESCRIPTION",
     "IMGT_ANTIBODY_DOMAIN_NAME",
@@ -57,8 +55,7 @@
     "MOLECULE_PROCESSING",
     "MEMBRANE_TOPOLOGY",
     "MEMBRANE_SEGMENT",
-    "CHAIN",
-    "INITIATOR_METHIONINE",
+    "MOLECULE_PROCESSING",
     "SEQUENCE_VARIANT",
     "GLYCOSYLATION_SITE",
     "LIPID_MOIETY_BINDING_REGION",
@@ -75,9 +72,7 @@
     "SHORT_SEQUENCE_MOTIF",
     "ZINC_FINGER_REGION",
     "PROPEPTIDE",
-    "TRANSMEMBRANE_REGION",
-    "INTRAMEMBRANE_REGION",
-    "TOPOLOGICAL_DOMAIN",
+    "MEMBRANE_TOPOLOGY",
     "COILED_COIL_REGION",
     "REPEAT",
     "DOMAIN",
@@ -86,18 +81,14 @@
     "SPLICE_VARIANT",
     "NON_TERMINAL_RESIDUE",
     "TURN",
-    "SIGNAL_PEPTIDE",
     "CARD_MODEL",
     "CALCIUM_BINDING_REGION",
     "PEPTIDE"
   ],
   "instance_order": [
+    "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
     "SECONDARY_STRUCTURE",
-    "HELIX_P",
-    "SHEET",
     "UNOBSERVED",
-    "UNOBSERVED_RESIDUE_XYZ",
-    "UNOBSERVED_ATOM_XYZ",
     "ZERO_OCCUPANCY_RESIDUE_XYZ",
     "ZERO_OCCUPANCY_ATOM_XYZ",
     "RAMACHANDRAN_OUTLIER",
@@ -426,7 +417,42 @@
     "color": "#e43372",
     "title": "HELIX"
   },{
+    "type": "HELX_LH_PP_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "HELX_RH_AL_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "HELX_RH_3_T_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "HELX_RH_PI_P",
+    "display": "block",
+    "color": "#e43372",
+    "title": "HELIX"
+  },{
+    "type": "BEND",
+    "display": "block",
+    "color": "#65cbf3",
+    "title": "BEND"
+  },{
+    "type": "TURN_TY_1_P",
+    "display": "block",
+    "color": "#0053d6",
+    "title": "TURN"
+  },{
     "type": "SHEET",
+    "display": "block",
+    "color": "#f1d23b",
+    "title": "BETA STRAND"
+  },{
+    "type": "STRN",
     "display": "block",
     "color": "#f1d23b",
     "title": "BETA STRAND"
@@ -626,5 +652,13 @@
       "thresholds": [0.000001]
     },
     "title": "BURIED RESIDUES"
+  },{
+    "type": "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
+    "display": "block-area",
+    "color": {
+      "colors": ["#ff7d45","#ffdb13","#65cbf3","#0053d6"],
+      "thresholds": [50,70,90]
+    },
+    "title": "pLDDT"
   }]
 }

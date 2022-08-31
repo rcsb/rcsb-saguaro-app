@@ -15,8 +15,8 @@ interface LabelComponentState {
 const expandObserver: Subject<{id:string}> = new Subject<{id:string}>();
 export class LabelComponent extends React.Component<VictoryLabelProps, LabelComponentState>{
 
-    public static readonly HARD_THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.725;
-    public static readonly SOFT_THR: number = (ChartTools.paddingLeft + ChartTools.xDomainPadding)*0.77;
+    public static readonly HARD_THR: number = (ChartTools.getConfig<number>("paddingLeft", {}) + ChartTools.getConfig<number>("xDomainPadding", {}))*0.725;
+    public static readonly SOFT_THR: number = (ChartTools.getConfig<number>("paddingLeft", {}) + ChartTools.getConfig<number>("xDomainPadding", {}))*0.77;
     public static readonly OVERFLOW_POSTFIX: " ..." = " ...";
     private static readonly BACKGROUND_COLOR: string = "#FFF";
     private subscription: Subscription;
@@ -29,7 +29,7 @@ export class LabelComponent extends React.Component<VictoryLabelProps, LabelComp
             {...this.props}
             textAnchor={this.state.textAnchor ?? this.props.textAnchor}
             x={this.state.x ?? this.props.x}
-            style={{fontSize: ChartTools.fontSize, fontFamily: ChartTools.fontFamily}}
+            style={{fontSize: ChartTools.getConfig<number>("fontSize", {}), fontFamily: ChartTools.getConfig<string>("fontFamily", {})}}
             text={this.state.label}
             id={this.id}
             backgroundStyle={{fill:LabelComponent.BACKGROUND_COLOR}}

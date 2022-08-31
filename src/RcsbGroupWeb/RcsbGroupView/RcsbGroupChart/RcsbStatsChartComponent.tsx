@@ -7,10 +7,12 @@ import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 
 interface RcsbStatsChartInterface {
     facetStore: FacetStoreInterface;
-    searchQuery:SearchQueryType;
+    searchQuery:SearchQuery;
     returnType: ReturnType;
 }
 
@@ -40,9 +42,10 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
         let facets: Array<BucketFacet> = [];
         for(const service of this.props.facetStore.getServices()){
             const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
-                this.props.searchQuery,
+                this.props.searchQuery.query,
                 this.props.facetStore.getFacetService(service).map(f => f.facet),
-                this.props.facetStore.returnType
+                this.props.facetStore.returnType,
+                SQT.searchContentType(this.props.searchQuery)
             );
             if(groupProperties.facets)
                 facets = facets.concat(groupProperties.facets as BucketFacet[]);

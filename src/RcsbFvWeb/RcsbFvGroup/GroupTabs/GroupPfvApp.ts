@@ -1,21 +1,25 @@
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../../RcsbFvModule/RcsbFvModuleInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
-import {alignmentVariation} from "../../../RcsbUtils/AnnotationGenerators/AlignmentVariation";
+import {alignmentVariation} from "../../../RcsbUtils/TrackGenerators/AlignmentVariation";
 import {RcsbFvGroupBuilder} from "../../RcsbFvBuilder/RcsbFvGroupBuilder";
 import {
     Feature,
     FieldName,
-    GroupReference, OperationType,
-    SequenceReference, Source, Type
+    GroupReference,
+    OperationType,
+    SequenceReference,
+    Source,
+    Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AnnotationProcessingInterface
 } from "../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {AnnotationTrack, FeaturePositionGaps} from "../../../RcsbCollectTools/AnnotationCollector/AnnotationTrack";
-import {alignmentGlobalLigandBindingSite} from "../../../RcsbUtils/AnnotationGenerators/AlignmentGlobalBindingSite";
-import {RcsbTabs} from "../../WebTools/RcsbTabs";
+import {FeaturePositionGaps} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
+import {alignmentGlobalLigandBindingSite} from "../../../RcsbUtils/TrackGenerators/AlignmentGlobalBindingSite";
+import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
 import {GroupPfvUI} from "./GroupPfvUI";
+import {TrackManagerInterface} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 
 export namespace GroupPfvApp {
 
@@ -106,7 +110,7 @@ export namespace GroupPfvApp {
             }],
             sources: [Source.PdbInstance],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-            externalTrackBuilder: alignmentGlobalLigandBindingSite()
+            externalTrackBuilder:  alignmentGlobalLigandBindingSite()
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
@@ -131,7 +135,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
                 return feature.p.values[0];
             }
         },
-        computeAnnotationValue: (annotationTracks: Map<string, AnnotationTrack>) => {
+        computeAnnotationValue: (annotationTracks: Map<string, TrackManagerInterface>) => {
             annotationTracks.forEach((at,type)=>{
                 const N: number = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite) || type.includes(Type.Pfam)) ? targets.get(type) : nTargets;
                 at.forEach((ann,positionKey)=>{

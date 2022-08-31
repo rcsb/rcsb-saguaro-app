@@ -7,7 +7,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {
     SelectOptionInterface,
     SelectOptionProps
-} from "../WebTools/SelectButton";
+} from "../RcsbFvComponents/SelectButton";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
@@ -70,6 +70,7 @@ export class RcsbFvInstanceBuilder {
                 shortLabel: config.displayAuthId === true ? instance.authId : label,
                 optId: instance.authId,
                 onChange: async () => {
+                    out.getFv().reset();
                     let externalContext: RcsbContextType | undefined;
                     if (typeof config.beforeChangeCallback === "function")
                         externalContext = config.beforeChangeCallback(instance, out);

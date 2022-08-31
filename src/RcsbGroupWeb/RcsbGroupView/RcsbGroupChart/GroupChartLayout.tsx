@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
+import {ChartDisplayConfigInterface, ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {HistogramChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/HistogramChartComponent";
 import {BarChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/BarChartComponent";
 import {Col, Container, Row} from "react-bootstrap";
@@ -11,7 +11,9 @@ import {
 import {
     VictoryHistogramChartComponent
 } from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryHistogramChartComponent";
+import uniqid from "uniqid";
 
+//TODO chart && subChart should be defined in RcsbChartInterface.data: ChartObjectInterface as RcsbChartInterface.data{XXX:ChartObjectInterface,subXXX:ChartObjectInterface}
 export type ChartMapType = Map<string,{chart:RcsbChartInterface;subChart?:RcsbChartInterface;}>;
 export interface RcsbChartLayoutInterface {
     layout: string[];
@@ -20,15 +22,10 @@ export interface RcsbChartLayoutInterface {
 
 export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,{}> {
 
-    constructor(props: RcsbChartLayoutInterface) {
-        super(props);
-
-    }
-
     render():JSX.Element {
         return (
             <Container fluid={"md"}>
-                <Row className={"mt-md-5 mb-md-5"}>
+                <Row>
                     {
                         this.props.layout.map((attr)=>this.renderCell(attr))
                     }
@@ -42,19 +39,19 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
         if(chart){
             const subChart: RcsbChartInterface = this.props.chartMap.get(attr).subChart;
             const node: JSX.Element = chart.chartType == ChartType.histogram ? histogramChart(attr, chart, subChart) : barChart(attr, chart, subChart);
-            return chartCell(node,chart.title);
+            return chartCell(node,chart.title, chart.chartConfig?.chartDisplayConfig);
         }
         return null;
     }
 
 }
 
-function chartCell(chartNode:JSX.Element, title: string, colSize:number = 6): JSX.Element{
-    return(<Col md={colSize}>
+function chartCell(chartNode:JSX.Element, title: string, chartDisplayConfig:Partial<ChartDisplayConfigInterface>): JSX.Element{
+    return(<Col key={`${title}_${uniqid()}`}>
         <Row className={"mb-md-5"}>
             <Col md={12}>
                 <Row className={"mb-md-2"}>
-                    <Col md={12} style={{paddingLeft:ChartTools.paddingLeft + ChartTools.xDomainPadding}}><strong>{title}</strong></Col>
+                    <Col md={12} style={{paddingLeft:ChartTools.getConfig<number>("paddingLeft", chartDisplayConfig) + ChartTools.getConfig<number>("xDomainPadding", chartDisplayConfig)}}><strong>{title}</strong></Col>
                 </Row>
                 <Row>
                     <Col md={12}>{chartNode}</Col>

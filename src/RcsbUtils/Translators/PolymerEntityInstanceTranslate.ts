@@ -3,12 +3,13 @@ import {RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
 import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "../Helpers/TagDelimiter";
 
-export interface TranslateContextInterface {
+export interface AlignmentContextInterface {
     queryId: string;
     targetId: string;
     from: SequenceReference | undefined;
     to: SequenceReference|Source;
     targetSequenceLength?: number;
+    querySequenceLength?: number;
 }
 
 export class PolymerEntityInstanceTranslate{
@@ -72,7 +73,7 @@ export class PolymerEntityInstanceTranslate{
             return this.instanceAuthResIds.get(asymId)[index-1];
     }
 
-    public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:TranslateContextInterface):RcsbFvTrackDataElementInterface {
+    public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
         if(alignmentContext.from === SequenceReference.PdbInstance) {
             const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];

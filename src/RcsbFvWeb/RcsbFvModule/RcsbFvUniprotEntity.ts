@@ -1,4 +1,5 @@
 import {
+    AlignmentResponse,
     AnnotationFeatures,
     Feature,
     FieldName,
@@ -10,10 +11,12 @@ import {
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
+import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const upAcc: string = buildConfig.upAcc;
         const entityId: string = buildConfig.entityId;
         const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig
@@ -23,28 +26,37 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             source: Source.PdbEntity,
             values:[entityId]
         }];
-        this.alignmentTracks = await this.sequenceCollector.collect({
+        const alignmentRequestContext = {
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
             filterByTargetContains: entityId,
             excludeAlignmentLinks: true
-        }, buildConfig.additionalConfig?.alignmentFilter);
-        this.annotationTracks = await this.annotationCollector.collect({
+        };
+        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [entityId]);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
+
+        const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:additionalConfig?.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],
             filters:additionalConfig?.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters,
-            titleSuffix: this.titleSuffix.bind(this)
-        });
-        this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
+            titleSuffix: this.titleSuffix.bind(this),
+            annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
+            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+        };
+        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
+
+        this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;
         return void 0;
 
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
-        this.rowConfigData = this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment).concat(this.annotationTracks);
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        this.rowConfigData = [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks);
     }
 
     private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{

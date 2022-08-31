@@ -1,22 +1,29 @@
-import {ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {
+    ChartDisplayConfigInterface,
+    ChartObjectInterface
+} from "../RcsbChartComponent/ChartConfigInterface";
+import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 
 export class ChartTools {
 
-    public static readonly paddingLeft: number = 150;
-    public static readonly paddingTopLarge: number = 50;
-    public static readonly paddingTop: number = 10;
-    public static readonly paddingRight: number = 15;
-    public static readonly constWidth: number = 350;
-    public static readonly constHeight: number = 225;
-    public static readonly xIncrement: number = 22;
-    public static readonly xDomainPadding: number = 10;
-    public static readonly barWidth: number = 10;
-    public static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
-    public static readonly fontSize: number = 12;
+    private static readonly paddingLeft: number = 150;
+    private static readonly paddingTopLarge: number = 50;
+    private static readonly paddingTop: number = 10;
+    private static readonly paddingRight: number = 15;
+    private static readonly constWidth: number = 350;
+    private static readonly constHeight: number = 225;
+    private static readonly xIncrement: number = 22;
+    private static readonly xDomainPadding: number = 10;
+    private static readonly barWidth: number = 10;
+    private static readonly fontFamily: string = "\"Helvetica Neue\",Helvetica,Arial,sans-serif";
+    private static readonly fontSize: number = 12;
 
-    public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): {x:string;y:number;}[]{
-        const out: {x:string;y:number;}[] = data.filter(d=>( d.population>size)).map(d=>({
+    public static getConfig<T>(key: keyof ChartDisplayConfigInterface, chartDisplayConfig:Partial<ChartDisplayConfigInterface>): T {
+        return ((chartDisplayConfig && (typeof chartDisplayConfig[key] === "string" || typeof chartDisplayConfig[key] === "number")) ? chartDisplayConfig[key] : this[key]) as unknown as T;
+    }
+
+    public static mergeGroupSize(data: ChartObjectInterface[], size: number, mergeName?: string): ChartDataInterface[]{
+        const out: ChartDataInterface[] = data.filter(d=>( d.population>size)).map(d=>({
             x:d.label  as string,
             y:d.population
         }));
@@ -29,9 +36,9 @@ export class ChartTools {
         return out;
     }
 
-    public static mostPopulatedGroups (data: ChartObjectInterface[], maxGroups: number, mergeName?: string): {x:string;y:number;}[]{
+    public static mostPopulatedGroups (data: ChartObjectInterface[], maxGroups: number, mergeName?: string): ChartDataInterface[]{
         const sorted :ChartObjectInterface[] = data.sort((a,b)=>(b.population-a.population));
-        const out: {x:string;y:number;}[] =  sorted.slice(0,maxGroups).map(d=>({
+        const out: ChartDataInterface[] =  sorted.slice(0,maxGroups).map(d=>({
             x:d.label  as string,
             y:d.population
         }));
@@ -44,8 +51,8 @@ export class ChartTools {
         return out;
     }
 
-    public static mergeDomainMaxValue(data: ChartObjectInterface[], maxValue: number): {x:number;y:number;}[]{
-        const out: {x:number;y:number;}[] =  data.filter(d => parseFloat(d.label as string) < maxValue).map(d => ({
+    public static mergeDomainMaxValue(data: ChartObjectInterface[], maxValue: number): ChartDataInterface[]{
+        const out: ChartDataInterface[] =  data.filter(d => parseFloat(d.label as string) < maxValue).map(d => ({
             x: parseFloat(d.label as string),
             y: d.population
         }));
@@ -62,11 +69,13 @@ export class ChartTools {
         return data.map(d=>({
             x:d.label as string,
             y:d.population,
+            color:d.objectConfig?.color,
+            id: d.objectConfig?.objectId,
             isLabel:true
         }));
     }
 
-    public static labelsAsNumber(data: ChartObjectInterface[]): {x:number;y:number;}[]{
+    public static labelsAsNumber(data: ChartObjectInterface[]): ChartDataInterface[]{
         return data.map(d=>({x: parseFloat(d.label as string), y:d.population}));
     }
 
@@ -75,6 +84,15 @@ export class ChartTools {
         const subMap: Map<string|number, number> = new Map<string | number, number>( subData.map<[string|number,number]>((d)=>[d.x,d.y]) );
         data.forEach((d=>{d.yc = subMap.get(d.x)}));
         subData.forEach((d=>{d.yc = dataMap.get(d.x)}));
+    }
+
+    public static mergeData(data: ChartDataInterface[]): ChartDataInterface[] {
+        const domainList: (string|number)[] = Array.from(new Set(data.map(d=>d.x)));
+        return domainList.map(x=>({
+            ...data.find(d=>d.x===x),
+            y: data.filter(d=>d.x===x).reduce((prev,curr)=>(prev+curr.y),0),
+            yc: data.filter(d=>d.x===x).reduce((prev,curr)=>(prev+(curr.yc ?? 0) ),0),
+        }));
     }
 
 }

@@ -2,15 +2,12 @@ import {rcsbFvCtxManager} from "./RcsbFvContextManager";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFv} from "@rcsb/rcsb-saguaro";
 import {
-    RcsbFvAdditionalConfig,
     RcsbFvModuleBuildInterface,
     RcsbFvModuleInterface,
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
-import {SelectButtonConfigInterface, WebToolsManager} from "../WebTools/WebToolsManager";
-import {GroupedOptionsInterface, SelectOptionInterface} from "../WebTools/SelectButton";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {SelectButtonConfigInterface, ComponentsManager} from "../RcsbFvComponents/ComponentsManager";
+import {GroupedOptionsInterface, SelectOptionInterface} from "../RcsbFvComponents/SelectButton";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export interface CreateFvInterface {
@@ -57,11 +54,14 @@ export class RcsbFvCoreBuilder {
      * */
     static async createFv (createFvI: CreateFvInterface): Promise<RcsbFvModulePublicInterface> {
         const elementId: string = createFvI.elementId;
-        const fvModuleI: new (elementId:string, rcsbFv: RcsbFv, additionalConfig?: RcsbFvAdditionalConfig) => RcsbFvModuleInterface = createFvI.fvModuleI;
+        const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
         const p: PolymerEntityInstanceTranslate = createFvI.p;
         const rcsbFv: RcsbFv = rcsbFvCtxManager.getFv(elementId, createFvI.config.additionalConfig?.boardConfig);
-        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFv, config.additionalConfig);
+        await rcsbFv.then(()=>{
+            console.info(`PFV ${elementId} render complete`);
+        });
+        const rcsbFvInstance: RcsbFvModuleInterface= new fvModuleI(elementId, rcsbFv);
         if(p!=null) rcsbFvInstance.setPolymerEntityInstanceTranslator(p);
         await rcsbFvInstance.build(config);
         if(!rcsbFvInstance.activeDisplay())
@@ -74,7 +74,7 @@ export class RcsbFvCoreBuilder {
         if (rcsbFvCtxManager.hasFv(elementId)) {
             if(rcsbFvCtxManager.getButtonList(elementId)!=null){
                 rcsbFvCtxManager.getButtonList(elementId).forEach(buttonId=>{
-                    WebToolsManager.clearSelectButton(buttonId);
+                    ComponentsManager.clearSelectButton(buttonId);
                 });
             }
             rcsbFvCtxManager.getFv(elementId).unmount();
@@ -84,19 +84,19 @@ export class RcsbFvCoreBuilder {
 
     static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
-        WebToolsManager.buildSelectButton(selectButtonId, options, config);
+        ComponentsManager.buildSelectButton(selectButtonId, options, config);
     }
 
     static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string){
         if(rcsbFvCtxManager.getButtonList(elementFvId)?.has(selectButtonId)){
             rcsbFvCtxManager.getButtonList(elementFvId).delete(selectButtonId);
         }
-        WebToolsManager.clearAdditionalSelectButton(selectButtonId);
+        ComponentsManager.clearAdditionalSelectButton(selectButtonId);
     }
 
     static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
-        WebToolsManager.addSelectButton(selectButtonId, options, config);
+        ComponentsManager.addSelectButton(selectButtonId, options, config);
     }
 
     static showMessage(elementId: string, message: string){

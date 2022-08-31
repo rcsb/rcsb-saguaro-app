@@ -1,0 +1,59 @@
+{
+  "blockConfig": [{
+    "type": "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
+    "trackType": ["MA_QA_METRIC_LOCAL_TYPE_PLDDT"],
+    "sort": ["VERY_LOW", "LOW", "CONFIDENT", "VERY_HIGH"],
+    "contentType": "numerical",
+    "axisLabel": "Number of Residues",
+    "undefTrack": {
+      "label": "N/A",
+      "id": "UNDEF",
+      "color": "#cccccc"
+    }
+  },{
+    "type": "SECONDARY_STRUCTURE",
+    "title": "Secondary Structure Distribution",
+    "trackType": ["HELIX", "SHEET", "TURN"],
+    "contentType": "binary",
+    "undefTrack": {
+      "label": "Undef",
+      "id": "UNDEF",
+      "color": "#cccccc"
+    }
+  }],
+  "trackConfig": [{
+    "type": "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
+    "numericalCategories": {
+      "categories": [{
+        "color":"#ff7d45",
+        "label": "Very Low",
+        "id": "VERY_LOW"
+      },{
+        "color":"#ffdb13",
+        "label": "Low",
+        "id": "LOW"
+      },{
+        "color":"#65cbf3",
+        "label": "Confident",
+        "id": "CONFIDENT"
+      },{
+        "color":"#0053d6",
+        "label": "Very High",
+        "id": "VERY_HIGH"
+      }],
+      "thresholds": [50,70,90]
+    }
+  },{
+    "type": "HELIX",
+    "label": "Helix",
+    "color": "#e43372"
+  },{
+    "type": "SHEET",
+    "label": "Sheet",
+    "color": "#f1d23b"
+  },{
+    "type": "TURN",
+    "label": "Turn",
+    "color": "#0053d6"
+  }]
+}

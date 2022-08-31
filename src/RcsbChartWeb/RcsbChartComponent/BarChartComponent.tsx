@@ -1,27 +1,29 @@
 import * as React from "react";
 import {ChartTools} from "../RcsbChartTools/ChartTools";
-import {ChartDataProviderInterface} from "../RcsbChartData/ChartDataProviderInterface";
-import {BarChartData} from "../RcsbChartData/BarChartData";
+import {ChartDataProviderInterface, ChartDataInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
+import {BarChartDataProvider} from "../RcsbChartDataProvider/BarChartDataProvider";
 import {AbstractChartComponent} from "./AbstractChartComponent";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
-import {ChartDataInterface} from "../RcsbChartData/ChartDataInterface";
+import {ChartDisplayConfigInterface} from "./ChartConfigInterface";
+import {Operator} from "../../RcsbUtils/Helpers/Operator";
 
 export class BarChartComponent extends AbstractChartComponent {
 
-    protected readonly dataProvider: ChartDataProviderInterface = new BarChartData();
+    protected readonly dataProvider: ChartDataProviderInterface = new BarChartDataProvider();
     private readonly EXPAND_NUMBER: number = 10;
 
     render():JSX.Element {
         this.dataProvider.setData(this.state.data, this.state.subData, this.state.chartConfig);
+        const displayConfig: Partial<ChartDisplayConfigInterface> = this.props.chartConfig.chartDisplayConfig;
         const {data,excludedData}: {data: ChartDataInterface[]; excludedData?:ChartDataInterface[];} = this.dataProvider.getChartData();
-        const width: number = ChartTools.paddingLeft + ChartTools.constWidth + ChartTools.paddingRight;
-        const height: number = ChartTools.paddingTopLarge + data.length*ChartTools.xIncrement;
+        const width: number = ChartTools.getConfig<number>("paddingLeft", displayConfig) + ChartTools.getConfig<number>("constWidth", displayConfig) + ChartTools.getConfig<number>("paddingRight", displayConfig);
+        const height: number = ChartTools.getConfig<number>("paddingTopLarge", displayConfig) + data.length*ChartTools.getConfig<number>("xIncrement", displayConfig);
         const ChartComponent: AbstractChartImplementationType = this.props.chartComponentImplementation;
         return (
             <div style={{width:width}}>
                 <ChartComponent width={width} height={height} chartConfig={this.props.chartConfig} dataProvider={this.dataProvider}/>
                 {
-                    excludedData.length > 0  || this.state.chartConfig.mostPopulatedGroups > this.props.chartConfig.mostPopulatedGroups ?
+                    excludedData.length > 0  || this.state.chartConfig?.mostPopulatedGroups > this.props.chartConfig?.mostPopulatedGroups ?
                          this.chartUI(excludedData.length): <></>
                 }
             </div>
@@ -29,7 +31,7 @@ export class BarChartComponent extends AbstractChartComponent {
     }
 
     private chartUI(excluded: number): JSX.Element {
-        return (<div className={"mt-3 d-table"}  style={{height:22, fontFamily:ChartTools.fontFamily}}>
+        return (<div className={"mt-3 d-table"}  style={{height:22, fontFamily:ChartTools.getConfig<string>("fontFamily", this.props.chartConfig.chartDisplayConfig)}}>
             <div className={"d-table-row"}>
                 {
                     this.uiButton(
@@ -47,13 +49,13 @@ export class BarChartComponent extends AbstractChartComponent {
                 }
                 {
                     this.uiButton(
-                        this.state.chartConfig.mostPopulatedGroups > this.props.chartConfig.mostPopulatedGroups,
+                        this.state.chartConfig?.mostPopulatedGroups > this.props.chartConfig?.mostPopulatedGroups,
                         "bi-dash-circle",
                         (e)=>{
                             if(e.shiftKey){
                                 this.updateCategories(0);
                             }else{
-                                if(this.state.chartConfig.mostPopulatedGroups-this.EXPAND_NUMBER >= this.props.chartConfig.mostPopulatedGroups)
+                                if(this.state.chartConfig?.mostPopulatedGroups-this.EXPAND_NUMBER >= this.props.chartConfig?.mostPopulatedGroups)
                                     this.updateCategories(-this.EXPAND_NUMBER);
                                 else
                                     this.updateCategories(0);
@@ -63,7 +65,9 @@ export class BarChartComponent extends AbstractChartComponent {
                         "Shift-click to collapse all"
                     )
                 }
-                <div className={"ps-1 text-muted text-opacity-50 align-middle d-table-cell"} style={{fontSize:ChartTools.fontSize}}>[ {excluded}+ ]</div>
+                <div className={"ps-1 text-muted text-opacity-50 align-middle d-table-cell"} style={{fontSize:ChartTools.getConfig<number>("fontSize",this.props.chartConfig.chartDisplayConfig)}}>
+                    [ {Operator.digitGrouping(excluded)}+ ]
+                </div>
             </div>
         </div>);
     }
@@ -84,14 +88,14 @@ export class BarChartComponent extends AbstractChartComponent {
             this.setState({
                 chartConfig:{
                     ...this.state.chartConfig,
-                    mostPopulatedGroups: this.props.chartConfig.mostPopulatedGroups
+                    mostPopulatedGroups: this.props.chartConfig?.mostPopulatedGroups
                 }
             });
-        else if(this.state.chartConfig.mostPopulatedGroups+n >= this.props.chartConfig.mostPopulatedGroups)
+        else if(this.state.chartConfig?.mostPopulatedGroups+n >= this.props.chartConfig?.mostPopulatedGroups)
             this.setState({
                 chartConfig:{
                     ...this.state.chartConfig,
-                    mostPopulatedGroups: this.state.chartConfig.mostPopulatedGroups + n
+                    mostPopulatedGroups: this.state.chartConfig?.mostPopulatedGroups + n
                 }
             });
     }

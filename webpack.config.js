@@ -1,8 +1,14 @@
 const path = require('path');
 
 const commonConfig = {
+    mode: "production",
     module: {
         rules: [
+            {
+                test: /\.jsx?$/,
+                loader: 'babel-loader',
+                exclude: [/node_modules/]
+            },
             {
                 test: /\.(graphql|gql)$/,
                 exclude: /node_modules/,
@@ -22,28 +28,30 @@ const commonConfig = {
         ]
     },
     resolve: {
-        extensions: ['.js', 'jsx' ]
+        extensions: ['.js', '.jsx' ],
+        fallback: {
+            fs: false,
+            buffer: require.resolve('buffer'),
+            crypto: require.resolve('crypto-browserify'),
+            path: require.resolve('path-browserify'),
+            stream: require.resolve('stream-browserify')
+        }
     }
 };
 
 const webWorker = {
     ...commonConfig,
-    //mode: "development",
-    mode:"production",
     entry: {
         'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
     },
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'build/dist')
-    },
-    devtool: 'source-map'
+    }
 };
 
 const webBuilder = {
     ...commonConfig,
-    //mode: "development",
-    mode:"production",
     entry: {
         'app':'./build/src/app.js'
     },
@@ -53,14 +61,11 @@ const webBuilder = {
         libraryTarget: 'umd',
         umdNamedDefine: true,
         path: path.resolve(__dirname, 'build/dist')
-    },
-    devtool: 'source-map'
+    }
 };
 
 const webChart = {
     ...commonConfig,
-    //mode: "development",
-    mode:"production",
     entry: {
         'plot':'./build/src/plot.js'
     },
@@ -70,14 +75,11 @@ const webChart = {
         libraryTarget: 'umd',
         umdNamedDefine: true,
         path: path.resolve(__dirname, 'build/dist')
-    },
-    devtool: 'source-map'
+    }
 };
 
 const webConstants = {
     ...commonConfig,
-    //mode: "development",
-    mode:"production",
     entry: {
         'constants':'./build/src/constants.js'
     },
@@ -88,8 +90,7 @@ const webConstants = {
         umdNamedDefine: true,
         globalObject: 'this',
         path: path.resolve(__dirname, 'build/dist')
-    },
-    devtool: 'source-map'
+    }
 };
 
 module.exports =[webWorker, webBuilder, webChart, webConstants];

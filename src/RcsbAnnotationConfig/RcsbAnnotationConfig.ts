@@ -1,8 +1,9 @@
 import * as acm from "./RcsbAnnotationConfig.ac.json";
-import {Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvColorGradient, RcsbFvDisplayTypes, RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
+import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbFvColorGradient, RcsbFvDisplayTypes} from '@rcsb/rcsb-saguaro';
 import {AnnotationConfigInterface, RcsbAnnotationConfigInterface} from "./AnnotationConfigInterface";
 import stc from "string-to-color";
+import {AnnotationRequestContext} from "../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 export interface RcsbMergedTypesInterface {
     merged_types: Array<string>;
@@ -19,26 +20,23 @@ const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbAnnotationConfig {
     private readonly annotationConfigMap: AnnotationConfigInterface;
     private readonly annotationMap: Map<string,RcsbAnnotationConfigInterface> = new Map<string, RcsbAnnotationConfigInterface>();
-    private readonly externalAnnotationsOrder: Array<string> = new Array<string>();
-    private readonly instanceAnnotationsOrder: Array<string> = new Array<string>();
-    private readonly entityAnnotationsOrder: Array<string> = new Array<string>();
+
+    private readonly annotationTypes = {
+        instance: new Map<string,Array<string>>(),
+        entity: new Map<string,Array<string>>(),
+        external: new Map<string,Array<string>>()
+    };
     private readonly mergedTypes: Map<string,RcsbMergedTypesInterface> = new Map<string,RcsbMergedTypesInterface>();
-    private readonly addedTypes: Map<string,Array<string>> = new Map<string,Array<string>>();
 
     constructor(acm?: AnnotationConfigInterface) {
         this.annotationConfigMap = acm ?? annotationConfigMap;
         this.annotationConfigMap.config.forEach(m=>{
+            //TODO move provenance list from configuration to TrackManager
             m.provenanceList = new Set<string>();
             this.annotationMap.set(m.type,m);
         });
-        this.externalAnnotationsOrder = this.annotationConfigMap.external_data_order ?? [];
-        this.instanceAnnotationsOrder = this.annotationConfigMap.instance_order ?? [];
-        this.entityAnnotationsOrder = this.annotationConfigMap.entity_order ?? [];
-        this.annotationConfigMap.merge?.forEach(m=>{
-            m.merged_types.forEach(type=>{
-                this.mergedTypes.set(type,m);
-            });
-        });
+        this.initTypes();
+
     }
 
     public getConfig(type: string): RcsbAnnotationConfigInterface{
@@ -49,26 +47,29 @@ export class RcsbAnnotationConfig {
     }
 
     public allTypes(): Set<string>{
-        const concat: Array<string> = this.externalAnnotationsOrder.concat(this.instanceAnnotationsOrder).concat(this.entityAnnotationsOrder);
+        const concat: Array<string> = this.uniprotOrder().concat(this.instanceOrder()).concat(this.entityOrder());
         return new Set(concat);
     }
 
     public uniprotOrder(): Array<string>{
-        return this.externalAnnotationsOrder;
+        return Array.from(this.annotationTypes.external.entries()).map(e=>e[1].sort((a,b)=>a.localeCompare(b))).flat();
     }
 
     public instanceOrder(): Array<string>{
-        return this.instanceAnnotationsOrder;
+        return Array.from(this.annotationTypes.instance.entries()).map(e=>e[1].sort((a,b)=>a.localeCompare(b))).flat();
     }
 
     public entityOrder(): Array<string>{
-        return this.entityAnnotationsOrder;
+        return Array.from(this.annotationTypes.entity.entries()).map(e=>e[1].sort((a,b)=>a.localeCompare(b))).flat();
     }
 
     //TODO refactor how title and type are defined. Can this be split in two different methods ?
-    public buildAndAddType(d: Feature, trackTitle?:string, titleSuffix?: string, typeSuffix?: string): string{
-        const type: string = d.type;
-        const a: DynamicKeyAnnotationInterface = d;
+    public async getAnnotationType(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<string>{
+        const trackTitle: string = typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,feature)) : undefined;
+        const titleSuffix: string = typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,feature)) : undefined;
+        const typeSuffix: string = typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,feature)) : undefined;
+        const type: string = feature.type;
+        const a: DynamicKeyAnnotationInterface = feature;
         const addToTypeSuffix: ArraySuffix<string> =  new ArraySuffix<string>();
         addToTypeSuffix.push(titleSuffix,typeSuffix);
         if(Array.isArray(this.annotationMap.get(type)?.addToType)){
@@ -77,9 +78,10 @@ export class RcsbAnnotationConfig {
                     addToTypeSuffix.push(a[field]);
             });
         }
+        let newType: string;
         if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
             addToTypeSuffix.unshift(a[this.annotationMap.get(type).key]);
-            const newType: string = type+addToTypeSuffix.join(".");
+            newType = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 const title: string = a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "";
                 this.annotationMap.set(newType, {
@@ -90,11 +92,10 @@ export class RcsbAnnotationConfig {
                     title: title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationConfigInterface);
+                this.addNewType(newType, type);
             }
-            this.addNewType(newType, type);
-            return newType;
         }else if(titleSuffix !=  null){
-            const newType: string = type+addToTypeSuffix.join(".");
+            newType = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
@@ -105,9 +106,8 @@ export class RcsbAnnotationConfig {
                 });
                 this.addNewType(newType, type, titleSuffix);
             }
-            return newType;
         }else if(trackTitle!=null){
-            const newType: string = type+addToTypeSuffix.join(".");
+            newType = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
                     ...this.annotationMap.get(type),
@@ -116,12 +116,24 @@ export class RcsbAnnotationConfig {
                 });
                 this.addNewType(newType,type);
             }
-            return newType;
         }else{
-            const newType: string = type+addToTypeSuffix.join(".");
-            this.addNewType(newType,type);
-            return newType;
+            newType = type+addToTypeSuffix.join(".");
+            if(!this.annotationMap.has(newType) || this.mergedTypes.has(type)) {
+                this.addNewType(newType, type);
+            }
         }
+        this.addProvenance(newType, feature.provenance_source);
+        return newType;
+    }
+
+    public isMergedType(type: string): boolean {
+        return this.mergedTypes.has(type);
+    }
+
+    public getMergeConfig(type: string): RcsbMergedTypesInterface {
+        if(this.mergedTypes.has(type))
+            return this.mergedTypes.get(type);
+        return null;
     }
 
     private addNewType(newType: string, type: string, titleSuffix?: string){
@@ -138,95 +150,59 @@ export class RcsbAnnotationConfig {
                 type: mergedType,
                 display: this.mergedTypes.get(type).display,
                 color: null,
-                title: newType != type ? this.annotationMap.get(newType).title : this.mergedTypes.get(type).title,
-                prefix: newType != type ? this.mergedTypes.get(type).title : undefined,
+                title: titleSuffix ?? this.mergedTypes.get(type).title,
+                prefix: titleSuffix ?  this.mergedTypes.get(type).title : undefined,
                 provenanceList: new Set<string>()
             });
-            this.checkAndIncludeNewType(mergedType, type);
+            this.checkAndIncludeNewType(mergedType, this.mergedTypes.get(type).type);
         }else{
-            if(!this.addedTypes.has(type))
-                this.addedTypes.set(type, new Array<string>());
-            this.addedTypes.get(type).push(newType);
-            //this.checkAndIncludeNewType(newType, type);
+            this.checkAndIncludeNewType(newType, type)
         }
-    }
-
-    public sortAndIncludeNewTypes(): void{
-        //this.cleanAddedTypes();
-        const addedTypesKeys: Array<string> = Array.from(this.addedTypes.keys()).sort((a,b)=>b.localeCompare(a));
-        addedTypesKeys.forEach(type=>{
-            const newTypes: Array<string> = this.addedTypes.get(type).sort((a,b)=>b.localeCompare(a));
-            newTypes.forEach(newT=>{
-                this.checkAndIncludeNewType(newT,type);
-            });
-        });
     }
 
     private checkAndIncludeNewType(newType: string, type: string){
         if(type === newType)
             return;
-        if(this.instanceAnnotationsOrder.includes(type) && !this.instanceAnnotationsOrder.includes(newType))
-            addType(this.instanceAnnotationsOrder, newType, type);
-        else if(this.entityAnnotationsOrder.includes(type) && !this.entityAnnotationsOrder.includes(newType))
-            addType(this.entityAnnotationsOrder, newType, type);
-        else if(this.externalAnnotationsOrder.includes(type) && !this.externalAnnotationsOrder.includes(newType))
-            addType(this.externalAnnotationsOrder, newType, type);
-    }
-
-    private cleanAddedTypes(): void{
-        this.addedTypes.forEach((newTypes,type)=>{
-            newTypes.forEach(newT=>{
-                [this.instanceAnnotationsOrder, this.entityAnnotationsOrder, this.externalAnnotationsOrder].forEach(array=>{
-                    const index: number = array.indexOf(newT);
-                    if(index>-1)
-                        array.splice(index,1);
-                });
-            });
-        })
-    }
-
-    isMergedType(type: string): boolean {
-        return this.mergedTypes.has(type);
-    }
-
-    getMergedType(type: string): string {
-        if(this.mergedTypes.has(type))
-            return this.mergedTypes.get(type).type;
-        return null;
-    }
-
-    annotationMergedPreference(type: string, a: RcsbFvTrackDataElementInterface, b: RcsbFvTrackDataElementInterface): boolean {
-        if(!this.mergedTypes.has(type))
-            return false;
-        return this.mergedTypes.get(type).merged_types.indexOf(a.type) < this.mergedTypes.get(type).merged_types.indexOf(b.type);
-
+        if(this.annotationTypes.instance.has(type) && !this.annotationTypes.instance.get(type).includes(newType))
+            this.annotationTypes.instance.get(type).push(newType);
+        if(this.annotationTypes.entity.has(type) && !this.annotationTypes.entity.get(type).includes(newType))
+            this.annotationTypes.entity.get(type).push(newType);
+        if(this.annotationTypes.external.has(type) && !this.annotationTypes.external.get(type).includes(newType))
+            this.annotationTypes.external.get(type).push(newType);
     }
 
     static randomRgba(str?: string): string{
         return stc(str);
     }
 
-    addProvenance(type:string, provenanceName: string): void {
+    private addProvenance(type:string, provenanceName: string): void {
         if(this.annotationMap.has(type))
             this.annotationMap.get(type).provenanceList.add(provenanceName);
     }
 
-    addMultipleProvenance(type:string, provenanceList: Array<string>): void {
+    public addMultipleProvenance(type:string, provenanceList: Array<string>): void {
         provenanceList.forEach(p=>{
             this.addProvenance(type, p);
         });
     }
 
-    getProvenanceList(type: string): Array<string>{
-        if(this.annotationMap.has(type))
-            return Array.from(this.annotationMap.get(type).provenanceList);
-        return null;
+    private initTypes(): void {
+        this.annotationConfigMap.external_data_order?.forEach(type=>{
+            this.annotationTypes.external.set(type, [type]);
+        });
+        this.annotationConfigMap.instance_order?.forEach(type=>{
+            this.annotationTypes.instance.set(type, [type]);
+        });
+        this.annotationConfigMap.entity_order?.forEach(type=>{
+            this.annotationTypes.entity.set(type, [type]);
+        });
+        this.annotationConfigMap.merge?.forEach(m=>{
+            m.merged_types.forEach(type=>{
+                this.mergedTypes.set(type,m);
+            });
+        });
     }
 
-    isTransformedToNumerical(type: string): boolean{
-        return this.annotationMap.get(type).transformToNumerical === true;
-
-    }
 }
 
 class ArraySuffix<T> extends Array<T> {

@@ -2,6 +2,35 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.0] - 2022-06-01
+### Improvements
+- `TagDelimiter` exposes methods to parse RCSB PDB object identifiers
+- Removed alignment element sorting
+- Large alignments lists do not block dropdown buttons
+- `RcsbGroupWeb.RcsbResidueChart` new package to display residue properties histograms
+  - It can display any positional feature at entry and instance level
+  - It cannot filter properties
+- `ChartConfigInterface.chartDisplayConfig` allows to overwrite `CharTools` display properties (sizes, padding, fontsize, ...)
+
+### Code refactoring
+- `AnnotationCollector` class does not format collected data anymore. The only responsibility of this class is to dispatch positional features
+- `SeqeunceCollector` class has been renamed to `AlignmentCollector` and it does not format data anymore. The only responsibility of this class is to dispatch alignment data
+- `RcsbFvFactories` is a new package to format data from the 1d-coordinate sever into track configuration objects `RcsbFvRowConfigInterface`. 
+  Tracks are grouped in blocks. In most cases one block represents alignments and a second block positional features
+- `RcsvFvBlockFactoryInterface` functional interface that defines a block factory
+  - `BlockManager` package defines the logic of how positional features are organized into tracks
+- `RcsvFvTrackFactoryInterface` functional interface that defines a track factory
+- `WebTools` package renamed to `RcsbFvComponents`
+- Class `SelectButtonManager` abstracts creation of select dropdown menus
+  - Dropdowns menu are fake-unmounted using `Root::render(undefined)`
+- `ChartTools` readonly static attributes are not public anymore.
+  - `ChartTools.getConfig` allows to get `CharTools` attributes
+  
+### Dependency update
+- rcsb-saguaro v2.2.6
+- React 18
+- Multiple dependencies updated 
+
 ## [4.3.6] - 2022-05-26
 ### Bug fixes
 - Client initializers were not overwriting `rcsbRequestClient` attributes

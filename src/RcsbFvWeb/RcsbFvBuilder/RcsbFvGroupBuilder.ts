@@ -43,8 +43,7 @@ export class RcsbFvGroupBuilder {
                         from: from,
                         to: to,
                         additionalConfig: {
-                            ...additionalConfig,
-                            //sequenceCollector: new ObservedSequenceCollector()
+                            ...additionalConfig
                         },
                         resolve: resolve
                     }

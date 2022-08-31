@@ -85,8 +85,7 @@ export class RcsbFvChromosomeBuilder {
                         elementSelectId: elementSelectId,
                         additionalConfig:{
                             rcsbContext:{
-                                entryId: entityId.split(TagDelimiter.entity)[0],
-                                entityId: entityId.split(TagDelimiter.entity)[1],
+                                ...TagDelimiter.parseEntity(entityId),
                                 chrId: chrId
                             },
                             ...additionalConfig

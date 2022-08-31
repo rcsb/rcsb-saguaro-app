@@ -1,18 +1,14 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {AnnotationCollectorInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
-import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
+import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {PlainAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/PlainAlignmentTrackFactory";
 
-const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
-    protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector(annotationConfigMap);
 
-    protected async protectedBuild(buildConfig: RcsbFvModuleBuildInterface): Promise<void> {
-
-        this.alignmentTracks = await this.sequenceCollector.collect({
+    protected async protectedBuild(): Promise<void> {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        const alignmentRequestContext = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
             filter: buildConfig.additionalConfig?.alignmentFilter,
@@ -23,16 +19,22 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             fitTitleWidth:true,
             excludeFirstRowLink: true,
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
-        }, buildConfig.additionalConfig?.alignmentFilter);
+        }
+        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
+            alignmentTrackFactory: new PlainAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
+        });
 
-        this.boardConfigData.length = this.sequenceCollector.getSequenceLength();
+        this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;
 
         return void 0;
     }
 
-    protected concatAlignmentAndAnnotationTracks(buildConfig: RcsbFvModuleBuildInterface): void {
-        this.rowConfigData =  this.alignmentTracks.sequence ? this.alignmentTracks.sequence.concat(this.alignmentTracks.alignment) : this.alignmentTracks.alignment;
+    protected concatAlignmentAndAnnotationTracks(): void {
+        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        this.rowConfigData =  this.referenceTrack ? [this.referenceTrack].concat(this.alignmentTracks) : this.alignmentTracks;
     }
+
 
 }
