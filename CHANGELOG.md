@@ -2,7 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.4.0] - 2022-06-01
+## [4.4.1] - 2022-09-01
+### Dependency update
+- rcsb-saguaro v2.2.7
+
+## [4.4.0] - 2022-08-31
 ### Improvements
 - `TagDelimiter` exposes methods to parse RCSB PDB object identifiers
 - Removed alignment element sorting
