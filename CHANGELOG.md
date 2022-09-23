@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.10] - 2022-09-23
+### Bug fix
+-  `buildUniprotMultipleEntitySequenceFv` `boardConfig` overwriting bug fixed
+
 ## [4.4.9] - 2022-09-13
 ### Dependency update
 - rcsb-saguaro v2.2.15
