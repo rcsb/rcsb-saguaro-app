@@ -15,6 +15,8 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvGroupTabsBuilder} from "./RcsbFvGroup/RcsbFvGroupTabsBuilder";
 import {PairwiseAlignmentInterface} from "../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
+import {GroupPfvApp} from "./RcsbFvGroup/GroupTabs/GroupPfvApp";
+import {RcsbFvGroupSequenceIdentityAlignment} from "./RcsbFvGroup/RcsbFvGroupSequenceIdentityAlignment";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -91,4 +93,8 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
 
 export function buildGroupFv(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig): void {
     RcsbFvGroupTabsBuilder.buildGroupTabs(elementId, groupProvenanceId, groupId, query);
+}
+
+export function buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    return RcsbFvGroupSequenceIdentityAlignment.buildSequenceIdentityAlignmentFv(elementId,groupId,query,additionalConfig);
 }

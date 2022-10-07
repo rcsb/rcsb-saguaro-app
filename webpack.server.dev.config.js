@@ -46,7 +46,7 @@ const commonConfig = {
     devtool: 'source-map'
 };
 
-const examples = ['ResidueDistribution','GroupHistogram','InstanceSequenceFv','SingleEntitySummaryFv','EntitySummaryFv','UniprotGroupFv','SequenceIdentityGroupFv','UniprotFv'];
+const examples = ['ResidueDistribution','GroupHistogram','InstanceSequenceFv','SingleEntitySummaryFv','EntitySummaryFv','UniprotGroupFv','SequenceIdentityGroupFv','UniprotFv','SequenceIdentityGroupAlignmentFv'];
 const entries = examples.reduce((prev,current)=>{prev[current]=`./src/RcsbFvExamples/${current}.ts`;return prev;},{});
 
 const server = {
