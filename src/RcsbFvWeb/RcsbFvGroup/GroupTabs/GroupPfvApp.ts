@@ -31,7 +31,8 @@ export namespace GroupPfvApp {
                 additionalConfig = {
                     ...additionalConfig,
                     boardConfig:{
-                        rowTitleWidth: 190
+                        rowTitleWidth: 190,
+                        ...additionalConfig.boardConfig
                     },
                     externalTrackBuilder: alignmentVariation()
                 }
@@ -65,7 +66,8 @@ export namespace GroupPfvApp {
         additionalConfig = {
             ...additionalConfig,
             boardConfig:{
-                rowTitleWidth: 150
+                rowTitleWidth: 150,
+                ...additionalConfig.boardConfig
             },
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
@@ -100,7 +102,8 @@ export namespace GroupPfvApp {
         additionalConfig = {
             ...additionalConfig,
             boardConfig:{
-                rowTitleWidth: 190
+                rowTitleWidth: 190,
+                ...additionalConfig.boardConfig
             },
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,

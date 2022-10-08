@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.12] - 2022-10-07
+### Bug fix
+- `buildSequenceIdentityAlignmentFv` `boardConfig` overwriting bug fixed
+
 ## [4.4.11] - 2022-10-07
 ### Improvement
 - Exposed `buildSequenceIdentityAlignmentFv` to display sequence identity group alignments
