@@ -13,6 +13,7 @@ import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
+import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -34,7 +35,9 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
-        await trackFactory.prepareFeatures(await collectUnobservedRegions(groupId), await  collectLocalScores(groupId));
+
+        const targetList: string[] = alignmentResponse.target_alignment.map(ta=>TagDelimiter.parseEntity(ta.target_id).entryId);
+        await trackFactory.prepareFeatures(await collectUnobservedRegions(groupId, targetList), await  collectLocalScores(groupId, targetList));
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
         });
@@ -53,7 +56,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectUnobservedRegions(groupId: string): Promise<Array<AnnotationFeatures>> {
+async function collectUnobservedRegions(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
     return await rcsbClient.requestRcsbPdbGroupAnnotations({
         histogram: false,
         groupId: groupId,
@@ -64,11 +67,16 @@ async function collectUnobservedRegions(groupId: string): Promise<Array<Annotati
             operation: OperationType.Equals,
             field:FieldName.Type,
             values:[Type.UnobservedResidueXyz]
+        },{
+            source:Source.PdbInstance,
+            operation: OperationType.Contains,
+            field:FieldName.TargetId,
+            values:targetList
         }]
     });
 }
 
-async function collectLocalScores(groupId: string): Promise<Array<AnnotationFeatures>> {
+async function collectLocalScores(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
     return await rcsbClient.requestRcsbPdbGroupAnnotations({
         histogram: false,
         groupId: groupId,
@@ -79,6 +87,11 @@ async function collectLocalScores(groupId: string): Promise<Array<AnnotationFeat
             operation: OperationType.Equals,
             field:FieldName.Type,
             values:[Type.MaQaMetricLocalTypePlddt]
+        },{
+            source:Source.PdbInstance,
+            operation: OperationType.Contains,
+            field:FieldName.TargetId,
+            values:targetList
         }]
     });
 }
