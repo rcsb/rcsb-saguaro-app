@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.13] - 2022-10-10
+### Display improvement
+- `RcsbFvGroupAlignment` display aligned track using observed/unobserved and local scores color codes
+### Minor refactor
+- `UniprotAlignmentTrackFactory` renamed to `MsaAlignmentTrackFactory`
+
 ## [4.4.12] - 2022-10-07
 ### Bug fix
 - `buildSequenceIdentityAlignmentFv` `boardConfig` overwriting bug fixed

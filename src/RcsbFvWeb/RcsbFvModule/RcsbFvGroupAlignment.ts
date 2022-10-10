@@ -1,13 +1,25 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {PlainAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/PlainAlignmentTrackFactory";
+import {
+    AlignmentResponse,
+    AnnotationFeatures,
+    FieldName,
+    GroupReference,
+    OperationType,
+    Source,
+    Type
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {
+    MsaAlignmentTrackFactory
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        const groupId: string = buildConfig.groupId;
         const alignmentRequestContext = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -21,8 +33,10 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
+        await trackFactory.prepareFeatures(await collectUnobservedRegions(groupId), await  collectLocalScores(groupId));
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
-            alignmentTrackFactory: new PlainAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator())
+            alignmentTrackFactory: trackFactory
         });
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
@@ -37,4 +51,34 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
     }
 
 
+}
+
+async function collectUnobservedRegions(groupId: string): Promise<Array<AnnotationFeatures>> {
+    return await rcsbClient.requestRcsbPdbGroupAnnotations({
+        histogram: false,
+        groupId: groupId,
+        group: GroupReference.SequenceIdentity,
+        sources: [Source.PdbInstance],
+        filters: [{
+            source:Source.PdbInstance,
+            operation: OperationType.Equals,
+            field:FieldName.Type,
+            values:[Type.UnobservedResidueXyz]
+        }]
+    });
+}
+
+async function collectLocalScores(groupId: string): Promise<Array<AnnotationFeatures>> {
+    return await rcsbClient.requestRcsbPdbGroupAnnotations({
+        histogram: false,
+        groupId: groupId,
+        group: GroupReference.SequenceIdentity,
+        sources: [Source.PdbInstance],
+        filters: [{
+            source:Source.PdbInstance,
+            operation: OperationType.Equals,
+            field:FieldName.Type,
+            values:[Type.MaQaMetricLocalTypePlddt]
+        }]
+    });
 }

@@ -7,7 +7,7 @@ import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/
 import {PlainObservedAlignmentTrackFactory} from "./PlainObservedAlignmentTrackFactory";
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 
-export class UniprotAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
+export class MsaAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
     private observedAlignmentTrackFactory: PlainObservedAlignmentTrackFactory;
     private positionalScoreAlignmentTrackFactory: PositionalScoreAlignmentTrackFactory;
