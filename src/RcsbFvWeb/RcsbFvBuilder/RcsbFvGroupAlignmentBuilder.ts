@@ -1,12 +1,15 @@
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {GroupPfvApp} from "./GroupTabs/GroupPfvApp";
+import {
+    RcsbFvAdditionalConfig,
+    RcsbFvModulePublicInterface
+} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {GroupPfvApp} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 
-export class RcsbFvGroupSequenceIdentityAlignment {
+export class RcsbFvGroupAlignmentBuilder {
 
     static async buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig):Promise<RcsbFvModulePublicInterface> {
         let entityCount: number = -1;
@@ -27,4 +30,5 @@ export class RcsbFvGroupSequenceIdentityAlignment {
             ...additionalConfig
         })
     }
+
 }

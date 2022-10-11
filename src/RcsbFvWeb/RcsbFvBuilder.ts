@@ -16,7 +16,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {RcsbFvGroupTabsBuilder} from "./RcsbFvGroup/RcsbFvGroupTabsBuilder";
 import {PairwiseAlignmentInterface} from "../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {GroupPfvApp} from "./RcsbFvGroup/GroupTabs/GroupPfvApp";
-import {RcsbFvGroupSequenceIdentityAlignment} from "./RcsbFvGroup/RcsbFvGroupSequenceIdentityAlignment";
+import {RcsbFvGroupAlignmentBuilder} from "./RcsbFvBuilder/RcsbFvGroupAlignmentBuilder";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -96,5 +96,5 @@ export function buildGroupFv(elementId: string, groupProvenanceId: GroupProvenan
 }
 
 export function buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvGroupSequenceIdentityAlignment.buildSequenceIdentityAlignmentFv(elementId,groupId,query,additionalConfig);
+    return RcsbFvGroupAlignmentBuilder.buildSequenceIdentityAlignmentFv(elementId,groupId,query,additionalConfig);
 }
