@@ -37,7 +37,11 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
         const targetList: string[] = alignmentResponse.target_alignment.map(ta=>TagDelimiter.parseEntity(ta.target_id).entryId);
-        await trackFactory.prepareFeatures(await collectUnobservedRegions(groupId, targetList), await  collectLocalScores(groupId, targetList));
+        const alignmentFeatures: AnnotationFeatures[] = await collectAlignmentFeatures(groupId, targetList);
+        await trackFactory.prepareFeatures(
+            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.UnobservedResidueXyz)})),
+            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.MaQaMetricLocalTypePlddt)}))
+        );
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
         });
@@ -56,7 +60,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectUnobservedRegions(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
+async function collectAlignmentFeatures(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
     return await rcsbClient.requestRcsbPdbGroupAnnotations({
         histogram: false,
         groupId: groupId,
@@ -66,27 +70,7 @@ async function collectUnobservedRegions(groupId: string, targetList: string[]): 
             source:Source.PdbInstance,
             operation: OperationType.Equals,
             field:FieldName.Type,
-            values:[Type.UnobservedResidueXyz]
-        },{
-            source:Source.PdbInstance,
-            operation: OperationType.Contains,
-            field:FieldName.TargetId,
-            values:targetList
-        }]
-    });
-}
-
-async function collectLocalScores(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
-    return await rcsbClient.requestRcsbPdbGroupAnnotations({
-        histogram: false,
-        groupId: groupId,
-        group: GroupReference.SequenceIdentity,
-        sources: [Source.PdbInstance],
-        filters: [{
-            source:Source.PdbInstance,
-            operation: OperationType.Equals,
-            field:FieldName.Type,
-            values:[Type.MaQaMetricLocalTypePlddt]
+            values:[Type.UnobservedResidueXyz,Type.MaQaMetricLocalTypePlddt]
         },{
             source:Source.PdbInstance,
             operation: OperationType.Contains,

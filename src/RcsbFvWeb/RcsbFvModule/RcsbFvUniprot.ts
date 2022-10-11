@@ -30,7 +30,11 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
-        await trackFactory.prepareFeatures(await collectUnobservedRegions(upAcc), await  collectLocalScores(upAcc));
+        const alignmentFeatures: AnnotationFeatures[] = await collectFeatures(upAcc);
+        await trackFactory.prepareFeatures(
+            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.UnobservedResidueXyz)})),
+            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.MaQaMetricLocalTypePlddt)}))
+        );
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
         });
@@ -61,7 +65,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
 }
 
-async function collectUnobservedRegions(upAcc: string): Promise<Array<AnnotationFeatures>> {
+async function collectFeatures(upAcc: string): Promise<Array<AnnotationFeatures>> {
     return await rcsbClient.requestRcsbPdbAnnotations({
         queryId: upAcc,
         reference: SequenceReference.Uniprot,
@@ -70,21 +74,7 @@ async function collectUnobservedRegions(upAcc: string): Promise<Array<Annotation
             source:Source.PdbInstance,
             operation: OperationType.Equals,
             field:FieldName.Type,
-            values:[Type.UnobservedResidueXyz]
-        }]
-    });
-}
-
-async function collectLocalScores(upAcc: string): Promise<Array<AnnotationFeatures>> {
-    return await rcsbClient.requestRcsbPdbAnnotations({
-        queryId: upAcc,
-        reference: SequenceReference.Uniprot,
-        sources: [Source.PdbInstance],
-        filters: [{
-            source:Source.PdbInstance,
-            operation: OperationType.Equals,
-            field:FieldName.Type,
-            values:[Type.MaQaMetricLocalTypePlddt]
+            values:[Type.UnobservedResidueXyz,Type.MaQaMetricLocalTypePlddt]
         }]
     });
 }
