@@ -4,14 +4,24 @@ import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
 import {RcsbFvModulePublicInterface} from "../../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
 import {ItemComponent} from "./ItemComponent";
 
-interface FilterItemState {
+interface FilterItemProps {
+    elements:string[];
+    stateChange:(state:FilterPartialState,prevState:FilterPartialState)=>void;
+}
+
+interface FilterPartialState {
+    filteredElements: string[];
+}
+
+interface FilterItemState extends FilterPartialState{
     collapseIn:boolean;
 }
 
-export class FilterItemComponent<T extends unknown[]> extends AbstractMenuItemComponent<T,{pfv:RcsbFvModulePublicInterface;},{collapseIn:boolean;}> {
+export class FilterItemComponent extends AbstractMenuItemComponent<FilterItemProps,FilterPartialState,FilterItemState> {
 
     private readonly allowedValues:Map<string,boolean> = new Map<string,boolean>();
-    readonly state: FilterItemState ={
+    readonly state: FilterItemState = {
+        filteredElements:[],
         collapseIn:false,
     }
 
@@ -22,13 +32,6 @@ export class FilterItemComponent<T extends unknown[]> extends AbstractMenuItemCo
                 <div className={"position-absolute"} ></div>
             </Collapse>
         </>);
-    }
-
-    async componentDidMount() {
-        (await this.props.pfv.getAlignmentResponse()).target_alignment_subset.edges.map(e=>e.node).forEach(n=>console.log(n))
-    }
-
-    execute(): void {
     }
 
 }

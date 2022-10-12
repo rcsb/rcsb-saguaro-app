@@ -1,20 +1,9 @@
 import React from "react";
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
 
-type MenuActionArgsType<T extends unknown[]> = [string, ...T, RcsbFvAdditionalConfig?];
-export type PfvMethodType<T  extends unknown[]> = (...x:MenuActionArgsType<T>)=>Promise<RcsbFvModulePublicInterface>;
-interface MenuActionInterface<T extends unknown[]> {
-    pfvMethod: PfvMethodType<T>;
-    pfvParams: T;
-    additionalConfig?:RcsbFvAdditionalConfig;
+export abstract class AbstractMenuItemComponent<P extends {stateChange(state:S, prevState:S): void}, S extends {}, SS extends S = S> extends React.Component<P,S & SS> {
+
+    componentDidUpdate(prevProps: Readonly<P & { stateChange(newState: S, oldState: S): void }>, prevState: Readonly<S & SS>, snapshot?: any) {
+        this.props.stateChange(this.state, prevState);
+    }
+
 }
-
-export interface MenuItemInterface<T extends unknown[]> {
-    elementId:string;
-    actionMethod: MenuActionInterface<T>;
-}
-
-export abstract class AbstractMenuItemComponent<T extends unknown[], A={}, S=any> extends React.Component<MenuItemInterface<T> & A, S> {
-    abstract execute(): void;
-}
-

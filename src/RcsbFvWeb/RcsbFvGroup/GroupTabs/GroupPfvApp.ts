@@ -1,4 +1,7 @@
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../../RcsbFvModule/RcsbFvModuleInterface";
+import {
+    RcsbFvAdditionalConfig,
+    RcsbFvModulePublicInterface
+} from "../../RcsbFvModule/RcsbFvModuleInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {alignmentVariation} from "../../../RcsbUtils/TrackGenerators/AlignmentVariation";
@@ -20,10 +23,11 @@ import {alignmentGlobalLigandBindingSite} from "../../../RcsbUtils/TrackGenerato
 import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
 import {GroupPfvUI} from "./GroupPfvUI";
 import {TrackManagerInterface} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {ActionMethods} from "../../../RcsbFvUI/Helper/ActionMethods";
 
 export namespace GroupPfvApp {
 
-    export async function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, entityCount:number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+    export async function alignment(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, entityCount:number, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface): Promise<RcsbFvModulePublicInterface>{
         switch (groupProvenanceId){
             case GroupProvenanceId.ProvenanceMatchingUniprotAccession:
                 return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementId,elementId+RcsbTabs.SELECT_SUFFIX,groupId,{},additionalConfig)
@@ -48,15 +52,29 @@ export namespace GroupPfvApp {
                     ...pfvArgs,
                     additionalConfig
                 );
-                GroupPfvUI.alignmentUI<typeof pfvArgs>(
+                const paginationCallback = ActionMethods.paginationCallback<typeof pfvArgs>();
+                GroupPfvUI.alignmentUI(
                     elementId,
-                    RcsbFvGroupBuilder.buildGroupAlignmentFv,
                     {
-                        alignmentCount:entityCount,
-                        pfv:pfv
-                    },
-                    additionalConfig,
-                    ...pfvArgs
+                        count:entityCount,
+                        after: additionalConfig?.page?.after ?? "0",
+                        first: additionalConfig?.page?.first ?? 50,
+                        stateChange:(state, prevState)=>{
+                            paginationCallback(
+                                elementId,
+                                pfv,
+                                RcsbFvGroupBuilder.buildGroupAlignmentFv,
+                                pfvArgs,
+                                {
+                                    ...additionalConfig,
+                                    page:{
+                                        first:state.first,
+                                        after:state.after.toString()
+                                    }
+                                }
+                            )
+                        }
+                    }
                 );
                 return pfv;
         }

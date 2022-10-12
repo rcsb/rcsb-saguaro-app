@@ -1,35 +1,24 @@
 import React from "react";
-import {PfvMethodType} from "./AbstractMenuItemComponent";
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
 import {PaginationItemComponent} from "./Components/PaginationItemComponent";
 import {FilterItemComponent} from "./Components/FilterItemComponent";
 
 export class MenuItemFactory {
 
-    public static getPaginationItem<T extends unknown[]>(elementId: string, pfvMethod:PfvMethodType<T>, pfv:RcsbFvModulePublicInterface, count:number, additionalConfig: RcsbFvAdditionalConfig, ...x:T): JSX.Element {
+    public static getPaginationItem(count:number, after:string, first:number, stateChange:(state:{after:number;first:number;},prevState:{after:number;first:number;})=>void): JSX.Element {
        return(
-            <PaginationItemComponent<T>
-                elementId={elementId}
-                actionMethod={{
-                    pfvMethod:pfvMethod,
-                    pfvParams:x,
-                    additionalConfig:additionalConfig
-                }}
-                pfv={pfv}
+            <PaginationItemComponent
                 count={count}
+                after={after}
+                first={first}
+                stateChange={stateChange}
             />
        );
     }
 
-    public static getFilterItem<T extends unknown[]>(elementId: string, pfvMethod:PfvMethodType<T>, pfv:RcsbFvModulePublicInterface, additionalConfig: RcsbFvAdditionalConfig, ...x:T): JSX.Element {
-        return (<FilterItemComponent<T>
-            elementId={elementId}
-            actionMethod={{
-                pfvMethod:pfvMethod,
-                pfvParams:x,
-                additionalConfig:additionalConfig
-            }}
-            pfv={pfv}
+    public static getFilterItem(elements:string[], stateChange:(state:{filteredElements: string[]},prevState:{filteredElements: string[]})=>void): JSX.Element {
+        return (<FilterItemComponent
+           elements={elements}
+           stateChange={stateChange}
         />);
     }
 

@@ -1,20 +1,28 @@
 import React from "react";
-import {asyncScheduler, Subscription} from "rxjs";
-import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
-import {AbstractMenuItemComponent, MenuItemInterface} from "../AbstractMenuItemComponent";
 import {ItemComponent} from "./ItemComponent";
-import {RcsbFvModulePublicInterface} from "../../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
+import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
 
-export class PaginationItemComponent<T extends unknown[]> extends AbstractMenuItemComponent<T, {count:number;pfv:RcsbFvModulePublicInterface;},{after:number;first:number;}> {
+interface PaginationItemState {
+    after:number;
+    first:number;
+}
 
-    private subscription: Subscription;
-    readonly state:{after:number;first:number;} = {
-        after: parseInt(this.props.actionMethod.additionalConfig.page.after),
-        first: this.props.actionMethod.additionalConfig.page.first > this.props.count ? this.props.count : this.props.actionMethod.additionalConfig.page.first
+interface PaginationItemProps {
+    count:number;
+    after:string;
+    first:number;
+    stateChange(state:PaginationItemState,prevState:PaginationItemState):void;
+}
+
+export class PaginationItemComponent extends AbstractMenuItemComponent<PaginationItemProps,PaginationItemState>{
+
+    readonly state:PaginationItemState = {
+        after: parseInt(this.props.after),
+        first: this.props.first > this.props.count ? this.props.count : this.props.first
     }
 
     render(): JSX.Element {
-        if(this.props.actionMethod.additionalConfig.page.first < this.props.count)
+        if(this.props.first < this.props.count)
             return (
                 <ItemComponent role={""}>
                     <div
@@ -38,36 +46,8 @@ export class PaginationItemComponent<T extends unknown[]> extends AbstractMenuIt
         return null;
     }
 
-    async componentDidUpdate(prevProps: Readonly<MenuItemInterface<T> & { count: number }>, prevState: Readonly<{ after: number; first: number }>, snapshot?: any) {
-        await this.execute();
-    }
-
-    async execute(): Promise<void> {
-        if(this.subscription) this.subscription.unsubscribe()
-        this.subscription = asyncScheduler.schedule(async ()=>{
-            const dom:[number,number] = this.props.pfv.getFv().getDomain()
-            const sel: SelectionInterface[] = this.props.pfv.getFv().getSelection("select")
-            await this.props.actionMethod.pfvMethod(
-                this.props.elementId,
-                ...this.props.actionMethod.pfvParams,
-                {
-                    ...this.props.actionMethod.additionalConfig,
-                    page:{
-                        after: this.state.after.toString(),
-                        first: this.state.first
-                    }
-                }
-            );
-            this.props.pfv.getFv().setDomain(dom);
-            this.props.pfv.getFv().setSelection({
-                elements:sel.map((s)=>({
-                    begin:s.rcsbFvTrackDataElement.begin,
-                    end:s.rcsbFvTrackDataElement.end
-                })),
-                mode:"select"
-            });
-        },333);
-
+    componentDidUpdate(prevProps: Readonly<PaginationItemProps & { stateChange(newState: PaginationItemState, oldState: PaginationItemState): void }>, prevState: Readonly<PaginationItemState>, snapshot?: any) {
+        super.componentDidUpdate(prevProps, prevState, snapshot);
     }
 
     private next(n: number): void {
