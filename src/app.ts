@@ -18,6 +18,7 @@ export {
     buildUniprotFv,
     buildGroupFv,
     buildSequenceIdentityAlignmentFv,
+    buildUniprotAlignmentFv,
     unmount
 } from "./RcsbFvWeb/RcsbFvBuilder";
 
