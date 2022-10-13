@@ -7,6 +7,8 @@
 - `RcsbFvGroupAlignment` display aligned track using observed/unobserved and local scores color codes
 ### Minor refactor
 - `UniprotAlignmentTrackFactory` renamed to `MsaAlignmentTrackFactory`
+### Bug Fix
+- External track Alignment Variation memory leak bug fixed
 
 ## [4.4.12] - 2022-10-07
 ### Bug fix

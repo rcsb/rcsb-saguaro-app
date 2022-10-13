@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.4.13-uniprot-msa.4",
+  "version": "4.4.13-uniprot-msa.5",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [

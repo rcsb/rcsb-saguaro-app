@@ -48,6 +48,7 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                     description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
                 }))
             }].forEach(track=>tracks.alignmentTracks.unshift(track));
+            querySequenceLogo = [];
             return void 0;
         },
         processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
