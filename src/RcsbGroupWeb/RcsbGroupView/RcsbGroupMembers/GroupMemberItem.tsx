@@ -5,6 +5,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 
 interface GroupMemberItemInterface {
     item: ItemFeaturesInterface;
+    groupId: string;
     groupProvenanceId: GroupProvenanceId;
 }
 
@@ -28,6 +29,7 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
             <div>
                 <div><img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/></div>
                 <div className={"bg-light border-top p-md-4"}>
+                    <div><strong><i className={"bi bi-box"}/> 3D View</strong>: <a href={alignment1d3dUrl(this.props.groupId)}>1D-3D Alignments</a></div>
                     <div>
                         <strong>{memberSummaryUrlText(this.props.item, this.props.groupProvenanceId)} </strong>
                         <span> - </span>
@@ -54,6 +56,10 @@ function memberImgUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvena
     if(groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId)
         return resource.rcsb_cdn.url + ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() + "/" + ei.entryId.toLowerCase() + "_model-1.jpeg";
     return resource.rcsb_cdn.url + (TagDelimiter.isRcsbId(ei.entityId) ? ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() : "") + "/" + ei.entryId.toLowerCase() + "_chain-" + ei.asymId + ".jpeg";
+}
+
+function alignment1d3dUrl(groupId: string){
+    return resource["1d3d-alignment"].url+groupId;
 }
 
 function memberSummaryUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvenanceId): string{

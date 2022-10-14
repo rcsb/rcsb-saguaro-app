@@ -35,5 +35,8 @@
   },
   "rcsb_cdn": {
     "url": "https://cdn.rcsb.org/images/structures/"
+  },
+  "1d3d-alignment": {
+    "url": "/groups/3d-sequence/polymer_entity/"
   }
 }

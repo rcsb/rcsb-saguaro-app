@@ -49,7 +49,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                                             if(ei)
                                                 return (
                                                     <Col className={"p-0"} key={`${uniqid("col_")}_${j}`}>
-                                                        <GroupMemberItem item={ei} groupProvenanceId={this.props.groupProvenanceId}/>
+                                                        <GroupMemberItem item={ei} groupId={this.props.groupId} groupProvenanceId={this.props.groupProvenanceId}/>
                                                     </Col>
                                                 );
                                             else
