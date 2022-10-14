@@ -29,9 +29,14 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
             <div>
                 <div><img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/></div>
                 <div className={"bg-light border-top p-md-4"}>
-                    <div><strong><i className={"bi bi-box"}/> 3D View</strong>: <a href={alignment1d3dUrl(this.props.groupId)}>1D-3D Alignments</a></div>
+                    {
+                        this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingUniprotAccession ?
+                            <div><strong><i className={"bi bi-box"}/> 3D View</strong>: <a href={alignment1d3dUrl(this.props.groupId)}>1D-3D Alignments</a></div>
+                            :
+                            undefined
+                    }
                     <div>
-                        <strong>{memberSummaryUrlText(this.props.item, this.props.groupProvenanceId)} </strong>
+                        <strong>{memberSummaryUrlText(this.props.item, this.props.groupProvenanceId)}</strong>
                         <span> - </span>
                         <a href={memberSummaryUrl(this.props.item, this.props.groupProvenanceId)}>Summary</a>
                         <span> | </span>
