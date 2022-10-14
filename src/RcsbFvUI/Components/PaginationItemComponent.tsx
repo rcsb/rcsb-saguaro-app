@@ -33,7 +33,7 @@ export class PaginationItemComponent extends AbstractMenuItemComponent<Paginatio
                     >❮</div>
                     <div
                         className={"d-inline-block text-center"}
-                        style={{width:80}}
+                        style={{width:90}}
                     >{this.state.after+1} - {this.state.after+this.state.first}</div>
                     <div
                         onClick={()=>this.next(this.state.first)}
