@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Tab, Tabs} from "react-bootstrap";
-import classes from "./scss/group-display.module.scss";
+import classes from "./scss/bootstrap-display.module.scss";
 import uniqid from "uniqid";
 
 export interface RcsbTabsInterface<T extends string> {
@@ -21,7 +21,7 @@ export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterfa
     }
 
     render(): JSX.Element {
-        return (<div className={classes.bootstrapGroupSequenceComponentScope}>
+        return (<div className={classes.bootstrapComponentScope}>
             <Tabs
                 id={this.props.id}
                 defaultActiveKey={this.props.default}

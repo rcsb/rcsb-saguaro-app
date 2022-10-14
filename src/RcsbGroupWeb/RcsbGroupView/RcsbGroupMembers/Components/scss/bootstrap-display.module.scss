@@ -1,0 +1,15 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import "../../../../../RcsbUtils/scss/bootstrap-mixin.module";
+
+.bootstrapComponentScope {
+    @import "~bootstrap/scss/bootstrap";
+    @include bootstrapRoot;
+    @include bootstrapBody;
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+}

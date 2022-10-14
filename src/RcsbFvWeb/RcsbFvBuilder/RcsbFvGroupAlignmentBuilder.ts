@@ -7,9 +7,13 @@ import {
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {GroupPfvApp} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
+import {getReferenceFromGroupProvenance, GroupPfvApp} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
 import {ActionMethods} from "../../RcsbFvUI/Helper/ActionMethods";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
+import {alignmentVariation} from "../../RcsbUtils/TrackGenerators/AlignmentVariation";
+import {GroupReference, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {RcsbFvGroupBuilder} from "./RcsbFvGroupBuilder";
+import {GroupPfvUI} from "../RcsbFvGroup/GroupTabs/GroupPfvUI";
 
 export class RcsbFvGroupAlignmentBuilder {
 
@@ -26,11 +30,53 @@ export class RcsbFvGroupAlignmentBuilder {
         }else{
             entityCount = await searchRequestProperty.requestCount({query: SQT.searchGroupQuery(GroupProvenanceId.ProvenanceSequenceIdentity, groupId), return_type: ReturnType.PolymerEntity});
         }
-        return GroupPfvApp.alignment(elementId, GroupProvenanceId.ProvenanceSequenceIdentity, groupId, entityCount, {
+        additionalConfig = {
+            ...additionalConfig,
+            boardConfig:{
+                rowTitleWidth: 190,
+                ...additionalConfig.boardConfig,
+            },
             page:{first:50, after:"0"},
-            alignmentFilter: filterEntities,
-            ...additionalConfig
-        })
+            alignmentFilter:filterEntities,
+            externalTrackBuilder: alignmentVariation()
+        }
+        // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
+        const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
+            getReferenceFromGroupProvenance(GroupProvenanceId.ProvenanceSequenceIdentity),
+            groupId,
+            SequenceReference.PdbEntity,
+            SequenceReference.Uniprot
+        ];
+        const pfv: RcsbFvModulePublicInterface = await RcsbFvGroupBuilder.buildGroupAlignmentFv(
+            elementId,
+            ...pfvArgs,
+            additionalConfig
+        );
+        const paginationCallback = ActionMethods.paginationCallback<typeof pfvArgs>();
+        GroupPfvUI.alignmentUI(
+            GroupPfvUI.addBootstrapElement(elementId),
+            {
+                count:entityCount,
+                after: additionalConfig?.page?.after ?? "0",
+                first: additionalConfig?.page?.first ?? 50,
+                stateChange:(state, prevState)=>{
+                    paginationCallback(
+                        elementId,
+                        pfv,
+                        RcsbFvGroupBuilder.buildGroupAlignmentFv,
+                        pfvArgs,
+                        {
+                            ...additionalConfig,
+                            page:{
+                                first:state.first,
+                                after:state.after.toString()
+                            }
+                        }
+                    )
+                }
+            }
+        );
+        return pfv;
     }
 
     static async buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {

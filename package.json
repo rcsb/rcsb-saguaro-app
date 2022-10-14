@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.4.13-uniprot-msa.7",
+  "version": "4.4.13-uniprot-msa.9",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/dist/app.js",
   "files": [
@@ -17,7 +17,7 @@
     "checkQueries": "ts-node src/RcsbGraphQL/Queries/QueryCheck.ts",
     "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
     "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
-    "copyCss": "ncp src/RcsbFvWeb/RcsbFvComponents/scss build/src/RcsbFvWeb/RcsbFvComponents/scss  && ncp src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/Components/scss build/src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/Components/scss",
+    "copyCss": "ncp src/RcsbUtils/scss build/src/RcsbUtils/scss && ncp src/RcsbFvWeb/RcsbFvComponents/scss build/src/RcsbFvWeb/RcsbFvComponents/scss  && ncp src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/Components/scss build/src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/Components/scss",
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
@@ -75,8 +75,8 @@
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
-    "sass": "^1.54.0",
-    "sass-loader": "^13.0.2",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0",
     "stream-browserify": "^3.0.0",
     "string-to-color": "^2.2.2",
     "style-loader": "^3.3.1",

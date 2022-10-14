@@ -168,7 +168,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
     }
 }
 
-function getReferenceFromGroupProvenance(groupProvenanceId: GroupProvenanceId): GroupReference {
+export function getReferenceFromGroupProvenance(groupProvenanceId: GroupProvenanceId): GroupReference {
     switch (groupProvenanceId){
         case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
             throw `Undefined reference for provenance ${groupProvenanceId}`;

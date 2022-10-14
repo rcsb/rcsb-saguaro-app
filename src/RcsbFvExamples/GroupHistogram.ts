@@ -3,7 +3,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 
 buildGroupContent("select", GroupProvenanceId.ProvenanceSequenceIdentity, "5_30");
 
-//buildGroupMembers("selectBis", GroupProvenanceId.ProvenanceSequenceIdentity, "5_30", 1, 1)
+buildGroupMembers("selectBis", GroupProvenanceId.ProvenanceSequenceIdentity, "5_30", 1, 1)
 
 
 buildGroup("pfv", GroupProvenanceId.ProvenanceSequenceIdentity, "5_30", undefined, ["ENTITY_NAME_FACET", "RELEASE_DATE_FACET", "METHODOLOGY_FACET"]).then((m)=>{

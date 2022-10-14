@@ -1,5 +1,5 @@
 import * as React from "react";
-import classes from "../RcsbGroupMembers/Components/scss/group-display.module.scss";
+import classes from "../RcsbGroupMembers/Components/scss/bootstrap-display.module.scss";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
 import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
@@ -28,7 +28,7 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
 
     render(): JSX.Element{
         if(this.state?.facets)
-            return (<div className={classes.bootstrapGroupComponentScope}>
+            return (<div className={classes.bootstrapComponentScope}>
                     <GroupChartLayout
                         layout={this.props.facetStore.facetLayoutGrid}
                         chartMap={FacetTools.getResultDrilldowns(this.props.facetStore.getFacetService("all"), this.state.facets).reduce<ChartMapType>((prev,current)=>{

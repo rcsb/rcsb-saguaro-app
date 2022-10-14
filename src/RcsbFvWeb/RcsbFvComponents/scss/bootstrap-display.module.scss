@@ -1,5 +1,9 @@
-.bootstrapGroupSequenceComponentScope {
+@import "../../../RcsbUtils/scss/bootstrap-mixin.module";
+
+.bootstrapComponentScope {
   @import "~bootstrap/scss/bootstrap";
+  @include bootstrapRoot;
+  @include bootstrapBody;
   .nav > a {
     font-size: 12px;
   }
@@ -20,6 +24,6 @@
   }
 }
 
-.bootstrapGroupSequenceComponentScope * {
-  box-sizing: content-box;
+.bootstrapComponentScope *, *::before, *::after {
+  box-sizing: border-box;
 }
