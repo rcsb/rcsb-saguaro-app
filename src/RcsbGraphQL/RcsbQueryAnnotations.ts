@@ -48,12 +48,8 @@ export class RcsbQueryGroupAnnotations implements RcsbCoreQueryInterface<QueryGr
     public async request(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>> {
         try {
             const annotationsResponse: GroupAnnotationsResultInterface = await this.getClient().request<QueryGroup_AnnotationsArgs,GroupAnnotationsResultInterface>(
-                {
-                    group: requestConfig.group,
-                    groupId: requestConfig.groupId,
-                    sources: requestConfig.sources,
-                    filters: requestConfig.filters
-                }, queryGroupAnnotations
+                requestConfig,
+                queryGroupAnnotations
             );
             return annotationsResponse.group_annotations;
         } catch (error) {
