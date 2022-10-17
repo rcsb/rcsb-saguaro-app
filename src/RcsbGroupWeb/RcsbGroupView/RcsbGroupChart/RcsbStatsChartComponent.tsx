@@ -1,5 +1,5 @@
 import * as React from "react";
-import classes from "../RcsbGroupMembers/Components/scss/bootstrap-display.module.scss";
+import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display.module.scss";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
 import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";

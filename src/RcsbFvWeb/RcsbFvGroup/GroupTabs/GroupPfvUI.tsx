@@ -2,7 +2,7 @@ import React from "react";
 import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
 import {MenuItemFactory} from "../../../RcsbFvUI/MenuItemFactory";
 import {createRoot} from "react-dom/client";
-import classes from "../../RcsbFvComponents/scss/bootstrap-display.module.scss";
+import classes from "../../RcsbFvComponents/scss/bootstrap-fv-display.module.scss";
 
 export class GroupPfvUI {
 
@@ -31,7 +31,7 @@ export class GroupPfvUI {
 
     public static addBootstrapElement(elementId: string): HTMLElement {
         const div: HTMLElement = GroupPfvUI.htmlElementUI(elementId);
-        div.className = classes.bootstrapComponentScope;
+        div.className = classes.bootstrapFvComponentScope;
         return div;
     }
 

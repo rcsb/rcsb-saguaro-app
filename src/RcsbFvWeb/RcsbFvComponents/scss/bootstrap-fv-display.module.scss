@@ -1,6 +1,6 @@
 @import "../../../RcsbUtils/scss/bootstrap-mixin.module";
 
-.bootstrapComponentScope {
+.bootstrapFvComponentScope {
   @import "~bootstrap/scss/bootstrap";
   @include bootstrapRoot;
   @include bootstrapBody;

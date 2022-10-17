@@ -6,7 +6,7 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {GroupChartAdditionalProperties} from "./GroupChartAdditionalProperties";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
-import classes from "../RcsbGroupMembers/Components/scss/bootstrap-display.module.scss";
+import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display.module.scss";
 
 interface RcsbGroupChartInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -30,7 +30,7 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
 
     render(): JSX.Element {
         if(this.state?.layout?.flat().filter((e)=>(this.state?.chartMap?.get(e)))) {
-            return (<div className={classes.bootstrapComponentScope}>
+            return (<div className={classes.bootstrapGroupComponentScope}>
                 {SearchQueryComponentFactory.getGroupSearchComponent(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery)}
                 <GroupChartLayout
                     layout={this.state.layout}

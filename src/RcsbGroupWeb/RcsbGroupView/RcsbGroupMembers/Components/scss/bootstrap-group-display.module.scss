@@ -1,7 +1,7 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 @import "../../../../../RcsbUtils/scss/bootstrap-mixin.module";
 
-.bootstrapComponentScope {
+.bootstrapGroupComponentScope {
     @import "~bootstrap/scss/bootstrap";
     @include bootstrapRoot;
     @include bootstrapBody;
