@@ -4,6 +4,17 @@
   @import "~bootstrap/scss/bootstrap";
   @include bootstrapRoot;
   @include bootstrapBody;
+  * {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+  }
+  *:before,
+  *:after {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+  }
   .nav > a {
     font-size: 12px;
   }
@@ -22,8 +33,4 @@
   .rcsbFvRowTitleText a:hover {
     text-decoration-line: underline;
   }
-}
-
-.bootstrapComponentScope *, *::before, *::after {
-  box-sizing: content-box;
 }
