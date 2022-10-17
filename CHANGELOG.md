@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.13] - 2022-10-17
+### Dependency update
+- rcsb-saguaro v2.2.15
+
+### Update
+- Removed SwissModel packages 
+
 ## [4.4.12] - 2022-10-07
 ### Bug fix
 - `buildSequenceIdentityAlignmentFv` `boardConfig` overwriting bug fixed

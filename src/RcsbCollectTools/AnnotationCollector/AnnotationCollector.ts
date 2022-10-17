@@ -1,7 +1,6 @@
 import {
     AnnotationFeatures, Feature
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {SwissModelQueryAnnotations} from "../../ExternalResources/SwissModel/SwissModelQueryAnnotations";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     AnnotationRequestContext,
@@ -22,11 +21,6 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     public async collect(requestConfig: AnnotationRequestContext): Promise<Array<AnnotationFeatures>> {
         this.requestStatus = "pending";
         this.annotationFeatures = await this.requestAnnotations(requestConfig);
-        if (requestConfig.collectSwissModel === true) {
-            const swissModelData: Array<AnnotationFeatures> = await SwissModelQueryAnnotations.request(requestConfig.queryId);
-            if(swissModelData && swissModelData.length > 0)
-                this.annotationFeatures = this.annotationFeatures.concat(swissModelData);
-        }
         if(typeof requestConfig?.annotationGenerator === "function") {
             const generatedFeatures: Array<AnnotationFeatures> = await requestConfig.annotationGenerator(this.annotationFeatures)
             if(generatedFeatures && generatedFeatures.filter((f)=>(f!=null)).length > 0)

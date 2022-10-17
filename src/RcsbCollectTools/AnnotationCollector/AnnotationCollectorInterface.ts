@@ -19,7 +19,6 @@ export interface AnnotationProcessingInterface {
 }
 
 export interface CommonAnnotationInterface {
-    collectSwissModel?: boolean;
     rcsbContext?:Partial<PolymerEntityInstanceInterface>;
     annotationProcessing?: AnnotationProcessingInterface;
     externalAnnotationTrackBuilder?: ExternalTrackBuilderInterface;

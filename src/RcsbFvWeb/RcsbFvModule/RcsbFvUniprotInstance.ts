@@ -53,7 +53,6 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             filters:filters,
             annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
             annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
-            collectSwissModel:true,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
