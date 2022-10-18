@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.14] - 2022-10-17
+### Minor display
+- Victory tooltip `dx` attribute has been decreased to avoid tooltip disappear in Safari
+
 ## [4.4.13] - 2022-10-17
 ### Dependency update
 - rcsb-saguaro v2.2.15
