@@ -9,6 +9,8 @@
 - `UniprotAlignmentTrackFactory` renamed to `MsaAlignmentTrackFactory`
 ### Bug Fix
 - External track Alignment Variation memory leak bug fixed
+- ### Dependency update
+- rcsb-api-tools v4.1.1
 
 ## [4.4.14] - 2022-10-17
 ### Minor display
@@ -16,7 +18,7 @@
 
 ## [4.4.13] - 2022-10-17
 ### Dependency update
-- rcsb-saguaro v2.2.15
+- rcsb-saguaro v2.2.16
 
 ### Update
 - Removed SwissModel packages 

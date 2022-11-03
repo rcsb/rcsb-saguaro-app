@@ -21,7 +21,7 @@
     "tsc": "tsc",
     "clean": "del-cli build/*json build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
-    "buildDoc": "typedoc ./src/app.ts && sed -i '' '/---/d' docs/index.html",
+    "buildDoc": "typedoc --excludeExternals --externalPattern \"**/node_modules/**\" ./src/app.ts && sed -i '' '/---/d' docs/index.html",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -82,7 +82,7 @@
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.1",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.15",
+    "typedoc": "^0.23.20",
     "typedoc-plugin-missing-exports": "^1.0.0",
     "typescript": "^4.7.4",
     "uniqid": "^5.4.0",
@@ -93,8 +93,8 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@rcsb/rcsb-api-tools": "^4.1.1-beta.1",
-    "@rcsb/rcsb-saguaro": "^2.2.15",
+    "@rcsb/rcsb-api-tools": "^4.1.1",
+    "@rcsb/rcsb-saguaro": "^2.2.16",
     "react-select": "^5.4.0",
     "rxjs": "^7.5.5",
     "victory": "^36.5.0"
