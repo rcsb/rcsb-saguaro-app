@@ -26,7 +26,6 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
             queryId: queryId,
             reference: buildConfig.from,
             sources:source,
-            collectSwissModel:true,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };

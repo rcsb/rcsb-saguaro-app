@@ -43,7 +43,6 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:source,
-            collectSwissModel:true,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };

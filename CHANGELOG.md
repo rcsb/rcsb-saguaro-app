@@ -2,13 +2,24 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.4.13] - 2022-10-10
+## [4.4.15] - 2022-11-03
 ### Display improvement
 - `RcsbFvGroupAlignment` display aligned track using observed/unobserved and local scores color codes
 ### Minor refactor
 - `UniprotAlignmentTrackFactory` renamed to `MsaAlignmentTrackFactory`
 ### Bug Fix
 - External track Alignment Variation memory leak bug fixed
+
+## [4.4.14] - 2022-10-17
+### Minor display
+- Victory tooltip `dx` attribute has been decreased to avoid tooltip disappear in Safari
+
+## [4.4.13] - 2022-10-17
+### Dependency update
+- rcsb-saguaro v2.2.15
+
+### Update
+- Removed SwissModel packages 
 
 ## [4.4.12] - 2022-10-07
 ### Bug fix
