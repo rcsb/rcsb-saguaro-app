@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.4.16] - 2022-11-04
+### Display improvement
+- Exposed group histogram layout configuration `GroupChartAdditionalProperties.layoutConfig`. 
+Currently, it includes the histogram title (`string|undefined`)
+
 ## [4.4.15] - 2022-11-03
 ### Display improvement
 - `RcsbFvGroupAlignment` display aligned track using observed/unobserved and local scores color codes

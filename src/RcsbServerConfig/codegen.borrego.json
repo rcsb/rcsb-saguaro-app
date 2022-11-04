@@ -1,4 +1,4 @@
 {
-  "schema": "https://1d-coordinates-groups-1d3d.rcsb.org/graphql",
-  "documents": "src/RcsbGraphQL/Queries/Borrego/*.graphql"
+  "schema": "https://1d-coordinates.rcsb.org/graphql",
+  "documents": "src/RcsbGraphQL/Queries/Borrego/Query*.graphql"
 }
