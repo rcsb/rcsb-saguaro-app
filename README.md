@@ -38,7 +38,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 The full collection of examples can be edit and modified at [CODEPEN](https://codepen.io/collection/XjrBRP?grid_type=list)
 
 ### Library Documentation
-TypeScript classes documentation can be found [here](https://rcsb.github.io/rcsb-saguaro-app/globals.html).
+TypeScript classes documentation can be found [here](https://rcsb.github.io/rcsb-saguaro-app/modules.html).
 
 ### Main Class and Methods
 **RcsbFvWebApp** calss provides a collection of methods to display preconfigured features over PDB and UniProt sequences 
@@ -51,7 +51,7 @@ click events.
 - **RcsbFvWebApp.buildUniprotEntityFv**(elementId: string, upAcc: string, entityId: string)
 - **RcsbFvWebApp.buildUniprotEntityInstanceFv**(elementId: string, upAcc: string, entityId: string, instanceId: string)
 
-- **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/rcsbfvboardconfiginterface.html))
+- **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/RcsbFvBoardConfigInterface.html))
 - **RcsbFvWebApp.getRcsbFv**(elementId: string)
 
 ### GraphQL configuration
@@ -77,6 +77,18 @@ click events.
     - The class exposes the methods needs to provide the relationships between RCSB objects of different granularity
 - A new method in the `RcsbRequestContextManager` defined in `src/RcsbFvWeb/RcsbFvBuilder`
     - This method must avoid duplicate requests
+
+### Testing
+Different testing example are available in the `src/RcsbFvExamples` folder
+- `npm install`
+- `npm run devServer`
+
+Go to:
+
+- `http://localhost:9000/EntitySummaryFv.html`
+- `http://localhost:9000/InstanceSequenceFv.html`
+- `http://localhost:9000/UniprotGroupFv.html`
+  ...
 
 Contributing
 ---
