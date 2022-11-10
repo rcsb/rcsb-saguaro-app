@@ -1,30 +1,29 @@
 import React from "react";
-import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
-import {MenuItemFactory} from "../../../RcsbFvUI/MenuItemFactory";
+import {RcsbTabs} from "../RcsbFvWeb/RcsbFvComponents/RcsbTabs";
 import {createRoot} from "react-dom/client";
-import classes from "../../RcsbFvComponents/scss/bootstrap-fv-display.module.scss";
+import classes from "../RcsbFvWeb/RcsbFvComponents/scss/bootstrap-fv-display.module.scss";
+import {ItemComponent} from "./Components/ItemComponent";
+
+export type UiComponentType<T extends {}> = {
+    component: typeof React.Component<T,any>,
+    props: T
+};
 
 export class GroupPfvUI {
 
-    public static alignmentUI(
+    public static fvUI(
         element: string | HTMLElement,
-        paginationUI:{count:number, after:string, first:number, stateChange:(state:{after:number;first:number;},prevState:{after:number;first:number;})=>void }
+        uiComponent: UiComponentType<any>[]
     ): void {
         createRoot(typeof element === "string" ? GroupPfvUI.htmlElementUI(element) : element ).render(
             <>
-                <span>{MenuItemFactory.getPaginationItem(paginationUI.count,paginationUI.after,paginationUI.first,paginationUI.stateChange)}</span>
-            </>
-        );
-    }
-
-    public static structureUI<T extends unknown[]>(
-        elementId: string,
-        elements:string[],
-        stateChange:(state:{filteredElements: string[]},prevState:{filteredElements: string[]})=>void
-    ): void {
-        createRoot(GroupPfvUI.htmlElementUI(elementId)).render(
-            <>
-                <span className={"ms-2"}>{MenuItemFactory.getFilterItem(elements, stateChange)}</span>
+                {
+                    uiComponent.map(
+                        b=>( <ItemComponent role={""}>
+                            <b.component {...b.props}/>
+                        </ItemComponent>)
+                    )
+                }
             </>
         );
     }

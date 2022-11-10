@@ -1,13 +1,12 @@
 import React from "react";
-import {ItemComponent} from "./ItemComponent";
 import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
 
-interface PaginationItemState {
+export interface PaginationItemState {
     after:number;
     first:number;
 }
 
-interface PaginationItemProps {
+export interface PaginationItemProps {
     count:number;
     after:string;
     first:number;
@@ -24,7 +23,7 @@ export class PaginationItemComponent extends AbstractMenuItemComponent<Paginatio
     render(): JSX.Element {
         if(this.props.first < this.props.count)
             return (
-                <ItemComponent role={""}>
+                <>
                     <div
                         onClick={()=>this.next(-this.state.first)}
                         role={this.role(-this.state.first)}
@@ -41,7 +40,7 @@ export class PaginationItemComponent extends AbstractMenuItemComponent<Paginatio
                         className={"d-inline-block text-center"+" "+this.textColor(this.state.first)}
                         style={{width:20}}
                     >❯</div>
-                </ItemComponent>
+                </>
             );
         return null;
     }

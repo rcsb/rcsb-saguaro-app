@@ -7,17 +7,22 @@ import {
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {getReferenceFromGroupProvenance, GroupPfvApp} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
+import {getReferenceFromGroupProvenance} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
 import {ActionMethods} from "../../RcsbFvUI/Helper/ActionMethods";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
 import {alignmentVariation} from "../../RcsbUtils/TrackGenerators/AlignmentVariation";
 import {GroupReference, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvGroupBuilder} from "./RcsbFvGroupBuilder";
-import {GroupPfvUI} from "../RcsbFvGroup/GroupTabs/GroupPfvUI";
+import {GroupPfvUI, UiComponentType} from "../../RcsbFvUI/GroupPfvUI";
+import {
+    PaginationItemComponent,
+    PaginationItemProps,
+    PaginationItemState
+} from "../../RcsbFvUI/Components/PaginationItemComponent";
 
 export class RcsbFvGroupAlignmentBuilder {
 
-    static async buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
+    static async buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface ):Promise<RcsbFvModulePublicInterface> {
         let entityCount: number = -1;
         let filterEntities: string[]|undefined = undefined;
         if(query) {
@@ -53,13 +58,13 @@ export class RcsbFvGroupAlignmentBuilder {
             additionalConfig
         );
         const paginationCallback = ActionMethods.paginationCallback<typeof pfvArgs>();
-        GroupPfvUI.alignmentUI(
-            GroupPfvUI.addBootstrapElement(elementId),
-            {
+        const uiComp:UiComponentType<PaginationItemProps> = {
+            component: PaginationItemComponent,
+            props:{
                 count:entityCount,
                 after: additionalConfig?.page?.after ?? "0",
                 first: additionalConfig?.page?.first ?? 50,
-                stateChange:(state, prevState)=>{
+                stateChange:(state:PaginationItemState,prevState:PaginationItemState)=>{
                     paginationCallback(
                         elementId,
                         pfv,
@@ -75,12 +80,12 @@ export class RcsbFvGroupAlignmentBuilder {
                     )
                 }
             }
-        );
+        };
+        GroupPfvUI.fvUI( GroupPfvUI.addBootstrapElement(elementId), [uiComp].concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : []));
         return pfv;
     }
 
     static async buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
-        let entityCount: number = -1;
         let filterEntities: string[]|undefined = undefined;
         if(query) {
             filterEntities = await searchRequestProperty.requestMembers({
@@ -88,9 +93,6 @@ export class RcsbFvGroupAlignmentBuilder {
                 query: SQT.addGroupNodeToSearchQuery(GroupProvenanceId.ProvenanceMatchingUniprotAccession, upAcc, query.query),
                 return_type: ReturnType.PolymerEntity
             });
-            entityCount = filterEntities.length;
-        }else{
-            entityCount = await searchRequestProperty.requestCount({query: SQT.searchGroupQuery(GroupProvenanceId.ProvenanceMatchingUniprotAccession, upAcc), return_type: ReturnType.PolymerEntity});
         }
         return RcsbFvUniprotBuilder.buildUniprotFv(elementId,upAcc, {
                 ...additionalConfig,

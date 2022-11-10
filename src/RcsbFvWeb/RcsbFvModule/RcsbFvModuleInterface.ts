@@ -15,6 +15,7 @@ import {
     AlignmentRequestContextType
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {UiComponentType} from "../../RcsbFvUI/GroupPfvUI";
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
 export interface RcsbFvAdditionalConfig{
@@ -33,6 +34,7 @@ export interface RcsbFvAdditionalConfig{
         alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment) => Promise<Partial<RcsbFvRowConfigInterface>>,
         annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     };
+    externalUiComponents?: UiComponentType<any>[];
 }
 
 //TODO move psa & elementSelectId into additional config

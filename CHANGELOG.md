@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.0] - 2022-11-10
+### Improvement
+- Exposed configuration `RcsbFvAdditionalConfig.externalUiComponents` to add external UI elements. 
+Currently, only available for `buildSequenceIdentityAlignmentFv`
+
 ## [4.4.16] - 2022-11-04
 ### Display improvement
 - Exposed group histogram layout configuration `GroupChartAdditionalProperties.layoutConfig`. 

@@ -21,9 +21,14 @@ import {
 import {FeaturePositionGaps} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
 import {alignmentGlobalLigandBindingSite} from "../../../RcsbUtils/TrackGenerators/AlignmentGlobalBindingSite";
 import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
-import {GroupPfvUI} from "./GroupPfvUI";
+import {GroupPfvUI, UiComponentType} from "../../../RcsbFvUI/GroupPfvUI";
 import {TrackManagerInterface} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 import {ActionMethods} from "../../../RcsbFvUI/Helper/ActionMethods";
+import {
+    PaginationItemComponent,
+    PaginationItemProps,
+    PaginationItemState
+} from "../../../RcsbFvUI/Components/PaginationItemComponent";
 
 export namespace GroupPfvApp {
 
@@ -53,13 +58,13 @@ export namespace GroupPfvApp {
                     additionalConfig
                 );
                 const paginationCallback = ActionMethods.paginationCallback<typeof pfvArgs>();
-                GroupPfvUI.alignmentUI(
-                    elementId,
-                    {
+                const uiComp:UiComponentType<PaginationItemProps> = {
+                    component: PaginationItemComponent,
+                    props:{
                         count:entityCount,
                         after: additionalConfig?.page?.after ?? "0",
                         first: additionalConfig?.page?.first ?? 50,
-                        stateChange:(state, prevState)=>{
+                        stateChange:(state:PaginationItemState,prevState:PaginationItemState)=>{
                             paginationCallback(
                                 elementId,
                                 pfv,
@@ -75,7 +80,8 @@ export namespace GroupPfvApp {
                             )
                         }
                     }
-                );
+                };
+                GroupPfvUI.fvUI( GroupPfvUI.addBootstrapElement(elementId), [uiComp].concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : []));
                 return pfv;
         }
     }
