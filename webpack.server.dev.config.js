@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const fs = require('fs')
 
 const commonConfig = {
     mode: "development",
@@ -47,7 +48,7 @@ const commonConfig = {
 };
 
 const examples = ['ResidueDistribution','GroupHistogram','InstanceSequenceFv','SingleEntitySummaryFv','EntitySummaryFv','UniprotGroupFv','SequenceIdentityGroupFv','UniprotFv','SequenceIdentityGroupAlignmentFv'];
-const entries = examples.reduce((prev,current)=>{prev[current]=`./src/RcsbFvExamples/${current}.ts`;return prev;},{});
+const entries = examples.reduce((prev,current)=>{prev[current]= fs.existsSync(`./src/RcsbFvExamples/${current}.ts`) ? `./src/RcsbFvExamples/${current}.ts` : `./src/RcsbFvExamples/${current}.tsx`;return prev;},{});
 
 const server = {
     ...commonConfig,
