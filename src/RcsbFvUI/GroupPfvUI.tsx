@@ -19,7 +19,7 @@ export class GroupPfvUI {
             <>
                 {
                     uiComponent.map(
-                        b=>( <ItemComponent role={""}>
+                        (b,n)=>( <ItemComponent key={"uiItem_"+n} role={""}>
                             <b.component {...b.props}/>
                         </ItemComponent>)
                     )
