@@ -95,7 +95,7 @@
   },
   "dependencies": {
     "@rcsb/rcsb-api-tools": "^4.1.1",
-    "@rcsb/rcsb-saguaro": "^2.3.0-beta",
+    "@rcsb/rcsb-saguaro": "^2.2.17",
     "react-select": "^5.4.0",
     "rxjs": "^7.5.5",
     "victory": "^36.5.0"
