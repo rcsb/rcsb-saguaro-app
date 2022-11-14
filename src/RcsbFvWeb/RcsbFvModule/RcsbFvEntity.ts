@@ -19,7 +19,8 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
         const alignmentRequestContext:CollectAlignmentInterface = {
             queryId: buildConfig.entityId,
             from: SequenceReference.PdbEntity,
-            to: SequenceReference.Uniprot
+            to: SequenceReference.Uniprot,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);

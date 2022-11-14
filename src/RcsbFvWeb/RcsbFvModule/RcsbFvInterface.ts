@@ -22,6 +22,7 @@ import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackF
 import {
     InstanceSequenceTrackTitleFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackTitleFactoryImpl/InstanceSequenceTrackTitleFactory";
+import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
@@ -36,10 +37,11 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         this.instanceId = instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
 
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: instanceId,
             from: SequenceReference.PdbInstance,
-            to: SequenceReference.Uniprot
+            to: SequenceReference.Uniprot,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {

@@ -6,6 +6,7 @@ import {
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
 
@@ -13,11 +14,12 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const queryId: string = buildConfig.queryId;
         const source: Array<Source> = buildConfig.sources ?? [Source.Uniprot];
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: queryId,
             from: buildConfig.from,
             to: buildConfig.to,
-            dynamicDisplay:true
+            dynamicDisplay:true,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);

@@ -9,13 +9,14 @@ import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/
 import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
 import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
+import {CollectGroupAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
 
     public async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
             filter: buildConfig.additionalConfig?.alignmentFilter,
@@ -25,7 +26,8 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true,
-            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
+            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())

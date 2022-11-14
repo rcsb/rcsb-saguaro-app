@@ -14,6 +14,9 @@ import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
+import {
+    CollectGroupAlignmentInterface
+} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -21,7 +24,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const groupId: string = buildConfig.groupId;
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
             filter: buildConfig.additionalConfig?.alignmentFilter,
@@ -31,7 +34,8 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true,
-            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix
+            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());

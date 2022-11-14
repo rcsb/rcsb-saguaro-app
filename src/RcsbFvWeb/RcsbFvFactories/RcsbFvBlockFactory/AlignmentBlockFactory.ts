@@ -21,6 +21,8 @@ export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRe
     }
 
     async getBlock(alignmentRequestContext: AlignmentRequestContextType, alignmentData: AlignmentResponse): Promise<RcsbFvRowConfigInterface[]> {
+        if(typeof alignmentRequestContext.externalTrackBuilder?.filterAlignments === "function")
+            alignmentData = await alignmentRequestContext.externalTrackBuilder.filterAlignments({alignments:alignmentData, rcsbContext: alignmentRequestContext.rcsbContext})
         alignmentRequestContext = {...alignmentRequestContext, querySequence: alignmentData.query_sequence};
         return (await Promise.all(alignmentData.target_alignment.map(async alignment=>{
             if (alignmentRequestContext.filterByTargetContains != null && !alignment.target_id.includes(alignmentRequestContext.filterByTargetContains))

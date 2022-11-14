@@ -12,6 +12,7 @@ import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {MsaAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
+import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
@@ -20,13 +21,14 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         const upAcc: string = buildConfig.upAcc;
         const source: Array<Source> = [Source.Uniprot];
 
-        const alignmentRequestContext = {
-                queryId: upAcc,
-                from: SequenceReference.Uniprot,
-                to: SequenceReference.PdbEntity,
-                dynamicDisplay:false,
-                fitTitleWidth:true,
-                excludeFirstRowLink: true
+        const alignmentRequestContext: CollectAlignmentInterface = {
+            queryId: upAcc,
+            from: SequenceReference.Uniprot,
+            to: SequenceReference.PdbEntity,
+            dynamicDisplay:false,
+            fitTitleWidth:true,
+            excludeFirstRowLink: true,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());

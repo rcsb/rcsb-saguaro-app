@@ -19,9 +19,13 @@ import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentColl
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
+import {
+    PolymerEntityInstanceInterface
+} from "../../../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {
     querySequence?:string;
+    rcsbContext?:Partial<PolymerEntityInstanceInterface>;
 };
 
 export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]> {

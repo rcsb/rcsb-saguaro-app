@@ -11,6 +11,7 @@ import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
 
@@ -36,12 +37,13 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         }];
         if(additionalConfig != null && additionalConfig.filters!=null && additionalConfig.filters.length>0)
             filters = additionalConfig.filters;
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbInstance,
             filterByTargetContains: instanceId,
-            excludeFirstRowLink: true
+            excludeFirstRowLink: true,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [instanceId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);

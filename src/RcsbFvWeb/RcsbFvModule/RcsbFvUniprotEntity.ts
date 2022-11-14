@@ -12,6 +12,7 @@ import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 
@@ -26,12 +27,13 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             source: Source.PdbEntity,
             values:[entityId]
         }];
-        const alignmentRequestContext = {
+        const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: upAcc,
             from: SequenceReference.Uniprot,
             to: SequenceReference.PdbEntity,
             filterByTargetContains: entityId,
-            excludeAlignmentLinks: true
+            excludeAlignmentLinks: true,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [entityId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);

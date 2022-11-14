@@ -1,10 +1,12 @@
 import {
     AlignmentResponse,
-    QueryAlignmentArgs
+    QueryAlignmentArgs, SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
+import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 interface CommonAlignmentInterface {
+    externalTrackBuilder?: ExternalTrackBuilderInterface;
     filterByTargetContains?:string;
     dynamicDisplay?: boolean;
     excludeAlignmentLinks?: boolean;
@@ -18,6 +20,8 @@ export interface CollectAlignmentInterface extends QueryAlignmentArgs, CommonAli
 
 export interface CollectGroupAlignmentInterface extends RcsbQueryGroupAlignmentArguments, CommonAlignmentInterface {
     sequencePrefix:string;
+    from?: SequenceReference;
+    to?: SequenceReference;
 }
 
 export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & CollectGroupAlignmentInterface>;
