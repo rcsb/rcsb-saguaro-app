@@ -20,6 +20,12 @@ buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {boardConfig:{
         console.log(selection);
     }
     },
+    externalTrackBuilder:{
+        filterAlignments: (data)=>{
+            console.log("filterAlignments!!!!!!!!");
+            return new Promise(resolve => resolve(data.alignments));
+        }
+    },
     beforeChangeCallback:(module)=>{
         console.log("This happens before change")
     },

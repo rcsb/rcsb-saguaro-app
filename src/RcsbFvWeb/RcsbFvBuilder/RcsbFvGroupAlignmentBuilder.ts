@@ -43,7 +43,10 @@ export class RcsbFvGroupAlignmentBuilder {
             },
             page:{first:50, after:"0"},
             alignmentFilter:filterEntities,
-            externalTrackBuilder: alignmentVariation()
+            externalTrackBuilder: {
+                ...alignmentVariation(),
+                ...additionalConfig?.externalTrackBuilder
+            }
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
