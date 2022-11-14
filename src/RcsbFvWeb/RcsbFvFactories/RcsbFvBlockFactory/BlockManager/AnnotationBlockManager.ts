@@ -47,8 +47,6 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     }
 
     private async processAnnotations(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
-        if(typeof requestConfig.externalAnnotationTrackBuilder?.filterFeatures === "function")
-            data = await requestConfig.externalAnnotationTrackBuilder?.filterFeatures({annotations: data, rcsbContext: requestConfig.rcsbContext});
         await Promise.all(data.map<Promise<void>[]>(ann=>{
             return ann.features.map<Promise<void>>(async feature=>{
                 return  await this.addFeature(requestConfig,ann,feature);
