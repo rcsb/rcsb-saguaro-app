@@ -28,8 +28,9 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
         const targetAlignment: Array<TargetAlignment> = this.alignmentResponse?.target_alignment ?? this.alignmentResponse?.target_alignment_subset?.edges.map(e=>e.node);
         this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id));
+        this.alignmentResponse = typeof requestConfig.externalTrackBuilder?.filterAlignments === "function" ? await requestConfig.externalTrackBuilder.filterAlignments({alignments: this.alignmentResponse}) : this.alignmentResponse;
         this.complete();
-        return typeof requestConfig.externalTrackBuilder?.filterAlignments === "function" ? await requestConfig.externalTrackBuilder.filterAlignments({alignments: this.alignmentResponse}) : this.alignmentResponse;
+        return this.alignmentResponse;
     }
 
     public async getTargets():Promise<Array<string>> {
