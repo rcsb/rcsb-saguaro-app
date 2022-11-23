@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.2] - 2022-11-23
+### Improvement
+- Enabling 1D-3D Alignment link for Sequence Identity carousels
+
 ## [4.5.1] - 2022-11-23
 ### Improvement
 - External filters are available for annotations and alignments. Filters are applied in collector methods
