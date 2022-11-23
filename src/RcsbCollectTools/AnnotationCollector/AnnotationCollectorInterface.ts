@@ -21,7 +21,7 @@ export interface AnnotationProcessingInterface {
 export interface CommonAnnotationInterface {
     rcsbContext?:Partial<PolymerEntityInstanceInterface>;
     annotationProcessing?: AnnotationProcessingInterface;
-    externalAnnotationTrackBuilder?: ExternalTrackBuilderInterface;
+    externalTrackBuilder?: ExternalTrackBuilderInterface;
     annotationGenerator?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
     annotationFilter?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
     titleSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;

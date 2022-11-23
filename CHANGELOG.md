@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.1] - 2022-11-23
+### Improvement
+- External filters are available for annotations and alignments. Filters are applied in collector methods
+### Dependency update
+- rcsb-saguaro v2.5.4
+
 ## [4.5.0] - 2022-11-10
 ### Improvement
 - Exposed configuration `RcsbFvAdditionalConfig.externalUiComponents` to add external UI elements. 

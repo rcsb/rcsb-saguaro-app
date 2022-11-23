@@ -56,7 +56,7 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
             annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
-            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);

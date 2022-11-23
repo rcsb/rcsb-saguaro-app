@@ -29,8 +29,8 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
         if(typeof requestConfig?.annotationFilter === "function") {
             this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);
         }
-        if(typeof requestConfig?.externalAnnotationTrackBuilder.filterFeatures === "function")
-            this.annotationFeatures = await requestConfig.externalAnnotationTrackBuilder.filterFeatures({annotations:this.annotationFeatures, rcsbContext:requestConfig.rcsbContext});
+        if(typeof requestConfig?.externalTrackBuilder?.filterFeatures === "function")
+            this.annotationFeatures = await requestConfig.externalTrackBuilder.filterFeatures({annotations:this.annotationFeatures, rcsbContext:requestConfig.rcsbContext});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();
         return this.annotationFeatures;

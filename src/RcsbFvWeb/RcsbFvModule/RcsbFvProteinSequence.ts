@@ -29,7 +29,7 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
             reference: buildConfig.from,
             sources:source,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
-            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);

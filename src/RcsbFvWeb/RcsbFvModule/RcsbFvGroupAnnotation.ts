@@ -40,7 +40,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             sources:buildConfig.additionalConfig?.sources,
             filters:buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
-            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);

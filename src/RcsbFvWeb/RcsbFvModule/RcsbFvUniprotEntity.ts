@@ -45,7 +45,7 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
             filters:additionalConfig?.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters,
             titleSuffix: this.titleSuffix.bind(this),
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
-            externalAnnotationTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);

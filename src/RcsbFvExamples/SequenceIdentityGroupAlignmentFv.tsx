@@ -26,6 +26,17 @@ buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {boardConfig:{
             return new Promise(resolve => resolve(data.alignments));
         }
     },
+    trackConfigModifier:{
+        alignment:(alignmentContext, targetAlignment)=>{
+            return new Promise(resolve => {
+                resolve({
+                    metadata:{
+                        targetId: targetAlignment.target_id
+                    }
+                });
+            });
+        }
+    },
     beforeChangeCallback:(module)=>{
         console.log("This happens before change")
     },
@@ -39,7 +50,7 @@ buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {boardConfig:{
             fvContainer,
             b:""
         }
-    }]
+    }],
 }).then(pfv=>{
     fvContainer.set(pfv)
     console.log(pfv, "rendered");
