@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.4] - 2022-11-23
+### Bug Fix
+- SearchQuery propagated trough group carousel link
+
 ## [4.5.3] - 2022-11-23
 ### Bug Fix
 - Page button is not rendered in single page MSA
