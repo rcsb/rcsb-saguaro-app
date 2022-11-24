@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.3] - 2022-11-23
+### Bug Fix
+- Page button is not rendered in single page MSA
+- `RcsbFvGroupAlignmentBuilder` `additionalConfig.page` bug fixed
+
 ## [4.5.2] - 2022-11-23
 ### Improvement
 - Enabling 1D-3D Alignment link for Sequence Identity carousels

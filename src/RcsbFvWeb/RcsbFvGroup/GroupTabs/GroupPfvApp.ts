@@ -81,7 +81,10 @@ export namespace GroupPfvApp {
                         }
                     }
                 };
-                GroupPfvUI.fvUI( GroupPfvUI.addBootstrapElement(elementId), [uiComp].concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : []));
+                GroupPfvUI.fvUI(
+                    GroupPfvUI.addBootstrapElement(elementId),
+                    (entityCount > (additionalConfig?.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : [])
+                );
                 return pfv;
         }
     }

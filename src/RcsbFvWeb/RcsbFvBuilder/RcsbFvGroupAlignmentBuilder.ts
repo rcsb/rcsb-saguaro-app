@@ -41,7 +41,11 @@ export class RcsbFvGroupAlignmentBuilder {
                 rowTitleWidth: 190,
                 ...additionalConfig.boardConfig,
             },
-            page:{first:50, after:"0"},
+            page:{
+                first:50,
+                after:"0",
+                ...additionalConfig.page
+            },
             alignmentFilter:filterEntities,
             externalTrackBuilder: {
                 ...alignmentVariation(),
@@ -84,7 +88,10 @@ export class RcsbFvGroupAlignmentBuilder {
                 }
             }
         };
-        GroupPfvUI.fvUI( GroupPfvUI.addBootstrapElement(elementId), [uiComp].concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : []));
+        GroupPfvUI.fvUI(
+            GroupPfvUI.addBootstrapElement(elementId),
+            (entityCount > (additionalConfig?.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : [])
+        );
         return pfv;
     }
 

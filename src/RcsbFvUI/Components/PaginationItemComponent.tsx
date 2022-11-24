@@ -21,28 +21,26 @@ export class PaginationItemComponent extends AbstractMenuItemComponent<Paginatio
     }
 
     render(): JSX.Element {
-        if(this.props.first < this.props.count)
-            return (
-                <>
-                    <div
-                        onClick={()=>this.next(-this.state.first)}
-                        role={this.role(-this.state.first)}
-                        className={"d-inline-block text-center"+" "+this.textColor(-this.state.first)}
-                        style={{width:20}}
-                    >❮</div>
-                    <div
-                        className={"d-inline-block text-center"}
-                        style={{width:90}}
-                    >{this.state.after+1} - {this.state.after+this.state.first}</div>
-                    <div
-                        onClick={()=>this.next(this.state.first)}
-                        role={this.role(this.state.first)}
-                        className={"d-inline-block text-center"+" "+this.textColor(this.state.first)}
-                        style={{width:20}}
-                    >❯</div>
-                </>
-            );
-        return null;
+        return (
+            <>
+                <div
+                    onClick={()=>this.next(-this.state.first)}
+                    role={this.role(-this.state.first)}
+                    className={"d-inline-block text-center"+" "+this.textColor(-this.state.first)}
+                    style={{width:20}}
+                >❮</div>
+                <div
+                    className={"d-inline-block text-center"}
+                    style={{width:90}}
+                >{this.state.after+1} - {this.state.after+this.state.first}</div>
+                <div
+                    onClick={()=>this.next(this.state.first)}
+                    role={this.role(this.state.first)}
+                    className={"d-inline-block text-center"+" "+this.textColor(this.state.first)}
+                    style={{width:20}}
+                >❯</div>
+            </>
+        );
     }
 
     componentDidUpdate(prevProps: Readonly<PaginationItemProps & { stateChange(newState: PaginationItemState, oldState: PaginationItemState): void }>, prevState: Readonly<PaginationItemState>, snapshot?: any) {

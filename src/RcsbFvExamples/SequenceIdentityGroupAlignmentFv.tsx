@@ -15,10 +15,15 @@ class UiComponent extends React.Component<{text:string;fvContainer:DataContainer
 
 }
 
-buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {boardConfig:{
-    selectionChangeCallBack:(selection)=>{
-        console.log(selection);
-    }
+buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {
+    boardConfig:{
+        selectionChangeCallBack:(selection)=>{
+            console.log(selection);
+        }
+    },
+    page:{
+        first:200,
+        after:"0"
     },
     externalTrackBuilder:{
         filterAlignments: (data)=>{
