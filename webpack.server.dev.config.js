@@ -47,7 +47,19 @@ const commonConfig = {
     devtool: 'source-map'
 };
 
-const examples = ['ResidueDistribution','GroupHistogram','InstanceSequenceFv','SingleEntitySummaryFv','EntitySummaryFv','UniprotGroupFv','SequenceIdentityGroupFv','UniprotFv','SequenceIdentityGroupAlignmentFv'];
+const examples = [
+    'ResidueDistribution',
+    'GroupHistogram',
+    'InstanceSequenceFv',
+    'SingleEntitySummaryFv',
+    'EntitySummaryFv',
+    'UniprotGroupFv',
+    'SequenceIdentityGroupFv',
+    'UniprotFv',
+    'SequenceIdentityGroupAlignmentFv',
+    'UniprotEntityInstanceFv',
+    'InstanceFv'
+];
 const entries = examples.reduce((prev,current)=>{prev[current]= fs.existsSync(`./src/RcsbFvExamples/${current}.ts`) ? `./src/RcsbFvExamples/${current}.ts` : `./src/RcsbFvExamples/${current}.tsx`;return prev;},{});
 
 const server = {
