@@ -2,9 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.5.5] - 2022-11-28
+## [4.5.6] - 2022-11-28
 ### Dependency update
 - rcsb-saguaro v2.5.5
+
+## [4.5.5] - 2022-11-28
+### No change
+- No changes. Published mistake
 
 ## [4.5.4] - 2022-11-23
 ### Bug Fix
