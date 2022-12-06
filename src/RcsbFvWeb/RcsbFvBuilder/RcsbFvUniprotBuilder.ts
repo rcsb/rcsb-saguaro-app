@@ -8,6 +8,7 @@ import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollect
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {RcsbFvUniprotAlignment} from "../RcsbFvModule/RcsbFvUniprotAlignment";
 
 export interface UniprotSequenceOnchangeInterface extends Partial<PolymerEntityInstanceInterface> {
     upAcc:string;
@@ -208,4 +209,28 @@ export class RcsbFvUniprotBuilder {
             }
         });
     }
+
+    static async buildUniprotAlignmentFv(elementId: string, upAcc: string, additionalConfig?:RcsbFvAdditionalConfig):  Promise<RcsbFvModulePublicInterface> {
+        return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
+            try {
+                RcsbFvCoreBuilder.createFv({
+                    elementId: elementId,
+                    fvModuleI: RcsbFvUniprotAlignment,
+                    config: {
+                        upAcc: upAcc,
+                        additionalConfig: {
+                            rcsbContext:{
+                                upAcc:upAcc
+                            },
+                            ...additionalConfig
+                        },
+                        resolve: resolve
+                    }
+                });
+            }catch(e) {
+                reject(e);
+            }
+        });
+    }
+
 }

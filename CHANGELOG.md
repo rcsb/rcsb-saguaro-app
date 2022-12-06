@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.7] - 2022-12-05
+### Display improvement
+- Uniprot Group Alignment pagination
+
 ## [4.5.6] - 2022-11-28
 ### Dependency update
 - rcsb-saguaro v2.5.5

@@ -96,9 +96,9 @@ export function buildGroupFv(elementId: string, groupProvenanceId: GroupProvenan
 }
 
 export function buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface): Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvGroupAlignmentBuilder.buildSequenceIdentityAlignmentFv(elementId,groupId,query,additionalConfig);
+    return RcsbFvGroupAlignmentBuilder.buildGroupAlignmentFv(elementId, GroupProvenanceId.ProvenanceSequenceIdentity, groupId, query, additionalConfig);
 }
 
 export function  buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
-    return RcsbFvGroupAlignmentBuilder.buildUniprotAlignmentFv(elementId, upAcc, query, additionalConfig);
+    return RcsbFvGroupAlignmentBuilder.buildGroupAlignmentFv(elementId, GroupProvenanceId.ProvenanceMatchingUniprotAccession, upAcc, query, additionalConfig);
 }
