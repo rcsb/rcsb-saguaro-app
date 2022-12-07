@@ -65,6 +65,8 @@ class RcsbRequestContextManager {
     private readonly assemblyInterfacesCollector: AssemblyInterfacesCollector = new AssemblyInterfacesCollector();
     private readonly multipleEntityInstancesCollector: MultipleDocumentPropertyCollectorInterface<"entity_ids",PolymerEntityInstanceInterface> = new MultipleEntityInstancesCollector();
 
+    public readonly modelKey: string = EntryAssembliesCollector.modelKey;
+
     public async getEntityProperties(entityIds:string|Array<string>): Promise<Array<PolymerEntityInstanceInterface>>{
         return RRT.getMultipleObjectProperties<"entity_ids",PolymerEntityInstanceInterface>(
             entityIds,
@@ -101,7 +103,7 @@ class RcsbRequestContextManager {
             async ()=>{
                 RRT.mapPending<PolymerEntityInstanceTranslate>(entryId, this.polymerEntityToInstanceMap);
                 const result: Map<string, Array<PolymerEntityInstanceInterface>> = await this.assemblyCollector.collect({entry_id: entryId});
-                RRT.mapSet<PolymerEntityInstanceTranslate>(this.polymerEntityToInstanceMap.get(entryId), new PolymerEntityInstanceTranslate(result.get(EntryAssembliesCollector.modelKey)));
+                RRT.mapSet<PolymerEntityInstanceTranslate>(this.polymerEntityToInstanceMap.get(entryId), new PolymerEntityInstanceTranslate(result.get(this.modelKey)));
                 return new EntryAssemblyTranslate(result);
             }
         );

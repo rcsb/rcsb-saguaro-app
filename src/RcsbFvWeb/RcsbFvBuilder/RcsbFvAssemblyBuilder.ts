@@ -1,5 +1,4 @@
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
-import {EntryAssembliesCollector} from "../../RcsbCollectTools/DataCollectors/EntryAssembliesCollector";
 import {InstanceSequenceOnchangeInterface, RcsbFvInstanceBuilder} from "./RcsbFvInstanceBuilder";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
@@ -25,9 +24,9 @@ export class RcsbFvAssemblyBuilder {
                     }
                 }
             }), {dropdownTitle:"ASSEMBLY"});
-            const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildSelectorInstanceFv(assemblyMap.get(EntryAssembliesCollector.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
+            const out: RcsbFvModulePublicInterface = await RcsbFvInstanceBuilder.buildSelectorInstanceFv(assemblyMap.get(rcsbRequestCtxManager.modelKey), elementFvId, elementSelectInstanceId, entryId, {onChangeCallback: onInstanceChangeCallback});
             if(typeof onAsseblyChangeCallback === "function")
-                onAsseblyChangeCallback(EntryAssembliesCollector.modelKey);
+                onAsseblyChangeCallback(rcsbRequestCtxManager.modelKey);
             return out;
         }
     }

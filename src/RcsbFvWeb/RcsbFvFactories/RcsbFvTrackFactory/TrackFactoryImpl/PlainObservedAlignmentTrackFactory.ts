@@ -13,13 +13,11 @@ import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/r
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 
-import {
-    EntryPropertyIntreface,
-    MultipleEntryPropertyCollector
-} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {range} from "lodash";
 import {PlainAlignmentTrackFactory} from "./PlainAlignmentTrackFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
+import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextManager";
+import {EntryPropertyIntreface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 
 export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
@@ -44,9 +42,8 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
 
     private async collectFeatureEntryProperties(unObservedRegions: Array<AnnotationFeatures>): Promise<void>{
         const entryIds: string[] = Operator.uniqueValues<string>(unObservedRegions.map(uor=>uor.target_id.split(TagDelimiter.instance)[0]));
-        const entryPropertyCollector = new MultipleEntryPropertyCollector();
         //TODO define a Translator class for multiple entry entry data
-        const entryProperties: EntryPropertyIntreface[] = (await Promise.all<EntryPropertyIntreface[]>(Operator.arrayChunk(entryIds, 100).map(ids => entryPropertyCollector.collect({entry_ids:ids})))).flat();
+        const entryProperties: EntryPropertyIntreface[] = (await Promise.all<EntryPropertyIntreface[]>(Operator.arrayChunk(entryIds, 100).map(ids => rcsbRequestCtxManager.getEntryProperties(ids)))).flat();
         entryProperties.forEach(ep=>{
             ep.entityToInstance.forEach((instanceList,entityId)=>{
                 this.entityInstanceNumberMap.set(entityId, instanceList.length);
