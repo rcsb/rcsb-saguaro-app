@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.8] - 2022-12-09
+### Bug fix
+- Uniprot Group Alignment entity track title color bug fix
+
 ## [4.5.7] - 2022-12-05
 ### Display improvement
 - Uniprot Group Alignment pagination
