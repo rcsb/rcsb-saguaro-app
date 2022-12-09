@@ -1,7 +1,7 @@
 import {VictoryAxis, VictoryLabel} from "victory";
 import * as React from "react";
 import {VictoryAxisProps} from "victory-axis";
-import {ChartTools} from "../../../RcsbChartTools/ChartTools";
+import {ChartTools} from "../../../RcsbChartDataProvider/ChartTools";
 import {ChartConfigInterface} from "../../ChartConfigInterface";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 

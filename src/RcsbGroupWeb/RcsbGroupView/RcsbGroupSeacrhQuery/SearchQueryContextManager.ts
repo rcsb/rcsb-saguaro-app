@@ -17,15 +17,15 @@ export class SearchQueryContextManager {
     private static readonly attributeList: string[] = [];
     public static subscribe(f:(x:SearchQueryContextManagerSubjectInterface)=>void, attr?:string): Subscription {
         if(typeof attr === "string")
-            this.attributeList.push(attr);
-        return this.searchQueryObservable.subscribe({
+            SearchQueryContextManager.attributeList.push(attr);
+        return SearchQueryContextManager.searchQueryObservable.subscribe({
             next:(o:SearchQueryContextManagerSubjectInterface)=>{
                 f(o);
             }
         });
     }
     public static next(o:SearchQueryContextManagerSubjectInterface): void {
-        this.searchQueryObservable.next(o);
+        SearchQueryContextManager.searchQueryObservable.next(o);
     }
     public static getAttributeList(): string[] {
         return cloneDeep<string[]>(this.attributeList);

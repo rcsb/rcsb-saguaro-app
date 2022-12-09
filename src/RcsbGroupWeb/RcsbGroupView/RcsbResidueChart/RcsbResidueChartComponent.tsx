@@ -34,7 +34,7 @@ export class RcsbResidueChartComponent extends React.Component <ResidueChartInte
             .map(ch=>FacetTools.addChartDisplayConfig(ch, this.props.chartDisplayConfig ?? {}));
         this.setState({
             layout: charts.map(c=>c.attribute),
-            chartMap: charts.reduce<ChartMapType>((prev,curr)=>(prev.set(curr.attribute,{chart: curr})), new Map())
+            chartMap: charts.reduce<ChartMapType>((prev,curr)=>(prev.set(curr.attribute,[curr])), new Map())
         });
     }
 

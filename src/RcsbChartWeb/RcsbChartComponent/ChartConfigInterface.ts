@@ -1,4 +1,4 @@
-import {ChartDataInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartDataInterface, ChartDataValuesInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import * as React from "react";
 
 export interface ChartObjectInterface {
@@ -25,7 +25,7 @@ export interface ChartConfigInterface {
     axisLabel?:string
     barClickCallback?:BarClickCallbackType;
     sort?:(b: ChartDataInterface, a: ChartDataInterface) => number;
-    tooltipText?:(a: ChartDataInterface) => string;
+    tooltipText?:(a: ChartDataValuesInterface) => string;
     chartDisplayConfig?: Partial<ChartDisplayConfigInterface>;
 }
 export interface ChartDisplayConfigInterface {

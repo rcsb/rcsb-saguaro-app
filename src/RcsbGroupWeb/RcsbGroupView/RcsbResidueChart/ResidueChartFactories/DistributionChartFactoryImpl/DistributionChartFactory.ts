@@ -2,7 +2,9 @@ import {DistributionChartFactoryInterface, ResidueDistributionInterface} from ".
 import {RcsbChartInterface} from "../../../../../RcsbSeacrh/FacetTools";
 import {ChartObjectInterface, ChartType} from "../../../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
-import {ChartDataInterface} from "../../../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataProviderInterface";
+import {
+    ChartDataValuesInterface
+} from "../../../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataProviderInterface";
 import {Operator} from "../../../../../RcsbUtils/Helpers/Operator";
 
 export class DistributionChartFactory implements DistributionChartFactoryInterface {
@@ -32,7 +34,7 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
             title: residueDistribution.title,
             chartConfig: {
                 sort: sort ? (a,b)=>(sort.findIndex(x=>x===a.id)-sort.findIndex(x=>x===b.id)) : undefined,
-                tooltipText: (d: ChartDataInterface)=>(`${Operator.digitGrouping(d.y)} residues`),
+                tooltipText: (d: ChartDataValuesInterface)=>(`${Operator.digitGrouping(d.y)} residues`),
                 axisLabel
             }
         };

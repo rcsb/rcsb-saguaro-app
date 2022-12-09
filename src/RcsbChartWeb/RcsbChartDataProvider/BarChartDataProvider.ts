@@ -1,5 +1,5 @@
 import {ChartConfigInterface, ChartObjectInterface} from "../RcsbChartComponent/ChartConfigInterface";
-import {ChartTools} from "../RcsbChartTools/ChartTools";
+import {ChartTools} from "./ChartTools";
 import {ChartDataProviderInterface,ChartDataInterface} from "./ChartDataProviderInterface";
 
 export class BarChartDataProvider implements ChartDataProviderInterface{
@@ -8,29 +8,19 @@ export class BarChartDataProvider implements ChartDataProviderInterface{
     private excludedData: ChartDataInterface[];
     private data: ChartDataInterface[];
 
-    public setData(chartData: ChartObjectInterface[], chartSubData: ChartObjectInterface[], config?: ChartConfigInterface):void {
-        const data: ChartDataInterface[] = ChartTools.labelsAsString(chartData);
-        const subData: ChartDataInterface[] = chartSubData ? ChartTools.labelsAsString(chartSubData) : [];
+    public setData(chartData: ChartObjectInterface[][], config?: ChartConfigInterface):void {
+        const data: ChartDataInterface[] = ChartTools.normalizeData(ChartTools.labelsAsString(chartData));
+        const subData: ChartDataInterface[] = data.filter(d=>d.y[0].value==0) ?? [];
 
         const mergedValues: Map<string|number, number> = new Map<string, number>();
         const subValues: Map<string|number, number> = new Map<string, number>();
+        data.forEach(d=>{
+            mergedValues.set(d.x,d.y[0].value);
+        })
         subData.forEach((d)=>{
-            mergedValues.set(d.x,0);
-            subValues.set(d.x,d.y);
+            subValues.set(d.x,d.y.reduce((prev,curr)=>(prev+curr.value),0));
         });
-        data.forEach((d)=>{
-            mergedValues.set(d.x,d.y);
-        });
-        const categories: Map<string|number,{x:string;id:string;}> = data.reduce((prev,curr)=>(prev.set(curr.x,curr)), new Map());
-        const subCategories: Map<string|number,{x:string;id:string;}> = subData.reduce((prev,curr)=>(prev.set(curr.x,curr)), new Map());
-        subCategories.forEach(c=>{
-            if(!categories.has(c.x))
-                data.push({x:c.x, y:0, id: c.id, isLabel:true});
-        });
-        categories.forEach(c=>{
-            if(!subCategories.has(c.x))
-                subData.push({x:c.x, y:0, id: c.id, isLabel:true});
-        });
+
         const allowedCategories: Set<string|number> = new Set<string|number>([...mergedValues.entries()]
             .sort((a,b)=>(b[1]-a[1]))
             .slice(0,config?.mostPopulatedGroups ?? mergedValues.size)
@@ -45,8 +35,6 @@ export class BarChartDataProvider implements ChartDataProviderInterface{
                 return subValues.get(b.x)-subValues.get(a.x);
         });
         const barOut: ChartDataInterface[] = data.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        const subOut: ChartDataInterface[] = subData.sort((a, b)=>sort(a,b)).filter(d=>(allowedCategories.has(d.x)));
-        ChartTools.addComplementaryData(barOut,subOut);
         this.stringTicks = barOut.map(d=>d.x as string);
         this.excludedData = data.filter(d=>(!allowedCategories.has(d.x)));
         this.data = barOut;

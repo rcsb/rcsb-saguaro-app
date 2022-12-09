@@ -3,7 +3,6 @@ import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
 import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
-import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
@@ -32,7 +31,7 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
                     <GroupChartLayout
                         layout={this.props.facetStore.facetLayoutGrid}
                         chartMap={FacetTools.getResultDrilldowns(this.props.facetStore.getFacetService("all"), this.state.facets).reduce<ChartMapType>((prev,current)=>{
-                            return prev.set(current.attribute,{chart: current})
+                            return prev.set(current.attribute,[current])
                         },new Map())}
                     />
             </div>);
