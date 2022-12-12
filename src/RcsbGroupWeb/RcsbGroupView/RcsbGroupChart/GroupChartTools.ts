@@ -52,7 +52,11 @@ export namespace GroupChartMap{
         }));
 
         return chartData.reduce<ChartMapType>((prev,current)=>{
-            return prev.set(current.attributeName,{chart: current, subChart: subData?.find((c)=>(c.attributeName===current.attributeName))})
+            prev.set(current.attributeName,[current])
+            const comp = subData?.find((c)=>(c.attributeName===current.attributeName))
+            if(comp)
+                prev.get(current.attributeName).push(comp);
+            return prev;
         },new Map());
 
     }

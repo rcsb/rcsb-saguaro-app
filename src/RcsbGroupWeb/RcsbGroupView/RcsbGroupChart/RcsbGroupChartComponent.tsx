@@ -58,7 +58,7 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
 function applyLayoutConfig(layout: string[], chartMap: ChartMapType, layoutConfig: LayoutConfigInterface){
     layout.forEach(attr=>{
         if(chartMap.has(attr) && layoutConfig[attr]){
-            chartMap.get(attr).chart.title = layoutConfig[attr].title;
+            chartMap.get(attr)[0].title = layoutConfig[attr].title;
         }
     });
 }

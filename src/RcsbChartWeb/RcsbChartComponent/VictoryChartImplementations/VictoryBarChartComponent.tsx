@@ -1,12 +1,12 @@
 import {AbstractChartImplementation} from "../AbstractChartImplementation";
-import {ChartTools} from "../../RcsbChartTools/ChartTools";
+import {ChartTools} from "../../RcsbChartDataProvider/ChartTools";
 import {AxisFactory} from "./Components/AxisFactory";
 import {Bar, VictoryAxis, VictoryBar, VictoryChart, VictoryStack} from "victory";
 import {LabelComponent} from "./Components/LabelComponent";
 import * as React from "react";
 import {BarComponent} from "./Components/BarComponent";
 import {TooltipFactory} from "./Components/TooltipFactory";
-import {ChartDataInterface} from "../../RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartDataInterface, ChartDataValuesInterface} from "../../RcsbChartDataProvider/ChartDataProviderInterface";
 import {ChartConfigInterface, ChartDisplayConfigInterface} from "../ChartConfigInterface";
 
 export class VictoryBarChartComponent extends AbstractChartImplementation {
@@ -30,13 +30,47 @@ export class VictoryBarChartComponent extends AbstractChartImplementation {
 //TODO <VictoryStack animate={true}> BarComponent props fails in capturing updated data
 function stack(data:ChartDataInterface[], chartConfig?: ChartConfigInterface): JSX.Element{
     return ( <VictoryStack >
-        {bar(data, "#5e94c3", <BarComponent barClick={chartConfig?.barClickCallback}/>, TooltipFactory.getTooltip({dx:15, tooltipText:chartConfig?.tooltipText}), chartConfig?.chartDisplayConfig)}
-        {bar(data.map(d=>({...d,y:d.yc,yc:d.y})), "#d0d0d0", <BarComponent />, undefined, chartConfig?.chartDisplayConfig)}
+        {bar(
+            data.map(d=>({
+                ...d,
+                y:d.y[0].value,
+                color:d.y[0].color,
+                values:d.y.map(v=>v.value),
+                index:0
+            })),
+            0,
+            "#5e94c3",
+            <BarComponent barClick={chartConfig?.barClickCallback}/>,
+            TooltipFactory.getTooltip({dx:15, tooltipText:chartConfig?.tooltipText}),
+            chartConfig?.chartDisplayConfig
+        )}
+        {
+            data[0].y.length > 1 ?
+                Array(data[0].y.length-1).fill(undefined).map(
+                    (e,n)=>bar(
+                        data.map(d=>({
+                            ...d,
+                            y:d.y[n+1].value,
+                            color:d.y[n+1].color,
+                            values:d.y.map(v=>v.value),
+                            index:n+1
+                        })),
+                        n+1,
+                        "#d0d0d0",
+                        <BarComponent />,
+                        undefined,
+                        chartConfig?.chartDisplayConfig
+                    )
+                )
+                :
+                undefined
+        }
     </VictoryStack>);
 }
 
-function bar(data:ChartDataInterface[], color: string, barComp: JSX.Element, labelComponent?:JSX.Element, chartDisplayConfig?:Partial<ChartDisplayConfigInterface>): JSX.Element {
+function bar(data:ChartDataValuesInterface[], index:number, color: string, barComp: JSX.Element, labelComponent?:JSX.Element, chartDisplayConfig?:Partial<ChartDisplayConfigInterface>): JSX.Element {
     return data.length > 0 ? (<VictoryBar
+        key={"victory_bar_"+index}
         barWidth={ChartTools.getConfig<number>("xDomainPadding", chartDisplayConfig)}
         style={{
             data: {

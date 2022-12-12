@@ -2,7 +2,6 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import React from "react";
 import {Subscription} from "rxjs";
-import {Col, Container, Row} from "react-bootstrap";
 import {actionIcon} from "../RcsbGroupMembers/Components/Slider";
 import {
     SearchQueryContextManager as SQCM,
@@ -63,6 +62,10 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
         this.checkUrlState();
     }
 
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
     private unsubscribe(): void{
         this.subscription.unsubscribe();
     }
@@ -97,7 +100,7 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
                 this.encodeUrlParameters(this.state.searchQueryList[this.state.index]);
                 const chartMap: ChartMapType = await GDCM.getChartMap(this.props.groupProvenanceId,this.props.groupId,this.state.searchQueryList[this.state.index]);
                 SQCM.next({
-                    chartMap:chartMap,
+                    chartMap,
                     attributeName: this.COMPONENT_NAME,
                     searchQuery:this.state.searchQueryList[this.state.index],
                     groupId: this.props.groupId,

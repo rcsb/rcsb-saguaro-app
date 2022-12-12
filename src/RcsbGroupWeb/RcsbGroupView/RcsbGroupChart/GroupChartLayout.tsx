@@ -4,7 +4,7 @@ import {HistogramChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/
 import {BarChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/BarChartComponent";
 import {Col, Container, Row} from "react-bootstrap";
 import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
-import {ChartTools} from "../../../RcsbChartWeb/RcsbChartTools/ChartTools";
+import {ChartTools} from "../../../RcsbChartWeb/RcsbChartDataProvider/ChartTools";
 import {
     VictoryBarChartComponent
 } from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryBarChartComponent";
@@ -12,9 +12,9 @@ import {
     VictoryHistogramChartComponent
 } from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryHistogramChartComponent";
 import uniqid from "uniqid";
+import {SearchQueryContextManager} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
 
-//TODO chart && subChart should be defined in RcsbChartInterface.data: ChartObjectInterface as RcsbChartInterface.data{XXX:ChartObjectInterface,subXXX:ChartObjectInterface}
-export type ChartMapType = Map<string,{chart:RcsbChartInterface;subChart?:RcsbChartInterface;}>;
+export type ChartMapType = Map<string,RcsbChartInterface[]>;
 export interface RcsbChartLayoutInterface {
     layout: string[];
     chartMap: ChartMapType;
@@ -35,11 +35,10 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
     }
 
     private renderCell(attr: string): JSX.Element {
-        const chart: RcsbChartInterface = this.props.chartMap.get(attr)?.chart;
+        const chart: RcsbChartInterface[] = this.props.chartMap.get(attr);
         if(chart){
-            const subChart: RcsbChartInterface = this.props.chartMap.get(attr).subChart;
-            const node: JSX.Element = chart.chartType == ChartType.histogram ? histogramChart(attr, chart, subChart) : barChart(attr, chart, subChart);
-            return chartCell(node,chart.title, chart.chartConfig?.chartDisplayConfig);
+            const node: JSX.Element = chart[0].chartType == ChartType.histogram ? histogramChart(attr, chart) : barChart(attr, chart);
+            return chartCell(node,chart[0].title, chart[0].chartConfig?.chartDisplayConfig);
         }
         return null;
     }
@@ -61,14 +60,26 @@ function chartCell(chartNode:JSX.Element, title: string, chartDisplayConfig:Part
     </Col>);
 }
 
-function histogramChart(attributeName: string, chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
-    return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <HistogramChartComponent data={chart.data} subData={subChart?.data} chartConfig={chart.chartConfig} attributeName={attributeName} chartComponentImplementation={VictoryHistogramChartComponent}/>
+function histogramChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Element {
+    return (<div id={`chart:${chart[0].labelList ? chart[0].labelList.join("-") + chart[0].attribute : chart[0].attribute}`} >
+        <HistogramChartComponent
+            data={chart.map(c=>c.data)}
+            chartConfig={chart[0].chartConfig}
+            attributeName={attributeName}
+            chartComponentImplementation={VictoryHistogramChartComponent}
+            subscribe={SearchQueryContextManager.subscribe}
+        />
     </div>);
 }
 
-function barChart(attributeName: string, chart: RcsbChartInterface, subChart?:RcsbChartInterface): JSX.Element {
-    return (<div id={`chart:${chart.labelList ? chart.labelList.join("-") + chart.attribute : chart.attribute}`} >
-        <BarChartComponent data={chart.data} subData={subChart?.data} chartConfig={chart.chartConfig} attributeName={attributeName} chartComponentImplementation={VictoryBarChartComponent}/>
+function barChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Element {
+    return (<div id={`chart:${chart[0].labelList ? chart[0].labelList.join("-") + chart[0].attribute : chart[0].attribute}`} >
+        <BarChartComponent
+            data={chart.map(c=>c.data)}
+            chartConfig={chart[0].chartConfig}
+            attributeName={attributeName}
+            chartComponentImplementation={VictoryBarChartComponent}
+            subscribe={SearchQueryContextManager.subscribe}
+        />
     </div>);
 }

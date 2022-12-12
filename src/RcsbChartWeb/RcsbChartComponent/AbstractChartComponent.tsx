@@ -1,25 +1,27 @@
 import {ChartConfigInterface, ChartObjectInterface} from "./ChartConfigInterface";
 import * as React from "react";
-import {
-    SearchQueryContextManager as SQCM,
-    SearchQueryContextManagerSubjectInterface
-} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
+
 import {asyncScheduler, Subscription} from "rxjs";
 import {ChartDataProviderInterface} from "../RcsbChartDataProvider/ChartDataProviderInterface";
 import {AbstractChartImplementationType} from "./AbstractChartImplementation";
-
-interface AbstractChartState {
-    data: ChartObjectInterface[];
-    subData: ChartObjectInterface[];
-    chartConfig:ChartConfigInterface;
-}
+import {RcsbChartInterface} from "../../RcsbSeacrh/FacetTools";
 
 interface AbstractChartInterface {
-    data: ChartObjectInterface[];
-    subData?: ChartObjectInterface[];
+    data: ChartObjectInterface[][];
+    subscribe? (f:(x:ObservedDataInterface)=>void, attr?:string): Subscription
     chartConfig?:ChartConfigInterface;
     attributeName:string;
     chartComponentImplementation: AbstractChartImplementationType;
+}
+
+interface AbstractChartState {
+    data: ChartObjectInterface[][];
+    chartConfig:ChartConfigInterface;
+}
+
+interface ObservedDataInterface {
+    attributeName: string;
+    chartMap:Map<string,RcsbChartInterface[]>;
 }
 
 export abstract class AbstractChartComponent extends React.Component <AbstractChartInterface, AbstractChartState> {
@@ -29,7 +31,6 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
     private subscription: Subscription;
     readonly state: AbstractChartState = {
         data: this.props.data,
-        subData: this.props.subData,
         chartConfig: this.props.chartConfig
     };
 
@@ -42,20 +43,20 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
     }
 
     private unsubscribe(): void {
-        this.subscription.unsubscribe();
+        this.subscription?.unsubscribe();
     }
 
     private subscribe(): void{
-        this.subscription = SQCM.subscribe(
-            (o:SearchQueryContextManagerSubjectInterface)=>{
+        this.subscription = this.props?.subscribe(
+            (o:ObservedDataInterface)=>{
                 this.updateChartMap(o);
             },
             this.props.attributeName
         );
     }
 
-    private updateChartMap(sqData: SearchQueryContextManagerSubjectInterface): void{
-        if(!sqData.chartMap.get(this.props.attributeName))
+    private updateChartMap(sqData: ObservedDataInterface): void{
+        if(!sqData.chartMap)
             return;
         if(this.props.attributeName === sqData.attributeName){
             this.asyncUpdate(sqData);
@@ -64,13 +65,12 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
         }
     }
 
-    private asyncUpdate(sqData: SearchQueryContextManagerSubjectInterface,x?:number): void {
+    private asyncUpdate(sqData: ObservedDataInterface,x?:number): void {
         if(this.asyncSubscription)
             this.asyncSubscription.unsubscribe();
         this.asyncSubscription = asyncScheduler.schedule(()=>{
             this.setState({
-                data:sqData.chartMap.get(this.props.attributeName).chart.data,
-                subData:sqData.chartMap.get(this.props.attributeName).subChart?.data,
+                data:sqData.chartMap.get(this.props.attributeName).map(chart=>chart.data)
             });
         }, x );
     }
