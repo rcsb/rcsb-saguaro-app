@@ -39,59 +39,19 @@ const commonConfig = {
     }
 };
 
-const webWorker = {
-    ...commonConfig,
-    entry: {
-        'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
-    },
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist')
-    }
-};
-
-const webBuilder = {
-    ...commonConfig,
-    entry: {
-        'app':'./build/src/app.js'
-    },
-    output: {
-        filename: '[name].js',
-        library: 'RcsbFvWebApp',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
-    }
-};
-
 const webChart = {
     ...commonConfig,
     entry: {
-        'plot':'./build/src/plot.js'
+        'charts':'./build/src/charts.js'
     },
     output: {
         filename: '[name].js',
-        library: 'RcsbChartWebApp',
+        library: 'RcsbCharts',
         libraryTarget: 'umd',
         umdNamedDefine: true,
         path: path.resolve(__dirname, 'build/dist')
     }
 };
 
-const webConstants = {
-    ...commonConfig,
-    entry: {
-        'constants':'./build/src/constants.js'
-    },
-    output: {
-        filename: '[name].js',
-        library: 'RcsbChartConstants',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-        globalObject: 'this',
-        path: path.resolve(__dirname, 'build/dist')
-    }
-};
-
-module.exports =[webWorker, webBuilder, webChart, webConstants];
+module.exports =[webChart];
 

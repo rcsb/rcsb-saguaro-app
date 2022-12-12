@@ -1,29 +1,18 @@
 {
-  "name": "@rcsb/rcsb-saguaro-app",
-  "version": "4.5.7",
-  "description": "RCSB 1D Saguaro Web App",
-  "main": "build/dist/app.js",
+  "name": "@rcsb/rcsb-charts",
+  "version": "0.0.1",
+  "description": "RCSB Charts",
+  "main": "build/dist/charts.js",
   "files": [
     "build/dist"
   ],
   "scripts": {
-    "devServer": "webpack-dev-server --config webpack.server.dev.config.js",
-    "buildAll": "npm run buildApp && npm run buildAllDoc",
-    "buildOnlyApp": "npm run tsc && npm run copyQueries && npm run copyCss && npm run build && npm run copyConfig",
-    "buildApp": "npm run cleanAll && npm run checkQueries && npm run buildOnlyApp && npm run clean",
-    "buildAppDev": "npm run cleanAll && npm run checkQueries && npm run buildDev",
+    "buildApp": "npm run cleanAll && npm run tsc && npm run build && npm run clean",
     "build": "webpack --config ./webpack.config.js",
-    "buildDev": "webpack --config ./webpack.server.dev.config.js",
-    "checkQueries": "ts-node src/RcsbGraphQL/Queries/QueryCheck.ts",
-    "copyQueries": "ncp src/RcsbGraphQL/Queries build/src/RcsbGraphQL/Queries",
-    "copyConfig": "ncp build/src/RcsbServerConfig/ServerConfig.js build/dist/config.js",
-    "copyCss": "ncp src/RcsbUtils/scss build/src/RcsbUtils/scss && ncp src/RcsbFvWeb/RcsbFvComponents/scss build/src/RcsbFvWeb/RcsbFvComponents/scss  && ncp src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/Components/scss build/src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/Components/scss",
     "tsc": "tsc",
-    "clean": "del-cli build/*json build/src",
+    "clean": "del-cli build/src",
     "cleanAll": "npm run clean && del-cli build/dist",
-    "buildDoc": "typedoc --excludeExternals --externalPattern \"**/node_modules/**\" ./src/app.ts && sed -i '' '/---/d' docs/index.html",
-    "cpExamples": "ncp examples docs/examples",
-    "buildAllDoc": "npm run buildDoc && npm run cpExamples",
+    "buildDoc": "typedoc --excludeExternals --externalPattern \"**/node_modules/**\" ./src/charts.ts && sed -i '' '/---/d' docs/index.html",
     "publishApp": "npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -32,15 +21,9 @@
     "url": "git://github.com/rcsb/rcsb-saguaro-app.git"
   },
   "keywords": [
-    "1D",
-    "viewer",
-    "sequence",
-    "annotations",
-    "gene",
-    "protein",
     "PDB",
     "RCSB",
-    "UniProt"
+    "Charts"
   ],
   "author": "Joan Segura Mora <joan.segura@rcsb.org>",
   "publishConfig": {
