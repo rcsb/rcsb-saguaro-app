@@ -1,18 +1,17 @@
 import * as React from "react";
-import {ChartDisplayConfigInterface, ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
-import {HistogramChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/HistogramChartComponent";
-import {BarChartComponent} from "../../../RcsbChartWeb/RcsbChartComponent/BarChartComponent";
 import {Col, Container, Row} from "react-bootstrap";
 import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
-import {ChartTools} from "../../../RcsbChartWeb/RcsbChartDataProvider/ChartTools";
-import {
-    VictoryBarChartComponent
-} from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryBarChartComponent";
-import {
-    VictoryHistogramChartComponent
-} from "../../../RcsbChartWeb/RcsbChartComponent/VictoryChartImplementations/VictoryHistogramChartComponent";
+
 import uniqid from "uniqid";
-import {SearchQueryContextManager} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
+import {
+    ChartDisplayConfigInterface
+} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {
+    ChartType,
+    ChartTools
+} from "@rcsb/rcsb-charts";
+import {HistogramChartComponent} from "../../../RcsbChartWeb/HistogramChartComponent";
+import {BarChartComponent} from "../../../RcsbChartWeb/BarChartComponent";
 
 export type ChartMapType = Map<string,RcsbChartInterface[]>;
 export interface RcsbChartLayoutInterface {
@@ -66,8 +65,6 @@ function histogramChart(attributeName: string, chart: RcsbChartInterface[]): JSX
             data={chart.map(c=>c.data)}
             chartConfig={chart[0].chartConfig}
             attributeName={attributeName}
-            chartComponentImplementation={VictoryHistogramChartComponent}
-            subscribe={SearchQueryContextManager.subscribe}
         />
     </div>);
 }
@@ -78,8 +75,6 @@ function barChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Eleme
             data={chart.map(c=>c.data)}
             chartConfig={chart[0].chartConfig}
             attributeName={attributeName}
-            chartComponentImplementation={VictoryBarChartComponent}
-            subscribe={SearchQueryContextManager.subscribe}
         />
     </div>);
 }

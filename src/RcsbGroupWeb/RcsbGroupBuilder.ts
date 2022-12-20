@@ -1,7 +1,6 @@
 import {RcsbGroupDisplay} from "./RcsbGroupView/RcsbGroupDisplay";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {entityGranularityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore";
-import {SearchQueryType} from "../RcsbSeacrh/SearchRequestProperty";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupChartAdditionalProperties} from "./RcsbGroupView/RcsbGroupChart/GroupChartAdditionalProperties";
@@ -12,7 +11,7 @@ import {
 import {Subscription} from "rxjs";
 import {RcsbGroupContentTextInterface} from "./RcsbGroupView/RcsbGroupContent/RcsbGroupContentComponent";
 import {ResidueChartInterface} from "./RcsbGroupView/RcsbResidueChart/ResidueChartTools/ResidueChartTools";
-import {ChartDisplayConfigInterface} from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
+import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
 
 export async function buildSearchRequest(elementId: string, searchQuery:SearchQuery, returnType:ReturnType): Promise<void>{
     await RcsbGroupDisplay.displayRcsbSearchStats(elementId, entityGranularityGroupFacetStore, searchQuery, returnType);

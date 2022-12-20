@@ -1,11 +1,10 @@
 import {DistributionChartFactoryInterface, ResidueDistributionInterface} from "../ResidueDistributionFactoryInterface";
 import {RcsbChartInterface} from "../../../../../RcsbSeacrh/FacetTools";
-import {ChartObjectInterface, ChartType} from "../../../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
-import {
-    ChartDataValuesInterface
-} from "../../../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataProviderInterface";
 import {Operator} from "../../../../../RcsbUtils/Helpers/Operator";
+import {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {ChartDataValuesInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartType} from "@rcsb/rcsb-charts";
 
 export class DistributionChartFactory implements DistributionChartFactoryInterface {
 

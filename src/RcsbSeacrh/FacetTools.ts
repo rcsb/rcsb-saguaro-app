@@ -1,10 +1,5 @@
 import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {
-    ChartConfigInterface, ChartDisplayConfigInterface,
-    ChartObjectInterface,
-    ChartType
-} from "../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
-import {FacetMemberInterface, FacetType} from "./FacetStore/FacetMemberInterface";
+import {FacetMemberInterface} from "./FacetStore/FacetMemberInterface";
 import {cloneDeep} from "lodash";
 import {
     AttributeTextQueryParameters,
@@ -12,6 +7,11 @@ import {
     FilterQueryTerminalNode
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {
+    ChartConfigInterface, ChartDisplayConfigInterface,
+    ChartObjectInterface,
+} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {ChartType} from "@rcsb/rcsb-charts";
 
 export type SearchFilter = {attribute:string;value:AttributeTextQueryParameters['value'];operator:Operator;service:Service.Text|Service.TextChem};
 export interface RcsbChartInterface {

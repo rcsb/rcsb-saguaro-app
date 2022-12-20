@@ -48,7 +48,8 @@ export namespace GroupChartMap{
                     return_type:groupProvenanceToReturnType[groupProvenanceId]
                 },
                 groupProvenanceToReturnType[groupProvenanceId]
-            )
+            );
+            GDE.addTooltipText(chart);
         }));
 
         return chartData.reduce<ChartMapType>((prev,current)=>{

@@ -4,8 +4,9 @@ import {
     HistogramFacet, RangeFacet,
     TermsFacet
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {ChartConfigInterface, ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {ChartConfigInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {ChartType} from "@rcsb/rcsb-charts";
 
 export type FacetType = TermsFacet | HistogramFacet | DateHistogramFacet | RangeFacet | DateRangeFacet | CardinalityFacet  | FilterFacet;
 

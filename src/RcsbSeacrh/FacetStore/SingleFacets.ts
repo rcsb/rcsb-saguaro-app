@@ -1,8 +1,8 @@
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {ChartType} from "../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {ChartType} from "@rcsb/rcsb-charts";
 
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {

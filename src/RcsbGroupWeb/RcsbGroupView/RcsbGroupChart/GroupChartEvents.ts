@@ -2,7 +2,6 @@ import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {DateRange, Range, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {ChartType} from "../../../RcsbChartWeb/RcsbChartComponent/ChartConfigInterface";
 import React from "react";
 import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
@@ -11,7 +10,8 @@ import {ChartMapType} from "./GroupChartLayout";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
-import {ChartDataInterface} from "../../../RcsbChartWeb/RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartDataInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartTools, ChartType} from "@rcsb/rcsb-charts";
 
 export namespace GroupChartEvents {
 
@@ -25,6 +25,20 @@ export namespace GroupChartEvents {
             case ChartType.histogram:
                 addHistogramChartClick(chart,groupProvenanceId, groupId,searchQuery,returnType);
                 break;
+        }
+    }
+
+    export function addTooltipText(chart: RcsbChartInterface): void {
+        chart.chartConfig = {
+            ...chart.chartConfig,
+            tooltipText: (d) => {
+                const sum = d.values.slice(1).reduce((prev,curr)=>prev+curr,0);
+                if(d.index ==  0)
+                    return ChartTools.digitGrouping(d.y) + (sum > 0? (" of " + ChartTools.digitGrouping(d.y+sum)) : "") + " group members\n" +
+                        "Click to refine group\n" +
+                        "Shift-click to search";
+            }
+
         }
     }
 
