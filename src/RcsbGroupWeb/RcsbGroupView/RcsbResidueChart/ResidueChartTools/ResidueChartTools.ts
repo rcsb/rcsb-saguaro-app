@@ -13,22 +13,22 @@ import {
 import {filter, interfaceAnnotations} from "../../../../RcsbFvWeb/RcsbFvModule/RcsbFvInterface";
 import {
     BlockManagerInterface
-} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/BlockManagerInterface";
+} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/BlockManagerInterface";
 
 import {
     DistributionChartFactoryInterface,
     ResidueDistributionFactoryInterface,
     TrackBlockFactoryInterface
 } from "../ResidueChartFactories/ResidueDistributionFactoryInterface";
-import {RcsbChartInterface} from "../../../../RcsbSeacrh/FacetTools";
+import type {RcsbChartInterface} from "../../../../RcsbSearch/FacetTools";
 import {AnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import * as rcm from "../../../../RcsbAnnotationConfig/RcsbResidueConfig.ac.json";
 import {
     AnnotationBlockManager
-} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationBlockManager";
+} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/AnnotationBlockManager";
 import {
     AnnotationTrackManagerFactory
-} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
+} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/AnnotationTrackManager";
 import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {TrackBlockFactory} from "../ResidueChartFactories/TrackBlockFactoryImpl/TrackBlockFactory";
 import {
@@ -90,7 +90,7 @@ export namespace ResidueChartTools {
         return await getCharts(annotationsRequestContext, await annotationCollector.collect(annotationsRequestContext),alignmentResponse.query_sequence.length);
     }
 
-    async function getCharts(annotationRequestContext: AnnotationRequestContext, annotations: Array<AnnotationFeatures>, numberResidues:number): Promise<RcsbChartInterface[]> {
+    async function getCharts(annotationRequestContext: AnnotationRequestContext, annotations: AnnotationFeatures[], numberResidues:number): Promise<RcsbChartInterface[]> {
         return processAnnotations({
             annotations,
             annotationBlockManager: new AnnotationBlockManager(
@@ -108,7 +108,7 @@ export namespace ResidueChartTools {
     async function processAnnotations(config: {
         annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext, AnnotationFeatures[]]>,
         annotationRequestContext: AnnotationRequestContext,
-        annotations: Array<AnnotationFeatures>,
+        annotations: AnnotationFeatures[],
         trackBlockFactory: TrackBlockFactoryInterface<{blockType:string}>,
         residueDistributionFactory: ResidueDistributionFactoryInterface<[string,number]>,
         distributionChartFactory: DistributionChartFactoryInterface,

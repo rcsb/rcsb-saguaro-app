@@ -1,6 +1,6 @@
 import {RcsbFvCoreBuilder} from "../RcsbFvWeb/RcsbFvBuilder/RcsbFvCoreBuilder";
 import {GroupedOptionsInterface, SelectOptionInterface} from "../RcsbFvWeb/RcsbFvComponents/SelectButton";
-import {SelectButtonConfigInterface} from "../RcsbFvWeb/RcsbFvComponents/ComponentsManager";
+import {SelectButtonConfigInterface} from "../RcsbFvWeb/RcsbFvComponents/SelectButtonManager";
 
 export class RcsbFvUI {
 
@@ -8,11 +8,11 @@ export class RcsbFvUI {
         RcsbFvCoreBuilder.clearAdditionalSelectButton(elementFvId, selectButtonId);
     }
 
-    static createSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
+    static createSelectButton(elementFvId: string, selectButtonId: string, options: SelectOptionInterface[]|GroupedOptionsInterface[], config?:SelectButtonConfigInterface){
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, selectButtonId, options, config);
     }
 
-    static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+    static addSelectButton(elementFvId: string, selectButtonId: string, options: SelectOptionInterface[], config?:SelectButtonConfigInterface){
         RcsbFvCoreBuilder.addSelectButton(elementFvId, selectButtonId, options, config);
     }
 

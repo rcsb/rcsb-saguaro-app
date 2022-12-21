@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
+import {RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
 
 import uniqid from "uniqid";
 import {
@@ -13,13 +13,12 @@ import {
 import {HistogramChartComponent} from "../../../RcsbChartWeb/HistogramChartComponent";
 import {BarChartComponent} from "../../../RcsbChartWeb/BarChartComponent";
 
-export type ChartMapType = Map<string,RcsbChartInterface[]>;
 export interface RcsbChartLayoutInterface {
     layout: string[];
-    chartMap: ChartMapType;
+    chartMap: Map<string,RcsbChartInterface[]>;
 }
 
-export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,{}> {
+export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface> {
 
     render():JSX.Element {
         return (

@@ -8,13 +8,13 @@ import {
 import {cloneDeep} from "lodash";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 
-export function burialFraction(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
-    const burialFractionOut: Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
-    const asaUnboundAnn:Array<AnnotationFeatures> = cloneDeep(annotations).map(ann=>{
+export function burialFraction(annotations: AnnotationFeatures[]): AnnotationFeatures[] {
+    const burialFractionOut: AnnotationFeatures[] = new Array<AnnotationFeatures>();
+    const asaUnboundAnn:AnnotationFeatures[] = cloneDeep(annotations).map(ann=>{
         ann.features = ann.features.filter(f=>(f.type===Type.AsaUnbound));
         return ann;
     }).filter(ann=>(ann.features.length>0));
-    const asaBoundAnn:Array<AnnotationFeatures> = cloneDeep(annotations).map(ann=>{
+    const asaBoundAnn:AnnotationFeatures[] = cloneDeep(annotations).map(ann=>{
         ann.features = ann.features.filter(f=>(f.type===Type.AsaBound));
         return ann;
     }).filter(ann=>(ann.features.length>0));
@@ -53,7 +53,7 @@ export function burialFraction(annotations: Array<AnnotationFeatures>): Array<An
     return burialFractionOut;
 }
 
-export function burialFractionFilter(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
+export function burialFractionFilter(annotations: AnnotationFeatures[]): AnnotationFeatures[] {
     return cloneDeep(annotations).map(ann=>{
         ann.features = ann.features.filter(f=>(ann.source !== Source.PdbInterface || f.type===FeatureType.BurialFraction));
         return ann;

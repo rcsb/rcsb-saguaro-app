@@ -15,7 +15,7 @@ export interface ItemFeaturesInterface {
     entryId: string;
     asymId?: string;
     entityId?: string;
-    taxNames: Array<string>;
+    taxNames: string[];
     name: string;
     experimentalMethod: string;
     resolution: number;
@@ -23,8 +23,8 @@ export interface ItemFeaturesInterface {
     molecularWeight:number;
 }
 
-const NA: string = "N/A";
-export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}>{
+const NA = "N/A";
+export class GroupMemberItem extends React.Component<GroupMemberItemInterface>{
 
     render() {
         return (

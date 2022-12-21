@@ -8,9 +8,9 @@ import {
     SearchQueryContextManagerSubjectInterface
 } from "./SearchQueryContextManager";
 import {UrlTools} from "../../../RcsbUtils/Helpers/UrlTools";
-import {ChartMapType} from "../RcsbGroupChart/GroupChartLayout";
-import {GroupChartMap as GDCM} from "../RcsbGroupChart/GroupChartTools";
+import {GroupChartMap as GCM} from "../RcsbGroupChart/GroupChartTools";
 import Draggable from 'react-draggable';
+import {RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
 
 interface RcsbGroupQuerySearchComponentInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -29,7 +29,7 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
     private readonly URL_STATE_PARAMETER_NAME: "searchQueryState" = "searchQueryState";
     private readonly URL_REQUEST_PARAMETER_NAME: "request" = "request";
     private subscription: Subscription;
-    public static unique: boolean = true;
+    public static unique = true;
 
 
     readonly state: RcsbGroupQuerySearchComponentState = {
@@ -98,7 +98,7 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
         if(index >= 0 && index<this.state.searchQueryList.length){
             this.setState({index:index}, async ()=>{
                 this.encodeUrlParameters(this.state.searchQueryList[this.state.index]);
-                const chartMap: ChartMapType = await GDCM.getChartMap(this.props.groupProvenanceId,this.props.groupId,this.state.searchQueryList[this.state.index]);
+                const chartMap: Map<string,RcsbChartInterface[]> = await GCM.getChartMap(this.props.groupProvenanceId,this.props.groupId,this.state.searchQueryList[this.state.index]);
                 SQCM.next({
                     chartMap,
                     attributeName: this.COMPONENT_NAME,

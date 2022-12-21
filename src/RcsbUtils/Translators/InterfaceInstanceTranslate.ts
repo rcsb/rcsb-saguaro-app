@@ -2,11 +2,11 @@ import {InterfaceInstanceInterface} from "../../RcsbCollectTools/DataCollectors/
 
 export class InterfaceInstanceTranslate {
 
-    private readonly rawData: Array<InterfaceInstanceInterface>;
+    private readonly rawData: InterfaceInstanceInterface[];
     private readonly instances: Map<string, [string,string]> = new Map<string, [string, string]>();
-    private readonly operatorsIds: Map<string,[Array<Array<string>>, Array<Array<string>>]> = new Map<string, [Array<Array<string>>, Array<Array<string>>]>();
+    private readonly operatorsIds: Map<string,[string[][], string[][]]> = new Map<string, [string[][], string[][]]>();
 
-    constructor(data: Array<InterfaceInstanceInterface>) {
+    constructor(data: InterfaceInstanceInterface[]) {
         this.rawData = data;
         data.forEach(d=>{
             this.instances.set(d.rcsbId, d.asymIds);
@@ -18,7 +18,7 @@ export class InterfaceInstanceTranslate {
         return this.instances.get(rcsbId);
     }
 
-    getOperatorIds(rcsbId: string): [Array<Array<string>>, Array<Array<string>>] {
+    getOperatorIds(rcsbId: string): [string[][], string[][]] {
         return this.operatorsIds.get(rcsbId);
     }
 }

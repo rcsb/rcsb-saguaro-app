@@ -6,7 +6,7 @@ import stc from "string-to-color";
 import {AnnotationRequestContext} from "../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 export interface RcsbMergedTypesInterface {
-    merged_types: Array<string>;
+    merged_types: string[];
     title: string;
     type: string;
     display: RcsbFvDisplayTypes;
@@ -22,9 +22,9 @@ export class RcsbAnnotationConfig {
     private readonly annotationMap: Map<string,RcsbAnnotationConfigInterface> = new Map<string, RcsbAnnotationConfigInterface>();
 
     private readonly annotationTypes = {
-        instance: new Map<string,Array<string>>(),
-        entity: new Map<string,Array<string>>(),
-        external: new Map<string,Array<string>>()
+        instance: new Map<string,string[]>(),
+        entity: new Map<string,string[]>(),
+        external: new Map<string,string[]>()
     };
     private readonly mergedTypes: Map<string,RcsbMergedTypesInterface> = new Map<string,RcsbMergedTypesInterface>();
 
@@ -47,19 +47,19 @@ export class RcsbAnnotationConfig {
     }
 
     public allTypes(): Set<string>{
-        const concat: Array<string> = this.uniprotOrder().concat(this.instanceOrder()).concat(this.entityOrder());
+        const concat: string[] = this.uniprotOrder().concat(this.instanceOrder()).concat(this.entityOrder());
         return new Set(concat);
     }
 
-    public uniprotOrder(): Array<string>{
+    public uniprotOrder(): string[]{
         return Array.from(this.annotationTypes.external.entries()).map(e=>e[1].sort((a,b)=>a.localeCompare(b))).flat();
     }
 
-    public instanceOrder(): Array<string>{
+    public instanceOrder(): string[]{
         return Array.from(this.annotationTypes.instance.entries()).map(e=>e[1].sort((a,b)=>a.localeCompare(b))).flat();
     }
 
-    public entityOrder(): Array<string>{
+    public entityOrder(): string[]{
         return Array.from(this.annotationTypes.entity.entries()).map(e=>e[1].sort((a,b)=>a.localeCompare(b))).flat();
     }
 
@@ -180,7 +180,7 @@ export class RcsbAnnotationConfig {
             this.annotationMap.get(type).provenanceList.add(provenanceName);
     }
 
-    public addMultipleProvenance(type:string, provenanceList: Array<string>): void {
+    public addMultipleProvenance(type:string, provenanceList: string[]): void {
         provenanceList.forEach(p=>{
             this.addProvenance(type, p);
         });
@@ -221,7 +221,7 @@ class ArraySuffix<T> extends Array<T> {
     }
 }
 
-function addType(array: Array<string>, newType: string, type: string): void{
+function addType(array: string[], newType: string, type: string): void{
     const index: number = array.indexOf(type);
     array.splice(index+1,0, newType);
 }

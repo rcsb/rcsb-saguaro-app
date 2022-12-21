@@ -4,15 +4,15 @@ import query from "./Queries/Yosemite/QueryMultipleEntriesProperties.graphql";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 interface EntryInstancesResultInterface {
-    entries: Array<CoreEntry>;
+    entries: CoreEntry[];
 }
 
-export class RcsbQueryMultipleEntriesProperties implements RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>>{
+export class RcsbQueryMultipleEntriesProperties implements RcsbCoreQueryInterface<QueryEntriesArgs,CoreEntry[]>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryEntriesArgs): Promise<Array<CoreEntry>> {
+    public async request(requestConfig: QueryEntriesArgs): Promise<CoreEntry[]> {
         try {
             const response:EntryInstancesResultInterface = await this.getClient().request<QueryEntriesArgs, EntryInstancesResultInterface>(
                 {

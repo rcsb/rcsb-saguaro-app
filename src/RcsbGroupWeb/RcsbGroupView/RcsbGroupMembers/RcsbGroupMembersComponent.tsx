@@ -3,7 +3,7 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import classes from "./Components/scss/bootstrap-group-display.module.scss";
 import {GroupMembersGrid} from "./GroupMembersGrid";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../../RcsbSearch/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./Components/Slider";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";

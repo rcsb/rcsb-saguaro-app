@@ -1,7 +1,7 @@
 import React from "react";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbGroupMembersComponent} from "./RcsbGroupMembers/RcsbGroupMembersComponent";
-import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterface";
+import {FacetStoreInterface} from "../../RcsbSearch/FacetStore/FacetStoreInterface";
 import { ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {GroupChartAdditionalProperties} from "./RcsbGroupChart/GroupChartAdditionalProperties";
@@ -16,14 +16,14 @@ import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChar
 
 export class RcsbGroupDisplay {
 
-    public static async displayRcsbSearchStats(elementId: string, facetStore: FacetStoreInterface, searchQuery:SearchQuery, returnType: ReturnType): Promise<void>{
+    public static displayRcsbSearchStats(elementId: string, facetStore: FacetStoreInterface, searchQuery:SearchQuery, returnType: ReturnType): void{
 
         createRoot(document.getElementById(elementId)).render(
             <RcsbStatsChartComponent facetStore={facetStore} searchQuery={searchQuery} returnType={returnType}/>
         );
     }
 
-    public static async displaySearchAttributes(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:string[], additionalProperties?: GroupChartAdditionalProperties): Promise<void>{
+    public static displaySearchAttributes(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery, facetLayoutGrid?:string[], additionalProperties?: GroupChartAdditionalProperties): void{
         createRoot(document.getElementById(elementId)).render(
             <RcsbGroupChartComponent groupProvenanceId={groupProvenanceId} groupId={groupId} searchQuery={searchQuery} facetLayoutGrid={facetLayoutGrid} additionalProperties={additionalProperties}/>
         );

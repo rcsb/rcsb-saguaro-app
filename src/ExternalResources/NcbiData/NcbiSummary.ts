@@ -22,7 +22,7 @@ export interface TaxonomyMetadataInterface {
 
 interface NcbiSummaryInterface {
     result:{
-        uids: Array<string>;
+        uids: string[];
     }
 }
 
@@ -54,7 +54,7 @@ export class NcbiSummary {
                         },NcbiSummary.timeout);
                     }else {
                         const jsonResult: any = JSON.parse(Http.responseText);
-                        const uid: string = (jsonResult as NcbiSummaryInterface)?.result?.uids[0];
+                        const uid: string = (jsonResult as NcbiSummaryInterface).result.uids[0];
                         const out: ChromosomeMetadataInterface = jsonResult.result[uid] as ChromosomeMetadataInterface;
                         out.ncbiId = chrId
                         resolve(out);
@@ -91,7 +91,7 @@ export class NcbiSummary {
                         },NcbiSummary.timeout);
                     }else {
                         const jsonResult: any = JSON.parse(Http.responseText);
-                        const uid: string = (jsonResult as NcbiSummaryInterface)?.result?.uids[0];
+                        const uid: string = (jsonResult as NcbiSummaryInterface).result.uids[0];
                         resolve(jsonResult.result[uid] as TaxonomyMetadataInterface);
                     }
                 };

@@ -7,9 +7,9 @@ export interface PolymerEntityInstanceInterface {
     entryId: string;
     asymId: string;
     authId: string;
-    authResId: Array<string>;
+    authResId: string[];
     name: string;
-    taxNames: Array<string>;
+    taxNames: string[];
     experimentalMethod: string;
     resolution: number;
     sequenceLength: number;
@@ -21,7 +21,7 @@ export class PolymerEntityInstancesCollector {
 
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect(requestConfig: QueryEntryArgs): Promise<Array<PolymerEntityInstanceInterface>> {
+    public async collect(requestConfig: QueryEntryArgs): Promise<PolymerEntityInstanceInterface[]> {
         try {
             const result: CoreEntry = await this.rcsbFvQuery.requestEntityInstances(requestConfig);
             return PolymerEntityInstancesCollector.getEntryInstances(result);
@@ -31,9 +31,9 @@ export class PolymerEntityInstancesCollector {
         }
     }
 
-    private static getEntryInstances(entry: CoreEntry ): Array<PolymerEntityInstanceInterface>{
-        const out: Array<PolymerEntityInstanceInterface> = new Array<PolymerEntityInstanceInterface>();
-        if(entry?.polymer_entities instanceof Array){
+    private static getEntryInstances(entry: CoreEntry ): PolymerEntityInstanceInterface[]{
+        const out: PolymerEntityInstanceInterface[] = new Array<PolymerEntityInstanceInterface>();
+        if(entry.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
                 if(entity.polymer_entity_instances instanceof Array){
                     PolymerEntityInstancesCollector.parsePolymerEntityInstances(entity.polymer_entity_instances, out);
@@ -43,10 +43,10 @@ export class PolymerEntityInstancesCollector {
         return out;
     }
 
-    static parsePolymerEntityInstances(polymerEntityInstances: Array<CorePolymerEntityInstance>, out: Array<PolymerEntityInstanceInterface>){
+    static parsePolymerEntityInstances(polymerEntityInstances: CorePolymerEntityInstance[], out: PolymerEntityInstanceInterface[]){
         polymerEntityInstances.forEach(instance=>{
             const taxIds: Set<string> = new Set<string>();
-            if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
+            if(instance.polymer_entity?.rcsb_entity_source_organism instanceof Array)
                 instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
                     if(typeof sO.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
                         taxIds.add(sO.ncbi_scientific_name);

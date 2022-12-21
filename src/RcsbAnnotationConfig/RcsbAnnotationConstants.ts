@@ -4,10 +4,10 @@ import {AnnotationConfigInterface} from "./AnnotationConfigInterface";
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export const RcsbAnnotationConstants = {
     provenanceColorCode:{
-        rcsbLink: (<AnnotationConfigInterface>annotationConfigMap).provenance_color_code.rcsb_link,
-        rcsbPdb: (<AnnotationConfigInterface>annotationConfigMap).provenance_color_code.rcsb_pdb,
-        external: (<AnnotationConfigInterface>annotationConfigMap).provenance_color_code.external,
-        csm: (<AnnotationConfigInterface>annotationConfigMap).provenance_color_code.csm,
+        rcsbLink: (annotationConfigMap).provenance_color_code.rcsb_link,
+        rcsbPdb: (annotationConfigMap).provenance_color_code.rcsb_pdb,
+        external: (annotationConfigMap).provenance_color_code.external,
+        csm: (annotationConfigMap).provenance_color_code.csm,
     },
     provenanceName: {
         pdb: "PDB",

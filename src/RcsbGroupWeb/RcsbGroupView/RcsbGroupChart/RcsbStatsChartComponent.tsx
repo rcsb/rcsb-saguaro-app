@@ -1,12 +1,12 @@
 import * as React from "react";
 import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display.module.scss";
-import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
-import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
-import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
+import {GroupChartLayout} from "./GroupChartLayout";
+import {FacetTools, RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
+import {FacetStoreInterface} from "../../../RcsbSearch/FacetStore/FacetStoreInterface";
 import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../../RcsbSearch/SearchQueryTools";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 
 interface RcsbStatsChartInterface {
@@ -16,7 +16,7 @@ interface RcsbStatsChartInterface {
 }
 
 interface RcsbStatsChartState {
-    facets: Array<BucketFacet>;
+    facets: BucketFacet[];
 }
 
 export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInterface, RcsbStatsChartState> {
@@ -26,11 +26,11 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
     }
 
     render(): JSX.Element{
-        if(this.state?.facets)
+        if(this.state.facets)
             return (<div className={classes.bootstrapComponentScope}>
                     <GroupChartLayout
                         layout={this.props.facetStore.facetLayoutGrid}
-                        chartMap={FacetTools.getResultDrilldowns(this.props.facetStore.getFacetService("all"), this.state.facets).reduce<ChartMapType>((prev,current)=>{
+                        chartMap={FacetTools.getResultDrilldowns(this.props.facetStore.getFacetService("all"), this.state.facets).reduce<Map<string,RcsbChartInterface[]>>((prev,current)=>{
                             return prev.set(current.attribute,[current])
                         },new Map())}
                     />
@@ -38,7 +38,7 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
     }
 
     private async updateState(): Promise<void>{
-        let facets: Array<BucketFacet> = [];
+        let facets: BucketFacet[] = [];
         for(const service of this.props.facetStore.getServices()){
             const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
                 this.props.searchQuery.query,

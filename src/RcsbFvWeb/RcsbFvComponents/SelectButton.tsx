@@ -6,7 +6,7 @@ import {CSSObjectWithLabel, OptionsOrGroups} from "react-select/dist/declaration
 import {StylesConfig} from "react-select/dist/declarations/src/styles";
 
 export interface GroupedOptionsInterface {
-    options: Array<SelectOptionInterface>;
+    options: SelectOptionInterface[];
     label: string;
 }
 
@@ -14,7 +14,7 @@ export type SelectOptionProps = OptionProps<OptionPropsInterface,false,GroupOpti
 
 interface SelectButtonInterface {
     elementId: string;
-    options?: Array<SelectOptionInterface> | Array<GroupedOptionsInterface>;
+    options?: SelectOptionInterface[] | GroupedOptionsInterface[];
     addTitle: boolean;
     renderTitle:(title:string)=>void;
     defaultValue?: string|undefined|null;
@@ -53,7 +53,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     private currentOption: {selectOpt: SelectOptionInterface; index: number;};
 
     readonly state: SelectButtonState = {
-        selectedOption: ((this.props.options as Array<GroupedOptionsInterface>)[0].options) == null ? {...((this.props.options as Array<SelectOptionInterface>)[0]), value:0} : {...((this.props.options as Array<GroupedOptionsInterface>)[0].options[0]), value: 0}
+        selectedOption: ((this.props.options as GroupedOptionsInterface[])[0].options) == null ? {...((this.props.options as SelectOptionInterface[])[0]), value:0} : {...((this.props.options as GroupedOptionsInterface[])[0].options[0]), value: 0}
     };
 
     constructor(props: SelectButtonInterface) {
@@ -105,14 +105,14 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             )
         };
         let options: OptionsOrGroups<OptionPropsInterface,GroupOptionPropsInterface>;
-        if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null){
-            options = (this.props.options as Array<SelectOptionInterface>).map((opt,index)=>{
+        if((this.props.options as GroupedOptionsInterface[])[0].options == null){
+            options = (this.props.options as SelectOptionInterface[]).map((opt,index)=>{
                 const props: OptionPropsInterface = {...opt,value:index};
                 return props;
             });
         }else{
-            let i: number = 0;
-            options = (this.props.options as Array<GroupedOptionsInterface>).map((group,n)=>({
+            let i = 0;
+            options = (this.props.options as GroupedOptionsInterface[]).map((group,n)=>({
                 label: group.label,
                 options: group.options.map(opt=>({
                     ...opt,
@@ -163,20 +163,20 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private getSelectOpt(): {selectOpt: SelectOptionInterface; index: number;}{
-        let index: number = 0;
+        let index = 0;
         let selectOpt: SelectOptionInterface;
         if(this.defaultValue!=null){
-            if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
-                const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
+            if((this.props.options as GroupedOptionsInterface[])[0].options == null) {
+                const n: number = (this.props.options as OptionPropsInterface[]).findIndex(a => {
                     return a.optId === this.defaultValue
                 });
                 if (n >= 0) {
                     index = n;
-                    selectOpt = (this.props.options as Array<SelectOptionInterface>)[n];
+                    selectOpt = (this.props.options as SelectOptionInterface[])[n];
                 }
-            }else if((this.props.options as Array<GroupedOptionsInterface>)[0].options != null){
-                let flag: boolean = false;
-                for(const group of (this.props.options as Array<GroupedOptionsInterface>)){
+            }else if((this.props.options as GroupedOptionsInterface[])[0].options != null){
+                let flag = false;
+                for(const group of (this.props.options as GroupedOptionsInterface[])){
                     for(const opt of group.options){
                         if(opt.optId === this.defaultValue){
                             selectOpt = opt;
@@ -192,7 +192,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
             }
         }else{
             selectOpt = this.state.selectedOption;
-            index = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
+            index = (this.props.options as OptionPropsInterface[]).findIndex(a => {
                 return a.optId === this.state.selectedOption.optId
             });
         }

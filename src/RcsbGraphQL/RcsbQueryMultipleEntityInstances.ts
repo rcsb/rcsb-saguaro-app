@@ -7,15 +7,15 @@ import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 interface EntryInstancesResultInterface {
-    polymer_entities: Array<CorePolymerEntity>;
+    polymer_entities: CorePolymerEntity[];
 }
 
-export class RcsbQueryMultipleEntityInstances implements RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>>{
+export class RcsbQueryMultipleEntityInstances implements RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,CorePolymerEntity[]>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>> {
+    public async request(requestConfig: QueryPolymer_EntitiesArgs): Promise<CorePolymerEntity[]> {
         try {
             const result:EntryInstancesResultInterface = await this.getClient().request<QueryPolymer_EntitiesArgs, EntryInstancesResultInterface>(
                 {

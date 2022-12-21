@@ -1,29 +1,33 @@
-import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
+import {RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {DateRange, Range, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import React from "react";
-import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
-import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
+import {SearchQueryTools as SQT, SearchQueryType} from "../../../RcsbSearch/SearchQueryTools";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
-import {ChartMapType} from "./GroupChartLayout";
-import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
-import {GroupChartMap as GDCM} from "./GroupChartTools";
+import {FacetMemberInterface} from "../../../RcsbSearch/FacetStore/FacetMemberInterface";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {ChartDataInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartDataProvider/ChartDataProviderInterface";
 import {ChartTools, ChartType} from "@rcsb/rcsb-charts";
 
 export namespace GroupChartEvents {
 
-    export function addBarClickCallback(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
+    export function addBarClickCallback(
+        chart: RcsbChartInterface,
+        groupProvenanceId: GroupProvenanceId,
+        groupId: string,
+        searchQuery:SearchQuery,
+        returnType:ReturnType,
+        getChartMap: (groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery)=>Promise<Map<string,RcsbChartInterface[]>>
+    ): void{
         if(!chart.chartConfig)
             chart.chartConfig = {}
         switch (chart.chartType){
             case ChartType.barplot:
-                addBarChartClick(chart,groupProvenanceId, groupId,searchQuery,returnType);
+                addBarChartClick(chart,groupProvenanceId, groupId,searchQuery,returnType, getChartMap);
                 break;
             case ChartType.histogram:
-                addHistogramChartClick(chart,groupProvenanceId, groupId,searchQuery,returnType);
+                addHistogramChartClick(chart,groupProvenanceId, groupId,searchQuery,returnType,getChartMap);
                 break;
         }
     }
@@ -42,7 +46,14 @@ export namespace GroupChartEvents {
         }
     }
 
-    function addBarChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
+    function addBarChartClick(
+        chart: RcsbChartInterface,
+        groupProvenanceId: GroupProvenanceId,
+        groupId: string,
+        searchQuery:SearchQuery,
+        returnType:ReturnType,
+        getChartMap: (groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery)=>Promise<Map<string,RcsbChartInterface[]>>
+    ): void{
         chart.chartConfig.barClickCallback = async (datum:ChartDataInterface, data: ChartDataInterface[], e: React.MouseEvent) => {
             let query: SearchQueryType|undefined = undefined;
             if(datum.isLabel){
@@ -54,24 +65,39 @@ export namespace GroupChartEvents {
                 chart.filters.forEach(f=>{
                     query = SQT.addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
                 })
-            await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
+            await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType, getChartMap);
         };
     }
 
-    function addHistogramChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
+    function addHistogramChartClick(
+        chart: RcsbChartInterface,
+        groupProvenanceId: GroupProvenanceId,
+        groupId: string,
+        searchQuery:SearchQuery,
+        returnType:ReturnType,
+        getChartMap: (groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery)=>Promise<Map<string,RcsbChartInterface[]>>
+    ): void{
         chart.chartConfig.barClickCallback = async (datum:ChartDataInterface, data: ChartDataInterface[], e: React.MouseEvent) => {
             const range: Range|DateRange = formatRange(chart, datum);
             const query: SearchQueryType = SQT.addNewNodeToAttributeSearchQuery(chart.attribute, range, Operator.Range, searchQuery.query, Service.Text);
-            await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
+            await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType, getChartMap);
         };
     }
 
-    async function clickEvent(e: React.MouseEvent, chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, query: SearchQueryType, returnType:ReturnType ): Promise<void> {
+    async function clickEvent(
+        e: React.MouseEvent,
+        chart: RcsbChartInterface,
+        groupProvenanceId: GroupProvenanceId,
+        groupId: string, searchQuery:SearchQuery,
+        query: SearchQueryType,
+        returnType:ReturnType,
+        getChartMap: (groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery)=>Promise<Map<string,RcsbChartInterface[]>>
+    ): Promise<void> {
         if(e.shiftKey) {
             location.href = resource.rcsb_search.url + encodeURI(JSON.stringify(SQT.buildNodeSearchQuery(query, searchQuery.query, returnType, SQT.searchContentType(searchQuery))));
         }else{
             const fullQuery = SQT.buildNodeSearchQuery(searchQuery.query, query, returnType, SQT.searchContentType(searchQuery));
-            const chartMap: ChartMapType = await GDCM.getChartMap(groupProvenanceId,groupId,fullQuery);
+            const chartMap: Map<string,RcsbChartInterface[]> = await getChartMap(groupProvenanceId,groupId,fullQuery);
             SQCM.next({
                 chartMap:chartMap,
                 attributeName: chart.attributeName,

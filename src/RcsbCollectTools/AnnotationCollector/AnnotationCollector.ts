@@ -13,50 +13,50 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     readonly rcsbFvQuery: RcsbClient = rcsbClient;
     private requestStatus: "pending"|"complete" = "complete";
-    private rawFeatures: Array<Feature>;
-    private annotationFeatures: Array<AnnotationFeatures>;
-    private readonly rawFeaturesSubject: Subject<Array<Feature>> = new Subject<Array<Feature>>();
-    private readonly annotationFeaturesSubject: Subject<Array<AnnotationFeatures>> = new Subject<Array<AnnotationFeatures>>();
+    private rawFeatures: Feature[];
+    private annotationFeatures: AnnotationFeatures[];
+    private readonly rawFeaturesSubject: Subject<Feature[]> = new Subject<Feature[]>();
+    private readonly annotationFeaturesSubject: Subject<AnnotationFeatures[]> = new Subject<AnnotationFeatures[]>();
 
-    public async collect(requestConfig: AnnotationRequestContext): Promise<Array<AnnotationFeatures>> {
+    public async collect(requestConfig: AnnotationRequestContext): Promise<AnnotationFeatures[]> {
         this.requestStatus = "pending";
         this.annotationFeatures = await this.requestAnnotations(requestConfig);
-        if(typeof requestConfig?.annotationGenerator === "function") {
-            const generatedFeatures: Array<AnnotationFeatures> = await requestConfig.annotationGenerator(this.annotationFeatures)
+        if(typeof requestConfig.annotationGenerator === "function") {
+            const generatedFeatures: AnnotationFeatures[] = await requestConfig.annotationGenerator(this.annotationFeatures)
             if(generatedFeatures && generatedFeatures.filter((f)=>(f!=null)).length > 0)
                 this.annotationFeatures = this.annotationFeatures.concat(generatedFeatures.filter((f)=>(f!=null)));
         }
-        if(typeof requestConfig?.annotationFilter === "function") {
+        if(typeof requestConfig.annotationFilter === "function") {
             this.annotationFeatures = await requestConfig.annotationFilter(this.annotationFeatures);
         }
-        if(typeof requestConfig?.externalTrackBuilder?.filterFeatures === "function")
+        if(typeof requestConfig.externalTrackBuilder?.filterFeatures === "function")
             this.annotationFeatures = await requestConfig.externalTrackBuilder.filterFeatures({annotations:this.annotationFeatures, rcsbContext:requestConfig.rcsbContext});
         this.rawFeatures = [].concat.apply([], this.annotationFeatures.map(af=>af.features));
         this.complete();
         return this.annotationFeatures;
     }
 
-    public async getFeatures(): Promise<Array<Feature>>{
-        return new Promise<Array<Feature>>((resolve, reject)=>{
+    public async getFeatures(): Promise<Feature[]>{
+        return new Promise<Feature[]>((resolve, reject)=>{
             if(this.requestStatus === "complete"){
                 resolve(this.rawFeatures);
             }else{
-                ObservableHelper.oneTimeSubscription<Array<Feature>>(resolve, this.rawFeaturesSubject);
+                ObservableHelper.oneTimeSubscription<Feature[]>(resolve, this.rawFeaturesSubject);
             }
         });
     }
 
-    public async getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>{
-        return new Promise<Array<AnnotationFeatures>>((resolve, reject)=>{
+    public async getAnnotationFeatures(): Promise<AnnotationFeatures[]>{
+        return new Promise<AnnotationFeatures[]>((resolve, reject)=>{
             if(this.requestStatus === "complete"){
                 resolve(this.annotationFeatures);
             }else{
-                ObservableHelper.oneTimeSubscription<Array<AnnotationFeatures>>(resolve, this.annotationFeaturesSubject);
+                ObservableHelper.oneTimeSubscription<AnnotationFeatures[]>(resolve, this.annotationFeaturesSubject);
             }
         })
     }
 
-    private async requestAnnotations(requestConfig: AnnotationRequestContext): Promise<Array<AnnotationFeatures>> {
+    private async requestAnnotations(requestConfig: AnnotationRequestContext): Promise<AnnotationFeatures[]> {
         return requestConfig.queryId ?
             await this.rcsbFvQuery.requestRcsbPdbAnnotations({
                 queryId: requestConfig.queryId,

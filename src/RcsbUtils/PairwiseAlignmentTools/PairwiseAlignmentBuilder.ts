@@ -78,13 +78,13 @@ export class PairwiseAlignmentBuilder {
         return this.alignmentLength;
     }
 
-    buildReferenceAlignment(): Array<RcsbFvRowConfigInterface> {
-        const qA: Array<string> = this.queryAlignment.split('');
-        const tA: Array<string> = this.targetAlignment.split('');
+    buildReferenceAlignment(): RcsbFvRowConfigInterface[] {
+        const qA: string[] = this.queryAlignment.split('');
+        const tA: string[] = this.targetAlignment.split('');
 
-        const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-        const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
-        const targetSequence: Array<RcsbFvTrackDataElementInterface> = [];
+        const alignedBlocks: RcsbFvTrackDataElementInterface[] = [];
+        const mismatchData: RcsbFvTrackDataElementInterface[] = [];
+        const targetSequence: RcsbFvTrackDataElementInterface[] = [];
         let currentQueryIndex: number = this.queryBegin;
         let currentTargetIndex: number = this.targetBegin;
         let blockQueryStart: number = this.queryBegin;
@@ -207,18 +207,18 @@ export class PairwiseAlignmentBuilder {
         return [queryTrack,alignmentTrack];
     }
 
-    buildPairwiseAlignment(): Array<RcsbFvRowConfigInterface>{
-        const qA: Array<string> = this.queryAlignment.split('');
-        const tA: Array<string> = this.targetAlignment.split('');
+    buildPairwiseAlignment(): RcsbFvRowConfigInterface[]{
+        const qA: string[] = this.queryAlignment.split('');
+        const tA: string[] = this.targetAlignment.split('');
 
-        const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-        const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
-        const querySeq: Array<RcsbFvTrackDataElementInterface> = [];
-        const targetSeq: Array<RcsbFvTrackDataElementInterface> = [];
+        const alignedBlocks: RcsbFvTrackDataElementInterface[] = [];
+        const mismatchData: RcsbFvTrackDataElementInterface[] = [];
+        const querySeq: RcsbFvTrackDataElementInterface[] = [];
+        const targetSeq: RcsbFvTrackDataElementInterface[] = [];
         let currentQueryIndex: number = this.queryBegin;
         let currentTargetIndex: number = this.targetBegin;
 
-        let start: number = 1;
+        let start = 1;
         qA.forEach((q,i)=>{
             const t: string = tA[i];
             if(q === "-" || t === "-"){
@@ -329,7 +329,7 @@ export class PairwiseAlignmentBuilder {
         return [queryTrack,alignmentTrack,targetTrack];
     }
 
-    private addBlockTerminalTags(alignedBlocks: Array<RcsbFvTrackDataElementInterface>): void{
+    private addBlockTerminalTags(alignedBlocks: RcsbFvTrackDataElementInterface[]): void{
         if(alignedBlocks[0].oriBegin > 1){
             alignedBlocks[0].openBegin = true;
         }

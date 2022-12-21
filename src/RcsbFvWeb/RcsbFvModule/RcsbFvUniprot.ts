@@ -19,7 +19,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const upAcc: string = buildConfig.upAcc;
-        const source: Array<Source> = [Source.Uniprot];
+        const source: Source[] = [Source.Uniprot];
 
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: upAcc,
@@ -66,7 +66,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
 }
 
-async function collectFeatures(upAcc: string): Promise<Array<AnnotationFeatures>> {
+async function collectFeatures(upAcc: string): Promise<AnnotationFeatures[]> {
     return await rcsbClient.requestRcsbPdbAnnotations({
         queryId: upAcc,
         reference: SequenceReference.Uniprot,

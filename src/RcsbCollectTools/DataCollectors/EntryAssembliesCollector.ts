@@ -12,7 +12,7 @@ export class EntryAssembliesCollector {
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
     static readonly modelKey: string = "Model";
 
-    public async collect(requestConfig: QueryEntryArgs): Promise<Map<string,Array<PolymerEntityInstanceInterface>>> {
+    public async collect(requestConfig: QueryEntryArgs): Promise<Map<string,PolymerEntityInstanceInterface[]>> {
         try{
             const coreEntry: CoreEntry = await this.rcsbFvQuery.requestEntityInstances(requestConfig);
             return EntryAssembliesCollector.getEntryAssemblies(coreEntry);
@@ -22,18 +22,18 @@ export class EntryAssembliesCollector {
         }
     }
 
-    private static getEntryAssemblies(entry: CoreEntry ): Map<string,Array<PolymerEntityInstanceInterface>>{
-        const out: Map<string,Array<PolymerEntityInstanceInterface>> = new Map<string,Array<PolymerEntityInstanceInterface>>();
+    private static getEntryAssemblies(entry: CoreEntry ): Map<string,PolymerEntityInstanceInterface[]>{
+        const out: Map<string,PolymerEntityInstanceInterface[]> = new Map<string,PolymerEntityInstanceInterface[]>();
         out.set(EntryAssembliesCollector.modelKey, new Array<PolymerEntityInstanceInterface>());
         const asymInstanceMap: Map<string, PolymerEntityInstanceInterface> = new Map<string, PolymerEntityInstanceInterface>();
-        if(entry?.polymer_entities instanceof Array){
+        if(entry.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
                 if(entity.polymer_entity_instances instanceof Array){
                     EntryAssembliesCollector.parsePolymerEntityInstances(entity.polymer_entity_instances, asymInstanceMap, out);
                 }
             })
         }
-        if(entry?.assemblies instanceof Array){
+        if(entry.assemblies instanceof Array){
             entry.assemblies.forEach(assembly=>{
                 EntryAssembliesCollector.parsePolymerEntityAssemblies(assembly, asymInstanceMap, out);
             });
@@ -41,10 +41,10 @@ export class EntryAssembliesCollector {
         return out;
     }
 
-    private static parsePolymerEntityInstances(polymerEntityInstances: Array<CorePolymerEntityInstance>, asymInstanceMap: Map<string, PolymerEntityInstanceInterface>, out: Map<string,Array<PolymerEntityInstanceInterface>>){
+    private static parsePolymerEntityInstances(polymerEntityInstances: CorePolymerEntityInstance[], asymInstanceMap: Map<string, PolymerEntityInstanceInterface>, out: Map<string,PolymerEntityInstanceInterface[]>){
         polymerEntityInstances.forEach(instance=>{
             const taxIds: Set<string> = new Set<string>();
-            if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
+            if(instance.polymer_entity?.rcsb_entity_source_organism instanceof Array)
                 instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
                     if(typeof sO.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
                         taxIds.add(sO.ncbi_scientific_name);
@@ -69,7 +69,7 @@ export class EntryAssembliesCollector {
         });
     }
 
-    private static parsePolymerEntityAssemblies(assembly: CoreAssembly, asymInstanceMap: Map<string, PolymerEntityInstanceInterface>, out: Map<string,Array<PolymerEntityInstanceInterface>>){
+    private static parsePolymerEntityAssemblies(assembly: CoreAssembly, asymInstanceMap: Map<string, PolymerEntityInstanceInterface>, out: Map<string,PolymerEntityInstanceInterface[]>){
         out.set(assembly.rcsb_assembly_container_identifiers.assembly_id, new Array<PolymerEntityInstanceInterface>());
         assembly.pdbx_struct_assembly_gen?.forEach(assemblyGen=>{
             assemblyGen?.asym_id_list?.forEach(asymId=>{

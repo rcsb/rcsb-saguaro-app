@@ -2,10 +2,12 @@ import {asyncScheduler, Subscription} from "rxjs";
 import {RcsbFvLocationViewInterface, RcsbFvTrackData} from "@rcsb/rcsb-saguaro";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
-export class NcbiGenomeSequenceData {
-    private static readonly urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
-    private static readonly urlSuffix: string = (resource as any).ncbi_genome_sequence.url_suffix;
-    public static update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
+export namespace NcbiGenomeSequenceData {
+
+    const urlPrefix:string  = (resource as Record<string, {url:string;url_suffix?:string;}>).ncbi_genome_sequence.url;
+    const urlSuffix: string = (resource as Record<string, {url:string;url_suffix?:string;}>).ncbi_genome_sequence.url_suffix ?? "";
+
+    export function update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
         let process: Subscription | null = null;
         return (where: RcsbFvLocationViewInterface) => {
             if(process)
@@ -13,25 +15,25 @@ export class NcbiGenomeSequenceData {
             return new Promise<RcsbFvTrackData>((resolve, reject) => {
                 const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
                 if (delta > 4) {
-                    let N: number = 0;
-                    const timeout: number = 5000;
+                    let N = 0;
+                    const timeout = 5000;
                     const getGenomeSequence: ()=>void = ()=> {
                         const Http = new XMLHttpRequest();
                         Http.timeout = timeout;
-                        const url = NcbiGenomeSequenceData.urlPrefix + 'id=' + ncbiId + '&from=' + where.from + '&to=' + where.to + '&strand=' + strand + NcbiGenomeSequenceData.urlSuffix;
+                        const url = `${urlPrefix}id=${ncbiId}&from=${where.from}&to=${where.to}&strand=${strand}${urlSuffix}`;
                         Http.open("GET", url);
                         Http.send();
-                        Http.onloadend = (e) => {
+                        Http.onloadend = () => {
                             const sequence: string = Http.responseText.split("\n").slice(1).join("");
                             if(sequence.length<1){
                                 N++;
-                                console.warn("HTTP error while access URL: " + url + " - empty sequence - "+ N);
+                                console.warn(`HTTP error while access URL: ${url} - empty sequence - ${N}`);
                                 if(N<4){
                                     process = asyncScheduler.schedule(()=>{
                                         getGenomeSequence();
                                     },timeout);
                                 }else{
-                                    reject("HTTP error while access URL: " + url + " - No more attempts after "+N);
+                                    reject(`HTTP error while access URL: ${url} - No more attempts after ${N}`);
                                 }
                             }else {
                                 const selectedOption: RcsbFvTrackData = [{
@@ -41,22 +43,22 @@ export class NcbiGenomeSequenceData {
                                 resolve(selectedOption);
                             }
                         };
-                        Http.onerror = (e) => {
+                        Http.onerror = () => {
                             N++;
-                            console.warn("HTTP error while access URL: " + url + " - "+ N);
+                            console.warn(`HTTP error while access URL: ${url} - ${N}`);
                             if(N<4){
                                 process = asyncScheduler.schedule(()=>{
                                     getGenomeSequence();
                                 },timeout);
                             }else{
-                                reject("HTTP error while access URL: " + url + " - No more attempts after "+ N);
+                                reject(`HTTP error while access URL: ${url} - No more attempts after ${N}`);
                             }
 
                         };
                     }
                     getGenomeSequence();
                 } else {
-                    resolve(null);
+                    resolve([]);
                 }
             });
         };

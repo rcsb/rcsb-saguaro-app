@@ -1,1 +1,1 @@
-export {SearchFacets} from "./RcsbSeacrh/FacetStore/SingleFacets";
+export {SearchFacets} from "./RcsbSearch/FacetStore/SingleFacets";

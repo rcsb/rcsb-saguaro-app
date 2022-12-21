@@ -4,7 +4,7 @@ import {
 } from "../ResidueDistributionFactoryInterface";
 import {
     TrackManagerInterface
-} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 import {range} from "lodash";
 
@@ -17,7 +17,7 @@ export class MultipleTrackDistributionFactory implements ResidueDistributionFact
     }
 
     getDistribution(tracks:TrackManagerInterface[],blockType:string,numberResidues:number):ResidueDistributionInterface {
-        const undefResidues: Set<number> = new Set(range(1,numberResidues+1));
+        const undefResidues = new Set<number>(range(1,numberResidues+1));
         const undefTrack = this.distributionConfig.getBlockConfig(blockType).undefTrack;
         return {
             attribute:this.distributionConfig.getBlockConfig(blockType).type,

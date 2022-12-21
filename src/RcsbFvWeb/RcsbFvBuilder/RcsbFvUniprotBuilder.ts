@@ -19,7 +19,7 @@ export interface UniprotSequenceConfig {
     onChangeCallback?:(x: UniprotSequenceOnchangeInterface, module:RcsbFvModulePublicInterface)=>void;
 }
 
-const ALL:string = "ALL";
+const ALL = "ALL";
 
 //TODO Find a better structure for change callbacks
 export class RcsbFvUniprotBuilder {
@@ -47,7 +47,7 @@ export class RcsbFvUniprotBuilder {
                     upAcc
                 }, rcsbFvUniprot);
             resolve(rcsbFvUniprot);
-            const targets: Array<string>  = await rcsbFvUniprot.getTargets();
+            const targets: string[]  = await rcsbFvUniprot.getTargets();
             RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, [ALL].concat(targets).map(entityId => {
                     return {
                         label: entityId === ALL ? entityId+" ("+targets.length+")": entityId,
@@ -73,7 +73,7 @@ export class RcsbFvUniprotBuilder {
                             } else {
                                 const entryId: string = TagDelimiter.parseEntity(entityId).entryId;
                                 const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
-                                const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData().filter(r=>{
+                                const result:PolymerEntityInstanceInterface[] = entityInstanceTranslator.getData().filter(r=>{
                                     return r.entityId === TagDelimiter.parseEntity(entityId).entityId;
                                 });
                                 let externalContext: RcsbContextType | undefined;

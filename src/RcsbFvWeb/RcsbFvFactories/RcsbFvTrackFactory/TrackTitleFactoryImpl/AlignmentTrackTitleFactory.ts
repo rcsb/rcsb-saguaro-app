@@ -1,11 +1,11 @@
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AlignmentRequestContextType} from "../TrackFactoryImpl/AlignmentTrackFactory";
 import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {ExperimentalAlignmentTrackTitleFactory} from "./ExperimentalAlignmentTrackTitleFactory";
 import {ModelAlignmentTrackTitleFactory} from "./ModelAlignmentTrackTitleFactory";
+import {AlignmentRequestContextType} from "../TrackFactoryInterface";
 
 export class AlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]> {
 

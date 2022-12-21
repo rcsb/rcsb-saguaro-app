@@ -4,7 +4,7 @@ import classes from "./scss/bootstrap-fv-display.module.scss";
 import uniqid from "uniqid";
 
 export interface RcsbTabsInterface<T extends string> {
-    tabList: Array<{key:T; title:string; additionalComponent?:JSX.Element;}>;
+    tabList: {key:T; title:string; additionalComponent?:JSX.Element;}[];
     default: T;
 
     id: string;
@@ -12,7 +12,7 @@ export interface RcsbTabsInterface<T extends string> {
     onMount(t: T): void;
 }
 
-export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterface<T>, {}> {
+export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterface<T>> {
 
     public static readonly UI_SUFFIX: string = "_"+uniqid()+"_UI_DIV";
     public static readonly SELECT_SUFFIX: string = "_"+uniqid()+"_SELECT_DIV";

@@ -2,7 +2,7 @@ import {
     AlignmentResponse,
     QueryAlignmentArgs, SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
+import type {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 
 interface CommonAlignmentInterface {
@@ -27,10 +27,10 @@ export interface CollectGroupAlignmentInterface extends RcsbQueryGroupAlignmentA
 export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & CollectGroupAlignmentInterface>;
 
 export interface AlignmentCollectorInterface {
-    getTargets():Promise<Array<string>>;
+    getTargets():Promise<string[]>;
     getAlignment():Promise<AlignmentResponse>;
     getAlignmentLength(): Promise<number>;
     collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface,
-            filter?:Array<string>,
+            filter?:string[],
     ): Promise<AlignmentResponse>;
 }

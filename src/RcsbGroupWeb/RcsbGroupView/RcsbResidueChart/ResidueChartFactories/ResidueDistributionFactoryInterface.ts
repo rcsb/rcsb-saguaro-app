@@ -1,7 +1,7 @@
-import {
+import type {
     TrackManagerInterface
-} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
-import {RcsbChartInterface} from "../../../../RcsbSeacrh/FacetTools";
+} from "../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
+import type {RcsbChartInterface} from "../../../../RcsbSearch/FacetTools";
 
 export interface ResidueDistributionInterface {
     attribute: string;

@@ -1,7 +1,7 @@
 import {EntryPropertyIntreface} from "../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 
 export interface GroupPropertiesProviderInterface{
-    entryProperties: Array<EntryPropertyIntreface>;
+    entryProperties: EntryPropertyIntreface[];
 }
 
 interface ItemPropertyInterface {
@@ -13,19 +13,19 @@ export type groupProperty = "experimental_method" | "resolution";
 
 export class GroupPropertiesProvider {
 
-    private readonly entryProperties: Array<EntryPropertyIntreface>;
+    private readonly entryProperties: EntryPropertyIntreface[];
 
     constructor(properties: GroupPropertiesProviderInterface) {
         this.entryProperties = properties.entryProperties;
     }
 
-    public get(key: groupProperty): Array<ItemPropertyInterface>{
+    public get(key: groupProperty): ItemPropertyInterface[]{
         if(key === "experimental_method" || key === "resolution"){
             return this.getEntryProperties(key);
         }
     }
 
-    private getEntryProperties(key: groupProperty): Array<ItemPropertyInterface>{
+    private getEntryProperties(key: groupProperty): ItemPropertyInterface[]{
         if(key === "experimental_method"){
             return this.entryProperties.map(p=>({
                 objectId: p.rcsbId,

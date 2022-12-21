@@ -6,7 +6,7 @@ import {
     SearchQuery, SortOptionAttributes
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../../RcsbSearch/SearchQueryTools";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
@@ -27,7 +27,7 @@ interface GroupMembersGridInterface {
 }
 
 interface GroupMembersGridState {
-    itemList: Array<ItemFeaturesInterface>
+    itemList: ItemFeaturesInterface[]
 }
 
 export class GroupMembersGrid extends React.Component <GroupMembersGridInterface, GroupMembersGridState> {
@@ -83,7 +83,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
 
     private async getMembersData(): Promise<void> {
         const searchResult: QueryResult = await this.searchRequest();
-        const itemList: Array<ItemFeaturesInterface> = parseItems(
+        const itemList: ItemFeaturesInterface[] = parseItems(
             this.props.groupProvenanceId, this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
                 (await rcsbRequestCtxManager.getEntryProperties(searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)))
                     :
@@ -125,7 +125,7 @@ async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: stri
             },
             sort:[{
                 sort_by: searchQuery?.request_options?.group_by?.ranking_criteria_type?.sort_by ?? RcsbSearchMetadata.RcsbEntryContainerIdentifiers.EntryId.path,
-                direction: ((searchQuery?.request_options?.group_by?.ranking_criteria_type as SortOptionAttributes)?.direction as SortDirection) ?? SortDirection.Asc
+                direction: ((searchQuery?.request_options?.group_by?.ranking_criteria_type as SortOptionAttributes).direction as SortDirection) ?? SortDirection.Asc
             }],
             results_content_type: SQT.searchContentType(searchQuery)
         },
@@ -133,9 +133,9 @@ async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: stri
     });
 }
 
-function parseItems(groupProvenanceId: GroupProvenanceId, propsList:Array<EntryPropertyIntreface>|Array<PolymerEntityInstanceInterface>): Array<ItemFeaturesInterface>{
+function parseItems(groupProvenanceId: GroupProvenanceId, propsList:EntryPropertyIntreface[]|PolymerEntityInstanceInterface[]): ItemFeaturesInterface[]{
     return groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
-        (propsList as Array<EntryPropertyIntreface>).map((o)=>({...o, molecularWeight:o.entryMolecularWeight}))
+        (propsList as EntryPropertyIntreface[]).map((o)=>({...o, molecularWeight:o.entryMolecularWeight}))
         :
-        (propsList as Array<PolymerEntityInstanceInterface>).map((o)=>({...o, molecularWeight: o.entityMolecularWeight}));
+        (propsList as PolymerEntityInstanceInterface[]).map((o)=>({...o, molecularWeight: o.entityMolecularWeight}));
 }

@@ -5,7 +5,7 @@ import {
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 import {
     TrackManagerInterface
-} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 import {MultipleTrackDistributionFactory} from "./MultipleTrackDistributionFactory";
 import {NumericalTrackDistributionFactory} from "./NumericalTrackDistributionFactory";
 

@@ -8,7 +8,7 @@ import {
 } from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {TrackManagerInterface} from "../../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {TrackManagerInterface} from "../../RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AnnotationsTrackTitleFactory} from "../TrackTitleFactoryImpl/AnnotationsTrackTitleFactory";
 
@@ -60,7 +60,7 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
 }
 
 function buildRcsbFvRowConfigArea(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-    const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
+    const data: RcsbFvTrackDataElementInterface[] = annotationTrack.values();
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     const displayType: RcsbFvDisplayTypes = annConfig.display;
     const displayColor:string|RcsbFvColorGradient = annConfig.color;
@@ -89,7 +89,7 @@ function buildRcsbFvRowConfigArea(annotationTrack: TrackManagerInterface, type: 
 }
 
 function buildRcsbFvRowConfigBlockArea(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-    const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
+    const data: RcsbFvTrackDataElementInterface[] = annotationTrack.values();
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     const displayType: RcsbFvDisplayTypes = annConfig.display;
     const displayColor:string|RcsbFvColorGradient = annConfig.color;
@@ -107,7 +107,7 @@ function buildRcsbFvRowConfigBlockArea(annotationTrack: TrackManagerInterface, t
 }
 
 function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-    const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
+    const data: RcsbFvTrackDataElementInterface[] = annotationTrack.values();
     let out: RcsbFvRowConfigInterface;
 
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
@@ -120,8 +120,8 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
     }
     const displayColor = annConfig.color ?? RcsbAnnotationConfig.randomRgba();
 
-    const pin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
-    const nonPin: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
+    const pin: RcsbFvTrackDataElementInterface[] = new Array<RcsbFvTrackDataElementInterface>();
+    const nonPin: RcsbFvTrackDataElementInterface[] = new Array<RcsbFvTrackDataElementInterface>();
     data.forEach(d => {
         if (d.end !== null && d.end !== d.begin) {
             nonPin.push(d);
@@ -131,7 +131,7 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
     });
 
     if (pin.length > 0 && nonPin.length > 0) {
-        const displayConfig: Array<RcsbFvDisplayConfigInterface> = new Array<RcsbFvDisplayConfigInterface>();
+        const displayConfig: RcsbFvDisplayConfigInterface[] = new Array<RcsbFvDisplayConfigInterface>();
         displayConfig.push({
             displayData: nonPin,
             displayType: altDisplayType,
@@ -164,7 +164,7 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
 }
 
 function buildRcsbFvRowConfigTrack(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
-    const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
+    const data: RcsbFvTrackDataElementInterface[] = annotationTrack.values();
     let displayType: RcsbFvDisplayTypes = RcsbFvDisplayTypes.BLOCK;
     if (data.length > 0 && data[0].end == null) {
         displayType = RcsbFvDisplayTypes.PIN;

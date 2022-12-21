@@ -6,18 +6,18 @@ export namespace UrlTools {
         paramList.filter(p=>p.value).forEach(p=>{
             urlParams.push(`${p.key}=${encode(p.value)}`);
         });
-        globalThis?.history.replaceState(null, null, "?" + urlParams.join("&"));
+        globalThis.history.replaceState(null, null, "?" + urlParams.join("&"));
     }
 
     export function encodeUrlParameter(key: string, value: any): void {
-        globalThis?.history.replaceState(null, null, "?" + (value ? `${key}=${encode(value)}` : ""));
+        globalThis.history.replaceState(null, null, "?" + (value ? `${key}=${encode(value)}` : ""));
     }
 
     export function decodeUrlParameters(): {key: string, value: any}[] | undefined {
         return parseUrlParameters()?.map(param=>({key:param.key, value:JSON.parse(decodeURIComponent(param.value))}));
     }
 
-    function parseUrlParameters(): Array<{key:string;value:any;}> | undefined {
+    function parseUrlParameters(): {key:string;value:any;}[] | undefined {
         if(globalThis.window.location.search.length === 0)
             return;
         return globalThis.window.location.search.substring(1)

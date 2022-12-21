@@ -9,19 +9,19 @@ import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 interface AnnotationsResultInterface {
-    annotations: Array<AnnotationFeatures>;
+    annotations: AnnotationFeatures[];
 }
 
 interface GroupAnnotationsResultInterface {
-    group_annotations: Array<AnnotationFeatures>;
+    group_annotations: AnnotationFeatures[];
 }
 
-export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>>{
+export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotationsArgs,AnnotationFeatures[]>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>> {
+    public async request(requestConfig: QueryAnnotationsArgs): Promise<AnnotationFeatures[]> {
         try {
             const annotationsResponse: AnnotationsResultInterface = await this.getClient().request<QueryAnnotationsArgs,AnnotationsResultInterface>(
                 {
@@ -40,12 +40,12 @@ export class RcsbQueryAnnotations implements RcsbCoreQueryInterface<QueryAnnotat
     }
 }
 
-export class RcsbQueryGroupAnnotations implements RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>>{
+export class RcsbQueryGroupAnnotations implements RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,AnnotationFeatures[]>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>> {
+    public async request(requestConfig: QueryGroup_AnnotationsArgs): Promise<AnnotationFeatures[]> {
         try {
             const annotationsResponse: GroupAnnotationsResultInterface = await this.getClient().request<QueryGroup_AnnotationsArgs,GroupAnnotationsResultInterface>(
                 requestConfig,

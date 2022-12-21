@@ -6,12 +6,12 @@ import {
     Source,
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
+import {searchRequestClient} from "../../RcsbSearch/SearchRequestClient";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../RcsbFvComponents/RcsbTabs";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
-import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
+import {SearchQueryTools as SQT} from "../../RcsbSearch/SearchQueryTools";
 import {GroupPfvApp as GPA} from "./GroupTabs/GroupPfvApp";
 
 const ALIGNMENT: "alignment" = "alignment";
@@ -27,8 +27,8 @@ interface SequenceTabInterface {
 export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
 
     private readonly featureViewers: Map<TabKey,RcsbFvModulePublicInterface> = new Map<TabKey, RcsbFvModulePublicInterface>();
-    private filterInstances: Array<string> = undefined;
-    private filterEntities: Array<string> = undefined;
+    private filterInstances: string[] = undefined;
+    private filterEntities: string[] = undefined;
     private entityCount: number = undefined;
     private currentTab: TabKey = ALIGNMENT;
 
@@ -55,21 +55,21 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
 
     private async onMount() {
         if(this.props.searchQuery) {
-            this.filterEntities = await searchRequestProperty.requestMembers({
+            this.filterEntities = await searchRequestClient.requestMembers({
                 ...this.props.searchQuery,
                 query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                 return_type: ReturnType.PolymerEntity
             });
             this.entityCount = this.filterEntities.length;
-            this.filterInstances = await searchRequestProperty.requestMembers({
+            this.filterInstances = await searchRequestClient.requestMembers({
                 ...this.props.searchQuery,
                 query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
                 return_type: ReturnType.PolymerInstance
             });
             await this.onSelect(this.currentTab);
         }else{
-            this.filterInstances = await searchRequestProperty.requestMembers({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
-            this.entityCount = await searchRequestProperty.requestCount({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerEntity});
+            this.filterInstances = await searchRequestClient.requestMembers({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerInstance});
+            this.entityCount = await searchRequestClient.requestCount({query: SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId), return_type: ReturnType.PolymerEntity});
             await this.onSelect(this.currentTab);
         }
     }
@@ -78,8 +78,8 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
         if(tabKey !== this.currentTab){
             const dom: [number,number] = this.featureViewers.get(this.currentTab)?.getFv().getDomain();
             this.featureViewers.get(tabKey).getFv().setDomain(dom);
-            const sel: Array<SelectionInterface> = this.featureViewers.get(this.currentTab)?.getFv().getSelection("select");
-            if(sel?.length > 0){
+            const sel: SelectionInterface[] = this.featureViewers.get(this.currentTab)?.getFv().getSelection("select");
+            if(sel.length > 0){
                 this.featureViewers.get(tabKey).getFv().clearSelection("select");
                 this.featureViewers.get(tabKey).getFv().setSelection({
                     elements:sel.map((s)=>({

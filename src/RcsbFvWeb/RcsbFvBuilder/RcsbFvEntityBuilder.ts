@@ -88,7 +88,7 @@ export class RcsbFvEntityBuilder {
 }
 
 function additionalConfig(f?: FilterInput): RcsbFvAdditionalConfig{
-    const filters: Array<FilterInput> = [{
+    const filters: FilterInput[] = [{
         field: FieldName.Type,
         operation:OperationType.Equals,
         source:Source.PdbInstance,

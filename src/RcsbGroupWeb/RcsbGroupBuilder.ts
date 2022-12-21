@@ -1,6 +1,6 @@
 import {RcsbGroupDisplay} from "./RcsbGroupView/RcsbGroupDisplay";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {entityGranularityGroupFacetStore} from "../RcsbSeacrh/FacetStore/EntityGranularitySearchFacetStore";
+import {entityGranularityGroupFacetStore} from "../RcsbSearch/FacetStore/EntityGranularitySearchFacetStore";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupChartAdditionalProperties} from "./RcsbGroupView/RcsbGroupChart/GroupChartAdditionalProperties";

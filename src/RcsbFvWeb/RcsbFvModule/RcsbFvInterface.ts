@@ -35,7 +35,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const instanceId: string = buildConfig.instanceId;
         this.instanceId = instanceId;
-        const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
+        const source: Source[] = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
 
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: instanceId,
@@ -51,7 +51,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
-            titleSuffix: this.titleSuffix(buildConfig?.additionalConfig?.rcsbContext).bind(this),
+            titleSuffix: this.titleSuffix(buildConfig.additionalConfig?.rcsbContext).bind(this),
             trackTitle: this.trackTitle.bind(this),
             typeSuffix: this.typeSuffix.bind(this),
             sources:source,
@@ -92,8 +92,8 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 if(!chPair) return "";
                 const asym: string = chPair[0] == chain ? chPair[1] : chPair[0]
                 const auth: string = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
-                const operators: [Array<Array<string>>, Array<Array<string>>] = interfaceTranslate.getOperatorIds(ann.target_id);
-                let partnerOperator: string = "";
+                const operators: [string[][], string[][]] = interfaceTranslate.getOperatorIds(ann.target_id);
+                let partnerOperator = "";
                 if(Array.isArray(rcsbContext.operatorIds)){
                     const opIndex: number = operators[ann.target_identifiers.interface_partner_index].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
                     if(opIndex < 0) {
@@ -115,11 +115,11 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     }
 }
 
-export function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
-    const buried: Array<AnnotationFeatures> = buriedResidues(annotations);
-    const burial: Array<AnnotationFeatures> = burialFraction(annotations);
-    return new Promise<Array<AnnotationFeatures>>(resolve => {
-        const out:Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
+export function interfaceAnnotations(annotations: AnnotationFeatures[]): Promise<AnnotationFeatures[]> {
+    const buried: AnnotationFeatures[] = buriedResidues(annotations);
+    const burial: AnnotationFeatures[] = burialFraction(annotations);
+    return new Promise<AnnotationFeatures[]>(resolve => {
+        const out:AnnotationFeatures[] = new Array<AnnotationFeatures>();
         if(buried && buried.length > 0)
             out.push(...buried);
         if(burial && burial.length > 0)
@@ -128,8 +128,8 @@ export function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Pr
     })
 }
 
-export function filter(ann: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
-    return new Promise<Array<AnnotationFeatures>>(resolve => {
+export function filter(ann: AnnotationFeatures[]): Promise<AnnotationFeatures[]> {
+    return new Promise<AnnotationFeatures[]>(resolve => {
         resolve(burialFractionFilter(buriedResiduesFilter(ann)));
     })
 }

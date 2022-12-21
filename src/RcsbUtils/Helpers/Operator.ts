@@ -1,12 +1,12 @@
 
 export class Operator {
 
-    public static uniqueValues<T>(array: Array<T>){
+    public static uniqueValues<T>(array: T[]){
         return Array.from<T>(new Set<T>(array));
     }
 
-    public static arrayChunk<T>(array: Array<T>, size: number): Array<Array<T>> {
-        const out: Array<Array<T>> = new Array<Array<T>>();
+    public static arrayChunk<T>(array: T[], size: number): T[][] {
+        const out: T[][] = new Array<T[]>();
         for(let i = 0; i < array.length; i += size) {
             out.push(array.slice(i, i+size));
         }

@@ -4,10 +4,10 @@ import {createRoot} from "react-dom/client";
 import classes from "../RcsbFvWeb/RcsbFvComponents/scss/bootstrap-fv-display.module.scss";
 import {ItemComponent} from "./Components/ItemComponent";
 
-export type UiComponentType<T extends {}> = {
+export interface UiComponentType<T extends {}> {
     component: typeof React.Component<T,any>,
     props: T
-};
+}
 
 export class GroupPfvUI {
 

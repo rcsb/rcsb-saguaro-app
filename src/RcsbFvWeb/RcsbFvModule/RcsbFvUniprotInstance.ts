@@ -21,10 +21,10 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         const entityId:string = buildConfig.entityId;
         const instanceId: string = buildConfig.instanceId;
         const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig;
-        let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
+        let sources: Source[] = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
             sources = additionalConfig.sources;
-        let filters:Array<FilterInput> = [{
+        let filters:FilterInput[] = [{
             field:FieldName.TargetId,
             operation:OperationType.Equals,
             source: Source.PdbEntity,

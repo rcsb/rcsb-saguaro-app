@@ -28,7 +28,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
     return (where: RcsbFvLocationViewInterface) => {
         const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
         if (delta > 4) {
-            const ids: Array<string> = new Array<string>();
+            const ids: string[] = new Array<string>();
             ranges.forEach((id, r) => {
                 if (!(r[0] > where.to || r[1] < where.from))
                     ids.push(id);
@@ -44,13 +44,17 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
                 alignments.forEach((a,n) => {
                     if(a.query_sequence == null)
                         return;
-                    const sequence: Array<string> = a.query_sequence.split("");
-                    a.target_alignment.forEach(ta => {
-                        const orientation = ta.orientation;
-                        ta.aligned_regions.forEach(r => {
-                            const targetIndex: number = r.target_begin
-                            const queryIndex: number = r.query_begin
-                            const length: number = r.query_end - r.query_begin + 1;
+                    const sequence: string[] = a.query_sequence.split("");
+                    a?.target_alignment?.forEach(ta => {
+                        const orientation = ta?.orientation;
+                        if(!orientation)
+                            return;
+                        ta?.aligned_regions?.forEach(r => {
+                            if(!(r?.target_begin && r?.query_begin && r?.query_end) )
+                                return;
+                            const targetIndex: number | undefined = r?.target_begin;
+                            const queryIndex: number | undefined = r?.query_begin;
+                            const length: number = r?.query_end - r?.query_begin + 1;
                             for (let i = 0; i < length; i++) {
                                 out.push({
                                     begin: targetIndex + orientation * (1+3*i),
@@ -67,7 +71,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
             });
         }else{
             return new Promise<RcsbFvTrackData>((resolve,reject)=>{
-                resolve(null);
+                resolve([]);
             });
         }
     };
@@ -76,36 +80,36 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
 //TODO This class needs a lot of improvements
 //TODO this Module is not collecting alignments through AlignmentCollector
 export class RcsbFvChromosome extends RcsbFvAbstractModule {
-    private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
-        [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
-        [SequenceReference.Uniprot, new Array<Array<TargetAlignment>>()],
-        [SequenceReference.PdbEntity, new Array<Array<TargetAlignment>>()]
+    private readonly targetAlignmentList: Map<SequenceReference,TargetAlignment[][]> = new Map<SequenceReference, TargetAlignment[][]>([
+        [SequenceReference.NcbiProtein, new Array<TargetAlignment[]>()],
+        [SequenceReference.Uniprot, new Array<TargetAlignment[]>()],
+        [SequenceReference.PdbEntity, new Array<TargetAlignment[]>()]
     ]);
 
-    private maxRange: number = 0;
+    private maxRange = 0;
     private minRange: number = Number.MAX_SAFE_INTEGER;
     private alignmentCollectorQueue: RcsbFvAlignmentCollectorQueue = new RcsbFvAlignmentCollectorQueue(12);
-    private nTasks: number = 0;
-    private completeTasks: number = 0;
+    private nTasks = 0;
+    private completeTasks = 0;
     private pdbEntityTrack:  RcsbFvRowConfigInterface;
-    private batchSize: number = 10000000;
-    private beginView: number = 0;
-    private endView: number = 0;
-    private entityBegin: number = 0;
-    private entityEnd: number = 0;
-    private nonExonConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
-    private featuresConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
-    private targetCoverages: Map<String, Coverage> = new Map<String, Coverage>();
-    private chrSet: Array<string> = new Array<string>();
-    private targetFilterFlag: boolean = true;
+    private batchSize = 10000000;
+    private beginView = 0;
+    private endView = 0;
+    private entityBegin = 0;
+    private entityEnd = 0;
+    private nonExonConfigData: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
+    private featuresConfigData: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
+    private targetCoverages: Map<string, Coverage> = new Map<string, Coverage>();
+    private chrSet: string[] = new Array<string>();
+    private targetFilterFlag = true;
     private entityId: string;
-    private IDEOGRAM_DIV_ID:string = "chrIdeogramDiv";
-    private TITLE_CHR_DIV_ID:string = "chrTitleDiv";
-    private TITLE_CHR_REGION_ID:string = "chrTitleRegion";
-    private currentDisplayedChrId: string = "";
+    private IDEOGRAM_DIV_ID = "chrIdeogramDiv";
+    private TITLE_CHR_DIV_ID = "chrTitleDiv";
+    private TITLE_CHR_REGION_ID = "chrTitleRegion";
+    private currentDisplayedChrId = "";
     private elementSelectId: string;
     private readonly buildSubject: Subject<void> = new Subject<void>();
-    private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
+    private readonly targetsSubject: Subject<string[]> = new Subject<string[]>();
 
     private buildPdbGenomeFv(pdbEntityId: string, chrId?: string){
         this.entityId = pdbEntityId;
@@ -117,7 +121,9 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
             });
         })).then(result=>{
             result.forEach(a=>{
-                a.target_alignment.forEach(ta=>{
+                a?.target_alignment?.forEach(ta=>{
+                    if(!(ta?.target_id && ta?.coverage))
+                        return;
                     this.targetCoverages.set(ta.target_id, ta.coverage);
                 });
             });
@@ -142,7 +148,9 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
     }
 
     private async collectPdbWorkerResults(ar: AlignmentResponse, pdbEntityId: string, chrId?: string): Promise<void>{
-         const exonTracks: Array<RcsbFvRowConfigInterface> = this.collectExons(
+        if(!ar.target_alignment )
+            return;
+        const exonTracks: RcsbFvRowConfigInterface[] = this.collectExons(
             ar.target_alignment,
             "target",
             RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
@@ -256,7 +264,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 },
             },
             titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.external,
-            updateDataOnMove: NcbiGenomeSequenceData.update(chrId, 1, false, this.rcsbFv?.getBoardConfig()?.trackWidth)
+            updateDataOnMove: NcbiGenomeSequenceData.update(chrId, 1, false, this.rcsbFv.getBoardConfig().trackWidth)
         });
 
         this.nonExonConfigData.push({
@@ -273,7 +281,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 },
             },
             titleFlagColor:RcsbAnnotationConstants.provenanceColorCode.external,
-            updateDataOnMove: NcbiGenomeSequenceData.update(chrId, 2, true, this.rcsbFv?.getBoardConfig()?.trackWidth)
+            updateDataOnMove: NcbiGenomeSequenceData.update(chrId, 2, true, this.rcsbFv.getBoardConfig().trackWidth)
         });
     }
 
@@ -327,14 +335,14 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         }
     }
 
-    private collectExons(targetAlignmentList: Array<TargetAlignment>, member: "query"|"target", blockColor: string, flagTitleColor: string, reference: SequenceReference, chrId?: string): Array<RcsbFvRowConfigInterface> {
-        const exonTrackList: Array<{data:RcsbFvTrackData;id:string;}> = new Array<{data:RcsbFvTrackData;id:string;}>();
+    private collectExons(targetAlignmentList: TargetAlignment[], member: "query"|"target", blockColor: string, flagTitleColor: string, reference: SequenceReference, chrId?: string): RcsbFvRowConfigInterface[] {
+        const exonTrackList: {data:RcsbFvTrackData;id:string;}[] = new Array<{data:RcsbFvTrackData;id:string;}>();
         targetAlignmentList.forEach((targetAlignment,i) => {
             if(targetAlignment.aligned_regions.length == 0 || (member == "query" && this.targetFilterFlag && !this.targetCoverages.has(targetAlignment.target_id)) || (member == "target" && chrId != null && chrId != targetAlignment.target_id))
                 return;
             exonTrackList.push({data:[this.normalizeTargetAlignment(targetAlignment, member)],id:targetAlignment.target_id});
         });
-        const lightTracks: Array<RcsbFvTrackData> =  this.simplifyExonTracks(
+        const lightTracks: RcsbFvTrackData[] =  this.simplifyExonTracks(
             exonTrackList.sort((_a,_b)=>{
                 const a: RcsbFvTrackData = _a.data;
                 const b: RcsbFvTrackData = _b.data;
@@ -387,8 +395,8 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                     const nextExon: AlignedRegion = targetAlignment.aligned_regions[n+1];
                     let beginGap: number = currentExon[endMember];
                     let endGap: number = nextExon[beginMember];
-                    const exonShift: Array<number> = currentExon.exon_shift;
-                    if(exonShift?.length == 1){
+                    const exonShift: number[] = currentExon.exon_shift;
+                    if(exonShift.length == 1){
                         if( Math.abs(exonShift[0]-endGap) == 1 ){
                             endGap = exonShift[0];
                         }else{
@@ -399,7 +407,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                             });
                             endGap = exonShift[0];
                         }
-                    }else if(exonShift?.length == 2){
+                    }else if(exonShift.length == 2){
                         if( Math.abs(exonShift[1]-endGap) == 1 && Math.abs(exonShift[1]-exonShift[0]) == 1){
                             endGap = exonShift[0];
                         }else if( Math.abs(exonShift[1]-endGap) == 1 ){
@@ -448,10 +456,10 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 if((n+1)<targetAlignment.aligned_regions.length) {
                     const nextExon: AlignedRegion = targetAlignment.aligned_regions[n + 1];
                     let beginGap: number = currentExon[beginMember];
-                    let endGap: number = nextExon[endMember];
-                    const exonShift: Array<number> = nextExon.exon_shift;
+                    const endGap: number = nextExon[endMember];
+                    const exonShift: number[] = nextExon.exon_shift;
 
-                    if(exonShift?.length == 1){
+                    if(exonShift.length == 1){
                         if( Math.abs(exonShift[0]-beginGap) == 1 ){
                             beginGap = exonShift[0];
                         }else{
@@ -462,7 +470,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                             });
                             beginGap = exonShift[0];
                         }
-                    }else if(exonShift?.length == 2){
+                    }else if(exonShift.length == 2){
                         if( Math.abs(exonShift[1]-beginGap) == 1  && Math.abs(exonShift[1]-exonShift[0]) == 1 ){
                             beginGap = exonShift[0];
                         }else if( Math.abs(exonShift[1]-beginGap) == 1 ){
@@ -506,8 +514,8 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         return out;
     }
 
-    private simplifyExonTracks(tracks: Array<RcsbFvTrackData>, member: "query"|"target", reference: SequenceReference): Array<RcsbFvTrackData> {
-        const lightTracks: Array<RcsbFvTrackData> = new Array<RcsbFvTrackData>();
+    private simplifyExonTracks(tracks: RcsbFvTrackData[], member: "query"|"target", reference: SequenceReference): RcsbFvTrackData[] {
+        const lightTracks: RcsbFvTrackData[] = new Array<RcsbFvTrackData>();
         tracks.forEach(t=>{
             const trackBegin: number = t[0].begin;
             const trackEnd: number = t[0].end;
@@ -542,14 +550,14 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         return lightTracks;
     }
 
-    private mergeExonTracks(tracks: Array<RcsbFvRowConfigInterface>, reference: SequenceReference): Array<RcsbFvRowConfigInterface> {
-        const lightTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private mergeExonTracks(tracks: RcsbFvRowConfigInterface[], reference: SequenceReference): RcsbFvRowConfigInterface[] {
+        const lightTracks: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
         tracks.forEach(t=>{
             if(lightTracks.length == 0){
                 lightTracks.push(t);
             }else{
                 const trackBegin: number = t.displayConfig[0].displayData[0].begin;
-                let index: number = -1;
+                let index = -1;
                 lightTracks.forEach((lT,n)=>{
                     const N: number = lT.displayConfig[0].displayData.length-1;
                     const end: number = lT.displayConfig[0].displayData[N].end;
@@ -568,7 +576,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         return lightTracks;
     }
 
-    private addSequences(lightTracks: Array<RcsbFvRowConfigInterface>, reference: SequenceReference): void{
+    private addSequences(lightTracks: RcsbFvRowConfigInterface[], reference: SequenceReference): void{
         lightTracks.forEach(t=>{
             const ids: Map<[number,number], string> = new Map<[number, number], string>();
             t.displayConfig[0].displayData.forEach(d=>{
@@ -576,7 +584,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
             })
             t.displayConfig.push({
                 displayType: RcsbFvDisplayTypes.SEQUENCE,
-                updateDataOnMove: sequenceDisplayDynamicUpdate(reference, ids, this.rcsbFv?.getBoardConfig()?.trackWidth),
+                updateDataOnMove: sequenceDisplayDynamicUpdate(reference, ids, this.rcsbFv.getBoardConfig().trackWidth),
                 displayData: [],
                 hideEmptyTrackFlag: true,
                 minRatio: 1 / 1000
@@ -585,7 +593,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
     }
 
     private async setDisplayView(): Promise<void>{
-        if(this.entityBegin == 0 && this.entityEnd == 0 && this.pdbEntityTrack?.displayConfig?.length > 0 ){
+        if(this.entityBegin == 0 && this.entityEnd == 0 && this.pdbEntityTrack.displayConfig?.length > 0 ){
             const lastIndex: number = this.pdbEntityTrack.displayConfig[0].displayData.length-1;
             this.entityBegin = this.pdbEntityTrack.displayConfig[0].displayData[0].begin;
             this.entityEnd = this.pdbEntityTrack.displayConfig[0].displayData[lastIndex].end;
@@ -598,7 +606,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 min:begin - Math.ceil(0.05*length),
                 max:end + Math.ceil(+0.05*length)
             };
-        }else if(this.pdbEntityTrack?.displayConfig?.length > 0){
+        }else if(this.pdbEntityTrack.displayConfig?.length > 0){
             this.beginView = this.minRange;
             this.endView = this.maxRange;
             const begin: number = this.beginView;
@@ -616,9 +624,9 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
 
     private async plot(): Promise<void>{
         console.log("PROCESSING");
-        let tracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+        let tracks: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
 
-        let ncbiTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+        let ncbiTracks: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
         this.targetAlignmentList.get(SequenceReference.NcbiProtein).forEach((tA, index)=>{
             if(tA.length>0) {
                 ncbiTracks = ncbiTracks.concat(this.collectExons(tA, "query", "#69b3a2", "#69b3a2", SequenceReference.NcbiProtein));
@@ -626,14 +634,14 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         });
         ncbiTracks = this.mergeExonTracks(ncbiTracks, SequenceReference.NcbiProtein);
 
-        let uniprotTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+        let uniprotTracks: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
         this.targetAlignmentList.get(SequenceReference.Uniprot).forEach((tA, index)=>{
             if(tA.length>0)
                 uniprotTracks = uniprotTracks.concat( this.collectExons(tA,"query", "#cc99ff","#cc99ff", SequenceReference.Uniprot) );
         });
         uniprotTracks = this.mergeExonTracks(uniprotTracks, SequenceReference.Uniprot);
 
-        let entityTracks: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+        let entityTracks: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
         this.targetAlignmentList.get(SequenceReference.PdbEntity).forEach((tA, index)=>{
             if(tA.length>0)
                 entityTracks = entityTracks.concat( this.collectExons(tA,"query", RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, RcsbAnnotationConstants.provenanceColorCode.rcsbPdb, SequenceReference.PdbEntity) );
@@ -653,7 +661,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
             entityTracks[0].rowTitle = "PDB ENTITIES";
         }
 
-        const headerTracks: Array<RcsbFvRowConfigInterface> = this.featuresConfigData?.length > 0 ? this.nonExonConfigData.concat(this.featuresConfigData) : this.nonExonConfigData;
+        const headerTracks: RcsbFvRowConfigInterface[] = this.featuresConfigData.length > 0 ? this.nonExonConfigData.concat(this.featuresConfigData) : this.nonExonConfigData;
         if(tracks.length > 0)
             this.rowConfigData = headerTracks.concat(tracks);
         else
@@ -682,12 +690,12 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
 
     }
 
-    public async getTargets(): Promise<Array<string>> {
-        return new Promise<Array<string>>((resolve, reject)=>{
+    public async getTargets(): Promise<string[]> {
+        return new Promise<string[]>((resolve, reject)=>{
             if(this.chrSet.length > 0)
                 resolve(this.chrSet);
             else
-                ObservableHelper.oneTimeSubscription<Array<string>>(resolve, this.targetsSubject);
+                ObservableHelper.oneTimeSubscription<string[]>(resolve, this.targetsSubject);
         });
     }
 

@@ -1,8 +1,8 @@
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
-import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
+import {searchRequestClient} from "../../RcsbSearch/SearchRequestClient";
+import {SearchQueryTools as SQT} from "../../RcsbSearch/SearchQueryTools";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {getReferenceFromGroupProvenance} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
 import {ActionMethods} from "../../RcsbFvUI/Helper/ActionMethods";
@@ -22,7 +22,7 @@ export class RcsbFvGroupAlignmentBuilder {
     static async buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
         let filterEntities: string[]|undefined = undefined;
         if(query) {
-            filterEntities = await searchRequestProperty.requestMembers({
+            filterEntities = await searchRequestClient.requestMembers({
                 ...query,
                 query: SQT.addGroupNodeToSearchQuery(GroupProvenanceId.ProvenanceMatchingUniprotAccession, upAcc, query.query),
                 return_type: ReturnType.PolymerEntity
@@ -36,17 +36,17 @@ export class RcsbFvGroupAlignmentBuilder {
     }
 
     static async buildGroupAlignmentFv(elementId: string, groupProvenance:GroupProvenanceId, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface ):Promise<RcsbFvModulePublicInterface> {
-        let entityCount: number = -1;
+        let entityCount = -1;
         let filterEntities: string[]|undefined = undefined;
         if(query) {
-            filterEntities = await searchRequestProperty.requestMembers({
+            filterEntities = await searchRequestClient.requestMembers({
                 ...query,
                 query: SQT.addGroupNodeToSearchQuery(groupProvenance, groupId, query.query),
                 return_type: ReturnType.PolymerEntity
             });
             entityCount = filterEntities.length;
         }else{
-            entityCount = await searchRequestProperty.requestCount({query: SQT.searchGroupQuery(groupProvenance, groupId), return_type: ReturnType.PolymerEntity});
+            entityCount = await searchRequestClient.requestCount({query: SQT.searchGroupQuery(groupProvenance, groupId), return_type: ReturnType.PolymerEntity});
         }
         additionalConfig = {
             ...additionalConfig,
@@ -97,8 +97,8 @@ export class RcsbFvGroupAlignmentBuilder {
             component: PaginationItemComponent,
             props:{
                 count:entityCount,
-                after: additionalConfig?.page?.after ?? "0",
-                first: additionalConfig?.page?.first ?? 50,
+                after: additionalConfig.page?.after ?? "0",
+                first: additionalConfig.page?.first ?? 50,
                 stateChange:(state:PaginationItemState,prevState:PaginationItemState)=>{
                     switch (groupProvenance){
                         case GroupProvenanceId.ProvenanceSequenceIdentity:
@@ -138,7 +138,7 @@ export class RcsbFvGroupAlignmentBuilder {
         };
         GroupPfvUI.fvUI(
             GroupPfvUI.addBootstrapElement(elementId),
-            (entityCount > (additionalConfig?.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : [])
+            (entityCount > (additionalConfig.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig.externalUiComponents ? additionalConfig.externalUiComponents : [])
         );
         return pfv;
     }

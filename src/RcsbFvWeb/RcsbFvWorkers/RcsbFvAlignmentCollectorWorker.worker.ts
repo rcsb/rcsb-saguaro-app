@@ -7,7 +7,7 @@ worker.onmessage = function(message: MessageEvent){
     const rcsbFvQuery: RcsbClient = rcsbClient;
     rcsbFvQuery.requestAlignment(request).then((result)=>{
 
-        // @ts-ignore
+        // @ts-expect-error
         postMessage(result);
     });
 }

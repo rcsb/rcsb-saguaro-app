@@ -5,7 +5,7 @@ import {
 } from "../ResidueDistributionFactoryInterface";
 import {
     TrackManagerInterface
-} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 import {range} from "lodash";
 
@@ -21,7 +21,7 @@ export class NumericalTrackDistributionFactory implements ResidueDistributionFac
         const track: TrackManagerInterface = tracks[0];
         const numericalCategories = this.distributionConfig.getTrackConfig(track.getId()).numericalCategories;
         const bucketMap: Map<string,ResidueBucket> = new Map<string, ResidueBucket>();
-        const undefResidues: Set<number> = new Set(range(1,numberResidues+1));
+        const undefResidues = new Set<number>(range(1,numberResidues+1));
         numericalCategories.categories.forEach(category=>{
             const label: string = category.label;
             bucketMap.set(label, {

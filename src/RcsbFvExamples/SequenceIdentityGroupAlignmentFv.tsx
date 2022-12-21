@@ -5,7 +5,7 @@ import {DataContainer, DataContainerReader} from "../RcsbUtils/Helpers/DataConta
 import {RcsbFvModulePublicInterface} from "../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
 
 const fvContainer: DataContainer<RcsbFvModulePublicInterface> = new DataContainer<RcsbFvModulePublicInterface>();
-class UiComponent extends React.Component<{text:string;fvContainer:DataContainerReader<RcsbFvModulePublicInterface>;},{}> {
+class UiComponent extends React.Component<{text:string;fvContainer:DataContainerReader<RcsbFvModulePublicInterface>;}> {
 
     public render():JSX.Element {
         return (<div onClick={()=>{

@@ -14,7 +14,7 @@ buildInstanceSequenceFv("pfv", "select", "1A6D", {module:"interface"},{
 });
 
 function externalTrackBuilder(){
-    let myComputedTrack: RcsbFvRowConfigInterface = {
+    const myComputedTrack: RcsbFvRowConfigInterface = {
         trackId: "blockTrack",
         trackHeight: 20,
         trackColor: "#F9F9F9",
@@ -28,14 +28,14 @@ function externalTrackBuilder(){
         }]
     };
     return {
-        processAlignmentAndFeatures(data: { annotations?: Array<AnnotationFeatures>; alignments?: AlignmentResponse }): Promise<void> {
+        processAlignmentAndFeatures(data: { annotations?: AnnotationFeatures[]; alignments?: AlignmentResponse }): Promise<void> {
             return new Promise<void>(resolve => {
                 myComputedTrack.trackData = [];
                 data.annotations?.forEach(a=>{
                     a.features?.forEach(f=>{
                         if(f!=null && f.type === Type.RegionOfInterest){
                             if(f.feature_positions)
-                                myComputedTrack.trackData?.push( ...f.feature_positions?.map(p=>({
+                                myComputedTrack.trackData?.push( ...f.feature_positions.map(p=>({
                                     begin:p?.beg_seq_id ?? 0,
                                     end:p?.end_seq_id ?? undefined
                                 })))
@@ -46,16 +46,16 @@ function externalTrackBuilder(){
             })
 
         },
-        addTo(tracks: { alignmentTracks?: Array<RcsbFvRowConfigInterface>; annotationTracks?: Array<RcsbFvRowConfigInterface>; rcsbContext?: Partial<PolymerEntityInstanceInterface>; }): Promise<void> {
+        addTo(tracks: { alignmentTracks?: RcsbFvRowConfigInterface[]; annotationTracks?: RcsbFvRowConfigInterface[]; rcsbContext?: Partial<PolymerEntityInstanceInterface>; }): Promise<void> {
             return new Promise<void>(resolve => {
-                if (tracks.rcsbContext?.asymId === "A" && myComputedTrack?.trackData && myComputedTrack.trackData.length > 0) {
+                if (tracks.rcsbContext?.asymId === "A" && myComputedTrack.trackData && myComputedTrack.trackData.length > 0) {
                     tracks.annotationTracks?.push(myComputedTrack);
                 }
                 resolve(void 0);
             })
         },
-        filterFeatures(data: {annotations: Array<AnnotationFeatures>; rcsbContext:Partial<PolymerEntityInstanceInterface>}): Promise<Array<AnnotationFeatures>> {
-            return new Promise<Array<AnnotationFeatures>>(resolve => {
+        filterFeatures(data: {annotations: AnnotationFeatures[]; rcsbContext:Partial<PolymerEntityInstanceInterface>}): Promise<AnnotationFeatures[]> {
+            return new Promise<AnnotationFeatures[]>(resolve => {
                 resolve(data.annotations);
             })
         }

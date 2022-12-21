@@ -24,9 +24,11 @@ import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {SingletonMap} from "../../RcsbUtils/Helpers/SingletonMap";
 import {AlignmentCollector} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollector";
-import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
 import {
     AlignmentRequestContextType,
+    TrackFactoryInterface
+} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
+import {
     AlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
@@ -36,10 +38,10 @@ import {AnnotationsBlockFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/Ann
 import {AnnotationsTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AnnotationsTrackFactory";
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {AnnotationBlockManager} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationBlockManager";
+import {AnnotationBlockManager} from "../RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/AnnotationBlockManager";
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {AnnotationTrackManagerFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
-import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {AnnotationTrackManagerFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/AnnotationTrackManager";
+import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 
 
 export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
@@ -49,19 +51,19 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected boardConfigData: RcsbFvBoardConfigInterface = {
         length:0
     };
-    protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    protected rowConfigData: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
 
     protected polymerEntityInstance: PolymerEntityInstanceTranslate;
     protected readonly alignmentCollector: AlignmentCollectorInterface = new AlignmentCollector();
     protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
     protected referenceTrack: RcsbFvRowConfigInterface;
-    protected alignmentTracks: Array<RcsbFvRowConfigInterface> = [];
-    protected annotationTracks: Array<RcsbFvRowConfigInterface> = [];
+    protected alignmentTracks: RcsbFvRowConfigInterface[] = [];
+    protected annotationTracks: RcsbFvRowConfigInterface[] = [];
     protected buildConfig: RcsbFvModuleBuildInterface;
 
     private rcsbFvRowUpdatePromise: Promise<void>;
-    private activeDisplayFlag: boolean = false;
+    private activeDisplayFlag = false;
 
     constructor(elementId: string, rcsbFv: RcsbFv) {
         this.rcsbFv = rcsbFv;
@@ -103,7 +105,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         return this.rcsbFv;
     }
 
-    public async getTargets(): Promise<Array<string>>{
+    public async getTargets(): Promise<string[]>{
         return await this.alignmentCollector.getTargets();
     }
 
@@ -111,12 +113,12 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         return await this.alignmentCollector.getAlignment();
     }
 
-    public async getFeatures(): Promise<Array<Feature>>{
+    public async getFeatures(): Promise<Feature[]>{
         //return (await this.annotationCollector.getAnnotationFeatures()).map(af=>af.features).flat();
         return await this.annotationCollector.getFeatures();
     }
 
-    public async getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>{
+    public async getAnnotationConfigData(): Promise<RcsbFvRowConfigInterface[]>{
         return this.annotationTracks;
     }
 

@@ -70,7 +70,7 @@ export class RcsbFvUniprotAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectFeatures(upAcc: string): Promise<Array<AnnotationFeatures>> {
+async function collectFeatures(upAcc: string): Promise<AnnotationFeatures[]> {
     return await rcsbClient.requestRcsbPdbAnnotations({
         queryId: upAcc,
         reference: SequenceReference.Uniprot,

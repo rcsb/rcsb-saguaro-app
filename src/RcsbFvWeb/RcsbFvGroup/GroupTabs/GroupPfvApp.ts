@@ -15,14 +15,13 @@ import {
     Source,
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {
-    AnnotationProcessingInterface
-} from "../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {FeaturePositionGaps} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
 import {alignmentGlobalLigandBindingSite} from "../../../RcsbUtils/TrackGenerators/AlignmentGlobalBindingSite";
 import {RcsbTabs} from "../../RcsbFvComponents/RcsbTabs";
 import {GroupPfvUI, UiComponentType} from "../../../RcsbFvUI/GroupPfvUI";
-import {TrackManagerInterface} from "../../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+import {
+    AnnotationProcessingInterface, FeaturePositionGaps,
+    TrackManagerInterface
+} from "../../RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 import {ActionMethods} from "../../../RcsbFvUI/Helper/ActionMethods";
 import {
     PaginationItemComponent,
@@ -62,8 +61,8 @@ export namespace GroupPfvApp {
                     component: PaginationItemComponent,
                     props:{
                         count:entityCount,
-                        after: additionalConfig?.page?.after ?? "0",
-                        first: additionalConfig?.page?.first ?? 50,
+                        after: additionalConfig.page?.after ?? "0",
+                        first: additionalConfig.page?.first ?? 50,
                         stateChange:(state:PaginationItemState,prevState:PaginationItemState)=>{
                             paginationCallback(
                                 elementId,
@@ -83,7 +82,7 @@ export namespace GroupPfvApp {
                 };
                 GroupPfvUI.fvUI(
                     GroupPfvUI.addBootstrapElement(elementId),
-                    (entityCount > (additionalConfig?.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : [])
+                    (entityCount > (additionalConfig.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig.externalUiComponents ? additionalConfig.externalUiComponents : [])
                 );
                 return pfv;
         }

@@ -1,4 +1,3 @@
-import {SearchQueryType} from "./SearchRequestProperty";
 import {
     LogicalOperator,
     Operator, RelevanceScoreRankingOption, ReturnType,
@@ -9,7 +8,7 @@ import {
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {
     SearchQuery,
-    AttributeTextQueryParameters, ResultsContentType
+    AttributeTextQueryParameters, ResultsContentType, GroupNode, TerminalNode
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetStoreInterface} from "./FacetStore/FacetStoreInterface";
 import {cloneDeep} from 'lodash';
@@ -17,6 +16,8 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {depositionGroupFacetStore} from "./FacetStore/DepositionGroupFacetStore";
 import {sequenceGroupFacetStore} from "./FacetStore/SequenceGroupFacetStore";
 import {uniprotGroupFacetStore} from "./FacetStore/UniprotGroupFacetStore";
+
+export type SearchQueryType = GroupNode | TerminalNode;
 
 export namespace SearchQueryTools {
 
@@ -38,7 +39,7 @@ export namespace SearchQueryTools {
         return addNodeToSearchQuery(searchGroupQuery(groupProvenanceId, groupId, service), searchQuery);
     }
 
-    export function buildAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, returnType: ReturnType, service: Service.Text | Service.TextChem, negation: boolean = false): SearchQuery {
+    export function buildAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, returnType: ReturnType, service: Service.Text | Service.TextChem, negation = false): SearchQuery {
         return {
             query: addNewNodeToAttributeSearchQuery(attribute, value, operator, searchQuery, service, negation),
             return_type: returnType,
@@ -106,11 +107,11 @@ export namespace SearchQueryTools {
         }
     }
 
-    export function addNewNodeToAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, service: Service.Text | Service.TextChem, negation: boolean = false): SearchQueryType {
+    export function addNewNodeToAttributeSearchQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, searchQuery: SearchQueryType, service: Service.Text | Service.TextChem, negation = false): SearchQueryType {
         return addNodeToSearchQuery(searchAttributeQuery(attribute, value, operator, service, negation), searchQuery);
     }
 
-    export function searchAttributeQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, service: Service.Text | Service.TextChem, negation: boolean = false): SearchQueryType {
+    export function searchAttributeQuery(attribute: string, value: AttributeTextQueryParameters['value'], operator: Operator, service: Service.Text | Service.TextChem, negation = false): SearchQueryType {
         return {
             type: Type.Terminal,
             service: service,

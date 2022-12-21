@@ -1,8 +1,16 @@
-import {GroupedOptionsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
-import {SelectButtonConfigInterface} from "./ComponentsManager";
+import {GroupedOptionsInterface, SelectButton, SelectOptionInterface, SelectOptionProps} from "./SelectButton";
 import * as React from "react";
 import {SelectButtonTitle} from "./SelectButtonTitle";
 import {MountableComponent} from "./MountableComponent";
+
+export interface SelectButtonConfigInterface {
+    addTitle?: boolean;
+    defaultValue?: string|undefined|null;
+    width?: number;
+    dropdownTitle?: string;
+    optionProps?: (props: SelectOptionProps)=>JSX.Element;
+    isAdditionalButton?: boolean;
+}
 
 export class SelectButtonManager {
 
@@ -37,11 +45,11 @@ export class SelectButtonManager {
 
     }
 
-    public createButton(options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void {
+    public createButton(options: SelectOptionInterface[]|GroupedOptionsInterface[], config?:SelectButtonConfigInterface): void {
         this.button(this.selectComponent.mainButton,options,config);
     }
 
-    public addButton(options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void {
+    public addButton(options: SelectOptionInterface[]|GroupedOptionsInterface[], config?:SelectButtonConfigInterface): void {
         this.button(this.selectComponent.additionalButton,options,config);
     }
 
@@ -56,7 +64,7 @@ export class SelectButtonManager {
         this.selectComponent.selectTitleButton.unmount();
     }
 
-    private button(button:MountableComponent,options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface): void {
+    private button(button:MountableComponent,options: SelectOptionInterface[]|GroupedOptionsInterface[], config?:SelectButtonConfigInterface): void {
         button.render(<SelectButton
             elementId={this.elementId}
             options={options}

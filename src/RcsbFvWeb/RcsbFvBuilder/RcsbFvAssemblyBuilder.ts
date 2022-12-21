@@ -9,7 +9,7 @@ export class RcsbFvAssemblyBuilder {
 
     static async buildAssemblySequenceFv(elementFvId:string, elementSelectAssemblyId:string, elementSelectInstanceId:string, entryId: string, onAsseblyChangeCallback?:(x: string)=>void, onInstanceChangeCallback?:(x: InstanceSequenceOnchangeInterface)=>void): Promise<RcsbFvModulePublicInterface> {
         const assemblyTranslate: EntryAssemblyTranslate = await rcsbRequestCtxManager.getEntryToAssembly(entryId);
-        const assemblyMap:Map<string,Array<PolymerEntityInstanceInterface>>  = assemblyTranslate.getData();
+        const assemblyMap:Map<string,PolymerEntityInstanceInterface[]>  = assemblyTranslate.getData();
         if(assemblyMap.size == 0){
             RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
         }else{

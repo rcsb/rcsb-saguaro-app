@@ -1,19 +1,20 @@
 import * as React from "react";
-import {ChartMapType, GroupChartLayout} from "../RcsbGroupChart/GroupChartLayout";
+import {GroupChartLayout} from "../RcsbGroupChart/GroupChartLayout";
 import {ResidueChartInterface, ResidueChartTools as RCT} from "./ResidueChartTools/ResidueChartTools";
 import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display.module.scss";
-import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
+import type {RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
+import {FacetTools} from "../../../RcsbSearch/FacetTools";
 import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
 
 interface RcsbResidueChartState {
     layout: string[];
-    chartMap: ChartMapType;
+    chartMap: Map<string,RcsbChartInterface[]>;
 }
 
 export class RcsbResidueChartComponent extends React.Component <ResidueChartInterface & {facetLayoutGrid?:string[];chartDisplayConfig?: Partial<ChartDisplayConfigInterface>;}, RcsbResidueChartState> {
 
     render(): JSX.Element {
-        if (this.state?.layout?.flat().filter((e) => (this.state?.chartMap?.get(e)))) {
+        if (this.state.layout.flat().filter((e) => (this.state.chartMap.get(e)))) {
             return (<div className={classes.bootstrapComponentScope}>
                 <GroupChartLayout
                     layout={this.state.layout}
@@ -34,7 +35,7 @@ export class RcsbResidueChartComponent extends React.Component <ResidueChartInte
             .map(ch=>FacetTools.addChartDisplayConfig(ch, this.props.chartDisplayConfig ?? {}));
         this.setState({
             layout: charts.map(c=>c.attribute),
-            chartMap: charts.reduce<ChartMapType>((prev,curr)=>(prev.set(curr.attribute,[curr])), new Map())
+            chartMap: charts.reduce<Map<string,RcsbChartInterface[]>>((prev,curr)=>(prev.set(curr.attribute,[curr])), new Map())
         });
     }
 

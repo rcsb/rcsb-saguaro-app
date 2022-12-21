@@ -1,13 +1,13 @@
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
 export class EntryAssemblyTranslate {
-    private readonly rawData: Map<string,Array<PolymerEntityInstanceInterface>>;
+    private readonly rawData: Map<string,PolymerEntityInstanceInterface[]>;
 
-    constructor(data: Map<string,Array<PolymerEntityInstanceInterface>>) {
+    constructor(data: Map<string,PolymerEntityInstanceInterface[]>) {
         this.rawData = data;
     }
 
-    getData(): Map<string,Array<PolymerEntityInstanceInterface>>{
+    getData(): Map<string,PolymerEntityInstanceInterface[]>{
         return this.rawData;
     }
 }

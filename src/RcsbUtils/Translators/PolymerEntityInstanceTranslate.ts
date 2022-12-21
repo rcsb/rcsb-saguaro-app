@@ -13,15 +13,15 @@ export interface AlignmentContextInterface {
 }
 
 export class PolymerEntityInstanceTranslate{
-    private readonly rawData: Array<PolymerEntityInstanceInterface>;
+    private readonly rawData: PolymerEntityInstanceInterface[];
     private readonly instanceAsymToAuth: Map<string,string> = new Map<string, string>();
     private readonly instanceAuthToAsym: Map<string,string> = new Map<string, string>();
     private readonly instanceAsymToEntity: Map<string,string> = new Map<string, string>();
     private readonly entityToAsym: Map<string,Set<string>> = new Map<string, Set<string>>();
-    private readonly instanceAuthResIds: Map<string,Array<string>> = new Map<string, Array<string>>();
+    private readonly instanceAuthResIds: Map<string,string[]> = new Map<string, string[]>();
     private readonly INDEX_NAME: string = "auth";
 
-    constructor(data: Array<PolymerEntityInstanceInterface>) {
+    constructor(data: PolymerEntityInstanceInterface[]) {
         this.rawData = data;
         data.forEach(d=>{
             this.instanceAsymToAuth.set(d.asymId,d.authId);
@@ -34,11 +34,11 @@ export class PolymerEntityInstanceTranslate{
         });
     }
 
-    public getData(): Array<PolymerEntityInstanceInterface>{
+    public getData(): PolymerEntityInstanceInterface[]{
         return this.rawData;
     }
 
-    public translateEntityToAsym(id: string): Array<string>{
+    public translateEntityToAsym(id: string): string[]{
         if(this.entityToAsym.has(id))
             return Array.from( this.entityToAsym.get(id) );
         return null;
@@ -74,7 +74,7 @@ export class PolymerEntityInstanceTranslate{
     }
 
     public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
-        let o:RcsbFvTrackDataElementInterface = e;
+        const o:RcsbFvTrackDataElementInterface = e;
         if(alignmentContext.from === SequenceReference.PdbInstance) {
             const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
@@ -88,7 +88,7 @@ export class PolymerEntityInstanceTranslate{
     }
 
     private helperAddAuthorResIds(e: RcsbFvTrackDataElementInterface, reference:string, source:string, asymId: string):RcsbFvTrackDataElementInterface{
-        let out: RcsbFvTrackDataElementInterface = e;
+        const out: RcsbFvTrackDataElementInterface = e;
         if( reference === SequenceReference.PdbInstance || (reference === SequenceReference.PdbEntity && source === Source.PdbInstance) ) {
             const x:string = this.instanceAuthResIds.get(asymId)[e.begin-1];
             if (typeof e.end === "number" && this.instanceAuthResIds.get(asymId)[e.end-1] != x){

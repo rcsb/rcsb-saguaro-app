@@ -5,8 +5,8 @@ export class PolymerEntityChromosomeCollector {
 
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect( entityIds: Array<string>): Promise<Map<string, Array<string>>> {
-        const entityMap: Map<string, Array<string>> = new Map<string, Array<string>>();
+    public async collect( entityIds: string[]): Promise<Map<string, string[]>> {
+        const entityMap: Map<string, string[]> = new Map<string, string[]>();
         const result = await Promise.all(entityIds.map(e=>{
             return this.entityChromosomes(e);
         }));

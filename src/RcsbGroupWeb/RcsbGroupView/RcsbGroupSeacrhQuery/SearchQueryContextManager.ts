@@ -1,13 +1,13 @@
 import {Subject, Subscription} from "rxjs";
-import {ChartMapType} from "../RcsbGroupChart/GroupChartLayout";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import type {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import type {RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
 
 export interface SearchQueryContextManagerSubjectInterface {
     attributeName: string;
-    chartMap:ChartMapType;
+    chartMap: Map<string,RcsbChartInterface[]>;
     searchQuery?:SearchQuery;
     groupId:string;
     groupProvenanceId: GroupProvenanceId;

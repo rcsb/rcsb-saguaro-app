@@ -2,17 +2,17 @@ import {AssemblyInterfacesInterface} from "../../RcsbCollectTools/DataCollectors
 
 export class AssemblyInterfacesTranslate {
 
-    private readonly rawData: Array<AssemblyInterfacesInterface>;
-    private interfaceMap: Map<string,Array<string>> = new Map<string, Array<string>>();
+    private readonly rawData: AssemblyInterfacesInterface[];
+    private interfaceMap: Map<string,string[]> = new Map<string, string[]>();
 
-    constructor(data: Array<AssemblyInterfacesInterface>) {
+    constructor(data: AssemblyInterfacesInterface[]) {
         this.rawData = data;
         data.forEach(d=>{
             this.interfaceMap.set(d.rcsbId, d.interfaceIds);
         })
     }
 
-    getInterfaces(assemblyId: string): Array<string>{
+    getInterfaces(assemblyId: string): string[]{
         return this.interfaceMap.get(assemblyId);
     }
 

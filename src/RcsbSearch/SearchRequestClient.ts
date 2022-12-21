@@ -2,18 +2,15 @@ import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
-    GroupNode,
     ResultsContentType,
-    SearchQuery,
-    TerminalNode
+    SearchQuery
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetType} from "./FacetStore/FacetMemberInterface";
 import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
-import {SearchQueryTools as SQT} from "./SearchQueryTools";
+import {SearchQueryTools as SQT, SearchQueryType} from "./SearchQueryTools";
 
-export type SearchQueryType = GroupNode | TerminalNode;
 
-class SearchRequestProperty {
+class SearchRequestClient {
 
     private readonly getClient: ()=>SearchRequest;
 
@@ -47,7 +44,7 @@ class SearchRequestProperty {
     }
 
     //TODO this should be part of `SearchQueryTools`
-    public async requestMembers(query: SearchQuery): Promise<Array<string>> {
+    public async requestMembers(query: SearchQuery): Promise<string[]> {
         return (await this.getClient().request({
             query: query.query,
             request_options: {
@@ -76,4 +73,4 @@ class SearchRequestProperty {
 
 }
 
-export const searchRequestProperty = new SearchRequestProperty(()=>rcsbRequestClient.arches);
+export const searchRequestClient = new SearchRequestClient(()=>rcsbRequestClient.arches);

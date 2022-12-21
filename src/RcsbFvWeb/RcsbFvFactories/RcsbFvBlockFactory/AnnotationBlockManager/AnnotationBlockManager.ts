@@ -24,12 +24,12 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         this.polymerEntityInstanceTranslator = polymerEntityInstanceTranslator;
     }
 
-    public async setData(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
+    public async setData(requestConfig: AnnotationRequestContext, data: AnnotationFeatures[]): Promise<void>{
         await this.processAnnotations(requestConfig, data);
         this.mergeTracks();
     }
 
-    public getTracks(): Array<TrackManagerInterface>{
+    public getTracks(): TrackManagerInterface[]{
         return this.orderedTypes().filter(type=>this.has(type) && this.annotationTracks.get(type).size()>0).map(type=>this.annotationTracks.get(type));
     }
 
@@ -46,7 +46,7 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         ].flat();
     }
 
-    private async processAnnotations(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
+    private async processAnnotations(requestConfig: AnnotationRequestContext, data: AnnotationFeatures[]): Promise<void>{
         await Promise.all(data.map<Promise<void>[]>(ann=>{
             return ann.features.map<Promise<void>>(async feature=>{
                 return  await this.addFeature(requestConfig,ann,feature);
@@ -57,7 +57,7 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     }
 
     private async addFeature(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<void> {
-        if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
+        if(this.rcsbAnnotationConfig.getConfig(feature.type).ignore)
             return;
 
         const type: string = await this.rcsbAnnotationConfig.getAnnotationType(requestConfig, ann, feature);

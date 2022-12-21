@@ -9,15 +9,15 @@ export interface InterfaceInstanceInterface {
     assemblyId: string;
     interfaceId: string;
     asymIds: [string,string];
-    operatorIds: [Array<Array<string>>,Array<Array<string>>];
+    operatorIds: [string[][],string[][]];
 }
 
 export class InterfaceInstanceCollector {
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect(requestConfig: QueryInterfacesArgs): Promise<Array<InterfaceInstanceInterface>> {
+    public async collect(requestConfig: QueryInterfacesArgs): Promise<InterfaceInstanceInterface[]> {
         try {
-            const result: Array<CoreInterface> = await this.rcsbFvQuery.requestInterfaceInstances(requestConfig);
+            const result: CoreInterface[] = await this.rcsbFvQuery.requestInterfaceInstances(requestConfig);
             return result.map(r=>parseInterfaceInstances(r));
         }catch (error) {
             console.log(error);

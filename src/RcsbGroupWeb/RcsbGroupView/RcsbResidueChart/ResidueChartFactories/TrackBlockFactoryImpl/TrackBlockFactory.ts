@@ -1,7 +1,7 @@
 import {TrackBlockFactoryInterface} from "../ResidueDistributionFactoryInterface";
 import {
     TrackManagerInterface
-} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
+} from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 
 export class TrackBlockFactory implements TrackBlockFactoryInterface<{blockType:string}>{

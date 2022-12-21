@@ -3,13 +3,13 @@ import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {BlockFactoryInterface} from "./BlockFactoryInterface";
 import {AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface";
-import {BlockManagerInterface} from "./BlockManager/BlockManagerInterface";
-import {TrackManagerInterface} from "./BlockManager/TrackManagerInterface";
+import {BlockManagerInterface} from "./AnnotationBlockManager/BlockManagerInterface";
+import {TrackManagerInterface} from "./AnnotationBlockManager/TrackManagerInterface";
 
 export class AnnotationsBlockFactory implements BlockFactoryInterface<[AnnotationRequestContext, AnnotationFeatures[]],[TrackManagerInterface]>{
 
     private readonly annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>;
-    private readonly annotationsBlockData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
+    private readonly annotationsBlockData: RcsbFvRowConfigInterface[] = new Array<RcsbFvRowConfigInterface>();
 
     readonly trackFactory: TrackFactoryInterface<[TrackManagerInterface]>;
     readonly trackConfigModifier: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>;
@@ -29,7 +29,7 @@ export class AnnotationsBlockFactory implements BlockFactoryInterface<[Annotatio
         await Promise.all(this.annotationBlockManager.getTracks().map(async track=>{
             this.annotationsBlockData.push( {
                 ... await this.trackFactory.getTrack(track),
-                ... await this.trackConfigModifier?.(track)
+                ... await this.trackConfigModifier(track)
             });
         }));
         return this.annotationsBlockData;

@@ -1,22 +1,20 @@
 import {groupProvenanceToReturnType} from "../../../RcsbUtils/Groups/GroupProvenanceToAggregationType";
-import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
-import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
+import {FacetStoreInterface} from "../../../RcsbSearch/FacetStore/FacetStoreInterface";
+import {SearchQueryTools as SQT, SearchQueryType} from "../../../RcsbSearch/SearchQueryTools";
 import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
-import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
+import {FacetTools, RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
 import {Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
-import {ChartMapType} from "./GroupChartLayout";
-import {GroupChartEvents as GDE} from "./GroupChartEvents";
+import {GroupChartEvents as GCE} from "./GroupChartEvents";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 
 export namespace GroupChartMap{
 
-    export async function getChartMap(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): Promise<ChartMapType>{
+    export async function getChartMap(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): Promise<Map<string,RcsbChartInterface[]>>{
         const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId);
-        let facets: Array<BucketFacet> = [];
+        let facets: BucketFacet[] = [];
         for(const service of facetStore.getServices()){
             const groupQuery: SearchQueryType = SQT.searchGroupQuery(groupProvenanceId, groupId, service);
             const groupProperties: QueryResult | null = await rcsbRequestCtxManager.getSearchQueryFacets(
@@ -28,15 +26,15 @@ export namespace GroupChartMap{
             if(groupProperties)
                 facets = facets.concat(groupProperties.facets as BucketFacet[]);
         }
-        let chartData: Array<RcsbChartInterface> = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets);
-        let subData: Array<RcsbChartInterface> | undefined = undefined;
+        let chartData: RcsbChartInterface[] = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets);
+        let subData: RcsbChartInterface[] | undefined = undefined;
         if(searchQuery) {
-            const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, groupProvenanceId, groupId, searchQuery);
+            const searchData: {chartData: RcsbChartInterface[];subData: RcsbChartInterface[] | undefined;} = await subtractSearchQuery(chartData, groupProvenanceId, groupId, searchQuery);
             chartData = searchData.chartData;
             subData = searchData.subData;
         }
         chartData.forEach((chart=>{
-            GDE.addBarClickCallback(
+            GCE.addBarClickCallback(
                 chart,
                 groupProvenanceId,
                 groupId,
@@ -47,12 +45,13 @@ export namespace GroupChartMap{
                     query: SQT.searchGroupQuery(groupProvenanceId, groupId, Service.Text),
                     return_type:groupProvenanceToReturnType[groupProvenanceId]
                 },
-                groupProvenanceToReturnType[groupProvenanceId]
+                groupProvenanceToReturnType[groupProvenanceId],
+                getChartMap
             );
-            GDE.addTooltipText(chart);
+            GCE.addTooltipText(chart);
         }));
 
-        return chartData.reduce<ChartMapType>((prev,current)=>{
+        return chartData.reduce<Map<string,RcsbChartInterface[]>>((prev,current)=>{
             prev.set(current.attributeName,[current])
             const comp = subData?.find((c)=>(c.attributeName===current.attributeName))
             if(comp)
@@ -62,10 +61,10 @@ export namespace GroupChartMap{
 
     }
 
-    async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
+    async function subtractSearchQuery(chartData: RcsbChartInterface[], groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery): Promise<{chartData: RcsbChartInterface[];subData: RcsbChartInterface[] | undefined}>{
         const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId);
-        let subData: Array<RcsbChartInterface> | undefined;
-        let partialFacets: Array<BucketFacet> = [];
+        let subData: RcsbChartInterface[] | undefined;
+        let partialFacets: BucketFacet[] = [];
         for (const service of facetStore.getServices()) {
             const groupQuery: SearchQueryType = SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query, service);
             const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
@@ -77,7 +76,7 @@ export namespace GroupChartMap{
             if(groupProperties)
                 partialFacets = partialFacets.concat(groupProperties.facets as BucketFacet[]);
         }
-        let partialData: Array<RcsbChartInterface> = cloneDeep(chartData);
+        let partialData: RcsbChartInterface[] = cloneDeep(chartData);
         if(partialFacets.length > 0) {
             partialData = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), partialFacets)
             subData = FacetTools.subtractDrilldowns(

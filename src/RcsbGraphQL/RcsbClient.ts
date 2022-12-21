@@ -24,15 +24,15 @@ import {GraphQLRequest} from "@rcsb/rcsb-api-tools";
 //TODO Implement a cache to store requests and avoid duplication
 class RcsbClientClass {
 
-    private readonly rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> ;
-    private readonly rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>>;
+    private readonly rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,AnnotationFeatures[]> ;
+    private readonly rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,AnnotationFeatures[]>;
     private readonly rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse>;
     private readonly rcsbQueryGroupAlignment: RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments,AlignmentResponse>;
     private readonly rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry>;
-    private readonly rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>>;
-    private readonly rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>>;
-    private readonly rcsbQueryInterfaceInstances: RcsbCoreQueryInterface<QueryInterfacesArgs,Array<CoreInterface>>;
-    private readonly rcsbQueryAssemblyInterfaces: RcsbCoreQueryInterface<QueryAssembliesArgs,Array<CoreAssembly>>;
+    private readonly rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,CorePolymerEntity[]>;
+    private readonly rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,CoreEntry[]>;
+    private readonly rcsbQueryInterfaceInstances: RcsbCoreQueryInterface<QueryInterfacesArgs,CoreInterface[]>;
+    private readonly rcsbQueryAssemblyInterfaces: RcsbCoreQueryInterface<QueryAssembliesArgs,CoreAssembly[]>;
     private readonly rcsbQueryGroup: RcsbCoreQueryInterface<QueryPolymer_Entity_GroupArgs,GroupPolymerEntity>;
 
     constructor(get:{borrego: ()=>GraphQLRequest, yosemite: ()=>GraphQLRequest}){
@@ -48,11 +48,11 @@ class RcsbClientClass {
         this.rcsbQueryGroup = new RcsbQueryGroup(get.yosemite);
     }
 
-    public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
+    public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<AnnotationFeatures[]>{
         return await this.rcsbQueryAnnotations.request(requestConfig);
     }
 
-    public async requestRcsbPdbGroupAnnotations(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>>{
+    public async requestRcsbPdbGroupAnnotations(requestConfig: QueryGroup_AnnotationsArgs): Promise<AnnotationFeatures[]>{
         return await this.rcsbQueryGroupAnnotations.request(requestConfig);
     }
 
@@ -68,7 +68,7 @@ class RcsbClientClass {
         return await this.rcsbQueryEntityInstances.request(requestConfig);
     }
 
-    public async requestMultipleEntityInstances(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<CorePolymerEntity>>{
+    public async requestMultipleEntityInstances(requestConfig: QueryPolymer_EntitiesArgs): Promise<CorePolymerEntity[]>{
         return await this.rcsbQueryMutipleEntityInstances.request(requestConfig);
     }
 
@@ -76,15 +76,15 @@ class RcsbClientClass {
         return await this.rcsbQueryGroup.request(requestConfig);
     }
 
-    public async requestMultipleEntriesProperties(requestConfig: QueryEntriesArgs): Promise<Array<CoreEntry>>{
+    public async requestMultipleEntriesProperties(requestConfig: QueryEntriesArgs): Promise<CoreEntry[]>{
         return await this.rcsbQueryEntryProperties.request(requestConfig);
     }
 
-    public async requestInterfaceInstances(requestConfig:QueryInterfacesArgs): Promise<Array<CoreInterface>> {
+    public async requestInterfaceInstances(requestConfig:QueryInterfacesArgs): Promise<CoreInterface[]> {
         return await this.rcsbQueryInterfaceInstances.request(requestConfig);
     }
 
-    public async requestAssemblyInterfaces(requestConfig:QueryAssembliesArgs): Promise<Array<CoreAssembly>> {
+    public async requestAssemblyInterfaces(requestConfig:QueryAssembliesArgs): Promise<CoreAssembly[]> {
         return await this.rcsbQueryAssemblyInterfaces.request(requestConfig);
     }
 }

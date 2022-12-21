@@ -3,7 +3,7 @@ import {AlignmentLogo} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borreg
 export class Logo<T extends string>  {
 
     private readonly symbols: {[key in T]?:number} = {};
-    private n: number = 0;
+    private n = 0;
 
     /*constructor(symbols: Array<T>) {
         symbols.forEach(s=>{

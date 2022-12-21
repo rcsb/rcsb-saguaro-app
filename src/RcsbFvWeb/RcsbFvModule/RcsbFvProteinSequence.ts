@@ -13,7 +13,7 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const queryId: string = buildConfig.queryId;
-        const source: Array<Source> = buildConfig.sources ?? [Source.Uniprot];
+        const source: Source[] = buildConfig.sources ?? [Source.Uniprot];
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: queryId,
             from: buildConfig.from,

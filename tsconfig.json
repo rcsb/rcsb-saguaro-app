@@ -13,14 +13,14 @@
     "allowJs": true,
     "sourceMap": false,
     //"noUnusedLocals": true,
-    //"strictNullChecks": true,
+    "strictNullChecks": true,
     "strictFunctionTypes": true,
     "declaration": true,
     "declarationDir": "./build/dist",
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": [ "src/*", "src/**/*", "src/**/**/*", "src/**/**/**/*" ],
+  "include": [ "src" ],
   "exclude": [
     "node_modules"
   ]

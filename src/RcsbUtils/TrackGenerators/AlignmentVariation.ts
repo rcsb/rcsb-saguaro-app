@@ -6,12 +6,12 @@ import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/
 
 export function alignmentVariation(): ExternalTrackBuilderInterface {
 
-    const seqName: string = "CONSENSUS SEQUENCE";
-    const conservationName: string = "CONSERVATION";
-    let querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
+    const seqName = "CONSENSUS SEQUENCE";
+    const conservationName = "CONSERVATION";
+    let querySequenceLogo: Logo<aaType>[] = new Array<Logo<aaType>>();
 
     return {
-        addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
+        addTo(tracks: { annotationTracks: RcsbFvRowConfigInterface[], alignmentTracks: RcsbFvRowConfigInterface[]}): Promise<void> {
             if(querySequenceLogo.length == 0)
                 return;
             [{
@@ -26,8 +26,8 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                 titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
                 rowTitle: conservationName,
                 trackData: querySequenceLogo.map((s,n)=>{
-                    const nFreq: number = 5;
-                    const maxFreqList: Array<number> = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);
+                    const nFreq = 5;
+                    const maxFreqList: number[] = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);
                     const gapFreq: number  = Math.trunc(s.frequency().filter(f=>f.symbol=="-")[0].value*100)/100;
                     return {
                         begin: n+1,
@@ -51,16 +51,16 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
             querySequenceLogo = [];
             return void 0;
         },
-        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
+        processAlignmentAndFeatures(data: { annotations: AnnotationFeatures[], alignments: AlignmentResponse }): Promise<void> {
             processAlignments(data.alignments);
             return void 0;
         },
-        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = data.annotations;
+        filterFeatures(data:{annotations: AnnotationFeatures[]}): Promise<AnnotationFeatures[]> {
+            const annotations: AnnotationFeatures[] = data.annotations;
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>(f.name != "automated matches"));
             })
-            return new Promise<Array<AnnotationFeatures>>((resolve)=>{
+            return new Promise<AnnotationFeatures[]>((resolve)=>{
                 resolve(annotations);
             });
         }

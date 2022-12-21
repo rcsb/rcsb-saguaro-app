@@ -19,7 +19,7 @@ export class RcsbFvChromosomeBuilder {
     static async buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<RcsbFvModulePublicInterface>{
         return new Promise<RcsbFvModulePublicInterface>(async (resolve, reject)=>{
             const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
-            const result:Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData();
+            const result:PolymerEntityInstanceInterface[] = entityInstanceTranslator.getData();
             const entitySet: Set<string> = new Set<string>();
             result.sort((a,b)=>{
                 return parseInt(a.entityId)-parseInt(b.entityId);
@@ -27,7 +27,7 @@ export class RcsbFvChromosomeBuilder {
                 entitySet.add(r.entryId+TagDelimiter.entity+r.entityId);
             });
             const entityChrTranslate: PolymerEntityChromosomeTranslate = await rcsbRequestCtxManager.getEntityToChromosome(Array.from(entitySet));
-            const entityMap: Map<string, Array<string>> = entityChrTranslate.getData();
+            const entityMap: Map<string, string[]> = entityChrTranslate.getData();
             if(entityMap.size == 0){
                 RcsbFvCoreBuilder.showMessage(elementFvId, "No genome alignments are available");
             }else{
@@ -59,7 +59,7 @@ export class RcsbFvChromosomeBuilder {
 
     static async buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<RcsbFvModulePublicInterface> {
         const chrViewer: RcsbFvModulePublicInterface = await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, null, elementSelectId,{boardConfig:{rowTitleWidth:160}});
-        const targets: Array<string> = await chrViewer.getTargets();
+        const targets: string[] = await chrViewer.getTargets();
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
             return {
                 label: chrId,

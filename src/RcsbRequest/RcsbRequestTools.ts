@@ -7,7 +7,7 @@ export namespace RcsbRequestTools {
 
     export interface DataStatusInterface<T>{
         data:T;
-        resolveList : Array<(x:T)=>void>;
+        resolveList : ((x:T)=>void)[];
         status:"pending"|"available";
     }
 
@@ -25,15 +25,15 @@ export namespace RcsbRequestTools {
         }
     }
 
-    export async function getMultipleObjectProperties<K extends string,T>(ids:string|Array<string>, map: Map<string,DataStatusInterface<T>>, collector:MultipleDocumentPropertyCollectorInterface<K,T>, collectorKey: K, propertyKey:(e:T)=>string): Promise<Array<T>>{
+    export async function getMultipleObjectProperties<K extends string,T>(ids:string|string[], map: Map<string,DataStatusInterface<T>>, collector:MultipleDocumentPropertyCollectorInterface<K,T>, collectorKey: K, propertyKey:(e:T)=>string): Promise<T[]>{
         if(!Array.isArray(ids))
             ids = [ids]
-        const notAvailable: Array<string> = ids.filter(id=>map.get(id)?.status !== "available");
+        const notAvailable: string[] = ids.filter(id=>map.get(id)?.status !== "available");
         if(notAvailable.length === 0){
             return ids.map(id=>map.get(id).data);
         }else{
-            const available: Array<string> = ids.filter(id=>map.get(id)?.status === "available");
-            const notPending: Array<string> = notAvailable.filter(id=>map.get(id)?.status !== "pending");
+            const available: string[] = ids.filter(id=>map.get(id)?.status === "available");
+            const notPending: string[] = notAvailable.filter(id=>map.get(id)?.status !== "pending");
             if(notPending.length === 0 ){
                 return Promise.all<T>([
                     ...available.map(id=>(new Promise<T>((resolve,reject) => {
@@ -42,12 +42,12 @@ export namespace RcsbRequestTools {
                     ...notAvailable.map(id=>(mapResolve<T>(map.get(id))))
                 ]);
             }else{
-                const pending: Array<string> = notAvailable.filter(id=>map.get(id)?.status === "pending");
-                const missing: Array<string> = notPending;
+                const pending: string[] = notAvailable.filter(id=>map.get(id)?.status === "pending");
+                const missing: string[] = notPending;
                 missing.forEach(id=>{
                     mapPending<T>(id,map);
                 });
-                const properties: Array<T> = await collector.collect({[collectorKey]:missing} as DataCollectorArgsType<K>);
+                const properties: T[] = await collector.collect({[collectorKey]:missing} as DataCollectorArgsType<K>);
                 properties.forEach(e=>{
                     mapSet<T>(map.get(propertyKey(e)),e);
                 });

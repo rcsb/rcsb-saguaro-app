@@ -13,9 +13,9 @@ interface TaskInterface {
 
 export class RcsbFvAlignmentCollectorQueue {
     private readonly nWorkers: number;
-    private readonly workerList: Array<WorkerInterface> = new Array<WorkerInterface>();
-    private readonly taskQueue: Array<TaskInterface> = new Array<TaskInterface>();
-    private isQueueActive: boolean = false;
+    private readonly workerList: WorkerInterface[] = new Array<WorkerInterface>();
+    private readonly taskQueue: TaskInterface[] = new Array<TaskInterface>();
+    private isQueueActive = false;
 
     constructor(nWorkers?: number) {
         if(nWorkers!=null)
@@ -32,7 +32,7 @@ export class RcsbFvAlignmentCollectorQueue {
     }
 
     public sendTask(request: QueryAlignmentArgs, callback: (data: any)=>void): void{
-        const available:Array<WorkerInterface> = this.workerList.filter(d=>d.available);
+        const available:WorkerInterface[] = this.workerList.filter(d=>d.available);
         if(available.length > 0){
             available[0].available = false;
             available[0].worker.postMessage(request);

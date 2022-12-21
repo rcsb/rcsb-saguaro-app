@@ -13,7 +13,7 @@ import {
 } from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
 import {ChartType} from "@rcsb/rcsb-charts";
 
-export type SearchFilter = {attribute:string;value:AttributeTextQueryParameters['value'];operator:Operator;service:Service.Text|Service.TextChem};
+export interface SearchFilter {attribute:string;value:AttributeTextQueryParameters['value'];operator:Operator;service:Service.Text|Service.TextChem}
 export interface RcsbChartInterface {
     chartType: ChartType;
     labelList?: string[];
@@ -29,8 +29,8 @@ export interface RcsbChartInterface {
 
 export class FacetTools {
 
-    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<BucketFacet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
-        const out: Array<RcsbChartInterface> = recursiveOut ?? new Array<RcsbChartInterface>();
+    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: BucketFacet[], labelList?:string[], recursiveOut?: RcsbChartInterface[]): RcsbChartInterface[]{
+        const out: RcsbChartInterface[] = recursiveOut ?? new Array<RcsbChartInterface>();
         searchResultFacets.forEach(f=> {
             const facet:BucketFacet = FacetTools.getFacetFromName(facetMembers,f.name).transformSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.name).transformSearchResultFacets(f) : f;
             if(facet.buckets.filter(g=>g.drilldown).length > 0){
@@ -59,8 +59,8 @@ export class FacetTools {
         return out;
     }
 
-    public static subtractDrilldowns(partial: Array<RcsbChartInterface>, full: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
-        const diff: Array<RcsbChartInterface> = cloneDeep<Array<RcsbChartInterface>>(full);
+    public static subtractDrilldowns(partial: RcsbChartInterface[], full: RcsbChartInterface[]): RcsbChartInterface[]{
+        const diff: RcsbChartInterface[] = cloneDeep<RcsbChartInterface[]>(full);
         const dataMap: Map<string,Map<string|number,ChartObjectInterface>> = new Map<string, Map<string, ChartObjectInterface>>();
         diff.forEach(fullChart=>{
             dataMap.set( fullChart.attributeName, new Map<string, ChartObjectInterface>() );
@@ -93,7 +93,7 @@ export class FacetTools {
         }
     }
 
-    private static includeMissingFacets(partial: Array<RcsbChartInterface>,full: Array<RcsbChartInterface>): void {
+    private static includeMissingFacets(partial: RcsbChartInterface[],full: RcsbChartInterface[]): void {
         const partialFacetNameSet: Set<string> = new Set<string>(partial.map(f=>f.attributeName));
         const fullFacetNameSet: Map<string, RcsbChartInterface> = new Map<string,RcsbChartInterface>(full.map(f=>[f.attributeName,f]));
         fullFacetNameSet.forEach((v,k)=>{
@@ -112,7 +112,7 @@ export class FacetTools {
         const facet: FacetMemberInterface = facetMembers.find((facet)=>(facet.attributeName === name));
         if(!facet)
             return;
-        const filters: Array<FilterQueryTerminalNode> = new Array<FilterQueryTerminalNode>();
+        const filters: FilterQueryTerminalNode[] = new Array<FilterQueryTerminalNode>();
         if( (facet.facet as FilterFacet).filter ){
             filters.push((facet.facet as FilterFacet).filter as FilterQueryTerminalNode);
         }

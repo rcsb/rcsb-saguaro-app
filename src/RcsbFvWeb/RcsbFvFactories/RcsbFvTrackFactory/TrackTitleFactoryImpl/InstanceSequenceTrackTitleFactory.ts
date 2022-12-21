@@ -1,8 +1,8 @@
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
-import {AlignmentRequestContextType} from "../TrackFactoryImpl/AlignmentTrackFactory";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
 import {SequenceTrackTitleFactory} from "./SequenceTrackTitleFactory";
+import {AlignmentRequestContextType} from "../TrackFactoryInterface";
 
 export class InstanceSequenceTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType]> {
 

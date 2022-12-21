@@ -1,5 +1,5 @@
 import {DistributionChartFactoryInterface, ResidueDistributionInterface} from "../ResidueDistributionFactoryInterface";
-import {RcsbChartInterface} from "../../../../../RcsbSeacrh/FacetTools";
+import type {RcsbChartInterface} from "../../../../../RcsbSearch/FacetTools";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 import {Operator} from "../../../../../RcsbUtils/Helpers/Operator";
 import {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";

@@ -6,7 +6,7 @@ export class FeatureTools {
 
     private static readonly rcsbLigand: RegExp = new RegExp(/^(ligand)(\s)(\w{1,3})$/);
 
-    static mergeBlocks(blocks: Array<RcsbFvTrackDataElementInterface>){
+    static mergeBlocks(blocks: RcsbFvTrackDataElementInterface[]){
         let merged = false;
         do{
             merged = false;

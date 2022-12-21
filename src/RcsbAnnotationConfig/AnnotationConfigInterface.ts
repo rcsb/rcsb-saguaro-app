@@ -8,16 +8,16 @@ export interface AnnotationConfigInterface {
         rcsb_link: string;
         csm: string;
     };
-    merge?: Array<{
-        merged_types: Array<string>,
+    merge?: {
+        merged_types: string[],
         type: string;
         title: string;
         display: RcsbFvDisplayTypes;
-    }>;
-    external_data_order?: Array<string>;
-    instance_order?: Array<string>;
-    entity_order?: Array<string>;
-    config: Array<RcsbAnnotationConfigInterface>
+    }[];
+    external_data_order?: string[];
+    instance_order?: string[];
+    entity_order?: string[];
+    config: RcsbAnnotationConfigInterface[]
 }
 
 export interface RcsbAnnotationConfigInterface {

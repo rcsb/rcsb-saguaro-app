@@ -20,9 +20,9 @@ import {
     MultipleEntryPropertyCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Operator} from "../RcsbUtils/Helpers/Operator";
-import {SearchQueryType, searchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
-import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
-import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {searchRequestClient} from "../RcsbSearch/SearchRequestClient";
+import type {FacetType} from "../RcsbSearch/FacetStore/FacetMemberInterface";
+import type {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
 import {TagDelimiter} from "../RcsbUtils/Helpers/TagDelimiter";
 import {
@@ -43,6 +43,7 @@ import {rcsbRequestClient} from "./RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import { RequestInit as GraphqlRequestInit} from "graphql-request/src/types.dom";
+import type {SearchQueryType} from "../RcsbSearch/SearchQueryTools";
 
 class RcsbRequestContextManager {
 
@@ -67,7 +68,7 @@ class RcsbRequestContextManager {
 
     public readonly modelKey: string = EntryAssembliesCollector.modelKey;
 
-    public async getEntityProperties(entityIds:string|Array<string>): Promise<Array<PolymerEntityInstanceInterface>>{
+    public async getEntityProperties(entityIds:string|string[]): Promise<PolymerEntityInstanceInterface[]>{
         return RRT.getMultipleObjectProperties<"entity_ids",PolymerEntityInstanceInterface>(
             entityIds,
             this.entityPropertyMap,
@@ -77,7 +78,7 @@ class RcsbRequestContextManager {
         )
     }
 
-    public async getEntryProperties(entryIds:string|Array<string>): Promise<Array<EntryPropertyIntreface>> {
+    public async getEntryProperties(entryIds:string|string[]): Promise<EntryPropertyIntreface[]> {
         return RRT.getMultipleObjectProperties<"entry_ids",EntryPropertyIntreface>(
             entryIds,
             this.entryPropertyMap,
@@ -102,14 +103,14 @@ class RcsbRequestContextManager {
             this.entryToAssemblyMap,
             async ()=>{
                 RRT.mapPending<PolymerEntityInstanceTranslate>(entryId, this.polymerEntityToInstanceMap);
-                const result: Map<string, Array<PolymerEntityInstanceInterface>> = await this.assemblyCollector.collect({entry_id: entryId});
+                const result: Map<string, PolymerEntityInstanceInterface[]> = await this.assemblyCollector.collect({entry_id: entryId});
                 RRT.mapSet<PolymerEntityInstanceTranslate>(this.polymerEntityToInstanceMap.get(entryId), new PolymerEntityInstanceTranslate(result.get(this.modelKey)));
                 return new EntryAssemblyTranslate(result);
             }
         );
     }
 
-    public async getEntityToChromosome( entityIds: Array<string> ): Promise<PolymerEntityChromosomeTranslate> {
+    public async getEntityToChromosome( entityIds: string[] ): Promise<PolymerEntityChromosomeTranslate> {
         const chrMap = await this.entityChrCollector.collect(entityIds);
         return new PolymerEntityChromosomeTranslate(chrMap);
     }
@@ -120,8 +121,8 @@ class RcsbRequestContextManager {
             groupId,
             this.groupPropertyMap,
             async ()=>{
-                const result:Array<PolymerEntityInstanceInterface> = await this.groupMemberCollector.collect(groupQuery);
-                const entriesProperties: Array<EntryPropertyIntreface> = await this.multipleEntryPropertyCollector.collect({entry_ids:Operator.uniqueValues(result.map(r=>r.entryId))})
+                const result:PolymerEntityInstanceInterface[] = await this.groupMemberCollector.collect(groupQuery);
+                const entriesProperties: EntryPropertyIntreface[] = await this.multipleEntryPropertyCollector.collect({entry_ids:Operator.uniqueValues(result.map(r=>r.entryId))})
                 return new GroupPropertiesProvider({entryProperties: entriesProperties});
             }
         );
@@ -132,7 +133,7 @@ class RcsbRequestContextManager {
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            async ()=>(await searchRequestProperty.request(searchQuery))
+            async ()=>(await searchRequestClient.request(searchQuery))
         );
     }
 
@@ -141,7 +142,7 @@ class RcsbRequestContextManager {
         return RRT.getSingleObjectData<QueryResult | null>(
             key,
             this.searchRequestMap,
-            async ()=>(await searchRequestProperty.requestFacets(query, facets, returnType, resultsContentType))
+            async ()=>(await searchRequestClient.requestFacets(query, facets, returnType, resultsContentType))
         );
     }
 
@@ -158,7 +159,7 @@ class RcsbRequestContextManager {
         }else{
             RRT.mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
             const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
-            const result: Array<InterfaceInstanceInterface> = await this.interfaceCollector.collect({interface_ids: assemblyInterfaces.getInterfaces(assemblyId)});
+            const result: InterfaceInstanceInterface[] = await this.interfaceCollector.collect({interface_ids: assemblyInterfaces.getInterfaces(assemblyId)});
             const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
             if (assemblyInterfaces.getInterfaces(assemblyId).length == 0){
                 this.interfaceToInstanceMap.set(key,{

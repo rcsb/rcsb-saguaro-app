@@ -19,7 +19,7 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const instanceId: string = buildConfig.instanceId;
-        const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
+        const source: Source[] = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
 
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: instanceId,

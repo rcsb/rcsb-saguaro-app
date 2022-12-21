@@ -9,12 +9,11 @@ import {
     PolymerEntityInstanceTranslate
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
-import {TrackFactoryInterface} from "../TrackFactoryInterface";
+import {AlignmentRequestContextType, TrackFactoryInterface} from "../TrackFactoryInterface";
 import {
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
-import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 import {range} from "lodash";
 
@@ -34,7 +33,7 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         this.alignmentTrackFactory = new PlainAlignmentTrackFactory(entityInstanceTranslator);
     }
 
-    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
+    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>RcsbFvTrackDataElementInterface[]): Promise<RcsbFvRowConfigInterface> {
         return this.alignmentTrackFactory.getTrack(
             alignmentRequestContext,
             targetAlignment,
@@ -47,12 +46,12 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
 
     }
 
-    public async prepareFeatures(positionalScores: Array<AnnotationFeatures>): Promise<void>{
+    public async prepareFeatures(positionalScores: AnnotationFeatures[]): Promise<void>{
         await this.collectFeatureEntryProperties(positionalScores);
         this.prepareFeaturesAlignmentMap(positionalScores);
     }
 
-    private async collectFeatureEntryProperties(unObservedRegions: Array<AnnotationFeatures>): Promise<void>{
+    private async collectFeatureEntryProperties(unObservedRegions: AnnotationFeatures[]): Promise<void>{
         const entryIds: string[] = Operator.uniqueValues<string>(unObservedRegions.map(uor=>uor.target_id.split(TagDelimiter.instance)[0]));
         //TODO define a Translator class for multiple entry entry data
         const entryProperties: EntryPropertyIntreface[] = (await Promise.all<EntryPropertyIntreface[]>(Operator.arrayChunk(entryIds, 100).map(ids => rcsbRequestCtxManager.getEntryProperties(ids)))).flat();
@@ -65,7 +64,7 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         });
     }
 
-    private prepareFeaturesAlignmentMap(positionalScores: Array<AnnotationFeatures>){
+    private prepareFeaturesAlignmentMap(positionalScores: AnnotationFeatures[]){
         const instancePositionalScores: Map<string,Map<number,number>> = new Map<string, Map<number,number>>();
         positionalScores.forEach(ps=> {
             const instanceId: string = ps.target_id;
@@ -96,10 +95,10 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         this.positionalScores = entityPositionalScore;
     }
 
-    private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
+    private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): RcsbFvTrackDataElementInterface[]{
         if(!this.positionalScores.has(alignmentContext.targetId) || this.positionalScores.get(alignmentContext.targetId).size == 0)
             return this.alignmentTrackFactory.alignedRegionToTrackElementList(region, alignmentContext);
-        const outRegions: Array<RcsbFvTrackDataElementInterface> = [];
+        const outRegions: RcsbFvTrackDataElementInterface[] = [];
         const entityPositionalScores: Map<number,number> =  this.positionalScores.get(alignmentContext.targetId);
         if(entityPositionalScores.size>0) {
             range(region.query_begin,region.query_end+1).forEach((p,n)=>outRegions.push(this.alignmentTrackFactory.addAuthorResIds({

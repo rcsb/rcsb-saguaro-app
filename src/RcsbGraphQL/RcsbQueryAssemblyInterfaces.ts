@@ -7,15 +7,15 @@ import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequ
 import query from "./Queries/Yosemite/QueryAssemblyInterfaces.graphql";
 
 interface AssemblyInterfacesResultInterface {
-    assemblies: Array<CoreAssembly>;
+    assemblies: CoreAssembly[];
 }
 
-export class RcsbQueryAssemblyInterfaces implements RcsbCoreQueryInterface<QueryAssembliesArgs,Array<CoreAssembly>>{
+export class RcsbQueryAssemblyInterfaces implements RcsbCoreQueryInterface<QueryAssembliesArgs,CoreAssembly[]>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryAssembliesArgs): Promise<Array<CoreAssembly>> {
+    public async request(requestConfig: QueryAssembliesArgs): Promise<CoreAssembly[]> {
         try {
             const response:AssemblyInterfacesResultInterface = await this.getClient().request<QueryAssembliesArgs,AssemblyInterfacesResultInterface>(
                 requestConfig,

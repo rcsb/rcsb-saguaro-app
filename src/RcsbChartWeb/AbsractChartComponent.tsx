@@ -38,7 +38,7 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
     }
 
     private unsubscribe(): void {
-        this.subscription?.unsubscribe?.();
+        this.subscription.unsubscribe();
     }
 
     private subscribe(): void{
@@ -60,7 +60,7 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
     }
 
     private asyncUpdate(sqData: ObservedDataInterface,x?:number): void {
-        this.asyncSubscription?.unsubscribe();
+        this.asyncSubscription.unsubscribe();
         this.asyncSubscription = asyncScheduler.schedule(()=>{
             this.setState({
                 data:sqData.chartMap.get(this.props.attributeName)

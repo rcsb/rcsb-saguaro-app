@@ -6,3 +6,5 @@ build
 # intellij
 .idea
 *.iml
+/.dependency-cruiser.js
+/dependency-test/

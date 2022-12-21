@@ -1,29 +1,22 @@
 import {
     AnnotationFeatures,
-    Feature,
+    Feature, FeaturePosition,
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {FeaturePositionGaps} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
-import {
-    TrackManagerInterface
-} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 
-export type IncreaseAnnotationValueType = (feature:{type:string; targetId:string; positionKey:string; d:Feature; p:FeaturePositionGaps;})=>number;
-export interface AnnotationProcessingInterface {
-    getAnnotationValue?:IncreaseAnnotationValueType;
-    computeAnnotationValue?:(annotationTracks: Map<string, TrackManagerInterface>)=>void;
-    addTrackElementCallback?:IncreaseAnnotationValueType;
-}
+import {
+    AnnotationProcessingInterface
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/AnnotationBlockManager/TrackManagerInterface";
 
 export interface CommonAnnotationInterface {
     rcsbContext?:Partial<PolymerEntityInstanceInterface>;
     annotationProcessing?: AnnotationProcessingInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
-    annotationGenerator?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
-    annotationFilter?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
+    annotationGenerator?(annotations: AnnotationFeatures[]): Promise<AnnotationFeatures[]>;
+    annotationFilter?(annotations: AnnotationFeatures[]): Promise<AnnotationFeatures[]>;
     titleSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
     trackTitle?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
     typeSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
@@ -38,7 +31,7 @@ export interface CollectGroupAnnotationsInterface extends QueryGroup_Annotations
 export type AnnotationRequestContext = Partial<CollectAnnotationsInterface & CollectGroupAnnotationsInterface>;
 
 export interface AnnotationCollectorInterface {
-    collect(requestConfig: CollectAnnotationsInterface | CollectGroupAnnotationsInterface): Promise<Array<AnnotationFeatures>>;
-    getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>;
-    getFeatures(): Promise<Array<Feature>>;
+    collect(requestConfig: CollectAnnotationsInterface | CollectGroupAnnotationsInterface): Promise<AnnotationFeatures[]>;
+    getAnnotationFeatures(): Promise<AnnotationFeatures[]>;
+    getFeatures(): Promise<Feature[]>;
 }

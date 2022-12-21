@@ -5,8 +5,7 @@ import {
     AlignmentContextInterface,
     PolymerEntityInstanceTranslate
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {TrackFactoryInterface} from "../TrackFactoryInterface";
-import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
+import {AlignmentRequestContextType, TrackFactoryInterface} from "../TrackFactoryInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {SequenceTrackTitleFactory} from "../TrackTitleFactoryImpl/SequenceTrackTitleFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
@@ -50,8 +49,8 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
         };
     }
 
-    public buildSequenceData(config: BuildSequenceDataInterface, source:"from"|"to"):Array<RcsbFvTrackDataElementInterface> {
-        const sequenceData: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
+    public buildSequenceData(config: BuildSequenceDataInterface, source:"from"|"to"):RcsbFvTrackDataElementInterface[] {
+        const sequenceData: RcsbFvTrackDataElementInterface[] = new Array<RcsbFvTrackDataElementInterface>();
         const id: string = source === "from" ? config.queryId : config.targetId;
         config.sequence.split("").forEach((s, i) => {
             const o: RcsbFvTrackDataElementInterface = {
@@ -75,7 +74,7 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
 
     //TODO this method can be defined in a helper
     public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
-        let o:RcsbFvTrackDataElementInterface = e;
+        const o:RcsbFvTrackDataElementInterface = e;
         if(this.entityInstanceTranslator!=null){
             this.entityInstanceTranslator.addAuthorResIds(o,alignmentContext);
         }

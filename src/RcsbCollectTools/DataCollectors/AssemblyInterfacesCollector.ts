@@ -5,15 +5,15 @@ import {
 
 export interface AssemblyInterfacesInterface {
     rcsbId: string;
-    interfaceIds: Array<string>;
+    interfaceIds: string[];
 }
 
 export class AssemblyInterfacesCollector {
 
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
-    public async collect(requestConfig: QueryAssembliesArgs): Promise<Array<AssemblyInterfacesInterface>> {
+    public async collect(requestConfig: QueryAssembliesArgs): Promise<AssemblyInterfacesInterface[]> {
         try {
-            const result: Array<CoreAssembly> = await this.rcsbFvQuery.requestAssemblyInterfaces(requestConfig);
+            const result: CoreAssembly[] = await this.rcsbFvQuery.requestAssemblyInterfaces(requestConfig);
             return result.map(r=>parseAssemblyInterfaces(r));
         }catch (error) {
             console.log(error);

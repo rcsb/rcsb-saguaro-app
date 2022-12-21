@@ -2,10 +2,9 @@ import {
     AlignmentResponse,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {AlignmentRequestContextType} from "../RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {BlockFactoryInterface} from "./BlockFactoryInterface";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface";
+import {AlignmentRequestContextType, TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface";
 
 export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment]> {
 
@@ -29,7 +28,7 @@ export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRe
                 return;
            return {
                ... await this.trackFactory.getTrack(alignmentRequestContext, alignment),
-               ... await this.trackConfigModifier?.(alignmentRequestContext,alignment)
+               ... await this.trackConfigModifier(alignmentRequestContext,alignment)
            };
         }))).filter(x=>x!=undefined);
     }

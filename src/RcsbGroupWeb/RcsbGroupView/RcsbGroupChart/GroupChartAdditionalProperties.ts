@@ -1,13 +1,11 @@
-import {ChartMapType} from "./GroupChartLayout";
+import {RcsbChartInterface} from "../../../RcsbSearch/FacetTools";
 
 
 export interface GroupChartAdditionalProperties {
-    componentMountCallback(chartMap: ChartMapType, layout:string[]):void;
+    componentMountCallback(chartMap: Map<string,RcsbChartInterface[]>, layout:string[]):void;
     layoutConfig: LayoutConfigInterface;
 }
 
-export interface LayoutConfigInterface {
-     [layoutKey:string]:{
+export type LayoutConfigInterface = Record<string, {
             title:string|undefined;
-     }
-}
+     }>;

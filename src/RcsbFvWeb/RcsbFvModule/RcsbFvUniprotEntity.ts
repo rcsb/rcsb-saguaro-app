@@ -21,7 +21,7 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
         const upAcc: string = buildConfig.upAcc;
         const entityId: string = buildConfig.entityId;
         const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig
-        const filters:Array<FilterInput> = [{
+        const filters:FilterInput[] = [{
             field:FieldName.TargetId,
             operation:OperationType.Equals,
             source: Source.PdbEntity,
@@ -41,8 +41,8 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
         const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
-            sources:additionalConfig?.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],
-            filters:additionalConfig?.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters,
+            sources:additionalConfig.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],
+            filters:additionalConfig.filters instanceof Array ? additionalConfig.filters.concat(filters) : filters,
             titleSuffix: this.titleSuffix.bind(this),
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder

@@ -7,15 +7,15 @@ import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequ
 import query from "./Queries/Yosemite/QueryInterfaceInstances.graphql";
 
 interface InterfaceInstancesResultInterface {
-    interfaces: Array<CoreInterface>;
+    interfaces: CoreInterface[];
 }
 
-export class RcsbQueryInterfaceInstances implements RcsbCoreQueryInterface<QueryInterfacesArgs,Array<CoreInterface>>{
+export class RcsbQueryInterfaceInstances implements RcsbCoreQueryInterface<QueryInterfacesArgs,CoreInterface[]>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryInterfacesArgs): Promise<Array<CoreInterface>> {
+    public async request(requestConfig: QueryInterfacesArgs): Promise<CoreInterface[]> {
         try {
             const response:InterfaceInstancesResultInterface = await this.getClient().request<QueryInterfacesArgs,InterfaceInstancesResultInterface>(
                 requestConfig,

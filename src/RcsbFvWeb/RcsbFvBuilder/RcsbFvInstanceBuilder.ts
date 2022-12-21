@@ -12,9 +12,7 @@ import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
-export interface InstanceSequenceOnchangeInterface extends PolymerEntityInstanceInterface {
-
-}
+export type InstanceSequenceOnchangeInterface = PolymerEntityInstanceInterface
 
 type InstanceModuleType = "interface"|"instance";
 export interface InstanceSequenceConfig {
@@ -31,7 +29,7 @@ export interface InstanceSequenceConfig {
 //TODO Find a better structure for change callbacks
 export class RcsbFvInstanceBuilder {
 
-    static async buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: Array<string>, config: InstanceSequenceConfig={}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    static async buildMultipleInstanceSequenceFv(elementFvId:string, elementEntrySelectId:string, elementInstanceSelectId:string, entryIdList: string[], config: InstanceSequenceConfig={}, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementEntrySelectId, entryIdList.map(entryId=>{
             return {
                 label:entryId,
@@ -47,7 +45,7 @@ export class RcsbFvInstanceBuilder {
 
     static async buildInstanceSequenceFv(elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         const entityInstanceTranslator: PolymerEntityInstanceTranslate = await rcsbRequestCtxManager.getEntityToInstance(entryId);
-        const result: Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData();
+        const result: PolymerEntityInstanceInterface[] = entityInstanceTranslator.getData();
         if(result.length == 0){
             RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
             return void 0;
@@ -56,9 +54,9 @@ export class RcsbFvInstanceBuilder {
         }
     }
 
-    static async buildSelectorInstanceFv(instanceList: Array<PolymerEntityInstanceInterface>, elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
-        const filteredInstanceList: Array<PolymerEntityInstanceInterface> = instanceList.filter(i=>(config.filterInstances == null || config.filterInstances.has(i.asymId)));
-        const groupedInstances: Map<string, Array<SelectOptionInterface>> = new Map<string, Array<SelectOptionInterface>>();
+    static async buildSelectorInstanceFv(instanceList: PolymerEntityInstanceInterface[], elementFvId:string, elementSelectId:string, entryId: string, config: InstanceSequenceConfig, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
+        const filteredInstanceList: PolymerEntityInstanceInterface[] = instanceList.filter(i=>(config.filterInstances == null || config.filterInstances.has(i.asymId)));
+        const groupedInstances: Map<string, SelectOptionInterface[]> = new Map<string, SelectOptionInterface[]>();
         filteredInstanceList.forEach((instance)=>{
             if(!groupedInstances.has(instance.entityId))
                 groupedInstances.set(instance.entityId, new Array<SelectOptionInterface>());
@@ -90,7 +88,7 @@ export class RcsbFvInstanceBuilder {
                 }
             })
         });
-        let index: number = 0;
+        let index = 0;
         if (config.defaultValue != null) {
             const n: number = filteredInstanceList.findIndex(a => {
                 return a.authId === config.defaultValue

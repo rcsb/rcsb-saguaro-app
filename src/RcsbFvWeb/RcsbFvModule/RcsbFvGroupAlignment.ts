@@ -64,7 +64,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectAlignmentFeatures(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
+async function collectAlignmentFeatures(groupId: string, targetList: string[]): Promise<AnnotationFeatures[]> {
     return await rcsbClient.requestRcsbPdbGroupAnnotations({
         histogram: false,
         groupId: groupId,

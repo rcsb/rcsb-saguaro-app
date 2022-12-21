@@ -6,9 +6,10 @@ import {
     RcsbFvModuleInterface,
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
-import {SelectButtonConfigInterface, ComponentsManager} from "../RcsbFvComponents/ComponentsManager";
+import {ComponentsManager} from "../RcsbFvComponents/ComponentsManager";
 import {GroupedOptionsInterface, SelectOptionInterface} from "../RcsbFvComponents/SelectButton";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {SelectButtonConfigInterface} from "../RcsbFvComponents/SelectButtonManager";
 
 export interface CreateFvInterface {
     elementId: string;
@@ -82,19 +83,19 @@ export class RcsbFvCoreBuilder {
         }
     }
 
-    static buildSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
+    static buildSelectButton(elementFvId: string, selectButtonId: string, options: SelectOptionInterface[]|GroupedOptionsInterface[], config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
         ComponentsManager.buildSelectButton(selectButtonId, options, config);
     }
 
     static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string){
-        if(rcsbFvCtxManager.getButtonList(elementFvId)?.has(selectButtonId)){
+        if(rcsbFvCtxManager.getButtonList(elementFvId).has(selectButtonId)){
             rcsbFvCtxManager.getButtonList(elementFvId).delete(selectButtonId);
         }
         ComponentsManager.clearAdditionalSelectButton(selectButtonId);
     }
 
-    static addSelectButton(elementFvId: string, selectButtonId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
+    static addSelectButton(elementFvId: string, selectButtonId: string, options: SelectOptionInterface[], config?:SelectButtonConfigInterface){
         rcsbFvCtxManager.setButton(elementFvId, selectButtonId);
         ComponentsManager.addSelectButton(selectButtonId, options, config);
     }

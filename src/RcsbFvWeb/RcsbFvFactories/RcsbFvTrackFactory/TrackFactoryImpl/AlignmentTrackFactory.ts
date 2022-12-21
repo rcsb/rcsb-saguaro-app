@@ -14,15 +14,11 @@ import {
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureTools";
 import {SequenceTrackFactory} from "./SequenceTrackFactory";
-import {TrackFactoryInterface} from "../TrackFactoryInterface";
-import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {AlignmentRequestContextType, TrackFactoryInterface} from "../TrackFactoryInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
 
-export type AlignmentRequestContextType = AlignmentCollectConfig & {
-    querySequence?:string;
-};
 
 export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]> {
 
@@ -36,7 +32,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         this.trackTitleFactory = trackTitleFactory ?? new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
-    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
+    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>RcsbFvTrackDataElementInterface[]): Promise<RcsbFvRowConfigInterface> {
         const {alignedBlocks, mismatchData, sequenceData} = this.getAlignmentTrackConfiguration(alignmentRequestContext, targetAlignment, alignedRegionToTrackElementList ?? this.alignedRegionToTrackElementList.bind(this));
         const sequenceDisplay: RcsbFvDisplayConfigInterface = {
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -70,14 +66,14 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
         alignmentQueryContext: AlignmentRequestContextType,
         targetAlignment: TargetAlignment,
-        alignedRegionToTrackElementList: (region:AlignedRegion,alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
+        alignedRegionToTrackElementList: (region:AlignedRegion,alignmentContext: AlignmentContextInterface)=>RcsbFvTrackDataElementInterface[]
 
-    ): {alignedBlocks: Array<RcsbFvTrackDataElementInterface>; mismatchData: Array<RcsbFvTrackDataElementInterface>; sequenceData: Array<RcsbFvTrackDataElementInterface>;} {
+    ): {alignedBlocks: RcsbFvTrackDataElementInterface[]; mismatchData: RcsbFvTrackDataElementInterface[]; sequenceData: RcsbFvTrackDataElementInterface[];} {
 
-        const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-        const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
+        const alignedBlocks: RcsbFvTrackDataElementInterface[] = [];
+        const mismatchData: RcsbFvTrackDataElementInterface[] = [];
         const targetSequence = targetAlignment.target_sequence;
-        const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
+        const sequenceData: RcsbFvTrackDataElementInterface[] = [];
         const alignmentContext: AlignmentContextInterface = {
             queryId: alignmentQueryContext.queryId,
             targetId: targetAlignment.target_id,
@@ -119,7 +115,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         return {alignedBlocks, mismatchData, sequenceData};
     }
 
-    public alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface):  Array<RcsbFvTrackDataElementInterface>{
+    public alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface):  RcsbFvTrackDataElementInterface[]{
         let openBegin = false;
         if (region.target_begin != 1)
             openBegin = true;
@@ -150,8 +146,8 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
 }
 
-function findMismatch(seqA: string, seqB: string): Array<number> {
-    const out: Array<number> = [];
+function findMismatch(seqA: string, seqB: string): number[] {
+    const out: number[] = [];
     if (seqA.length === seqB.length) {
         for (let i = 0; i < seqA.length; i++) {
             if (seqA.charAt(i) !== seqB.charAt(i)) {

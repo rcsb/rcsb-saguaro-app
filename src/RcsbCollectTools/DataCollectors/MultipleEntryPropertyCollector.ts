@@ -7,17 +7,17 @@ export interface EntryPropertyIntreface {
     experimentalMethod: string;
     resolution: number;
     name: string;
-    taxNames: Array<string>;
+    taxNames: string[];
     entryMolecularWeight: number;
-    description:Array<string>;
-    entityToInstance: Map<string,Array<string>>;
+    description:string[];
+    entityToInstance: Map<string,string[]>;
 }
 
 export class MultipleEntryPropertyCollector {
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect(requestConfig: QueryEntriesArgs): Promise<Array<EntryPropertyIntreface>> {
-        const result: Array<CoreEntry> = await this.rcsbFvQuery.requestMultipleEntriesProperties(requestConfig);
+    public async collect(requestConfig: QueryEntriesArgs): Promise<EntryPropertyIntreface[]> {
+        const result: CoreEntry[] = await this.rcsbFvQuery.requestMultipleEntriesProperties(requestConfig);
         return result.map(r=>MultipleEntryPropertyCollector.getEntryProperties(r));
     }
 

@@ -2,10 +2,10 @@ import {AnnotationFeatures, Feature, Source, Type} from "@rcsb/rcsb-api-tools/bu
 import {cloneDeep} from "lodash";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 
-export function buriedResidues(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
-    const accThr: number = 6;
+export function buriedResidues(annotations: AnnotationFeatures[]): AnnotationFeatures[] {
+    const accThr = 6;
     let buriedResidues:AnnotationFeatures;
-    let nBuried: number = 0;
+    let nBuried = 0;
     mainloop:
         for(const ann of annotations){
             if(ann.source === Source.PdbInstance){
@@ -33,7 +33,7 @@ export function buriedResidues(annotations: Array<AnnotationFeatures>): Array<An
     return nBuried > 0 ? [buriedResidues] : [];
 }
 
-export function buriedResiduesFilter(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
+export function buriedResiduesFilter(annotations: AnnotationFeatures[]): AnnotationFeatures[] {
     return cloneDeep(annotations).map(ann=>{
         ann.features = ann.features.filter(f=>(f.type!==Type.Asa));
         return ann;

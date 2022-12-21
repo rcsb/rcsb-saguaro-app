@@ -7,7 +7,7 @@ export class GroupMemberCollector {
 
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect(requestConfig: QueryPolymer_Entity_GroupArgs): Promise<Array<PolymerEntityInstanceInterface>> {
+    public async collect(requestConfig: QueryPolymer_Entity_GroupArgs): Promise<PolymerEntityInstanceInterface[]> {
         try {
             const result: GroupPolymerEntity = await this.rcsbFvQuery.requestGroupInfo(requestConfig);
             if(result.rcsb_group_info.group_members_granularity === "polymer_entity"){

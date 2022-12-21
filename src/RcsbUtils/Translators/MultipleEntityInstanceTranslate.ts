@@ -7,8 +7,8 @@ export class MultipleEntityInstanceTranslate {
 
     private readonly entityInstanceTranslateMap: Map<string, PolymerEntityInstanceTranslate> = new Map<string, PolymerEntityInstanceTranslate>();
 
-    public add(data: Array<PolymerEntityInstanceInterface>) {
-        const entryEntityInstanceMapList: Map<string, Array<PolymerEntityInstanceInterface>> = new Map<string, Array<PolymerEntityInstanceInterface>>();
+    public add(data: PolymerEntityInstanceInterface[]) {
+        const entryEntityInstanceMapList: Map<string, PolymerEntityInstanceInterface[]> = new Map<string, PolymerEntityInstanceInterface[]>();
         data.forEach(d=>{
             const entityId: string = d.entryId+TagDelimiter.entity+d.entityId;
             if(!entryEntityInstanceMapList.has(entityId))
@@ -24,17 +24,17 @@ export class MultipleEntityInstanceTranslate {
         return this.entityInstanceTranslateMap.get(entityId);
     }
 
-    public getEntities(): Array<string>{
+    public getEntities(): string[]{
         return Array.from<string>(this.entityInstanceTranslateMap.keys());
     }
 
-    public getEntries(): Array<string>{
+    public getEntries(): string[]{
         return Operator.uniqueValues<string>(
             Array.from<string>(this.entityInstanceTranslateMap.keys()).map(entityId=>TagDelimiter.parseEntity(entityId).entryId)
         );
     }
 
-    public getInstances(): Array<string>{
+    public getInstances(): string[]{
         return Operator.uniqueValues<string>(
             Array.from<PolymerEntityInstanceTranslate>(this.entityInstanceTranslateMap.values()).map(peit=>peit.getData()).flat().map(e => e.asymId)
         );

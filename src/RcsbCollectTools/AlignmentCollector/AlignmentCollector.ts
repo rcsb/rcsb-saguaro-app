@@ -11,34 +11,34 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
 
     private sequenceLength: number;
     private requestStatus: "pending"|"complete" = "complete";
-    private dynamicDisplay: boolean = false;
+    private dynamicDisplay = false;
 
     readonly rcsbFvQuery: RcsbClient = rcsbClient;
-    private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
+    private readonly targetsSubject: Subject<string[]> = new Subject<string[]>();
     private alignmentResponse: AlignmentResponse;
     private readonly alignmentResponseSubject: Subject<AlignmentResponse> = new Subject<AlignmentResponse>();
     private readonly alignmentLengthSubject: Subject<number> = new Subject<number>();
 
     public async collect(
         requestConfig: AlignmentCollectConfig,
-        filter?: Array<string>
+        filter?: string[]
     ): Promise<AlignmentResponse> {
         this.requestStatus = "pending";
         this.alignmentResponse = await this.requestAlignment(requestConfig);
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
-        const targetAlignment: Array<TargetAlignment> = this.alignmentResponse?.target_alignment ?? this.alignmentResponse?.target_alignment_subset?.edges.map(e=>e.node);
+        const targetAlignment: TargetAlignment[] = this.alignmentResponse.target_alignment ?? this.alignmentResponse.target_alignment_subset?.edges.map(e=>e.node);
         this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id));
         this.alignmentResponse = typeof requestConfig.externalTrackBuilder?.filterAlignments === "function" ? await requestConfig.externalTrackBuilder.filterAlignments({alignments: this.alignmentResponse}) : this.alignmentResponse;
         this.complete();
         return this.alignmentResponse;
     }
 
-    public async getTargets():Promise<Array<string>> {
-        return new Promise<Array<string>>((resolve,reject)=>{
+    public async getTargets():Promise<string[]> {
+        return new Promise<string[]>((resolve,reject)=>{
             if(this.requestStatus === "complete"){
                 resolve(this.alignmentResponse.target_alignment.map(ta=>ta.target_id));
             }else{
-                ObservableHelper.oneTimeSubscription<Array<string>>(resolve, this.targetsSubject);
+                ObservableHelper.oneTimeSubscription<string[]>(resolve, this.targetsSubject);
             }
         });
     }

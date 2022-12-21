@@ -10,13 +10,13 @@ import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/
 import {alignmentVariation} from "./AlignmentVariation";
 
 export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
-    const trackName: string = "GLOBAL BINDINGS";
+    const trackName = "GLOBAL BINDINGS";
     const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
-    let max: number = 0;
+    let max = 0;
     const addConservation: ExternalTrackBuilderInterface = alignmentVariation();
 
     return {
-        async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
+        async addTo(tracks: { annotationTracks: RcsbFvRowConfigInterface[], alignmentTracks: RcsbFvRowConfigInterface[]}): Promise<void> {
             if(Array.from(bindingSiteMap.values()).length > 0)
                 tracks.annotationTracks.unshift({
                     trackId: "annotationTrack_GLOBAL_BINDINGS",
@@ -33,23 +33,23 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
             await addConservation.addTo(tracks);
             return void 0;
         },
-        async processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
+        async processAlignmentAndFeatures(data: { annotations: AnnotationFeatures[], alignments: AlignmentResponse }): Promise<void> {
             processFeatures(data.annotations);
             await addConservation.processAlignmentAndFeatures(data);
             return void 0;
         },
-        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = data.annotations;
+        filterFeatures(data:{annotations: AnnotationFeatures[]}): Promise<AnnotationFeatures[]> {
+            const annotations: AnnotationFeatures[] = data.annotations;
             annotations.forEach(ann=>{
                 ann.features = ann.features.filter(f=>f.name.includes("ligand"));
             })
-            return new Promise<Array<AnnotationFeatures>>((resolve => {
+            return new Promise<AnnotationFeatures[]>((resolve => {
                 resolve(annotations);
             }));
         }
     };
 
-    function processFeatures(annotations: Array<AnnotationFeatures>){
+    function processFeatures(annotations: AnnotationFeatures[]){
         // position > ligand name
         const ligandMap: Map<string,Set<string>> = new Map<string, Set<string>>();
         annotations.forEach(ann => {

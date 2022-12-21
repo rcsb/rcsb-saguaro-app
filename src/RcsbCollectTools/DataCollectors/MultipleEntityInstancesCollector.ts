@@ -10,9 +10,9 @@ export class MultipleEntityInstancesCollector implements MultipleDocumentPropert
 
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect(requestConfig: QueryPolymer_EntitiesArgs): Promise<Array<PolymerEntityInstanceInterface>> {
+    public async collect(requestConfig: QueryPolymer_EntitiesArgs): Promise<PolymerEntityInstanceInterface[]> {
         try{
-           const result: Array<CorePolymerEntity> = await this.rcsbFvQuery.requestMultipleEntityInstances(requestConfig);
+           const result: CorePolymerEntity[] = await this.rcsbFvQuery.requestMultipleEntityInstances(requestConfig);
            return MultipleEntityInstancesCollector.getEntityInstances(result);
         }catch (error) {
             console.log(error);
@@ -20,8 +20,8 @@ export class MultipleEntityInstancesCollector implements MultipleDocumentPropert
         }
     }
 
-    private static getEntityInstances(polymer_entities: Array<CorePolymerEntity> ): Array<PolymerEntityInstanceInterface> {
-        const out: Array<PolymerEntityInstanceInterface> = new Array<PolymerEntityInstanceInterface>();
+    private static getEntityInstances(polymer_entities: CorePolymerEntity[] ): PolymerEntityInstanceInterface[] {
+        const out: PolymerEntityInstanceInterface[] = new Array<PolymerEntityInstanceInterface>();
         if(polymer_entities instanceof Array){
             polymer_entities.forEach(entity=>{
                 if(entity.polymer_entity_instances instanceof Array){

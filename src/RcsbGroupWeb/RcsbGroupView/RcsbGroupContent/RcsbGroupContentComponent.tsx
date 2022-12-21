@@ -9,7 +9,7 @@ import {
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
 import {
     SearchQueryTools as SQT
-} from "../../../RcsbSeacrh/SearchQueryTools";
+} from "../../../RcsbSearch/SearchQueryTools";
 import {groupProvenanceToReturnType} from "../../../RcsbUtils/Groups/GroupProvenanceToAggregationType";
 import {
     RelevanceScoreRankingOption,
