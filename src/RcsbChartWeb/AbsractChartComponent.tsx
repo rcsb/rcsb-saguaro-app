@@ -9,15 +9,15 @@ import {SearchQueryContextManager} from "../RcsbGroupWeb/RcsbGroupView/RcsbGroup
 
 interface ObservedDataInterface {
     attributeName: string;
-    chartMap:Map<string,ChartObjectInterface[][]>;
+    chartMap?:Map<string,ChartObjectInterface[][]>;
 }
 
 interface AbstractChartInterface extends Omit<ChartInterface, "chartComponentImplementation" | "dataProvider"> {
     attributeName:string;
 }
 
-interface AbstractChartState extends ChartState {
-    data: ChartObjectInterface[][];
+interface AbstractChartState extends Partial<ChartState> {
+    data: ChartObjectInterface[][] | undefined;
 }
 
 export abstract class AbstractChartComponent extends React.Component <AbstractChartInterface, AbstractChartState> {
@@ -63,7 +63,7 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
         this.asyncSubscription.unsubscribe();
         this.asyncSubscription = asyncScheduler.schedule(()=>{
             this.setState({
-                data:sqData.chartMap.get(this.props.attributeName)
+                data:sqData.chartMap?.get(this.props.attributeName)
             });
         }, x );
     }

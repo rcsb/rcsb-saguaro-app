@@ -5,7 +5,7 @@ import {
     RcsbTrackConfigInterface
 } from "./AnnotationConfigInterface";
 
-const distributionConfig: RcsbDistributionConfigInterface = dcm as any;
+const distributionConfig: RcsbDistributionConfigInterface = dcm as unknown as RcsbDistributionConfigInterface;
 export class RcsbDistributionConfig {
 
     private readonly distributionConfig: RcsbDistributionConfigInterface;
@@ -18,15 +18,15 @@ export class RcsbDistributionConfig {
         this.processConfig();
     }
 
-    getBlockType(trackType: string): string {
+    getBlockType(trackType: string): string | undefined {
         return this.trackToBlockType.get(trackType);
     }
 
-    getBlockConfig(type: string): RcsbTrackBlockConfigInterface {
+    getBlockConfig(type: string): RcsbTrackBlockConfigInterface | undefined  {
         return this.blockConfig.get(type);
     }
 
-    getTrackConfig(type:string): RcsbTrackConfigInterface {
+    getTrackConfig(type:string): RcsbTrackConfigInterface | undefined {
         return this.trackConfig.get(type);
     }
 

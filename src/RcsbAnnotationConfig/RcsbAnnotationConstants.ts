@@ -1,7 +1,7 @@
 import * as acm from "./RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "./AnnotationConfigInterface";
 
-const annotationConfigMap: AnnotationConfigInterface = <any>acm;
+const annotationConfigMap: AnnotationConfigInterface = acm as AnnotationConfigInterface;
 export const RcsbAnnotationConstants = {
     provenanceColorCode:{
         rcsbLink: (annotationConfigMap).provenance_color_code.rcsb_link,

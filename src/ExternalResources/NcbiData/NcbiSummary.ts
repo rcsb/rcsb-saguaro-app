@@ -20,88 +20,99 @@ export interface TaxonomyMetadataInterface {
     uid:number;
 }
 
-interface NcbiSummaryInterface {
-    result:{
+type NcbiSummaryInterface = Record<string,ChromosomeMetadataInterface | TaxonomyMetadataInterface >;
+
+interface NcbiSummaryResultInterface {
+    result: NcbiSummaryInterface & {
         uids: string[];
     }
 }
 
 //TODO are static attributes/methods safe in this case ?
 //TODO change `XMLHttpRequest` to `fetch`
-
-export class NcbiSummary {
-
-    private static timeout = 3000;
-    private static httpTimeout = 10000;
-    private static jobTask: Subscription | null = null;
-
-    public static requestChromosomeData(chrId: string): Promise<ChromosomeMetadataInterface>{
-        if(NcbiSummary.jobTask)
-            NcbiSummary.jobTask.unsubscribe();
-        const urlPrefix:string  = (resource as any).ncbi_summary_nuccore.url;
-        const urlSuffix: string = (resource as any).ncbi_summary_nuccore.url_suffix;
-        return new Promise<ChromosomeMetadataInterface>((resolve, reject)=>{
-            const recursiveRequest = () =>{
-                const url: string = urlPrefix+chrId+urlSuffix;
-                const Http = new XMLHttpRequest();
-                Http.timeout = NcbiSummary.httpTimeout;
-                Http.open("GET", url);
-                Http.send();
-                Http.onloadend = (e) => {
-                    if(Http.responseText.length == 0){
-                        NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
-                            recursiveRequest();
-                        },NcbiSummary.timeout);
-                    }else {
-                        const jsonResult: any = JSON.parse(Http.responseText);
-                        const uid: string = (jsonResult as NcbiSummaryInterface).result.uids[0];
-                        const out: ChromosomeMetadataInterface = jsonResult.result[uid] as ChromosomeMetadataInterface;
-                        out.ncbiId = chrId
-                        resolve(out);
-                    }
-                };
-                Http.onerror = (e) => {
-                    if(NcbiSummary.jobTask)
-                        NcbiSummary.jobTask.unsubscribe();
-                    NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
-                        recursiveRequest();
-                    },NcbiSummary.timeout);
-                };
-            };
-            recursiveRequest();
-        });
-    }
-
-    public static requestTaxonomyData(taxId: string): Promise<TaxonomyMetadataInterface>{
-        if(NcbiSummary.jobTask)
-            NcbiSummary.jobTask.unsubscribe();
-        const urlPrefix:string  = (resource as any).ncbi_summary_taxonomy.url;
-        const urlSuffix: string = (resource as any).ncbi_summary_taxonomy.url_suffix;
-        return new Promise<TaxonomyMetadataInterface>((resolve, reject)=>{
-            const recursiveRequest = () =>{
-                const url: string = urlPrefix+taxId+urlSuffix;
-                const Http = new XMLHttpRequest();
-                Http.timeout = NcbiSummary.httpTimeout;
-                Http.open("GET", url);
-                Http.send();
-                Http.onloadend = (e) => {
-                    if(Http.responseText.length == 0){
-                        NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
-                            recursiveRequest();
-                        },NcbiSummary.timeout);
-                    }else {
-                        const jsonResult: any = JSON.parse(Http.responseText);
-                        const uid: string = (jsonResult as NcbiSummaryInterface).result.uids[0];
-                        resolve(jsonResult.result[uid] as TaxonomyMetadataInterface);
-                    }
-                };
-                Http.onerror = (e) => {
-                    NcbiSummary.jobTask = asyncScheduler.schedule(()=>{
-                        recursiveRequest();
-                    },NcbiSummary.timeout);
-                };
-            };
-            recursiveRequest();
-        });
-    }
+const attributes:{
+    timeout:number;
+    httpTimeout: number;
+    jobTask: null|Subscription;
+} = {
+    timeout: 3000,
+    httpTimeout: 10000,
+    jobTask: null
 }
+
+
+function requestChromosomeData(chrId: string): Promise<ChromosomeMetadataInterface>{
+    attributes.jobTask?.unsubscribe();
+    const urlPrefix:string  = resource.ncbi_summary_nuccore.url;
+    const urlSuffix: string = resource.ncbi_summary_nuccore.url_suffix;
+    return new Promise<ChromosomeMetadataInterface>((resolve)=>{
+        const recursiveRequest = () =>{
+            const url: string = urlPrefix+chrId+urlSuffix;
+            const Http = new XMLHttpRequest();
+            Http.timeout = attributes.httpTimeout;
+            Http.open("GET", url);
+            Http.send();
+            Http.onloadend = () => {
+                if(Http.responseText.length == 0){
+                    attributes.jobTask = asyncScheduler.schedule(()=>{
+                        recursiveRequest();
+                    },attributes.timeout);
+                } else {
+                    const jsonResult: NcbiSummaryResultInterface = JSON.parse(Http.responseText) as NcbiSummaryResultInterface;
+                    const uid: string = jsonResult.result.uids[0];
+                    const out: ChromosomeMetadataInterface = jsonResult.result[uid] as ChromosomeMetadataInterface;
+                    out.ncbiId = chrId
+                    resolve(out);
+                }
+            };
+            Http.onerror = () => {
+                if(attributes.jobTask)
+                    attributes.jobTask.unsubscribe();
+                attributes.jobTask = asyncScheduler.schedule(()=>{
+                    recursiveRequest();
+                },attributes.timeout);
+            };
+        };
+        recursiveRequest();
+    });
+}
+
+function requestTaxonomyData(taxId: string): Promise<TaxonomyMetadataInterface>{
+    if(attributes.jobTask)
+        attributes.jobTask.unsubscribe();
+    const urlPrefix: string  = resource.ncbi_summary_taxonomy.url;
+    const urlSuffix: string = resource.ncbi_summary_taxonomy.url_suffix;
+    return new Promise<TaxonomyMetadataInterface>((resolve)=>{
+        const recursiveRequest = () =>{
+            const url: string = urlPrefix+taxId+urlSuffix;
+            const Http = new XMLHttpRequest();
+            Http.timeout = attributes.httpTimeout;
+            Http.open("GET", url);
+            Http.send();
+            Http.onloadend = () => {
+                if(Http.responseText.length == 0){
+                    attributes.jobTask = asyncScheduler.schedule(()=>{
+                        recursiveRequest();
+                    },attributes.timeout);
+                }else {
+                    const jsonResult: NcbiSummaryResultInterface = JSON.parse(Http.responseText) as NcbiSummaryResultInterface;
+                    const uid: string = jsonResult.result.uids[0];
+                    resolve(jsonResult.result[uid] as TaxonomyMetadataInterface);
+                }
+            };
+            Http.onerror = () => {
+                attributes.jobTask = asyncScheduler.schedule(()=>{
+                    recursiveRequest();
+                },attributes.timeout);
+            };
+        };
+        recursiveRequest();
+    });
+}
+
+const methods = {
+    requestChromosomeData,
+    requestTaxonomyData
+}
+
+export {methods as NcbiSummary};

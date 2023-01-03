@@ -2,10 +2,11 @@ import {AlignmentCollectConfig, AlignmentCollectorInterface} from "./AlignmentCo
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {Subject} from "rxjs";
 import {
-    AlignmentResponse,
+    AlignmentResponse, GroupReference,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
+import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
 
 export class AlignmentCollector implements AlignmentCollectorInterface {
 
@@ -26,17 +27,17 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         this.requestStatus = "pending";
         this.alignmentResponse = await this.requestAlignment(requestConfig);
         this.sequenceLength = this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length;
-        const targetAlignment: TargetAlignment[] = this.alignmentResponse.target_alignment ?? this.alignmentResponse.target_alignment_subset?.edges.map(e=>e.node);
-        this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id));
+        const targetAlignment: TargetAlignment[] = (this.alignmentResponse.target_alignment ?? this.alignmentResponse.target_alignment_subset?.edges?.map(e=>e?.node)) as TargetAlignment[] ?? [];
+        this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment.filter(ta=>filter.includes(ta.target_id as string));
         this.alignmentResponse = typeof requestConfig.externalTrackBuilder?.filterAlignments === "function" ? await requestConfig.externalTrackBuilder.filterAlignments({alignments: this.alignmentResponse}) : this.alignmentResponse;
         this.complete();
         return this.alignmentResponse;
     }
 
     public async getTargets():Promise<string[]> {
-        return new Promise<string[]>((resolve,reject)=>{
+        return new Promise<string[]>((resolve)=>{
             if(this.requestStatus === "complete"){
-                resolve(this.alignmentResponse.target_alignment.map(ta=>ta.target_id));
+                resolve(this.alignmentResponse.target_alignment?.map(ta=>ta?.target_id) as string[]);
             }else{
                 ObservableHelper.oneTimeSubscription<string[]>(resolve, this.targetsSubject);
             }
@@ -44,7 +45,7 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
     }
 
     public async getAlignment():Promise<AlignmentResponse> {
-        return new Promise<AlignmentResponse>((resolve,reject)=>{
+        return new Promise<AlignmentResponse>((resolve)=>{
             if(this.requestStatus === "complete"){
                 resolve(this.alignmentResponse);
             }else{
@@ -54,9 +55,9 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
     }
 
     public getAlignmentLength(): Promise<number>{
-        return new Promise<number>((resolve,reject)=>{
+        return new Promise<number>((resolve)=>{
             if(this.requestStatus === "complete"){
-                resolve(this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length);
+                resolve((this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length) as number);
             }else{
                 ObservableHelper.oneTimeSubscription<number>(resolve, this.alignmentLengthSubject);
             }
@@ -76,18 +77,18 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
             })
             :
             await this.rcsbFvQuery.requestGroupAlignment({
-                group: requestConfig.group,
+                group: requestConfig.group as GroupReference,
                 groupId: requestConfig.groupId,
-                page: requestConfig.page,
+                page: requestConfig.page as RcsbQueryGroupAlignmentArguments["page"],
                 filter: requestConfig.filter
             });
     }
 
     private complete(){
         this.requestStatus = "complete";
-        this.targetsSubject.next(this.alignmentResponse.target_alignment?.map(ta=>ta.target_id));
+        this.targetsSubject.next(this.alignmentResponse.target_alignment?.map(ta=>ta?.target_id) as string[]);
         this.alignmentResponseSubject.next(this.alignmentResponse);
-        this.alignmentLengthSubject.next(this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length);
+        this.alignmentLengthSubject.next((this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length) as number);
         console.info("Alignment Processing Complete");
     }
 

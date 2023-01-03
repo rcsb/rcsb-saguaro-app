@@ -8,7 +8,7 @@ declare module '*.graphql' {
     export = value;
 }
 
-declare module "codegen.*.json" {
+declare module 'codegen.*.json' {
     const value: {
         schema: string,
         documents: string
@@ -17,3 +17,8 @@ declare module "codegen.*.json" {
 }
 
 declare module 'ideogram';
+
+declare module 'web.resources.json' {
+    const value: Record<string, {url:string;url_suffix?:string;}>
+    export default value;
+}

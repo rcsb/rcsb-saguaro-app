@@ -1,4 +1,5 @@
 import {RcsbFvColorGradient, RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro";
+import {Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 //Positional annotation interfaces
 export interface AnnotationConfigInterface {
@@ -23,13 +24,13 @@ export interface AnnotationConfigInterface {
 export interface RcsbAnnotationConfigInterface {
     type: string;
     display: RcsbFvDisplayTypes;
-    color: string | RcsbFvColorGradient;
+    color?: string | RcsbFvColorGradient;
     title: string;
     prefix?: string;
     provenanceList: Set<string>;
     height?:number;
-    key?: string;
-    addToType?: string[];
+    key?: keyof Feature;
+    addToType?: (keyof Feature)[];
     transformToNumerical?: boolean;
     domain?: [number,number];
     displayCooccurrence?: boolean;

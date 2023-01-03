@@ -30,7 +30,7 @@ export interface AlignmentCollectorInterface {
     getTargets():Promise<string[]>;
     getAlignment():Promise<AlignmentResponse>;
     getAlignmentLength(): Promise<number>;
-    collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface,
+    collect(requestConfig: AlignmentCollectConfig,
             filter?:string[],
     ): Promise<AlignmentResponse>;
 }
