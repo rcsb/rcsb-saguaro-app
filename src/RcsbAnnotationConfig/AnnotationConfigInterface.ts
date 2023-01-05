@@ -23,7 +23,7 @@ export interface AnnotationConfigInterface {
 export interface RcsbAnnotationConfigInterface {
     type: string;
     display: RcsbFvDisplayTypes;
-    color: string | RcsbFvColorGradient;
+    color?: string | RcsbFvColorGradient;
     title: string;
     prefix?: string;
     provenanceList: Set<string>;

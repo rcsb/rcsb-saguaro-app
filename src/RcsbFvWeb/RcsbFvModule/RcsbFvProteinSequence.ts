@@ -7,12 +7,15 @@ import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const queryId: string = buildConfig.queryId;
+        const queryId: string | undefined = buildConfig.queryId;
+        assertDefined(queryId);
         const source: Array<Source> = buildConfig.sources ?? [Source.Uniprot];
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: queryId,
@@ -43,7 +46,7 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         if(buildConfig.additionalConfig?.hideAlignments){
             this.rowConfigData = [this.referenceTrack].concat(this.annotationTracks);
-        }else if(buildConfig.additionalConfig.bottomAlignments){
+        }else if(buildConfig.additionalConfig?.bottomAlignments){
             this.rowConfigData = [this.referenceTrack].concat(this.annotationTracks).concat(this.alignmentTracks);
         }else{
             this.rowConfigData = [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks);

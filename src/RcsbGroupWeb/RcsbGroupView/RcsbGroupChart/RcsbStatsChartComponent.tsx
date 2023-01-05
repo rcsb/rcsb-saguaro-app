@@ -35,19 +35,22 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
                         },new Map())}
                     />
             </div>);
+        return <></>;
     }
 
     private async updateState(): Promise<void>{
         let facets: Array<BucketFacet> = [];
         for(const service of this.props.facetStore.getServices()){
-            const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
-                this.props.searchQuery.query,
-                this.props.facetStore.getFacetService(service).map(f => f.facet),
-                this.props.facetStore.returnType,
-                SQT.searchContentType(this.props.searchQuery)
-            );
-            if(groupProperties.facets)
-                facets = facets.concat(groupProperties.facets as BucketFacet[]);
+            if(this.props.searchQuery.query) {
+                const groupProperties: QueryResult | null= await rcsbRequestCtxManager.getSearchQueryFacets(
+                    this.props.searchQuery.query,
+                    this.props.facetStore.getFacetService(service).map(f => f.facet),
+                    this.props.facetStore.returnType,
+                    SQT.searchContentType(this.props.searchQuery)
+                );
+                if (groupProperties?.facets)
+                    facets = facets.concat(groupProperties.facets as BucketFacet[]);
+            }
         }
         this.setState({facets})
     }

@@ -68,7 +68,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                     </Container>
             );
         }else
-            return null;
+            return <></>;
     }
 
     async componentDidMount() {
@@ -82,7 +82,9 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
     }
 
     private async getMembersData(): Promise<void> {
-        const searchResult: QueryResult = await this.searchRequest();
+        const searchResult: QueryResult | null = await this.searchRequest();
+        if(!searchResult?.result_set)
+            return;
         const itemList: Array<ItemFeaturesInterface> = parseItems(
             this.props.groupProvenanceId, this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
                 (await rcsbRequestCtxManager.getEntryProperties(searchResult.result_set.map(m=>typeof m === "string" ? m : m.identifier)))
@@ -104,7 +106,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
         });
     }
 
-    private async searchRequest(): Promise<QueryResult> {
+    private async searchRequest(): Promise<QueryResult|null> {
         return await searchRequest(
             this.props.groupProvenanceId,
             this.props.groupId,
@@ -115,9 +117,9 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
     }
 }
 
-async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, start:number, rows: number, searchQuery?: SearchQuery): Promise<QueryResult> {
+async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, start:number, rows: number, searchQuery?: SearchQuery): Promise<QueryResult|null> {
     return await rcsbRequestCtxManager.getSearchQuery({
-        query: searchQuery ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
+        query: searchQuery?.query ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
             paginate:{
                 start: start,

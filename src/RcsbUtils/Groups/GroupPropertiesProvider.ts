@@ -9,7 +9,7 @@ interface ItemPropertyInterface {
     value: number|string;
 }
 
-export type groupProperty = "experimental_method" | "resolution";
+export type GroupPropertyType = "experimental_method" | "resolution";
 
 export class GroupPropertiesProvider {
 
@@ -19,13 +19,13 @@ export class GroupPropertiesProvider {
         this.entryProperties = properties.entryProperties;
     }
 
-    public get(key: groupProperty): Array<ItemPropertyInterface>{
+    public get(key: GroupPropertyType): ItemPropertyInterface[] | undefined {
         if(key === "experimental_method" || key === "resolution"){
             return this.getEntryProperties(key);
         }
     }
 
-    private getEntryProperties(key: groupProperty): Array<ItemPropertyInterface>{
+    private getEntryProperties(key: GroupPropertyType): ItemPropertyInterface[] | undefined{
         if(key === "experimental_method"){
             return this.entryProperties.map(p=>({
                 objectId: p.rcsbId,

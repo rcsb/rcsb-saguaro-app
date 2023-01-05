@@ -16,11 +16,14 @@ import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {CollectGroupAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvUniprotAlignment extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        assertDefined(buildConfig.additionalConfig?.page), assertDefined(buildConfig.upAcc);
         const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: GroupReference.MatchingUniprotAccession,
             groupId: buildConfig.upAcc,
@@ -31,15 +34,15 @@ export class RcsbFvUniprotAlignment extends RcsbFvAbstractModule {
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true,
-            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix,
+            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
         const alignmentFeatures: AnnotationFeatures[] = await collectFeatures(buildConfig.upAcc);
         await trackFactory.prepareFeatures(
-            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.UnobservedResidueXyz)})),
-            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.MaQaMetricLocalTypePlddt)}))
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.UnobservedResidueXyz)})),
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.MaQaMetricLocalTypePlddt)}))
         );
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory

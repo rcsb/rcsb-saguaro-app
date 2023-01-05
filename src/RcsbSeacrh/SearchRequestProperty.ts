@@ -22,14 +22,15 @@ class SearchRequestProperty {
     }
 
     private async _requestFacets(config: {query: SearchQueryType; facets: FacetType[]; returnType: ReturnType; resultsContentType:ResultsContentType}): Promise<QueryResult | null> {
+        const facet = config.facets.shift();
         return await this.getClient().request({
             query: config.query,
-            request_options: config.facets.length > 0 ? {
+            request_options: facet ? {
                 paginate:{
                     start: 0,
                     rows: 0
                 },
-                facets: [config.facets.shift(), ...config.facets],
+                facets: [facet, ...config.facets],
                 results_content_type: config.resultsContentType
             } : {
                 paginate:{
@@ -47,7 +48,7 @@ class SearchRequestProperty {
     }
 
     //TODO this should be part of `SearchQueryTools`
-    public async requestMembers(query: SearchQuery): Promise<Array<string>> {
+    public async requestMembers(query: SearchQuery): Promise<string[]> {
         return (await this.getClient().request({
             query: query.query,
             request_options: {
@@ -55,7 +56,7 @@ class SearchRequestProperty {
                 results_content_type: SQT.searchContentType(query)
             },
             return_type: query.return_type
-        })).result_set.map(item=>typeof item === "string" ? item : item.identifier);
+        }))?.result_set?.map(item=>typeof item === "string" ? item : item.identifier) ?? [];
     }
 
     //TODO this should be part of `SearchQueryTools`
@@ -67,7 +68,7 @@ class SearchRequestProperty {
                 results_content_type: SQT.searchContentType(query)
             },
             return_type: query.return_type
-        })).total_count;
+        }))?.total_count ?? -1;
     }
 
     public async request(query: SearchQuery): Promise<QueryResult | null> {

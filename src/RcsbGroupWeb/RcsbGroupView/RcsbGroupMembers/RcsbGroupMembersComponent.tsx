@@ -58,7 +58,7 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
                 </div>
             );
         else
-            return null;
+            return <></>;
     }
 
     async componentDidMount() {
@@ -85,7 +85,9 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
     }
 
     private async loadPages(): Promise<void>{
-        const searchResult: QueryResult = await this.searchRequest();
+        const searchResult: QueryResult | null= await this.searchRequest();
+        if(!searchResult)
+            return;
         const nPages: number = Math.ceil(searchResult.total_count/(this.props.nRows*this.props.nColumns));
         this.setState({
             nPages: nPages,
@@ -93,13 +95,7 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
         });
     }
 
-    private async select(index:number): Promise<void>{
-        this.setState({
-            selectedIndex: index
-        });
-    }
-
-    private async searchRequest(): Promise<QueryResult> {
+    private async searchRequest(): Promise<QueryResult|null> {
         return await searchRequest(
             this.props.groupProvenanceId,
             this.props.groupId,
@@ -119,9 +115,9 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
     }
 }
 
-export async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult> {
+export async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult|null> {
     return await rcsbRequestCtxManager.getSearchQuery({
-        query: searchQuery ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
+        query: searchQuery && searchQuery.query ? SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query) : SQT.searchGroupQuery(groupProvenanceId, groupId),
         request_options:{
             return_counts: true,
             results_content_type: SQT.searchContentType(searchQuery)

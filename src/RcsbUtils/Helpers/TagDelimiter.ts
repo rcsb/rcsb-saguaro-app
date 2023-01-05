@@ -14,14 +14,18 @@ export class TagDelimiter {
 
     public static parseEntity(rcsbId:string): {entryId: string;entityId:string;} {
         const ids: string[] = rcsbId.split(TagDelimiter.entity);
-        const entityId: string = ids.pop();
-        const entryId: string =  ids.join(TagDelimiter.entity)
+        const entityId: string | undefined = ids.pop();
+        if(!entityId)
+            throw `Entity Id ${rcsbId} format error`;
+        const entryId: string  =  ids.join(TagDelimiter.entity)
         return {entryId, entityId};
     }
 
     public static parseInstance(rcsbId:string): {instanceId: string;entryId:string;} {
         const ids: string[] = rcsbId.split(TagDelimiter.instance);
-        const instanceId: string = ids.pop();
+        const instanceId: string | undefined = ids.pop();
+        if(!instanceId)
+            throw `Instance Id ${rcsbId} format error`;
         const entryId: string =  ids.join(TagDelimiter.instance)
         return {instanceId, entryId};
     }

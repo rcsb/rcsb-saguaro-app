@@ -10,7 +10,7 @@ export class SearchQueryComponentFactory {
                 groupProvenanceId={groupProvenanceId}
             groupId={groupId}
         searchQuery={searchQuery}
-        /> : null;
+        /> : <></>;
     }
 
 }

@@ -21,7 +21,7 @@ export interface TrackBlockFactoryInterface<S = {}> {
 }
 
 export interface ResidueDistributionFactoryInterface<T extends any [] = []> {
-    getDistribution(tracks: TrackManagerInterface[], ...args:T): ResidueDistributionInterface;
+    getDistribution(tracks: TrackManagerInterface[], ...args:T): ResidueDistributionInterface | undefined;
 }
 
 export interface DistributionChartFactoryInterface {

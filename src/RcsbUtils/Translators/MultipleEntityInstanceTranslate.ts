@@ -13,14 +13,14 @@ export class MultipleEntityInstanceTranslate {
             const entityId: string = d.entryId+TagDelimiter.entity+d.entityId;
             if(!entryEntityInstanceMapList.has(entityId))
                 entryEntityInstanceMapList.set(entityId, new Array<PolymerEntityInstanceInterface>())
-            entryEntityInstanceMapList.get(entityId).push(d);
+            entryEntityInstanceMapList.get(entityId)?.push(d);
         });
         entryEntityInstanceMapList.forEach((v,entityId)=>{
             this.entityInstanceTranslateMap.set(entityId, new PolymerEntityInstanceTranslate(v));
         });
     }
 
-    public getEntity(entityId: string): PolymerEntityInstanceTranslate{
+    public getEntity(entityId: string): PolymerEntityInstanceTranslate | undefined{
         return this.entityInstanceTranslateMap.get(entityId);
     }
 

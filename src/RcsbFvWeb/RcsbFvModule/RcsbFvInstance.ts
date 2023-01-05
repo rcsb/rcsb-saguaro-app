@@ -13,12 +13,15 @@ import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackF
 import {
     InstanceSequenceTrackTitleFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackTitleFactoryImpl/InstanceSequenceTrackTitleFactory";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvInstance extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const instanceId: string = buildConfig.instanceId;
+        const instanceId: string | undefined = buildConfig.instanceId;
+        assertDefined(instanceId)
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
 
         const alignmentRequestContext: CollectAlignmentInterface = {

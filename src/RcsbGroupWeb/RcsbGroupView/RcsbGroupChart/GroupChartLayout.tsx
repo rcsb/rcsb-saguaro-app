@@ -34,17 +34,17 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
     }
 
     private renderCell(attr: string): JSX.Element {
-        const chart: RcsbChartInterface[] = this.props.chartMap.get(attr);
+        const chart: RcsbChartInterface[] | undefined = this.props.chartMap.get(attr);
         if(chart){
             const node: JSX.Element = chart[0].chartType == ChartType.histogram ? histogramChart(attr, chart) : barChart(attr, chart);
             return chartCell(node,chart[0].title, chart[0].chartConfig?.chartDisplayConfig);
         }
-        return null;
+        return <></>;
     }
 
 }
 
-function chartCell(chartNode:JSX.Element, title: string, chartDisplayConfig:Partial<ChartDisplayConfigInterface>): JSX.Element{
+function chartCell(chartNode:JSX.Element, title?: string, chartDisplayConfig?:Partial<ChartDisplayConfigInterface>): JSX.Element{
     return(<Col key={`${title}_${uniqid()}`}>
         <Row className={"mb-md-5"}>
             <Col md={12}>

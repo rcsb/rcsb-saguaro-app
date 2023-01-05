@@ -21,7 +21,7 @@ export class RcsbResidueChartComponent extends React.Component <ResidueChartInte
                 />
             </div>);
         }
-        return null;
+        return <></>;
     }
 
     async componentDidMount(): Promise<void> {

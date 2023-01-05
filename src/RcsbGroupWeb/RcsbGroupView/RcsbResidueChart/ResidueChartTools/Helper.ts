@@ -1,7 +1,11 @@
 import {RcsbChartInterface} from "../../../../RcsbSeacrh/FacetTools";
 import {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 
 export namespace Helper {
+
+
+    import assertDefined = Assertions.assertDefined;
 
     export function mergeCharts(charts: RcsbChartInterface[]): RcsbChartInterface[] {
         const attributes: string[] = Array.from(new Set(charts.map(ch=>ch.attribute)));
@@ -19,9 +23,13 @@ export namespace Helper {
 
     function mergeData(data: ChartObjectInterface[]): ChartObjectInterface[] {
         const labels: (string|number)[] = Array.from(new Set(data.map(d=>d.label)));
-        return labels.map(label=>({
-            ...data.find(d=>d.label===label),
-            population: data.filter(d=>d.label===label).reduce((prev,curr)=>(prev+curr.population),0),
-        }));
+        return labels.map(label=>{
+            const d = data.find(d=>d.label===label);
+            assertDefined(d);
+            return{
+                ...d,
+                population: data.filter(d=>d.label===label)?.reduce((prev,curr)=>(prev+curr.population),0) ?? 0,
+            }
+        });
     }
 }

@@ -13,7 +13,7 @@ export interface SliderInterface {
 }
 
 
-export class Slider extends React.Component<SliderInterface,null> {
+export class Slider extends React.Component<SliderInterface> {
 
     render():JSX.Element {
         return (

@@ -4,6 +4,9 @@ import {RcsbFvColorGradient, RcsbFvDisplayTypes} from '@rcsb/rcsb-saguaro';
 import {AnnotationConfigInterface, RcsbAnnotationConfigInterface} from "./AnnotationConfigInterface";
 import stc from "string-to-color";
 import {AnnotationRequestContext} from "../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {Assertions} from "../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
+import uniqid from "uniqid";
 
 export interface RcsbMergedTypesInterface {
     merged_types: Array<string>;
@@ -39,11 +42,8 @@ export class RcsbAnnotationConfig {
 
     }
 
-    public getConfig(type: string): RcsbAnnotationConfigInterface{
-        if(this.annotationMap.has(type)){
-            return this.annotationMap.get(type);
-        }
-        return null;
+    public getConfig(type: string): RcsbAnnotationConfigInterface | undefined{
+        return this.annotationMap.get(type);
     }
 
     public allTypes(): Set<string>{
@@ -65,30 +65,35 @@ export class RcsbAnnotationConfig {
 
     //TODO refactor how title and type are defined. Can this be split in two different methods ?
     public async getAnnotationType(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<string>{
-        const trackTitle: string = typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,feature)) : undefined;
-        const titleSuffix: string = typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,feature)) : undefined;
-        const typeSuffix: string = typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,feature)) : undefined;
-        const type: string = feature.type;
+        const trackTitle: string | undefined = typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,feature)) : undefined;
+        const titleSuffix: string | undefined = typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,feature)) : undefined;
+        const typeSuffix: string | undefined = typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,feature)) : undefined;
+        const type: string | undefined | null = feature.type;
+        assertDefined(type);
         const a: DynamicKeyAnnotationInterface = feature;
         const addToTypeSuffix: ArraySuffix<string> =  new ArraySuffix<string>();
-        addToTypeSuffix.push(titleSuffix,typeSuffix);
-        if(Array.isArray(this.annotationMap.get(type)?.addToType)){
-            this.annotationMap.get(type).addToType.forEach(field=>{
+        const ac = this.annotationMap.get(type);
+        if(titleSuffix)
+            addToTypeSuffix.push(titleSuffix,);
+        if(typeSuffix)
+            addToTypeSuffix.push(typeSuffix);
+        if(Array.isArray(ac?.addToType)){
+            ac?.addToType?.forEach(field=>{
                 if(a[field]!=null)
                     addToTypeSuffix.push(a[field]);
             });
         }
         let newType: string;
-        if(this.annotationMap.has(type) && this.annotationMap.get(type).key!=null && a[this.annotationMap.get(type).key]){
-            addToTypeSuffix.unshift(a[this.annotationMap.get(type).key]);
+        if(ac && ac.key!=null && a[ac.key]){
+            addToTypeSuffix.unshift(a[ac.key]);
             newType = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
-                const title: string = a[this.annotationMap.get(type).key]!=null ? a[this.annotationMap.get(type).key] as string : "";
+                const title: string = a[ac.key]!=null ? a[ac.key] as string : "";
                 this.annotationMap.set(newType, {
-                    ...this.annotationMap.get(type),
+                    ...ac,
                     type: newType,
-                    color: typeof this.annotationMap.get(type).color === "string" ? RcsbAnnotationConfig.randomRgba(title) : { ...(this.annotationMap.get(type).color as RcsbFvColorGradient), colors:RcsbAnnotationConfig.randomRgba(title) },
-                    prefix: trackTitle ?? this.annotationMap.get(type).title,
+                    color: typeof ac.color === "string" ? RcsbAnnotationConfig.randomRgba(title) : { ...(ac.color as RcsbFvColorGradient), colors:RcsbAnnotationConfig.randomRgba(title) },
+                    prefix: trackTitle ?? ac.title,
                     title: title,
                     provenanceList: new Set<string>()
                 } as RcsbAnnotationConfigInterface);
@@ -98,9 +103,10 @@ export class RcsbAnnotationConfig {
             newType = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
-                    ...this.annotationMap.get(type),
+                    display: ac?.display ?? RcsbFvDisplayTypes.BLOCK,
+                    ...ac,
                     type: newType,
-                    prefix: trackTitle ?? this.annotationMap.get(type).title,
+                    prefix: trackTitle ?? ac?.title,
                     title: titleSuffix,
                     provenanceList: new Set<string>()
                 });
@@ -110,7 +116,9 @@ export class RcsbAnnotationConfig {
             newType = type+addToTypeSuffix.join(".");
             if(!this.annotationMap.has(newType)) {
                 this.annotationMap.set(newType, {
-                    ...this.annotationMap.get(type),
+                    display: RcsbFvDisplayTypes.BLOCK,
+                    type: uniqid("type-"),
+                    ...ac,
                     title: trackTitle,
                     provenanceList: new Set<string>()
                 });
@@ -122,7 +130,7 @@ export class RcsbAnnotationConfig {
                 this.addNewType(newType, type);
             }
         }
-        this.addProvenance(newType, feature.provenance_source);
+        this.addProvenance(newType, feature.provenance_source ?? "N/A");
         return newType;
     }
 
@@ -130,31 +138,29 @@ export class RcsbAnnotationConfig {
         return this.mergedTypes.has(type);
     }
 
-    public getMergeConfig(type: string): RcsbMergedTypesInterface {
-        if(this.mergedTypes.has(type))
-            return this.mergedTypes.get(type);
-        return null;
+    public getMergeConfig(type: string): RcsbMergedTypesInterface | undefined {
+        return this.mergedTypes.get(type);
     }
 
     private addNewType(newType: string, type: string, titleSuffix?: string){
-        if(this.mergedTypes.has(type)) {
-            const mergedType: string = titleSuffix ? this.mergedTypes.get(type).type+"."+titleSuffix : this.mergedTypes.get(type).type;
+        const mt = this.mergedTypes.get(type);
+        if(mt) {
+            const mergedType: string = titleSuffix ? mt.type+"."+titleSuffix : mt.type;
             if(newType!=type)
                 this.mergedTypes.set(newType, {
-                    merged_types:this.mergedTypes.get(type).merged_types,
-                    display: this.mergedTypes.get(type).display,
+                    merged_types: mt.merged_types,
+                    display: mt.display,
                     type: mergedType,
-                    title: this.mergedTypes.get(type).title,
+                    title: mt.title,
                 });
             this.annotationMap.set(mergedType, {
                 type: mergedType,
-                display: this.mergedTypes.get(type).display,
-                color: null,
-                title: titleSuffix ?? this.mergedTypes.get(type).title,
-                prefix: titleSuffix ?  this.mergedTypes.get(type).title : undefined,
+                display: mt.display,
+                title: titleSuffix ?? mt.title,
+                prefix: titleSuffix ?  mt.title : undefined,
                 provenanceList: new Set<string>()
             });
-            this.checkAndIncludeNewType(mergedType, this.mergedTypes.get(type).type);
+            this.checkAndIncludeNewType(mergedType, mt.type);
         }else{
             this.checkAndIncludeNewType(newType, type)
         }
@@ -163,12 +169,12 @@ export class RcsbAnnotationConfig {
     private checkAndIncludeNewType(newType: string, type: string){
         if(type === newType)
             return;
-        if(this.annotationTypes.instance.has(type) && !this.annotationTypes.instance.get(type).includes(newType))
-            this.annotationTypes.instance.get(type).push(newType);
-        if(this.annotationTypes.entity.has(type) && !this.annotationTypes.entity.get(type).includes(newType))
-            this.annotationTypes.entity.get(type).push(newType);
-        if(this.annotationTypes.external.has(type) && !this.annotationTypes.external.get(type).includes(newType))
-            this.annotationTypes.external.get(type).push(newType);
+        if(this.annotationTypes.instance.has(type) && !this.annotationTypes.instance.get(type)?.includes(newType))
+            this.annotationTypes.instance.get(type)?.push(newType);
+        if(this.annotationTypes.entity.has(type) && !this.annotationTypes.entity.get(type)?.includes(newType))
+            this.annotationTypes.entity.get(type)?.push(newType);
+        if(this.annotationTypes.external.has(type) && !this.annotationTypes.external.get(type)?.includes(newType))
+            this.annotationTypes.external.get(type)?.push(newType);
     }
 
     static randomRgba(str?: string): string{
@@ -177,7 +183,7 @@ export class RcsbAnnotationConfig {
 
     private addProvenance(type:string, provenanceName: string): void {
         if(this.annotationMap.has(type))
-            this.annotationMap.get(type).provenanceList.add(provenanceName);
+            this.annotationMap.get(type)?.provenanceList.add(provenanceName);
     }
 
     public addMultipleProvenance(type:string, provenanceList: Array<string>): void {
@@ -219,9 +225,4 @@ class ArraySuffix<T> extends Array<T> {
         });
         return this.length;
     }
-}
-
-function addType(array: Array<string>, newType: string, type: string): void{
-    const index: number = array.indexOf(type);
-    array.splice(index+1,0, newType);
 }

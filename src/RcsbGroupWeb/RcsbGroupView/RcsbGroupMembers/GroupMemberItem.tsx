@@ -57,7 +57,7 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
 function memberImgUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvenanceId): string{
     if(groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId)
         return resource.rcsb_cdn.url + ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() + "/" + ei.entryId.toLowerCase() + "_model-1.jpeg";
-    return resource.rcsb_cdn.url + (TagDelimiter.isRcsbId(ei.entityId) ? ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() : "") + "/" + ei.entryId.toLowerCase() + "_chain-" + ei.asymId + ".jpeg";
+    return resource.rcsb_cdn.url + (ei.entityId && TagDelimiter.isRcsbId(ei.entityId) ? ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() : "") + "/" + ei.entryId.toLowerCase() + "_chain-" + ei.asymId + ".jpeg";
 }
 
 function alignment1d3dUrl(groupId: string, searchQuery?: SearchQuery){

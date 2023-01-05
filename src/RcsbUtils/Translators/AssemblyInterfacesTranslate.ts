@@ -12,8 +12,12 @@ export class AssemblyInterfacesTranslate {
         })
     }
 
-    getInterfaces(assemblyId: string): Array<string>{
+    getInterfaces(assemblyId: string): Array<string> | undefined{
         return this.interfaceMap.get(assemblyId);
+    }
+
+    getRawData(): Array<AssemblyInterfacesInterface>{
+        return this.rawData;
     }
 
 }

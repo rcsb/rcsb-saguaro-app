@@ -20,7 +20,7 @@ export interface RcsbChartInterface {
     attribute: string;
     attributeName: string;
     chartConfig?: ChartConfigInterface,
-    title: string,
+    title?: string,
     data: ChartObjectInterface[];
     filters?:SearchFilter[];
     contentType:FacetMemberInterface['contentType'];
@@ -32,28 +32,33 @@ export class FacetTools {
     public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<BucketFacet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
         const out: Array<RcsbChartInterface> = recursiveOut ?? new Array<RcsbChartInterface>();
         searchResultFacets.forEach(f=> {
-            const facet:BucketFacet = FacetTools.getFacetFromName(facetMembers,f.name).transformSearchResultFacets ? FacetTools.getFacetFromName(facetMembers,f.name).transformSearchResultFacets(f) : f;
-            if(facet.buckets.filter(g=>g.drilldown).length > 0){
-                facet.buckets.filter(g=>g.drilldown).forEach(g=>{
+            const facet = FacetTools.getFacetFromName(facetMembers,f.name);
+            if(!facet)
+                return;
+            const bucketFacet:BucketFacet = facet.transformSearchResultFacets ? facet.transformSearchResultFacets(f) : f;
+            if(bucketFacet.buckets.filter(g=>g.drilldown).length > 0){
+                bucketFacet.buckets.filter(g=>g.drilldown).forEach(g=>{
                     FacetTools.getResultDrilldowns(facetMembers, g.drilldown as BucketFacet[], labelList ? labelList.concat(g.label) : [g.label], out);
                 });
             }
-            if(facet.buckets.filter(g=>!g.drilldown).length > 0) {
-                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, facet.name);
-                out.push({
-                    chartType: chart.chartType,
-                    chartConfig: chart.chartConfig,
-                    labelList: labelList,
-                    attributeName: facet.name,
-                    attribute: FacetTools.getFacetFromName(facetMembers, facet.name).attribute,
-                    title: chart.title,
-                    data: facet.buckets.filter(g => !g.drilldown).map((d)=>({
-                        label: d.label,
-                        population: d.population
-                    })),
-                    filters:FacetTools.getFacetFiltersFromName(facetMembers, facet.name),
-                    contentType: FacetTools.getFacetFromName(facetMembers,facet.name).contentType
-                });
+            if(bucketFacet.buckets.filter(g=>!g.drilldown).length > 0) {
+                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title?: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, bucketFacet.name);
+                const bf = FacetTools.getFacetFromName(facetMembers, bucketFacet.name);
+                if(bf)
+                    out.push({
+                        chartType: chart.chartType,
+                        chartConfig: chart.chartConfig,
+                        labelList: labelList,
+                        attributeName: bucketFacet.name,
+                        attribute: bf.attribute,
+                        title: chart.title,
+                        data: bucketFacet.buckets.filter(g => !g.drilldown).map((d)=>({
+                            label: d.label,
+                            population: d.population
+                        })),
+                        filters:FacetTools.getFacetFiltersFromName(facetMembers, bucketFacet.name),
+                        contentType: bf.contentType
+                    });
             }
         });
         return out;
@@ -65,12 +70,12 @@ export class FacetTools {
         diff.forEach(fullChart=>{
             dataMap.set( fullChart.attributeName, new Map<string, ChartObjectInterface>() );
             fullChart.data.forEach(d=>{
-                dataMap.get(fullChart.attributeName).set(d.label,d);
+                dataMap.get(fullChart.attributeName)?.set(d.label,d);
             });
         });
         partial.forEach(partialChart=>{
             partialChart.data.forEach(d=>{
-                const data: ChartObjectInterface = dataMap.get(partialChart.attributeName)?.get(d.label);
+                const data: ChartObjectInterface | undefined = dataMap.get(partialChart.attributeName)?.get(d.label);
                 if(data)
                     data.population -= d.population;
             });
@@ -79,7 +84,7 @@ export class FacetTools {
         return diff;
     }
 
-    public static getFacetFromName(facetMembers: FacetMemberInterface[], name: string): FacetMemberInterface {
+    public static getFacetFromName(facetMembers: FacetMemberInterface[], name: string): FacetMemberInterface | undefined {
         return facetMembers.find((facet)=>(facet.attributeName === name));
     }
 
@@ -103,15 +108,17 @@ export class FacetTools {
         });
     }
 
-    private static getFacetChartTypeFromAttribute(facetMembers: FacetMemberInterface[], attribute: string): {chartType: ChartType, chartConfig?: ChartConfigInterface, title: string} {
-        const facet: FacetMemberInterface = facetMembers.find((facet)=>(facet.attributeName === attribute));
+    private static getFacetChartTypeFromAttribute(facetMembers: FacetMemberInterface[], attribute: string): {chartType: ChartType, chartConfig?: ChartConfigInterface, title?: string} {
+        const facet: FacetMemberInterface | undefined = facetMembers.find((facet)=>(facet.attributeName === attribute));
+        if(!facet)
+            throw `Unknown facet attribute ${attribute}`;
         return {chartType: facet.chartType, chartConfig:facet.chartConfig, title: facet.title};
     }
 
-    private static getFacetFiltersFromName(facetMembers: FacetMemberInterface[], name: string): SearchFilter[] {
-        const facet: FacetMemberInterface = facetMembers.find((facet)=>(facet.attributeName === name));
+    private static getFacetFiltersFromName(facetMembers: FacetMemberInterface[], attribute: string): SearchFilter[] {
+        const facet: FacetMemberInterface | undefined = facetMembers.find((facet)=>(facet.attributeName === attribute));
         if(!facet)
-            return;
+            throw `Unknown facet attribute ${attribute}`;
         const filters: Array<FilterQueryTerminalNode> = new Array<FilterQueryTerminalNode>();
         if( (facet.facet as FilterFacet).filter ){
             filters.push((facet.facet as FilterFacet).filter as FilterQueryTerminalNode);

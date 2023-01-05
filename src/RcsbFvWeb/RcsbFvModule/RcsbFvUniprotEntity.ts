@@ -13,14 +13,17 @@ import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModule
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const upAcc: string = buildConfig.upAcc;
-        const entityId: string = buildConfig.entityId;
-        const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig
+        const upAcc: string | undefined = buildConfig.upAcc;
+        const entityId: string | undefined = buildConfig.entityId;
+        const additionalConfig:RcsbFvAdditionalConfig | undefined = buildConfig.additionalConfig
+        assertDefined(upAcc), assertDefined(entityId);
         const filters:Array<FilterInput> = [{
             field:FieldName.TargetId,
             operation:OperationType.Equals,
@@ -57,17 +60,17 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
     }
 
     protected concatAlignmentAndAnnotationTracks(): void {
-        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks);
     }
 
     private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{
         if( this.polymerEntityInstance != null && ann.source === Source.PdbInstance){
-            const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
-            const authAsymId: string = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
+            const labelAsymId: string | undefined = ann.target_id?.split(TagDelimiter.instance)[1];
+            if(!labelAsymId)
+                return;
+            const authAsymId: string  | undefined = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
             return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
         }
-        return void 0;
     }
 
 }

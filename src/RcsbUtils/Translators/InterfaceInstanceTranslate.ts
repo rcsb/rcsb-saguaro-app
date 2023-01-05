@@ -14,11 +14,16 @@ export class InterfaceInstanceTranslate {
         })
     }
 
-    getInstances(rcsbId: string):[string,string] {
+    getInstances(rcsbId: string):[string,string] | undefined{
         return this.instances.get(rcsbId);
     }
 
-    getOperatorIds(rcsbId: string): [Array<Array<string>>, Array<Array<string>>] {
+    getOperatorIds(rcsbId: string): [Array<Array<string>>, Array<Array<string>>] | undefined {
         return this.operatorsIds.get(rcsbId);
     }
+
+    getRawData(): Array<InterfaceInstanceInterface>{
+        return this.rawData;
+    }
+
 }

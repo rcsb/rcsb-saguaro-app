@@ -13,12 +13,15 @@ import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationColl
 import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {MsaAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvUniprot extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const upAcc: string = buildConfig.upAcc;
+        const upAcc: string | undefined = buildConfig.upAcc;
+        assertDefined(upAcc);
         const source: Array<Source> = [Source.Uniprot];
 
         const alignmentRequestContext: CollectAlignmentInterface = {
@@ -34,8 +37,8 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
         const alignmentFeatures: AnnotationFeatures[] = await collectFeatures(upAcc);
         await trackFactory.prepareFeatures(
-            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.UnobservedResidueXyz)})),
-            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.MaQaMetricLocalTypePlddt)}))
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.UnobservedResidueXyz)})),
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.MaQaMetricLocalTypePlddt)}))
         );
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory

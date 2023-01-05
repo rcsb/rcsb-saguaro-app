@@ -6,11 +6,11 @@ export namespace UrlTools {
         paramList.filter(p=>p.value).forEach(p=>{
             urlParams.push(`${p.key}=${encode(p.value)}`);
         });
-        globalThis?.history.replaceState(null, null, "?" + urlParams.join("&"));
+        globalThis?.history.replaceState(null, "", "?" + urlParams.join("&"));
     }
 
     export function encodeUrlParameter(key: string, value: any): void {
-        globalThis?.history.replaceState(null, null, "?" + (value ? `${key}=${encode(value)}` : ""));
+        globalThis?.history.replaceState(null, "", "?" + (value ? `${key}=${encode(value)}` : ""));
     }
 
     export function decodeUrlParameters(): {key: string, value: any}[] | undefined {

@@ -48,9 +48,10 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
 
     async componentDidMount() {
         this.subscribe();
-        const fullGroupMembers:number = (await searchRequest(this.props.groupProvenanceId, this.props.groupId)).total_count;
-        const subGroupMembers:number = (await searchRequest(this.props.groupProvenanceId, this.props.groupId,this.props.searchQuery)).total_count;
-        this.setState({subGroupMembers,fullGroupMembers});
+        const fullGroupMembers:number|undefined = (await searchRequest(this.props.groupProvenanceId, this.props.groupId))?.total_count;
+        const subGroupMembers:number|undefined = (await searchRequest(this.props.groupProvenanceId, this.props.groupId,this.props.searchQuery))?.total_count;
+        if(fullGroupMembers && subGroupMembers)
+            this.setState({subGroupMembers,fullGroupMembers});
     }
 
     render() {
@@ -78,13 +79,14 @@ export class RcsbGroupContentComponent extends React.Component <RcsbGroupContent
     }
 
     private async updateGroupContent(o:SearchQueryContextManagerSubjectInterface): Promise<void> {
-        const subGroupMembers:number = (await searchRequest(this.props.groupProvenanceId, this.props.groupId,o.searchQuery)).total_count;
-        this.setState({subGroupMembers, searchQuery: o.searchQuery});
+        const subGroupMembers:number|undefined = (await searchRequest(this.props.groupProvenanceId, this.props.groupId,o.searchQuery))?.total_count;
+        if(subGroupMembers)
+            this.setState({subGroupMembers, searchQuery: o.searchQuery});
     }
 
     private href(): {subGroup: string; fullGroup:string;} {
         return {
-            subGroup: this.state.searchQuery ? resource.rcsb_search.url + encodeURI(JSON.stringify(
+            subGroup: this.state.searchQuery?.query ? resource.rcsb_search.url + encodeURI(JSON.stringify(
                 SQT.buildNodeSearchQuery(
                     SQT.searchGroupQuery(this.props.groupProvenanceId, this.props.groupId, Service.Text),
                     this.state.searchQuery.query,

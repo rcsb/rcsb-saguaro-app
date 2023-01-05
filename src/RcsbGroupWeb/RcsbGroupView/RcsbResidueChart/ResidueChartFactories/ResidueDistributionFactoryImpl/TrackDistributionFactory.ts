@@ -22,13 +22,15 @@ export class TrackDistributionFactory implements ResidueDistributionFactoryInter
 
     }
 
-    getDistribution(tracks:TrackManagerInterface[], blockType:string, numberResidues: number): ResidueDistributionInterface {
+    getDistribution(tracks:TrackManagerInterface[], blockType:string, numberResidues: number): ResidueDistributionInterface | undefined {
 
-        switch(this.distributionConfig.getBlockConfig(blockType).contentType) {
+        switch(this.distributionConfig.getBlockConfig(blockType)?.contentType) {
             case "binary":
                 return this.multipleTrackDistributionFactory.getDistribution(tracks, blockType, numberResidues);
             case "numerical":
                 return this.numericalTrackDistributionFactory.getDistribution([tracks[0]], blockType, numberResidues);
+            default:
+                return undefined;
         }
 
     }

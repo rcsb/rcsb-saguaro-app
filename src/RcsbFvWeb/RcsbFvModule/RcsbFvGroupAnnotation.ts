@@ -10,12 +10,15 @@ import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/Track
 import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
 import {CollectGroupAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
 
     public async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        assertDefined(buildConfig.group), assertDefined(buildConfig.groupId), assertDefined(buildConfig.additionalConfig?.page), assertDefined(buildConfig.additionalConfig?.sequencePrefix);
         const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -52,7 +55,6 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
     }
 
     protected concatAlignmentAndAnnotationTracks(): void {
-        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = this.referenceTrack ? [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks) : this.alignmentTracks.concat(this.annotationTracks);
     }
 }

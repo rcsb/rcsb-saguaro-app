@@ -13,7 +13,7 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
     return {
         addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
             if(querySequenceLogo.length == 0)
-                return;
+                return new Promise(()=>{});
             [{
                 trackId: "annotationTrack_ALIGNMENT_FREQ",
                 displayType: RcsbFvDisplayTypes.MULTI_AREA,
@@ -49,16 +49,16 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                 }))
             }].forEach(track=>tracks.alignmentTracks.unshift(track));
             querySequenceLogo = [];
-            return void 0;
+            return new Promise(()=>{});
         },
         processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
             processAlignments(data.alignments);
-            return void 0;
+            return new Promise(()=>{});
         },
         filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
             const annotations: Array<AnnotationFeatures> = data.annotations;
             annotations.forEach(ann=>{
-                ann.features = ann.features.filter(f=>(f.name != "automated matches"));
+                ann.features = ann.features?.filter(f=>(f?.name != "automated matches"));
             })
             return new Promise<Array<AnnotationFeatures>>((resolve)=>{
                 resolve(annotations);
@@ -67,10 +67,11 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
     };
 
     function processAlignments(alignment: AlignmentResponse){
-        if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo.length)
+        if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo?.length)
             throw "ERROR Alignment length and logo should match"
         alignment.alignment_logo?.forEach(al=>{
-            querySequenceLogo.push(new Logo<aaType>(al));
+            if(al)
+                querySequenceLogo.push(new Logo<aaType>(al));
         });
     }
 

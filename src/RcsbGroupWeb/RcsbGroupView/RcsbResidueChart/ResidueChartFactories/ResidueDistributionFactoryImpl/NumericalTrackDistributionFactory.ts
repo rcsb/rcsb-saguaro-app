@@ -8,6 +8,8 @@ import {
 } from "../../../../../RcsbFvWeb/RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 import {range} from "lodash";
+import {Assertions} from "../../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class NumericalTrackDistributionFactory implements ResidueDistributionFactoryInterface<[string,number]> {
 
@@ -19,7 +21,8 @@ export class NumericalTrackDistributionFactory implements ResidueDistributionFac
 
     getDistribution(tracks:[TrackManagerInterface],blockType:string,numberResidues:number):ResidueDistributionInterface {
         const track: TrackManagerInterface = tracks[0];
-        const numericalCategories = this.distributionConfig.getTrackConfig(track.getId()).numericalCategories;
+        const numericalCategories = this.distributionConfig.getTrackConfig(track.getId())?.numericalCategories;
+        assertDefined(numericalCategories);
         const bucketMap: Map<string,ResidueBucket> = new Map<string, ResidueBucket>();
         const undefResidues: Set<number> = new Set(range(1,numberResidues+1));
         numericalCategories.categories.forEach(category=>{
@@ -30,18 +33,19 @@ export class NumericalTrackDistributionFactory implements ResidueDistributionFac
             });
         });
         track.forEach(ann=>{
-            let index: number = numericalCategories.thresholds.findIndex((x)=>x>=ann.value);
+            let index: number = numericalCategories.thresholds.findIndex((x)=>x>=(ann.value ?? Number.MAX_SAFE_INTEGER));
             if(index<0) index = numericalCategories.thresholds.length;
             const label: string = numericalCategories.categories[index].label;
-            bucketMap.get(label).residueSet.add(ann.begin);
+            bucketMap.get(label)?.residueSet.add(ann.begin);
             undefResidues.delete(ann.begin)
         });
-        const undefTrack = this.distributionConfig.getBlockConfig(blockType).undefTrack;
+        const bc = this.distributionConfig.getBlockConfig(blockType);
+        assertDefined(bc)
         return {
-            attribute:this.distributionConfig.getBlockConfig(blockType).type,
-            title:this.distributionConfig.getBlockConfig(blockType).title,
-            buckets: Array.from(bucketMap.values()).concat(undefTrack && undefResidues.size > 0 ? [{
-                ...undefTrack,
+            attribute: bc.type,
+            title:bc.title,
+            buckets: Array.from(bucketMap.values()).concat(bc.undefTrack && undefResidues.size > 0 ? [{
+                ...bc.undefTrack,
                 residueSet: undefResidues
             }] : [])
         };

@@ -14,7 +14,10 @@ interface CommonAlignmentInterface {
     excludeFirstRowLink?:boolean;
 }
 
-export interface CollectAlignmentInterface extends QueryAlignmentArgs, CommonAlignmentInterface {
+type QueryAlignmentArgsTypes = {
+    [K in keyof QueryAlignmentArgs]: NonNullable<QueryAlignmentArgs[K]>
+}
+export interface CollectAlignmentInterface extends QueryAlignmentArgsTypes, CommonAlignmentInterface {
 
 }
 
@@ -30,7 +33,7 @@ export interface AlignmentCollectorInterface {
     getTargets():Promise<Array<string>>;
     getAlignment():Promise<AlignmentResponse>;
     getAlignmentLength(): Promise<number>;
-    collect(requestConfig: CollectAlignmentInterface | CollectGroupAlignmentInterface,
+    collect(requestConfig: AlignmentCollectConfig,
             filter?:Array<string>,
     ): Promise<AlignmentResponse>;
 }

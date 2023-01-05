@@ -12,15 +12,18 @@ import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModule
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
 import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const upAcc: string = buildConfig.upAcc;
-        const entityId:string = buildConfig.entityId;
-        const instanceId: string = buildConfig.instanceId;
-        const additionalConfig:RcsbFvAdditionalConfig = buildConfig.additionalConfig;
+        const upAcc: string | undefined= buildConfig.upAcc;
+        const entityId:string | undefined = buildConfig.entityId;
+        const instanceId: string | undefined = buildConfig.instanceId;
+        const additionalConfig:RcsbFvAdditionalConfig | undefined = buildConfig.additionalConfig;
+        assertDefined(entityId), assertDefined(instanceId), assertDefined(upAcc);
         let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
             sources = additionalConfig.sources;
@@ -67,7 +70,6 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
     }
 
     protected concatAlignmentAndAnnotationTracks(): void {
-        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData = [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks);
     }
 

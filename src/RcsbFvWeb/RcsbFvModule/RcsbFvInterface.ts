@@ -23,6 +23,8 @@ import {
     InstanceSequenceTrackTitleFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackTitleFactoryImpl/InstanceSequenceTrackTitleFactory";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
@@ -33,7 +35,8 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const instanceId: string = buildConfig.instanceId;
+        const instanceId: string | undefined = buildConfig.instanceId;
+        assertDefined(instanceId);
         this.instanceId = instanceId;
         const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
 
@@ -78,23 +81,27 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     }
 
     private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string> {
-        if(ann.source === Source.PdbInterface) {
+        if(ann.source === Source.PdbInterface && ann.target_identifiers?.interface_id) {
             return ann.target_identifiers.interface_id + "|" + ann.target_identifiers.interface_partner_index;
         }
+        return "";
     }
 
-    private titleSuffix(rcsbContext: RcsbContextType): ((ann: AnnotationFeatures, d: Feature)=>Promise<string>) {
+    private titleSuffix(rcsbContext?: RcsbContextType): ((ann: AnnotationFeatures, d: Feature)=>Promise<string>) {
         return (async (ann: AnnotationFeatures, d: Feature) => {
             if (ann.source === Source.PdbInterface) {
+                if(!ann.target_id)
+                    return "";
                 const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
                 const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
-                const chPair: [string, string] = interfaceTranslate.getInstances(ann.target_id);
-                if(!chPair) return "";
-                const asym: string = chPair[0] == chain ? chPair[1] : chPair[0]
-                const auth: string = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
-                const operators: [Array<Array<string>>, Array<Array<string>>] = interfaceTranslate.getOperatorIds(ann.target_id);
+                const chPair: [string, string] | undefined = interfaceTranslate.getInstances(ann.target_id);
+                if(!chPair)
+                    return "";
+                const asym: string = chPair[0] == chain ? chPair[1] : chPair[0];
+                const auth: string | undefined = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
+                const operators: [Array<Array<string>>, Array<Array<string>>] | undefined = interfaceTranslate.getOperatorIds(ann.target_id);
                 let partnerOperator: string = "";
-                if(Array.isArray(rcsbContext.operatorIds)){
+                if(operators && ann.target_identifiers?.interface_partner_index && rcsbContext && Array.isArray(rcsbContext.operatorIds)){
                     const opIndex: number = operators[ann.target_identifiers.interface_partner_index].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
                     if(opIndex < 0) {
                         console.error(`Operator Id ${rcsbContext.operatorIds.join("-")} not found in [[${operators[0]}],[${operators[1]}]]`);
@@ -105,6 +112,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 }
                 return (asym == auth ? asym : `${asym}[auth ${auth}]`)+partnerOperator;
             }
+            return "";
         });
     }
 
@@ -112,6 +120,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         if (ann.source === Source.PdbInterface && d.type === FeatureType.BurialFraction) {
             return "BINDING CHAIN ";
         }
+        return "";
     }
 }
 

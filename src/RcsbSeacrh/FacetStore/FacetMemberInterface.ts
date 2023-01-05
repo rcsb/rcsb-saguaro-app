@@ -12,7 +12,7 @@ export type FacetType = TermsFacet | HistogramFacet | DateHistogramFacet | Range
 
 export interface FacetMemberInterface {
     id: string;
-    title: string;
+    title?: string;
     attributeName: string;
     attribute: string;
     chartType: ChartType;

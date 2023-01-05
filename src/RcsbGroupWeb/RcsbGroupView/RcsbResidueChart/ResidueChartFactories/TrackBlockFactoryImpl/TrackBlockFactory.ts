@@ -15,12 +15,12 @@ export class TrackBlockFactory implements TrackBlockFactoryInterface<{blockType:
     getTrackBlocks(tracks: TrackManagerInterface[]): ({ tracks: TrackManagerInterface[] } & { blockType: string })[] {
         const trackMap: Map<string,TrackManagerInterface[]> = new Map<string, TrackManagerInterface[]>();
         tracks.forEach(t=>{
-            const blockType: string = this.distributionConfig.getBlockType(t.getId());
+            const blockType: string|undefined = this.distributionConfig.getBlockType(t.getId());
             if(!blockType)
                 return;
             if(!trackMap.has(blockType))
                 trackMap.set(blockType, []);
-            trackMap.get(blockType).push(t);
+            trackMap.get(blockType)?.push(t);
         });
         return Array.from(trackMap.entries()).map(e=>({blockType:e[0],tracks:e[1]}));
     }

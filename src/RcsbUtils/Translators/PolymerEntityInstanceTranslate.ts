@@ -30,7 +30,7 @@ export class PolymerEntityInstanceTranslate{
             this.instanceAsymToEntity.set(d.asymId,d.entityId);
             if(!this.entityToAsym.has(d.entityId))
                 this.entityToAsym.set(d.entityId, new Set<string>());
-            this.entityToAsym.get(d.entityId).add(d.asymId);
+            this.entityToAsym.get(d.entityId)?.add(d.asymId);
         });
     }
 
@@ -38,39 +38,34 @@ export class PolymerEntityInstanceTranslate{
         return this.rawData;
     }
 
-    public translateEntityToAsym(id: string): Array<string>{
-        if(this.entityToAsym.has(id))
-            return Array.from( this.entityToAsym.get(id) );
-        return null;
+    public translateEntityToAsym(id: string): string[] | undefined {
+        const asymIds: Set<string> | undefined = this.entityToAsym.get(id);
+        if(asymIds)
+            return Array.from(asymIds);
     }
 
-    public translateAsymToEntity(id: string): string{
-        if(this.instanceAsymToEntity.has(id))
-            return this.instanceAsymToEntity.get(id);
-        return null;
+    public translateAsymToEntity(id: string): string | undefined {
+        return this.instanceAsymToEntity.get(id);
     }
 
-    public translateAsymToAuth(id: string): string{
-        if(this.instanceAsymToAuth.has(id))
-            return this.instanceAsymToAuth.get(id);
-        return null;
+    public translateAsymToAuth(id: string): string | undefined {
+        return this.instanceAsymToAuth.get(id);
     }
 
-    public translateAuthToAsym(id: string): string{
-        if(this.instanceAuthToAsym.has(id))
-            return this.instanceAuthToAsym.get(id);
-        return null;
+    public translateAuthToAsym(id: string): string | undefined{
+        return this.instanceAuthToAsym.get(id);
     }
 
-    public translateAuthResId(asymId:string, index:number): string{
-        if(!this.instanceAuthResIds.has(asymId))
-            return null;
-        else if(index>this.instanceAuthResIds.get(asymId).length)
-            return null;
-        else if(this.instanceAuthResIds.get(asymId)[index-1])
-            return null;
+    public translateAuthResId(asymId:string, index:number): string | undefined {
+        const autReaIds: string[] | undefined =  this.instanceAuthResIds.get(asymId);
+        if(!autReaIds)
+            return undefined;
+        else if(index > autReaIds.length)
+            return undefined;
+        else if(autReaIds[index-1])
+            return undefined;
         else
-            return this.instanceAuthResIds.get(asymId)[index-1];
+            return autReaIds[index-1];
     }
 
     public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
@@ -79,7 +74,7 @@ export class PolymerEntityInstanceTranslate{
             const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
             o.indexName = this.INDEX_NAME;
-        }else if(alignmentContext.to === SequenceReference.PdbInstance){
+        }else if(alignmentContext.to === SequenceReference.PdbInstance && alignmentContext.from){
             const asymId: string = alignmentContext.targetId.split(TagDelimiter.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
             o.indexName = this.INDEX_NAME;
@@ -89,20 +84,23 @@ export class PolymerEntityInstanceTranslate{
 
     private helperAddAuthorResIds(e: RcsbFvTrackDataElementInterface, reference:string, source:string, asymId: string):RcsbFvTrackDataElementInterface{
         let out: RcsbFvTrackDataElementInterface = e;
+        const authResIds: string[] | undefined = this.instanceAuthResIds.get(asymId);
+        if(!authResIds)
+            return out;
         if( reference === SequenceReference.PdbInstance || (reference === SequenceReference.PdbEntity && source === Source.PdbInstance) ) {
-            const x:string = this.instanceAuthResIds.get(asymId)[e.begin-1];
-            if (typeof e.end === "number" && this.instanceAuthResIds.get(asymId)[e.end-1] != x){
+            const x:string = authResIds[e.begin-1];
+            if (typeof e.end === "number" && authResIds[e.end-1] != x){
                 out.beginName = x;
-                out.endName = this.instanceAuthResIds.get(asymId)[e.end-1];
-            }else if(typeof e.end != "number" || this.instanceAuthResIds.get(asymId)[e.end-1] == x){
+                out.endName = authResIds[e.end-1];
+            }else if(typeof e.end != "number" || authResIds[e.end-1] == x){
                 out.beginName = x;
             }
-        }else if( source === Source.PdbInstance ){
-            const x:string = this.instanceAuthResIds.get(asymId)[e.oriBegin-1];
-            if(typeof e.oriEnd === "number" && this.instanceAuthResIds.get(asymId)[e.oriEnd-1] != x){
+        }else if( source === Source.PdbInstance  && e.oriBegin){
+            const x:string = authResIds[e.oriBegin-1];
+            if(typeof e.oriEnd === "number" && authResIds[e.oriEnd-1] != x){
                 out.oriBeginName = x;
-                out.oriEndName = this.instanceAuthResIds.get(asymId)[e.oriEnd-1];
-            }else if(typeof e.oriEnd != "number" || this.instanceAuthResIds.get(asymId)[e.oriEnd-1] == x){
+                out.oriEndName =authResIds[e.oriEnd-1];
+            }else if(typeof e.oriEnd != "number" || authResIds[e.oriEnd-1] == x){
                 out.oriBeginName = x;
             }
         }

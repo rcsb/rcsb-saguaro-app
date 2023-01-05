@@ -1,4 +1,4 @@
-import {AlignmentLogo} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentLogo, Maybe} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 export class Logo<T extends string>  {
 
@@ -11,10 +11,12 @@ export class Logo<T extends string>  {
         })
     }*/
 
-    constructor(logo: AlignmentLogo[]) {
+    constructor(logo: Maybe<AlignmentLogo>[]) {
         logo.forEach(s=>{
-            this.symbols[s.symbol as T] = s.value;
-            this.n += s.value;
+            if(s?.value && s?.symbol){
+                this.symbols[s.symbol as T] = s.value;
+                this.n += s.value;
+            }
         });
     }
 
@@ -27,7 +29,7 @@ export class Logo<T extends string>  {
         this.n ++;
     }*/
 
-    get(aa: T): number{
+    get(aa: T): number | undefined{
         return this.symbols[aa];
     }
 
@@ -38,15 +40,26 @@ export class Logo<T extends string>  {
     }
 
     mode(): T {
-        return this.aaTypes().sort((a, b)=>(this.symbols[b]-this.symbols[a]))[0];
+       return this.aaSort()[0];
     }
 
     frequency(): {symbol:T, value:number}[] {
-        return this.aaTypes().sort((a, b)=>(this.symbols[b]-this.symbols[a])).map(a=>({symbol:a, value:this.get(a)/this.n}));
+        return this.aaSort().map(a=>({symbol:a, value:(this.get(a) ?? 0)/this.n}));
     }
 
     entropy(): number {
-        return -this.aaTypes().map<number>(aa=>(this.get(aa)!=0 ? (this.get(aa)/this.n) * (Math.log(this.get(aa)/this.n) / Math.log(this.aaTypes().length)) : 0)).reduce((p,v)=>(p+v));
+        return -this.aaTypes().map<number>(aa=>(this.get(aa)!=0 ? ((this.get(aa) ?? 0)/this.n) * (Math.log((this.get(aa) ?? 0)/this.n) / Math.log(this.aaTypes().length)) : 0)).reduce((p,v)=>(p+v));
+    }
+
+    private aaSort(): T[]{
+        return this.aaTypes().sort((a, b)=>{
+            const sB: number | undefined = this.symbols[b];
+            const sA: number | undefined = this.symbols[a]
+            if(sB && sA)
+                return (sB-sA);
+            else
+                return Number.MAX_SAFE_INTEGER;
+        });
     }
 
 }

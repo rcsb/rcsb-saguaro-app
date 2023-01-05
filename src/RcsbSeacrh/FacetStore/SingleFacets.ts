@@ -71,7 +71,7 @@ export const METHODOLOGY_FACET: FacetMemberInterface = {
 
 export const RELEASE_DATE_FACET: FacetMemberInterface = {
     id: "release_date",
-    title: null,
+    title: undefined,
     attributeName: "RELEASE_DATE_FACET",
     attribute: RcsbSearchMetadata.RcsbAccessionInfo.InitialReleaseDate.path,
     contentType: "date",
@@ -336,7 +336,7 @@ export const PFAM_FACET: FacetMemberInterface = {
 
 export const ENTITY_NAME_FACET: FacetMemberInterface = {
     id: "entiy_names",
-    title: null,
+    title: undefined,
     attributeName: "ENTITY_NAME_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbPolymerNameCombined.Names.path,
     contentType: "string",
@@ -452,7 +452,7 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
         return {
             name: facet.name,
             buckets: facet.buckets.filter((g) => (
-                g.facets.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "molecular_function"))).length > 0).length > 0
+                (g.facets?.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "molecular_function"))).length > 0).length ?? 0) > 0
             )).map((g) => ({
                 label: g.label,
                 population: g.population
@@ -511,7 +511,7 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
         return {
             name: facet.name,
             buckets: facet.buckets.filter((g) => (
-                g.facets.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "biological_process"))).length > 0).length > 0
+                (g.facets?.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "biological_process"))).length > 0).length ?? 0) > 0
             )).map((g) => ({
                 label: g.label,
                 population: g.population
@@ -570,7 +570,7 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
         return {
             name: facet.name,
             buckets: facet.buckets.filter((g) => (
-                g.facets.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "cellular_component"))).length > 0).length > 0
+                (g.facets?.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "cellular_component"))).length > 0).length ?? 0) > 0
             )).map((g) => ({
                 label: g.label,
                 population: g.population

@@ -42,6 +42,7 @@ import {
 import {AlignmentCollector} from "../../../../RcsbCollectTools/AlignmentCollector/AlignmentCollector";
 import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextManager";
 import {Helper} from "./Helper";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 
 export interface ResidueChartInterface {
     granularity: "entry" | "assembly" | "instance" | "entity";
@@ -50,16 +51,18 @@ export interface ResidueChartInterface {
 
 export namespace ResidueChartTools {
 
+    import assertDefined = Assertions.assertDefined;
+
     export async function getResidueDistribution(residueChart: ResidueChartInterface): Promise<Promise<RcsbChartInterface[]>> {
         switch (residueChart.granularity){
             case "entry":
                 return await getEntryCharts(residueChart.rcsbId)
             case "assembly":
-                break;
+                return [];
             case "instance":
                 return await getInstanceCharts(residueChart.rcsbId)
             case "entity":
-                break;
+                return [];
         }
     }
 
@@ -87,7 +90,7 @@ export namespace ResidueChartTools {
             annotationGenerator: interfaceAnnotations,
             annotationFilter: filter
         };
-        return await getCharts(annotationsRequestContext, await annotationCollector.collect(annotationsRequestContext),alignmentResponse.query_sequence.length);
+        return await getCharts(annotationsRequestContext, await annotationCollector.collect(annotationsRequestContext),alignmentResponse.query_sequence?.length ?? -1);
     }
 
     async function getCharts(annotationRequestContext: AnnotationRequestContext, annotations: Array<AnnotationFeatures>, numberResidues:number): Promise<RcsbChartInterface[]> {
@@ -119,9 +122,10 @@ export namespace ResidueChartTools {
             config.annotationBlockManager.getTracks()
         ).map(block=>(
             config.residueDistributionFactory.getDistribution(block.tracks,block.blockType,config.numberResidues)
-        )).map(distribution=>(
-            config.distributionChartFactory.getChart(distribution)
-        ));
+        )).map(distribution=> {
+            assertDefined(distribution)
+            return config.distributionChartFactory.getChart(distribution)
+        });
 
     }
 

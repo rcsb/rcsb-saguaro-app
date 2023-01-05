@@ -30,18 +30,16 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
                     interpolationType: InterpolationTypes.STEP,
                     trackData: Array.from(bindingSiteMap.values())
                 });
-            await addConservation.addTo(tracks);
-            return void 0;
+            await addConservation.addTo?.(tracks);
         },
         async processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
             processFeatures(data.annotations);
-            await addConservation.processAlignmentAndFeatures(data);
-            return void 0;
+            await addConservation.processAlignmentAndFeatures?.(data);
         },
         filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
             const annotations: Array<AnnotationFeatures> = data.annotations;
             annotations.forEach(ann=>{
-                ann.features = ann.features.filter(f=>f.name.includes("ligand"));
+                ann.features = ann.features?.filter(f=> f ? f.name?.includes("ligand") : false);
             })
             return new Promise<Array<AnnotationFeatures>>((resolve => {
                 resolve(annotations);
@@ -53,31 +51,36 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
         // position > ligand name
         const ligandMap: Map<string,Set<string>> = new Map<string, Set<string>>();
         annotations.forEach(ann => {
-            ann.features.forEach(d => {
-                d.feature_positions.forEach(p=>{
-                    p.values.forEach((v,n)=>{
-                        const key: string = (p.beg_seq_id+n).toString();
-                        if(!ligandMap.has(key))
-                            ligandMap.set(key, new Set<string>());
-                        else if(!ligandMap.get(key).has(d.name))
-                            ligandMap.get(key).add(d.name)
-                        else
-                            return;
-                        if(!bindingSiteMap.has(key)){
-                            bindingSiteMap.set(key,{
-                                begin: p.beg_seq_id+n,
-                                type: trackName,
-                                value: 1
-                            })
-                            if(max == 0)
-                                max = 1;
-                        }else{
-                            (bindingSiteMap.get(key).value as number) += 1;
-                            if((bindingSiteMap.get(key).value as number) > max)
-                                max = (bindingSiteMap.get(key).value as number);
-                        }
+            ann.features?.forEach(d => {
+                if(d)
+                    d.feature_positions?.forEach(p=>{
+                        if(p?.beg_seq_id)
+                            p.values?.forEach((v,n)=>{
+                                const key: string = (p.beg_seq_id as number+n).toString();
+                                if(!ligandMap.has(key))
+                                    ligandMap.set(key, new Set<string>());
+                                else if(d.name && !ligandMap.get(key)?.has(d.name))
+                                    ligandMap.get(key)?.add(d.name)
+                                else
+                                    return;
+                                const bs = bindingSiteMap.get(key);
+                                if(!bs){
+                                    bindingSiteMap.set(key,{
+                                        begin: p.beg_seq_id as number+n,
+                                        type: trackName,
+                                        value: 1
+                                    })
+                                    if(max == 0)
+                                        max = 1;
+                                }else{
+                                    if(bs){
+                                        (bs.value as number) += 1;
+                                        if((bs.value as number) > max)
+                                            max = (bs.value as number);
+                                    }
+                                }
+                            });
                     });
-                });
             });
         });
     }

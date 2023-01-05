@@ -79,9 +79,9 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
     }
 
     private checkUrlState(): void {
-        const urlParams: {key:string;value: any;}[] = UrlTools.decodeUrlParameters();
+        const urlParams: {key:string;value: any;}[] | undefined = UrlTools.decodeUrlParameters();
         if(!urlParams) return;
-        const urlState: {key:string;value:any;} = urlParams.find(p=>p.key === this.URL_STATE_PARAMETER_NAME);
+        const urlState: {key:string;value:any;} | undefined = urlParams.find(p=>p.key === this.URL_STATE_PARAMETER_NAME);
         if(urlState) this.setState(urlState.value);
     }
 
@@ -89,7 +89,7 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
         if(o.searchQuery && o.attributeName != this.COMPONENT_NAME)
             this.setState(
                 {searchQueryList:[...this.state.searchQueryList.slice(0,this.state.index+1), o.searchQuery], index:this.state.searchQueryList.slice(0,this.state.index+1).length},
-                ()=> this.encodeUrlParameters(o.searchQuery)
+                ()=>{if(o.searchQuery) this.encodeUrlParameters(o.searchQuery)}
             );
     }
 
@@ -111,11 +111,12 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
         }
     }
 
-    private encodeUrlParameters(query: SearchQuery): void {
-        UrlTools.encodeUrlParameterList([
-            {key: this.URL_REQUEST_PARAMETER_NAME, value: query},
-            {key: this.URL_STATE_PARAMETER_NAME, value: this.state}
-        ])
+    private encodeUrlParameters(query: SearchQuery | undefined): void {
+        if(query)
+            UrlTools.encodeUrlParameterList([
+                {key: this.URL_REQUEST_PARAMETER_NAME, value: query},
+                {key: this.URL_STATE_PARAMETER_NAME, value: this.state}
+            ])
     }
 
 }

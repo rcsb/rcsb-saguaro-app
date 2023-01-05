@@ -38,17 +38,15 @@ export class PairwiseAlignmentBuilder {
     private targetSequence: string;
     private queryAlignment: string;
     private targetAlignment: string;
-    private queryBegin: number;
-    private queryEnd: number;
-    private targetBegin: number;
-    private targetEnd: number;
-    private alignmentLength: number;
-    private targetId: string;
-    private queryId: string;
+    private readonly queryBegin: number;
+    private readonly targetBegin: number;
+    private readonly alignmentLength: number;
+    private readonly targetId: string;
+    private readonly queryId: string;
     private sequenceId: number;
-    private isQueryExternal: boolean;
-    private isTargetExternal: boolean;
-    private pairwiseView: boolean;
+    private readonly isQueryExternal: boolean;
+    private readonly isTargetExternal: boolean;
+    private readonly pairwiseView: boolean | undefined;
 
     constructor(paI: PairwiseAlignmentInterface) {
         this.querySequence = paI.querySequence;
@@ -56,9 +54,7 @@ export class PairwiseAlignmentBuilder {
         this.queryAlignment = paI.queryAlignment;
         this.targetAlignment = paI.targetAlignment;
         this.queryBegin = paI.queryBegin;
-        this.queryEnd = paI.queryEnd;
         this.targetBegin = paI.targetBegin;
-        this.targetEnd = paI.targetEnd;
         this.targetId = paI.targetId;
         this.queryId = paI.queryId;
         this.sequenceId = paI.sequenceId;
@@ -330,17 +326,19 @@ export class PairwiseAlignmentBuilder {
     }
 
     private addBlockTerminalTags(alignedBlocks: Array<RcsbFvTrackDataElementInterface>): void{
-        if(alignedBlocks[0].oriBegin > 1){
+        if(alignedBlocks[0].oriBegin ?? 0 > 1){
             alignedBlocks[0].openBegin = true;
         }
         for(let n=0; n<(alignedBlocks.length-1); n++){
-            if(alignedBlocks[n].oriEnd+1 != alignedBlocks[n+1].oriBegin){
+            const oriEnd = alignedBlocks[n].oriEnd;
+            if( oriEnd && oriEnd +1 != alignedBlocks[n+1].oriBegin){
                 alignedBlocks[n].openEnd = true;
                 alignedBlocks[n+1].openBegin = true;
 
             }
         }
-        if(alignedBlocks[alignedBlocks.length-1].oriEnd < this.targetSequence.length){
+        const oriEnd = alignedBlocks[alignedBlocks.length-1].oriEnd;
+        if(oriEnd && oriEnd < this.targetSequence.length){
             alignedBlocks[alignedBlocks.length-1].openEnd = true;
         }
         FeatureTools.mergeBlocks(alignedBlocks);

@@ -40,7 +40,7 @@ export namespace GroupChartMap{
                 chart,
                 groupProvenanceId,
                 groupId,
-                searchQuery ? {
+                searchQuery?.query ? {
                     query: SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query),
                     return_type:groupProvenanceToReturnType[groupProvenanceId]
                 } : {
@@ -56,7 +56,7 @@ export namespace GroupChartMap{
             prev.set(current.attributeName,[current])
             const comp = subData?.find((c)=>(c.attributeName===current.attributeName))
             if(comp)
-                prev.get(current.attributeName).push(comp);
+                prev.get(current.attributeName)?.push(comp);
             return prev;
         },new Map());
 
@@ -67,15 +67,17 @@ export namespace GroupChartMap{
         let subData: Array<RcsbChartInterface> | undefined;
         let partialFacets: Array<BucketFacet> = [];
         for (const service of facetStore.getServices()) {
-            const groupQuery: SearchQueryType = SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query, service);
-            const groupProperties: QueryResult = await rcsbRequestCtxManager.getSearchQueryFacets(
-                groupQuery,
-                facetStore.getFacetService(service).map(f => f.facet),
-                facetStore.returnType,
-                searchQuery.request_options?.results_content_type ?? ["computational","experimental"]
-            );
-            if(groupProperties)
-                partialFacets = partialFacets.concat(groupProperties.facets as BucketFacet[]);
+            if(searchQuery.query) {
+                const groupQuery: SearchQueryType = SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query, service);
+                const groupProperties: QueryResult | null = await rcsbRequestCtxManager.getSearchQueryFacets(
+                    groupQuery,
+                    facetStore.getFacetService(service).map(f => f.facet),
+                    facetStore.returnType,
+                    searchQuery.request_options?.results_content_type ?? ["computational", "experimental"]
+                );
+                if (groupProperties)
+                    partialFacets = partialFacets.concat(groupProperties.facets as BucketFacet[]);
+            }
         }
         let partialData: Array<RcsbChartInterface> = cloneDeep(chartData);
         if(partialFacets.length > 0) {

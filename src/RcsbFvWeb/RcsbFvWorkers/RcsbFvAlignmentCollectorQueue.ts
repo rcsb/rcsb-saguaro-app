@@ -60,7 +60,9 @@ export class RcsbFvAlignmentCollectorQueue {
             this.workerList.filter(d=>d.available).forEach(aW=>{
                 if(this.taskQueue.length > 0){
                     aW.available = false;
-                    const task: TaskInterface = this.taskQueue.shift();
+                    const task: TaskInterface | undefined = this.taskQueue.shift();
+                    if(!task)
+                        return;
                     aW.worker.postMessage(task.request);
                     aW.worker.onmessage = (e) => {
                         task.callback(e.data);
