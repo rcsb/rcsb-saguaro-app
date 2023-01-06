@@ -18,7 +18,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
 
     public async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        assertDefined(buildConfig.group), assertDefined(buildConfig.groupId), assertDefined(buildConfig.additionalConfig?.page), assertDefined(buildConfig.additionalConfig?.sequencePrefix);
+        assertDefined(buildConfig.group), assertDefined(buildConfig.groupId), assertDefined(buildConfig.additionalConfig?.page);
         const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -29,7 +29,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true,
-            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix,
+            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);

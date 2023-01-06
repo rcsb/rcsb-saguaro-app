@@ -105,10 +105,10 @@ class RcsbRequestContextManager {
             async ()=>{
                 RRT.mapPending<PolymerEntityInstanceTranslate>(entryId, this.polymerEntityToInstanceMap);
                 const result: Map<string, Array<PolymerEntityInstanceInterface>> = await this.assemblyCollector.collect({entry_id: entryId});
-                const obj = this.polymerEntityToInstanceMap.get(entryId);
-                const eid = result.get(this.modelKey);
-                assertDefined(obj, `object Id ${entryId} not found`), assertDefined(eid, `assembly ${entryId}/${this.modelKey} entity to instance translator error`);
-                RRT.mapSet<PolymerEntityInstanceTranslate>(obj, new PolymerEntityInstanceTranslate(eid));
+                const  eti = this.polymerEntityToInstanceMap.get(entryId);
+                const etit = result.get(this.modelKey);
+                assertDefined(eti), assertDefined(etit);
+                RRT.mapSet<PolymerEntityInstanceTranslate>(eti, new PolymerEntityInstanceTranslate(etit));
                 return new EntryAssemblyTranslate(result);
             }
         );
@@ -153,36 +153,39 @@ class RcsbRequestContextManager {
     public async getInterfaceToInstance(interfaceId:string): Promise<InterfaceInstanceTranslate>{
         const key: string = interfaceId;
         const assemblyId = interfaceId.split(TagDelimiter.instance)[0];
-        const iti = this.interfaceToInstanceMap.get(key);
-        if(iti?.status === "available"){
-            assertDefined(iti.data, `Corrupted data object in object id ${iti.id}`);
-            return iti.data;
-        } else if(iti?.status === "pending"){
-            return await RRT.mapResolve<InterfaceInstanceTranslate>(iti);
+        if(this.interfaceToInstanceMap.get(key)?.status === "available"){
+            const d = this.interfaceToInstanceMap.get(key)?.data;
+            assertDefined(d)
+            return d;
+        } else if(this.interfaceToInstanceMap.get(key)?.status === "pending"){
+            const o = this.interfaceToInstanceMap.get(key);
+            assertDefined(o);
+            return await RRT.mapResolve<InterfaceInstanceTranslate>(o);
         }else if (this.assemblyInterfacesMap.get(assemblyId)?.status === "pending"){
-            const obj = RRT.mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
-            return await RRT.mapResolve<InterfaceInstanceTranslate>(obj);
+            RRT.mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
+            const o = this.interfaceToInstanceMap.get(key);
+            assertDefined(o);
+            return await RRT.mapResolve<InterfaceInstanceTranslate>(o);
         }else{
             RRT.mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
             const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
-            const result: Array<InterfaceInstanceInterface> = await this.interfaceCollector.collect({interface_ids: assemblyInterfaces.getInterfaces(assemblyId)??[]});
+            const interfaceIds = assemblyInterfaces.getInterfaces(assemblyId);
+            const result: InterfaceInstanceInterface[] = interfaceIds ? await this.interfaceCollector.collect({interface_ids: interfaceIds}) : [];
             const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
             if (assemblyInterfaces.getInterfaces(assemblyId)?.length == 0){
                 this.interfaceToInstanceMap.set(key,{
-                    id:key,
                     data: translator,
                     status: "available",
                     resolveList: []
                 });
             }
-            for(const id of assemblyInterfaces.getInterfaces(assemblyId) ?? []){
-                if(this.interfaceToInstanceMap.get(id)?.status === "pending") {
-                    const obj = this.interfaceToInstanceMap.get(id);
-                    assertDefined(obj,`Corrupted data object in object id ${id}`);
-                    RRT.mapSet<InterfaceInstanceTranslate>(obj, translator);
-                }else {
+            for(const id of assemblyInterfaces.getInterfaces(assemblyId) ?? []) {
+                if (this.interfaceToInstanceMap.get(id)?.status === "pending") {
+                    const o = this.interfaceToInstanceMap.get(id);
+                    assertDefined(o);
+                    RRT.mapSet<InterfaceInstanceTranslate>(o, translator);
+                } else {
                     this.interfaceToInstanceMap.set(id, {
-                        id,
                         data: translator,
                         status: "available",
                         resolveList: []

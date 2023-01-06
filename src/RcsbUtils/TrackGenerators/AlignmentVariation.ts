@@ -13,7 +13,9 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
     return {
         addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
             if(querySequenceLogo.length == 0)
-                return new Promise(()=>{});
+                return new Promise((resolve)=>{
+                    resolve();
+                });
             [{
                 trackId: "annotationTrack_ALIGNMENT_FREQ",
                 displayType: RcsbFvDisplayTypes.MULTI_AREA,
@@ -29,6 +31,7 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                     const nFreq: number = 5;
                     const maxFreqList: Array<number> = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);
                     const gapFreq: number  = Math.trunc(s.frequency().filter(f=>f.symbol=="-")[0].value*100)/100;
+                    console.log(n+1, maxFreqList.map((f,n)=>maxFreqList.slice(0,(n+1)).reduce((v,n)=>v+n)).concat([1-gapFreq,1]))
                     return {
                         begin: n+1,
                         values: maxFreqList.map((f,n)=>maxFreqList.slice(0,(n+1)).reduce((v,n)=>v+n)).concat([1-gapFreq,1]),
@@ -49,11 +52,15 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                 }))
             }].forEach(track=>tracks.alignmentTracks.unshift(track));
             querySequenceLogo = [];
-            return new Promise(()=>{});
+            return new Promise((resolve)=>{
+                resolve();
+            });
         },
         processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
             processAlignments(data.alignments);
-            return new Promise(()=>{});
+            return new Promise((resolve)=>{
+                resolve();
+            });
         },
         filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
             const annotations: Array<AnnotationFeatures> = data.annotations;
@@ -68,7 +75,7 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
 
     function processAlignments(alignment: AlignmentResponse){
         if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo?.length)
-            throw "ERROR Alignment length and logo should match"
+            throw new Error("ERROR Alignment length and logo should match");
         alignment.alignment_logo?.forEach(al=>{
             if(al)
                 querySequenceLogo.push(new Logo<aaType>(al));
