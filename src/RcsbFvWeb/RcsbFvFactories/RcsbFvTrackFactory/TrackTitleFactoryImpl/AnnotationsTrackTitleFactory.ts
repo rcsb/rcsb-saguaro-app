@@ -8,7 +8,8 @@ import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureToo
 export class AnnotationsTrackTitleFactory implements TrackTitleFactoryInterface<[TrackManagerInterface]>{
 
     async getTrackTitle(trackManager: TrackManagerInterface): Promise<string | RcsbFvLink> {
-        return trackManager.getConfig() ? buildRowTitle(trackManager.getConfig()) : trackManager.getId();
+        const c = trackManager.getConfig();
+        return c ? buildRowTitle(c) : trackManager.getId();
     }
 
     async getTrackTitleFlagColor(trackManager: TrackManagerInterface): Promise<string> {
@@ -25,7 +26,7 @@ export class AnnotationsTrackTitleFactory implements TrackTitleFactoryInterface<
     }
 
     async getTrackTitlePrefix(trackManager: TrackManagerInterface): Promise<string> {
-        return trackManager.getConfig()?.prefix;
+        return trackManager.getConfig()?.prefix ?? "";
     }
 
 }

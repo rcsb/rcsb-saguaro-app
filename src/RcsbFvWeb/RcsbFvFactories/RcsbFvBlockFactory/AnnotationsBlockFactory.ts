@@ -12,12 +12,12 @@ export class AnnotationsBlockFactory implements BlockFactoryInterface<[Annotatio
     private readonly annotationsBlockData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
     readonly trackFactory: TrackFactoryInterface<[TrackManagerInterface]>;
-    readonly trackConfigModifier: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>;
+    readonly trackConfigModifier?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>;
 
     constructor(
         annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>,
         annotationTrackFactory: TrackFactoryInterface<[TrackManagerInterface]>,
-        trackModifier: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
+        trackModifier?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     ) {
         this.annotationBlockManager = annotationBlockManager;
         this.trackFactory = annotationTrackFactory;

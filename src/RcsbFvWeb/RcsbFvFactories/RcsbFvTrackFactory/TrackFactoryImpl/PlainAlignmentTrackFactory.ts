@@ -2,7 +2,6 @@ import {
     RcsbFvColorGradient,
     RcsbFvDisplayConfigInterface,
     RcsbFvDisplayTypes,
-    RcsbFvLink,
     RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
@@ -10,7 +9,6 @@ import {
     AlignedRegion,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
@@ -22,18 +20,18 @@ import {range} from "lodash";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {querySequence?:string;};
 
 export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]> {
 
     private readonly sequenceTrackFactory: SequenceTrackFactory;
-    private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
     private readonly trackTitleFactory: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>;
 
     constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
         this.sequenceTrackFactory = new SequenceTrackFactory(entityInstanceTranslator);
-        this.entityInstanceTranslator = entityInstanceTranslator;
         this.trackTitleFactory = new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
@@ -85,41 +83,47 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
         const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
         const targetSequence = targetAlignment.target_sequence;
         const sequenceData: Array<RcsbFvTrackDataElementInterface> = [];
+        const queryId = alignmentQueryContext.queryId ?? alignmentQueryContext.groupId;
+        assertDefined(queryId), assertDefined(targetAlignment.target_id);
         const alignmentContext: AlignmentContextInterface = {
-            queryId: alignmentQueryContext.queryId,
+            queryId,
             targetId: targetAlignment.target_id,
             from: alignmentQueryContext.from,
             to: alignmentQueryContext.to,
-            targetSequenceLength: targetAlignment.target_sequence.length,
+            targetSequenceLength: targetAlignment.target_sequence?.length,
             querySequenceLength: alignmentQueryContext.querySequence?.length
         };
-        targetAlignment.aligned_regions.forEach(region => {
-            const regionSequence = targetSequence.substring(region.target_begin - 1, region.target_end);
-            this.sequenceTrackFactory.buildSequenceData({
-                ...alignmentContext,
-                sequence: regionSequence,
-                begin: region.query_begin,
-                oriBegin: region.target_begin
-            }, "to").forEach(sd=>{
-                sequenceData.push(sd);
-            });
+        targetAlignment.aligned_regions?.forEach(region => {
+            if(!region?.target_begin || !region?.target_end )
+                return;
+            const regionSequence = targetSequence?.substring(region.target_begin - 1, region.target_end);
+            if(regionSequence)
+                this.sequenceTrackFactory.buildSequenceData({
+                    ...alignmentContext,
+                    sequence: regionSequence,
+                    begin: region.query_begin,
+                    oriBegin: region.target_begin
+                }, "to").forEach(sd=>{
+                    sequenceData.push(sd);
+                });
 
             alignedRegionToTrackElementList(region, alignmentContext).forEach(r=>{
                 alignedBlocks.push(r);
             })
 
-            if(alignmentQueryContext.querySequence)
+            if(regionSequence && alignmentQueryContext.querySequence)
                 findMismatch(regionSequence, alignmentQueryContext.querySequence.substring(region.query_begin - 1, region.query_end)).forEach(m => {
-                    mismatchData.push(this.sequenceTrackFactory.addAuthorResIds({
-                        begin: (m + region.query_begin),
-                        oriBegin: (m + region.target_begin),
-                        sourceId: targetAlignment.target_id,
-                        source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
-                        provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
-                        provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
-                        type: "MISMATCH",
-                        title: "MISMATCH"
-                    }, alignmentContext));
+                    if(alignmentQueryContext.querySequence && targetAlignment.target_id && alignmentContext.to)
+                        mismatchData.push(this.sequenceTrackFactory.addAuthorResIds({
+                            begin: (m + region.query_begin),
+                            oriBegin: (m + region.target_begin),
+                            sourceId: targetAlignment.target_id,
+                            source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+                            provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+                            provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
+                            type: "MISMATCH",
+                            title: "MISMATCH"
+                        }, alignmentContext));
                 });
         });
         return {alignedBlocks, mismatchData, sequenceData};
@@ -133,19 +137,22 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
         if (region.target_end != alignmentContext.targetSequenceLength && alignmentContext.querySequenceLength)
             openEnd = true;
 
-        return range(region.query_begin,region.query_end+1).map((p,n)=>this.addAuthorResIds({
-            begin: p,
-            oriBegin: region.target_begin+n,
-            sourceId: alignmentContext.targetId,
-            source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
-            provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
-            provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
-            openBegin: openBegin,
-            openEnd: openEnd,
-            type: "ALIGNED_BLOCK",
-            title: "ALIGNED REGION",
-            value:100
-        }, alignmentContext));
+        return range(region.query_begin,region.query_end+1).map((p,n)=>{
+            assertDefined(alignmentContext.to);
+            return this.addAuthorResIds({
+                begin: p,
+                oriBegin: region.target_begin+n,
+                sourceId: alignmentContext.targetId,
+                source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+                provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
+                openBegin: openBegin,
+                openEnd: openEnd,
+                type: "ALIGNED_BLOCK",
+                title: "ALIGNED REGION",
+                value:100
+            }, alignmentContext)
+        });
 
     }
 

@@ -26,8 +26,10 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         this.requestStatus = "pending";
         this.alignmentResponse = await this.requestAlignment(requestConfig);
         const targetAlignment: (TargetAlignment | null | undefined)[] | undefined = this.alignmentResponse?.target_alignment ?? this.alignmentResponse?.target_alignment_subset?.edges?.map(e=>e?.node);
-        assertElementListDefined(targetAlignment)
-        this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment?.filter(ta=>filter.includes(ta?.target_id ?? "not-included"));
+        if(targetAlignment) {
+            assertElementListDefined(targetAlignment);
+            this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment?.filter(ta => filter.includes(ta?.target_id ?? "not-included"));
+        }
         this.alignmentResponse = typeof requestConfig.externalTrackBuilder?.filterAlignments === "function" ? await requestConfig.externalTrackBuilder.filterAlignments({alignments: this.alignmentResponse}) : this.alignmentResponse;
         this.complete();
         return this.alignmentResponse;

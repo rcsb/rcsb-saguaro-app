@@ -10,11 +10,13 @@ import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {SequenceTrackTitleFactory} from "../TrackTitleFactoryImpl/SequenceTrackTitleFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 interface BuildSequenceDataInterface extends AlignmentContextInterface {
     sequence: string;
     begin: number;
-    oriBegin: number;
+    oriBegin?: number;
 }
 
 export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, string]> {
@@ -28,6 +30,8 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
     }
 
     public async getTrack(alignmentQueryContext: AlignmentRequestContextType, querySequence: string): Promise<RcsbFvRowConfigInterface> {
+        const queryId = alignmentQueryContext.queryId ?? alignmentQueryContext.groupId;
+        assertDefined(queryId);
         return {
             trackId: "mainSequenceTrack_" + alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -41,11 +45,11 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
             trackData: this.buildSequenceData({
                 sequence: querySequence,
                 begin: 1,
-                oriBegin: null,
-                queryId: alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
-                targetId: null,
+                oriBegin: undefined,
+                queryId,
+                targetId: "",
                 from: alignmentQueryContext.from,
-                to: null
+                to: undefined
             }, "from")
         };
     }
@@ -54,13 +58,16 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
         const sequenceData: Array<RcsbFvTrackDataElementInterface> = new Array<RcsbFvTrackDataElementInterface>();
         const id: string = source === "from" ? config.queryId : config.targetId;
         config.sequence.split("").forEach((s, i) => {
+            const c = config[source]
+            if(!c)
+                return;
             const o: RcsbFvTrackDataElementInterface = {
                 begin: (config.begin + i),
                 oriBegin: typeof config.oriBegin === "number" ? config.oriBegin + i : undefined,
                 sourceId: id,
-                source: TrackUtils.transformSourceFromTarget(id, config[source]),
-                provenanceName: TrackUtils.getProvenanceConfigFormTarget(id,config[source]).name,
-                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(id,config[source]).color,
+                source: TrackUtils.transformSourceFromTarget(id, c),
+                provenanceName: TrackUtils.getProvenanceConfigFormTarget(id,c).name,
+                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(id,c).color,
                 value: s
             };
             sequenceData.push(this.addAuthorResIds(o, {

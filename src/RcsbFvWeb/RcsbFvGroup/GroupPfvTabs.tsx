@@ -24,12 +24,12 @@ interface SequenceTabInterface {
     groupId: string;
     searchQuery?: SearchQuery;
 }
-export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
+export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
 
     private readonly featureViewers: Map<TabKey,RcsbFvModulePublicInterface> = new Map<TabKey, RcsbFvModulePublicInterface>();
-    private filterInstances: Array<string> = undefined;
-    private filterEntities: Array<string> = undefined;
-    private entityCount: number = undefined;
+    private filterInstances: Array<string> | undefined = undefined;
+    private filterEntities: Array<string> | undefined = undefined;
+    private entityCount: number | undefined = undefined;
     private currentTab: TabKey = ALIGNMENT;
 
     constructor(props:{groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery: SearchQuery}) {
@@ -54,7 +54,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
     }
 
     private async onMount() {
-        if(this.props.searchQuery) {
+        if(this.props.searchQuery && this.props.searchQuery.query) {
             this.filterEntities = await searchRequestProperty.requestMembers({
                 ...this.props.searchQuery,
                 query: SQT.addGroupNodeToSearchQuery(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery.query),
@@ -76,20 +76,21 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
 
     private syncPositionAndHighlight(tabKey: TabKey): void {
         if(tabKey !== this.currentTab){
-            const dom: [number,number] = this.featureViewers.get(this.currentTab)?.getFv().getDomain();
-            this.featureViewers.get(tabKey).getFv().setDomain(dom);
-            const sel: Array<SelectionInterface> = this.featureViewers.get(this.currentTab)?.getFv().getSelection("select");
-            if(sel?.length > 0){
-                this.featureViewers.get(tabKey).getFv().clearSelection("select");
-                this.featureViewers.get(tabKey).getFv().setSelection({
-                    elements:sel.map((s)=>({
+            const dom: [number,number] | undefined = this.featureViewers.get(this.currentTab)?.getFv().getDomain();
+            if(dom)
+                this.featureViewers.get(tabKey)?.getFv().setDomain(dom);
+            const sel: Array<SelectionInterface> | undefined = this.featureViewers.get(this.currentTab)?.getFv().getSelection("select");
+            if(sel && sel?.length > 0){
+                this.featureViewers.get(tabKey)?.getFv().clearSelection("select");
+                this.featureViewers.get(tabKey)?.getFv().setSelection({
+                    elements:sel?.map((s)=>({
                         begin:s.rcsbFvTrackDataElement.begin,
                         end:s.rcsbFvTrackDataElement.end
-                    })),
+                    })) ?? [],
                     mode:"select"
                 });
             }else{
-                this.featureViewers.get(tabKey).getFv().clearSelection("select");
+                this.featureViewers.get(tabKey)?.getFv().clearSelection("select");
             }
         }
     }
@@ -110,7 +111,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
                         tabKey.toString(),
                         this.props.groupProvenanceId,
                         this.props.groupId,
-                        this.entityCount,
+                        this.entityCount ?? 0,
                         {
                             page:{first:50, after:"0"},
                             alignmentFilter: this.filterEntities
@@ -125,7 +126,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
                         tabKey.toString(),
                         this.props.groupProvenanceId,
                         this.props.groupId,
-                        this.filterInstances.length,
+                        this.filterInstances?.length ?? 0,
                         {
                             page:{first:0,after: "0"},
                             alignmentFilter: this.props.searchQuery ?  this.filterEntities : undefined,
@@ -146,7 +147,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface, null> {
                         tabKey.toString(),
                         this.props.groupProvenanceId,
                         this.props.groupId,
-                        this.filterInstances.length,
+                        this.filterInstances?.length ?? 0,
                         {
                             page:{first:0,after: "0"},
                             alignmentFilter: this.props.searchQuery ? this.filterEntities : undefined,

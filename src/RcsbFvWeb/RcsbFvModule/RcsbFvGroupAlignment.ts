@@ -17,13 +17,16 @@ import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {
     CollectGroupAlignmentInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const groupId: string = buildConfig.groupId;
+        const groupId: string | undefined = buildConfig.groupId;
+        assertDefined(groupId), assertDefined(buildConfig.group), assertDefined(buildConfig.additionalConfig?.page);
         const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -34,17 +37,20 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             dynamicDisplay:false,
             fitTitleWidth:true,
             excludeFirstRowLink: true,
-            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix,
+            sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
-        const targetList: string[] = alignmentResponse.target_alignment.map(ta=>TagDelimiter.parseEntity(ta.target_id).entryId);
+        const targetList: string[] = alignmentResponse.target_alignment?.map(ta=>{
+            assertDefined(ta?.target_id);
+            return TagDelimiter.parseEntity(ta.target_id).entryId
+        }) ?? [];
         const alignmentFeatures: AnnotationFeatures[] = await collectAlignmentFeatures(groupId, targetList);
         await trackFactory.prepareFeatures(
-            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.UnobservedResidueXyz)})),
-            alignmentFeatures.map(af=>({...af, feature:af.features.filter(f=>f.type==Type.MaQaMetricLocalTypePlddt)}))
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.UnobservedResidueXyz)})),
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.MaQaMetricLocalTypePlddt)}))
         );
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
@@ -57,7 +63,6 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
     }
 
     protected concatAlignmentAndAnnotationTracks(): void {
-        const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         this.rowConfigData =  this.referenceTrack ? [this.referenceTrack].concat(this.alignmentTracks) : this.alignmentTracks;
     }
 

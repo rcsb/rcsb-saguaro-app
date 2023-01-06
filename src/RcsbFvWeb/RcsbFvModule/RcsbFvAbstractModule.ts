@@ -170,8 +170,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     }
 
     private async buildExternalTracks(): Promise<void> {
-        const externalTrackBuilder: ExternalTrackBuilderInterface = this.buildConfig.additionalConfig?.externalTrackBuilder;
-        const rcsbContext:Partial<PolymerEntityInstanceInterface> = this.buildConfig.additionalConfig?.rcsbContext;
+        const externalTrackBuilder: ExternalTrackBuilderInterface  | undefined = this.buildConfig.additionalConfig?.externalTrackBuilder;
+        const rcsbContext:Partial<PolymerEntityInstanceInterface> | undefined = this.buildConfig.additionalConfig?.rcsbContext;
 
         if(!externalTrackBuilder)
             return;

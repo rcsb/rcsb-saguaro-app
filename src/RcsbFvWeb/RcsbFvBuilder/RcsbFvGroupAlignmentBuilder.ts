@@ -21,7 +21,7 @@ export class RcsbFvGroupAlignmentBuilder {
 
     static async buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
         let filterEntities: string[]|undefined = undefined;
-        if(query) {
+        if(query && query.query) {
             filterEntities = await searchRequestProperty.requestMembers({
                 ...query,
                 query: SQT.addGroupNodeToSearchQuery(GroupProvenanceId.ProvenanceMatchingUniprotAccession, upAcc, query.query),
@@ -38,7 +38,7 @@ export class RcsbFvGroupAlignmentBuilder {
     static async buildGroupAlignmentFv(elementId: string, groupProvenance:GroupProvenanceId, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface ):Promise<RcsbFvModulePublicInterface> {
         let entityCount: number = -1;
         let filterEntities: string[]|undefined = undefined;
-        if(query) {
+        if(query && query.query) {
             filterEntities = await searchRequestProperty.requestMembers({
                 ...query,
                 query: SQT.addGroupNodeToSearchQuery(groupProvenance, groupId, query.query),
@@ -72,7 +72,7 @@ export class RcsbFvGroupAlignmentBuilder {
             SequenceReference.PdbEntity,
             SequenceReference.Uniprot
         ];
-        let pfv: RcsbFvModulePublicInterface;
+        let pfv: RcsbFvModulePublicInterface = Object();
         switch (groupProvenance) {
             case GroupProvenanceId.ProvenanceSequenceIdentity:
                 pfv = await RcsbFvGroupBuilder.buildGroupAlignmentFv(

@@ -80,14 +80,13 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 this.alignmentTracks.concat(this.annotationTracks);
     }
 
-    private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string> {
+    private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined> {
         if(ann.source === Source.PdbInterface && ann.target_identifiers?.interface_id) {
             return ann.target_identifiers.interface_id + "|" + ann.target_identifiers.interface_partner_index;
         }
-        return "";
     }
 
-    private titleSuffix(rcsbContext?: RcsbContextType): ((ann: AnnotationFeatures, d: Feature)=>Promise<string>) {
+    private titleSuffix(rcsbContext?: RcsbContextType): ((ann: AnnotationFeatures, d: Feature)=>Promise<string|undefined>) {
         return (async (ann: AnnotationFeatures, d: Feature) => {
             if (ann.source === Source.PdbInterface) {
                 if(!ann.target_id)
@@ -112,15 +111,13 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 }
                 return (asym == auth ? asym : `${asym}[auth ${auth}]`)+partnerOperator;
             }
-            return "";
         });
     }
 
-    private async trackTitle(ann: AnnotationFeatures, d: Feature): Promise<string> {
+    private async trackTitle(ann: AnnotationFeatures, d: Feature): Promise<string|undefined> {
         if (ann.source === Source.PdbInterface && d.type === FeatureType.BurialFraction) {
             return "BINDING CHAIN ";
         }
-        return "";
     }
 }
 

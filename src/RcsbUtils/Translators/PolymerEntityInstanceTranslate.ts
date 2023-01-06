@@ -7,7 +7,7 @@ export interface AlignmentContextInterface {
     queryId: string;
     targetId: string;
     from: SequenceReference | undefined;
-    to: SequenceReference|Source;
+    to: SequenceReference|Source|undefined;
     targetSequenceLength?: number;
     querySequenceLength?: number;
 }
@@ -70,7 +70,7 @@ export class PolymerEntityInstanceTranslate{
 
     public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
         let o:RcsbFvTrackDataElementInterface = e;
-        if(alignmentContext.from === SequenceReference.PdbInstance) {
+        if(alignmentContext.from === SequenceReference.PdbInstance && alignmentContext.to) {
             const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
             o.indexName = this.INDEX_NAME;

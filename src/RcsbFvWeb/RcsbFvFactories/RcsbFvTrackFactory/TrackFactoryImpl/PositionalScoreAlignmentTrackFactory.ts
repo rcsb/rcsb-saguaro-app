@@ -22,6 +22,8 @@ import {PlainAlignmentTrackFactory} from "./PlainAlignmentTrackFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
 import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextManager";
 import {EntryPropertyIntreface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
@@ -53,7 +55,10 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
     }
 
     private async collectFeatureEntryProperties(unObservedRegions: Array<AnnotationFeatures>): Promise<void>{
-        const entryIds: string[] = Operator.uniqueValues<string>(unObservedRegions.map(uor=>uor.target_id.split(TagDelimiter.instance)[0]));
+        const entryIds: string[] = Operator.uniqueValues<string>(unObservedRegions.map(uor=>{
+            assertDefined(uor.target_id);
+            return uor.target_id.split(TagDelimiter.instance)[0];
+        }));
         //TODO define a Translator class for multiple entry entry data
         const entryProperties: EntryPropertyIntreface[] = (await Promise.all<EntryPropertyIntreface[]>(Operator.arrayChunk(entryIds, 100).map(ids => rcsbRequestCtxManager.getEntryProperties(ids)))).flat();
         entryProperties.forEach(ep=>{
@@ -68,28 +73,34 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
     private prepareFeaturesAlignmentMap(positionalScores: Array<AnnotationFeatures>){
         const instancePositionalScores: Map<string,Map<number,number>> = new Map<string, Map<number,number>>();
         positionalScores.forEach(ps=> {
+            if(!ps.target_id)
+                return;
             const instanceId: string = ps.target_id;
             if(!instancePositionalScores.has(instanceId))
                 instancePositionalScores.set(instanceId, new Map<number,number>())
-            ps.features.forEach(feature=>{
-                feature.feature_positions.forEach(fp=>{
-                    fp.values.forEach((v,n)=>{
-                        instancePositionalScores.get(instanceId).set(fp.beg_seq_id+n,v);
+            ps.features?.forEach(feature=>{
+                feature?.feature_positions?.forEach(fp=>{
+                    fp?.values?.forEach((v,n)=>{
+                        if(fp.beg_seq_id && v)
+                            instancePositionalScores.get(instanceId)?.set(fp.beg_seq_id+n,v);
                     });
                 });
             });
         });
         const entityPositionalScore: Map<string,Map<number,number>> = new Map<string, Map<number,number>>();
         instancePositionalScores.forEach((ips,instanceId)=>{
-            const entityId: string = this.instanceEntityMap.get(instanceId);
+            const entityId: string | undefined = this.instanceEntityMap.get(instanceId);
+            if(!entityId)
+                return
             if(!entityPositionalScore.has(entityId))
                 entityPositionalScore.set(entityId, new Map<number, number>());
-
+            const o = entityPositionalScore.get(entityId);
+            assertDefined(o);
             ips.forEach((score,position)=>{
-                if(!entityPositionalScore.get(entityId).has(position)){
-                    entityPositionalScore.get(entityId).set(position,score);
-                }else if(score < entityPositionalScore.get(entityId).get(position) ){
-                    entityPositionalScore.get(entityId).set(position,score);
+                if(!o.has(position)){
+                    o.set(position,score);
+                }else if(score < (o.get(position) ?? Number.MIN_SAFE_INTEGER) ){
+                    o.set(position,score);
                 }
             });
         });
@@ -97,21 +108,25 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
     }
 
     private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
-        if(!this.positionalScores.has(alignmentContext.targetId) || this.positionalScores.get(alignmentContext.targetId).size == 0)
+        if(!this.positionalScores.has(alignmentContext.targetId) || this.positionalScores.get(alignmentContext.targetId)?.size == 0)
             return this.alignmentTrackFactory.alignedRegionToTrackElementList(region, alignmentContext);
         const outRegions: Array<RcsbFvTrackDataElementInterface> = [];
-        const entityPositionalScores: Map<number,number> =  this.positionalScores.get(alignmentContext.targetId);
-        if(entityPositionalScores.size>0) {
-            range(region.query_begin,region.query_end+1).forEach((p,n)=>outRegions.push(this.alignmentTrackFactory.addAuthorResIds({
-                begin: p,
-                oriBegin: region.target_begin+n,
-                value: entityPositionalScores.get(p),
-                sourceId: alignmentContext.targetId,
-                source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
-                provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
-                provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
-                type: Type.MaQaMetricLocalTypeOther,
-            }, alignmentContext)));
+        const entityPositionalScores: Map<number,number> | undefined =  this.positionalScores.get(alignmentContext.targetId);
+        if(entityPositionalScores && entityPositionalScores.size>0) {
+            range(region.query_begin,region.query_end+1).forEach((p,n)=>{
+                if(!alignmentContext.to)
+                    return;
+                outRegions.push(this.alignmentTrackFactory.addAuthorResIds({
+                    begin: p,
+                    oriBegin: region.target_begin+n,
+                    value: entityPositionalScores.get(p),
+                    sourceId: alignmentContext.targetId,
+                    source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
+                    provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
+                    provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
+                    type: Type.MaQaMetricLocalTypeOther,
+                }, alignmentContext))
+            });
         }
         return outRegions;
     }

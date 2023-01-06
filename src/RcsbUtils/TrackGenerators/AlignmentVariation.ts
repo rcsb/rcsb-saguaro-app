@@ -3,6 +3,8 @@ import {Logo} from "./Logo";
 import {RcsbFvDisplayTypes, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Assertions} from "../Helpers/Assertions";
+import assertElementListDefined = Assertions.assertElementListDefined;
 
 export function alignmentVariation(): ExternalTrackBuilderInterface {
 
@@ -76,8 +78,8 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
         if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo?.length)
             throw new Error("ERROR Alignment length and logo should match");
         alignment.alignment_logo?.forEach(al=>{
-            if(al)
-                querySequenceLogo.push(new Logo<aaType>(al));
+            assertElementListDefined(al);
+            querySequenceLogo.push(new Logo<aaType>(al));
         });
     }
 

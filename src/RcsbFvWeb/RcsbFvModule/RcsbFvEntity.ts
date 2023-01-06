@@ -11,11 +11,14 @@ import {
     CollectAnnotationsInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvEntity extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        assertDefined(buildConfig.entityId);
         const alignmentRequestContext:CollectAlignmentInterface = {
             queryId: buildConfig.entityId,
             from: SequenceReference.PdbEntity,
@@ -28,7 +31,7 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
         const annotationsRequestContext: CollectAnnotationsInterface = {
             queryId: buildConfig.entityId,
             reference: SequenceReference.PdbEntity,
-            sources: buildConfig.additionalConfig.sources ?? [Source.PdbEntity, Source.Uniprot],
+            sources: buildConfig.additionalConfig?.sources ?? [Source.PdbEntity, Source.Uniprot],
             titleSuffix: this.titleSuffix.bind(this),
             filters: buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
@@ -51,12 +54,13 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
     }
 
     private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{
+        if(!ann.target_id)
+            return;
         if( this.polymerEntityInstance != null && ann.source === Source.PdbInstance){
             const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
-            const authAsymId: string = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
+            const authAsymId: string | undefined = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
             return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";
         }
-        return void 0;
     }
 
 }

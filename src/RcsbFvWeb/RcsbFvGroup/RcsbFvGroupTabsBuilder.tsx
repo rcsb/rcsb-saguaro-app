@@ -3,10 +3,14 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {GroupPfvTabs} from "./GroupPfvTabs";
 import * as React from "react";
 import {createRoot} from "react-dom/client";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class RcsbFvGroupTabsBuilder {
     static buildGroupTabs(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery) {
-        createRoot(document.getElementById(elementId)).render(
+        const element = document.getElementById(elementId);
+        assertDefined(element);
+        createRoot(element).render(
             <GroupPfvTabs groupProvenanceId={groupProvenanceId} groupId={groupId} searchQuery={query}/>
         )
     }

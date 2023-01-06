@@ -1,22 +1,20 @@
-import {AlignmentLogo, Maybe} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentLogo} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Assertions} from "../Helpers/Assertions";
+import assertElementListDefined = Assertions.assertElementListDefined;
+import assertDefined = Assertions.assertDefined;
 
 export class Logo<T extends string>  {
 
-    private readonly symbols: {[key in T]?:number} = {};
+    private readonly symbols: {[key in T]:number} = Object();
     private n: number = 0;
 
-    /*constructor(symbols: Array<T>) {
-        symbols.forEach(s=>{
-            this.symbols[s] = 0;
-        })
-    }*/
-
-    constructor(logo: Maybe<AlignmentLogo>[]) {
+    constructor(logo: AlignmentLogo[]) {
+        assertElementListDefined(logo);
         logo.forEach(s=>{
-            if(s?.value && s?.symbol){
-                this.symbols[s.symbol as T] = s.value;
-                this.n += s.value;
-            }
+            assertDefined(s.symbol);
+            assertDefined(s.value);
+            this.symbols[s.symbol as T] = s.value;
+            this.n += s.value;
         });
     }
 
@@ -29,8 +27,10 @@ export class Logo<T extends string>  {
         this.n ++;
     }*/
 
-    get(aa: T): number | undefined{
-        return this.symbols[aa];
+    get(aa: T): number{
+        const n = this.symbols[aa];
+        assertDefined(n)
+        return n;
     }
 
     forEach(callback:(aa: T, n: number)=>void): void{
@@ -40,26 +40,15 @@ export class Logo<T extends string>  {
     }
 
     mode(): T {
-       return this.aaSort()[0];
+        return this.aaTypes().sort((a, b)=>(this.symbols[b]-this.symbols[a]))[0];
     }
 
     frequency(): {symbol:T, value:number}[] {
-        return this.aaSort().map(a=>({symbol:a, value:(this.get(a) ?? 0)/this.n}));
+        return this.aaTypes().sort((a, b)=>(this.symbols[b]-this.symbols[a])).map(a=>({symbol:a, value:this.get(a)/this.n}));
     }
 
     entropy(): number {
-        return -this.aaTypes().map<number>(aa=>(this.get(aa)!=0 ? ((this.get(aa) ?? 0)/this.n) * (Math.log((this.get(aa) ?? 0)/this.n) / Math.log(this.aaTypes().length)) : 0)).reduce((p,v)=>(p+v));
-    }
-
-    private aaSort(): T[]{
-        return this.aaTypes().sort((a, b)=>{
-            const sB: number | undefined = this.symbols[b];
-            const sA: number | undefined = this.symbols[a]
-            if(sB && sA)
-                return (sB-sA);
-            else
-                return Number.MAX_SAFE_INTEGER;
-        });
+        return -this.aaTypes().map<number>(aa=>(this.get(aa)!=0 ? (this.get(aa)/this.n) * (Math.log(this.get(aa)/this.n) / Math.log(this.aaTypes().length)) : 0)).reduce((p,v)=>(p+v));
     }
 
 }

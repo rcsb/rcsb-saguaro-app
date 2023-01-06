@@ -8,11 +8,9 @@ import {ExperimentalAlignmentTrackTitleFactory} from "./ExperimentalAlignmentTra
 
 export class ModelAlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]> {
 
-    private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
     private readonly alignmentTrackTitleFactory: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>;
 
     constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
-        this.entityInstanceTranslator = entityInstanceTranslator;
         this.alignmentTrackTitleFactory = new ExperimentalAlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 

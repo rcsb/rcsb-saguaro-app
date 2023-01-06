@@ -41,7 +41,7 @@ export namespace GroupPfvApp {
                     ...additionalConfig,
                     boardConfig:{
                         rowTitleWidth: 190,
-                        ...additionalConfig.boardConfig
+                        ...additionalConfig?.boardConfig
                     },
                     externalTrackBuilder: alignmentVariation()
                 }
@@ -94,7 +94,7 @@ export namespace GroupPfvApp {
             ...additionalConfig,
             boardConfig:{
                 rowTitleWidth: 150,
-                ...additionalConfig.boardConfig
+                ...additionalConfig?.boardConfig
             },
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
@@ -130,7 +130,7 @@ export namespace GroupPfvApp {
             ...additionalConfig,
             boardConfig:{
                 rowTitleWidth: 190,
-                ...additionalConfig.boardConfig
+                ...additionalConfig?.boardConfig
             },
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
@@ -159,18 +159,19 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
     return {
         getAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; p: FeaturePositionGaps}) => {
             if (!targets.has(feature.type)) {
-                targets.set(feature.type, feature.d.value);
-                return feature.p.values[0];
+                if(feature.d.value)
+                    targets.set(feature.type, feature.d.value);
+                return feature.p.values?.[0] ?? 0;
             }else{
-                return feature.p.values[0];
+                return feature.p.values?.[0] ?? 0;
             }
         },
         computeAnnotationValue: (annotationTracks: Map<string, TrackManagerInterface>) => {
             annotationTracks.forEach((at,type)=>{
-                const N: number = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite) || type.includes(Type.Pfam)) ? targets.get(type) : nTargets;
+                const N: number | undefined = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite) || type.includes(Type.Pfam)) ? targets.get(type) : nTargets;
                 at.forEach((ann,positionKey)=>{
                     if(ann.source != Source.PdbInterface)
-                        ann.value = Math.ceil(1000*(ann.value as number) / N)/1000;
+                        ann.value = Math.ceil(1000*(ann.value as number) / (N ?? 1))/1000;
                 });
             });
         }

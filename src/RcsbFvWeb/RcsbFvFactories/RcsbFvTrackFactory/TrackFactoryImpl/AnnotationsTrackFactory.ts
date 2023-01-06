@@ -11,6 +11,8 @@ import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotat
 import {TrackManagerInterface} from "../../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AnnotationsTrackTitleFactory} from "../TrackTitleFactoryImpl/AnnotationsTrackTitleFactory";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackManagerInterface]>{
 
@@ -24,22 +26,25 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
         let out: RcsbFvRowConfigInterface;
         const type: string = annotations.getId();
         const rcsbAnnotationConfig:RcsbAnnotationConfigInterface|undefined = annotations.getConfig();
-        let displayType: string;
-        const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
-        if (annConfig !== null) {
-            displayType = annConfig.display;
+        let displayType: string | undefined;
+        const annConfig: RcsbAnnotationConfigInterface | undefined = rcsbAnnotationConfig;
+        if (annConfig != null) {
+            displayType = annConfig?.display;
         }
         switch (displayType){
             case RcsbFvDisplayTypes.COMPOSITE:
             case RcsbFvDisplayTypes.BOND:
             case RcsbFvDisplayTypes.PIN:
+                assertDefined(rcsbAnnotationConfig)
                 out = buildRcsbFvRowConfigComposite(annotations,type, rcsbAnnotationConfig);
                 break;
             case RcsbFvDisplayTypes.AREA:
             case RcsbFvDisplayTypes.LINE:
+                assertDefined(rcsbAnnotationConfig)
                 out = buildRcsbFvRowConfigArea(annotations,type, rcsbAnnotationConfig);
                 break;
             case RcsbFvDisplayTypes.BLOCK_AREA:
+                assertDefined(rcsbAnnotationConfig)
                 out = buildRcsbFvRowConfigBlockArea(annotations,type, rcsbAnnotationConfig);
                 break;
             default:
@@ -61,9 +66,9 @@ export class AnnotationsTrackFactory implements TrackFactoryInterface<[TrackMana
 
 function buildRcsbFvRowConfigArea(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
     const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
-    const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
-    const displayType: RcsbFvDisplayTypes = annConfig.display;
-    const displayColor:string|RcsbFvColorGradient = annConfig.color;
+    const annConfig: RcsbAnnotationConfigInterface | undefined = rcsbAnnotationConfig;
+    const displayType: RcsbFvDisplayTypes | undefined = annConfig?.display;
+    const displayColor:string|RcsbFvColorGradient | undefined = annConfig?.color;
 
     let min: number = annotationTrack.getRange().min;
     let max: number = annotationTrack.getRange().max;
@@ -74,7 +79,7 @@ function buildRcsbFvRowConfigArea(annotationTrack: TrackManagerInterface, type: 
         max = -min;
     else
         min = -max;
-    const domain:[number,number] =  annConfig.domain ?? [min,max];
+    const domain:[number,number] =  annConfig?.domain ?? [min,max];
 
     return {
         ...rcsbAnnotationConfig,
@@ -92,7 +97,7 @@ function buildRcsbFvRowConfigBlockArea(annotationTrack: TrackManagerInterface, t
     const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     const displayType: RcsbFvDisplayTypes = annConfig.display;
-    const displayColor:string|RcsbFvColorGradient = annConfig.color;
+    const displayColor:string|RcsbFvColorGradient = annConfig.color ?? RcsbAnnotationConfig.randomRgba();
 
     return {
         ...rcsbAnnotationConfig,
@@ -108,7 +113,7 @@ function buildRcsbFvRowConfigBlockArea(annotationTrack: TrackManagerInterface, t
 
 function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
     const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
-    let out: RcsbFvRowConfigInterface;
+    let out: RcsbFvRowConfigInterface | undefined = undefined;
 
     const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
     let altDisplayType = RcsbFvDisplayTypes.BLOCK;
@@ -151,7 +156,7 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
     } else if (pin.length > 0) {
         altDisplayType = RcsbFvDisplayTypes.PIN;
     }
-    if(out === undefined){
+    if(out == undefined){
         out = {
             trackId: "annotationTrack_" + type,
             displayType: altDisplayType,
@@ -163,7 +168,7 @@ function buildRcsbFvRowConfigComposite(annotationTrack: TrackManagerInterface, t
     return out;
 }
 
-function buildRcsbFvRowConfigTrack(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
+function buildRcsbFvRowConfigTrack(annotationTrack: TrackManagerInterface, type: string, rcsbAnnotationConfig?: RcsbAnnotationConfigInterface):RcsbFvRowConfigInterface{
     const data: Array<RcsbFvTrackDataElementInterface> = annotationTrack.values();
     let displayType: RcsbFvDisplayTypes = RcsbFvDisplayTypes.BLOCK;
     if (data.length > 0 && data[0].end == null) {
@@ -171,10 +176,11 @@ function buildRcsbFvRowConfigTrack(annotationTrack: TrackManagerInterface, type:
     }
     let displayColor: string|RcsbFvColorGradient = RcsbAnnotationConfig.randomRgba();
 
-    const annConfig: RcsbAnnotationConfigInterface = rcsbAnnotationConfig;
-    if (annConfig !== null) {
+    const annConfig: RcsbAnnotationConfigInterface | undefined = rcsbAnnotationConfig;
+    if (annConfig != null) {
         displayType = annConfig.display;
-        displayColor = annConfig.color;
+        if(annConfig.color)
+            displayColor = annConfig.color;
     } else {
         console.warn("Annotation config type " + type + " not found. Using random config");
     }

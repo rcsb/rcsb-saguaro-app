@@ -6,6 +6,8 @@ import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]> {
 
@@ -17,10 +19,12 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
 
     public async getTrackTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string | RcsbFvLink> {
         let rowTitle: string | RcsbFvLink;
+        assertDefined(targetAlignment.target_id);
         if(alignmentQueryContext.excludeAlignmentLinks){
             rowTitle = targetAlignment.target_id;
         } else if (alignmentQueryContext.to === SequenceReference.PdbInstance && this.entityInstanceTranslator != null) {
-            const entityId: string = this.entityInstanceTranslator.translateAsymToEntity(TagDelimiter.parseInstance(targetAlignment.target_id).instanceId);
+            const entityId: string | undefined = this.entityInstanceTranslator.translateAsymToEntity(TagDelimiter.parseInstance(targetAlignment.target_id).instanceId);
+            assertDefined(entityId);
             rowTitle = {
                 visibleTex:this.buildInstanceId(targetAlignment.target_id),
                 url:(resource as any).rcsb_entry.url+TagDelimiter.parseInstance(targetAlignment.target_id).entryId+"#entity-"+entityId,
@@ -66,7 +70,7 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
 
     private buildInstanceId(targetId: string): string{
         const labelAsymId: string = TagDelimiter.parseInstance(targetId).instanceId;
-        const authAsymId: string = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
+        const authAsymId: string  | undefined = this.entityInstanceTranslator?.translateAsymToAuth(labelAsymId);
         return TagDelimiter.parseInstance(targetId).entryId+TagDelimiter.instance+(labelAsymId === authAsymId || !authAsymId? labelAsymId : labelAsymId+"[auth "+authAsymId+"]");
     }
 
