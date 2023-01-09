@@ -6,10 +6,19 @@ export namespace Assertions {
             throw message ? new Error(message) : new Error(`Undefined value`);
     }
 
-    export function assertElementListDefined<T>(x: T[]|undefined|null, message?:string): asserts x is NonNullable<T>[] {
+    export function assertElementListDefined<T>(x: (T|undefined|null)[]|undefined|null, message?:string): asserts x is NonNullable<T>[] {
         if(x === null || x === undefined)
             throw new Error(`Undefined list`);
         x.forEach( (e,n) => {
+            if( e === null || x === undefined)
+                throw message ? new Error(`${message} in index ${n}`) : new Error(`Undefined value in index ${n}`);
+        })
+    }
+
+    export function assertElementMatrixDefined<T>(x: ((T|undefined|null)[]|undefined|null)[]|undefined|null, message?:string): asserts x is NonNullable<T>[][] {
+        if(x === null || x === undefined)
+            throw new Error(`Undefined list`);
+        x.flat().forEach( (e,n) => {
             if( e === null || x === undefined)
                 throw message ? new Error(`${message} in index ${n}`) : new Error(`Undefined value in index ${n}`);
         })

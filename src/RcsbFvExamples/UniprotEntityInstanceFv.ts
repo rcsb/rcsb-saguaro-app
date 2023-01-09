@@ -5,6 +5,8 @@ buildUniprotEntityInstanceFv("pfv", "P01112", "2UZI_3", "2UZI.C",{boardConfig:{
         trackWidth:600,
         elementClickCallBack:(e)=>{
             const div = document.getElementById("myDiv");
+            if(!div)
+                return;
             if(e==null){
                 div.innerHTML = "";
                 return;

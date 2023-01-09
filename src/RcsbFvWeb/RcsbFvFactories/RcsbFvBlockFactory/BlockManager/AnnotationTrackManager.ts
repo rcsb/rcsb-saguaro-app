@@ -10,25 +10,28 @@ import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/An
 import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {TrackManagerFactoryInterface, TrackManagerInterface} from "./TrackManagerInterface";
 import {TrackUtils} from "../../RcsbFvTrackFactory/TrackFactoryImpl/Helper/TrackUtils";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertElementListDefined = Assertions.assertElementListDefined;
+import assertDefined = Assertions.assertDefined;
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
 }
 
 export class AnnotationTrackManagerFactory implements TrackManagerFactoryInterface<[string, RcsbAnnotationConfigInterface, PolymerEntityInstanceTranslate]> {
-    getTrackManager(trackId: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator: PolymerEntityInstanceTranslate): TrackManagerInterface {
+    getTrackManager(trackId: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator?: PolymerEntityInstanceTranslate): TrackManagerInterface {
         return new AnnotationTrackManager(trackId, annotationConfig, entityInstanceTranslator);
     }
 }
 
 class AnnotationTrackManager implements TrackManagerInterface {
     private valueRange: {min:number;max:number} = {max:Number.MIN_SAFE_INTEGER, min:Number.MAX_SAFE_INTEGER};
-    private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate;
+    private readonly entityInstanceTranslator?: PolymerEntityInstanceTranslate;
     private readonly type: string;
     private readonly annotationConfig: RcsbAnnotationConfigInterface;
     private readonly trackElementMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
 
-    constructor(type: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator: PolymerEntityInstanceTranslate) {
+    constructor(type: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
         this.entityInstanceTranslator = entityInstanceTranslator;
         this.type = type;
         this.annotationConfig = annotationConfig;
@@ -47,6 +50,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
     }
 
     public addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void {
+        assertElementListDefined(ann.feature.feature_positions);
         computeFeatureGaps(ann.feature.feature_positions).forEach(p => {
             if(p.beg_seq_id != null) {
                 this.annotationRangeKeys(p).forEach(rangeKey=>{
@@ -74,25 +78,26 @@ class AnnotationTrackManager implements TrackManagerInterface {
     }
 
     public getTrackProvenance(): Set<string> {
-        return new Set<string>( Array.from(this.trackElementMap.values()).map(e=>e.provenanceName) );
+        return new Set<string>( Array.from(this.trackElementMap.values()).map(e=>e.provenanceName).filter((x): x is string => x!=null) );
     }
 
     public values(): Array<RcsbFvTrackDataElementInterface>{
         return Array.from(this.trackElementMap.values());
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance:string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance?:string): RcsbFvTrackDataElementInterface{
         let title:string = this.annotationConfig?.title ?? this.type;
-        let value: number|string = undefined;
+        let value: number | undefined = undefined;
         if(this.isNumericalDisplay(this.type)) {
             if(this.annotationConfig?.transformToNumerical){
                 value = 1;
             }else{
-                value = p.values instanceof Array ? p.values[0] ?? 0 : 0;
+                value = Array.isArray(p.values) && p.values[0] ? p.values[0] : 0;
             }
         }
 
-        if(p.values instanceof Array && p.values.length > 0){
+        if(Array.isArray(p.values)  && p.values.length > 0){
+            assertElementListDefined(p.values);
             if(Math.max(...p.values) > this.valueRange.max)
                 this.valueRange.max = Math.max(...p.values)
             if(Math.min(...p.values) < this.valueRange.min)
@@ -107,32 +112,33 @@ class AnnotationTrackManager implements TrackManagerInterface {
         const sourceId: string = source == Source.PdbInstance && this.entityInstanceTranslator != null ?
             TagDelimiter.parseInstance(targetId).entryId + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(TagDelimiter.parseInstance(targetId).instanceId) : targetId;
 
+        assertDefined(p.beg_seq_id);
         return {
             begin: p.beg_seq_id,
             end: p.end_seq_id ?? p.beg_seq_id,
-            oriBegin: p.beg_ori_id,
-            oriEnd: p.end_ori_id ?? p.beg_ori_id,
+            oriBegin: p.beg_ori_id ?? undefined,
+            oriEnd: (p.end_ori_id ?? p.beg_ori_id) ?? undefined,
             description: new Array<string>(),
-            featureId: d.feature_id,
+            featureId: d.feature_id ?? undefined,
             type: this.type,
             title: title,
-            name: d.name,
+            name: d.name ?? undefined,
             value: value,
-            gValue: d.value,
+            gValue: d.value ?? undefined,
             gaps: (p.gaps as Array<RcsbFvTrackDataElementGapInterface>),
             sourceId: sourceId,
             source: TrackUtils.transformSourceFromTarget(targetId, source),
             provenanceName: provenance,
             provenanceColor: TrackUtils.getProvenanceColorFromProvenance(provenance),
-            openBegin: p.open_begin,
-            openEnd: p.open_end
+            openBegin: p.open_begin ?? undefined,
+            openEnd: p.open_end ?? undefined
         };
     }
 
     private addRange(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, p: FeaturePositionGaps, rangeKey: number[], annotationProcessing?:AnnotationProcessingInterface): void{
         const key: string = rangeKey.join(":");
         if (!this.trackElementMap.has(key)) {
-            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source);
+            const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source??undefined);
             if(this.annotationConfig?.transformToNumerical)
                 this.transformToNumerical(targetId, rangeKey, key, a, d, p, annotationProcessing?.getAnnotationValue);
             if(typeof annotationProcessing?.addTrackElementCallback === "function")
@@ -145,18 +151,28 @@ class AnnotationTrackManager implements TrackManagerInterface {
             };
             this.addAuthorResIds(a,translateContext);
             this.trackElementMap.set(key,a);
-            if(p.values instanceof Array)
+            if(Array.isArray(p.values)) {
+                assertElementListDefined(p.values);
                 this.expandValues(a, p.values, translateContext);
-        }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.trackElementMap.get(key).value === "number"){
-            (this.trackElementMap.get(key).value as number) +=
+            }
+        }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.trackElementMap.get(key)?.value === "number"){
+            const o = this.trackElementMap.get(key);
+            assertDefined(o?.value);
+            (o.value as number) +=
                 typeof annotationProcessing?.getAnnotationValue === "function" ? annotationProcessing.getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
-            if(this.trackElementMap.get(key).value > this.valueRange.max)
-                this.valueRange.max = this.trackElementMap.get(key).value as number;
-            if(this.trackElementMap.get(key).value < this.valueRange.min)
-                this.valueRange.min = this.trackElementMap.get(key).value as number;
+            if(o.value > this.valueRange.max)
+                this.valueRange.max = o.value as number;
+            if(o.value < this.valueRange.min)
+                this.valueRange.min = o.value as number;
         }
-        if(typeof d.description === "string")
-            this.trackElementMap.get(key).description.push(d.description);
+        if(typeof d.description === "string") {
+            const o = this.trackElementMap.get(key)
+            if(o) {
+                if(!o.description)
+                    o.description = [];
+                o.description.push(d.description);
+            }
+        }
     }
 
     private transformToNumerical(targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, getAnnotationValue?:IncreaseAnnotationValueType): void{
@@ -170,7 +186,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         values.forEach((v,i)=>{
             if(i>0){
                 const key:string = (e.begin+i).toString();
-                const a: RcsbFvTrackDataElementInterface = {...e, begin:(e.begin+i), end:null, oriBegin:e.oriBegin ?(e.oriBegin+i) : null, oriEnd:null, value:v};
+                const a: RcsbFvTrackDataElementInterface = {...e, begin:(e.begin+i), end:undefined, oriBegin:e.oriBegin ?(e.oriBegin+i) : undefined, oriEnd:undefined, value:v};
                 this.addAuthorResIds(a, translateContext);
                 this.trackElementMap.set(key, a);
             }
@@ -191,13 +207,13 @@ class AnnotationTrackManager implements TrackManagerInterface {
 
     private annotationRangeKeys(p: FeaturePositionGaps): Array<number[]> {
         const rangeKeys: Array<number[]> = new Array<number[]>();
-        if(this.annotationConfig?.transformToNumerical && p.end_seq_id != null){
+        if(this.annotationConfig?.transformToNumerical && p.beg_seq_id && p.end_seq_id != null){
             for(let i=p.beg_seq_id; i<=p.end_seq_id; i++){
                 rangeKeys.push([i]);
             }
-        }else if(this.annotationConfig?.transformToNumerical){
+        }else if(this.annotationConfig?.transformToNumerical && p.beg_seq_id){
             rangeKeys.push([p.beg_seq_id]);
-        }else{
+        }else if(p.beg_seq_id){
             const key: Array<number> = p.end_seq_id != null ? [p.beg_seq_id, p.end_seq_id] : [p.beg_seq_id, p.beg_seq_id];
             if(this.annotationConfig?.displayCooccurrence) key.push(Math.ceil(Math.random()*1000000000000));
             rangeKeys.push(key);
@@ -213,7 +229,7 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
         if(fp.range_id != null){
             if(!rangeIdMap.has(fp.range_id))
                 rangeIdMap.set(fp.range_id, new Array<FeaturePosition>());
-            rangeIdMap.get(fp.range_id).push(fp);
+            rangeIdMap.get(fp.range_id)?.push(fp);
         }else{
             out.push(fp)
         }
@@ -223,7 +239,9 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
             out.push(fpList[0])
         }else{
             const sorted: Array<FeaturePosition> = fpList.sort((a,b)=>{
-                return a.beg_seq_id-b.beg_seq_id;
+                if(a.beg_seq_id && b.beg_seq_id)
+                    return a.beg_seq_id-b.beg_seq_id;
+                return Number.MAX_SAFE_INTEGER;
             });
             const gapedFeaturePosition: FeaturePositionGaps = {
                 ...sorted[0],
@@ -233,19 +251,22 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
                 gaps: new Array<RcsbFvTrackDataElementGapInterface>()
             };
             for(let n=0;n<sorted.length-1;n++){
-                gapedFeaturePosition.gaps.push({
-                    begin:sorted[n].end_seq_id,
-                    end:sorted[n+1].beg_seq_id,
-                    isConnected: (
-                        sorted[n].beg_ori_id == null ||
-                        sorted[n].end_ori_id == null ||
-                        sorted[n+1].beg_ori_id == null ||
-                        sorted[n+1].end_ori_id == null ||
-                        sorted[n].end_ori_id+1 == sorted[n+1].beg_ori_id ||
-                        sorted[n].end_ori_id == sorted[n+1].beg_ori_id+1 ||
-                        sorted[n].end_ori_id == sorted[n+1].beg_ori_id
-                    )
-                });
+                const prevEnd = sorted[n].end_seq_id;
+                const nextBeg = sorted[n+1].beg_seq_id;
+                if(prevEnd &&nextBeg)
+                    gapedFeaturePosition?.gaps?.push({
+                        begin: prevEnd,
+                        end: nextBeg,
+                        isConnected: (
+                            sorted[n].beg_ori_id == null ||
+                            sorted[n].end_ori_id == null ||
+                            sorted[n+1].beg_ori_id == null ||
+                            sorted[n+1].end_ori_id == null ||
+                            (sorted[n].end_ori_id ?? Number.MIN_SAFE_INTEGER)+1 == sorted[n+1].beg_ori_id ||
+                            sorted[n].end_ori_id == (sorted[n+1].beg_ori_id ?? Number.MIN_SAFE_INTEGER)+1 ||
+                            sorted[n].end_ori_id == sorted[n+1].beg_ori_id
+                        )
+                    });
             }
             out.push(gapedFeaturePosition);
         }

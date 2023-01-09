@@ -1,6 +1,6 @@
 import React from "react";
 
-export class ItemComponent extends React.Component<React.HTMLAttributes<any>,null> {
+export class ItemComponent extends React.Component<React.HTMLAttributes<any>> {
 
     render() {
         return (<div

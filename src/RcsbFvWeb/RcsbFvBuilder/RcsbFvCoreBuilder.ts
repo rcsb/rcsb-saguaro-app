@@ -56,7 +56,7 @@ export class RcsbFvCoreBuilder {
         const elementId: string = createFvI.elementId;
         const fvModuleI: new (elementId:string, rcsbFv: RcsbFv) => RcsbFvModuleInterface = createFvI.fvModuleI;
         const config: RcsbFvModuleBuildInterface = createFvI.config;
-        const p: PolymerEntityInstanceTranslate = createFvI.p;
+        const p: PolymerEntityInstanceTranslate | undefined = createFvI.p;
         const rcsbFv: RcsbFv = rcsbFvCtxManager.getFv(elementId, createFvI.config.additionalConfig?.boardConfig);
         await rcsbFv.then(()=>{
             console.info(`PFV ${elementId} render complete`);
@@ -73,7 +73,7 @@ export class RcsbFvCoreBuilder {
     static unmount(elementId:string): void{
         if (rcsbFvCtxManager.hasFv(elementId)) {
             if(rcsbFvCtxManager.getButtonList(elementId)!=null){
-                rcsbFvCtxManager.getButtonList(elementId).forEach(buttonId=>{
+                rcsbFvCtxManager.getButtonList(elementId)?.forEach(buttonId=>{
                     ComponentsManager.clearSelectButton(buttonId);
                 });
             }
@@ -89,7 +89,7 @@ export class RcsbFvCoreBuilder {
 
     static clearAdditionalSelectButton(elementFvId: string, selectButtonId: string){
         if(rcsbFvCtxManager.getButtonList(elementFvId)?.has(selectButtonId)){
-            rcsbFvCtxManager.getButtonList(elementFvId).delete(selectButtonId);
+            rcsbFvCtxManager.getButtonList(elementFvId)?.delete(selectButtonId);
         }
         ComponentsManager.clearAdditionalSelectButton(selectButtonId);
     }
@@ -102,7 +102,7 @@ export class RcsbFvCoreBuilder {
     static showMessage(elementId: string, message: string){
         const domElement: HTMLElement = document.createElement<"h4">("h4");
         domElement.innerHTML = message;
-        document.getElementById(elementId).append(domElement);
+        document.getElementById(elementId)?.append(domElement);
     }
 
 }

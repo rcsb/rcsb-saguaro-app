@@ -12,7 +12,7 @@
     "lib": [ "dom", "es2020" ],
     "allowJs": true,
     "sourceMap": false,
-    "noUnusedLocals": true,
+    //"noUnusedLocals": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "declaration": true,
@@ -20,7 +20,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": [ "src/*", "src/**/*", "src/**/**/*", "src/**/**/**/*" ],
+  "include": [ "src" ],
   "exclude": [
     "node_modules"
   ]

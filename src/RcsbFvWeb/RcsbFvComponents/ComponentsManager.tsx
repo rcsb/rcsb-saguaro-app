@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
     GroupedOptionsInterface,
-    SelectButton,
     SelectOptionInterface, SelectOptionProps
 } from "./SelectButton";
 import {LoaderSpinner} from "./LoaderSpinner";
@@ -24,7 +23,7 @@ export class ComponentsManager {
 
     static buildSelectButton(elementId: string, options: Array<SelectOptionInterface>|Array<GroupedOptionsInterface>, config?:SelectButtonConfigInterface){
         ComponentsManager.selectButtonMap.set(elementId, new SelectButtonManager(elementId));
-        ComponentsManager.selectButtonMap.get(elementId).createButton(options, config);
+        ComponentsManager.selectButtonMap.get(elementId)?.createButton(options, config);
     }
 
     static addSelectButton(elementId: string, options: Array<SelectOptionInterface>, config?:SelectButtonConfigInterface){
@@ -33,7 +32,7 @@ export class ComponentsManager {
 
     static clearSelectButton(elementId: string){
         if( ComponentsManager.selectButtonMap.has(elementId) ){
-            ComponentsManager.selectButtonMap.get(elementId).unmountButton();
+            ComponentsManager.selectButtonMap.get(elementId)?.unmountButton();
             ComponentsManager.selectButtonMap.delete(elementId);
         }
 
@@ -49,31 +48,31 @@ export class ComponentsManager {
             ComponentsManager.hideElement(elementId);
             const div: HTMLDivElement = document.createElement<"div">("div");
             div.setAttribute("id", id);
-            document.getElementById(elementId).prepend(div);
+            document.getElementById(elementId)?.prepend(div);
             ComponentsManager.nodeMap.set(id, {reactRoot:createRoot(div),htmlElement:div});
-            ComponentsManager.nodeMap.get(id).reactRoot.render(<LoaderSpinner/>);
+            ComponentsManager.nodeMap.get(id)?.reactRoot.render(<LoaderSpinner/>);
         }
     }
 
     static unmountLoaderSpinner(elementId: string){
         const id: string = elementId+ComponentsManager.loaderSpinner;
         if( ComponentsManager.nodeMap.has(id) ){
-            ComponentsManager.nodeMap.get(id).reactRoot.unmount();
-            ComponentsManager.nodeMap.get(id).htmlElement.remove()
+            ComponentsManager.nodeMap.get(id)?.reactRoot.unmount();
+            ComponentsManager.nodeMap.get(id)?.htmlElement.remove()
             ComponentsManager.nodeMap.delete(id);
             ComponentsManager.showElement(elementId);
         }
     }
 
     private static hideElement(elementId:string): void{
-        for(let i=0;i<document.getElementById(elementId).children.length;i++){
-            (document.getElementById(elementId).children.item(i) as HTMLElement).style.visibility = "hidden";
+        for(let i=0;i<(document.getElementById(elementId)?.children.length ?? 0);i++){
+            (document.getElementById(elementId)?.children.item(i) as HTMLElement).style.visibility = "hidden";
         }
     }
 
     private static showElement(elementId:string): void{
-        for(let i=0;i<document.getElementById(elementId).children.length;i++){
-            (document.getElementById(elementId).children.item(i) as HTMLElement).style.visibility = "visible";
+        for(let i=0;i<(document.getElementById(elementId)?.children.length ?? 0);i++){
+            (document.getElementById(elementId)?.children.item(i) as HTMLElement).style.visibility = "visible";
         }
     }
 

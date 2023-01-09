@@ -56,7 +56,7 @@ export class NcbiGenomeSequenceData {
                     }
                     getGenomeSequence();
                 } else {
-                    resolve(null);
+                    resolve([]);
                 }
             });
         };

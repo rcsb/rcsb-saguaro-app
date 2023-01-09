@@ -3,6 +3,10 @@ import {
     CoreInterface,
     QueryInterfacesArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertElementListDefined = Assertions.assertElementListDefined;
+import assertDefined = Assertions.assertDefined;
+import assertElementMatrixDefined = Assertions.assertElementMatrixDefined;
 
 export interface InterfaceInstanceInterface {
     rcsbId: string;
@@ -27,13 +31,18 @@ export class InterfaceInstanceCollector {
 }
 
 function parseInterfaceInstances(coreInterface:CoreInterface): InterfaceInstanceInterface{
+    assertElementMatrixDefined(coreInterface.rcsb_interface_operator[0]);
+    assertElementMatrixDefined(coreInterface.rcsb_interface_operator[1]);
+    assertElementListDefined(coreInterface.rcsb_interface_partner);
+    assertDefined(coreInterface.rcsb_interface_partner[0].interface_partner_identifier?.asym_id);
+    assertDefined(coreInterface.rcsb_interface_partner[1].interface_partner_identifier?.asym_id);
     return {
         rcsbId: coreInterface.rcsb_interface_container_identifiers.rcsb_id,
         assemblyId: coreInterface.rcsb_interface_container_identifiers.assembly_id,
         interfaceId: coreInterface.rcsb_interface_container_identifiers.interface_id,
         asymIds: [
-            coreInterface.rcsb_interface_partner[0].interface_partner_identifier.asym_id,
-            coreInterface.rcsb_interface_partner[1].interface_partner_identifier.asym_id
+            coreInterface.rcsb_interface_partner[0].interface_partner_identifier?.asym_id,
+            coreInterface.rcsb_interface_partner[1].interface_partner_identifier?.asym_id
         ],
         operatorIds: [coreInterface.rcsb_interface_operator[0], coreInterface.rcsb_interface_operator[1]]
     }

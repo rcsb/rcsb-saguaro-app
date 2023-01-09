@@ -29,7 +29,7 @@ export namespace TrackUtils {
             return source
     }
 
-    export function getProvenanceColorFromProvenance(provenance: string): string {
+    export function getProvenanceColorFromProvenance(provenance?: string): string {
         if(provenance === RcsbAnnotationConstants.provenanceName.pdb || provenance === RcsbAnnotationConstants.provenanceName.promotif)
             return RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;
         return RcsbAnnotationConstants.provenanceColorCode.external;

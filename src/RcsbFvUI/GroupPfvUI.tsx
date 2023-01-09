@@ -35,11 +35,11 @@ export class GroupPfvUI {
     }
 
     private static htmlElementUI(elementId: string): HTMLElement {
-        let uiDiv: HTMLElement = document.getElementById(elementId+RcsbTabs.UI_SUFFIX);
+        let uiDiv: HTMLElement | null = document.getElementById(elementId+RcsbTabs.UI_SUFFIX);
         if(!uiDiv){
             uiDiv = document.createElement<"div">("div");
             uiDiv.setAttribute("id", elementId+RcsbTabs.UI_SUFFIX);
-            document.getElementById(elementId).parentElement.insertBefore(uiDiv, document.getElementById(elementId));
+            document.getElementById(elementId)?.parentElement?.insertBefore(uiDiv, document.getElementById(elementId));
         }
         return uiDiv;
     }

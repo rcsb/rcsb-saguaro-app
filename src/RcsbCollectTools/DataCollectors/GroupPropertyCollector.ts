@@ -22,8 +22,8 @@ export class GroupPropertyCollector {
 
     private static getGroupProperties(r: GroupPolymerEntity):GroupPropertyInterface{
         return {
-            groupName: r.rcsb_group_info.group_name,
-            groupDescription: r.rcsb_group_info.group_description
+            groupName: r.rcsb_group_info.group_name ?? "NA",
+            groupDescription: r.rcsb_group_info.group_description ?? "NA"
         };
     }
 

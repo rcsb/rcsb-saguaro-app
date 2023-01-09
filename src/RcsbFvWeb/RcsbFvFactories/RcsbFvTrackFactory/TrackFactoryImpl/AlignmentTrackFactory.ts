@@ -19,6 +19,8 @@ import {AlignmentCollectConfig} from "../../../../RcsbCollectTools/AlignmentColl
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrackTitleFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {
     querySequence?:string;
@@ -27,12 +29,10 @@ export type AlignmentRequestContextType = AlignmentCollectConfig & {
 export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]> {
 
     private readonly sequenceTrackFactory: SequenceTrackFactory;
-    private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
     private readonly trackTitleFactory: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>;
 
     constructor(entityInstanceTranslator?: PolymerEntityInstanceTranslate, trackTitleFactory?: TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]>) {
         this.sequenceTrackFactory = new SequenceTrackFactory(entityInstanceTranslator);
-        this.entityInstanceTranslator = entityInstanceTranslator;
         this.trackTitleFactory = trackTitleFactory ?? new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
@@ -74,6 +74,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
     ): {alignedBlocks: Array<RcsbFvTrackDataElementInterface>; mismatchData: Array<RcsbFvTrackDataElementInterface>; sequenceData: Array<RcsbFvTrackDataElementInterface>;} {
 
+        assertDefined(alignmentQueryContext.queryId), assertDefined(targetAlignment.target_id);
         const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
         const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
         const targetSequence = targetAlignment.target_sequence;
@@ -83,16 +84,17 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
             targetId: targetAlignment.target_id,
             from: alignmentQueryContext.from,
             to: alignmentQueryContext.to,
-            targetSequenceLength: targetAlignment.target_sequence.length,
+            targetSequenceLength: targetAlignment.target_sequence?.length,
             querySequenceLength: alignmentQueryContext.querySequence?.length
         };
-        targetAlignment.aligned_regions.forEach(region => {
-            const regionSequence = targetSequence.substring(region.target_begin - 1, region.target_end);
+        targetAlignment.aligned_regions?.forEach(region => {
+            assertDefined(region);
+            const regionSequence = targetSequence && region.target_begin && region.target_end ? targetSequence.substring(region.target_begin - 1, region.target_end) : "";
             this.sequenceTrackFactory.buildSequenceData({
                 ...alignmentContext,
                 sequence: regionSequence,
                 begin: region.query_begin,
-                oriBegin: region.target_begin
+                oriBegin: region?.target_begin
             }, "to").forEach(sd=>{
                 sequenceData.push(sd);
             });
@@ -103,10 +105,11 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
             if(alignmentQueryContext.querySequence)
                 findMismatch(regionSequence, alignmentQueryContext.querySequence.substring(region.query_begin - 1, region.query_end)).forEach(m => {
+                    assertDefined(alignmentContext.to), assertDefined(alignmentQueryContext.to);
                     mismatchData.push(this.sequenceTrackFactory.addAuthorResIds({
                         begin: (m + region.query_begin),
                         oriBegin: (m + region.target_begin),
-                        sourceId: targetAlignment.target_id,
+                        sourceId: targetAlignment.target_id ?? undefined,
                         source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId, alignmentContext.to),
                         provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId, alignmentQueryContext.to).name,
                         provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId, alignmentQueryContext.to).color,
@@ -127,6 +130,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         if (region.target_end != alignmentContext.targetSequenceLength && alignmentContext.querySequenceLength)
             openEnd = true;
 
+        assertDefined(alignmentContext.to)
         return [this.sequenceTrackFactory.addAuthorResIds({
             begin: region.query_begin,
             end: region.query_end,

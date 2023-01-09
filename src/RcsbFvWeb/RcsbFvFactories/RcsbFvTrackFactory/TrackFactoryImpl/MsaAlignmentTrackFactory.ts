@@ -18,7 +18,7 @@ export class MsaAlignmentTrackFactory implements TrackFactoryInterface<[Alignmen
     }
 
     public async getTrack(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<RcsbFvRowConfigInterface> {
-        if(TagDelimiter.isEntityOrInstanceId(targetAlignment.target_id))
+        if(targetAlignment.target_id && TagDelimiter.isEntityOrInstanceId(targetAlignment.target_id))
             return this.observedAlignmentTrackFactory.getTrack(alignmentQueryContext,targetAlignment);
         else
             return this.positionalScoreAlignmentTrackFactory.getTrack(alignmentQueryContext,targetAlignment);

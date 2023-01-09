@@ -50,7 +50,7 @@ export class RcsbFvInstanceBuilder {
         const result: Array<PolymerEntityInstanceInterface> = entityInstanceTranslator.getData();
         if(result.length == 0){
             RcsbFvCoreBuilder.showMessage(elementFvId, "No sequence features are available");
-            return void 0;
+            throw new Error("No sequence features are available");
         }else{
             return RcsbFvInstanceBuilder.buildSelectorInstanceFv(result, elementFvId, elementSelectId, entryId, config, additionalConfig);
         }
@@ -63,7 +63,7 @@ export class RcsbFvInstanceBuilder {
             if(!groupedInstances.has(instance.entityId))
                 groupedInstances.set(instance.entityId, new Array<SelectOptionInterface>());
             const label: string = instance.asymId === instance.authId ? instance.asymId : `${instance.asymId} [auth ${instance.authId}]`;
-            groupedInstances.get(instance.entityId).push({
+            groupedInstances.get(instance.entityId)?.push({
                 name: instance.name + " - " + instance.taxNames.join(", "),
                 label: label,
                 groupLabel: `ENTITY ${instance.entityId} - ${instance.name}`,
@@ -100,8 +100,8 @@ export class RcsbFvInstanceBuilder {
             else
                 config.defaultValue = undefined
         }
-        RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, Array.from(groupedInstances.values()).map(group=>({
-            label: group[0].groupLabel,
+        RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, Array.from(groupedInstances.values()).map((group, n)=>({
+            label: group[0].groupLabel ?? `Group ${n}`,
             options: group
         })), {addTitle:true, defaultValue: config.defaultValue, dropdownTitle: (config.dropdownTitle ?? "INSTANCE"), width: config.displayAuthId === true ? 70 : undefined, optionProps: config.selectButtonOptionProps });
         let externalContext: RcsbContextType | undefined;

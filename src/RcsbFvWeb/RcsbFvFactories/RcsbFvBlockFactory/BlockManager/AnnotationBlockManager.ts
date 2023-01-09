@@ -6,13 +6,15 @@ import {AnnotationRequestContext} from "../../../../RcsbCollectTools/AnnotationC
 import {BlockManagerInterface} from "./BlockManagerInterface";
 import {TrackManagerFactoryInterface, TrackManagerInterface} from "./TrackManagerInterface";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
+import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export class AnnotationBlockManager implements BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>{
 
     private readonly rcsbAnnotationConfig: RcsbAnnotationConfig;
     private readonly annotationTracks: Map<string, TrackManagerInterface> = new Map<string, TrackManagerInterface>();
-    private readonly polymerEntityInstanceTranslator:PolymerEntityInstanceTranslate;
-    private readonly trackManagerFactory: TrackManagerFactoryInterface<[string, RcsbAnnotationConfigInterface, PolymerEntityInstanceTranslate]>;
+    private readonly polymerEntityInstanceTranslator?:PolymerEntityInstanceTranslate;
+    private readonly trackManagerFactory: TrackManagerFactoryInterface<[string, RcsbAnnotationConfigInterface, PolymerEntityInstanceTranslate|undefined]>;
 
     constructor(
         trackManagerFactory: TrackManagerFactoryInterface<[string, RcsbAnnotationConfigInterface, PolymerEntityInstanceTranslate]>,
@@ -30,7 +32,10 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
     }
 
     public getTracks(): Array<TrackManagerInterface>{
-        return this.orderedTypes().filter(type=>this.has(type) && this.annotationTracks.get(type).size()>0).map(type=>this.annotationTracks.get(type));
+        return this.orderedTypes()
+                .filter(type=>this.has(type) && (this.annotationTracks.get(type)?.size() ?? 0)>0)
+                .map(type=>this.annotationTracks.get(type))
+                .filter((track): track is TrackManagerInterface => track!=null) ?? [];
     }
 
     private has(type:string):boolean {
@@ -48,23 +53,28 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
 
     private async processAnnotations(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
         await Promise.all(data.map<Promise<void>[]>(ann=>{
-            return ann.features.map<Promise<void>>(async feature=>{
-                return  await this.addFeature(requestConfig,ann,feature);
-            });
-        }).flat());
-        requestConfig.annotationProcessing?.computeAnnotationValue(this.annotationTracks);
-        return void 0;
+                return ann.features?.map<Promise<void>>(async feature=>{
+                    if(feature)
+                        return  await this.addFeature(requestConfig,ann,feature);
+                }) ?? [];
+            }).flat()
+        );
+        requestConfig.annotationProcessing?.computeAnnotationValue?.(this.annotationTracks);
     }
 
     private async addFeature(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<void> {
-        if(this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
+        if(feature.type && this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
             return;
 
         const type: string = await this.rcsbAnnotationConfig.getAnnotationType(requestConfig, ann, feature);
-        if (!this.annotationTracks.has(type))
-            this.annotationTracks.set(type, this.trackManagerFactory.getTrackManager(type, this.rcsbAnnotationConfig.getConfig(type), this.polymerEntityInstanceTranslator));
+        if (!this.annotationTracks.has(type)) {
+            const o = this.rcsbAnnotationConfig.getConfig(type);
+            assertDefined(o);
+            this.annotationTracks.set(type, this.trackManagerFactory.getTrackManager(type, o, this.polymerEntityInstanceTranslator));
+        }
 
-        this.annotationTracks.get(type).addFeature({
+        assertDefined(requestConfig.reference), assertDefined(requestConfig.queryId), assertDefined(ann.source), assertDefined(ann.target_id);
+        this.annotationTracks.get(type)?.addFeature({
                 reference: requestConfig.reference,
                 queryId: requestConfig.queryId,
                 source: ann.source,
@@ -78,15 +88,21 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         const typeList: string[] = Array.from(this.annotationTracks.keys());
         typeList.forEach((type)=>{
             if(this.rcsbAnnotationConfig.isMergedType(type)) {
-                const newType: string = this.rcsbAnnotationConfig.getMergeConfig(type).type;
-                const color: string  | RcsbFvColorGradient = this.rcsbAnnotationConfig.getConfig(type).color as string;
-                if(!this.annotationTracks.has(newType))
+                const newType: string | undefined = this.rcsbAnnotationConfig.getMergeConfig(type)?.type;
+                assertDefined(newType)
+                const color: string  | RcsbFvColorGradient | undefined = this.rcsbAnnotationConfig.getConfig(type)?.color;
+                if(!this.annotationTracks.has(newType)){
+                    const o = this.rcsbAnnotationConfig.getConfig(newType);
+                    assertDefined(o);
                     this.annotationTracks.set(
                         newType,
-                        this.trackManagerFactory.getTrackManager(newType,{...this.rcsbAnnotationConfig.getConfig(newType)}, this.polymerEntityInstanceTranslator)
+                        this.trackManagerFactory.getTrackManager(newType, o, this.polymerEntityInstanceTranslator)
                     );
-                this.annotationTracks.get(newType).addAll(this.annotationTracks.get(type),color);
-                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType).getTrackProvenance()));
+                }
+                const o = this.annotationTracks.get(type);
+                if(o && typeof color === "string")
+                    this.annotationTracks.get(newType)?.addAll(o,color);
+                this.rcsbAnnotationConfig.addMultipleProvenance(newType, Array.from(this.annotationTracks.get(newType)?.getTrackProvenance() ?? []));
                 this.annotationTracks.delete(type);
             }
         });

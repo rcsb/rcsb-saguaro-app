@@ -5,10 +5,10 @@ export interface EntryPropertyIntreface {
     rcsbId: string;
     entryId: string;
     experimentalMethod: string;
-    resolution: number;
+    resolution?: number;
     name: string;
     taxNames: Array<string>;
-    entryMolecularWeight: number;
+    entryMolecularWeight?: number;
     description:Array<string>;
     entityToInstance: Map<string,Array<string>>;
 }
@@ -25,13 +25,14 @@ export class MultipleEntryPropertyCollector {
         return {
             rcsbId: r.rcsb_id,
             entryId: r.rcsb_id,
-            experimentalMethod:r.rcsb_entry_info.experimental_method ,
-            resolution: r.rcsb_entry_info.resolution_combined ? r.rcsb_entry_info.resolution_combined[0] : null,
-            name: r.struct.title,
-            description: r.pdbx_molecule_features?.map(mf=>mf.details),
-            taxNames: r.polymer_entities.map((entity)=>(entity.rcsb_entity_source_organism?.map((so)=>(so.ncbi_scientific_name)))).flat(),
-            entryMolecularWeight: r.rcsb_entry_info.molecular_weight,
-            entityToInstance: r.polymer_entities.map(pe=>([pe.rcsb_id, pe.polymer_entity_instances.map(pei=>pei.rcsb_id)] as [string,string[]])).reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>())
+            experimentalMethod:r.rcsb_entry_info.experimental_method ?? "NA",
+            resolution: r.rcsb_entry_info.resolution_combined?.[0] ?? undefined,
+            name: r.struct?.title ?? "NA",
+            description: r.pdbx_molecule_features?.map(mf=>mf?.details).filter((x): x is string => x!=null) ?? [],
+            taxNames: r.polymer_entities?.map((entity)=>(entity?.rcsb_entity_source_organism?.map((so)=>(so?.ncbi_scientific_name)))).flat().filter((x): x is string => x != null) ?? [],
+            entryMolecularWeight: r.rcsb_entry_info.molecular_weight ?? undefined,
+            entityToInstance: r.polymer_entities?.map(pe=>([pe?.rcsb_id, pe?.polymer_entity_instances?.map(pei=>pei?.rcsb_id)] as [string,string[]]))
+                .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>()
         };
     }
 

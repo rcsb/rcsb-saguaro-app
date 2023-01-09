@@ -69,5 +69,5 @@ const query: SearchQuery = {
 }
 
 //buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "Q8WZ42");
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P69905");
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P69905", query);
 //buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30");

@@ -25,7 +25,7 @@ export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterfa
             <Tabs
                 id={this.props.id}
                 defaultActiveKey={this.props.default}
-                onSelect={(eventKey: string)=>{
+                onSelect={(eventKey: string | null)=>{
                     this.props.onSelect(eventKey as T);
                 }}
             >

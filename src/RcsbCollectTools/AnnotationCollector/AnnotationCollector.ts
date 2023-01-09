@@ -57,21 +57,22 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
     }
 
     private async requestAnnotations(requestConfig: AnnotationRequestContext): Promise<Array<AnnotationFeatures>> {
-        return requestConfig.queryId ?
-            await this.rcsbFvQuery.requestRcsbPdbAnnotations({
+        if(requestConfig.queryId)
+            return await this.rcsbFvQuery.requestRcsbPdbAnnotations({
                 queryId: requestConfig.queryId,
                 reference: requestConfig.reference,
                 sources: requestConfig.sources,
                 filters: requestConfig.filters,
                 range: requestConfig.range
-            })
-            :
-            await this.rcsbFvQuery.requestRcsbPdbGroupAnnotations({
+            });
+        else if(requestConfig.group && requestConfig.groupId)
+            return await this.rcsbFvQuery.requestRcsbPdbGroupAnnotations({
                 group: requestConfig.group,
                 groupId: requestConfig.groupId,
                 sources: requestConfig.sources,
                 filters: requestConfig.filters
             });
+        throw new Error(`Annotation query error`);
     }
 
     private complete(): void {

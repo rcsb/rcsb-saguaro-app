@@ -13,7 +13,7 @@ import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager
 export class RcsbFvChromosomeBuilder {
 
     static async buildFullChromosome(elementFvId:string, chrId: string): Promise<RcsbFvModulePublicInterface>{
-        return await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, null, chrId);
+        return await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, undefined, chrId);
     }
 
     static async buildEntryChromosome(elementFvId:string, entitySelectId:string, chromosomeSelectId:string, entryId: string): Promise<RcsbFvModulePublicInterface>{
@@ -58,7 +58,7 @@ export class RcsbFvChromosomeBuilder {
     }
 
     static async buildEntityChromosome(elementFvId:string,elementSelectId:string,  entityId: string): Promise<RcsbFvModulePublicInterface> {
-        const chrViewer: RcsbFvModulePublicInterface = await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, null, elementSelectId,{boardConfig:{rowTitleWidth:160}});
+        const chrViewer: RcsbFvModulePublicInterface = await RcsbFvChromosomeBuilder.buildChromosome(elementFvId, entityId, undefined, elementSelectId,{boardConfig:{rowTitleWidth:160}});
         const targets: Array<string> = await chrViewer.getTargets();
         RcsbFvCoreBuilder.buildSelectButton(elementFvId, elementSelectId, targets.map((chrId,n)=>{
             return {
@@ -73,7 +73,7 @@ export class RcsbFvChromosomeBuilder {
         return chrViewer;
     }
 
-    static async buildChromosome(elementFvId:string, entityId: string, chrId: string, elementSelectId?: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    static async buildChromosome(elementFvId:string, entityId: string|undefined, chrId: string|undefined, elementSelectId?: string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
         return new Promise<RcsbFvModulePublicInterface>((resolve,reject)=> {
             try {
                 RcsbFvCoreBuilder.createFv({
@@ -85,7 +85,7 @@ export class RcsbFvChromosomeBuilder {
                         elementSelectId: elementSelectId,
                         additionalConfig:{
                             rcsbContext:{
-                                ...TagDelimiter.parseEntity(entityId),
+                                ...(entityId ? TagDelimiter.parseEntity(entityId) : {}),
                                 chrId: chrId
                             },
                             ...additionalConfig

@@ -12,10 +12,11 @@ export class PolymerEntityChromosomeCollector {
         }));
         result.forEach((alignment,n)=>{
             alignment.target_alignment?.forEach(ta=>{
-                if(ta.aligned_regions.length>0){
+                if((ta?.aligned_regions?.length ?? 0)>0){
                     if(!entityMap.has(entityIds[n]))
                         entityMap.set(entityIds[n],new Array<string>());
-                    entityMap.get(entityIds[n]).push(ta.target_id);
+                    if(ta?.target_id)
+                        entityMap.get(entityIds[n])?.push(ta.target_id);
                 }
 
             })

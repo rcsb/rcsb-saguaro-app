@@ -6,6 +6,9 @@ import {
     QueryEntryArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertElementListDefined = Assertions.assertElementListDefined;
+import assertDefined = Assertions.assertDefined;
 
 export class EntryAssembliesCollector {
 
@@ -28,14 +31,16 @@ export class EntryAssembliesCollector {
         const asymInstanceMap: Map<string, PolymerEntityInstanceInterface> = new Map<string, PolymerEntityInstanceInterface>();
         if(entry?.polymer_entities instanceof Array){
             entry.polymer_entities.forEach(entity=>{
-                if(entity.polymer_entity_instances instanceof Array){
+                if(entity?.polymer_entity_instances && Array.isArray(entity?.polymer_entity_instances)){
+                    assertElementListDefined(entity.polymer_entity_instances);
                     EntryAssembliesCollector.parsePolymerEntityInstances(entity.polymer_entity_instances, asymInstanceMap, out);
                 }
             })
         }
         if(entry?.assemblies instanceof Array){
             entry.assemblies.forEach(assembly=>{
-                EntryAssembliesCollector.parsePolymerEntityAssemblies(assembly, asymInstanceMap, out);
+                if(assembly)
+                    EntryAssembliesCollector.parsePolymerEntityAssemblies(assembly, asymInstanceMap, out);
             });
         }
         return out;
@@ -46,26 +51,30 @@ export class EntryAssembliesCollector {
             const taxIds: Set<string> = new Set<string>();
             if(instance?.polymer_entity?.rcsb_entity_source_organism instanceof Array)
                 instance.polymer_entity.rcsb_entity_source_organism.forEach(sO=>{
-                    if(typeof sO.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
+                    if(typeof sO?.ncbi_scientific_name === "string" && sO.ncbi_scientific_name.length > 0)
                         taxIds.add(sO.ncbi_scientific_name);
                 });
+            const o = instance.rcsb_polymer_entity_instance_container_identifiers;
+            assertDefined(o), assertDefined(o?.entity_id), assertDefined(o?.entity_id), assertDefined(o?.asym_id), assertDefined(o?.auth_asym_id), assertElementListDefined(o?.auth_to_entity_poly_seq_mapping)
+            assertDefined(instance.polymer_entity?.entity_poly?.rcsb_sample_sequence_length);
             const d: PolymerEntityInstanceInterface = {
                 rcsbId: instance.rcsb_id,
-                entryId: instance.rcsb_polymer_entity_instance_container_identifiers.entry_id,
-                entityId: instance.rcsb_polymer_entity_instance_container_identifiers.entity_id,
-                asymId: instance.rcsb_polymer_entity_instance_container_identifiers.asym_id,
-                authId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_asym_id,
-                authResId: instance.rcsb_polymer_entity_instance_container_identifiers.auth_to_entity_poly_seq_mapping,
-                name: instance.polymer_entity.rcsb_polymer_entity.rcsb_polymer_name_combined?.names?.join(", ") ?? instance.polymer_entity.rcsb_polymer_entity.pdbx_description,
+                entryId: o.entry_id,
+                entityId: o.entity_id,
+                asymId: o.asym_id,
+                authId: o.auth_asym_id,
+                authResId: o.auth_to_entity_poly_seq_mapping,
+                name: (instance.polymer_entity?.rcsb_polymer_entity?.rcsb_polymer_name_combined?.names?.join(", ") ?? instance.polymer_entity?.rcsb_polymer_entity?.pdbx_description) ?? "NA",
                 taxNames:Array.from(taxIds),
-                experimentalMethod: instance.polymer_entity.entry.rcsb_entry_info.experimental_method,
-                resolution: instance.polymer_entity.entry.rcsb_entry_info.resolution_combined[0],
-                sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length,
-                entityMolecularWeight: instance.polymer_entity.rcsb_polymer_entity.formula_weight,
-                entryMolecularWeight: instance.polymer_entity.entry.rcsb_entry_info.molecular_weight
+                experimentalMethod: instance.polymer_entity?.entry?.rcsb_entry_info.experimental_method ?? "NA",
+                resolution: instance.polymer_entity?.entry?.rcsb_entry_info.resolution_combined?.[0] ?? undefined,
+                sequenceLength: instance.polymer_entity?.entity_poly?.rcsb_sample_sequence_length,
+                entityMolecularWeight: instance.polymer_entity.rcsb_polymer_entity?.formula_weight ?? undefined,
+                entryMolecularWeight: instance.polymer_entity.entry?.rcsb_entry_info.molecular_weight ?? undefined
             };
-            out.get(EntryAssembliesCollector.modelKey).push(d);
-            asymInstanceMap.set(instance.rcsb_polymer_entity_instance_container_identifiers.asym_id, d);
+            out.get(EntryAssembliesCollector.modelKey)?.push(d);
+            if(instance?.rcsb_polymer_entity_instance_container_identifiers?.asym_id)
+                asymInstanceMap.set(instance?.rcsb_polymer_entity_instance_container_identifiers?.asym_id, d);
         });
     }
 
@@ -73,8 +82,11 @@ export class EntryAssembliesCollector {
         out.set(assembly.rcsb_assembly_container_identifiers.assembly_id, new Array<PolymerEntityInstanceInterface>());
         assembly.pdbx_struct_assembly_gen?.forEach(assemblyGen=>{
             assemblyGen?.asym_id_list?.forEach(asymId=>{
-                if(asymInstanceMap.has(asymId))
-                    out.get(assembly.rcsb_assembly_container_identifiers.assembly_id).push(asymInstanceMap.get(asymId))
+                if(!asymId)
+                    return
+                const o = asymInstanceMap.get(asymId);
+                if(o)
+                    out.get(assembly.rcsb_assembly_container_identifiers.assembly_id)?.push(o)
             });
         })
     }

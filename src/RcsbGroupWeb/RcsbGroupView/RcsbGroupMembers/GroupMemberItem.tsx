@@ -18,9 +18,9 @@ export interface ItemFeaturesInterface {
     taxNames: Array<string>;
     name: string;
     experimentalMethod: string;
-    resolution: number;
+    resolution?: number;
     sequenceLength?:number;
-    molecularWeight:number;
+    molecularWeight?:number;
 }
 
 const NA: string = "N/A";

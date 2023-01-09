@@ -34,7 +34,7 @@ export class GroupPropertiesProvider {
         }else if(key === "resolution"){
             return this.entryProperties.map(p=>({
                 objectId: p.rcsbId,
-                value: p.resolution
+                value: p.resolution ?? "NA"
             }));
         }
     }

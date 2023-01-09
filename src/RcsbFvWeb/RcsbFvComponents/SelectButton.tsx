@@ -4,6 +4,8 @@ import {SingleValueProps} from "react-select";
 import {OptionProps} from "react-select";
 import {CSSObjectWithLabel, OptionsOrGroups} from "react-select/dist/declarations/src/types";
 import {StylesConfig} from "react-select/dist/declarations/src/styles";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export interface GroupedOptionsInterface {
     options: Array<SelectOptionInterface>;
@@ -120,7 +122,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }))
             }))
         }
-        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : null;
+        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : <></>;
         return(
             <div style={{display:"inline-block"}}>
                 {title}
@@ -131,7 +133,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                         onChange={this.change.bind(this)}
                         styles={this.configStyle()}
                         components={{ SingleValue, Option: this.props.optionProps ? (props)=>{
-                                return this.props.optionProps({...props,children:<components.Option {...props} children={props.children}/>});
+                                return this.props.optionProps?.({...props,children:<components.Option {...props} children={props.children}/>}) ?? <></>;
                             } : ((props)=>(<components.Option {...props} children={props.children}/>)) }}
                         defaultValue={{...defaultValue,value:index}}
                     />
@@ -164,7 +166,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
 
     private getSelectOpt(): {selectOpt: SelectOptionInterface; index: number;}{
         let index: number = 0;
-        let selectOpt: SelectOptionInterface;
+        let selectOpt: SelectOptionInterface | undefined = undefined;
         if(this.defaultValue!=null){
             if((this.props.options as Array<GroupedOptionsInterface>)[0].options == null) {
                 const n: number = (this.props.options as Array<OptionPropsInterface>).findIndex(a => {
@@ -196,10 +198,11 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 return a.optId === this.state.selectedOption.optId
             });
         }
+        assertDefined(selectOpt);
         return {selectOpt: selectOpt, index: index};
     }
 
     private renderTitle(): void {
-        if(this.props.addTitle) this.props.renderTitle(this.currentOption.selectOpt.name);
+        if(this.props.addTitle && this.currentOption.selectOpt.name) this.props.renderTitle(this.currentOption.selectOpt.name);
     }
 }

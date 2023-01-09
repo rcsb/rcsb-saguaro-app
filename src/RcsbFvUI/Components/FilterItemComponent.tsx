@@ -1,7 +1,6 @@
 import React from "react";
-import {Button, Collapse} from "react-bootstrap";
+import {Collapse} from "react-bootstrap";
 import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
-import {RcsbFvModulePublicInterface} from "../../RcsbFvWeb/RcsbFvModule/RcsbFvModuleInterface";
 import {ItemComponent} from "./ItemComponent";
 
 interface FilterItemProps {
@@ -19,7 +18,6 @@ interface FilterItemState extends FilterPartialState{
 
 export class FilterItemComponent extends AbstractMenuItemComponent<FilterItemProps,FilterPartialState,FilterItemState> {
 
-    private readonly allowedValues:Map<string,boolean> = new Map<string,boolean>();
     readonly state: FilterItemState = {
         filteredElements:[],
         collapseIn:false,

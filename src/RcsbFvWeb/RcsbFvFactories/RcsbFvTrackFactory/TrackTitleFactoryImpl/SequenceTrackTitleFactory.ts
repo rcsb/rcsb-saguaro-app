@@ -52,8 +52,9 @@ export class SequenceTrackTitleFactory implements  TrackTitleFactoryInterface<[A
     }
 
     public async getTrackTitleFlagColor(alignmentQueryContext: AlignmentRequestContextType): Promise<string> {
-        assertDefined(alignmentQueryContext.queryId), assertDefined(alignmentQueryContext.from);
-        return TrackUtils.getProvenanceConfigFormTarget(alignmentQueryContext.queryId,alignmentQueryContext.from).color;
+        const queryId = alignmentQueryContext.queryId ?? alignmentQueryContext.groupId;
+        assertDefined(queryId), assertDefined(alignmentQueryContext.from);
+        return TrackUtils.getProvenanceConfigFormTarget(queryId,alignmentQueryContext.from).color;
     }
 
     private buildInstanceId(targetId: string): string{

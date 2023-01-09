@@ -6,8 +6,9 @@ class RcsbFvContextManager {
     private readonly rcsbButtonManager: Map<string, Set<string>> = new Map<string, Set<string>>();
 
     public getFv(elementFvId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
-        if( this.rcsbFvManager.has(elementFvId)) {
-            return this.rcsbFvManager.get(elementFvId);
+        const o = this.rcsbFvManager.get(elementFvId);
+        if(o) {
+            return o;
         }else{
             const rcsbFvSingleViewer: RcsbFv = buildRcsbFvSingleViewer(elementFvId, boardConfig);
             this.setFv(elementFvId, rcsbFvSingleViewer);
@@ -23,14 +24,14 @@ class RcsbFvContextManager {
         this.rcsbFvManager.set(elementFvId, rcsbFv);
     }
 
-    public getButtonList(elementFvId: string): Set<string>{
+    public getButtonList(elementFvId: string): Set<string> | undefined{
         return this.rcsbButtonManager.get(elementFvId);
     }
 
     public setButton(elementFvId: string, buttonId: string): void{
         if(this.rcsbButtonManager.get(elementFvId) == null)
             this.rcsbButtonManager.set(elementFvId, new Set<string>());
-        this.rcsbButtonManager.get(elementFvId).add(buttonId);
+        this.rcsbButtonManager.get(elementFvId)?.add(buttonId);
     }
 
     public removeFv(elementFvId: string): void{
@@ -48,7 +49,7 @@ function buildRcsbFvSingleViewer(elementId: string, boardConfig?: Partial<RcsbFv
         ...boardConfig
     };
     return new RcsbFv({
-        rowConfigData: null,
+        rowConfigData: [],
         boardConfigData: config,
         elementId: elementId
     });

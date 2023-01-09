@@ -25,9 +25,9 @@ export class SelectButtonManager {
         const additionalDiv = this.createDiv(SelectButtonManager.ADDITIONAL_BUTTON_SUFFIX);
         const titleDiv = this.createDiv(SelectButtonManager.SELECT_TITLE_DIV);
 
-        document.getElementById(this.elementId).append(selectDiv);
-        document.getElementById(this.elementId).append(additionalDiv);
-        document.getElementById(this.elementId).append(titleDiv);
+        document.getElementById(this.elementId)?.append(selectDiv);
+        document.getElementById(this.elementId)?.append(additionalDiv);
+        document.getElementById(this.elementId)?.append(titleDiv);
 
         this.selectComponent = {
             mainButton : new MountableComponent(selectDiv),
@@ -61,7 +61,7 @@ export class SelectButtonManager {
             elementId={this.elementId}
             options={options}
             optionProps={config?.optionProps}
-            addTitle={config?.addTitle}
+            addTitle={config?.addTitle??false}
             defaultValue={config?.defaultValue}
             width={config?.width}
             dropdownTitle={config?.dropdownTitle}

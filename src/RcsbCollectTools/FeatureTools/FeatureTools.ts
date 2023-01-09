@@ -11,10 +11,13 @@ export class FeatureTools {
         do{
             merged = false;
             for(let n=0; n<(blocks.length-1); n++){
-                if(blocks[n].oriEnd+1 == blocks[n+1].oriBegin && blocks[n].color === blocks[n+1].color){
+                const end = blocks[n].end;
+                if(!end)
+                    return;
+                if( (blocks[n].oriEnd ?? Number.MIN_SAFE_INTEGER)+1 == blocks[n+1].oriBegin && blocks[n].color === blocks[n+1].color){
                     if(blocks[n].gaps == null)
                         blocks[n].gaps = []
-                    blocks[n].gaps.push({begin:blocks[n].end,end:blocks[n+1].begin, isConnected:true});
+                    blocks[n].gaps?.push({begin:end,end:blocks[n+1].begin, isConnected:true});
                     blocks[n].end = blocks[n+1].end;
                     blocks[n].oriEnd = blocks[n+1].oriEnd;
                     blocks.splice((n+1),1);
@@ -25,7 +28,7 @@ export class FeatureTools {
         }while(merged);
     }
     static parseLink(title: string): RcsbFvLink{
-        let match: RegExpExecArray;
+        let match: RegExpExecArray | null;
         if(match = FeatureTools.rcsbLigand.exec(title)) {
             return {
                 visibleTex: match[3],

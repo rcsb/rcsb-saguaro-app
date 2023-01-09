@@ -16,7 +16,7 @@ interface AbstractChartInterface extends Omit<ChartInterface, "chartComponentImp
     attributeName:string;
 }
 
-interface AbstractChartState extends ChartState {
+interface AbstractChartState extends Partial<ChartState> {
     data: ChartObjectInterface[][];
 }
 
@@ -62,9 +62,11 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
     private asyncUpdate(sqData: ObservedDataInterface,x?:number): void {
         this.asyncSubscription?.unsubscribe();
         this.asyncSubscription = asyncScheduler.schedule(()=>{
-            this.setState({
-                data:sqData.chartMap.get(this.props.attributeName)
-            });
+            const data = sqData.chartMap.get(this.props.attributeName);
+            if(data)
+                this.setState({
+                    data
+                });
         }, x );
     }
 
