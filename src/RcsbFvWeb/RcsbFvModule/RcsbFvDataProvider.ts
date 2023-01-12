@@ -8,7 +8,8 @@ export class RcsbFvDataProvider extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         if(this.buildConfig.additionalConfig?.dataProvider?.alignments) {
-            const alignmentResponse: AlignmentResponse = await this.buildConfig.additionalConfig.dataProvider.alignments.collector.collect({
+            this.alignmentCollector = this.buildConfig.additionalConfig.dataProvider.alignments.collector;
+            const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect({
                 ...this.buildConfig.additionalConfig?.dataProvider?.alignments.context
             }, this.buildConfig.additionalConfig?.alignmentFilter);
             await this.buildAlignmentTracks(this.buildConfig.additionalConfig?.dataProvider?.alignments.context, alignmentResponse,
@@ -18,7 +19,8 @@ export class RcsbFvDataProvider extends RcsbFvAbstractModule {
             this.boardConfigData.length = await this.buildConfig.additionalConfig?.dataProvider?.alignments.collector.getAlignmentLength();
         }
         if(this.buildConfig.additionalConfig?.dataProvider?.annotations){
-            const annotationsFeatures: AnnotationFeatures[] = await this.buildConfig.additionalConfig.dataProvider.annotations.collector.collect({
+            this.annotationCollector = this.buildConfig.additionalConfig.dataProvider.annotations.collector
+            const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect({
                 ...this.buildConfig.additionalConfig.dataProvider.annotations.context
             });
             await this.buildAnnotationsTrack(this.buildConfig.additionalConfig.dataProvider.annotations.context, annotationsFeatures);

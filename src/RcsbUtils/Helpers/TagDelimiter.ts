@@ -30,6 +30,14 @@ export class TagDelimiter {
         return {instanceId, entryId};
     }
 
+    public static parseRcsbId(rcsbId:string): {instanceId?:string;entityId?:string;entryId:string;} {
+        if(this.rcsbEntityRegExp.test(rcsbId))
+            return this.parseEntity(rcsbId);
+        if(this.rcsbInstanceRegExp.test(rcsbId))
+            return this.parseInstance(rcsbId);
+        return {entryId: rcsbId};
+    }
+
     public static isEntityOrInstanceId(rcsb:string): boolean {
         return this.rcsbEntityRegExp.test(rcsb) || this.rcsbInstanceRegExp.test(rcsb);
     }
@@ -41,4 +49,5 @@ export class TagDelimiter {
     public static isModel(rcsb:string): boolean {
         return this.alphaFoldRegExp.test(rcsb) || this.modelArchiveRegExp.test(rcsb);
     }
+
 }

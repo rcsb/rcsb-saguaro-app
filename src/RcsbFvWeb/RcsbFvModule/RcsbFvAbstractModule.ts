@@ -52,8 +52,8 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     protected rowConfigData: Array<RcsbFvRowConfigInterface> = new Array<RcsbFvRowConfigInterface>();
 
     protected polymerEntityInstance: PolymerEntityInstanceTranslate;
-    protected readonly alignmentCollector: AlignmentCollectorInterface = new AlignmentCollector();
-    protected readonly annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
+    protected alignmentCollector: AlignmentCollectorInterface = new AlignmentCollector();
+    protected annotationCollector: AnnotationCollectorInterface = new AnnotationCollector();
 
     protected referenceTrack: RcsbFvRowConfigInterface;
     protected alignmentTracks: Array<RcsbFvRowConfigInterface> = [];
