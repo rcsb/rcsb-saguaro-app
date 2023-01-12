@@ -1,4 +1,8 @@
-import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "./RcsbFvModule/RcsbFvModuleInterface";
+import {
+    RcsbFvAdditionalConfig,
+    RcsbFvModulePublicInterface,
+    RcsbModuleDataProviderInterface
+} from "./RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvBuilder/RcsbFvCoreBuilder";
 import {RcsbFvChromosomeBuilder} from "./RcsbFvBuilder/RcsbFvChromosomeBuilder";
 import {RcsbFvPairwiseAligmentBuilder} from "./RcsbFvBuilder/RcsbFvPairwiseAligmentBuilder";
@@ -17,6 +21,7 @@ import {RcsbFvGroupTabsBuilder} from "./RcsbFvGroup/RcsbFvGroupTabsBuilder";
 import {PairwiseAlignmentInterface} from "../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {RcsbFvGroupAlignmentBuilder} from "./RcsbFvBuilder/RcsbFvGroupAlignmentBuilder";
 import {ActionMethods} from "../RcsbFvUI/Helper/ActionMethods";
+import {RcsbFvDataProviderBuilder} from "./RcsbFvBuilder/RcsbFvDataProviderBuilder";
 
 export function unmount(elementId:string): void{
     RcsbFvCoreBuilder.unmount(elementId);
@@ -99,6 +104,15 @@ export function buildSequenceIdentityAlignmentFv(elementId: string, groupId: str
     return RcsbFvGroupAlignmentBuilder.buildGroupAlignmentFv(elementId, GroupProvenanceId.ProvenanceSequenceIdentity, groupId, query, additionalConfig);
 }
 
-export function  buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
+export function buildUniprotAlignmentFv(elementId: string, upAcc: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface):Promise<RcsbFvModulePublicInterface> {
     return RcsbFvGroupAlignmentBuilder.buildGroupAlignmentFv(elementId, GroupProvenanceId.ProvenanceMatchingUniprotAccession, upAcc, query, additionalConfig);
+}
+
+export function buildDataProviderFv(elementId: string, dataProvider: RcsbModuleDataProviderInterface, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
+    return RcsbFvDataProviderBuilder.buildFv(elementId, {
+        ...additionalConfig,
+        dataProvider: {
+            ...dataProvider
+        }
+    });
 }

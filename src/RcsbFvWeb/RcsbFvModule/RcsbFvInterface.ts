@@ -8,7 +8,7 @@ import {
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbContextType, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {
-    CollectAnnotationsInterface
+    AnnotationsCollectConfig
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
@@ -51,7 +51,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             sequenceTrackFactory: new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator(),new InstanceSequenceTrackTitleFactory(this.getPolymerEntityInstanceTranslator()))
         });
 
-        const annotationsRequestContext: CollectAnnotationsInterface = {
+        const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
             titleSuffix: this.titleSuffix(buildConfig?.additionalConfig?.rcsbContext).bind(this),

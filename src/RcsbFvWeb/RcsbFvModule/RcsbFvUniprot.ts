@@ -9,7 +9,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {AnnotationsCollectConfig} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {MsaAlignmentTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
@@ -44,7 +44,7 @@ export class RcsbFvUniprot extends RcsbFvAbstractModule {
             alignmentTrackFactory: trackFactory
         });
 
-        const annotationsRequestContext: CollectAnnotationsInterface = {
+        const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:source,

@@ -45,19 +45,21 @@ import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest
 import { RequestInit as GraphqlRequestInit} from "graphql-request/src/types.dom";
 import {Assertions} from "../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {
+    InstanceSequenceInterface,
+    MultipleInstanceSequencesCollector
+} from "../RcsbCollectTools/DataCollectors/MultipleInstanceSequencesCollector";
 
 class RcsbRequestContextManager {
-
     private readonly polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
     private readonly entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
     private readonly groupPropertyMap: Map<string,DataStatusInterface<GroupPropertiesProvider>> = new Map<string, DataStatusInterface<GroupPropertiesProvider>>();
     private readonly searchRequestMap: Map<string,DataStatusInterface<QueryResult|null>> = new Map<string, DataStatusInterface<QueryResult|null>>();
     private readonly interfaceToInstanceMap: Map<string,DataStatusInterface<InterfaceInstanceTranslate>> = new Map<string, DataStatusInterface<InterfaceInstanceTranslate>>();
     private readonly assemblyInterfacesMap: Map<string,DataStatusInterface<AssemblyInterfacesTranslate>> = new Map<string, DataStatusInterface<AssemblyInterfacesTranslate>>();
-
     private readonly entryPropertyMap: Map<string,DataStatusInterface<EntryPropertyIntreface>> = new Map<string, DataStatusInterface<EntryPropertyIntreface>>();
     private readonly entityPropertyMap: Map<string,DataStatusInterface<PolymerEntityInstanceInterface>> = new Map<string, DataStatusInterface<PolymerEntityInstanceInterface>>();
-
+    private readonly instanceSequenceMap: Map<string,DataStatusInterface<InstanceSequenceInterface>> = new Map<string, DataStatusInterface<InstanceSequenceInterface>>();
     private readonly instanceCollector: PolymerEntityInstancesCollector = new PolymerEntityInstancesCollector();
     private readonly assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
     private readonly entityChrCollector: PolymerEntityChromosomeCollector = new PolymerEntityChromosomeCollector();
@@ -66,7 +68,7 @@ class RcsbRequestContextManager {
     private readonly interfaceCollector: InterfaceInstanceCollector = new InterfaceInstanceCollector();
     private readonly assemblyInterfacesCollector: AssemblyInterfacesCollector = new AssemblyInterfacesCollector();
     private readonly multipleEntityInstancesCollector: MultipleDocumentPropertyCollectorInterface<"entity_ids",PolymerEntityInstanceInterface> = new MultipleEntityInstancesCollector();
-
+    private readonly multipleInstanceSequenceCollector:  MultipleDocumentPropertyCollectorInterface<"instance_ids",InstanceSequenceInterface> = new MultipleInstanceSequencesCollector();
     public readonly modelKey: string = EntryAssembliesCollector.modelKey;
 
     public async getEntityProperties(entityIds:string|Array<string>): Promise<Array<PolymerEntityInstanceInterface>>{
@@ -87,6 +89,16 @@ class RcsbRequestContextManager {
             "entry_ids",
             (e)=>(e.entryId)
         );
+    }
+
+    public async getInstanceSequences(instanceIds:string|string[]): Promise<InstanceSequenceInterface[]> {
+        return RRT.getMultipleObjectProperties<"instance_ids", InstanceSequenceInterface>(
+            instanceIds,
+            this.instanceSequenceMap,
+            this.multipleInstanceSequenceCollector,
+            "instance_ids",
+            (e)=>(e.rcsbId)
+        )
     }
 
     public async getEntityToInstance(entryId: string): Promise<PolymerEntityInstanceTranslate>{

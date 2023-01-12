@@ -1,0 +1,11 @@
+
+query multiple_instance_sequences($instance_ids: [String!]!){
+    polymer_entity_instances(instance_ids:$instance_ids){
+        rcsb_id
+        polymer_entity{
+            entity_poly{
+                pdbx_seq_one_letter_code_can
+            }
+        }
+    }
+}

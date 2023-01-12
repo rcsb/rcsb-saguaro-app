@@ -29,16 +29,16 @@ export interface CommonAnnotationInterface {
     typeSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
 }
 
-export interface CollectAnnotationsInterface extends QueryAnnotationsArgs, CommonAnnotationInterface {
+export interface AnnotationsCollectConfig extends QueryAnnotationsArgs, CommonAnnotationInterface {
 }
 
 export interface CollectGroupAnnotationsInterface extends QueryGroup_AnnotationsArgs, CommonAnnotationInterface {
 }
 
-export type AnnotationRequestContext = Partial<CollectAnnotationsInterface & CollectGroupAnnotationsInterface>;
+export type AnnotationRequestContext = Partial<AnnotationsCollectConfig & CollectGroupAnnotationsInterface>;
 
 export interface AnnotationCollectorInterface {
-    collect(requestConfig: CollectAnnotationsInterface | CollectGroupAnnotationsInterface): Promise<Array<AnnotationFeatures>>;
+    collect(requestConfig: AnnotationsCollectConfig | CollectGroupAnnotationsInterface): Promise<Array<AnnotationFeatures>>;
     getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>;
     getFeatures(): Promise<Array<Feature>>;
 }

@@ -11,7 +11,7 @@ import {
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
-import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {AnnotationsCollectConfig} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
@@ -41,7 +41,7 @@ export class RcsbFvUniprotEntity extends RcsbFvAbstractModule {
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [entityId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
-        const annotationsRequestContext: CollectAnnotationsInterface = {
+        const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:additionalConfig?.sources ? additionalConfig.sources : [Source.PdbEntity, Source.Uniprot],

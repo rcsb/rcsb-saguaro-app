@@ -2,7 +2,7 @@ import {AnnotationCollector} from "../../../../RcsbCollectTools/AnnotationCollec
 import {
     AnnotationCollectorInterface,
     AnnotationRequestContext,
-    CollectAnnotationsInterface
+    AnnotationsCollectConfig
 } from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {
     AlignmentResponse,
@@ -83,7 +83,7 @@ export namespace ResidueChartTools {
         };
         const alignmentResponse: AlignmentResponse = await alignmentCollector.collect(alignmentRequestContext);
 
-        const annotationsRequestContext: CollectAnnotationsInterface = {
+        const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
             sources: [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface],

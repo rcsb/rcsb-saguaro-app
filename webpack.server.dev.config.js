@@ -59,7 +59,8 @@ const examples = [
     'SequenceIdentityGroupAlignmentFv',
     'UniprotEntityInstanceFv',
     'InstanceFv',
-    'UniprotAlignmentFv'
+    'UniprotAlignmentFv',
+    'ExternalDataProvider'
 ];
 const entries = examples.reduce((prev,current)=>{prev[current]= fs.existsSync(`./src/RcsbFvExamples/${current}.ts`) ? `./src/RcsbFvExamples/${current}.ts` : `./src/RcsbFvExamples/${current}.tsx`;return prev;},{});
 

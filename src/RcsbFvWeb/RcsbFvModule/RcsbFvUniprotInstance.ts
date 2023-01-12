@@ -10,7 +10,7 @@ import {
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
-import {CollectAnnotationsInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {AnnotationsCollectConfig} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
@@ -51,7 +51,7 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [instanceId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
-        const annotationsRequestContext: CollectAnnotationsInterface = {
+        const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: upAcc,
             reference: SequenceReference.Uniprot,
             sources:sources,

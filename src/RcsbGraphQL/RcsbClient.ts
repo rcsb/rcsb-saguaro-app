@@ -8,8 +8,17 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreAssembly,
-    CoreEntry, CoreInterface, CorePolymerEntity, QueryAssembliesArgs, GroupPolymerEntity, QueryEntriesArgs,
-    QueryEntryArgs, QueryInterfacesArgs, QueryPolymer_EntitiesArgs, QueryPolymer_Entity_GroupArgs
+    CoreEntry,
+    CoreInterface,
+    CorePolymerEntity,
+    QueryAssembliesArgs,
+    GroupPolymerEntity,
+    QueryEntriesArgs,
+    QueryEntryArgs,
+    QueryInterfacesArgs,
+    QueryPolymer_EntitiesArgs,
+    QueryPolymer_Entity_GroupArgs,
+    QueryPolymer_Entity_InstancesArgs, CorePolymerEntityInstance
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 import {RcsbQueryMultipleEntityInstances} from "./RcsbQueryMultipleEntityInstances";
@@ -20,6 +29,7 @@ import {RcsbQueryInterfaceInstances} from "./RcsbQueryInterfaceInstances";
 import {RcsbQueryAssemblyInterfaces} from "./RcsbQueryAssemblyInterfaces";
 import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools";
+import {RcsbQueryMultipleInstanceSequences} from "./RcsbQueryMultipleInstanceSequences";
 
 //TODO Implement a cache to store requests and avoid duplication
 class RcsbClientClass {
@@ -34,6 +44,7 @@ class RcsbClientClass {
     private readonly rcsbQueryInterfaceInstances: RcsbCoreQueryInterface<QueryInterfacesArgs,Array<CoreInterface>>;
     private readonly rcsbQueryAssemblyInterfaces: RcsbCoreQueryInterface<QueryAssembliesArgs,Array<CoreAssembly>>;
     private readonly rcsbQueryGroup: RcsbCoreQueryInterface<QueryPolymer_Entity_GroupArgs,GroupPolymerEntity>;
+    private readonly rcsbQueryMultipleInstanceSequences: RcsbCoreQueryInterface<QueryPolymer_Entity_InstancesArgs, CorePolymerEntityInstance[]>;
 
     constructor(get:{borrego: ()=>GraphQLRequest, yosemite: ()=>GraphQLRequest}){
         this.rcsbQueryAnnotations = new RcsbQueryAnnotations(get.borrego);
@@ -46,6 +57,7 @@ class RcsbClientClass {
         this.rcsbQueryInterfaceInstances = new RcsbQueryInterfaceInstances(get.yosemite);
         this.rcsbQueryAssemblyInterfaces = new RcsbQueryAssemblyInterfaces(get.yosemite);
         this.rcsbQueryGroup = new RcsbQueryGroup(get.yosemite);
+        this.rcsbQueryMultipleInstanceSequences = new RcsbQueryMultipleInstanceSequences(get.yosemite);
     }
 
     public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
@@ -86,6 +98,10 @@ class RcsbClientClass {
 
     public async requestAssemblyInterfaces(requestConfig:QueryAssembliesArgs): Promise<Array<CoreAssembly>> {
         return await this.rcsbQueryAssemblyInterfaces.request(requestConfig);
+    }
+
+    public async requestMultipleInstanceSequences(requestConfig: QueryPolymer_Entity_InstancesArgs): Promise<CorePolymerEntityInstance[]> {
+        return await this.rcsbQueryMultipleInstanceSequences.request(requestConfig);
     }
 }
 

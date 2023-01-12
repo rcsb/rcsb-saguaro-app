@@ -1,5 +1,5 @@
 import {
-    AlignmentResponse,
+    AlignmentResponse, AnnotationFeatures,
     Feature,
     FilterInput,
     GroupReference,
@@ -8,7 +8,10 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {AnnotationProcessingInterface} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {
+    AnnotationCollectorInterface,
+    AnnotationProcessingInterface, AnnotationsCollectConfig
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {PairwiseAlignmentInterface} from "../../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {
@@ -16,6 +19,12 @@ import {
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
 import {UiComponentType} from "../../RcsbFvUI/GroupPfvUI";
+import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
+import {
+    AlignmentCollectConfig,
+    AlignmentCollectorInterface,
+    CollectAlignmentInterface
+} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
 export interface RcsbFvAdditionalConfig{
@@ -35,6 +44,22 @@ export interface RcsbFvAdditionalConfig{
         annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     };
     externalUiComponents?: UiComponentType<any>[];
+    dataProvider?: RcsbModuleDataProviderInterface;
+}
+
+export interface RcsbModuleDataProviderInterface {
+    alignments?: {
+        collector: AlignmentCollectorInterface;
+        context: AlignmentCollectConfig;
+        trackFactories?:{
+            alignmentTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>,
+            sequenceTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, string]>
+        }
+    };
+    annotations?: {
+        collector: AnnotationCollectorInterface;
+        context: AnnotationsCollectConfig;
+    };
 }
 
 //TODO move psa & elementSelectId into additional config

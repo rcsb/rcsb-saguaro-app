@@ -8,7 +8,7 @@ import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {
-    CollectAnnotationsInterface
+    AnnotationsCollectConfig
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
@@ -28,7 +28,7 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
-        const annotationsRequestContext: CollectAnnotationsInterface = {
+        const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: buildConfig.entityId,
             reference: SequenceReference.PdbEntity,
             sources: buildConfig.additionalConfig?.sources ?? [Source.PdbEntity, Source.Uniprot],
