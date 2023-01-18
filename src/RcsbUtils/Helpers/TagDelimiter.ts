@@ -47,10 +47,10 @@ export class TagDelimiter {
                 entryId: ids.join(TagDelimiter.instance)
             }
         }
-        if(entity)
-            return {...entity};
         if(instance)
             return {...instance};
+        if(entity)
+            return {...entity};
         return {entryId: rcsbId};
     }
 
