@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.9] - 2023-01-20
+### Dependency update
+- rcsb-saguaro v2.5.7
+
 ## [4.5.8] - 2022-12-09
 ### Bug fix
 - Uniprot Group Alignment entity track title color bug fix
