@@ -4,7 +4,7 @@
 
 ## [4.5.9] - 2023-01-20
 ### Dependency update
-- rcsb-saguaro v2.5.7
+- rcsb-saguaro v2.5.8
 
 ## [4.5.8] - 2022-12-09
 ### Bug fix
