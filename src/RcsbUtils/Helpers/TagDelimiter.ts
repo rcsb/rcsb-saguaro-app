@@ -30,6 +30,31 @@ export class TagDelimiter {
         return {instanceId, entryId};
     }
 
+    public static parseEntityOrInstance(rcsbId:string): {entryId:string;entityId:string;}|{entryId:string;instanceId:string;} {
+        let entity: {entryId: string;entityId:string;} | undefined = undefined;
+        let ids: string[] = rcsbId.split(TagDelimiter.entity);
+        if(ids.length > 1){
+            entity = {
+                entityId: ids.pop() as string,
+                entryId: ids.join(TagDelimiter.entity)
+            };
+        }
+        let instance: {instanceId: string;entryId:string;} | undefined = undefined;
+        ids =  rcsbId.split(TagDelimiter.instance);
+        if(ids.length > 1){
+            instance = {
+                instanceId: ids.pop() as string,
+                entryId: ids.join(TagDelimiter.instance)
+            }
+        }
+        if(instance)
+            return {...instance};
+        if(entity)
+            return {...entity};
+
+        throw new Error(`rcsb_id ${rcsbId} is not a valid entity or instance id`);
+    }
+
     public static parseRcsbId(rcsbId:string): {instanceId?:string;entityId?:string;entryId:string;} {
         let entity: {entryId: string;entityId:string;} | undefined = undefined;
         let ids: string[] = rcsbId.split(TagDelimiter.entity);
