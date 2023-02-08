@@ -99,7 +99,10 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
                 sequenceData.push(sd);
             });
 
-            alignedRegionToTrackElementList(region, alignmentContext).forEach(r=>{
+            alignedRegionToTrackElementList(region, {
+                ...alignmentContext,
+                targetSequenceLength: alignmentContext.targetSequenceLength ?? targetAlignment.target_sequence?.length
+            }).forEach(r=>{
                 alignedBlocks.push(r);
             })
 
@@ -127,7 +130,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         if (region.target_begin != 1)
             openBegin = true;
         let openEnd = false;
-        if (region.target_end != alignmentContext.targetSequenceLength && alignmentContext.querySequenceLength)
+        if (alignmentContext.targetSequenceLength && region.target_end != alignmentContext.targetSequenceLength)
             openEnd = true;
 
         assertDefined(alignmentContext.to)

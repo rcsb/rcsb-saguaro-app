@@ -1,6 +1,7 @@
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvDataProvider} from "../RcsbFvModule/RcsbFvDataProvider";
+import {GroupPfvUI} from "../../RcsbFvUI/GroupPfvUI";
 
 export class RcsbFvDataProviderBuilder {
     static async buildFv(elementId:string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
@@ -14,6 +15,10 @@ export class RcsbFvDataProviderBuilder {
                         additionalConfig
                     }
                 });
+                GroupPfvUI.fvUI(
+                    GroupPfvUI.addBootstrapElement(elementId),
+                    additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : []
+                );
             }catch (e){
                 reject(e);
             }
