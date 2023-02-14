@@ -1,5 +1,5 @@
 import * as React from "react";
-import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {
     FieldName,
     OperationType,
@@ -23,6 +23,7 @@ interface SequenceTabInterface {
     groupProvenanceId: GroupProvenanceId;
     groupId: string;
     searchQuery?: SearchQuery;
+    additionalConfig?:RcsbFvAdditionalConfig;
 }
 export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
 
@@ -114,6 +115,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                         this.entityCount ?? 0,
                         {
                             page:{first:50, after:"0"},
+                            ...this.props.additionalConfig,
                             alignmentFilter: this.filterEntities
                         }
                     )
@@ -129,6 +131,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                         this.filterInstances?.length ?? 0,
                         {
                             page:{first:0,after: "0"},
+                            ...this.props.additionalConfig,
                             alignmentFilter: this.props.searchQuery ?  this.filterEntities : undefined,
                             filters: this.props.searchQuery ? [{
                                 source: Source.PdbInstance,
@@ -150,6 +153,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                         this.filterInstances?.length ?? 0,
                         {
                             page:{first:0,after: "0"},
+                            ...this.props.additionalConfig,
                             alignmentFilter: this.props.searchQuery ? this.filterEntities : undefined,
                             filters: this.props.searchQuery ? [{
                                 source: Source.PdbInstance,

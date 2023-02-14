@@ -80,10 +80,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     public async display(): Promise<void>{
         console.info(`Starting display ${this.elementId}`);
         await this.rcsbFv.updateBoardConfig({
-            boardConfigData:{
-                rowTitleWidth:190,
-                ...this.boardConfigData
-            },
+            boardConfigData: this.boardConfigData,
             rowConfigData:[]
         });
         ComponentsManager.unmountLoaderSpinner(this.elementId);

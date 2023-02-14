@@ -50,10 +50,6 @@ export class RcsbFvGroupAlignmentBuilder {
         }
         additionalConfig = {
             ...additionalConfig,
-            boardConfig:{
-                rowTitleWidth: 190,
-                ...additionalConfig?.boardConfig,
-            },
             page:{
                 first:50,
                 after:"0",

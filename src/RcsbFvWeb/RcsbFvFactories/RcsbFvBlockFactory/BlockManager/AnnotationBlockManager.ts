@@ -73,10 +73,13 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
             this.annotationTracks.set(type, this.trackManagerFactory.getTrackManager(type, o, this.polymerEntityInstanceTranslator));
         }
 
-        assertDefined(requestConfig.reference), assertDefined(requestConfig.queryId), assertDefined(ann.source), assertDefined(ann.target_id);
+        const queryId = requestConfig.queryId ?? requestConfig.groupId;
+        assertDefined(queryId, "undefined queryId or groupId");
+        assertDefined(ann.source, "undefined source");
+        assertDefined(ann.target_id, "undefined target_id");
         this.annotationTracks.get(type)?.addFeature({
-                reference: requestConfig.reference,
-                queryId: requestConfig.queryId,
+                reference: requestConfig.reference ?? undefined,
+                queryId: queryId,
                 source: ann.source,
                 targetId: ann.target_id,
                 feature: feature

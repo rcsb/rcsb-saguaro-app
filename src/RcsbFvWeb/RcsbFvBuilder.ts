@@ -97,7 +97,7 @@ export function buildChromosome(elementFvId:string, entityId: string, chrId: str
 }
 
 export function buildGroupFv(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig): void {
-    RcsbFvGroupTabsBuilder.buildGroupTabs(elementId, groupProvenanceId, groupId, query);
+    RcsbFvGroupTabsBuilder.buildGroupTabs(elementId, groupProvenanceId, groupId, query, additionalConfig);
 }
 
 export function buildSequenceIdentityAlignmentFv(elementId: string, groupId: string, query?:SearchQuery, additionalConfig?:RcsbFvAdditionalConfig & ActionMethods.FvChangeConfigInterface): Promise<RcsbFvModulePublicInterface> {

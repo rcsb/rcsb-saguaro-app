@@ -39,10 +39,6 @@ export namespace GroupPfvApp {
             default:
                 additionalConfig = {
                     ...additionalConfig,
-                    boardConfig:{
-                        rowTitleWidth: 190,
-                        ...additionalConfig?.boardConfig
-                    },
                     externalTrackBuilder: alignmentVariation()
                 }
                 // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
@@ -92,10 +88,6 @@ export namespace GroupPfvApp {
     export async function structure(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
         additionalConfig = {
             ...additionalConfig,
-            boardConfig:{
-                rowTitleWidth: 150,
-                ...additionalConfig?.boardConfig
-            },
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
                 values: [Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
@@ -128,10 +120,6 @@ export namespace GroupPfvApp {
     export async function bindingSites(elementId: string, groupProvenanceId: GroupProvenanceId, groupId: string, nTargets: number, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface>{
         additionalConfig = {
             ...additionalConfig,
-            boardConfig:{
-                rowTitleWidth: 190,
-                ...additionalConfig?.boardConfig
-            },
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
                 values: [Type.BindingSite],

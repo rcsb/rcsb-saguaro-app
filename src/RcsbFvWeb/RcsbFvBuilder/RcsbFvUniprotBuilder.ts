@@ -37,10 +37,6 @@ export class RcsbFvUniprotBuilder {
                     ...additionalConfig?.rcsbContext,
                     ...externalContext
                 },
-                boardConfig:{
-                    rowTitleWidth:210,
-                    ...additionalConfig?.boardConfig
-                }
             });
             if (typeof config.onChangeCallback === "function")
                 config.onChangeCallback({

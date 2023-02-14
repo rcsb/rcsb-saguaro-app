@@ -912,6 +912,10 @@ async function app() {
                     to: SequenceReference.PdbInstance
                 }
             }
+        },{
+            boardConfig: {
+                rowTitleWidth: 100
+            }
         }
     );
 }
