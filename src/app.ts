@@ -23,8 +23,35 @@ export {
     unmount
 } from "./RcsbFvWeb/RcsbFvBuilder";
 
-import {rcsbRequestCtxManager} from "./RcsbRequest/RcsbRequestContextManager";
-export {rcsbRequestCtxManager as RcsbRequestContextManager};
+export {rcsbRequestCtxManager as RcsbRequestContextManager} from "./RcsbRequest/RcsbRequestContextManager";
 export {RcsbFvUI} from "./RcsbExport/RcsbFvUI";
 export {FeatureType} from "./RcsbExport/FeatureType";
 export {TagDelimiter} from "./RcsbUtils/Helpers/TagDelimiter";
+
+export {
+    SequenceTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
+
+export {
+    PositionalScoreAlignmentTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/PositionalScoreAlignmentTrackFactory";
+
+export {
+    PlainObservedAlignmentTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/PlainObservedAlignmentTrackFactory";
+
+export {
+    PlainAlignmentTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/PlainAlignmentTrackFactory";
+
+export {
+    MsaAlignmentTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
+
+export {
+    AnnotationsTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AnnotationsTrackFactory";
+
+export {
+    AlignmentTrackFactory
+} from "./RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";

@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.6.0] - 2023-02-23
+### New Features
+- New builder for external data providers `buildDataProviderFv`
+- Exposed track factories
+
+### Improvements
+- tsc strictNullChecks true
+
 ## [4.5.8] - 2022-12-09
 ### Bug fix
 - Uniprot Group Alignment entity track title color bug fix
