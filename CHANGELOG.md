@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.12] - 2023-03-02
+### Dependency update
+- Auditing vulnerabilities
+- 
 ## [4.5.11] - 2023-03-02
 ### Dependency update
 - Auditing vulnerabilities
