@@ -43,7 +43,10 @@ export interface RcsbFvAdditionalConfig{
         alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment) => Promise<Partial<RcsbFvRowConfigInterface>>,
         annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     };
-    externalUiComponents?: UiComponentType<any>[];
+    externalUiComponents?: {
+        add?: UiComponentType<any>[];
+        replace?: UiComponentType<any>[];
+    };
     dataProvider?: RcsbModuleDataProviderInterface;
 }
 

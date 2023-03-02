@@ -134,7 +134,7 @@ export class RcsbFvGroupAlignmentBuilder {
         };
         GroupPfvUI.fvUI(
             GroupPfvUI.addBootstrapElement(elementId),
-            (entityCount > (additionalConfig?.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : [])
+            additionalConfig?.externalUiComponents?.replace ?? (entityCount > (additionalConfig?.page?.first ?? 50) ? [uiComp]: []).concat(additionalConfig?.externalUiComponents?.add ? additionalConfig.externalUiComponents.add : [])
         );
         return pfv;
     }

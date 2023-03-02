@@ -17,7 +17,7 @@ export class RcsbFvDataProviderBuilder {
                 });
                 GroupPfvUI.fvUI(
                     GroupPfvUI.addBootstrapElement(elementId),
-                    additionalConfig?.externalUiComponents ? additionalConfig.externalUiComponents : []
+                    additionalConfig?.externalUiComponents ? [...(additionalConfig.externalUiComponents.add ?? []), ...(additionalConfig.externalUiComponents.replace ?? [])] : []
                 );
             }catch (e){
                 reject(e);

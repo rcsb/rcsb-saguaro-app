@@ -2,10 +2,16 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [4.6.0] - 2023-02-23
+## [5.0.0] - 2023-03-01
 ### New Features
 - New builder for external data providers `buildDataProviderFv`
 - Exposed track factories
+
+### Breaking changes
+- `externalUiComponents` exposes two attributes
+  - `add` to provide additional `UiComponentType` components
+  - `replace` to replace default `UiComponentType` for external ones
+
 
 ### Improvements
 - tsc strictNullChecks true

@@ -48,14 +48,15 @@ buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {
     onChangeCallback:()=>{
         console.log("This happens after change")
     },
-    externalUiComponents:[{
+    externalUiComponents:{
+        replace:[{
         component: UiComponent,
         props: {
             text:"Bring Top",
             fvContainer,
             b:""
         }
-    }],
+    }]},
 }).then(pfv=>{
     fvContainer.set(pfv)
     console.log(pfv, "rendered");
