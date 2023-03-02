@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.10] - 2023-03-02
+### Bug fixes
+- Cache entity collisions fixed  
+
 ## [4.5.9] - 2023-01-20
 ### Dependency update
 - rcsb-saguaro v2.5.8

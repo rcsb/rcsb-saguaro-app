@@ -43,6 +43,10 @@ import {rcsbRequestClient} from "./RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
 import { RequestInit as GraphqlRequestInit} from "graphql-request/src/types.dom";
+import {
+    MultiplePolymerEntityCollector,
+    PolymerEntityInterface
+} from "../RcsbCollectTools/DataCollectors/MultiplePolymerEntityCollector";
 
 class RcsbRequestContextManager {
 
@@ -54,7 +58,7 @@ class RcsbRequestContextManager {
     private readonly assemblyInterfacesMap: Map<string,DataStatusInterface<AssemblyInterfacesTranslate>> = new Map<string, DataStatusInterface<AssemblyInterfacesTranslate>>();
 
     private readonly entryPropertyMap: Map<string,DataStatusInterface<EntryPropertyIntreface>> = new Map<string, DataStatusInterface<EntryPropertyIntreface>>();
-    private readonly entityPropertyMap: Map<string,DataStatusInterface<PolymerEntityInstanceInterface>> = new Map<string, DataStatusInterface<PolymerEntityInstanceInterface>>();
+    private readonly entityPropertyMap: Map<string,DataStatusInterface<PolymerEntityInterface>> = new Map<string, DataStatusInterface<PolymerEntityInterface>>();
 
     private readonly instanceCollector: PolymerEntityInstancesCollector = new PolymerEntityInstancesCollector();
     private readonly assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
@@ -63,15 +67,15 @@ class RcsbRequestContextManager {
     private readonly multipleEntryPropertyCollector: MultipleEntryPropertyCollector = new MultipleEntryPropertyCollector();
     private readonly interfaceCollector: InterfaceInstanceCollector = new InterfaceInstanceCollector();
     private readonly assemblyInterfacesCollector: AssemblyInterfacesCollector = new AssemblyInterfacesCollector();
-    private readonly multipleEntityInstancesCollector: MultipleDocumentPropertyCollectorInterface<"entity_ids",PolymerEntityInstanceInterface> = new MultipleEntityInstancesCollector();
+    private readonly multipleEntityCollector: MultipleDocumentPropertyCollectorInterface<"entity_ids",PolymerEntityInterface> = new MultiplePolymerEntityCollector();
 
     public readonly modelKey: string = EntryAssembliesCollector.modelKey;
 
-    public async getEntityProperties(entityIds:string|Array<string>): Promise<Array<PolymerEntityInstanceInterface>>{
-        return RRT.getMultipleObjectProperties<"entity_ids",PolymerEntityInstanceInterface>(
+    public async getEntityProperties(entityIds:string|Array<string>): Promise<Array<PolymerEntityInterface>>{
+        return RRT.getMultipleObjectProperties<"entity_ids",PolymerEntityInterface>(
             entityIds,
             this.entityPropertyMap,
-            this.multipleEntityInstancesCollector,
+            this.multipleEntityCollector,
             "entity_ids",
             (e)=>(e.entryId+TagDelimiter.entity+e.entityId)
         )
