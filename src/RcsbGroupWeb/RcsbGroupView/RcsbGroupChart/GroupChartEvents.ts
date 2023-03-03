@@ -10,8 +10,9 @@ import {ChartMapType} from "./GroupChartLayout";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
-import {ChartDataInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartDataProvider/ChartDataProviderInterface";
-import {ChartTools, ChartType} from "@rcsb/rcsb-charts";
+import {ChartDataInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
+import {ChartTools} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartTools";
 
 export namespace GroupChartEvents {
 

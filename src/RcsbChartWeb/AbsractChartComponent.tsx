@@ -1,10 +1,10 @@
 import {asyncScheduler, Subscription} from "rxjs";
-import {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {ChartObjectInterface} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import React from "react";
 import {
     ChartInterface,
     ChartState
-} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartComponent";
+} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartComponent";
 import {SearchQueryContextManager} from "../RcsbGroupWeb/RcsbGroupView/RcsbGroupSeacrhQuery/SearchQueryContextManager";
 
 interface ObservedDataInterface {

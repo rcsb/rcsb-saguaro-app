@@ -1,6 +1,10 @@
 import {AbstractChartComponent} from "./AbsractChartComponent";
-import {BarChartDataProvider, ChartComponent, VictoryBarChartComponent} from "@rcsb/rcsb-charts";
 import React from "react";
+import {ChartComponent} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartComponent";
+import {
+    VictoryBarChartComponent
+} from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/VictoryChartImplementations/VictoryBarChartComponent";
+import {BarChartDataProvider} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/BarChartDataProvider";
 
 export class BarChartComponent extends AbstractChartComponent {
 

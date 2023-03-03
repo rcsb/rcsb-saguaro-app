@@ -1,6 +1,10 @@
 import {AbstractChartComponent} from "./AbsractChartComponent";
-import {ChartComponent, HistogramChartDataProvider, VictoryHistogramChartComponent} from "@rcsb/rcsb-charts";
 import React from "react";
+import {ChartComponent} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartComponent";
+import {
+    VictoryHistogramChartComponent
+} from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/VictoryChartImplementations/VictoryHistogramChartComponent";
+import {HistogramChartDataProvider} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/HistogramChartDataProvider";
 
 export class HistogramChartComponent extends AbstractChartComponent {
 

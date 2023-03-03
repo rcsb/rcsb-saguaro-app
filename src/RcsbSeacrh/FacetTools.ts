@@ -9,9 +9,8 @@ import {
 import {Operator, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
     ChartConfigInterface, ChartDisplayConfigInterface,
-    ChartObjectInterface,
-} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
-import {ChartType} from "@rcsb/rcsb-charts";
+    ChartObjectInterface, ChartType,
+} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 
 export type SearchFilter = {attribute:string;value:AttributeTextQueryParameters['value'];operator:Operator;service:Service.Text|Service.TextChem};
 export interface RcsbChartInterface {

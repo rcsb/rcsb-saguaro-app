@@ -4,14 +4,12 @@ import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 
 import uniqid from "uniqid";
 import {
-    ChartDisplayConfigInterface
-} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
-import {
-    ChartType,
-    ChartTools
-} from "@rcsb/rcsb-charts";
+    ChartDisplayConfigInterface, ChartType
+} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
+
 import {HistogramChartComponent} from "../../../RcsbChartWeb/HistogramChartComponent";
 import {BarChartComponent} from "../../../RcsbChartWeb/BarChartComponent";
+import {ChartTools} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartTools";
 
 export type ChartMapType = Map<string,RcsbChartInterface[]>;
 export interface RcsbChartLayoutInterface {

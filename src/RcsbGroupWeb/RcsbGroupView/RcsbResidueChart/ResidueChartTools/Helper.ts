@@ -1,5 +1,5 @@
 import {RcsbChartInterface} from "../../../../RcsbSeacrh/FacetTools";
-import {ChartObjectInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {ChartObjectInterface} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 
 export namespace Helper {

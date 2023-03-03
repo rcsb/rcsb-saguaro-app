@@ -11,7 +11,7 @@ import {RcsbStatsChartComponent} from "./RcsbGroupChart/RcsbStatsChartComponent"
 import {createRoot} from "react-dom/client";
 import {ResidueChartInterface} from "./RcsbResidueChart/ResidueChartTools/ResidueChartTools";
 import {RcsbResidueChartComponent} from "./RcsbResidueChart/RcsbResidueChartComponent";
-import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/build/dist/RcsbChartComponent/ChartConfigInterface";
+import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 

@@ -29,8 +29,7 @@ const commonConfig = {
                             localIdentName:'[local]'
                         }
                     }
-                }, 'sass-loader'],
-                exclude: /node_modules/
+                }, 'sass-loader']
             }
         ]
     },
