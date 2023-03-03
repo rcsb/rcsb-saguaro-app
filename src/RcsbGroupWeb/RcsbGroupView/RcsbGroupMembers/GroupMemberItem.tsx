@@ -29,7 +29,7 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
     render() {
         return (
             <div>
-                <div><img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/></div>
+                <div style={{minHeight:298}}><img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/></div>
                 <div className={"bg-light border-top p-md-4"}>
                     <div><strong><i className={"bi bi-box"}/> 3D View</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>1D-3D Alignments</a></div>
                     <div>

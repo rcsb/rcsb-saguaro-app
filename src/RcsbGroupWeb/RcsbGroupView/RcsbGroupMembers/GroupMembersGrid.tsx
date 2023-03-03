@@ -16,6 +16,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import uniqid from "uniqid";
+import {PolymerEntityInterface} from "../../../RcsbCollectTools/DataCollectors/MultiplePolymerEntityCollector";
 
 interface GroupMembersGridInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -135,9 +136,9 @@ async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: stri
     });
 }
 
-function parseItems(groupProvenanceId: GroupProvenanceId, propsList:Array<EntryPropertyIntreface>|Array<PolymerEntityInstanceInterface>): Array<ItemFeaturesInterface>{
+function parseItems(groupProvenanceId: GroupProvenanceId, propsList:Array<EntryPropertyIntreface>|Array<PolymerEntityInterface>): Array<ItemFeaturesInterface>{
     return groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
         (propsList as Array<EntryPropertyIntreface>).map((o)=>({...o, molecularWeight:o.entryMolecularWeight}))
         :
-        (propsList as Array<PolymerEntityInstanceInterface>).map((o)=>({...o, molecularWeight: o.entityMolecularWeight}));
+        (propsList as Array<PolymerEntityInterface>).map((o)=>(o.instances)).flat().map((o)=>({...o, molecularWeight: o.entityMolecularWeight}));
 }

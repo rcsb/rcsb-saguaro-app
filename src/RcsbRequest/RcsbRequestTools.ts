@@ -34,7 +34,12 @@ export namespace RcsbRequestTools {
         }
     }
 
-    export async function getMultipleObjectProperties<K extends string,T>(ids:string|Array<string>, map: Map<string,DataStatusInterface<T>>, collector:MultipleDocumentPropertyCollectorInterface<K,T>, collectorKey: K, propertyKey:(e:T)=>string): Promise<Array<T>>{
+    export async function getMultipleObjectProperties<K extends string,T>(
+        ids:string|Array<string>,
+        map: Map<string,DataStatusInterface<T>>,
+        collector:MultipleDocumentPropertyCollectorInterface<K,T>,
+        collectorKey: K, propertyKey:(e:T)=>string
+    ): Promise<Array<T>>{
         if(!Array.isArray(ids))
             ids = [ids]
         const notAvailable: Array<string> = ids.filter(id=>map.get(id)?.status !== "available");
@@ -102,6 +107,9 @@ export namespace RcsbRequestTools {
     }
 
     export function mapSet<T>(mapItem: DataStatusInterface<T>, data:T) {
+        if(mapItem.data!=null) {
+            console.warn('Cache data overwrite | This action is not allowed');
+        }
         mapItem.data = data;
         mapItem.status = "available";
         while (mapItem.resolveList.length > 0) {

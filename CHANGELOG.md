@@ -12,9 +12,24 @@
   - `add` to provide additional `UiComponentType` components
   - `replace` to replace default `UiComponentType` for external ones
 
-
 ### Improvements
 - tsc strictNullChecks true
+
+## [4.5.12] - 2023-03-02
+### Dependency update
+- Auditing vulnerabilities
+ 
+## [4.5.11] - 2023-03-02
+### Dependency update
+- Auditing vulnerabilities
+
+## [4.5.10] - 2023-03-02
+### Bug fixes
+- Cache entity collisions fixed  
+
+## [4.5.9] - 2023-01-20
+### Dependency update
+- rcsb-saguaro v2.5.8
 
 ## [4.5.8] - 2022-12-09
 ### Bug fix
