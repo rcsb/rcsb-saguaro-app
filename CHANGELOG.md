@@ -11,6 +11,7 @@
 - `externalUiComponents` exposes two attributes
   - `add` to provide additional `UiComponentType` components
   - `replace` to replace default `UiComponentType` for external ones
+- `buildInstanceSequenceFv` parameter `InstanceSequenceConfig.defaultValue` points to label_asym_id instead of label_auth_id
 
 ### Improvements
 - tsc strictNullChecks true

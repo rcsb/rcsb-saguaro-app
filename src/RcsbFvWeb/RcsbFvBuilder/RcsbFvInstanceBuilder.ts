@@ -68,7 +68,7 @@ export class RcsbFvInstanceBuilder {
                 label: label,
                 groupLabel: `ENTITY ${instance.entityId} - ${instance.name}`,
                 shortLabel: config.displayAuthId === true ? instance.authId : label,
-                optId: instance.authId,
+                optId: instance.asymId,
                 onChange: async () => {
                     out.getFv().reset();
                     let externalContext: RcsbContextType | undefined;
@@ -93,7 +93,7 @@ export class RcsbFvInstanceBuilder {
         let index: number = 0;
         if (config.defaultValue != null) {
             const n: number = filteredInstanceList.findIndex(a => {
-                return a.authId === config.defaultValue
+                return a.asymId === config.defaultValue
             });
             if (n >= 0)
                 index = n;

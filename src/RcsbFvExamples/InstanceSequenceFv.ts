@@ -7,7 +7,13 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
-buildInstanceSequenceFv("pfv", "select", "1A6D", {module:"interface"},{
+buildInstanceSequenceFv("pfv", "select", "2UZI", {
+    module:"interface",
+    onChangeCallback: (r)=>{
+        console.log(r);
+    },
+    defaultValue: "A"
+},{
     externalTrackBuilder: externalTrackBuilder()
 }).then((module)=>{
     console.log(module);
