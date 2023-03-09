@@ -1,7 +1,7 @@
 import * as React from "react";
 import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
 import * as resource from "../../../RcsbServerConfig/web.resources.json";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 
 interface GroupMemberItemInterface {
@@ -21,6 +21,7 @@ export interface ItemFeaturesInterface {
     resolution: number;
     sequenceLength?:number;
     molecularWeight:number;
+    structureDeterminationMethodology: StructureDeterminationMethodology;
 }
 
 const NA: string = "N/A";
@@ -29,7 +30,10 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
     render() {
         return (
             <div>
-                <div><img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/></div>
+                <div style={{position: "relative", minHeight: 358}}>
+                    {imageIcon(this.props.item)}
+                    <img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/>
+                </div>
                 <div className={"bg-light border-top p-md-4"}>
                     <div><strong><i className={"bi bi-box"}/> 3D View</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>1D-3D Alignments</a></div>
                     <div>
@@ -78,4 +82,33 @@ function memberSummaryUrlText(ei: ItemFeaturesInterface, groupProvenanceId: Grou
     if(groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId)
         return ei.entryId;
     return ei.entryId+TagDelimiter.entity+ei.entityId;
+}
+
+function imageIcon(ei: ItemFeaturesInterface): JSX.Element {
+    const isExperimental = ei.structureDeterminationMethodology === StructureDeterminationMethodology.Experimental;
+    return (
+        <div style={{
+            position: "absolute",
+            top: "0.2em",
+            right: "0.2em"
+        }}>
+            <div style={{
+                width: 28,
+                height: 28,
+                fontSize: 18,
+                position: "relative",
+                display: "inline-block",
+                color: "#FFF",
+                borderRadius: 4,
+                backgroundColor: isExperimental ? "#325880" : "#05d0e7"
+            }}>
+                <span style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)"
+                }} className={`fa ${isExperimental ? "fa-flask" : "fa-desktop"}`}/>
+            </div>
+        </div>
+    );
 }

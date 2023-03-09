@@ -1,5 +1,6 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
 export interface EntryPropertyIntreface {
     rcsbId: string;
@@ -11,6 +12,7 @@ export interface EntryPropertyIntreface {
     entryMolecularWeight: number;
     description:Array<string>;
     entityToInstance: Map<string,Array<string>>;
+    structureDeterminationMethodology: StructureDeterminationMethodology;
 }
 
 export class MultipleEntryPropertyCollector {
@@ -31,7 +33,8 @@ export class MultipleEntryPropertyCollector {
             description: r.pdbx_molecule_features?.map(mf=>mf.details),
             taxNames: r.polymer_entities.map((entity)=>(entity.rcsb_entity_source_organism?.map((so)=>(so.ncbi_scientific_name)))).flat(),
             entryMolecularWeight: r.rcsb_entry_info.molecular_weight,
-            entityToInstance: r.polymer_entities.map(pe=>([pe.rcsb_id, pe.polymer_entity_instances.map(pei=>pei.rcsb_id)] as [string,string[]])).reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>())
+            entityToInstance: r.polymer_entities.map(pe=>([pe.rcsb_id, pe.polymer_entity_instances.map(pei=>pei.rcsb_id)] as [string,string[]])).reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()),
+            structureDeterminationMethodology: r.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology
         };
     }
 

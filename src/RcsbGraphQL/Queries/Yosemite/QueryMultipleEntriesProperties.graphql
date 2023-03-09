@@ -21,6 +21,7 @@ query multiple_entries_properties($entry_ids: [String!]!){
             experimental_method
             resolution_combined
             molecular_weight
+            structure_determination_methodology
         }
         struct {
             title
