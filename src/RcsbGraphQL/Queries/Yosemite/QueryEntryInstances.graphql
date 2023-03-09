@@ -25,6 +25,7 @@ query QueryEntryInstance($entry_id: String!){
                             experimental_method
                             resolution_combined
                             molecular_weight
+                            structure_determination_methodology
                         }
                     }
                 }

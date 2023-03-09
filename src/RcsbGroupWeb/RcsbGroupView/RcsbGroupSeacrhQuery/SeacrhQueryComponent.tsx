@@ -86,6 +86,8 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
     }
 
     private addSearchQuery(o:SearchQueryContextManagerSubjectInterface): void {
+        if(!o.searchQuery)
+            return;
         if(o.searchQuery && o.attributeName != this.COMPONENT_NAME)
             this.setState(
                 {searchQueryList:[...this.state.searchQueryList.slice(0,this.state.index+1), o.searchQuery], index:this.state.searchQueryList.slice(0,this.state.index+1).length},

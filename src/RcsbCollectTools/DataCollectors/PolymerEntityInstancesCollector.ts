@@ -1,5 +1,6 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {CoreEntry, CorePolymerEntityInstance, QueryEntryArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;
@@ -18,6 +19,7 @@ export interface PolymerEntityInstanceInterface {
     sequenceLength: number;
     entityMolecularWeight?: number;
     entryMolecularWeight?: number;
+    structureDeterminationMethodology: StructureDeterminationMethodology;
 }
 
 export class PolymerEntityInstancesCollector {
@@ -73,7 +75,8 @@ export class PolymerEntityInstancesCollector {
                 resolution: instance.polymer_entity?.entry?.rcsb_entry_info.resolution_combined?.[0] ?? undefined,
                 sequenceLength: instance.polymer_entity.entity_poly.rcsb_sample_sequence_length,
                 entityMolecularWeight: instance.polymer_entity.rcsb_polymer_entity?.formula_weight ?? undefined,
-                entryMolecularWeight: instance.polymer_entity.entry?.rcsb_entry_info.molecular_weight ?? undefined
+                entryMolecularWeight: instance.polymer_entity.entry?.rcsb_entry_info.molecular_weight ?? undefined,
+                structureDeterminationMethodology: instance.polymer_entity.entry.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology
             });
         });
     }

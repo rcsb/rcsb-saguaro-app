@@ -23,6 +23,7 @@ query QueryMultipleEntityInstances($entity_ids: [String!]!){
                     rcsb_entry_info{
                         experimental_method
                         resolution_combined
+                        structure_determination_methodology
                     }
                 }
             }
