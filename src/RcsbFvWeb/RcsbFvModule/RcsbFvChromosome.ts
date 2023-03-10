@@ -312,7 +312,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 range: range
             }, async (e)=>{
                 const ar: AlignmentResponse = e as AlignmentResponse
-                if(index)
+                if(typeof index === "number")
                     await this.collectChromosomeWorkerResults(index,to,ar,false);
             });
         }else{

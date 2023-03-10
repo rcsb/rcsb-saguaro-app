@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const fs = require('fs')
+const path = require("path");
 
 const commonConfig = {
     mode: "development",
@@ -59,13 +60,20 @@ const examples = [
     'UniprotEntityInstanceFv',
     'InstanceFv',
     'UniprotAlignmentFv',
-    'ExternalDataProvider'
+    'ExternalDataProvider',
+    'ChromosomeFv'
 ];
 const entries = examples.reduce((prev,current)=>{prev[current]= fs.existsSync(`./src/RcsbFvExamples/${current}.ts`) ? `./src/RcsbFvExamples/${current}.ts` : `./src/RcsbFvExamples/${current}.tsx`;return prev;},{});
 
 const server = {
     ...commonConfig,
-    entry: entries,
+    entry: {
+        ...entries,
+        'worker': {
+            import: './src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.ts',
+            filename: 'saguaro/worker.js'
+        }
+    },
     devServer: {
         compress: true,
         port: 9000,
@@ -75,7 +83,10 @@ const server = {
         template:'./src/RcsbFvExamples/index.html',
         inject: true,
         chunks:[key]
-    }))
+    })),
+    output: {
+        filename: '[name].js'
+    }
 }
 
 module.exports = [server];
