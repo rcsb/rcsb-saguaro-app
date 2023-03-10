@@ -62,6 +62,7 @@ export class PolymerEntityInstancesCollector {
             assertDefined(o), assertDefined(o?.entity_id), assertDefined(o.auth_asym_id), assertElementListDefined(o?.auth_to_entity_poly_seq_mapping);
             assertDefined(p);
             assertDefined(instance.polymer_entity?.entity_poly?.rcsb_sample_sequence_length);
+            assertDefined(instance.polymer_entity.entry?.rcsb_entry_info.structure_determination_methodology);
             out.push({
                 rcsbId: instance.rcsb_id,
                 entryId: o.entry_id,

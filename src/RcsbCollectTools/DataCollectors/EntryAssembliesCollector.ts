@@ -56,8 +56,10 @@ export class EntryAssembliesCollector {
                         taxIds.add(sO.ncbi_scientific_name);
                 });
             const o = instance.rcsb_polymer_entity_instance_container_identifiers;
-            assertDefined(o), assertDefined(o?.entity_id), assertDefined(o?.entity_id), assertDefined(o?.asym_id), assertDefined(o?.auth_asym_id), assertElementListDefined(o?.auth_to_entity_poly_seq_mapping)
+            assertDefined(o), assertDefined(o?.entry_id), assertDefined(o?.entity_id), assertDefined(o?.entity_id), assertDefined(o?.asym_id), assertDefined(o?.auth_asym_id), assertElementListDefined(o?.auth_to_entity_poly_seq_mapping)
             assertDefined(instance.polymer_entity?.entity_poly?.rcsb_sample_sequence_length);
+            assertDefined(instance.polymer_entity.entry?.rcsb_entry_info.structure_determination_methodology);
+            const a = o.entry_id;
             const d: PolymerEntityInstanceInterface = {
                 rcsbId: instance.rcsb_id,
                 entryId: o.entry_id,
@@ -71,7 +73,7 @@ export class EntryAssembliesCollector {
                 resolution: instance.polymer_entity?.entry?.rcsb_entry_info.resolution_combined?.[0] ?? undefined,
                 sequenceLength: instance.polymer_entity?.entity_poly?.rcsb_sample_sequence_length,
                 entityMolecularWeight: instance.polymer_entity.rcsb_polymer_entity?.formula_weight ?? undefined,
-                entryMolecularWeight: instance.polymer_entity.entry?.rcsb_entry_info.molecular_weight ?? undefined
+                entryMolecularWeight: instance.polymer_entity.entry?.rcsb_entry_info.molecular_weight ?? undefined,
                 structureDeterminationMethodology: instance.polymer_entity.entry.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology
             };
             out.get(EntryAssembliesCollector.modelKey)?.push(d);

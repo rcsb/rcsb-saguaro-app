@@ -20,7 +20,7 @@ export interface ItemFeaturesInterface {
     experimentalMethod: string;
     resolution?: number;
     sequenceLength?:number;
-    molecularWeight:number;
+    molecularWeight?:number;
     structureDeterminationMethodology: StructureDeterminationMethodology;
 }
 

@@ -45,17 +45,17 @@ export namespace GroupChartEvents {
 
     function addBarChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
         if(chart.chartConfig)
-        chart.chartConfig.barClickCallback = async (datum:ChartDataInterface, data: ChartDataInterface[], e: React.MouseEvent) => {
-            let query: SearchQueryType = datum.isLabel ?
-                SQT.searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text)
-                :
-                SQT.searchAttributeQuery(chart.attribute, data.filter(d=>d.isLabel).map(d=>d.x) as any, Operator.In, Service.Text, true);
-            if(chart.filters)
-                chart.filters.forEach(f=>{
-                    query = SQT.addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
-                })
-            await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
-        };
+            chart.chartConfig.barClickCallback = async (datum:ChartDataInterface, data: ChartDataInterface[], e: React.MouseEvent) => {
+                let query: SearchQueryType = datum.isLabel ?
+                    SQT.searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text)
+                    :
+                    SQT.searchAttributeQuery(chart.attribute, data.filter(d=>d.isLabel).map(d=>d.x) as any, Operator.In, Service.Text, true);
+                if(chart.filters)
+                    chart.filters.forEach(f=>{
+                        query = SQT.addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
+                    })
+                await clickEvent(e, chart, groupProvenanceId, groupId, searchQuery, query, returnType);
+            };
     }
 
     function addHistogramChartClick(chart: RcsbChartInterface, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery, returnType:ReturnType): void{
