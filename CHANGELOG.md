@@ -7,6 +7,12 @@
 - New builder for external data providers `buildDataProviderFv`
 - Exposed track factories
 
+### Refactoring
+- `GroupChartEvents.clickEvent` calls `SearchQueryContextManager.updateSearchQuery`
+to add the new histogram/bar condition  to the current query
+- Only `SearchQueryContextManager` trigger the observers calling `SearchQueryContextManager.next`
+- `RcsbGroupSearchQueryComponent` constructor initializes `SearchQueryContextManager` configuration
+
 ### Breaking changes
 - `externalUiComponents` exposes two attributes
   - `add` to provide additional `UiComponentType` components

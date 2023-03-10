@@ -8,8 +8,6 @@ import {
     SearchQueryContextManagerSubjectInterface
 } from "./SearchQueryContextManager";
 import {UrlTools} from "../../../RcsbUtils/Helpers/UrlTools";
-import {ChartMapType} from "../RcsbGroupChart/GroupChartLayout";
-import {GroupChartMap as GDCM} from "../RcsbGroupChart/GroupChartTools";
 import Draggable from 'react-draggable';
 
 interface RcsbGroupQuerySearchComponentInterface {
@@ -23,22 +21,39 @@ interface RcsbGroupQuerySearchComponentState {
     searchQueryList: (SearchQuery|undefined)[];
 }
 
-export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearchComponentInterface,RcsbGroupQuerySearchComponentState>{
+export class SearchQueryComponentFactory {
+    private static unique = true;
+    public static getGroupSearchComponent(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): JSX.Element {
+        if(SearchQueryComponentFactory.unique){
+            SearchQueryComponentFactory.unique = false;
+            return <RcsbGroupSearchQueryComponent
+                groupProvenanceId={groupProvenanceId}
+                groupId={groupId}
+                searchQuery={searchQuery}
+            />;
+        }else{
+            return <></>
+        }
+    }
+}
+
+class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearchComponentInterface,RcsbGroupQuerySearchComponentState>{
 
     private readonly COMPONENT_NAME: "group-search-query-component" = "group-search-query-component";
     private readonly URL_STATE_PARAMETER_NAME: "searchQueryState" = "searchQueryState";
     private readonly URL_REQUEST_PARAMETER_NAME: "request" = "request";
     private subscription: Subscription;
-    public static unique: boolean = true;
-
 
     readonly state: RcsbGroupQuerySearchComponentState = {
         index:0,
         searchQueryList: [ this.props.searchQuery ]
     };
+    constructor(props: RcsbGroupQuerySearchComponentInterface) {
+        super(props);
+        SQCM.setConfig({...this.props});
+    }
 
     render():JSX.Element {
-        RcsbGroupSearchQueryComponent.unique = false;
         return (
             <Draggable>
                 <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 700px)", width:120, top:"50%"}}>
@@ -79,10 +94,15 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
     }
 
     private checkUrlState(): void {
-        const urlParams: {key:string;value: any;}[] | undefined = UrlTools.decodeUrlParameters();
+        const urlParams: {key:string;value:RcsbGroupQuerySearchComponentState;}[] | undefined = UrlTools.decodeUrlParameters();
         if(!urlParams) return;
-        const urlState: {key:string;value:any;} | undefined = urlParams.find(p=>p.key === this.URL_STATE_PARAMETER_NAME);
-        if(urlState) this.setState(urlState.value);
+        const urlState: {key:string;value:RcsbGroupQuerySearchComponentState;} | undefined = urlParams.find(p=>p.key === this.URL_STATE_PARAMETER_NAME);
+        if(urlState) {
+            this.setState(urlState.value);
+            const searchQuery = urlState.value.searchQueryList[urlState.value.index]
+            if(searchQuery)
+                SQCM.setConfig({searchQuery});
+        }
     }
 
     private addSearchQuery(o:SearchQueryContextManagerSubjectInterface): void {
@@ -100,25 +120,17 @@ export class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuer
         if(index >= 0 && index<this.state.searchQueryList.length){
             this.setState({index:index}, async ()=>{
                 this.encodeUrlParameters(this.state.searchQueryList[this.state.index]);
-                const chartMap: ChartMapType = await GDCM.getChartMap(this.props.groupProvenanceId,this.props.groupId,this.state.searchQueryList[this.state.index]);
-                SQCM.next({
-                    chartMap,
-                    attributeName: this.COMPONENT_NAME,
-                    searchQuery:this.state.searchQueryList[this.state.index],
-                    groupId: this.props.groupId,
-                    groupProvenanceId: this.props.groupProvenanceId
-                });
+                await SQCM.replaceSearchQuery(this.COMPONENT_NAME, this.state.searchQueryList[this.state.index])
             });
 
         }
     }
 
     private encodeUrlParameters(query: SearchQuery | undefined): void {
-        if(query)
-            UrlTools.encodeUrlParameterList([
-                {key: this.URL_REQUEST_PARAMETER_NAME, value: query},
-                {key: this.URL_STATE_PARAMETER_NAME, value: this.state}
-            ])
+        UrlTools.encodeUrlParameterList([
+            {key: this.URL_REQUEST_PARAMETER_NAME, value: query},
+            {key: this.URL_STATE_PARAMETER_NAME, value: this.state}
+        ])
     }
 
 }

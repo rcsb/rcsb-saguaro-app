@@ -86,7 +86,7 @@ export namespace SearchQueryTools {
         }
     }
 
-    export function buildSearchQuery(searchQuery: SearchQueryType, returnType: ReturnType, logicalOperator = LogicalOperator.And): SearchQuery {
+    export function buildSearchQuery(searchQuery: SearchQueryType, returnType: ReturnType): SearchQuery {
         return {
             query: searchQuery,
             return_type: returnType,

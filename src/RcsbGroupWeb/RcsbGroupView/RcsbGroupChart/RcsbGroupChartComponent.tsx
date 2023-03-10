@@ -1,5 +1,4 @@
 import * as React from "react";
-import {SearchQueryComponentFactory} from "../RcsbGroupSeacrhQuery/SearchQueryComponentFactory";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
@@ -7,6 +6,7 @@ import {GroupChartAdditionalProperties, LayoutConfigInterface} from "./GroupChar
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display.module.scss";
+import {SearchQueryComponentFactory} from "../RcsbGroupSeacrhQuery/RcsbGroupSeacrhQueryComponent";
 
 interface RcsbGroupChartInterface {
     groupProvenanceId: GroupProvenanceId;

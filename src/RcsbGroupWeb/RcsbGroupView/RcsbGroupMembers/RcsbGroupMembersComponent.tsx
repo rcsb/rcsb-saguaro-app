@@ -45,7 +45,7 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
     render(): JSX.Element{
         if(this.state.nPages>0)
             return (
-                <div id={this.groupMembersDiv} className={`${classes.bootstrapGroupComponentScope} ${faClasses.fontawsomeGroupComponentScope}`}>
+                <div id={this.groupMembersDiv} style={{minHeight:627}} className={`${classes.bootstrapGroupComponentScope} ${faClasses.fontawsomeGroupComponentScope}`}>
                     <Slider slide={this.slide.bind(this)} pages={this.state.nPages} currentPage={this.state.selectedIndex+1}>
                         <GroupMembersGrid
                             groupProvenanceId={this.props.groupProvenanceId}

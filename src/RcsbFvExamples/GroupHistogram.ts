@@ -1,7 +1,7 @@
 import {buildGroup, buildGroupContent, buildGroupMembers} from "../RcsbGroupWeb/RcsbGroupBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
-const groupId = "1507_30";
+const groupId = "11_30";
 
 buildGroupContent("select", GroupProvenanceId.ProvenanceSequenceIdentity, groupId);
 

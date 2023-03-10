@@ -4,7 +4,6 @@ import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
-import {Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
@@ -38,15 +37,6 @@ export namespace GroupChartMap{
         chartData.forEach((chart=>{
             GDE.addBarClickCallback(
                 chart,
-                groupProvenanceId,
-                groupId,
-                searchQuery?.query ? {
-                    query: SQT.addGroupNodeToSearchQuery(groupProvenanceId, groupId, searchQuery.query),
-                    return_type:groupProvenanceToReturnType[groupProvenanceId]
-                } : {
-                    query: SQT.searchGroupQuery(groupProvenanceId, groupId, Service.Text),
-                    return_type:groupProvenanceToReturnType[groupProvenanceId]
-                },
                 groupProvenanceToReturnType[groupProvenanceId]
             );
             GDE.addTooltipText(chart);
