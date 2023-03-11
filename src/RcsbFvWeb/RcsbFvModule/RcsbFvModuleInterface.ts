@@ -1,5 +1,5 @@
 import {
-    AlignmentResponse, AnnotationFeatures,
+    AlignmentResponse,
     Feature,
     FilterInput,
     GroupReference,
@@ -22,8 +22,7 @@ import {UiComponentType} from "../../RcsbFvUI/GroupPfvUI";
 import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
 import {
     AlignmentCollectConfig,
-    AlignmentCollectorInterface,
-    CollectAlignmentInterface
+    AlignmentCollectorInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
@@ -40,7 +39,7 @@ export interface RcsbFvAdditionalConfig{
     page?:{first:number,after:string};
     rcsbContext?:RcsbContextType;
     trackConfigModifier?:{
-        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment) => Promise<Partial<RcsbFvRowConfigInterface>>,
+        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse) => Promise<Partial<RcsbFvRowConfigInterface>>,
         annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     };
     externalUiComponents?: {

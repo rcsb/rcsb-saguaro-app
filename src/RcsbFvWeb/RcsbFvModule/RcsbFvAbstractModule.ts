@@ -145,7 +145,7 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = trackFactories?.sequenceTrackFactory ?? new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
         if(alignmentResponse.query_sequence)
             this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
-        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment]> = new AlignmentBlockFactory(
+        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment, AlignmentResponse]> = new AlignmentBlockFactory(
             trackFactories?.alignmentTrackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator()),
             this.buildConfig.additionalConfig?.trackConfigModifier?.alignment
         );
