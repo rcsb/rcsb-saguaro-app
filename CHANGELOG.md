@@ -18,7 +18,7 @@ to add the new histogram/bar condition  to the current query
   - `add` to provide additional `UiComponentType` components
   - `replace` to replace default `UiComponentType` for external ones
 - `buildInstanceSequenceFv` parameter `InstanceSequenceConfig.defaultValue` points to label_asym_id instead of label_auth_id
-- `trackConfigModifier.alignment` includes the full alignment response `AlignmentResponse` as third parameter
+- `trackConfigModifier.alignment` includes the full alignment response `AlignmentResponse` and alignment member index as parameters
 
 ### Improvements
 - tsc strictNullChecks true
