@@ -39,7 +39,7 @@ export interface RcsbFvAdditionalConfig{
     page?:{first:number,after:string};
     rcsbContext?:RcsbContextType;
     trackConfigModifier?:{
-        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse, indexResponse: number) => Promise<Partial<RcsbFvRowConfigInterface>>,
+        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse, alignmentIndex: number) => Promise<Partial<RcsbFvRowConfigInterface>>,
         annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     };
     externalUiComponents?: {
