@@ -25,6 +25,7 @@ to add the new histogram/bar condition  to the current query
 
 ### Dependency update
 - Using rcsb-charts
+- rcsb-saguaro v2.5.9
 
 ## [4.5.12] - 2023-03-02
 ### Dependency update
