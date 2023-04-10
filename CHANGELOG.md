@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [4.5.14] - 2023-04-12
+### Bug fix
+- Missing white space
+
 ## [4.5.13] - 2023-04-12
 ### Bug fix
 - Removed 1D3D link in entry groups
