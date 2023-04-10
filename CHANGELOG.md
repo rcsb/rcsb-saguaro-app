@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [5.0.0] - 2023-03-01
+## [5.0.0] - 2023-04-12
 ### New Features
 - New builder for external data providers `buildDataProviderFv`
 - Exposed track factories
@@ -27,6 +27,16 @@ to add the new histogram/bar condition  to the current query
 - Using rcsb-charts
 - rcsb-saguaro v2.5.9
 
+## [4.5.14] - 2023-04-12
+### Bug fix
+- Missing white space
+
+## [4.5.13] - 2023-04-12
+### Bug fix
+- Removed 1D3D link in entry groups
+### Dependency update
+- Auditing vulnerabilities
+
 ## [4.5.12] - 2023-03-02
 ### Dependency update
 - Auditing vulnerabilities
@@ -36,7 +46,7 @@ to add the new histogram/bar condition  to the current query
 - Auditing vulnerabilities
 
 ## [4.5.10] - 2023-03-02
-### Bug fixes
+### Bug fix
 - Cache entity collisions fixed  
 
 ## [4.5.9] - 2023-01-20
@@ -60,11 +70,11 @@ to add the new histogram/bar condition  to the current query
 - No changes. Published mistake
 
 ## [4.5.4] - 2022-11-23
-### Bug Fix
+### Bug fix
 - SearchQuery propagated trough group carousel link
 
 ## [4.5.3] - 2022-11-23
-### Bug Fix
+### Bug fix
 - Page button is not rendered in single page MSA
 - `RcsbFvGroupAlignmentBuilder` `additionalConfig.page` bug fixed
 
@@ -93,7 +103,7 @@ Currently, it includes the histogram title (`string|undefined`)
 - `RcsbFvGroupAlignment` display aligned track using observed/unobserved and local scores color codes
 ### Minor refactor
 - `UniprotAlignmentTrackFactory` renamed to `MsaAlignmentTrackFactory`
-### Bug Fix
+### Bug fix
 - External track Alignment Variation memory leak bug fixed
 - ### Dependency update
 - rcsb-api-tools v4.1.1
@@ -531,9 +541,10 @@ Dependency update
 - rcsb-saguaro update 1.2.0
 
 ## [1.1.2] - 2021-03-25
-### Bug Fix and Dependency update
-- rcsb-saguaro update
+### Bug fix 
 - Chromosome Fv Module: fixed null/empty sequence bug
+### Dependency update
+- rcsb-saguaro update
 
 ## [1.1.1] - 2021-02-23
 ### Data display
