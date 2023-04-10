@@ -35,7 +35,9 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                     <img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/>
                 </div>
                 <div className={"bg-light border-top p-md-4"}>
-                    <div><strong><i className={"bi bi-box"}/> 3D View</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>1D-3D Alignments</a></div>
+                    {
+                        hasGroup3D(this.props.groupProvenanceId) ? <div><strong><i className={"bi bi-box"}/> 3D View</strong><a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>1D-3D Alignments</a></div> : null
+                    }
                     <div>
                         <strong>{memberSummaryUrlText(this.props.item, this.props.groupProvenanceId)}</strong>
                         <span> - </span>
@@ -82,6 +84,11 @@ function memberSummaryUrlText(ei: ItemFeaturesInterface, groupProvenanceId: Grou
     if(groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId)
         return ei.entryId;
     return ei.entryId+TagDelimiter.entity+ei.entityId;
+}
+
+function hasGroup3D(groupProvenanceId: GroupProvenanceId){
+    return groupProvenanceId !== GroupProvenanceId.ProvenanceMatchingDepositGroupId;
+
 }
 
 function imageIcon(ei: ItemFeaturesInterface): JSX.Element {
