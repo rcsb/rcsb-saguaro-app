@@ -7,7 +7,6 @@ import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
@@ -20,6 +19,7 @@ import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextM
 import {EntryPropertyIntreface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 

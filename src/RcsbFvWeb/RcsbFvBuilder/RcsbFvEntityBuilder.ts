@@ -1,4 +1,3 @@
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvEntity} from "../RcsbFvModule/RcsbFvEntity";
 import {FieldName, FilterInput, OperationType, Source, Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
@@ -6,6 +5,7 @@ import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class RcsbFvEntityBuilder {
 

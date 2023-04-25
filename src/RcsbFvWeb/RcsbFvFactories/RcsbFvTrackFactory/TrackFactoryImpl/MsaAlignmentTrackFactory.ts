@@ -5,7 +5,7 @@ import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PositionalScoreAlignmentTrackFactory} from "./PositionalScoreAlignmentTrackFactory";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {PlainObservedAlignmentTrackFactory} from "./PlainObservedAlignmentTrackFactory";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class MsaAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 

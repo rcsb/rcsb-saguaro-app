@@ -26,7 +26,6 @@ export {
 export {rcsbRequestCtxManager as RcsbRequestContextManager} from "./RcsbRequest/RcsbRequestContextManager";
 export {RcsbFvUI} from "./RcsbExport/RcsbFvUI";
 export {FeatureType} from "./RcsbExport/FeatureType";
-export {TagDelimiter} from "./RcsbUtils/Helpers/TagDelimiter";
 
 export {
     SequenceTrackFactory

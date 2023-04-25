@@ -1,7 +1,7 @@
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvTrackDataElementInterface} from '@rcsb/rcsb-saguaro';
 import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {TagDelimiter} from "../Helpers/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export interface AlignmentContextInterface {
     queryId: string;

@@ -1,7 +1,6 @@
 import {RcsbContextType, RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvUniprotEntity} from "../RcsbFvModule/RcsbFvUniprotEntity";
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {RcsbFvUniprotInstance} from "../RcsbFvModule/RcsbFvUniprotInstance";
 import {RcsbFvUniprot} from "../RcsbFvModule/RcsbFvUniprot";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
@@ -9,6 +8,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 import {RcsbFvUniprotAlignment} from "../RcsbFvModule/RcsbFvUniprotAlignment";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export interface UniprotSequenceOnchangeInterface extends Partial<PolymerEntityInstanceInterface> {
     upAcc:string;

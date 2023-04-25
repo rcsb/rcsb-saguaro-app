@@ -13,7 +13,6 @@ import {
 
 import * as acm from "../../RcsbAnnotationConfig/RcsbAnnotationConfig.ac.json";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {buriedResidues, buriedResiduesFilter} from "../../RcsbUtils/TrackGenerators/BuriedResidues";
 import {burialFraction, burialFractionFilter} from "../../RcsbUtils/TrackGenerators/BurialFraction";
 import {FeatureType} from "../../RcsbExport/FeatureType";
@@ -25,6 +24,7 @@ import {
 import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;

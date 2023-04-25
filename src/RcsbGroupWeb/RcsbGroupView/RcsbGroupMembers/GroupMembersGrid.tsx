@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Col, Container, Row} from "react-bootstrap";
-import {TagDelimiter} from "../../../RcsbUtils/Helpers/TagDelimiter";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
 import {
     SearchQuery, SortOptionAttributes
@@ -17,6 +16,7 @@ import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/DataColl
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import uniqid from "uniqid";
 import {PolymerEntityInterface} from "../../../RcsbCollectTools/DataCollectors/MultiplePolymerEntityCollector";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 interface GroupMembersGridInterface {
     groupProvenanceId: GroupProvenanceId;

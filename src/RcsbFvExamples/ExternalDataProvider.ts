@@ -4,7 +4,6 @@ import {
     SequenceReference,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {TagDelimiter} from "../RcsbUtils/Helpers/TagDelimiter";
 import {buildDataProviderFv} from "../RcsbFvWeb/RcsbFvBuilder";
 
 import {

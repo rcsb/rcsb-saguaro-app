@@ -4,7 +4,6 @@ import {
     RcsbFvTrackDataElementInterface
 } from "@rcsb/rcsb-saguaro";
 import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceTranslate, AlignmentContextInterface} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
@@ -13,6 +12,7 @@ import {TrackUtils} from "../../RcsbFvTrackFactory/TrackFactoryImpl/Helper/Track
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;

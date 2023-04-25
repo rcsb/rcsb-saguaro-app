@@ -19,6 +19,7 @@ to add the new histogram/bar condition  to the current query
   - `replace` to replace default `UiComponentType` for external ones
 - `buildInstanceSequenceFv` parameter `InstanceSequenceConfig.defaultValue` points to label_asym_id instead of label_auth_id
 - `trackConfigModifier.alignment` includes the full alignment response `AlignmentResponse` and alignment member index as parameters
+ `TagDelimiter` has been moved to `@rcsb/rcsb-api-tools` module
 
 ### Improvements
 - tsc strictNullChecks true

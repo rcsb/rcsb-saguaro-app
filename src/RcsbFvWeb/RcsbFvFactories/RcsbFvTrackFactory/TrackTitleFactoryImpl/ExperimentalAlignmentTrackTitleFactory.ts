@@ -2,12 +2,12 @@ import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {SequenceReference, TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AlignmentRequestContextType} from "../TrackFactoryImpl/AlignmentTrackFactory";
 import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]> {
 

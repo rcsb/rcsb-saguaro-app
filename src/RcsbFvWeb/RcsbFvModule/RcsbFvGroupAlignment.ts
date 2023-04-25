@@ -13,12 +13,12 @@ import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {
     CollectGroupAlignmentInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 

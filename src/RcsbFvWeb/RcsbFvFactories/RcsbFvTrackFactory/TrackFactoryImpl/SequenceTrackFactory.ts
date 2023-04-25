@@ -1,5 +1,4 @@
 import {RcsbFvDisplayTypes, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
-import {TagDelimiter} from "../../../../RcsbUtils/Helpers/TagDelimiter";
 import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignmentContextInterface,
@@ -12,6 +11,7 @@ import {SequenceTrackTitleFactory} from "../TrackTitleFactoryImpl/SequenceTrackT
 import {TrackUtils} from "./Helper/TrackUtils";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 interface BuildSequenceDataInterface extends AlignmentContextInterface {
     sequence: string;

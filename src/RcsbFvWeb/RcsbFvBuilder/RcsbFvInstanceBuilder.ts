@@ -1,7 +1,6 @@
 import {RcsbContextType, RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvInstance} from "../RcsbFvModule/RcsbFvInstance";
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {
@@ -11,6 +10,7 @@ import {
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export interface InstanceSequenceOnchangeInterface extends PolymerEntityInstanceInterface {
 

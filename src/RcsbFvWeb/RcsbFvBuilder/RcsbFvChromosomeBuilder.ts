@@ -1,6 +1,5 @@
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {TagDelimiter} from "../../RcsbUtils/Helpers/TagDelimiter";
 import {PolymerEntityChromosomeTranslate} from "../../RcsbUtils/Translators/PolymerEntityChromosomeTranslate";
 import {RcsbFvChromosome} from "../RcsbFvModule/RcsbFvChromosome";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
@@ -9,6 +8,7 @@ import {
     RcsbFvModulePublicInterface
 } from "../RcsbFvModule/RcsbFvModuleInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class RcsbFvChromosomeBuilder {
 

@@ -24,7 +24,6 @@ import {SearchQueryType, searchRequestProperty} from "../RcsbSeacrh/SearchReques
 import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
-import {TagDelimiter} from "../RcsbUtils/Helpers/TagDelimiter";
 import {
     InterfaceInstanceCollector,
     InterfaceInstanceInterface
@@ -33,7 +32,6 @@ import {
     AssemblyInterfacesCollector
 } from "../RcsbCollectTools/DataCollectors/AssemblyInterfacesCollector";
 import {ResultsContentType, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {MultipleEntityInstancesCollector} from "../RcsbCollectTools/DataCollectors/MultipleEntityInstancesCollector";
 import {
     MultipleDocumentPropertyCollectorInterface
 } from "../RcsbCollectTools/DataCollectors/DataCollectorInterface";
@@ -53,6 +51,7 @@ import {
 import { InstanceSequenceInterface,
     MultipleInstanceSequencesCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleInstanceSequencesCollector";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 class RcsbRequestContextManager {
 
