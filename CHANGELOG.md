@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.0.1] - 2023-04-25
+### No changes
+- Fix npm tag
+
 ## [5.0.0] - 2023-04-25
 ### New Features
 - New builder for external data providers `buildDataProviderFv`
