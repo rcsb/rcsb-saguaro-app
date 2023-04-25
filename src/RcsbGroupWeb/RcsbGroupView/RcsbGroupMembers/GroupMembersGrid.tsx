@@ -12,7 +12,6 @@ import {
     EntryPropertyIntreface
 } from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {PolymerEntityInstanceInterface} from "../../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import uniqid from "uniqid";
 import {PolymerEntityInterface} from "../../../RcsbCollectTools/DataCollectors/MultiplePolymerEntityCollector";

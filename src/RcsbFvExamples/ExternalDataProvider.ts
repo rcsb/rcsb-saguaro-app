@@ -1,8 +1,6 @@
 import {
-    AlignedRegion,
     AlignmentResponse,
-    SequenceReference,
-    TargetAlignment
+    SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {buildDataProviderFv} from "../RcsbFvWeb/RcsbFvBuilder";
 
