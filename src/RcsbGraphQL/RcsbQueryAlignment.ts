@@ -5,6 +5,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import queryAlignment from "./Queries/Borrego/QueryAlignments.graphql";
 import queryGroupAlignment from "./Queries/Borrego/QueryGroupAlignments.graphql";
+import queryGroupAlignmentNoLogo from "./Queries/Borrego/QueryGroupAlignmentsNoLogo.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
@@ -40,7 +41,7 @@ export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignment
 }
 
 
-export type RcsbQueryGroupAlignmentArguments = QueryGroup_AlignmentArgs & {page:{first:number, after:string}};
+export type RcsbQueryGroupAlignmentArguments = QueryGroup_AlignmentArgs & {page:{first:number, after:string}; excludeLogo?: boolean;};
 export class RcsbQueryGroupAlignment implements RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments, AlignmentResponse>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
@@ -50,7 +51,7 @@ export class RcsbQueryGroupAlignment implements RcsbCoreQueryInterface<RcsbQuery
         try {
             const result: GroupAlignmentResponseInterface = await this.getClient().request<QueryGroup_AlignmentArgs & {first:number, after:string}, GroupAlignmentResponseInterface>(
                 {group: requestConfig.group, groupId: requestConfig.groupId, filter:requestConfig.filter, first: requestConfig.page.first, after: requestConfig.page.after},
-                queryGroupAlignment
+                requestConfig.excludeLogo ? queryGroupAlignmentNoLogo : queryGroupAlignment
             );
             return result.group_alignment;
         } catch (error) {

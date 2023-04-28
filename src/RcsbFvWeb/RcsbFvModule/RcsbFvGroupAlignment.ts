@@ -14,14 +14,16 @@ import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {
+    AlignmentCollectorInterface,
     CollectGroupAlignmentInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {Operator} from "../../RcsbUtils/Helpers/Operator";
+import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
-
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
@@ -32,6 +34,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             groupId: buildConfig.groupId,
             filter: buildConfig.additionalConfig?.alignmentFilter,
             page: buildConfig.additionalConfig?.page,
+            excludeLogo: buildConfig.additionalConfig?.excludeLogo,
             from: buildConfig.from,
             to: buildConfig.to,
             dynamicDisplay:false,
@@ -39,7 +42,10 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             excludeFirstRowLink: true,
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
-        }
+        };
+
+        collectNextPage(alignmentRequestContext,  this.alignmentCollector).then(()=>console.log("Next page ready"));
+
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
@@ -68,6 +74,26 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 
 }
+
+async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface): Promise<void> {
+    const alignmentResponse: AlignmentResponse = await alignmentCollector.collect({
+        ...alignmentRequestContext,
+        excludeLogo: true,
+        page: {
+            first: alignmentRequestContext.page.first,
+            after: (parseInt(alignmentRequestContext.page.after) + alignmentRequestContext.page.first).toString()
+        }
+    })
+    const targetList: string[] = alignmentResponse.target_alignment?.map(ta=>{
+        assertDefined(ta?.target_id);
+        return TagDelimiter.parseEntity(ta.target_id).entryId
+    }) ?? [];
+    if(alignmentRequestContext.groupId) {
+        collectAlignmentFeatures(alignmentRequestContext.groupId, targetList);
+        Operator.arrayChunk(targetList, 100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
+    }
+}
+
 
 async function collectAlignmentFeatures(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
     return await rcsbClient.requestRcsbPdbGroupAnnotations({

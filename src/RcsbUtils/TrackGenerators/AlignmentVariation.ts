@@ -52,7 +52,6 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                     description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
                 }))
             }].forEach(track=>tracks.alignmentTracks.unshift(track));
-            querySequenceLogo = [];
             return new Promise((resolve)=>{
                 resolve();
             });
@@ -75,6 +74,8 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
     };
 
     function processAlignments(alignment: AlignmentResponse){
+        if(querySequenceLogo.length > 0)
+            return;
         if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo?.length)
             throw new Error("ERROR Alignment length and logo should match");
         alignment.alignment_logo?.forEach(al=>{
@@ -85,4 +86,4 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
 
 }
 
-type aaType = "A"|"R"|"N"|"D"|"C"|"E"|"Q"|"G"|"H"|"I"|"L"|"K"|"M"|"F"|"P"|"S"|"T"|"W"|"Y"|"V"|"-"|"X";
+type aaType = "A"|"R"|"N"|"D"|"C"|"E"|"Q"|"G"|"H"|"I"|"L"|"K"|"M"|"F"|"P"|"S"|"T"|"W"|"Y"|"V"|"-"|"X"|"U";

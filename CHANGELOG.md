@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.0.2] - 2023-04-27
+- Support for single logo request in sequence groups view
+- Next page cache in sequence groups view 
+
 ## [5.0.1] - 2023-04-25
 ### No changes
 - Fix npm tag

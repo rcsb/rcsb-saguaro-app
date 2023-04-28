@@ -76,16 +76,18 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
                 from: requestConfig.from,
                 to: requestConfig.to
             });
-        }else {
-            if(requestConfig.group && requestConfig.page)
+        } else {
+            if(requestConfig.group && requestConfig.page) {
                 return await this.rcsbFvQuery.requestGroupAlignment({
                     group: requestConfig.group,
                     groupId: requestConfig.groupId,
                     page: requestConfig.page,
+                    excludeLogo: requestConfig.excludeLogo,
                     filter: requestConfig.filter
                 });
-            else
+            } else {
                 return {};
+            }
         }
 
     }

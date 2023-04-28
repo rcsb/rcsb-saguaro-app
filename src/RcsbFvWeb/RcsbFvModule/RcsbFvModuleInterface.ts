@@ -37,6 +37,7 @@ export interface RcsbFvAdditionalConfig{
     annotationProcessing?: AnnotationProcessingInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
     page?:{first:number,after:string};
+    excludeLogo?: boolean;
     rcsbContext?:RcsbContextType;
     trackConfigModifier?:{
         alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse, alignmentIndex: number) => Promise<Partial<RcsbFvRowConfigInterface>>,

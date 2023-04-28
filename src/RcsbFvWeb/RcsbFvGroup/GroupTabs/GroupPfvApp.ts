@@ -71,7 +71,8 @@ export namespace GroupPfvApp {
                                     page:{
                                         first:state.first,
                                         after:state.after.toString()
-                                    }
+                                    },
+                                    excludeLogo: true
                                 }
                             )
                         }

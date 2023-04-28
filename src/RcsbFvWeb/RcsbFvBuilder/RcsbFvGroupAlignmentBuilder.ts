@@ -108,7 +108,8 @@ export class RcsbFvGroupAlignmentBuilder {
                                     page:{
                                         first:state.first,
                                         after:state.after.toString()
-                                    }
+                                    },
+                                    excludeLogo: true
                                 }
                             )
                             break;
