@@ -49,10 +49,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
-        const targetList: string[] = Operator.uniqueValues<string>(alignmentResponse.target_alignment?.map(ta=>{
-            assertDefined(ta?.target_id);
-            return TagDelimiter.parseEntity(ta.target_id).entryId
-        }) ?? []);
+        const targetList: string[] = uniqueTargetList(alignmentResponse);
         const alignmentFeatures: AnnotationFeatures[] = await collectAlignmentFeatures(groupId, targetList);
         await trackFactory.prepareFeatures(
             alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.UnobservedResidueXyz)})),
@@ -84,16 +81,19 @@ async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInt
             after: (parseInt(alignmentRequestContext.page.after) + alignmentRequestContext.page.first).toString()
         }
     })
-    const targetList: string[] = Operator.uniqueValues<string>(alignmentResponse.target_alignment?.map(ta=>{
-        assertDefined(ta?.target_id);
-        return TagDelimiter.parseEntity(ta.target_id).entryId
-    }) ?? []);
+    const targetList: string[] = uniqueTargetList(alignmentResponse);
     if(alignmentRequestContext.groupId) {
         collectAlignmentFeatures(alignmentRequestContext.groupId, targetList);
         Operator.arrayChunk(targetList, 100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
     }
 }
 
+function uniqueTargetList(alignmentResponse: AlignmentResponse): string[] {
+    return Operator.uniqueValues<string>(alignmentResponse.target_alignment?.map(ta=>{
+        assertDefined(ta?.target_id);
+        return TagDelimiter.parseEntity(ta.target_id).entryId
+    }) ?? []);
+}
 
 async function collectAlignmentFeatures(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
     return await rcsbClient.requestRcsbPdbGroupAnnotations({

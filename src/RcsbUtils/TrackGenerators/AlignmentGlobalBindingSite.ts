@@ -22,6 +22,7 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
                     trackId: "annotationTrack_GLOBAL_BINDINGS",
                     trackHeight: 40,
                     displayType: RcsbFvDisplayTypes.AREA,
+                    overlap: true,
                     trackColor: "#F9F9F9",
                     displayColor: "#c4124b",
                     titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,

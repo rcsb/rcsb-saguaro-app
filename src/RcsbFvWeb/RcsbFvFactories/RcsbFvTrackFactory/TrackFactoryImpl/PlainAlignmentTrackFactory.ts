@@ -62,6 +62,7 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
         return {
             trackId: "targetSequenceTrack_"+targetAlignment.target_id,
             displayType: RcsbFvDisplayTypes.COMPOSITE,
+            overlap: true,
             trackColor: "#F9F9F9",
             rowTitle: await this.trackTitleFactory.getTrackTitle(alignmentRequestContext,targetAlignment),
             fitTitleWidth: alignmentRequestContext.fitTitleWidth,

@@ -2,7 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [5.0.3] - 2023-04-27
+## [5.0.4] - 2023-05-03
+### Improvements
+- Improved performance of track logo generation
+- Avoid overlap check for annotation area and block-area tracks and alignment tracks
+
+## [5.0.3] - 2023-05-02
 ### Bug fix
 - Duplicated cache bug fix
 
