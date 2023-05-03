@@ -2,7 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.0.3] - 2023-04-27
+### Bug fix
+- Duplicated cache bug fix
+
 ## [5.0.2] - 2023-04-27
+### Improvements
 - Support for single logo request in sequence groups view
 - Next page cache in sequence groups view 
 
