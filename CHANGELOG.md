@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.0.5] - 2023-05-05
+### Improvements
+- Removing gap columns in group views
+
 ## [5.0.4] - 2023-05-03
 ### Improvements
 - Improved performance of track logo generation

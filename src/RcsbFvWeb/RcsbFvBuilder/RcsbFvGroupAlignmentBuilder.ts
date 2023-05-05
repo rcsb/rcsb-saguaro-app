@@ -7,7 +7,7 @@ import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnum
 import {getReferenceFromGroupProvenance} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
 import {ActionMethods} from "../../RcsbFvUI/Helper/ActionMethods";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
-import {alignmentVariation} from "../../RcsbUtils/TrackGenerators/AlignmentVariation";
+import {groupExternalTrackBuilder} from "../../RcsbUtils/TrackGenerators/GroupExternalTrackBuilder";
 import {GroupReference, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvGroupBuilder} from "./RcsbFvGroupBuilder";
 import {GroupPfvUI, UiComponentType} from "../../RcsbFvUI/GroupPfvUI";
@@ -57,7 +57,7 @@ export class RcsbFvGroupAlignmentBuilder {
             },
             alignmentFilter:filterEntities,
             externalTrackBuilder: {
-                ...alignmentVariation(),
+                ...groupExternalTrackBuilder(),
                 ...additionalConfig?.externalTrackBuilder
             }
         }

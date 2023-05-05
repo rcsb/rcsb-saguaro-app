@@ -5,15 +5,15 @@ import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotation
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Assertions} from "../Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
-import {RcsbFvTrackData} from "@rcsb/rcsb-saguaro/build/RcsbDataManager/RcsbDataManager";
+import {GroupGapLessTransformer} from "../Groups/GroupGapLessTransformer";
 
-export function alignmentVariation(): ExternalTrackBuilderInterface {
+export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
 
     const seqName: string = "CONSENSUS SEQUENCE";
     const conservationName: string = "CONSERVATION";
-    let querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
-    let sequenceRowData: RcsbFvTrackData;
-    let logoRowData: RcsbFvTrackData;
+    const querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
+    const gapLessTransformer: GroupGapLessTransformer = new GroupGapLessTransformer();
+    let variationRowData: Array<RcsbFvRowConfigInterface>;
 
     return {
         addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
@@ -21,29 +21,9 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                 return new Promise((resolve)=>{
                     resolve();
                 });
-            [{
-                trackId: "annotationTrack_ALIGNMENT_FREQ",
-                displayType: RcsbFvDisplayTypes.MULTI_AREA,
-                overlap: true,
-                trackColor: "#F9F9F9",
-                displayColor: {
-                    thresholds:[],
-                    colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#f9f9f9"]
-                },
-                trackHeight: 20,
-                titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                rowTitle: conservationName,
-                trackData: sequenceRowData
-            },{
-                trackId: "annotationTrack_ALIGNMENT_MODE",
-                displayType: RcsbFvDisplayTypes.SEQUENCE,
-                overlap: true,
-                trackColor: "#F9F9F9",
-                titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
-                rowTitle: seqName,
-                nonEmptyDisplay: true,
-                trackData: logoRowData
-            }].forEach(track=>tracks.alignmentTracks.unshift(track));
+
+            [...tracks.alignmentTracks, ...tracks.annotationTracks].forEach(track=> gapLessTransformer.gapLessRow(track));
+            variationRowData.forEach(track=>tracks.alignmentTracks.unshift(track));
             return new Promise((resolve)=>{
                 resolve();
             });
@@ -66,15 +46,19 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
     };
 
     function processAlignments(alignment: AlignmentResponse){
-        if(querySequenceLogo.length > 0)
+        gapLessTransformer.processAlignments(alignment);
+        if(querySequenceLogo.length > 0) {
+            alignment.alignment_length = gapLessTransformer.gapLessLength();
             return;
-        if(alignment.alignment_length && alignment.alignment_length != alignment.alignment_logo?.length)
+        }
+        if(alignment.alignment_length && alignment.alignment_logo && alignment.alignment_length != alignment.alignment_logo?.length)
             throw new Error("ERROR Alignment length and logo should match");
+
         alignment.alignment_logo?.forEach(al=>{
             assertElementListDefined(al);
             querySequenceLogo.push(new Logo<aaType>(al));
         });
-        sequenceRowData = querySequenceLogo.map((s,n)=>{
+        const sequenceRowData = querySequenceLogo.map((s,n)=>{
             const nFreq: number = 5;
             const maxFreqList: Array<number> = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);
             const gapFreq: number  = Math.trunc(s.frequency().filter(f=>f.symbol=="-")[0].value*100)/100;
@@ -84,11 +68,36 @@ export function alignmentVariation(): ExternalTrackBuilderInterface {
                 value: s.frequency()[0].symbol != "-" ? Math.trunc(s.frequency()[0].value*100)/100 : 0
             };
         });
-        logoRowData = querySequenceLogo.map((s,n)=>({
+        const logoRowData = querySequenceLogo.map((s,n)=>({
             begin: n+1,
             value: s.mode(),
             description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
         }))
+        variationRowData = [{
+            trackId: "annotationTrack_ALIGNMENT_FREQ",
+            displayType: RcsbFvDisplayTypes.MULTI_AREA,
+            overlap: true,
+            trackColor: "#F9F9F9",
+            displayColor: {
+                thresholds:[],
+                colors:["#5289e9", "#76bbf6", "#91cef6", "#b9d9f8", "#d6eafd", "#e6f5fd", "#f9f9f9"]
+            },
+            trackHeight: 20,
+            titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            rowTitle: conservationName,
+            trackData: sequenceRowData
+        },{
+            trackId: "annotationTrack_ALIGNMENT_MODE",
+            displayType: RcsbFvDisplayTypes.SEQUENCE,
+            overlap: true,
+            trackColor: "#F9F9F9",
+            titleFlagColor: RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
+            rowTitle: seqName,
+            nonEmptyDisplay: true,
+            trackData: logoRowData
+        }];
+        variationRowData.forEach(track=>gapLessTransformer.gapLessRow(track));
+        alignment.alignment_length = gapLessTransformer.gapLessLength();
     }
 
 }

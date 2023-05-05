@@ -22,6 +22,7 @@ import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {Operator} from "../../RcsbUtils/Helpers/Operator";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -47,6 +48,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         collectNextPage(alignmentRequestContext,  this.alignmentCollector).then(()=>console.log("Next page ready"));
 
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
         const targetList: string[] = uniqueTargetList(alignmentResponse);
@@ -59,9 +61,6 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             alignmentTrackFactory: trackFactory
         });
 
-        this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
-        this.boardConfigData.includeAxis = true;
-
         return void 0;
     }
 
@@ -69,6 +68,13 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         this.rowConfigData =  this.referenceTrack ? [this.referenceTrack].concat(this.alignmentTracks) : this.alignmentTracks;
     }
 
+    protected async getBoardConfig(): Promise<RcsbFvBoardConfigInterface> {
+        return {
+            ... this.boardConfigData,
+            length: await this.alignmentCollector.getAlignmentLength(),
+            includeAxis: true
+        }
+    }
 
 }
 

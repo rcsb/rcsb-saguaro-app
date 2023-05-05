@@ -33,6 +33,10 @@ export class Logo<T extends string>  {
         return n;
     }
 
+    total(): number{
+        return this.n;
+    }
+
     forEach(callback:(aa: T, n: number)=>void): void{
         this.aaTypes().forEach( (aa, n)=>{
             callback(aa,n);

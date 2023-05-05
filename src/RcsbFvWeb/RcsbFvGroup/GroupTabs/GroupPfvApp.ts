@@ -4,7 +4,7 @@ import {
 } from "../../RcsbFvModule/RcsbFvModuleInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
-import {alignmentVariation} from "../../../RcsbUtils/TrackGenerators/AlignmentVariation";
+import {groupExternalTrackBuilder} from "../../../RcsbUtils/TrackGenerators/GroupExternalTrackBuilder";
 import {RcsbFvGroupBuilder} from "../../RcsbFvBuilder/RcsbFvGroupBuilder";
 import {
     Feature,
@@ -39,7 +39,7 @@ export namespace GroupPfvApp {
             default:
                 additionalConfig = {
                     ...additionalConfig,
-                    externalTrackBuilder: alignmentVariation()
+                    externalTrackBuilder: groupExternalTrackBuilder()
                 }
                 // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
                 const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
@@ -102,7 +102,7 @@ export namespace GroupPfvApp {
             }],
             sources: [Source.PdbInstance, Source.PdbEntity],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-            externalTrackBuilder: alignmentVariation()
+            externalTrackBuilder: groupExternalTrackBuilder()
         };
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [

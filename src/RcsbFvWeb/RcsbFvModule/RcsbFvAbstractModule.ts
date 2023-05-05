@@ -80,13 +80,13 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
     public async display(): Promise<void>{
         console.info(`Starting display ${this.elementId}`);
         await this.rcsbFv.updateBoardConfig({
-            boardConfigData: this.boardConfigData,
+            boardConfigData: await this.getBoardConfig(),
             rowConfigData:[]
         });
         ComponentsManager.unmountLoaderSpinner(this.elementId);
         console.info(`Rendering tracks ${this.elementId}`);
         this.rcsbFvRowUpdatePromise = this.rcsbFv.updateBoardConfig({
-            rowConfigData:this.rowConfigData
+            rowConfigData: await this.getRowsConfig()
         });
         this.activeDisplayFlag = true;
         return void 0;
@@ -164,6 +164,14 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
             this.buildConfig.additionalConfig?.trackConfigModifier?.annotations
         );
         this.annotationTracks = await annotationsBlockFactory.getBlock(annotationsRequestContext, annotationsFeatures);
+    }
+
+    protected async getBoardConfig(): Promise<RcsbFvBoardConfigInterface> {
+        return this.boardConfigData;
+    }
+
+    protected async getRowsConfig(): Promise<Array<RcsbFvRowConfigInterface>> {
+        return this.rowConfigData;
     }
 
     private async buildExternalTracks(): Promise<void> {

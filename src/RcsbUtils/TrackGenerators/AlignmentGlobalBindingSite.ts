@@ -7,13 +7,13 @@ import {
 } from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {alignmentVariation} from "./AlignmentVariation";
+import {groupExternalTrackBuilder} from "./GroupExternalTrackBuilder";
 
 export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
     const trackName: string = "GLOBAL BINDINGS";
     const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
     let max: number = 0;
-    const addConservation: ExternalTrackBuilderInterface = alignmentVariation();
+    const addConservation: ExternalTrackBuilderInterface = groupExternalTrackBuilder();
 
     return {
         async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {

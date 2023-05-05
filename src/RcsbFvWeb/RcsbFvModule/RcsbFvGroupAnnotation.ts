@@ -12,6 +12,7 @@ import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackF
 import {CollectGroupAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
@@ -48,10 +49,15 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
 
-        this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
-        this.boardConfigData.includeAxis = true;
-
         return void 0;
+    }
+
+    protected async getBoardConfig(): Promise<RcsbFvBoardConfigInterface> {
+        return {
+            ... this.boardConfigData,
+            length: await this.alignmentCollector.getAlignmentLength(),
+            includeAxis: true
+        }
     }
 
     protected concatAlignmentAndAnnotationTracks(): void {
