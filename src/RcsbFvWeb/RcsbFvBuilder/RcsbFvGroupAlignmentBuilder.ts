@@ -16,6 +16,7 @@ import {
     PaginationItemProps,
     PaginationItemState
 } from "../../RcsbFvUI/Components/PaginationItemComponent";
+import {FeatureTools} from "../../RcsbCollectTools/FeatureTools/FeatureTools";
 
 export class RcsbFvGroupAlignmentBuilder {
 
@@ -56,10 +57,10 @@ export class RcsbFvGroupAlignmentBuilder {
                 ...additionalConfig?.page
             },
             alignmentFilter:filterEntities,
-            externalTrackBuilder: {
-                ...groupExternalTrackBuilder(),
-                ...additionalConfig?.externalTrackBuilder
-            }
+            externalTrackBuilder: FeatureTools.mergeTrackBuilders(
+                groupExternalTrackBuilder(),
+                additionalConfig?.externalTrackBuilder
+            )
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [

@@ -2,9 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [5.0.5] - 2023-05-05
+## [5.0.5] - 2023-05-09
 ### Improvements
 - Removing gap columns in group views
+- `mergeTrackBuilders` new method to merge track builders
 
 ## [5.0.4] - 2023-05-03
 ### Improvements

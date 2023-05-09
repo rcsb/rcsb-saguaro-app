@@ -1,6 +1,9 @@
-import {RcsbFvLink, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvLink, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
+import {ExternalTrackBuilderInterface} from "./ExternalTrackBuilderInterface";
+import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
 
 export class FeatureTools {
 
@@ -27,6 +30,7 @@ export class FeatureTools {
             }
         }while(merged);
     }
+
     static parseLink(title: string): RcsbFvLink{
         let match: RegExpExecArray | null;
         if(match = FeatureTools.rcsbLigand.exec(title)) {
@@ -44,4 +48,44 @@ export class FeatureTools {
         }
         return {visibleTex: title, style:{fontWeight:"bold"}}
     }
+
+    static mergeTrackBuilders(builderA:ExternalTrackBuilderInterface, builderB?:ExternalTrackBuilderInterface): ExternalTrackBuilderInterface {
+        return {
+            async addTo(tracks: {
+                annotationTracks: Array<RcsbFvRowConfigInterface>,
+                alignmentTracks: Array<RcsbFvRowConfigInterface>
+            }): Promise<void> {
+                await builderA.addTo?.(tracks);
+                await builderB?.addTo?.(tracks);
+            },
+            async processAlignmentAndFeatures(data: {
+                annotations: Array<AnnotationFeatures>,
+                alignments: AlignmentResponse
+            }): Promise<void> {
+                await builderA.processAlignmentAndFeatures?.(data);
+                await builderB?.processAlignmentAndFeatures?.(data);
+            },
+            async filterFeatures(data: {
+                annotations: Array<AnnotationFeatures>;
+                rcsbContext?:Partial<PolymerEntityInstanceInterface>;
+            }): Promise<Array<AnnotationFeatures>> {
+                let annotations = data.annotations;
+                const rcsbContext = data.rcsbContext;
+                if(builderA.filterFeatures) annotations = await builderA.filterFeatures({annotations, rcsbContext});
+                if(builderB?.filterFeatures) annotations = await builderB.filterFeatures({annotations, rcsbContext});
+                return annotations;
+            },
+            async filterAlignments(data: {
+                alignments: AlignmentResponse;
+                rcsbContext?: Partial<PolymerEntityInstanceInterface>;
+            }): Promise<AlignmentResponse> {
+                let alignments = data.alignments;
+                const rcsbContext = data.rcsbContext;
+                if(builderA.filterAlignments) alignments = await builderA.filterAlignments({alignments, rcsbContext});
+                if(builderB?.filterAlignments) alignments = await builderB.filterAlignments({alignments, rcsbContext});
+                return alignments;
+            }
+        }
+    }
+
 }
