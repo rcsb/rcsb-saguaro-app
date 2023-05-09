@@ -6,6 +6,8 @@
 ### Improvements
 - Removing gap columns in group views
 - `mergeTrackBuilders` new method to merge track builders
+### Bug fix
+- Uniprot Entity pLDDT filter bug fixed
 
 ## [5.0.4] - 2023-05-03
 ### Improvements

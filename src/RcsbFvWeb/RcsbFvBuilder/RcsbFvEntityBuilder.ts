@@ -42,7 +42,7 @@ export class RcsbFvEntityBuilder {
                                             field:FieldName.TargetId,
                                             operation:OperationType.Contains,
                                             source:Source.PdbInstance,
-                                            values:[pdbId]
+                                            values:[pdbId+TagDelimiter.instance]
                                         })
                                     }
                                 );
