@@ -6,6 +6,7 @@ import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/
 import {Assertions} from "../Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import {GroupGapLessTransformer} from "../Groups/GroupGapLessTransformer";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
 export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
 
@@ -21,34 +22,36 @@ export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
                 return new Promise((resolve)=>{
                     resolve();
                 });
-
-            [...tracks.alignmentTracks, ...tracks.annotationTracks].forEach(track=> gapLessTransformer.gapLessRow(track));
             variationRowData.forEach(track=>tracks.alignmentTracks.unshift(track));
             return new Promise((resolve)=>{
                 resolve();
             });
         },
         processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
-            processAlignments(data.alignments);
             return new Promise((resolve)=>{
                 resolve();
             });
         },
         filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = data.annotations;
-            annotations.forEach(ann=>{
+            gapLessTransformer.gapLessFeatures(data.annotations);
+            data.annotations.forEach(ann=>{
                 ann.features = ann.features?.filter(f=>(f?.name != "automated matches"));
             })
             return new Promise<Array<AnnotationFeatures>>((resolve)=>{
-                resolve(annotations);
+                resolve(data.annotations);
+            });
+        },
+        filterAlignments(data: {alignments:AlignmentResponse;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<AlignmentResponse> {
+            gapLessTransformer.gapLessAlignments(data.alignments);
+            processAlignments(data.alignments);
+            return new Promise<AlignmentResponse>((resolve)=>{
+                resolve(data.alignments);
             });
         }
     };
 
     function processAlignments(alignment: AlignmentResponse){
-        gapLessTransformer.processAlignments(alignment);
         if(querySequenceLogo.length > 0) {
-            alignment.alignment_length = gapLessTransformer.gapLessLength();
             return;
         }
         if(alignment.alignment_length && alignment.alignment_logo && alignment.alignment_length != alignment.alignment_logo?.length)
@@ -96,8 +99,6 @@ export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
             nonEmptyDisplay: true,
             trackData: logoRowData
         }];
-        variationRowData.forEach(track=>gapLessTransformer.gapLessRow(track));
-        alignment.alignment_length = gapLessTransformer.gapLessLength();
     }
 
 }

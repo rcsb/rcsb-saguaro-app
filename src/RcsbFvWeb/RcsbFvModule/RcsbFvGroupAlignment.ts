@@ -9,7 +9,6 @@ import {
     Source,
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
@@ -23,13 +22,17 @@ import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {Operator} from "../../RcsbUtils/Helpers/Operator";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
+import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
+import {
+    AnnotationCollectorInterface,
+    CollectGroupAnnotationsInterface
+} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
-        const groupId: string | undefined = buildConfig.groupId;
-        assertDefined(groupId), assertDefined(buildConfig.group), assertDefined(buildConfig.additionalConfig?.page);
+        assertDefined(buildConfig.groupId), assertDefined(buildConfig.group), assertDefined(buildConfig.additionalConfig?.page);
         const alignmentRequestContext: CollectGroupAlignmentInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
@@ -45,18 +48,24 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
 
-        collectNextPage(alignmentRequestContext,  this.alignmentCollector).then(()=>console.log("Next page ready"));
+        collectNextPage(alignmentRequestContext, this.alignmentCollector, this.annotationCollector).then(()=>console.log("Next page ready"));
 
         const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
 
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
         const targetList: string[] = uniqueTargetList(alignmentResponse);
-        const alignmentFeatures: AnnotationFeatures[] = await collectAlignmentFeatures(groupId, targetList);
+        const alignmentFeatures: AnnotationFeatures[] = await collectFeatures({
+            groupId: buildConfig.groupId,
+            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder,
+            targetList
+        }, this.annotationCollector);
+
         await trackFactory.prepareFeatures(
             alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.UnobservedResidueXyz)})),
             alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.MaQaMetricLocalTypePlddt)}))
         );
+
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
         });
@@ -78,7 +87,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface): Promise<void> {
+async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface, annotationCollector: AnnotationCollectorInterface): Promise<void> {
     const alignmentResponse: AlignmentResponse = await alignmentCollector.collect({
         ...alignmentRequestContext,
         excludeLogo: true,
@@ -89,8 +98,12 @@ async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInt
     })
     const targetList: string[] = uniqueTargetList(alignmentResponse);
     if(alignmentRequestContext.groupId) {
-        collectAlignmentFeatures(alignmentRequestContext.groupId, targetList);
-        Operator.arrayChunk(targetList, 100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
+        const alignmentFeatures: AnnotationFeatures[] = await collectFeatures({
+            groupId: alignmentRequestContext.groupId,
+            targetList
+        }, annotationCollector);
+        const featureTargetList = Operator.uniqueValues<string>(alignmentFeatures.map(af=>TagDelimiter.parseInstance(af.target_id ?? "").entryId));
+        Operator.arrayChunk(featureTargetList,100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
     }
 }
 
@@ -101,10 +114,10 @@ function uniqueTargetList(alignmentResponse: AlignmentResponse): string[] {
     }) ?? []);
 }
 
-async function collectAlignmentFeatures(groupId: string, targetList: string[]): Promise<Array<AnnotationFeatures>> {
-    return await rcsbClient.requestRcsbPdbGroupAnnotations({
+async function collectFeatures(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}, annotationCollector: AnnotationCollectorInterface): Promise<Array<AnnotationFeatures>> {
+    const annotationsRequestContext: CollectGroupAnnotationsInterface = {
         histogram: false,
-        groupId: groupId,
+        groupId: annotationsContext.groupId,
         group: GroupReference.SequenceIdentity,
         sources: [Source.PdbInstance],
         filters: [{
@@ -116,7 +129,9 @@ async function collectAlignmentFeatures(groupId: string, targetList: string[]): 
             source:Source.PdbInstance,
             operation: OperationType.Contains,
             field:FieldName.TargetId,
-            values:targetList
-        }]
-    });
+            values:annotationsContext.targetList
+        }],
+        externalTrackBuilder: annotationsContext.externalTrackBuilder
+    }
+    return await annotationCollector.collect(annotationsRequestContext);
 }

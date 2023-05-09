@@ -70,7 +70,8 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
                 group: requestConfig.group,
                 groupId: requestConfig.groupId,
                 sources: requestConfig.sources,
-                filters: requestConfig.filters
+                filters: requestConfig.filters,
+                histogram: requestConfig.histogram
             });
         throw new Error(`Annotation query error`);
     }

@@ -8,12 +8,15 @@ import {
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {groupExternalTrackBuilder} from "./GroupExternalTrackBuilder";
+import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
+import {Assertions} from "../Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
 
 export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
     const trackName: string = "GLOBAL BINDINGS";
     const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
     let max: number = 0;
-    const addConservation: ExternalTrackBuilderInterface = groupExternalTrackBuilder();
+    const groupTrackBuilder: ExternalTrackBuilderInterface = groupExternalTrackBuilder();
 
     return {
         async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {
@@ -31,20 +34,24 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
                     interpolationType: InterpolationTypes.STEP,
                     trackData: Array.from(bindingSiteMap.values())
                 });
-            await addConservation.addTo?.(tracks);
+            await groupTrackBuilder.addTo?.(tracks);
         },
         async processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
+            await groupTrackBuilder.processAlignmentAndFeatures?.(data);
             processFeatures(data.annotations);
-            await addConservation.processAlignmentAndFeatures?.(data);
         },
-        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = data.annotations;
+        async filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
+            const annotations: Array<AnnotationFeatures> = await groupTrackBuilder.filterFeatures?.(data) ?? [];
             annotations.forEach(ann=>{
                 ann.features = ann.features?.filter(f=> f ? f.name?.includes("ligand") : false);
             })
             return new Promise<Array<AnnotationFeatures>>((resolve => {
                 resolve(annotations);
             }));
+        },
+        filterAlignments(data: {alignments:AlignmentResponse;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<AlignmentResponse> {
+            assertDefined(groupTrackBuilder.filterAlignments);
+            return groupTrackBuilder.filterAlignments(data);
         }
     };
 

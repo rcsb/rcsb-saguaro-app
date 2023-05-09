@@ -1,4 +1,4 @@
-import {AlignmentResponse} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Logo} from "../TrackGenerators/Logo";
 import {Assertions} from "../Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
@@ -8,7 +8,7 @@ export class GroupGapLessTransformer {
 
     private readonly gapLessReference: number[] = [];
     private refLength: number;
-    public processAlignments(alignment: AlignmentResponse): void {
+    private processAlignments(alignment: AlignmentResponse): void {
         if(this.gapLessReference.length > 0 || !alignment.alignment_logo)
             return;
 
@@ -31,24 +31,35 @@ export class GroupGapLessTransformer {
         this.refLength = newIndex - 1;
     }
 
-    public gapLessRow(row: RcsbFvRowConfigInterface): void {
-        if(row.trackData){
-            row.trackData.forEach(td=>{
-                td.begin = this.gapLessReference[td.begin];
-                if(td.end) td.end = this.gapLessReference[td.end];
-            })
-        }else if (row.displayConfig){
-            row.displayConfig.forEach(dc=>{
-                dc.displayData?.forEach(td=>{
-                    td.begin = this.gapLessReference[td.begin];
-                    if(td.end) td.end = this.gapLessReference[td.end];
-                })
-            })
-        }
+    public gapLessAlignments(alignments:AlignmentResponse): void {
+        this.processAlignments(alignments)
+        if(alignments.target_alignment)
+            alignments.target_alignment?.forEach(ta=>{
+                ta?.aligned_regions?.forEach(region=>{
+                    if(region?.query_begin) region.query_begin = this.gapLessReference[region.query_begin];
+                    if(region?.query_end) region.query_end = this.gapLessReference[region.query_end];
+                });
+            });
+        else
+            alignments.target_alignment_subset?.edges?.forEach(edge=>{
+                edge?.node?.aligned_regions?.forEach(region=>{
+                    if(region?.query_begin) region.query_begin = this.gapLessReference[region.query_begin];
+                    if(region?.query_end) region.query_end = this.gapLessReference[region.query_end];
+                });
+            });
+        alignments.alignment_logo = alignments.alignment_logo?.filter((al,n)=>this.gapLessReference[n+1]!=-1);
+        if(alignments.alignment_length) alignments.alignment_length = this.refLength;
     }
 
-    public gapLessLength(): number {
-        return this.refLength;
+    public gapLessFeatures(annotations: Array<AnnotationFeatures>): void {
+        annotations.forEach(ann=>{
+            ann.features?.forEach(feature=>{
+                feature?.feature_positions?.forEach(position=>{
+                    if(position?.beg_seq_id) position.beg_seq_id = this.gapLessReference[position.beg_seq_id];
+                    if(position?.end_seq_id) position.end_seq_id = this.gapLessReference[position.end_seq_id];
+                });
+            });
+        });
     }
 
 }
