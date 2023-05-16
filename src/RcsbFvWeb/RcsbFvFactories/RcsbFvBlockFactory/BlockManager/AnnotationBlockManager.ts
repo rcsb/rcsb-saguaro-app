@@ -1,6 +1,6 @@
 import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
-import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro";
+import {RcsbFvColorGradient, RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {AnnotationRequestContext} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {BlockManagerInterface} from "./BlockManagerInterface";
@@ -68,8 +68,13 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
 
         const type: string = await this.rcsbAnnotationConfig.getAnnotationType(requestConfig, ann, feature);
         if (!this.annotationTracks.has(type)) {
-            const o = this.rcsbAnnotationConfig.getConfig(type);
-            assertDefined(o);
+            const o: RcsbAnnotationConfigInterface = this.rcsbAnnotationConfig.getConfig(type) ?? {
+                type: type,
+                display: RcsbFvDisplayTypes.BLOCK,
+                title: type,
+                provenanceList: new Set<string>()
+            };
+            assertDefined(o, `Unknown type: ${type}`);
             this.annotationTracks.set(type, this.trackManagerFactory.getTrackManager(type, o, this.polymerEntityInstanceTranslator));
         }
 

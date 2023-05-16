@@ -1,3 +1,3 @@
 import {buildUniprotAlignmentFv} from "../RcsbFvWeb/RcsbFvBuilder";
 
-buildUniprotAlignmentFv("pfv", "P01112");
+buildUniprotAlignmentFv("pfv", "P12694");
