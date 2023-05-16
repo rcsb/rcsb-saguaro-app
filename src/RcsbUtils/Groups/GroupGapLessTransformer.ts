@@ -2,7 +2,6 @@ import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/
 import {Logo} from "../TrackGenerators/Logo";
 import {Assertions} from "../Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 
 export class GroupGapLessTransformer {
 
