@@ -33,6 +33,8 @@ export class GroupGapLessTransformer {
 
     public gapLessAlignments(alignments:AlignmentResponse): void {
         this.processAlignments(alignments)
+        if(this.gapLessReference.length == 0)
+            return;
         if(alignments.target_alignment)
             alignments.target_alignment?.forEach(ta=>{
                 ta?.aligned_regions?.forEach(region=>{
@@ -52,6 +54,8 @@ export class GroupGapLessTransformer {
     }
 
     public gapLessFeatures(annotations: Array<AnnotationFeatures>): void {
+        if(this.gapLessReference.length == 0)
+            return;
         annotations.forEach(ann=>{
             ann.features?.forEach(feature=>{
                 feature?.feature_positions?.forEach(position=>{

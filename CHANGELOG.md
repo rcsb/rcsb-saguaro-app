@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.0.6] - 2023-05-16
+### Bug fix
+- Uniprot Group Alignment bug fixed
+
 ## [5.0.5] - 2023-05-09
 ### Improvements
 - Removing gap columns in group views
