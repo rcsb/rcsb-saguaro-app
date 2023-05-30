@@ -12,8 +12,7 @@ export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
     chartType: ChartType.barplot,
     contentType: "string",
     chartConfig: {
-        mostPopulatedGroups: 3,
-        mergeName: "Other methods"
+        mostPopulatedGroups: 3
     },
     facet: {
         name: "EXPERIMENTAL_METHOD_FACET",
@@ -35,8 +34,17 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
             origin: 0.5,
             increment: 0.5
         },
+        tickFormat:{
+            domAxis: (t: number|string)=>{
+                if(parseInt(t.toString()) == 5)
+                    return `> ${t}`;
+                if(parseInt(t.toString()) > 5)
+                    return '';
+                return t.toString();
+            }
+        },
         histogramBinIncrement: 0.5,
-        mergeDomainMaxValue: 4.5,
+        mergeDomainMaxValue: 5,
         domainMinValue: 0,
         axisLabel: "Angstroms"
     },
@@ -45,7 +53,7 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
         aggregation_type: AggregationType.Histogram,
         attribute: RcsbSearchMetadata.RcsbEntryInfo.ResolutionCombined.path,
         interval: 0.5,
-        min_interval_population: 1
+        min_interval_population: 1,
     }
 };
 
@@ -57,8 +65,7 @@ export const METHODOLOGY_FACET: FacetMemberInterface = {
     chartType: ChartType.barplot,
     contentType: "string",
     chartConfig: {
-        mostPopulatedGroups: 3,
-        mergeName: "Other methods"
+        mostPopulatedGroups: 3
     },
     facet: {
         name: "METHODOLOGY_FACET",
@@ -85,11 +92,22 @@ export const RELEASE_DATE_FACET: FacetMemberInterface = {
         axisLabel: "Year"
     },
     facet: {
-        name: "RELEASE_DATE_FACET",
-        aggregation_type: AggregationType.DateHistogram,
-        attribute: RcsbSearchMetadata.RcsbAccessionInfo.InitialReleaseDate.path,
-        interval: "year",
-        min_interval_population: 1
+        filter: {
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters: {
+                attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
+                operator: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.operator.ExactMatch,
+                value: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.enum.experimental
+            }
+        },
+        facets:[{
+            name: "RELEASE_DATE_FACET",
+            aggregation_type: AggregationType.DateHistogram,
+            attribute: RcsbSearchMetadata.RcsbAccessionInfo.InitialReleaseDate.path,
+            interval: "year",
+            min_interval_population: 1
+        }]
     }
 };
 
@@ -101,8 +119,7 @@ export const SCOP_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other domains"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -142,8 +159,7 @@ export const CATH_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other domains"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -183,8 +199,7 @@ export const ECOD_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other domains"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -224,8 +239,7 @@ export const LIGAND_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 20,
-        mergeName: "Other molecules"
+        mostPopulatedGroups: 20
     },
     facet: {
         name: "LIGAND_FACET",
@@ -243,8 +257,7 @@ export const LIGAND_OF_INTEREST_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 20,
-        mergeName: "Other molecules"
+        mostPopulatedGroups: 20
     },
     facet: {
         filter: {
@@ -273,8 +286,7 @@ export const ORGANISM_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 9,
-        mergeName: "Other organisms"
+        mostPopulatedGroups: 9
     },
     facet: {
         name: "ORGANISM_FACET",
@@ -292,8 +304,7 @@ export const TAXONOMY_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 5,
-        mergeName: "Other taxonomies"
+        mostPopulatedGroups: 5
     },
     facet: {
         name: "TAXONOMY_FACET",
@@ -311,8 +322,7 @@ export const PFAM_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other domains"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -341,8 +351,7 @@ export const ENTITY_NAME_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 5,
-        mergeName: "Other names"
+        mostPopulatedGroups: 5
     },
     facet: {
         name: "ENTITY_NAME_FACET",
@@ -360,8 +369,7 @@ export const CHEM_COMP_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 5,
-        mergeName: "Other comps"
+        mostPopulatedGroups: 5
     },
     facet: {
         name: "CHEM_COMP_FACET",
@@ -379,8 +387,7 @@ export const ENZYME_CLASS_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other classes"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -409,8 +416,7 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other functions"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -457,8 +463,7 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other processes"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {
@@ -505,8 +510,7 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
-        mostPopulatedGroups: 10,
-        mergeName: "Other locations"
+        mostPopulatedGroups: 10
     },
     facet: {
         filter: {

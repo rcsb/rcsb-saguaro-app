@@ -24,7 +24,9 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
             <Container fluid={"md"}>
                 <Row>
                     {
-                        this.props.layout.map((attr)=>this.renderCell(attr))
+                        this.props.layout.filter(attr=>{
+                            return (this.props.chartMap.get(attr)?.filter(ch=>ch.data.length > 0) ?? []).length > 0
+                        }).map((attr)=>this.renderCell(attr))
                     }
                 </Row>
             </Container>
@@ -33,7 +35,7 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
 
     private renderCell(attr: string): JSX.Element {
         const chart: RcsbChartInterface[] | undefined = this.props.chartMap.get(attr);
-        if(chart){
+        if(chart && chart.filter(ch=>ch.data.length > 0).length > 0){
             const node: JSX.Element = chart[0].chartType == ChartType.histogram ? histogramChart(attr, chart) : barChart(attr, chart);
             return chartCell(node,chart[0].title, chart[0].chartConfig?.chartDisplayConfig);
         }

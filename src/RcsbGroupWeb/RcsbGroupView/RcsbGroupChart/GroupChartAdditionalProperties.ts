@@ -2,7 +2,7 @@ import {ChartMapType} from "./GroupChartLayout";
 
 
 export interface GroupChartAdditionalProperties {
-    componentMountCallback(chartMap: ChartMapType, layout:string[]):void;
+    componentMountCallback(chartMap?: ChartMapType, layout?:string[]):void;
     layoutConfig: LayoutConfigInterface;
 }
 

@@ -12,6 +12,7 @@ import {
 } from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {
+    BucketDataType,
     FilterFacetType,
     FilterQueryTerminalNodeType, SearchBucketFacetType
 } from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
@@ -23,13 +24,12 @@ export interface RcsbChartInterface<T=any> {
     labelList?: string[];
     attribute: RcsbSearchAttributeType;
     attributeName: string;
-    chartConfig?: ChartConfigInterface,
+    chartConfig?: FacetMemberInterface["chartConfig"],
     title?: string,
     data: ChartObjectInterface<T>[];
     filters?:SearchFilter[];
     contentType:FacetMemberInterface['contentType'];
 }
-
 
 export class FacetTools {
 
@@ -48,7 +48,7 @@ export class FacetTools {
                 attributeName: bucket.name,
                 attribute: facet.attribute,
                 title: chart.title,
-                data: bucket.data,
+                data: applyChartConfigToData(bucket.data, facet?.chartConfig),
                 filters: FacetTools.getFacetFiltersFromName(facetMembers, bucket.name),
                 contentType: facet.contentType
             });
@@ -131,6 +131,20 @@ export class FacetTools {
                 service: f.service as Service.Text|Service.TextChem
             }))
     }
+}
+
+function applyChartConfigToData(data: BucketDataType[], chartConfig?: FacetMemberInterface["chartConfig"]): BucketDataType[] {
+    if(chartConfig?.mergeDomainMaxValue)
+        return mergeDomainMaxValue(data, chartConfig.mergeDomainMaxValue)
+    return data;
+}
+
+function mergeDomainMaxValue(data: BucketDataType[], domMaxValue: number): BucketDataType[] {
+    const n = data.filter(d=> parseFloat(d.label.toString()) >= domMaxValue).reduce((prev, curr)=>prev+curr.population,0);
+    return n > 0 ? data.filter(d=> parseFloat(d.label.toString()) < domMaxValue).concat({
+        population: n,
+        label: domMaxValue
+    }) : data;
 }
 
 

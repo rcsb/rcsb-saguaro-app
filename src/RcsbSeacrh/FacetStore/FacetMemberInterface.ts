@@ -14,7 +14,7 @@ export interface FacetMemberInterface {
     attributeName: string;
     attribute: RcsbSearchAttributeType;
     chartType: ChartType;
-    chartConfig?: ChartConfigInterface;
+    chartConfig?: ChartConfigInterface & { mergeDomainMaxValue?:number; };
     facet: FacetType;
     contentType:"date"|"number"|"string";
 }

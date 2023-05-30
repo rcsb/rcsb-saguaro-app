@@ -63,9 +63,14 @@ export namespace GroupChartEvents {
             chart.chartConfig.barClickCallback = async (datum:ChartDataValueInterface, data: ChartDataColumnInterface[], e?: React.MouseEvent) => {
                 if(datum.id === "excluded")
                     return;
-                const range: Range|DateRange = formatRange(chart, datum);
-                const query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, range, Operator.Range,  Service.Text);
-                await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                if(chart.chartConfig?.mergeDomainMaxValue && parseFloat(datum.x.toString()) >= chart.chartConfig.mergeDomainMaxValue) {
+                    const query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, chart.chartConfig.mergeDomainMaxValue, Operator.GreaterOrEqual,  Service.Text);
+                    await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                }else{
+                    const range: Range|DateRange = formatRange(chart, datum);
+                    const query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, range, Operator.Range,  Service.Text);
+                    await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                }
             };
     }
 

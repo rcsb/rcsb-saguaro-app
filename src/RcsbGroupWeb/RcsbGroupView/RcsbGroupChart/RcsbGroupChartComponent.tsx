@@ -17,8 +17,8 @@ interface RcsbGroupChartInterface {
 }
 
 interface RcsbGroupChartState {
-    layout: string[];
-    chartMap: ChartMapType;
+    layout?: string[];
+    chartMap?: ChartMapType;
 }
 
 //TODO include chartDisplayConfig?: Partial<ChartDisplayConfigInterface> in props and propagate it
@@ -29,7 +29,7 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
     }
 
     render(): JSX.Element {
-        if(this.state?.layout?.flat().filter((e)=>(this.state?.chartMap?.get(e)))) {
+        if( this.state?.layout && this.state?.chartMap && (this.state?.layout?.filter((e)=>(this.state?.chartMap?.get(e))) ?? []).length > 0) {
             return (<div className={classes.bootstrapGroupComponentScope}>
                 {SearchQueryComponentFactory.getGroupSearchComponent(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery)}
                 <GroupChartLayout

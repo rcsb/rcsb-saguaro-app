@@ -36,7 +36,7 @@ export namespace GroupChartMap{
             subData = searchData.subData ?? [];
         }
         addCharMapColor("#5e94c3", chartData);
-        addCharMapIds("included", chartData)
+        addCharMapIds("included", chartData);
         addCharMapColor("#d0d0d0", subData);
         addCharMapIds("excluded", subData);
 
