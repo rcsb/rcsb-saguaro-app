@@ -2,16 +2,13 @@ import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
-    GroupNode,
     ResultsContentType,
-    SearchQuery,
-    TerminalNode
+    SearchQuery
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {FacetType} from "./FacetStore/FacetMemberInterface";
 import {rcsbRequestClient} from "../RcsbRequest/RcsbRequestClient";
 import {SearchQueryTools as SQT} from "./SearchQueryTools";
-
-export type SearchQueryType = GroupNode | TerminalNode;
+import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 
 class SearchRequestProperty {
 

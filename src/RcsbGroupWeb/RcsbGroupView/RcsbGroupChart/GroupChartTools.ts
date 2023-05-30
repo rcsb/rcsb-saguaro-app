@@ -2,7 +2,6 @@ import {groupProvenanceToReturnType} from "../../../RcsbUtils/Groups/GroupProven
 import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
@@ -10,9 +9,11 @@ import {cloneDeep} from "lodash";
 import {ChartMapType} from "./GroupChartLayout";
 import {GroupChartEvents as GDE} from "./GroupChartEvents";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
+import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 
 export namespace GroupChartMap{
 
+    export type ChartObjectIdType = "included"|"excluded";
     export async function getChartMap(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): Promise<ChartMapType>{
         const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId);
         let facets: Array<BucketFacet> = [];
@@ -28,12 +29,17 @@ export namespace GroupChartMap{
                 facets = facets.concat(groupProperties.facets as BucketFacet[]);
         }
         let chartData: Array<RcsbChartInterface> = FacetTools.getResultDrilldowns(facetStore.getFacetService("all"), facets);
-        let subData: Array<RcsbChartInterface> | undefined = undefined;
+        let subData: Array<RcsbChartInterface> = [];
         if(searchQuery) {
             const searchData: {chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined;} = await subtractSearchQuery(chartData, groupProvenanceId, groupId, searchQuery);
             chartData = searchData.chartData;
-            subData = searchData.subData;
+            subData = searchData.subData ?? [];
         }
+        addCharMapColor("#5e94c3", chartData);
+        addCharMapIds("included", chartData)
+        addCharMapColor("#d0d0d0", subData);
+        addCharMapIds("excluded", subData);
+
         chartData.forEach((chart=>{
             GDE.addBarClickCallback(
                 chart,
@@ -85,6 +91,28 @@ export namespace GroupChartMap{
             });
         }
         return {chartData: partialData, subData: subData};
+    }
+
+    function addCharMapColor(color:string, char: Array<RcsbChartInterface>): void {
+        char.forEach(ch=>{
+            ch.data.forEach(d=>{
+                d.objectConfig = {
+                    ...d.objectConfig,
+                    color
+                }
+            })
+        });
+    }
+
+    function addCharMapIds(id:ChartObjectIdType, char: Array<RcsbChartInterface>): void {
+        char.forEach(ch=>{
+            ch.data.forEach(d=>{
+                d.objectConfig = {
+                    ...d.objectConfig,
+                    objectId:id
+                }
+            })
+        });
     }
 
 }

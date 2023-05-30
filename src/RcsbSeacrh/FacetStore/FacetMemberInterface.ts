@@ -1,22 +1,20 @@
-import {
-    CardinalityFacet,
-    DateHistogramFacet, DateRangeFacet, FilterFacet,
-    HistogramFacet, RangeFacet,
-    TermsFacet
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
-import {ChartConfigInterface, ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 
-export type FacetType = TermsFacet | HistogramFacet | DateHistogramFacet | RangeFacet | DateRangeFacet | CardinalityFacet  | FilterFacet;
+import {ChartConfigInterface, ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
+import {
+    AttributeFacetType,
+    FilterFacetType
+} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
+import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+
+export type FacetType = AttributeFacetType  | FilterFacetType;
 
 export interface FacetMemberInterface {
     id: string;
     title?: string;
     attributeName: string;
-    attribute: string;
+    attribute: RcsbSearchAttributeType;
     chartType: ChartType;
     chartConfig?: ChartConfigInterface;
     facet: FacetType;
     contentType:"date"|"number"|"string";
-    transformSearchResultFacets?(facets: BucketFacet):BucketFacet;
 }

@@ -5,10 +5,10 @@ import {cloneDeep} from "lodash";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {ChartObjectInterface} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {DataContainer} from "../../../RcsbUtils/Helpers/DataContainer";
-import {SearchQueryType} from "../../../RcsbSeacrh/SearchRequestProperty";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {GroupChartMap as GDCM} from "../RcsbGroupChart/GroupChartTools";
+import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 
 export interface SearchQueryContextManagerSubjectInterface {
     attributeName: string;

@@ -1,12 +1,11 @@
 import {buildGroup, buildGroupContent, buildGroupMembers} from "../RcsbGroupWeb/RcsbGroupBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 
-const groupId = "11_30";
+const groupId = "8_30";
 
 buildGroupContent("select", GroupProvenanceId.ProvenanceSequenceIdentity, groupId);
 
-buildGroupMembers("selectBis", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, 1, 1)
-
+buildGroupMembers("carousel", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, 1, 1)
 
 buildGroup("pfv", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, undefined, ["ENTITY_NAME_FACET", "RELEASE_DATE_FACET", "METHODOLOGY_FACET"]).then((m)=>{
 });

@@ -3,7 +3,8 @@ import {RcsbChartInterface} from "../../../../../RcsbSeacrh/FacetTools";
 import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDistributionConfig";
 import {Operator} from "../../../../../RcsbUtils/Helpers/Operator";
 import {ChartObjectInterface, ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
-import {ChartDataValuesInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
+import {ChartDataValueInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
+import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 
 export class DistributionChartFactory implements DistributionChartFactoryInterface {
 
@@ -18,7 +19,7 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
         const axisLabel: string | undefined = this.distributionConfig.getBlockConfig(residueDistribution.attribute)?.axisLabel;
         return {
             chartType: ChartType.barplot,
-            attribute: residueDistribution.attribute,
+            attribute: residueDistribution.attribute as RcsbSearchAttributeType,
             attributeName: residueDistribution.attribute,
             contentType: "number",
             data: residueDistribution.buckets.map<ChartObjectInterface>(b=>({
@@ -31,8 +32,8 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
             })),
             title: residueDistribution.title,
             chartConfig: {
-                sort: sort ? (a,b)=>(sort.findIndex(x=>x===a.id)-sort.findIndex(x=>x===b.id)) : undefined,
-                tooltipText: (d: ChartDataValuesInterface)=>(`${Operator.digitGrouping(d.y)} residues`),
+                sort: sort ? (a,b)=>(sort.findIndex(x=>x===a.x)-sort.findIndex(x=>x===b.x)) : undefined,
+                tooltipText: (d: ChartDataValueInterface)=>(`${Operator.digitGrouping(d.y)} residues`),
                 axisLabel
             }
         };

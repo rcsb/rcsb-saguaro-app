@@ -51,7 +51,7 @@ class SequenceGroupFacetStore implements FacetStoreInterface{
         cloneDeep<FacetMemberInterface>(CHEM_COMP_FACET)
     ];
 
-    getServices(): Service[] {
+    getServices(): (Service.Text | Service.TextChem)[] {
         return [Service.Text];
     }
 

@@ -5,6 +5,9 @@ import {
     VictoryBarChartComponent
 } from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/VictoryChartImplementations/VictoryBarChartComponent";
 import {BarChartDataProvider} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/BarChartDataProvider";
+import {
+    ChartJsBarComponent
+} from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/ChatJsImplementations/ChartJsBarComponent";
 
 export class BarChartComponent extends AbstractChartComponent {
 

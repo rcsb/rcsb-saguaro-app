@@ -1,7 +1,6 @@
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
-import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 
 
@@ -447,17 +446,6 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
                 }]
             }]
         }]
-    },
-    transformSearchResultFacets(facet: BucketFacet): BucketFacet {
-        return {
-            name: facet.name,
-            buckets: facet.buckets.filter((g) => (
-                (g.facets?.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "molecular_function"))).length > 0).length ?? 0) > 0
-            )).map((g) => ({
-                label: g.label,
-                population: g.population
-            })) as BucketFacet['buckets']
-        };
     }
 }
 
@@ -506,17 +494,6 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
                 }]
             }]
         }]
-    },
-    transformSearchResultFacets(facet: BucketFacet): BucketFacet {
-        return {
-            name: facet.name,
-            buckets: facet.buckets.filter((g) => (
-                (g.facets?.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "biological_process"))).length > 0).length ?? 0) > 0
-            )).map((g) => ({
-                label: g.label,
-                population: g.population
-            })) as BucketFacet['buckets']
-        };
     }
 }
 
@@ -565,17 +542,6 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
                 }]
             }]
         }]
-    },
-    transformSearchResultFacets(facet: BucketFacet): BucketFacet {
-        return {
-            name: facet.name,
-            buckets: facet.buckets.filter((g) => (
-                (g.facets?.filter((d) => ((d as BucketFacet).buckets.filter((dg) => (dg.label === "cellular_component"))).length > 0).length ?? 0) > 0
-            )).map((g) => ({
-                label: g.label,
-                population: g.population
-            })) as BucketFacet['buckets']
-        };
     }
 }
 

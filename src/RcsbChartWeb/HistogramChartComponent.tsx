@@ -5,6 +5,9 @@ import {
     VictoryHistogramChartComponent
 } from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/VictoryChartImplementations/VictoryHistogramChartComponent";
 import {HistogramChartDataProvider} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/HistogramChartDataProvider";
+import {
+    ChartJsHistogramComponent
+} from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/ChatJsImplementations/ChartJsHistogramComponent";
 
 export class HistogramChartComponent extends AbstractChartComponent {
 

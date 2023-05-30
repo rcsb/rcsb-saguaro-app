@@ -3,24 +3,29 @@ import {FacetMemberInterface} from "./FacetStore/FacetMemberInterface";
 import {cloneDeep} from "lodash";
 import {
     AttributeTextQueryParameters,
-    FilterFacet,
-    FilterQueryTerminalNode
+    FilterFacet
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {Operator, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
     ChartConfigInterface, ChartDisplayConfigInterface,
     ChartObjectInterface, ChartType,
 } from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
+import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+import {
+    FilterFacetType,
+    FilterQueryTerminalNodeType, SearchBucketFacetType
+} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
+import {getBucketsFromFacets} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetTools";
 
-export type SearchFilter = {attribute:string;value:AttributeTextQueryParameters['value'];operator:Operator;service:Service.Text|Service.TextChem};
-export interface RcsbChartInterface {
+export type SearchFilter = {attribute:RcsbSearchAttributeType;value:AttributeTextQueryParameters['value'];operator:AttributeTextQueryParameters["operator"];service:Service.Text|Service.TextChem};
+export interface RcsbChartInterface<T=any> {
     chartType: ChartType;
     labelList?: string[];
-    attribute: string;
+    attribute: RcsbSearchAttributeType;
     attributeName: string;
     chartConfig?: ChartConfigInterface,
     title?: string,
-    data: ChartObjectInterface[];
+    data: ChartObjectInterface<T>[];
     filters?:SearchFilter[];
     contentType:FacetMemberInterface['contentType'];
 }
@@ -28,37 +33,25 @@ export interface RcsbChartInterface {
 
 export class FacetTools {
 
-    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<BucketFacet>, labelList?:string[], recursiveOut?: Array<RcsbChartInterface>): Array<RcsbChartInterface>{
-        const out: Array<RcsbChartInterface> = recursiveOut ?? new Array<RcsbChartInterface>();
-        searchResultFacets.forEach(f=> {
-            const facet = FacetTools.getFacetFromName(facetMembers,f.name);
+    public static getResultDrilldowns(facetMembers: FacetMemberInterface[], searchResultFacets: Array<BucketFacet>): Array<RcsbChartInterface> {
+        const out: Array<RcsbChartInterface> = new Array<RcsbChartInterface>();
+        const bucketList: SearchBucketFacetType[] = getBucketsFromFacets(searchResultFacets);
+        bucketList.forEach(bucket=>{
+            const facet = FacetTools.getFacetFromName(facetMembers,bucket.name);
             if(!facet)
                 return;
-            const bucketFacet:BucketFacet = facet.transformSearchResultFacets ? facet.transformSearchResultFacets(f) : f;
-            if(bucketFacet.buckets.filter(g=>g.drilldown).length > 0){
-                bucketFacet.buckets.filter(g=>g.drilldown).forEach(g=>{
-                    FacetTools.getResultDrilldowns(facetMembers, g.drilldown as BucketFacet[], labelList ? labelList.concat(g.label) : [g.label], out);
-                });
-            }
-            if(bucketFacet.buckets.filter(g=>!g.drilldown).length > 0) {
-                const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title?: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, bucketFacet.name);
-                const bf = FacetTools.getFacetFromName(facetMembers, bucketFacet.name);
-                if(bf)
-                    out.push({
-                        chartType: chart.chartType,
-                        chartConfig: chart.chartConfig,
-                        labelList: labelList,
-                        attributeName: bucketFacet.name,
-                        attribute: bf.attribute,
-                        title: chart.title,
-                        data: bucketFacet.buckets.filter(g => !g.drilldown).map((d)=>({
-                            label: d.label,
-                            population: d.population
-                        })),
-                        filters:FacetTools.getFacetFiltersFromName(facetMembers, bucketFacet.name),
-                        contentType: bf.contentType
-                    });
-            }
+            const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title?: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, bucket.name);
+            out.push({
+                chartType: chart.chartType,
+                chartConfig: chart.chartConfig,
+                labelList: [],
+                attributeName: bucket.name,
+                attribute: facet.attribute,
+                title: chart.title,
+                data: bucket.data,
+                filters: FacetTools.getFacetFiltersFromName(facetMembers, bucket.name),
+                contentType: facet.contentType
+            });
         });
         return out;
     }
@@ -118,9 +111,9 @@ export class FacetTools {
         const facet: FacetMemberInterface | undefined = facetMembers.find((facet)=>(facet.attributeName === attribute));
         if(!facet)
             throw `Unknown facet attribute ${attribute}`;
-        const filters: Array<FilterQueryTerminalNode> = new Array<FilterQueryTerminalNode>();
+        const filters: Array<FilterQueryTerminalNodeType> = new Array<FilterQueryTerminalNodeType>();
         if( (facet.facet as FilterFacet).filter ){
-            filters.push((facet.facet as FilterFacet).filter as FilterQueryTerminalNode);
+            filters.push((facet.facet as FilterFacetType).filter as FilterQueryTerminalNodeType);
         }
         //TODO second level filters should be considered. However, when included, in some cases e.g. SCOP, the search service returns empty results
         /*const facets = (facet.facet as TermsFacet | HistogramFacet | DateHistogramFacet | RangeFacet | DateRangeFacet | FilterFacet).facets;
@@ -132,7 +125,7 @@ export class FacetTools {
             })
         }*/
         return filters.map((f)=>({
-                operator: f.parameters.operator as Operator,
+                operator: f.parameters.operator,
                 value: f.parameters.value,
                 attribute: f.parameters.attribute,
                 service: f.service as Service.Text|Service.TextChem

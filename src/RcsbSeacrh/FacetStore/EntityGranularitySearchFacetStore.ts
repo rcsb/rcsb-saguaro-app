@@ -21,8 +21,8 @@ class EntityGranularitySearchFacetStore implements FacetStoreInterface{
     private readonly entityFacet: FacetMemberInterface[] = [cloneDeep<FacetMemberInterface>(ORGANISM_FACET), cloneDeep<FacetMemberInterface>(TAXONOMY_FACET), cloneDeep<FacetMemberInterface>(PFAM_FACET), cloneDeep<FacetMemberInterface>(ENTITY_NAME_FACET)];
     private readonly nonPolymerFacet: FacetMemberInterface[] = [cloneDeep<FacetMemberInterface>(CHEM_COMP_FACET)];
 
-    getServices(): Service[] {
-        return [Service.Text, Service.Chemical];
+    getServices(): (Service.Text | Service.TextChem)[] {
+        return [Service.Text, Service.TextChem];
     }
 
     getFacetService(service: Service|"all"): FacetMemberInterface[] {

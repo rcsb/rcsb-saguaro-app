@@ -20,7 +20,7 @@ import {
     MultipleEntryPropertyCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Operator} from "../RcsbUtils/Helpers/Operator";
-import {SearchQueryType, searchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
+import {searchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
 import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
@@ -52,6 +52,7 @@ import { InstanceSequenceInterface,
     MultipleInstanceSequencesCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleInstanceSequencesCollector";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 
 class RcsbRequestContextManager {
 
