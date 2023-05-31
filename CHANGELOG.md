@@ -12,7 +12,7 @@
   - `FacetTools.ts`
   - `SearchQueryTools.ts`
 ### Dependency update
-- rcsb-charts v0.1.4
+- rcsb-charts v0.2.2
 
 ## [5.0.7] - 2023-05-16
 ### Bug fix
