@@ -5,6 +5,11 @@ and designed to display protein features at the [RCSB Web Site](https://www.rcsb
 [1D Coordinate Server](https://1d-coordinates.rcsb.org) and the main [RCSB Data API](https://data.rcsb.org) and generates preconfigures Protein 
 Feature Summaries. The package allows access to RCSB Saguaro methods to add or change displayed data. 
 
+When using rcsb-saguaro, please cite:
+
+Joan Segura, Yana Rose, John Westbrook, Stephen K Burley, Jose M Duarte.
+RCSB Protein Data Bank 1D tools and services, Bioinformatics, 2020; https://doi.org/10.1093/bioinformatics/btaa1012
+
 <!---
 <div id="pfvSelect" ></div>  
 <div id="pfv" ></div>
