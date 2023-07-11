@@ -2,17 +2,23 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [5.0.8] - 2023-05-30
+## [5.0.9] - xxxx-xx-xx
 ### Improvement
 - New type `ChartObjectIdType` to identify included and excluded distribution areas in group summary pages
 - Strict typed `FacetMemberInterface.attribute` and `RcsbChartInterface.attribute` to `RcsbSearchAttributeType`
 ### Refactoring
 - Using rcsb-search-tools
 - Search requests use rcsb-search-tools methods
-  - `FacetTools.ts`
-  - `SearchQueryTools.ts`
+    - `FacetTools.ts`
+    - `SearchQueryTools.ts`
 ### Dependency update
 - rcsb-charts v0.2.2
+
+## [5.0.8] - 2023-07-11
+### Dependency update
+- rcsb-saguaro v2.5.12
+- rcsb-api-tools v4.1.13
+- Multiple dependencies updated
 
 ## [5.0.7] - 2023-05-16
 ### Bug fix
