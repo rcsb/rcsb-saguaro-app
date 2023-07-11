@@ -158,12 +158,13 @@ class AnnotationTrackManager implements TrackManagerInterface {
         }else if(this.isNumericalDisplay(this.type) && this.annotationConfig?.transformToNumerical && typeof this.trackElementMap.get(key)?.value === "number"){
             const o = this.trackElementMap.get(key);
             assertDefined(o?.value);
-            (o.value as number) +=
-                typeof annotationProcessing?.getAnnotationValue === "function" ? annotationProcessing.getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
+            if(typeof o.value !== "number")
+                return;
+            o.value += typeof annotationProcessing?.getAnnotationValue === "function" ? annotationProcessing.getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p}) : 1;
             if(o.value > this.valueRange.max)
-                this.valueRange.max = o.value as number;
+                this.valueRange.max = o.value;
             if(o.value < this.valueRange.min)
-                this.valueRange.min = o.value as number;
+                this.valueRange.min = o.value;
         }
         if(typeof d.description === "string") {
             const o = this.trackElementMap.get(key)

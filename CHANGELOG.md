@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.0.8] - 2023-07-11
+### Dependency update
+- rcsb-saguaro v2.5.12
+- rcsb-api-tools v4.1.13
+- Multiple dependencies updated
+
 ## [5.0.7] - 2023-05-16
 ### Bug fix
 - Uniprot unknown annotation type bug fixed

@@ -40,7 +40,7 @@ import DataStatusInterface = RRT.DataStatusInterface;
 import {rcsbRequestClient} from "./RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
-import { RequestInit as GraphqlRequestInit} from "graphql-request/src/types.dom";
+import {RequestConfig as GraphqlRequestInit} from "graphql-request/src/types";
 import {Assertions} from "../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {

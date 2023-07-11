@@ -33,7 +33,7 @@ export class NumericalTrackDistributionFactory implements ResidueDistributionFac
             });
         });
         track.forEach(ann=>{
-            let index: number = numericalCategories.thresholds.findIndex((x)=>x>=(ann.value ?? Number.MAX_SAFE_INTEGER));
+            let index: number = numericalCategories.thresholds.findIndex((x)=>x>=(ann.value as number ?? Number.MAX_SAFE_INTEGER));
             if(index<0) index = numericalCategories.thresholds.length;
             const label: string = numericalCategories.categories[index].label;
             bucketMap.get(label)?.residueSet.add(ann.begin);
