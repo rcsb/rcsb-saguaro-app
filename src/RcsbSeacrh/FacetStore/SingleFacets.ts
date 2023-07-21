@@ -92,22 +92,11 @@ export const RELEASE_DATE_FACET: FacetMemberInterface = {
         axisLabel: "Year"
     },
     facet: {
-        filter: {
-            type: Type.Terminal,
-            service: Service.Text,
-            parameters: {
-                attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
-                operator: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.operator.ExactMatch,
-                value: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.enum.experimental
-            }
-        },
-        facets:[{
-            name: "RELEASE_DATE_FACET",
-            aggregation_type: AggregationType.DateHistogram,
-            attribute: RcsbSearchMetadata.RcsbAccessionInfo.InitialReleaseDate.path,
-            interval: "year",
-            min_interval_population: 1
-        }]
+        name: "RELEASE_DATE_FACET",
+        aggregation_type: AggregationType.DateHistogram,
+        attribute: RcsbSearchMetadata.RcsbAccessionInfo.InitialReleaseDate.path,
+        interval: "year",
+        min_interval_population: 1
     }
 };
 
