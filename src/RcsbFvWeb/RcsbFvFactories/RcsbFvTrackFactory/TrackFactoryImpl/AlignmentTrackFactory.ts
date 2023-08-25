@@ -166,6 +166,8 @@ function findMismatch(seqA: string, seqB: string): Array<number> {
                 out.push(i);
             }
         }
+    }else{
+        console.error("Find alignment missmatch failed. Sequence regions of different length")
     }
     return out;
 }
