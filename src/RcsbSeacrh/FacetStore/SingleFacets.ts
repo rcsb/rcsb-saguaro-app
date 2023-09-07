@@ -2,6 +2,8 @@ import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/Se
 import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
+import {ChartDataValueInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
+import {GroupChartMap} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupChart/GroupChartTools";
 
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
@@ -43,10 +45,19 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
                 return t.toString();
             }
         },
+        chartDisplayConfig: {
+            constHeight: 225
+        },
         histogramBinIncrement: 0.5,
         mergeDomainMaxValue: 5,
         domainMinValue: 0,
-        axisLabel: "Angstroms"
+        domainMaxValue: 6,
+        axisLabel: "Angstroms",
+        tooltipText: (d: ChartDataValueInterface<GroupChartMap.ChartObjectIdType>)=>{
+            if(d.x as number > 5)
+                return "> 5"
+            return `Resolution ${d.x as number - 0.25} - ${d.x as number + 0.25}`;
+        }
     },
     facet: {
         name: "RESOLUTION_FACET",
@@ -87,9 +98,21 @@ export const RELEASE_DATE_FACET: FacetMemberInterface = {
             origin: 1980,
             increment: 10
         },
+        tickFormat:{
+            domAxis: (t: number|string)=>{
+               return t.toString().replace(",","")
+            }
+        },
         histogramBinIncrement: 1,
         domainMinValue: 1970,
-        axisLabel: "Year"
+        domainMaxValue: new Date().getFullYear()+2,
+        axisLabel: "Year",
+        chartDisplayConfig: {
+            constHeight: 225
+        },
+        tooltipText: (d: ChartDataValueInterface<GroupChartMap.ChartObjectIdType>)=>{
+            return `Release ${d.x as number - 0.5} - ${d.x as number + 0.5}`;
+        }
     },
     facet: {
         name: "RELEASE_DATE_FACET",

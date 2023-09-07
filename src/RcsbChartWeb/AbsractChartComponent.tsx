@@ -55,7 +55,7 @@ export abstract class AbstractChartComponent extends React.Component <AbstractCh
         if(this.props.attributeName === sqData.attributeName){
             this.asyncUpdate(sqData);
         }else{
-            this.asyncUpdate(sqData,300)
+            this.asyncUpdate(sqData, 10)
         }
     }
 

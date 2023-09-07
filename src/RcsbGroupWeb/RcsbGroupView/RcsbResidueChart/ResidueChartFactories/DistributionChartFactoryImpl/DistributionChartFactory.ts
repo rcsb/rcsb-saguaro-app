@@ -34,7 +34,8 @@ export class DistributionChartFactory implements DistributionChartFactoryInterfa
             chartConfig: {
                 sort: sort ? (a,b)=>(sort.findIndex(x=>x===a.x)-sort.findIndex(x=>x===b.x)) : undefined,
                 tooltipText: (d: ChartDataValueInterface)=>(`${Operator.digitGrouping(d.y)} residues`),
-                axisLabel
+                axisLabel,
+                domainEmptyBins: true
             }
         };
     }

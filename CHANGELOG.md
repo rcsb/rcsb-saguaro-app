@@ -2,17 +2,19 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [5.0.9] - xxxx-xx-xx
+## [5.1.0] - 2023-09-07
 ### Improvement
 - New type `ChartObjectIdType` to identify included and excluded distribution areas in group summary pages
 - Strict typed `FacetMemberInterface.attribute` and `RcsbChartInterface.attribute` to `RcsbSearchAttributeType`
+- Histograms based on ChatJS
+- tooltip and axis ticks added to the facet store items
 ### Refactoring
 - Using rcsb-search-tools
 - Search requests use rcsb-search-tools methods
     - `FacetTools.ts`
     - `SearchQueryTools.ts`
 ### Dependency update
-- rcsb-charts v0.2.2
+- rcsb-charts v0.2.21
 
 ## [5.0.8] - 2023-07-11
 ### Dependency update

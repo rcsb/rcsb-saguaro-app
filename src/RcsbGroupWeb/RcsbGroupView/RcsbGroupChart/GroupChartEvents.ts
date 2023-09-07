@@ -31,14 +31,28 @@ export namespace GroupChartEvents {
     }
 
     export function addTooltipText(chart: RcsbChartInterface): void {
+        const tooltipText = chart.chartConfig?.tooltipText;
+        const  tooltipTitle= (d: ChartDataValueInterface<GroupChartMap.ChartObjectIdType>)=>{
+            const tt = tooltipText?.(d);
+            if(!tt) return d.x.toString();
+            if(Array.isArray(tt)) return tt.join(" ")
+            return tt;
+        };
         chart.chartConfig = {
             ...chart.chartConfig,
             tooltipText: (d: ChartDataValueInterface<GroupChartMap.ChartObjectIdType>) => {
-                const sum = d.values.slice(1).reduce((prev,curr)=>prev+curr.value,0);
+                const sum = d.values.reduce((prev,curr)=>prev+curr.value,0);
                 if(d.id ==  "included")
-                    return ChartTools.digitGrouping(d.y) + (sum > 0? (" of " + ChartTools.digitGrouping(d.y+sum)) : "") + " group members\n" +
-                        "Click to refine group\n" +
-                        "Shift-click to search";
+                    return [
+                        tooltipTitle(d),
+                        ChartTools.digitGrouping(d.y) + (sum > 0? (" of " + sum) : ""),
+                        "Click to refine group",
+                        "Shift-click to search"
+                    ];
+                return [
+                    tooltipTitle(d),
+                    ChartTools.digitGrouping(d.y) + (sum > 0? (" of " + sum) : "")
+                ]
             }
 
         }
