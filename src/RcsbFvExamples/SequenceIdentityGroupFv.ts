@@ -40,5 +40,5 @@ const query: SearchQuery = {
     },
     "return_type": "polymer_entity"
 };
-// buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30", query);
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "P12694");
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30");
+//buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "P12694");

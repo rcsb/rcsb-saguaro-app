@@ -36,7 +36,6 @@ import {
     MultipleDocumentPropertyCollectorInterface
 } from "../RcsbCollectTools/DataCollectors/DataCollectorInterface";
 import {RcsbRequestTools as RRT} from "./RcsbRequestTools";
-import DataStatusInterface = RRT.DataStatusInterface;
 import {rcsbRequestClient} from "./RcsbRequestClient";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
@@ -56,15 +55,15 @@ import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/Sear
 
 class RcsbRequestContextManager {
 
-    private readonly polymerEntityToInstanceMap: Map<string,DataStatusInterface<PolymerEntityInstanceTranslate>> = new Map<string, DataStatusInterface<PolymerEntityInstanceTranslate>>();
-    private readonly entryToAssemblyMap: Map<string,DataStatusInterface<EntryAssemblyTranslate>> = new Map<string, DataStatusInterface<EntryAssemblyTranslate>>();
-    private readonly groupPropertyMap: Map<string,DataStatusInterface<GroupPropertiesProvider>> = new Map<string, DataStatusInterface<GroupPropertiesProvider>>();
-    private readonly searchRequestMap: Map<string,DataStatusInterface<QueryResult|null>> = new Map<string, DataStatusInterface<QueryResult|null>>();
-    private readonly interfaceToInstanceMap: Map<string,DataStatusInterface<InterfaceInstanceTranslate>> = new Map<string, DataStatusInterface<InterfaceInstanceTranslate>>();
-    private readonly assemblyInterfacesMap: Map<string,DataStatusInterface<AssemblyInterfacesTranslate>> = new Map<string, DataStatusInterface<AssemblyInterfacesTranslate>>();
-    private readonly entryPropertyMap: Map<string,DataStatusInterface<EntryPropertyIntreface>> = new Map<string, DataStatusInterface<EntryPropertyIntreface>>();
-    private readonly entityPropertyMap: Map<string,DataStatusInterface<PolymerEntityInterface>> = new Map<string, DataStatusInterface<PolymerEntityInterface>>();
-    private readonly instanceSequenceMap: Map<string,DataStatusInterface<InstanceSequenceInterface>> = new Map<string, DataStatusInterface<InstanceSequenceInterface>>();
+    private readonly polymerEntityToInstanceMap: Map<string,Promise<PolymerEntityInstanceTranslate>> = new Map<string, Promise<PolymerEntityInstanceTranslate>>();
+    private readonly entryToAssemblyMap: Map<string,Promise<EntryAssemblyTranslate>> = new Map<string, Promise<EntryAssemblyTranslate>>();
+    private readonly groupPropertyMap: Map<string,Promise<GroupPropertiesProvider>> = new Map<string, Promise<GroupPropertiesProvider>>();
+    private readonly searchRequestMap: Map<string,Promise<QueryResult|null>> = new Map<string, Promise<QueryResult|null>>();
+    private readonly interfaceToInstanceMap: Map<string,Promise<InterfaceInstanceTranslate>> = new Map<string, Promise<InterfaceInstanceTranslate>>();
+    private readonly assemblyInterfacesMap: Map<string,Promise<AssemblyInterfacesTranslate>> = new Map<string, Promise<AssemblyInterfacesTranslate>>();
+    private readonly entryPropertyMap: Map<string,Promise<EntryPropertyIntreface>> = new Map<string, Promise<EntryPropertyIntreface>>();
+    private readonly entityPropertyMap: Map<string,Promise<PolymerEntityInterface>> = new Map<string, Promise<PolymerEntityInterface>>();
+    private readonly instanceSequenceMap: Map<string,Promise<InstanceSequenceInterface>> = new Map<string, Promise<InstanceSequenceInterface>>();
 
     private readonly instanceCollector: PolymerEntityInstancesCollector = new PolymerEntityInstancesCollector();
     private readonly assemblyCollector: EntryAssembliesCollector = new EntryAssembliesCollector();
@@ -122,12 +121,10 @@ class RcsbRequestContextManager {
             entryId,
             this.entryToAssemblyMap,
             async ()=>{
-                RRT.mapPending<PolymerEntityInstanceTranslate>(entryId, this.polymerEntityToInstanceMap);
                 const result: Map<string, Array<PolymerEntityInstanceInterface>> = await this.assemblyCollector.collect({entry_id: entryId});
                 const  eti = this.polymerEntityToInstanceMap.get(entryId);
                 const etit = result.get(this.modelKey);
                 assertDefined(eti), assertDefined(etit);
-                RRT.mapSet<PolymerEntityInstanceTranslate>(eti, new PolymerEntityInstanceTranslate(etit));
                 return new EntryAssemblyTranslate(result);
             }
         );
@@ -172,45 +169,21 @@ class RcsbRequestContextManager {
     public async getInterfaceToInstance(interfaceId:string): Promise<InterfaceInstanceTranslate>{
         const key: string = interfaceId;
         const assemblyId = interfaceId.split(TagDelimiter.instance)[0];
-        if(this.interfaceToInstanceMap.get(key)?.status === "available"){
-            const d = this.interfaceToInstanceMap.get(key)?.data;
+        if(this.interfaceToInstanceMap.get(key)){
+            const d = this.interfaceToInstanceMap.get(key);
             assertDefined(d)
             return d;
-        } else if(this.interfaceToInstanceMap.get(key)?.status === "pending"){
-            const o = this.interfaceToInstanceMap.get(key);
-            assertDefined(o);
-            return await RRT.mapResolve<InterfaceInstanceTranslate>(o);
-        }else if (this.assemblyInterfacesMap.get(assemblyId)?.status === "pending"){
-            RRT.mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
-            const o = this.interfaceToInstanceMap.get(key);
-            assertDefined(o);
-            return await RRT.mapResolve<InterfaceInstanceTranslate>(o);
         }else{
-            RRT.mapPending<InterfaceInstanceTranslate>(key, this.interfaceToInstanceMap);
             const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
             const interfaceIds = assemblyInterfaces.getInterfaces(assemblyId);
             const result: InterfaceInstanceInterface[] = interfaceIds ? await this.interfaceCollector.collect({interface_ids: interfaceIds}) : [];
             const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
             if (assemblyInterfaces.getInterfaces(assemblyId)?.length == 0){
-                this.interfaceToInstanceMap.set(key,{
-                    data: translator,
-                    status: "available",
-                    resolveList: []
-                });
+                this.interfaceToInstanceMap.set(key, new Promise(resolve => translator));
             }
-            for(const id of assemblyInterfaces.getInterfaces(assemblyId) ?? []) {
-                if (this.interfaceToInstanceMap.get(id)?.status === "pending") {
-                    const o = this.interfaceToInstanceMap.get(id);
-                    assertDefined(o);
-                    RRT.mapSet<InterfaceInstanceTranslate>(o, translator);
-                } else {
-                    this.interfaceToInstanceMap.set(id, {
-                        data: translator,
-                        status: "available",
-                        resolveList: []
-                    });
-                }
-            }
+            (assemblyInterfaces.getInterfaces(assemblyId) ?? []).filter(id=>!this.interfaceToInstanceMap.has(id)).forEach(id=>{
+                this.interfaceToInstanceMap.set(id, new Promise(resolve => translator));
+            });
             return translator;
         }
     }

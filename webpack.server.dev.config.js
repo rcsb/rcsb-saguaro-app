@@ -61,7 +61,8 @@ const examples = [
     'InstanceFv',
     'UniprotAlignmentFv',
     'ExternalDataProvider',
-    'ChromosomeFv'
+    'ChromosomeFv',
+    'TestCollectors'
 ];
 const entries = examples.reduce((prev,current)=>{prev[current]= fs.existsSync(`./src/RcsbFvExamples/${current}.ts`) ? `./src/RcsbFvExamples/${current}.ts` : `./src/RcsbFvExamples/${current}.tsx`;return prev;},{});
 
