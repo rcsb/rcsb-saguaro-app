@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [5.1.1] - 2023-09-07
+## [5.1.1] - 2023-09-08
 ### Code refactoring
 - `RcsbRequestContextManager` maps store promises
 - Simplified `RcsbRequestTools`
