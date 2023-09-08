@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.1.1] - 2023-09-07
+### Code refactoring
+- `RcsbRequestContextManager` maps store promises
+- Simplified `RcsbRequestTools`
+
 ## [5.1.0] - 2023-09-07
 ### Improvement
 - New type `ChartObjectIdType` to identify included and excluded distribution areas in group summary pages
