@@ -171,7 +171,7 @@ class RcsbRequestContextManager {
         const assemblyId = interfaceId.split(TagDelimiter.instance)[0];
         if(this.interfaceToInstanceMap.get(key)){
             const d = this.interfaceToInstanceMap.get(key);
-            assertDefined(d)
+            assertDefined(d);
             return d;
         }else{
             const assemblyInterfaces = await this.getAssemblyInterfaces(assemblyId);
@@ -179,10 +179,10 @@ class RcsbRequestContextManager {
             const result: InterfaceInstanceInterface[] = interfaceIds ? await this.interfaceCollector.collect({interface_ids: interfaceIds}) : [];
             const translator: InterfaceInstanceTranslate =  new InterfaceInstanceTranslate(result);
             if (assemblyInterfaces.getInterfaces(assemblyId)?.length == 0){
-                this.interfaceToInstanceMap.set(key, new Promise(resolve => translator));
+                this.interfaceToInstanceMap.set(key, new Promise(resolve => resolve(translator)));
             }
             (assemblyInterfaces.getInterfaces(assemblyId) ?? []).filter(id=>!this.interfaceToInstanceMap.has(id)).forEach(id=>{
-                this.interfaceToInstanceMap.set(id, new Promise(resolve => translator));
+                this.interfaceToInstanceMap.set(id, new Promise(resolve => resolve(translator)));
             });
             return translator;
         }
