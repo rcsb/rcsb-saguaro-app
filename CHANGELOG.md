@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.1.2] - 2023-09-12
+### Refactor
+- bootstrap-icons to @fortawesome/fontawesome-free
+- Group UI titles camel-cased
+
+### Bug fix
+- `RcsbRequestTools.getMultipleObjectProperties` return all values bug fixed
+
 ## [5.1.1] - 2023-09-08
 ### Code refactoring
 - `RcsbRequestContextManager` maps store promises

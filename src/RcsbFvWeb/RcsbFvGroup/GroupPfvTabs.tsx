@@ -44,9 +44,9 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
         return (<RcsbTabs<TabKey>
                 id={"group-id"}
                 tabList={[
-                    {key: ALIGNMENT, title: "ALIGNMENTS", ...additionalComponent},
-                    {key: STRUCTURAL_FEATURES, title: "STRUCTURAL FEATURES", ...additionalComponent},
-                    {key: BINDING_SITES, title: "BINDING SITES", ...additionalComponent}
+                    {key: ALIGNMENT, title: "Alignments", ...additionalComponent},
+                    {key: STRUCTURAL_FEATURES, title: "Structural Features", ...additionalComponent},
+                    {key: BINDING_SITES, title: "Binding Sites", ...additionalComponent}
                 ]}
                 default={"alignment"}
                 onMount={this.onMount.bind(this)}

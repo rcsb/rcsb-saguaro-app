@@ -39,7 +39,7 @@ export namespace RcsbRequestTools {
                 })
             )
         });
-        return Promise.all(Array.from(map.values()));
+        return Promise.all(ids.map(i=>map.get(i)).filter((x): x is Promise<T> => typeof x !== undefined));
     }
 
 }

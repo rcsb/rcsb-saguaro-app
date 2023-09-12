@@ -11,7 +11,7 @@ import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollect
 export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
 
     const seqName: string = "CONSENSUS SEQUENCE";
-    const conservationName: string = "CONSERVATION";
+    const conservationName: string = "SEQUENCE VARIATION";
     const querySequenceLogo: Array<Logo<aaType>> = new Array<Logo<aaType>>();
     const gapLessTransformer: GroupGapLessTransformer = new GroupGapLessTransformer();
     let variationRowData: Array<RcsbFvRowConfigInterface>;
