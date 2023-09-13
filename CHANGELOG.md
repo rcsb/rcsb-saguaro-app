@@ -2,8 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.1.3] - 2023-09-13
+### Display
+- Group UI text mod
+
 ## [5.1.2] - 2023-09-12
-### Refactor
+### Refactoring
 - bootstrap-icons to @fortawesome/fontawesome-free
 - Group UI titles camel-cased
 
