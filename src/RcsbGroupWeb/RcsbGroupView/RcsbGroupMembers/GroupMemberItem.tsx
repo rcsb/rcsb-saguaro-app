@@ -39,7 +39,7 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                 <div className={"bg-light border-top p-md-4"}>
                     {
                         hasGroup3D(this.props.groupProvenanceId) ?
-                            <div><strong><i className={"fa fa-cube"}/>Explore in 3D</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>
+                            <div><strong><i className={"fa fa-cube"}/> Explore in 3D</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>
                                 {GroupMemberItem.SEQUENCE_ALIGNMENT_3D_LINK}
                             </a></div> : null
                     }
