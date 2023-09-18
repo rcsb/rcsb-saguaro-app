@@ -13,7 +13,7 @@ import {Assertions} from "../Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 
 export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
-    const trackName: string = "GLOBAL BINDINGS";
+    const trackName: string = "GLOBAL BINDING";
     const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
     let max: number = 0;
     const groupTrackBuilder: ExternalTrackBuilderInterface = groupExternalTrackBuilder();

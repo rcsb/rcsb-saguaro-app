@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [5.1.5] - 2023-09-18
+### Display
+- Group UI text mod
+
 ## [5.1.4] - 2023-09-13
 ### Display
 - Group UI text mod
