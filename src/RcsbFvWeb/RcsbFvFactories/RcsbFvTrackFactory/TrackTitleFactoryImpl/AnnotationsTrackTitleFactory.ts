@@ -1,6 +1,6 @@
+import {RcsbFvLink} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {TrackManagerInterface} from "../../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
-import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {FeatureTools} from "../../../../RcsbCollectTools/FeatureTools/FeatureTools";

@@ -3,8 +3,8 @@ import {
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import queryAnnotations from "./Queries/Borrego/QueryAnnotations.graphql";
-import queryGroupAnnotations from "./Queries/Borrego/QueryGroupAnnotations.graphql";
+import queryAnnotations from "../RcsbQueries/Borrego/QueryAnnotations.graphql";
+import queryGroupAnnotations from "../RcsbQueries/Borrego/QueryGroupAnnotations.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 

@@ -1,8 +1,9 @@
 import {
-    RcsbFvDisplayTypes,
     RcsbFvTrackDataElementGapInterface,
     RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
+} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate, AlignmentContextInterface} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";

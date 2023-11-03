@@ -1,4 +1,11 @@
 import {Subject} from "rxjs";
+import {LocationViewInterface} from "@rcsb/rcsb-saguaro/lib/RcsbBoard/RcsbBoard";
+import {
+    RcsbFvTrackData,
+    RcsbFvTrackDataElementInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import { RcsbFvRowConfigInterface } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
     AlignedRegion,
@@ -7,14 +14,6 @@ import {
     SequenceReference,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-
-import {
-    RcsbFvDisplayTypes,
-    RcsbFvLocationViewInterface,
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackData,
-    RcsbFvTrackDataElementInterface
-} from '@rcsb/rcsb-saguaro';
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {RcsbFvAlignmentCollectorQueue} from "../RcsbFvWorkers/RcsbFvAlignmentCollectorQueue";
@@ -27,8 +26,8 @@ import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;
 
-function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>){
-    return (where: RcsbFvLocationViewInterface) => {
+function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: LocationViewInterface) => Promise<RcsbFvTrackData>){
+    return (where: LocationViewInterface) => {
         const delta: number = trackWidth ? trackWidth / (where.to - where.from) : 1000 / (where.to - where.from);
         if (delta > 4) {
             const ids: Array<string> = new Array<string>();

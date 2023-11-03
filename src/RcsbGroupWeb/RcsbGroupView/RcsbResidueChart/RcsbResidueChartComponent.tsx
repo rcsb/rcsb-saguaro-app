@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ChartMapType, GroupChartLayout} from "../RcsbGroupChart/GroupChartLayout";
 import {ResidueChartInterface, ResidueChartTools as RCT} from "./ResidueChartTools/ResidueChartTools";
-import classes from "../RcsbGroupMembers/Components/scss/bootstrap-group-display.module.scss";
+import classes from "../../../scss/bootstrap-group-display.module.scss";
 import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 

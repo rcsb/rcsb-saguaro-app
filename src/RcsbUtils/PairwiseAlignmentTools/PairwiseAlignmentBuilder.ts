@@ -1,4 +1,9 @@
-import {RcsbFvTrackDataElementInterface, RcsbFvDisplayTypes, RcsbFvRowConfigInterface, RcsbFvDisplayConfigInterface} from '@rcsb/rcsb-saguaro';
+import {
+    RcsbFvDisplayConfigInterface,
+    RcsbFvRowConfigInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";

@@ -1,5 +1,4 @@
 import {AbstractChartComponent} from "./AbsractChartComponent";
-import React from "react";
 import {ChartComponent} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartComponent";
 import {HistogramChartDataProvider} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/HistogramChartDataProvider";
 import {

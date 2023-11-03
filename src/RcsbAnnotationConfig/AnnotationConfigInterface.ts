@@ -1,6 +1,8 @@
-import {RcsbFvColorGradient, RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro";
 
 //Positional annotation interfaces
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+
 export interface AnnotationConfigInterface {
     provenance_color_code: {
         external: string;

@@ -1,6 +1,5 @@
 import {buildGroupFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {rcsbRequestCtxManager} from "../RcsbRequest/RcsbRequestContextManager";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 
 // rcsbRequestCtxManager.initializeBorregoClient({api:"https://clustrelax-dev.rcsb.org/graphql"});
@@ -40,5 +39,5 @@ const query: SearchQuery = {
     },
     "return_type": "polymer_entity"
 };
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30");
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30", query);
 //buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "P12694");

@@ -1,4 +1,9 @@
 import {
+    RcsbFvBoardConfigInterface,
+    RcsbFvRowConfigInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFv} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFv";
+import {
     AlignmentResponse,
     Feature,
     FilterInput,
@@ -7,7 +12,6 @@ import {
     Source, TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
-import {RcsbFv, RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {
     AnnotationCollectorInterface,
     AnnotationProcessingInterface, AnnotationsCollectConfig
@@ -24,6 +28,7 @@ import {
     AlignmentCollectConfig,
     AlignmentCollectorInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
+
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
 export interface RcsbFvAdditionalConfig{

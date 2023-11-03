@@ -1,7 +1,6 @@
 import * as React from "react";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import classes from "./Components/scss/bootstrap-group-display.module.scss";
-import faClasses from "./Components/scss/fontawsome-group-display.module.scss";
+import classes from "../../../scss/bootstrap-group-display.module.scss";
 import {GroupMembersGrid} from "./GroupMembersGrid";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
@@ -45,7 +44,7 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
     render(): JSX.Element{
         if(this.state.nPages>0)
             return (
-                <div id={this.groupMembersDiv} style={{minHeight:627}} className={`${classes.bootstrapGroupComponentScope} ${faClasses.fontawsomeGroupComponentScope}`}>
+                <div id={this.groupMembersDiv} style={{minHeight:627}} className={`${classes.bootstrapGroupComponentScope}`}>
                     <Slider slide={this.slide.bind(this)} pages={this.state.nPages} currentPage={this.state.selectedIndex+1}>
                         <GroupMembersGrid
                             groupProvenanceId={this.props.groupProvenanceId}

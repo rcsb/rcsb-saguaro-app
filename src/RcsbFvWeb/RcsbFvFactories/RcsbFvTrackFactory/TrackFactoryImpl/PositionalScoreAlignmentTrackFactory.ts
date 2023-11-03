@@ -1,3 +1,6 @@
+import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+
 import {
     AlignedRegion,
     AnnotationFeatures,
@@ -9,10 +12,7 @@ import {
     PolymerEntityInstanceTranslate
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
-import {
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
+
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 import {range} from "lodash";
@@ -36,7 +36,11 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         this.alignmentTrackFactory = new PlainAlignmentTrackFactory(entityInstanceTranslator);
     }
 
-    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
+    public async getTrack(
+        alignmentRequestContext: AlignmentRequestContextType,
+        targetAlignment: TargetAlignment,
+        alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
+    ): Promise<RcsbFvRowConfigInterface> {
         return this.alignmentTrackFactory.getTrack(
             alignmentRequestContext,
             targetAlignment,

@@ -1,5 +1,5 @@
 import {asyncScheduler, Subscription} from "rxjs";
-import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
+import {SelectionInterface} from "@rcsb/rcsb-saguaro/lib/RcsbBoard/RcsbSelection";
 import {
     RcsbFvAdditionalConfig,
     RcsbFvModulePublicInterface

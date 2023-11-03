@@ -1,9 +1,9 @@
+import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {Feature, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AnnotationProcessingInterface
 } from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 
 export interface TrackManagerFactoryInterface<T extends any[]> {
     getTrackManager(...args: T): TrackManagerInterface;

@@ -1,9 +1,14 @@
-import {RcsbFvLink, RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import {
+    RcsbFvLink,
+    RcsbFvRowConfigInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {ExternalTrackBuilderInterface} from "./ExternalTrackBuilderInterface";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
+
 
 export class FeatureTools {
 
@@ -32,8 +37,8 @@ export class FeatureTools {
     }
 
     static parseLink(title: string): RcsbFvLink{
-        let match: RegExpExecArray | null;
-        if(match = FeatureTools.rcsbLigand.exec(title)) {
+        let match: RegExpExecArray | null = FeatureTools.rcsbLigand.exec(title);
+        if(match) {
             return {
                 visibleTex: match[3],
                 url: (resource as any).rcsb_ligand.url+match[3],

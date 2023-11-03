@@ -10,7 +10,7 @@ import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {RcsbTabs} from "../RcsbFvComponents/RcsbTabs";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {SelectionInterface} from "@rcsb/rcsb-saguaro/build/RcsbBoard/RcsbSelection";
+import {SelectionInterface} from "@rcsb/rcsb-saguaro/lib/RcsbBoard/RcsbSelection";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {GroupPfvApp as GPA} from "./GroupTabs/GroupPfvApp";
 

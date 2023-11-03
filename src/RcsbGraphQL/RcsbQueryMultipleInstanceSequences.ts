@@ -1,4 +1,4 @@
-import query from "./Queries/Yosemite/QueryMultipleInstanceSequences.graphql";
+import query from "../RcsbQueries/Yosemite/QueryMultipleInstanceSequences.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {
     CorePolymerEntityInstance,

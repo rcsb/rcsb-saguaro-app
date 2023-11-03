@@ -1,11 +1,13 @@
-import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
-import {RcsbFvDisplayTypes, RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
     AlignmentResponse,
     AnnotationFeatures,
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
+
 
 buildInstanceSequenceFv("pfv", "select", "2UZI", {
     module:"interface",

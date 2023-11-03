@@ -1,5 +1,5 @@
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {buildUniprotEntityInstanceFv} from "../RcsbFvWeb/RcsbFvBuilder";
-import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/build/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 buildUniprotEntityInstanceFv("pfv", "P01112", "2UZI_3", "2UZI.C",{boardConfig:{
         trackWidth:600,

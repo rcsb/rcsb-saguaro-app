@@ -1,9 +1,12 @@
-@import "../../../RcsbUtils/scss/bootstrap-mixin.module";
+@use "sass:meta";
+
+@use "./bootstrap-mixin.module" as styleVars;
 
 .bootstrapFvComponentScope {
-  @import "~bootstrap/scss/bootstrap";
-  @include bootstrapRoot;
-  @include bootstrapBody;
+
+  @include styleVars.bootstrapRoot;
+  @include meta.load-css("bootstrap/dist/css/bootstrap.min");
+
   * {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -33,4 +36,5 @@
   .rcsbFvRowTitleText a:hover {
     text-decoration-line: underline;
   }
+
 }

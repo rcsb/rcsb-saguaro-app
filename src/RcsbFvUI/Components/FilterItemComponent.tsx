@@ -1,4 +1,3 @@
-import React from "react";
 import {Collapse} from "react-bootstrap";
 import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
 import {ItemComponent} from "./ItemComponent";

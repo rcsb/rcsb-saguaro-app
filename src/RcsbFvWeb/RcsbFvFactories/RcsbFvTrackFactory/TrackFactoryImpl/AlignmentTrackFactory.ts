@@ -1,9 +1,9 @@
 import {
     RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes,
-    RcsbFvRowConfigInterface,
-    RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
+    RcsbFvRowConfigInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import { RcsbFvDisplayTypes } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import { RcsbFvTrackDataElementInterface } from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {
     AlignedRegion,
     TargetAlignment

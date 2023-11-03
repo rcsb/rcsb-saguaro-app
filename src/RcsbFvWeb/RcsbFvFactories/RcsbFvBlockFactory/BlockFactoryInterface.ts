@@ -1,4 +1,4 @@
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface";
 
 export interface BlockFactoryInterface<T extends any[], S extends any[]> {

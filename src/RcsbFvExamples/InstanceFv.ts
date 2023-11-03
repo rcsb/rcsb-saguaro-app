@@ -1,5 +1,5 @@
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {buildInstanceFv} from "../RcsbFvWeb/RcsbFvBuilder";
-import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/build/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 buildInstanceFv("pfv", "2UZI.C").then((module)=>{
         module.getFv().then(()=>{

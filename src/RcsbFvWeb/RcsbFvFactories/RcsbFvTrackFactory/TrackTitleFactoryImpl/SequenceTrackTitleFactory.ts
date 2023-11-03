@@ -1,6 +1,6 @@
+import {RcsbFvLink} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
 import {AlignmentRequestContextType} from "../TrackFactoryImpl/AlignmentTrackFactory";
-import {RcsbFvLink} from "@rcsb/rcsb-saguaro";
 import {SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import * as resource from "../../../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";

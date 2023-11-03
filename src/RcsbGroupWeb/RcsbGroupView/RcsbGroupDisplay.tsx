@@ -1,4 +1,3 @@
-import React from "react";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbGroupMembersComponent} from "./RcsbGroupMembers/RcsbGroupMembersComponent";
 import {FacetStoreInterface} from "../../RcsbSeacrh/FacetStore/FacetStoreInterface";

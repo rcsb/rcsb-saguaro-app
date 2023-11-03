@@ -1,3 +1,5 @@
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import { RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {
@@ -12,7 +14,6 @@ import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackF
 import {CollectGroupAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
-import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 
 const annotationConfigMap: AnnotationConfigInterface = <any>acm;
 export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {

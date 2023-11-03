@@ -30,7 +30,7 @@ const commonConfig = {
                             localIdentName:'[local]'
                         }
                     }
-                }, 'sass-loader']
+                }, 'resolve-url-loader', 'sass-loader']
             }
         ]
     },

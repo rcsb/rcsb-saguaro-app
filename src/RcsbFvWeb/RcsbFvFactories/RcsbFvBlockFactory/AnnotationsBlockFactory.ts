@@ -1,7 +1,7 @@
-import {AnnotationRequestContext} from "../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
-import {BlockFactoryInterface} from "./BlockFactoryInterface";
 import {AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import { RcsbFvRowConfigInterface } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {AnnotationRequestContext} from "../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {BlockFactoryInterface} from "./BlockFactoryInterface";
 import {TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface";
 import {BlockManagerInterface} from "./BlockManager/BlockManagerInterface";
 import {TrackManagerInterface} from "./BlockManager/TrackManagerInterface";

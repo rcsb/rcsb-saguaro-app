@@ -1,13 +1,10 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
-    CorePolymerEntityInstance,
-    QueryPolymer_Entity_InstancesArgs
+    CorePolymerEntityInstance
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
-import assertElementListDefined = Assertions.assertElementListDefined;
 import {MultipleDocumentPropertyCollectorInterface} from "./DataCollectorInterface";
-import {PolymerEntityInstanceInterface} from "./PolymerEntityInstancesCollector";
 
 export interface InstanceSequenceInterface {
     rcsbId: string;

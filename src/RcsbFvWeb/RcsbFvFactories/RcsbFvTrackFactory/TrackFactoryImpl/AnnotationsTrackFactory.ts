@@ -1,11 +1,16 @@
-import {TrackFactoryInterface} from "../TrackFactoryInterface";
+import {
+    RcsbFvDisplayConfigInterface,
+    RcsbFvRowConfigInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {
     InterpolationTypes,
-    RcsbFvColorGradient, RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes,
-    RcsbFvRowConfigInterface,
+    RcsbFvDisplayTypes
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {
+    RcsbFvColorGradient,
     RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
+} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {TrackManagerInterface} from "../../RcsbFvBlockFactory/BlockManager/TrackManagerInterface";

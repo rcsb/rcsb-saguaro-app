@@ -1,6 +1,11 @@
 {
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
   "compilerOptions": {
-    "declaration": false,
+    "declaration": true,
     "target": "es6",
     "alwaysStrict": true,
     "noImplicitAny": true,
@@ -9,7 +14,7 @@
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
-    "module": "esnext",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "importHelpers": true,
@@ -18,7 +23,7 @@
     "jsx": "react-jsx",
     "lib": [ "dom", "es2020" ],
     "rootDir": "src",
-    "outDir": "./dev-server",
+    "outDir": "./lib/commonjs",
     "resolveJsonModule": true,
     "skipLibCheck": true
   },

@@ -1,7 +1,8 @@
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {AnnotationFeatures, TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PositionalScoreAlignmentTrackFactory} from "./PositionalScoreAlignmentTrackFactory";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {PlainObservedAlignmentTrackFactory} from "./PlainObservedAlignmentTrackFactory";

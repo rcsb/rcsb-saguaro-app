@@ -22,9 +22,15 @@ const commonConfig = {
                             localIdentName:'[local]'
                         }
                     }
-                }, 'sass-loader']
-            }
-        ]
+                }, {
+                    loader: 'resolve-url-loader'
+                }, {
+                    loader: 'sass-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }]
+        }]
     },
     resolve: {
         extensions: ['.js', '.jsx' ],
@@ -41,46 +47,46 @@ const commonConfig = {
 const webWorker = {
     ...commonConfig,
     entry: {
-        'worker':'./build/src/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
+        'worker':'./lib/RcsbFvWeb/RcsbFvWorkers/RcsbFvAlignmentCollectorWorker.worker.js'
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'build/dist')
+        path: path.resolve(__dirname, 'build')
     }
 };
 
 const webBuilder = {
     ...commonConfig,
     entry: {
-        'app':'./build/src/app.js'
+        'app':'./lib/app.js'
     },
     output: {
         filename: '[name].js',
         library: 'RcsbFvWebApp',
         libraryTarget: 'umd',
         umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
+        path: path.resolve(__dirname, 'build')
     }
 };
 
 const webChart = {
     ...commonConfig,
     entry: {
-        'plot':'./build/src/plot.js'
+        'plot':'./lib/plot.js'
     },
     output: {
         filename: '[name].js',
         library: 'RcsbChartWebApp',
         libraryTarget: 'umd',
         umdNamedDefine: true,
-        path: path.resolve(__dirname, 'build/dist')
+        path: path.resolve(__dirname, 'build')
     }
 };
 
 const webConstants = {
     ...commonConfig,
     entry: {
-        'constants':'./build/src/constants.js'
+        'constants':'./lib/constants.js'
     },
     output: {
         filename: '[name].js',
@@ -88,7 +94,7 @@ const webConstants = {
         libraryTarget: 'umd',
         umdNamedDefine: true,
         globalObject: 'this',
-        path: path.resolve(__dirname, 'build/dist')
+        path: path.resolve(__dirname, 'build')
     }
 };
 

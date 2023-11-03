@@ -1,6 +1,5 @@
 import {GroupedOptionsInterface, SelectButton, SelectOptionInterface} from "./SelectButton";
 import {SelectButtonConfigInterface} from "./ComponentsManager";
-import * as React from "react";
 import {SelectButtonTitle} from "./SelectButtonTitle";
 import {MountableComponent} from "./MountableComponent";
 

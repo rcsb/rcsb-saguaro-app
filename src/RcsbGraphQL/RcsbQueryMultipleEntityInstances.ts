@@ -1,4 +1,4 @@
-import query from "./Queries/Yosemite/QueryMultipleEntityInstances.graphql";
+import query from "../RcsbQueries/Yosemite/QueryMultipleEntityInstances.graphql";
 import {
     CorePolymerEntity,
     QueryPolymer_EntitiesArgs

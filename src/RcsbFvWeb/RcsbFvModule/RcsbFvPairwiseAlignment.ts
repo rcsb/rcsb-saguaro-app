@@ -1,6 +1,7 @@
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
-import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {PairwiseAlignmentBuilder} from "../../RcsbUtils/PairwiseAlignmentTools/PairwiseAlignmentBuilder";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;

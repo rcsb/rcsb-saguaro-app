@@ -1,4 +1,3 @@
-import React from "react";
 import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
 
 export interface PaginationItemState {

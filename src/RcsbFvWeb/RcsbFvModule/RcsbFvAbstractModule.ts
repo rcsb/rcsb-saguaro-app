@@ -1,8 +1,5 @@
-import {
-    RcsbFv,
-    RcsbFvBoardConfigInterface,
-    RcsbFvRowConfigInterface
-} from '@rcsb/rcsb-saguaro';
+import { RcsbFv } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFv";
+import { RcsbFvBoardConfigInterface, RcsbFvRowConfigInterface } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 
 import {AnnotationCollector} from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollector";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
@@ -40,7 +37,6 @@ import {AnnotationBlockManager} from "../RcsbFvFactories/RcsbFvBlockFactory/Bloc
 import {RcsbAnnotationConfig} from "../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {AnnotationTrackManagerFactory} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/AnnotationTrackManager";
 import {TrackManagerInterface} from "../RcsbFvFactories/RcsbFvBlockFactory/BlockManager/TrackManagerInterface";
-
 
 export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 

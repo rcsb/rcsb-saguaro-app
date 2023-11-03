@@ -1,4 +1,5 @@
-import {RcsbFv, RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFv} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFv";
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 
 class RcsbFvContextManager {
 

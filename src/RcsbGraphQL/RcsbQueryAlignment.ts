@@ -3,9 +3,9 @@ import {
     QueryAlignmentArgs,
     QueryGroup_AlignmentArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import queryAlignment from "./Queries/Borrego/QueryAlignments.graphql";
-import queryGroupAlignment from "./Queries/Borrego/QueryGroupAlignments.graphql";
-import queryGroupAlignmentNoLogo from "./Queries/Borrego/QueryGroupAlignmentsNoLogo.graphql";
+import queryAlignment from "../RcsbQueries/Borrego/QueryAlignments.graphql";
+import queryGroupAlignment from "../RcsbQueries/Borrego/QueryGroupAlignments.graphql";
+import queryGroupAlignmentNoLogo from "../RcsbQueries/Borrego/QueryGroupAlignmentsNoLogo.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 

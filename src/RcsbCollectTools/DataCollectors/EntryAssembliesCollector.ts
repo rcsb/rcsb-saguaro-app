@@ -59,7 +59,6 @@ export class EntryAssembliesCollector {
             assertDefined(o), assertDefined(o?.entry_id), assertDefined(o?.entity_id), assertDefined(o?.entity_id), assertDefined(o?.asym_id), assertDefined(o?.auth_asym_id), assertElementListDefined(o?.auth_to_entity_poly_seq_mapping)
             assertDefined(instance.polymer_entity?.entity_poly?.rcsb_sample_sequence_length);
             assertDefined(instance.polymer_entity.entry?.rcsb_entry_info.structure_determination_methodology);
-            const a = o.entry_id;
             const d: PolymerEntityInstanceInterface = {
                 rcsbId: instance.rcsb_id,
                 entryId: o.entry_id,

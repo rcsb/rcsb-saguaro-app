@@ -1,4 +1,4 @@
-import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro";
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
 

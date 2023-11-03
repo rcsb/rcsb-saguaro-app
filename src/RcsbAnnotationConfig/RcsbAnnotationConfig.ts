@@ -1,6 +1,7 @@
 import * as acm from "./RcsbAnnotationConfig.ac.json";
 import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {RcsbFvColorGradient, RcsbFvDisplayTypes} from '@rcsb/rcsb-saguaro';
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {AnnotationConfigInterface, RcsbAnnotationConfigInterface} from "./AnnotationConfigInterface";
 import stc from "string-to-color";
 import {AnnotationRequestContext} from "../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";

@@ -1,10 +1,12 @@
 import {
     RcsbFvColorGradient,
-    RcsbFvDisplayConfigInterface,
-    RcsbFvDisplayTypes,
-    RcsbFvRowConfigInterface,
     RcsbFvTrackDataElementInterface
-} from "@rcsb/rcsb-saguaro";
+} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import {
+    RcsbFvDisplayConfigInterface,
+    RcsbFvRowConfigInterface
+} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
     AlignedRegion,
     TargetAlignment
@@ -35,7 +37,13 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
         this.trackTitleFactory = new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
-    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>, alignmentColor?:RcsbFvColorGradient): Promise<RcsbFvRowConfigInterface> {
+    public async getTrack(
+        alignmentRequestContext: AlignmentRequestContextType,
+        targetAlignment: TargetAlignment,
+        alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>,
+        alignmentColor?:RcsbFvColorGradient
+    ): Promise<RcsbFvRowConfigInterface> {
+
         const {alignedBlocks, mismatchData, sequenceData} = this.getAlignmentTrackConfiguration(
             alignmentRequestContext,
             targetAlignment,

@@ -4,7 +4,7 @@ import {
     QueryAssembliesArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
-import query from "./Queries/Yosemite/QueryAssemblyInterfaces.graphql";
+import query from "../RcsbQueries/Yosemite/QueryAssemblyInterfaces.graphql";
 
 interface AssemblyInterfacesResultInterface {
     assemblies: Array<CoreAssembly>;

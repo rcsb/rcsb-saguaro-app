@@ -1,7 +1,6 @@
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {GroupPfvTabs} from "./GroupPfvTabs";
-import * as React from "react";
 import {createRoot} from "react-dom/client";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;

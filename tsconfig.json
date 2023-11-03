@@ -1,23 +1,30 @@
 {
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
   "compilerOptions": {
-    "rootDir": "src",
-    "resolveJsonModule": true,
-    "outDir": "./build/src",
-    "noImplicitAny": true,
-    "alwaysStrict": true,
-    "noImplicitThis": true,
+    "declaration": true,
     "target": "es6",
-    "module": "commonjs",
-    "jsx": "react",
-    "lib": [ "dom", "es2020" ],
-    "allowJs": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
     "sourceMap": false,
-    //"noUnusedLocals": true,
+    "noUnusedLocals": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
-    "declaration": true,
-    "declarationDir": "./build/dist",
+    "module": "esnext",
     "esModuleInterop": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "lib": [ "dom", "es2020" ],
+    "rootDir": "src",
+    "outDir": "./lib",
+    "resolveJsonModule": true,
     "skipLibCheck": true
   },
   "include": [ "src" ],

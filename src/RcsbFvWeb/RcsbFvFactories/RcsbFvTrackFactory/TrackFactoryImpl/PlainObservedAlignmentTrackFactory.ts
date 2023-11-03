@@ -1,3 +1,6 @@
+import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+
 import {
     AlignedRegion,
     AnnotationFeatures,
@@ -8,7 +11,6 @@ import {
     AlignmentContextInterface
 } from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
-import {RcsbFvRowConfigInterface, RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";
 

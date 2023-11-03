@@ -1,13 +1,14 @@
 import {asyncScheduler, Subscription} from "rxjs";
-import {RcsbFvLocationViewInterface, RcsbFvTrackData} from "@rcsb/rcsb-saguaro";
+import {RcsbFvTrackData} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
+import {LocationViewInterface} from "@rcsb/rcsb-saguaro/lib/RcsbBoard/RcsbBoard";
 import * as resource from "../../RcsbServerConfig/web.resources.json";
 
 export class NcbiGenomeSequenceData {
     private static readonly urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
     private static readonly urlSuffix: string = (resource as any).ncbi_genome_sequence.url_suffix;
-    public static update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: RcsbFvLocationViewInterface) => Promise<RcsbFvTrackData>) {
+    public static update(ncbiId: string, strand: number, reverse: boolean, trackWidth?: number): ((where: LocationViewInterface) => Promise<RcsbFvTrackData>) {
         let process: Subscription | null = null;
-        return (where: RcsbFvLocationViewInterface) => {
+        return (where: LocationViewInterface) => {
             if(process)
                 process.unsubscribe();
             return new Promise<RcsbFvTrackData>((resolve, reject) => {

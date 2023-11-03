@@ -1,0 +1,19 @@
+@use "sass:meta";
+@use "./bootstrap-mixin.module" as styleVars;
+
+.bootstrapGroupComponentScope {
+
+    @include styleVars.bootstrapRoot;
+    @include meta.load-css("bootstrap/dist/css/bootstrap.min");
+    @include meta.load-css("~boxicons/css/boxicons.min");
+
+    a {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+}

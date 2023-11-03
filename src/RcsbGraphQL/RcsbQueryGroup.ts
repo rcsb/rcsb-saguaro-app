@@ -1,4 +1,4 @@
-import query from "./Queries/Yosemite/QueryGroup.graphql";
+import query from "../RcsbQueries/Yosemite/QueryGroup.graphql";
 import {GroupPolymerEntity, QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";

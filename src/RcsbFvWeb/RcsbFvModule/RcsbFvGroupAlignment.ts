@@ -1,3 +1,5 @@
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
 import {
@@ -21,7 +23,6 @@ import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {Operator} from "../../RcsbUtils/Helpers/Operator";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
-import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
     AnnotationCollectorInterface,
