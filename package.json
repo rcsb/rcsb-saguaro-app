@@ -1,10 +1,11 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "6.0.0-development.1",
+  "version": "6.0.0-development.2",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/app.js",
   "files": [
-    "build"
+    "build",
+    "lib"
   ],
   "scripts": {
     "devServer": "webpack-dev-server --config webpack.server.dev.config.js",
