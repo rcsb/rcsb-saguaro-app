@@ -1,4 +1,3 @@
-import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {
     InterpolationTypes,
@@ -12,10 +11,13 @@ import {groupExternalTrackBuilder} from "./GroupExternalTrackBuilder";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {Assertions} from "../Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {
+    RcsbFvTrackDataAnnotationInterface
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
     const trackName: string = "GLOBAL BINDING";
-    const bindingSiteMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
+    const bindingSiteMap: Map<string,RcsbFvTrackDataAnnotationInterface> = new Map<string, RcsbFvTrackDataAnnotationInterface>();
     let max: number = 0;
     const groupTrackBuilder: ExternalTrackBuilderInterface = groupExternalTrackBuilder();
 

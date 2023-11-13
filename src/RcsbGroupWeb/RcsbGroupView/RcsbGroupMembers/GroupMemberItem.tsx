@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as resource from "../../../RcsbServerConfig/web.resources.json";
+import React from "react";
+import resource from "../../../RcsbServerConfig/web.resources.json";
 import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";

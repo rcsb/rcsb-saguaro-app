@@ -53,7 +53,6 @@
     "@babel/core": "^7.23.2",
     "@babel/plugin-proposal-class-properties": "^7.17.12",
     "@babel/preset-env": "^7.23.2",
-    "@fortawesome/fontawesome-free": "^6.4.2",
     "@types/lodash": "^4.14.200",
     "@types/lodash.range": "^3.2.8",
     "@types/object-hash": "^3.0.5",
@@ -101,7 +100,7 @@
   },
   "peerDependencies": {
     "@rcsb/rcsb-api-tools": "^4.1.13",
-    "@rcsb/rcsb-saguaro": "^3.0.0-dev-js-iner-track-id.11",
+    "@rcsb/rcsb-saguaro": "^3.0.0-development.2",
     "boxicons": "^2.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"

@@ -1,20 +1,22 @@
-import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {
     RcsbFvLink,
     RcsbFvRowConfigInterface
 } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import * as resource from "../../RcsbServerConfig/web.resources.json";
+import resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {ExternalTrackBuilderInterface} from "./ExternalTrackBuilderInterface";
 import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
+import {
+    RcsbFvTrackDataAnnotationInterface
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 
 export class FeatureTools {
 
     private static readonly rcsbLigand: RegExp = new RegExp(/^(ligand)(\s)(\w{1,3})$/);
 
-    static mergeBlocks(blocks: Array<RcsbFvTrackDataElementInterface>){
+    static mergeBlocks(blocks: Array<RcsbFvTrackDataAnnotationInterface>){
         let merged = false;
         do{
             merged = false;

@@ -9,7 +9,7 @@ import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
 
-buildInstanceSequenceFv("pfv", "select", "2UZI", {
+buildInstanceSequenceFv("pfv", "select", "8PDU", {
     module:"interface",
     onChangeCallback: (r)=>{
         console.log(r);

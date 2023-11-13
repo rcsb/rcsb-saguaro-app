@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {searchRequest} from "../RcsbGroupMembers/RcsbGroupMembersComponent";
@@ -6,7 +6,7 @@ import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface
 } from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
-import * as resource from "../../../RcsbServerConfig/web.resources.json";
+import resource from "../../../RcsbServerConfig/web.resources.json";
 import {
     SearchQueryTools as SQT
 } from "../../../RcsbSeacrh/SearchQueryTools";

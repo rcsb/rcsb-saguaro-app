@@ -75,7 +75,7 @@ export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
         });
         const logoRowData = querySequenceLogo.map((s,n)=>({
             begin: n+1,
-            value: s.mode(),
+            label: s.mode(),
             description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
         }))
         variationRowData = [{

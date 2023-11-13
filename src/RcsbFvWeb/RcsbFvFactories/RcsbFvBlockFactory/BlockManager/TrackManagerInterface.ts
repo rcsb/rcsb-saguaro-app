@@ -4,6 +4,7 @@ import {Feature, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/Rcs
 import {
     AnnotationProcessingInterface
 } from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {RcsbFvTrackDataAnnotationInterface} from "../../RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 export interface TrackManagerFactoryInterface<T extends any[]> {
     getTrackManager(...args: T): TrackManagerInterface;
@@ -15,7 +16,7 @@ export interface TrackManagerInterface {
     getRange(): {min:number;max:number};
     addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void;
     size(): number;
-    forEach(f:(ann:RcsbFvTrackDataElementInterface,loc:string)=>void): void;
+    forEach(f:(ann:RcsbFvTrackDataAnnotationInterface, loc:string)=>void): void;
     addAll(trackElementsMap: TrackManagerInterface, color?: string ): void;
     getTrackProvenance(): Set<string>;
     values(): Array<RcsbFvTrackDataElementInterface>;

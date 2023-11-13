@@ -14,6 +14,7 @@ import {TrackUtils} from "./Helper/TrackUtils";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {RcsbFvTrackDataAnnotationInterface} from "../RcsbFvTrackDataAnnotationInterface";
 
 interface BuildSequenceDataInterface extends AlignmentContextInterface {
     sequence: string;
@@ -63,14 +64,14 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
             const c = config[source]
             if(!c)
                 return;
-            const o: RcsbFvTrackDataElementInterface = {
+            const o: RcsbFvTrackDataAnnotationInterface = {
                 begin: (config.begin + i),
                 oriBegin: typeof config.oriBegin === "number" ? config.oriBegin + i : undefined,
                 sourceId: id,
                 source: TrackUtils.transformSourceFromTarget(id, c),
                 provenanceName: TrackUtils.getProvenanceConfigFormTarget(id,c).name,
                 provenanceColor: TrackUtils.getProvenanceConfigFormTarget(id,c).color,
-                value: s
+                label: s
             };
             sequenceData.push(this.addAuthorResIds(o, {
                 from:config.from,
@@ -83,8 +84,8 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
     }
 
     //TODO this method can be defined in a helper
-    public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
-        let o:RcsbFvTrackDataElementInterface = e;
+    public addAuthorResIds(e:RcsbFvTrackDataAnnotationInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
+        let o:RcsbFvTrackDataAnnotationInterface = e;
         if(this.entityInstanceTranslator!=null){
             this.entityInstanceTranslator.addAuthorResIds(o,alignmentContext);
         }

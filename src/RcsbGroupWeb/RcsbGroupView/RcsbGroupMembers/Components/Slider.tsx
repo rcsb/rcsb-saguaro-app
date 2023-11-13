@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {ReactNode} from "react";
 import {Operator} from "../../../../RcsbUtils/Helpers/Operator";

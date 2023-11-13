@@ -14,6 +14,7 @@ import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {RcsbFvTrackDataAnnotationInterface} from "../../RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 export interface FeaturePositionGaps extends FeaturePosition {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
@@ -30,7 +31,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
     private readonly entityInstanceTranslator?: PolymerEntityInstanceTranslate;
     private readonly type: string;
     private readonly annotationConfig: RcsbAnnotationConfigInterface;
-    private readonly trackElementMap: Map<string,RcsbFvTrackDataElementInterface> = new Map<string, RcsbFvTrackDataElementInterface>();
+    private readonly trackElementMap: Map<string,RcsbFvTrackDataAnnotationInterface> = new Map();
 
     constructor(type: string, annotationConfig: RcsbAnnotationConfigInterface, entityInstanceTranslator?: PolymerEntityInstanceTranslate) {
         this.entityInstanceTranslator = entityInstanceTranslator;
@@ -86,7 +87,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         return Array.from(this.trackElementMap.values());
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance?:string): RcsbFvTrackDataElementInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance?:string): RcsbFvTrackDataAnnotationInterface{
         let title:string = this.annotationConfig?.title ?? this.type;
         let value: number | undefined = undefined;
         if(this.isNumericalDisplay(this.type)) {
@@ -125,7 +126,6 @@ class AnnotationTrackManager implements TrackManagerInterface {
             title: title,
             name: d.name ?? undefined,
             value: value,
-            gValue: d.value ?? undefined,
             gaps: (p.gaps as Array<RcsbFvTrackDataElementGapInterface>),
             sourceId: sourceId,
             source: TrackUtils.transformSourceFromTarget(targetId, source),
@@ -184,11 +184,22 @@ class AnnotationTrackManager implements TrackManagerInterface {
         a.end = rangeKey[0];
     }
 
-    private expandValues(e: RcsbFvTrackDataElementInterface, values: Array<number>, translateContext: AlignmentContextInterface): void{
+    private expandValues(
+        e: RcsbFvTrackDataAnnotationInterface,
+        values: Array<number>,
+        translateContext: AlignmentContextInterface
+    ): void{
         values.forEach((v,i)=>{
             if(i>0){
                 const key:string = (e.begin+i).toString();
-                const a: RcsbFvTrackDataElementInterface = {...e, begin:(e.begin+i), end:undefined, oriBegin:e.oriBegin ?(e.oriBegin+i) : undefined, oriEnd:undefined, value:v};
+                const a:RcsbFvTrackDataAnnotationInterface = {
+                    ...e,
+                    begin:(e.begin+i),
+                    end:undefined,
+                    oriBegin:e.oriBegin ?(e.oriBegin+i) : undefined,
+                    oriEnd:undefined,
+                    value:v
+                };
                 this.addAuthorResIds(a, translateContext);
                 this.trackElementMap.set(key, a);
             }

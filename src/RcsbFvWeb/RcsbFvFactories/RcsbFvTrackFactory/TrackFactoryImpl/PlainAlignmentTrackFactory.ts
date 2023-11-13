@@ -24,6 +24,7 @@ import {AlignmentTrackTitleFactory} from "../TrackTitleFactoryImpl/AlignmentTrac
 import {TrackUtils} from "./Helper/TrackUtils";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
+import {RcsbFvTrackDataAnnotationInterface} from "../RcsbFvTrackDataAnnotationInterface";
 
 export type AlignmentRequestContextType = AlignmentCollectConfig & {querySequence?:string;};
 
@@ -165,7 +166,7 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
 
     }
 
-    public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
+    public addAuthorResIds(e:RcsbFvTrackDataAnnotationInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
         return this.sequenceTrackFactory.addAuthorResIds(e,alignmentContext);
     }
 

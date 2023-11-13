@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";

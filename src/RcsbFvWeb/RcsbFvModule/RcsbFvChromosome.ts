@@ -25,6 +25,9 @@ import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;
+import {
+    RcsbFvTrackDataAnnotationInterface
+} from "../RcsbFvFactories/RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<[number,number],string>, trackWidth?: number): ((where: LocationViewInterface) => Promise<RcsbFvTrackData>){
     return (where: LocationViewInterface) => {
@@ -62,7 +65,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
                             for (let i = 0; i < length; i++) {
                                 out.push({
                                     begin: targetIndex + orientation * (1+3*i),
-                                    value: sequence[queryIndex - 1 + i],
+                                    label: sequence[queryIndex - 1 + i],
                                     oriBegin: queryIndex + i,
                                     source: reference.toString(),
                                     sourceId: ids[n]
@@ -393,7 +396,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         const ar = targetAlignment.aligned_regions;
         assertElementListDefined(ar);
         assertDefined(targetAlignment.target_id), assertDefined(targetAlignment.orientation);
-        const out: RcsbFvTrackDataElementInterface = {
+        const out: RcsbFvTrackDataAnnotationInterface = {
             begin: Math.min(ar[0][beginMember],ar[ar.length-1][endMember]),
             end: Math.max(ar[0][beginMember],ar[ar.length-1][endMember]),
             gaps: [],

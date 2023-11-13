@@ -1,7 +1,7 @@
 import {asyncScheduler, Subscription} from "rxjs";
 import {RcsbFvTrackData} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {LocationViewInterface} from "@rcsb/rcsb-saguaro/lib/RcsbBoard/RcsbBoard";
-import * as resource from "../../RcsbServerConfig/web.resources.json";
+import resource from "../../RcsbServerConfig/web.resources.json";
 
 export class NcbiGenomeSequenceData {
     private static readonly urlPrefix:string  = (resource as any).ncbi_genome_sequence.url;
@@ -37,7 +37,7 @@ export class NcbiGenomeSequenceData {
                             }else {
                                 const selectedOption: RcsbFvTrackData = [{
                                     begin: where.from,
-                                    value: reverse ? sequence.split("").reverse().join("") : sequence
+                                    label: reverse ? sequence.split("").reverse().join("") : sequence
                                 }];
                                 resolve(selectedOption);
                             }

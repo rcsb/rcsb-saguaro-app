@@ -24,6 +24,7 @@ import {EntryPropertyIntreface} from "../../../../RcsbCollectTools/DataCollector
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {RcsbFvTrackDataAnnotationInterface} from "../RcsbFvTrackDataAnnotationInterface";
 
 export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
 
@@ -114,7 +115,7 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
     private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
         if(!this.positionalScores.has(alignmentContext.targetId) || this.positionalScores.get(alignmentContext.targetId)?.size == 0)
             return this.alignmentTrackFactory.alignedRegionToTrackElementList(region, alignmentContext);
-        const outRegions: Array<RcsbFvTrackDataElementInterface> = [];
+        const outRegions: Array<RcsbFvTrackDataAnnotationInterface> = [];
         const entityPositionalScores: Map<number,number> | undefined =  this.positionalScores.get(alignmentContext.targetId);
         if(entityPositionalScores && entityPositionalScores.size>0) {
             range(region.query_begin,region.query_end+1).forEach((p,n)=>{

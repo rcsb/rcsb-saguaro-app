@@ -3,7 +3,7 @@ import {DateRange, Range} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/Sear
 import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import React from "react";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
-import * as resource from "../../../RcsbServerConfig/web.resources.json";
+import resource from "../../../RcsbServerConfig/web.resources.json";
 import {FacetMemberInterface} from "../../../RcsbSeacrh/FacetStore/FacetMemberInterface";
 import {SearchQueryContextManager as SQCM} from "../RcsbGroupSeacrhQuery/SearchQueryContextManager";
 import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";

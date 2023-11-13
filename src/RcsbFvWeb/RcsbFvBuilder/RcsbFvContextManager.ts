@@ -1,5 +1,6 @@
 import {RcsbFv} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFv";
 import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvTooltip} from "../RcsbFvTooltip/RcsbFvTooltip";
 
 class RcsbFvContextManager {
 
@@ -47,6 +48,7 @@ function buildRcsbFvSingleViewer(elementId: string, boardConfig?: Partial<RcsbFv
     const config: RcsbFvBoardConfigInterface =  {
         rowTitleWidth: 190,
         trackWidth: 900,
+        tooltipGenerator: new RcsbFvTooltip(),
         ...boardConfig
     };
     return new RcsbFv({

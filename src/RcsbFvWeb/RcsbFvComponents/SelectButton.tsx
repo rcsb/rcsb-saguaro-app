@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Select, {components} from 'react-select';
 import {SingleValueProps} from "react-select";
 import {OptionProps} from "react-select";

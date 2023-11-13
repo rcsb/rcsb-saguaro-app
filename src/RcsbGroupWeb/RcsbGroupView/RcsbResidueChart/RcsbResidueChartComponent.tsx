@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import {ChartMapType, GroupChartLayout} from "../RcsbGroupChart/GroupChartLayout";
 import {ResidueChartInterface, ResidueChartTools as RCT} from "./ResidueChartTools/ResidueChartTools";
 import classes from "../../../scss/bootstrap-group-display.module.scss";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classes from "../../scss/load-spinner.scss";
 
 export class LoaderSpinner extends React.Component <{}, {}> {

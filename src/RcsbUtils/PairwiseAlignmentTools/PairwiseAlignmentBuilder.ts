@@ -2,7 +2,6 @@ import {
     RcsbFvDisplayConfigInterface,
     RcsbFvRowConfigInterface
 } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
@@ -11,6 +10,9 @@ import {FeatureTools} from "../../RcsbCollectTools/FeatureTools/FeatureTools";
 import {
     TrackUtils
 } from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/Helper/TrackUtils";
+import {
+    RcsbFvTrackDataAnnotationInterface
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 export interface PairwiseAlignmentInterface{
     querySequence: string;
@@ -83,9 +85,9 @@ export class PairwiseAlignmentBuilder {
         const qA: Array<string> = this.queryAlignment.split('');
         const tA: Array<string> = this.targetAlignment.split('');
 
-        const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-        const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
-        const targetSequence: Array<RcsbFvTrackDataElementInterface> = [];
+        const alignedBlocks: Array<RcsbFvTrackDataAnnotationInterface> = [];
+        const mismatchData: Array<RcsbFvTrackDataAnnotationInterface> = [];
+        const targetSequence: Array<RcsbFvTrackDataAnnotationInterface> = [];
         let currentQueryIndex: number = this.queryBegin;
         let currentTargetIndex: number = this.targetBegin;
         let blockQueryStart: number = this.queryBegin;
@@ -116,7 +118,7 @@ export class PairwiseAlignmentBuilder {
                     sourceId:this.targetId,
                     provenanceName: TrackUtils.getProvenanceConfigFormTarget(this.targetId,this.targetId as SequenceReference).name,
                     provenanceColor: TrackUtils.getProvenanceConfigFormTarget(this.targetId,this.targetId as SequenceReference).color,
-                    value: t,
+                    label: t,
                     type: "RESIDUE",
                     title: "RESIDUE"
                 });
@@ -173,7 +175,7 @@ export class PairwiseAlignmentBuilder {
                 sourceId:this.queryId,
                 provenanceName: TrackUtils.getProvenanceConfigFormTarget(this.queryId,this.queryId as SequenceReference).name,
                 provenanceColor: TrackUtils.getProvenanceConfigFormTarget(this.queryId,this.queryId as SequenceReference).color,
-                value:s,
+                label:s,
                 begin:n+1
             }))
         };
@@ -212,10 +214,10 @@ export class PairwiseAlignmentBuilder {
         const qA: Array<string> = this.queryAlignment.split('');
         const tA: Array<string> = this.targetAlignment.split('');
 
-        const alignedBlocks: Array<RcsbFvTrackDataElementInterface> = [];
-        const mismatchData: Array<RcsbFvTrackDataElementInterface> = [];
-        const querySeq: Array<RcsbFvTrackDataElementInterface> = [];
-        const targetSeq: Array<RcsbFvTrackDataElementInterface> = [];
+        const alignedBlocks: Array<RcsbFvTrackDataAnnotationInterface> = [];
+        const mismatchData: Array<RcsbFvTrackDataAnnotationInterface> = [];
+        const querySeq: Array<RcsbFvTrackDataAnnotationInterface> = [];
+        const targetSeq: Array<RcsbFvTrackDataAnnotationInterface> = [];
         let currentQueryIndex: number = this.queryBegin;
         let currentTargetIndex: number = this.targetBegin;
 
@@ -248,7 +250,7 @@ export class PairwiseAlignmentBuilder {
             }
             querySeq.push({
                 begin:i+1,
-                value:q,
+                label:q,
                 source:RcsbAnnotationConstants.provenanceName.userInput,
                 sourceId:this.queryId,
                 provenanceName: this.queryId,
@@ -261,7 +263,7 @@ export class PairwiseAlignmentBuilder {
             }
             targetSeq.push({
                 begin:i+1,
-                value:t,
+                label:t,
                 source:TrackUtils.transformSourceFromTarget(this.targetId,SequenceReference.PdbEntity),
                 sourceId:this.targetId,
                 provenanceName: TrackUtils.getProvenanceConfigFormTarget(this.targetId,SequenceReference.PdbEntity).name,
@@ -330,7 +332,7 @@ export class PairwiseAlignmentBuilder {
         return [queryTrack,alignmentTrack,targetTrack];
     }
 
-    private addBlockTerminalTags(alignedBlocks: Array<RcsbFvTrackDataElementInterface>): void{
+    private addBlockTerminalTags(alignedBlocks: Array<RcsbFvTrackDataAnnotationInterface>): void{
         if(alignedBlocks[0].oriBegin ?? 0 > 1){
             alignedBlocks[0].openBegin = true;
         }

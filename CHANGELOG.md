@@ -2,6 +2,28 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.0] - 2023-11-13
+### Breaking changes
+- Types are not anymore exposed from `build/src`
+- All module classes and types are accessible from `lib/`
+    - Modules format is `ESNext`
+    - `lib/commonjs` exposes all modules in `CommonJS` format
+
+### Improvement
+- Class `RcsbFvTooltip` implements the Sequence Annotation Tooltip element 
+- Interface `RcsbFvTrackDataAnnotationInterface` extends `RcsbFvTrackDataElementInterface`
+  - The main purpose is to encode metadata and sequence annotation regions from the original reference
+  - This interface has been moved from rcsb-saguaro
+
+### Code refactoring
+- Sass @import changed to @use
+- Styles sheets `scss` refactoring
+- font-awsome replaced by boxicons
+
+### Dependency update
+- Multiple dependencies have been updated
+- rcsb-saguaro v3.0.0
+  
 ## [5.1.5] - 2023-09-18
 ### Display
 - Group UI text mod

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export class SelectButtonTitle  extends React.Component <{title:string}> {
 

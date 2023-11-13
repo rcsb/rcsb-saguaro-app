@@ -1,5 +1,5 @@
 import {asyncScheduler, Subscription} from "rxjs";
-import * as resource from "../../RcsbServerConfig/web.resources.json";
+import resource from "../../RcsbServerConfig/web.resources.json";
 
 export interface ChromosomeMetadataInterface {
     ncbiId: string;

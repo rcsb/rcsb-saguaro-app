@@ -2,6 +2,9 @@ import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollect
 import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {
+    RcsbFvTrackDataAnnotationInterface
+} from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
 export interface AlignmentContextInterface {
     queryId: string;
@@ -69,7 +72,7 @@ export class PolymerEntityInstanceTranslate{
     }
 
     public addAuthorResIds(e:RcsbFvTrackDataElementInterface, alignmentContext:AlignmentContextInterface):RcsbFvTrackDataElementInterface {
-        let o:RcsbFvTrackDataElementInterface = e;
+        let o:RcsbFvTrackDataAnnotationInterface = e;
         if(alignmentContext.from === SequenceReference.PdbInstance && alignmentContext.to) {
             const asymId: string = alignmentContext.queryId.split(TagDelimiter.instance)[1];
             this.helperAddAuthorResIds(o,alignmentContext.from,alignmentContext.to,asymId);
@@ -82,8 +85,8 @@ export class PolymerEntityInstanceTranslate{
         return o;
     }
 
-    private helperAddAuthorResIds(e: RcsbFvTrackDataElementInterface, reference:string, source:string, asymId: string):RcsbFvTrackDataElementInterface{
-        let out: RcsbFvTrackDataElementInterface = e;
+    private helperAddAuthorResIds(e: RcsbFvTrackDataAnnotationInterface, reference:string, source:string, asymId: string):RcsbFvTrackDataElementInterface{
+        let out: RcsbFvTrackDataAnnotationInterface = e;
         const authResIds: string[] | undefined = this.instanceAuthResIds.get(asymId);
         if(!authResIds)
             return out;

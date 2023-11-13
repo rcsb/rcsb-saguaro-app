@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import classes from "../../../scss/bootstrap-group-display.module.scss";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
