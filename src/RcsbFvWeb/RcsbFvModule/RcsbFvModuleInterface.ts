@@ -97,11 +97,16 @@ export interface RcsbFvModuleInterface extends RcsbFvModulePublicInterface{
     getPolymerEntityInstanceTranslator(): PolymerEntityInstanceTranslate;
 }
 
-export interface RcsbFvModulePublicInterface {
+export interface RcsbFvModulePublicInterface<
+    P extends {[k:string]:any;} = {},
+    S extends {[k:string]:any;} = {},
+    R extends {[k:string]:any;} = {},
+    M extends {[k:string]:any;} = {}
+> {
     getTargets(): Promise<Array<string>>;
     getAlignmentResponse():Promise<AlignmentResponse>;
     getFeatures(): Promise<Array<Feature>>;
-    getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface>>;
-    getFv(): RcsbFv;
+    getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface<P,S,R,M>>>;
+    getFv(): RcsbFv<P,S,R,M>;
     wait(): Promise<void>;
 }
