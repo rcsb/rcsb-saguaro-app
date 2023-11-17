@@ -17,6 +17,19 @@ query multiple_entries_properties($entry_ids: [String!]!){
                 rcsb_id
             }
         }
+        nonpolymer_entities {
+            rcsb_id
+            rcsb_nonpolymer_entity_container_identifiers {
+                entity_id
+                rcsb_id
+            }
+            nonpolymer_entity_instances {
+                rcsb_nonpolymer_entity_instance_container_identifiers {
+                    asym_id
+                }
+                rcsb_id
+            }
+        }
         rcsb_entry_info{
             experimental_method
             resolution_combined

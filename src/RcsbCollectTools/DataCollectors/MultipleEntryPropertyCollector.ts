@@ -13,6 +13,7 @@ export interface EntryPropertyIntreface {
     description:Array<string>;
     entityToInstance: Map<string,Array<string>>;
     structureDeterminationMethodology: StructureDeterminationMethodology;
+    nonPolymerEntityToInstance: Map<string,Array<string>>;
 }
 
 export class MultipleEntryPropertyCollector {
@@ -35,7 +36,9 @@ export class MultipleEntryPropertyCollector {
             entryMolecularWeight: r.rcsb_entry_info.molecular_weight ?? undefined,
             entityToInstance: r.polymer_entities?.map(pe=>([pe?.rcsb_id, pe?.polymer_entity_instances?.map(pei=>pei?.rcsb_id)] as [string,string[]]))
                 .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>(),
-            structureDeterminationMethodology: r.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology
+            structureDeterminationMethodology: r.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology,
+            nonPolymerEntityToInstance: r.nonpolymer_entities?.map(pe=>([pe?.rcsb_id, pe?.nonpolymer_entity_instances?.map(pei=>pei?.rcsb_id)] as [string,string[]]))
+                .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>()
         };
     }
 
