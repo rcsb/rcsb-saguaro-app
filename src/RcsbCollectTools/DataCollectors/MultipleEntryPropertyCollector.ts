@@ -1,6 +1,9 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
+import assertDefined = Assertions.assertDefined;
+import assertElementListDefined = Assertions.assertElementListDefined;
 
 export interface EntryPropertyIntreface {
     rcsbId: string;
@@ -14,6 +17,7 @@ export interface EntryPropertyIntreface {
     entityToInstance: Map<string,Array<string>>;
     structureDeterminationMethodology: StructureDeterminationMethodology;
     nonPolymerEntityToInstance: Map<string,Array<string>>;
+    instanceToOperator: Map<string,Map<string,Array<string>>>;
 }
 
 export class MultipleEntryPropertyCollector {
@@ -38,8 +42,31 @@ export class MultipleEntryPropertyCollector {
                 .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>(),
             structureDeterminationMethodology: r.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology,
             nonPolymerEntityToInstance: r.nonpolymer_entities?.map(pe=>([pe?.rcsb_id, pe?.nonpolymer_entity_instances?.map(pei=>pei?.rcsb_id)] as [string,string[]]))
-                .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>()
+                .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>(),
+            instanceToOperator: MultipleEntryPropertyCollector.instanceToOperator(r)
         };
+    }
+
+    private static instanceToOperator(r:CoreEntry): Map<string,Map<string,Array<string>>> {
+        const out = new  Map<string,Map<string,Array<string>>>();
+        assertDefined(r.assemblies);
+        r.assemblies.forEach( assembly => {
+            assertDefined(assembly?.rcsb_id), assertDefined(assembly?.pdbx_struct_assembly_gen);
+            out.set(assembly.rcsb_id, new Map())
+            assembly.pdbx_struct_assembly_gen.forEach(assemblyGen=>{
+                assertDefined(assemblyGen?.oper_expression), assertElementListDefined(assemblyGen.asym_id_list);
+                const operators = assemblyGen.oper_expression.split(",");
+                const instances = assemblyGen.asym_id_list;
+                instances.forEach(asymId=>{
+                    const instanceId = `${r.rcsb_id}.${asymId}`
+                    out.get(assembly.rcsb_id)?.set(
+                        instanceId,
+                        [...operators, ...out.get(assembly.rcsb_id)?.get(instanceId) ?? [] ]
+                    );
+                });
+            });
+        });
+        return out;
     }
 
 }

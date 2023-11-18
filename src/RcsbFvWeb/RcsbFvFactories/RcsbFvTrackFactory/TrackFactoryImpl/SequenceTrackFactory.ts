@@ -71,7 +71,8 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
                 source: TrackUtils.transformSourceFromTarget(id, c),
                 provenanceName: TrackUtils.getProvenanceConfigFormTarget(id,c).name,
                 provenanceColor: TrackUtils.getProvenanceConfigFormTarget(id,c).color,
-                label: s
+                label: s,
+                name: `RES ${s}`
             };
             sequenceData.push(this.addAuthorResIds(o, {
                 from:config.from,

@@ -14,7 +14,7 @@
 - Interface `RcsbFvTrackDataAnnotationInterface` extends `RcsbFvTrackDataElementInterface`
   - The main purpose is to encode metadata and sequence annotation regions from the original reference
   - This interface has been moved from rcsb-saguaro
-- `MultipleEntryPropertyCollector` includes non-polymer entity to instance relationships
+- `MultipleEntryPropertyCollector` includes non-polymer entity to instance and instance to operator relationships 
 
 ### Code refactoring
 - Sass @import changed to @use

@@ -39,5 +39,12 @@ query multiple_entries_properties($entry_ids: [String!]!){
         struct {
             title
         }
+        assemblies {
+            rcsb_id
+            pdbx_struct_assembly_gen {
+                oper_expression
+                asym_id_list
+            }
+        }
     }
 }

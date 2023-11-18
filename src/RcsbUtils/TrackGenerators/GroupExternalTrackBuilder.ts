@@ -76,7 +76,7 @@ export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
         const logoRowData = querySequenceLogo.map((s,n)=>({
             begin: n+1,
             label: s.mode(),
-            description: [s.frequency().filter(s=>(s.value>=0.01)).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
+            description: [s.frequency().filter(s=>(s.value>=0.01)).slice(0,14).map(s=>(s.symbol.replace("-","gap")+": "+Math.trunc(s.value*100)/100)).join(", ")]
         }))
         variationRowData = [{
             trackId: "annotationTrack_ALIGNMENT_FREQ",
