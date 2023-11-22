@@ -43,7 +43,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 The full collection of examples can be edit and modified at [CODEPEN](https://codepen.io/collection/XjrBRP?grid_type=list)
 
 ### Library Documentation
-TypeScript classes documentation can be found [here](https://rcsb.github.io/rcsb-saguaro-app/modules.html).
+TypeScript classes documentation can be found [here](https://rcsb.github.io/rcsb-saguaro-app/).
 
 ### Main Class and Methods
 **RcsbFvWebApp** calss provides a collection of methods to display preconfigured features over PDB and UniProt sequences 
