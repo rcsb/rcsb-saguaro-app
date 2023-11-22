@@ -28,7 +28,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 `npm install @rcsb/rcsb-saguaro-app`
 
 ### CDN JavaScript
-`<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app/build/dist/app.js" type="text/javascript"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app/build/app.js" type="text/javascript"></script>`
 
 ### Testing 
 - `npm install`
@@ -56,7 +56,7 @@ click events.
 - **RcsbFvWebApp.buildUniprotEntityFv**(elementId: string, upAcc: string, entityId: string)
 - **RcsbFvWebApp.buildUniprotEntityInstanceFv**(elementId: string, upAcc: string, entityId: string, instanceId: string)
 
-- **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/RcsbFvBoardConfigInterface.html))
+- **RcsbFvWebApp.setBoardConfig**(boardConfigData: [RcsbFvBoardConfigInterface](https://rcsb.github.io/rcsb-saguaro/interfaces/RcsbFv_RcsbFvConfig_RcsbFvConfigInterface.RcsbFvBoardConfigInterface.html))
 - **RcsbFvWebApp.getRcsbFv**(elementId: string)
 
 ### GraphQL configuration
