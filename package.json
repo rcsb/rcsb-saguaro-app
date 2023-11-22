@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "6.0.0-development.18",
+  "version": "6.0.0",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/app.js",
   "files": [
@@ -24,10 +24,10 @@
     "build-tsc": "tsc",
     "build-commonjs": "tsc --build tsconfig.commonjs.json",
     "clean": "del-cli lib && del-cli build",
-    "buildDoc": "typedoc --excludeExternals --externalPattern \"**/node_modules/**\" --plugin typedoc-plugin-missing-exports ./src/app.ts && sed -i '' '/---/d' docs/index.html",
+    "buildDoc": "typedoc --excludeExternals --externalPattern \"**/node_modules/**\" --plugin typedoc-plugin-missing-exports  --plugin typedoc-theme-hierarchy --theme hierarchy --entryPointStrategy expand ./src && sed -i '' '/---/d' docs/index.html",
     "cpExamples": "ncp examples docs/examples",
     "buildAllDoc": "npm run buildDoc && npm run cpExamples",
-    "publishApp": "npm publish --tag development",
+    "publishApp": "npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -83,6 +83,7 @@
     "ts-node": "^10.9.1",
     "typedoc": "^0.25.3",
     "typedoc-plugin-missing-exports": "^2.1.0",
+    "typedoc-theme-hierarchy": "^4.1.2",
     "typescript": "^5.2.2",
     "uniqid": "^5.4.0",
     "webpack": "^5.89.0",

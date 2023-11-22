@@ -2,7 +2,7 @@
 
 [Semantic Versioning](https://semver.org/)
 
-## [6.0.0] - 2023-11-13
+## [6.0.0] - 2023-11-22
 ### Breaking changes
 - Types are not anymore exposed from `build/src`
 - All module classes and types are accessible from `lib/`
@@ -23,7 +23,7 @@
 
 ### Dependency update
 - Multiple dependencies have been updated
-- rcsb-saguaro v3.0.0
+- rcsb-saguaro v3.0.3
   
 ## [5.1.5] - 2023-09-18
 ### Display
