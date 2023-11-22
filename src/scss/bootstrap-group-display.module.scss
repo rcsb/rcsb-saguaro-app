@@ -5,7 +5,6 @@
 
     @include styleVars.bootstrapRoot;
     @include meta.load-css("bootstrap/dist/css/bootstrap.min");
-    @include meta.load-css("~boxicons/css/boxicons.min");
 
     a {
         color: #337ab7;

@@ -17,7 +17,7 @@ class UiComponent extends React.Component<{text:string;fvContainer:DataContainer
 
 buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {
     boardConfig:{
-        selectionChangeCallBack:(selection)=>{
+        selectionChangeCallback:(selection)=>{
             console.log(selection);
         }
     },

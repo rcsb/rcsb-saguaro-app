@@ -1,11 +1,20 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const fs = require('fs')
-const path = require("path");
 
 const commonConfig = {
     mode: "development",
     module: {
         rules: [{
+                test: /\.svg$/,
+                issuer: /\.[jt]sx?$/,
+                use: [{
+                    loader:'@svgr/webpack',
+                    options: {
+                        expandProps: "end",
+                        svgoConfig: {}
+                    }
+                }]
+            },{
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
                 options:{
@@ -30,7 +39,7 @@ const commonConfig = {
                             localIdentName:'[local]'
                         }
                     }
-                }, 'resolve-url-loader', 'sass-loader']
+                }, 'sass-loader']
             }
         ]
     },

@@ -17,3 +17,9 @@ declare module "codegen.*.json" {
 }
 
 declare module 'ideogram';
+
+declare module "boxicons/*.svg" {
+    import {SVGProps} from "react";
+    const content: React.FC<SVGProps<any>>;
+    export default content;
+}

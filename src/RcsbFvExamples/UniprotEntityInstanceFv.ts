@@ -6,7 +6,7 @@ import {
 
 buildUniprotEntityInstanceFv("pfv", "P01112", "2UZI_3", "2UZI.C",{boardConfig:{
         trackWidth:600,
-        elementClickCallBack:(d?: RcsbFvTrackDataAnnotationInterface)=>{
+        elementClickCallback:(d?: RcsbFvTrackDataAnnotationInterface)=>{
             const div = document.getElementById("myDiv");
             if(!div)
                 return;

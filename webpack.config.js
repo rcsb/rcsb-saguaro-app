@@ -3,8 +3,17 @@ const path = require('path');
 const commonConfig = {
     mode: "production",
     module: {
-        rules: [
-            {
+        rules: [{
+                test: /\.svg$/,
+                issuer: /\.[jt]sx?$/,
+                use: [{
+                    loader:'@svgr/webpack',
+                    options: {
+                        expandProps: "end",
+                        svgoConfig: {}
+                    }
+                }]
+            }, {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
                 exclude: [/node_modules/]
@@ -22,8 +31,6 @@ const commonConfig = {
                             localIdentName:'[local]'
                         }
                     }
-                }, {
-                    loader: 'resolve-url-loader'
                 }, {
                     loader: 'sass-loader',
                     options: {

@@ -3,6 +3,7 @@ import resource from "../../../RcsbServerConfig/web.resources.json";
 import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import BxCube from "boxicons/svg/solid/bxs-cube.svg";
 
 interface GroupMemberItemInterface {
     item: ItemFeaturesInterface;
@@ -28,6 +29,11 @@ const NA: string = "N/A";
 export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}>{
 
     private static readonly SEQUENCE_ALIGNMENT_3D_LINK: string = "Sequence Alignments";
+    private static readonly ICON_PROPS = {
+        width: 15,
+        height: 15,
+        viewBox: "0 0 24 24"
+    }
 
     render() {
         return (
@@ -39,7 +45,7 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                 <div className={"bg-light border-top p-md-4"}>
                     {
                         hasGroup3D(this.props.groupProvenanceId) ?
-                            <div><strong><i className={"bx bxs-cube"}/> Explore in 3D</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>
+                            <div><BxCube {...GroupMemberItem.ICON_PROPS} /> <strong>Explore in 3D</strong>: <a href={alignment1d3dUrl(this.props.groupId, this.props.searchQuery)}>
                                 {GroupMemberItem.SEQUENCE_ALIGNMENT_3D_LINK}
                             </a></div> : null
                     }
