@@ -28,7 +28,7 @@ RcsbFvWebApp.buildInstanceFv("pfv", "4Z35.A", {
 `npm install @rcsb/rcsb-saguaro-app`
 
 ### CDN JavaScript
-`<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app/build/app.js" type="text/javascript"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@rcsb/rcsb-saguaro-app@6.0.0/build/app.min.js" type="text/javascript"></script>`
 
 ### Testing 
 - `npm install`
