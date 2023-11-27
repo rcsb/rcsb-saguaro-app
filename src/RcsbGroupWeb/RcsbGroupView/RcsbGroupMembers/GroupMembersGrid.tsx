@@ -9,7 +9,7 @@ import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
-    EntryPropertyIntreface
+    EntryPropertyInterface
 } from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
@@ -135,9 +135,9 @@ async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: stri
     });
 }
 
-function parseItems(groupProvenanceId: GroupProvenanceId, propsList:Array<EntryPropertyIntreface>|Array<PolymerEntityInterface>): Array<ItemFeaturesInterface>{
+function parseItems(groupProvenanceId: GroupProvenanceId, propsList:Array<EntryPropertyInterface>|Array<PolymerEntityInterface>): Array<ItemFeaturesInterface>{
     return groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId ?
-        (propsList as Array<EntryPropertyIntreface>).map((o)=>({...o, molecularWeight:o.entryMolecularWeight}))
+        (propsList as Array<EntryPropertyInterface>).map((o)=>({...o, molecularWeight:o.entryMolecularWeight}))
         :
         (propsList as Array<PolymerEntityInterface>).map((o)=>(o.instances)).flat().map((o)=>({...o, molecularWeight: o.entityMolecularWeight}));
 }

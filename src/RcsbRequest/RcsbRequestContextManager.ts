@@ -16,7 +16,7 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {GroupMemberCollector} from "../RcsbCollectTools/DataCollectors/GroupMemberCollector";
 import {
-    EntryPropertyIntreface,
+    EntryPropertyInterface,
     MultipleEntryPropertyCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Operator} from "../RcsbUtils/Helpers/Operator";
@@ -61,7 +61,7 @@ class RcsbRequestContextManager {
     private readonly searchRequestMap: Map<string,Promise<QueryResult|null>> = new Map<string, Promise<QueryResult|null>>();
     private readonly interfaceToInstanceMap: Map<string,Promise<InterfaceInstanceTranslate>> = new Map<string, Promise<InterfaceInstanceTranslate>>();
     private readonly assemblyInterfacesMap: Map<string,Promise<AssemblyInterfacesTranslate>> = new Map<string, Promise<AssemblyInterfacesTranslate>>();
-    private readonly entryPropertyMap: Map<string,Promise<EntryPropertyIntreface>> = new Map<string, Promise<EntryPropertyIntreface>>();
+    private readonly entryPropertyMap: Map<string,Promise<EntryPropertyInterface>> = new Map<string, Promise<EntryPropertyInterface>>();
     private readonly entityPropertyMap: Map<string,Promise<PolymerEntityInterface>> = new Map<string, Promise<PolymerEntityInterface>>();
     private readonly instanceSequenceMap: Map<string,Promise<InstanceSequenceInterface>> = new Map<string, Promise<InstanceSequenceInterface>>();
 
@@ -87,8 +87,8 @@ class RcsbRequestContextManager {
         )
     }
 
-    public async getEntryProperties(entryIds:string|Array<string>): Promise<Array<EntryPropertyIntreface>> {
-        return RRT.getMultipleObjectProperties<"entry_ids",EntryPropertyIntreface>(
+    public async getEntryProperties(entryIds:string|Array<string>): Promise<Array<EntryPropertyInterface>> {
+        return RRT.getMultipleObjectProperties<"entry_ids",EntryPropertyInterface>(
             entryIds,
             this.entryPropertyMap,
             this.multipleEntryPropertyCollector,
@@ -142,7 +142,7 @@ class RcsbRequestContextManager {
             this.groupPropertyMap,
             async ()=>{
                 const result:Array<PolymerEntityInstanceInterface> = await this.groupMemberCollector.collect(groupQuery);
-                const entriesProperties: Array<EntryPropertyIntreface> = await this.multipleEntryPropertyCollector.collect({entry_ids:Operator.uniqueValues(result.map(r=>r.entryId))})
+                const entriesProperties: Array<EntryPropertyInterface> = await this.multipleEntryPropertyCollector.collect({entry_ids:Operator.uniqueValues(result.map(r=>r.entryId))})
                 return new GroupPropertiesProvider({entryProperties: entriesProperties});
             }
         );

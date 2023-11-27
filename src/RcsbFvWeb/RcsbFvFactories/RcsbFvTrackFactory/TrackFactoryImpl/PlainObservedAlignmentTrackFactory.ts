@@ -18,7 +18,7 @@ import {range} from "lodash";
 import {PlainAlignmentTrackFactory} from "./PlainAlignmentTrackFactory";
 import {TrackUtils} from "./Helper/TrackUtils";
 import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextManager";
-import {EntryPropertyIntreface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
+import {EntryPropertyInterface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
@@ -50,7 +50,7 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
             return uor.target_id.split(TagDelimiter.instance)[0]
         }));
         //TODO define a Translator class for multiple entry entry data
-        const entryProperties: EntryPropertyIntreface[] = (await Promise.all<EntryPropertyIntreface[]>(Operator.arrayChunk(entryIds, 100).map(ids => rcsbRequestCtxManager.getEntryProperties(ids)))).flat();
+        const entryProperties: EntryPropertyInterface[] = (await Promise.all<EntryPropertyInterface[]>(Operator.arrayChunk(entryIds, 100).map(ids => rcsbRequestCtxManager.getEntryProperties(ids)))).flat();
         entryProperties.forEach(ep=>{
             ep.entityToInstance.forEach((instanceList,entityId)=>{
                 this.entityInstanceNumberMap.set(entityId, instanceList.length);

@@ -16,6 +16,9 @@ query multiple_entries_properties($entry_ids: [String!]!){
                 }
                 rcsb_id
             }
+            entity_poly {
+                rcsb_prd_id
+            }
         }
         nonpolymer_entities {
             rcsb_id

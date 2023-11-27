@@ -1,7 +1,7 @@
-import {EntryPropertyIntreface} from "../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
+import {EntryPropertyInterface} from "../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 
 export interface GroupPropertiesProviderInterface{
-    entryProperties: Array<EntryPropertyIntreface>;
+    entryProperties: Array<EntryPropertyInterface>;
 }
 
 interface ItemPropertyInterface {
@@ -13,7 +13,7 @@ export type GroupPropertyType = "experimental_method" | "resolution";
 
 export class GroupPropertiesProvider {
 
-    private readonly entryProperties: Array<EntryPropertyIntreface>;
+    private readonly entryProperties: Array<EntryPropertyInterface>;
 
     constructor(properties: GroupPropertiesProviderInterface) {
         this.entryProperties = properties.entryProperties;

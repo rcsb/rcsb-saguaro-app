@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.1] - 2023-11-27
+### Improvement
+- `MultipleEntryPropertyCollector` includes polymer entity prd ids
+
 ## [6.0.0] - 2023-11-22
 ### Breaking changes
 - Types are not anymore exposed from `build/src`

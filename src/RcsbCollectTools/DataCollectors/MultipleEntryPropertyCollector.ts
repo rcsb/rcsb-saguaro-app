@@ -1,11 +1,15 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {
+    CoreEntry,
+    CorePolymerEntity,
+    QueryEntriesArgs
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import assertElementListDefined = Assertions.assertElementListDefined;
 
-export interface EntryPropertyIntreface {
+export interface EntryPropertyInterface {
     rcsbId: string;
     entryId: string;
     experimentalMethod: string;
@@ -13,22 +17,23 @@ export interface EntryPropertyIntreface {
     name: string;
     taxNames: Array<string>;
     entryMolecularWeight?: number;
-    description:Array<string>;
+    description: Array<string>;
     entityToInstance: Map<string,Array<string>>;
     structureDeterminationMethodology: StructureDeterminationMethodology;
     nonPolymerEntityToInstance: Map<string,Array<string>>;
     instanceToOperator: Map<string,Map<string,Array<string>>>;
+    entityToPrd: Map<string,string>;
 }
 
 export class MultipleEntryPropertyCollector {
     private readonly rcsbFvQuery: RcsbClient = rcsbClient;
 
-    public async collect(requestConfig: QueryEntriesArgs): Promise<Array<EntryPropertyIntreface>> {
+    public async collect(requestConfig: QueryEntriesArgs): Promise<Array<EntryPropertyInterface>> {
         const result: Array<CoreEntry> = await this.rcsbFvQuery.requestMultipleEntriesProperties(requestConfig);
         return result.map(r=>MultipleEntryPropertyCollector.getEntryProperties(r));
     }
 
-    private static getEntryProperties(r:CoreEntry): EntryPropertyIntreface{
+    private static getEntryProperties(r:CoreEntry): EntryPropertyInterface{
         return {
             rcsbId: r.rcsb_id,
             entryId: r.rcsb_id,
@@ -43,7 +48,8 @@ export class MultipleEntryPropertyCollector {
             structureDeterminationMethodology: r.rcsb_entry_info.structure_determination_methodology as StructureDeterminationMethodology,
             nonPolymerEntityToInstance: r.nonpolymer_entities?.map(pe=>([pe?.rcsb_id, pe?.nonpolymer_entity_instances?.map(pei=>pei?.rcsb_id)] as [string,string[]]))
                 .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>(),
-            instanceToOperator: MultipleEntryPropertyCollector.instanceToOperator(r)
+            instanceToOperator: MultipleEntryPropertyCollector.instanceToOperator(r),
+            entityToPrd: r.polymer_entities?.filter((pe): pe is CorePolymerEntity => typeof pe != "undefined").map( pe=> [pe?.rcsb_id ?? "", pe?.entity_poly?.rcsb_prd_id ?? ""]).reduce((map, pair)=>map.set(pair[0],pair[1]), new Map<string,string>()) ?? new Map()
         };
     }
 
