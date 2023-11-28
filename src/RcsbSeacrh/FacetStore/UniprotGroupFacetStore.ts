@@ -20,7 +20,7 @@ import {
     ECOD_FACET,
     ENZYME_CLASS_FACET,
     GO_FUNCTION_FACET, GO_PROCESS_FACET, GO_COMPONENT_FACET,
-    METHODOLOGY_FACET
+    METHODOLOGY_FACET, CHIMERIC_FACET
 } from "./SingleFacets";
 import {cloneDeep} from "lodash";
 
@@ -45,7 +45,8 @@ class UniprotGroupFacetStore implements FacetStoreInterface{
         cloneDeep<FacetMemberInterface>(ENTITY_NAME_FACET),
         cloneDeep<FacetMemberInterface>(GO_FUNCTION_FACET),
         cloneDeep<FacetMemberInterface>(GO_PROCESS_FACET),
-        cloneDeep<FacetMemberInterface>(GO_COMPONENT_FACET)
+        cloneDeep<FacetMemberInterface>(GO_COMPONENT_FACET),
+        cloneDeep<FacetMemberInterface>(CHIMERIC_FACET)
     ];
     private readonly nonPolymerFacet: FacetMemberInterface[] = [
         cloneDeep<FacetMemberInterface>(CHEM_COMP_FACET)

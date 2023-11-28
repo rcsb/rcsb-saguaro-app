@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.2] - 2023-11-28
+### Improvement
+- `FacetMemberInterface.facetConfig` interface attribute to encode histogram data transformations and other configuration
+  - `facetTransform` can be used to transform Search API facets into other facets
+  - `bucketClickSearchQuery` can be used to overwrite bucket click events
+  - `mergeDomainMaxValue` has been moved from `FacetMemberInterface.chartConfig`
+- `CHIMERIC_FACET` New facet histogram to display wild type vs chimeric protein group distribution
+
 ## [6.0.1] - 2023-11-27
 ### Improvement
 - `MultipleEntryPropertyCollector` includes polymer entity prd ids

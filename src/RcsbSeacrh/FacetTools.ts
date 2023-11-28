@@ -7,8 +7,8 @@ import {
 } from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {
-    ChartConfigInterface, ChartDisplayConfigInterface,
-    ChartObjectInterface, ChartType,
+    ChartDisplayConfigInterface,
+    ChartObjectInterface,
 } from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
 import {
@@ -19,16 +19,10 @@ import {
 import {getBucketsFromFacets} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetTools";
 
 export type SearchFilter = {attribute:RcsbSearchAttributeType;value:AttributeTextQueryParameters['value'];operator:AttributeTextQueryParameters["operator"];service:Service.Text|Service.TextChem};
-export interface RcsbChartInterface<T=any> {
-    chartType: ChartType;
+export interface RcsbChartInterface<T=any> extends Omit<FacetMemberInterface, "id"|"facet">{
     labelList?: string[];
-    attribute: RcsbSearchAttributeType;
-    attributeName: string;
-    chartConfig?: FacetMemberInterface["chartConfig"],
-    title?: string,
     data: ChartObjectInterface<T>[];
     filters?:SearchFilter[];
-    contentType:FacetMemberInterface['contentType'];
 }
 
 export class FacetTools {
@@ -40,15 +34,13 @@ export class FacetTools {
             const facet = FacetTools.getFacetFromName(facetMembers,bucket.name);
             if(!facet)
                 return;
-            const chart: {chartType: ChartType; chartConfig?: ChartConfigInterface; title?: string;} = FacetTools.getFacetChartTypeFromAttribute(facetMembers, bucket.name);
+            const chart= FacetTools.getFacetChartTypeFromAttribute(facetMembers, bucket.name);
             out.push({
-                chartType: chart.chartType,
-                chartConfig: chart.chartConfig,
+                ...chart,
                 labelList: [],
                 attributeName: bucket.name,
                 attribute: facet.attribute,
-                title: chart.title,
-                data: applyChartConfigToData(bucket.data, facet?.chartConfig),
+                data: applyChartConfigToData(bucket.data, facet?.facetConfig),
                 filters: FacetTools.getFacetFiltersFromName(facetMembers, bucket.name),
                 contentType: facet.contentType
             });
@@ -100,11 +92,11 @@ export class FacetTools {
         });
     }
 
-    private static getFacetChartTypeFromAttribute(facetMembers: FacetMemberInterface[], attribute: string): {chartType: ChartType, chartConfig?: ChartConfigInterface, title?: string} {
+    private static getFacetChartTypeFromAttribute(facetMembers: FacetMemberInterface[], attribute: string):FacetMemberInterface {
         const facet: FacetMemberInterface | undefined = facetMembers.find((facet)=>(facet.attributeName === attribute));
         if(!facet)
             throw `Unknown facet attribute ${attribute}`;
-        return {chartType: facet.chartType, chartConfig:facet.chartConfig, title: facet.title};
+        return facet;
     }
 
     private static getFacetFiltersFromName(facetMembers: FacetMemberInterface[], attribute: string): SearchFilter[] {
@@ -133,9 +125,11 @@ export class FacetTools {
     }
 }
 
-function applyChartConfigToData(data: BucketDataType[], chartConfig?: FacetMemberInterface["chartConfig"]): BucketDataType[] {
-    if(chartConfig?.mergeDomainMaxValue)
-        return mergeDomainMaxValue(data, chartConfig.mergeDomainMaxValue)
+function applyChartConfigToData(data: BucketDataType[], facetConfig?: FacetMemberInterface["facetConfig"]): BucketDataType[] {
+    if(facetConfig?.mergeDomainMaxValue)
+        return mergeDomainMaxValue(data, facetConfig.mergeDomainMaxValue)
+    if(facetConfig?.facetTransform)
+        return facetConfig.facetTransform(data)
     return data;
 }
 

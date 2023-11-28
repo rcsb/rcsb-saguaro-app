@@ -1,9 +1,11 @@
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {AggregationType, Operator, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {ChartDataValueInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
 import {GroupChartMap} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupChart/GroupChartTools";
+import {BucketDataType} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
+import {SearchQueryTools as SQT} from "../SearchQueryTools";
 
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
@@ -49,7 +51,6 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
             constHeight: 225
         },
         histogramBinIncrement: 0.5,
-        mergeDomainMaxValue: 5,
         domainMinValue: 0,
         domainMaxValue: 6,
         axisLabel: "Angstroms",
@@ -58,6 +59,9 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
                 return "> 5"
             return `Resolution ${d.x as number - 0.25} - ${d.x as number + 0.25}`;
         }
+    },
+    facetConfig: {
+        mergeDomainMaxValue: 5
     },
     facet: {
         name: "RESOLUTION_FACET",
@@ -82,6 +86,68 @@ export const METHODOLOGY_FACET: FacetMemberInterface = {
         name: "METHODOLOGY_FACET",
         aggregation_type: AggregationType.Terms,
         attribute: RcsbSearchMetadata.RcsbEntryInfo.StructureDeterminationMethodology.path,
+        min_interval_population: 1
+    }
+};
+
+export const CHIMERIC_FACET: FacetMemberInterface = {
+    id: "chimeric",
+    title: "Protein Sequence Composition",
+    attributeName: "CHIMERIC_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourcePartCount.path,
+    chartType: ChartType.barplot,
+    contentType: "string",
+    facetConfig: {
+        facetTransform: (buckets)=>{
+            const out: BucketDataType[] = [];
+            const  wt = buckets.find(b=>b.label == 1)
+            if(wt)
+                out.push({
+                    label: "Wild Type",
+                    population: wt.population
+                });
+            const synthetic = buckets.find(b=>b.label == 0)
+            if(synthetic)
+                out.push({
+                    label: "Synthetic",
+                    population: synthetic.population
+                });
+            const chimeric = buckets.filter(b=> parseInt(b.label.toString()) > 1);
+            if(chimeric?.length > 0)
+                out.push({
+                    label: "Chimeric",
+                    population: chimeric.reduce((c,p)=>c+p.population,0)
+                });
+            return out;
+        },
+        bucketClickSearchQuery: (datum, data, e) => {
+            if(datum.x == "Wild Type")
+                return SQT.searchAttributeQuery(
+                    CHIMERIC_FACET.attribute,
+                    1,
+                    Operator.Equals,
+                    Service.Text
+                );
+            else if(datum.x == "Synthetic")
+                return SQT.searchAttributeQuery(
+                    CHIMERIC_FACET.attribute,
+                    0,
+                    Operator.Equals,
+                    Service.Text
+                );
+            else
+                return SQT.searchAttributeQuery(
+                    CHIMERIC_FACET.attribute,
+                    1,
+                    Operator.Greater,
+                    Service.Text
+                );
+        }
+    },
+    facet: {
+        name: "CHIMERIC_FACET",
+        aggregation_type: AggregationType.Terms,
+        attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourcePartCount.path,
         min_interval_population: 1
     }
 };
@@ -579,5 +645,6 @@ export const SearchFacets = {
     GO_PROCESS_FACET,
     GO_COMPONENT_FACET,
     LIGAND_OF_INTEREST_FACET,
-    METHODOLOGY_FACET
+    METHODOLOGY_FACET,
+    CHIMERIC_FACET
 };

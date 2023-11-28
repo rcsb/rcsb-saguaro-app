@@ -63,12 +63,17 @@ export namespace GroupChartEvents {
             chart.chartConfig.barClickCallback = async (datum:ChartDataValueInterface<GroupChartMap.ChartObjectIdType>, data: ChartDataColumnInterface[], e?: React.MouseEvent) => {
                 if(datum.id === "excluded")
                     return;
-                let query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
-                if(chart.filters)
-                    chart.filters.forEach(f=>{
-                        query = SQT.addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
-                    })
-                await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                if(chart.facetConfig?.bucketClickSearchQuery){
+                    const query: SearchQueryType = chart.facetConfig?.bucketClickSearchQuery(datum, data, e);
+                    await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                }else{
+                    let query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, datum.x, Operator.ExactMatch, Service.Text);
+                    if(chart.filters)
+                        chart.filters.forEach(f=>{
+                            query = SQT.addNewNodeToAttributeSearchQuery(f.attribute, f.value, f.operator, query, f.service)
+                        })
+                    await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                }
             };
     }
 
@@ -77,8 +82,11 @@ export namespace GroupChartEvents {
             chart.chartConfig.barClickCallback = async (datum:ChartDataValueInterface, data: ChartDataColumnInterface[], e?: React.MouseEvent) => {
                 if(datum.id === "excluded")
                     return;
-                if(chart.chartConfig?.mergeDomainMaxValue && parseFloat(datum.x.toString()) >= chart.chartConfig.mergeDomainMaxValue) {
-                    const query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, chart.chartConfig.mergeDomainMaxValue, Operator.GreaterOrEqual,  Service.Text);
+                if(chart.facetConfig?.bucketClickSearchQuery){
+                    const query: SearchQueryType = chart.facetConfig?.bucketClickSearchQuery(datum, data, e);
+                    await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
+                } else if(chart.facetConfig?.mergeDomainMaxValue && parseFloat(datum.x.toString()) >= chart.facetConfig.mergeDomainMaxValue) {
+                    const query: SearchQueryType = SQT.searchAttributeQuery(chart.attribute, chart.facetConfig.mergeDomainMaxValue, Operator.GreaterOrEqual,  Service.Text);
                     await clickEvent(e ?? {shiftKey: false}, chart, query, returnType);
                 }else{
                     const range: Range|DateRange = formatRange(chart, datum);
