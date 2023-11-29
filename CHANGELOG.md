@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.3] - 2023-11-28
+### Bug fix
+- `SingleFacets` cyclic dependency bug fixed
+
 ## [6.0.2] - 2023-11-28
 ### Improvement
 - `FacetMemberInterface.facetConfig` interface attribute to encode histogram data transformations and other configuration

@@ -5,8 +5,7 @@ import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInt
 import {ChartDataValueInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
 import {GroupChartMap} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupChart/GroupChartTools";
 import {BucketDataType} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
-import {SearchQueryTools as SQT} from "../SearchQueryTools";
-
+import {buildAttributeQuery} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryTools";
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
     id: "method",
@@ -122,26 +121,26 @@ export const CHIMERIC_FACET: FacetMemberInterface = {
         },
         bucketClickSearchQuery: (datum, data, e) => {
             if(datum.x == "Wild Type")
-                return SQT.searchAttributeQuery(
-                    CHIMERIC_FACET.attribute,
-                    1,
-                    Operator.Equals,
-                    Service.Text
-                );
+                return buildAttributeQuery({
+                    attribute: CHIMERIC_FACET.attribute,
+                    value: 1,
+                    operator: Operator.Equals,
+                    service: Service.Text
+                });
             else if(datum.x == "Synthetic")
-                return SQT.searchAttributeQuery(
-                    CHIMERIC_FACET.attribute,
-                    0,
-                    Operator.Equals,
-                    Service.Text
-                );
+                return buildAttributeQuery({
+                    attribute: CHIMERIC_FACET.attribute,
+                    value: 0,
+                    operator: Operator.Equals,
+                    service: Service.Text
+                });
             else
-                return SQT.searchAttributeQuery(
-                    CHIMERIC_FACET.attribute,
-                    1,
-                    Operator.Greater,
-                    Service.Text
-                );
+                return buildAttributeQuery({
+                    attribute: CHIMERIC_FACET.attribute,
+                    value: 1,
+                    operator: Operator.Greater,
+                    service: Service.Text
+                });
         }
     },
     facet: {

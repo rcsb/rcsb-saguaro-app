@@ -16,14 +16,15 @@ import {
 import {FacetStoreInterface} from "./FacetStore/FacetStoreInterface";
 import {cloneDeep} from 'lodash';
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {depositionGroupFacetStore} from "./FacetStore/DepositionGroupFacetStore";
-import {sequenceGroupFacetStore} from "./FacetStore/SequenceGroupFacetStore";
-import {uniprotGroupFacetStore} from "./FacetStore/UniprotGroupFacetStore";
 import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 import {
     buildAttributeQuery,
     buildRequestFromCombinedSearchQuery, buildRequestFromSearchQuery
 } from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryTools";
+
+import {depositionGroupFacetStore} from "./FacetStore/DepositionGroupFacetStore";
+import {sequenceGroupFacetStore} from "./FacetStore/SequenceGroupFacetStore";
+import {uniprotGroupFacetStore} from "./FacetStore/UniprotGroupFacetStore";
 
 export namespace SearchQueryTools {
 
