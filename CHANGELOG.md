@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.4] - 2023-11-29
+### Dependency update
+- rcsb-saguaro v3.0.4
+
 ## [6.0.3] - 2023-11-28
 ### Bug fix
 - `SingleFacets` cyclic dependency bug fixed
