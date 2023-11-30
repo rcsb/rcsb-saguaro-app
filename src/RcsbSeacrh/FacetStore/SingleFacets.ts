@@ -91,7 +91,7 @@ export const METHODOLOGY_FACET: FacetMemberInterface = {
 
 export const CHIMERIC_FACET: FacetMemberInterface = {
     id: "chimeric",
-    title: "Protein Sequence Composition",
+    title: "Biological Source",
     attributeName: "CHIMERIC_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourcePartCount.path,
     chartType: ChartType.barplot,
@@ -102,7 +102,7 @@ export const CHIMERIC_FACET: FacetMemberInterface = {
             const  wt = buckets.find(b=>b.label == 1)
             if(wt)
                 out.push({
-                    label: "Wild Type",
+                    label: "Non-chimeric",
                     population: wt.population
                 });
             const synthetic = buckets.find(b=>b.label == 0)
@@ -120,7 +120,7 @@ export const CHIMERIC_FACET: FacetMemberInterface = {
             return out;
         },
         bucketClickSearchQuery: (datum, data, e) => {
-            if(datum.x == "Wild Type")
+            if(datum.x == "Non-chimeric")
                 return buildAttributeQuery({
                     attribute: CHIMERIC_FACET.attribute,
                     value: 1,
