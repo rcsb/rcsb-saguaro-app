@@ -6,3 +6,5 @@ export {
     buildResidueDistribution,
     searchQueryContextManager
 } from "./RcsbGroupWeb/RcsbGroupBuilder";
+
+export {rcsbRequestCtxManager as RcsbRequestContextManager} from "./RcsbRequest/RcsbRequestContextManager";

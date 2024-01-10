@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.9] - 2024-01-10
+### Improvement
+- `plot` package exposes `RcsbRequestContextManager`
+
 ## [6.0.8] - 2023-12-07
 ### Dependency update
 - rcsb-saguaro v3.0.7
