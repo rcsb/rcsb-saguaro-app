@@ -626,6 +626,91 @@ export const GO_COMPONENT_FACET: FacetMemberInterface = {
     }
 }
 
+export const DISEASE_FACET: FacetMemberInterface = {
+    id: "disease",
+    title: "Disease Association",
+    attributeName: "DISEASE_FACET",
+    attribute: RcsbSearchMetadata.RcsbUniprotAnnotation.Name.path,
+    contentType: "string",
+    chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10
+    },
+    facet:{
+        filter: {
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters: {
+                operator: RcsbSearchMetadata.RcsbUniprotAnnotation.Type.operator.ExactMatch,
+                attribute: RcsbSearchMetadata.RcsbUniprotAnnotation.Type.path,
+                value: "disease"
+            }
+        },
+        facets:[{
+            name: "DISEASE_FACET",
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbUniprotAnnotation.Name.path
+        }]
+    }
+};
+
+export const INTERPRO_FACET: FacetMemberInterface = {
+    id: "InterPro",
+    title: "InterPro Domain",
+    attributeName: "INTERPRO_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+    contentType: "string",
+    chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10
+    },
+    facet: {
+        filter: {
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters: {
+                operator: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.operator.ExactMatch,
+                attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Type.path,
+                value: 'InterPro'
+            }
+        },
+        facets: [{
+            name: "INTERPRO_FACET",
+            min_interval_population: 1,
+            attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
+            aggregation_type: AggregationType.Terms
+        }]
+    }
+};
+
+export const PHENOTYPE_FACET: FacetMemberInterface = {
+    id: "phenotype",
+    title: "Phenotype Association",
+    attributeName: "PHENOTYPE_FACET",
+    attribute: RcsbSearchMetadata.RcsbUniprotAnnotation.Name.path,
+    contentType: "string",
+    chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10
+    },
+    facet:{
+        filter: {
+            type: Type.Terminal,
+            service: Service.Text,
+            parameters: {
+                operator: RcsbSearchMetadata.RcsbUniprotAnnotation.Type.operator.ExactMatch,
+                attribute: RcsbSearchMetadata.RcsbUniprotAnnotation.Type.path,
+                value: "phenotype"
+            }
+        },
+        facets:[{
+            name: "PHENOTYPE_FACET",
+            aggregation_type: AggregationType.Terms,
+            attribute: RcsbSearchMetadata.RcsbUniprotAnnotation.Name.path
+        }]
+    }
+};
+
 export const SearchFacets = {
     EXPERIMENTAL_METHOD_FACET,
     RESOLUTION_FACET,
@@ -645,5 +730,8 @@ export const SearchFacets = {
     GO_COMPONENT_FACET,
     LIGAND_OF_INTEREST_FACET,
     METHODOLOGY_FACET,
-    CHIMERIC_FACET
+    CHIMERIC_FACET,
+    DISEASE_FACET,
+    INTERPRO_FACET,
+    PHENOTYPE_FACET
 };

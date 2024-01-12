@@ -20,7 +20,7 @@ import {
     ECOD_FACET,
     ENZYME_CLASS_FACET,
     GO_FUNCTION_FACET, GO_PROCESS_FACET, GO_COMPONENT_FACET,
-    METHODOLOGY_FACET, CHIMERIC_FACET
+    METHODOLOGY_FACET, CHIMERIC_FACET, DISEASE_FACET, INTERPRO_FACET, PHENOTYPE_FACET
 } from "./SingleFacets";
 import {cloneDeep} from "lodash";
 
@@ -48,6 +48,11 @@ class SequenceGroupFacetStore implements FacetStoreInterface{
         cloneDeep<FacetMemberInterface>(GO_COMPONENT_FACET),
         cloneDeep<FacetMemberInterface>(CHIMERIC_FACET)
     ];
+    private readonly uniprotFacet: FacetMemberInterface[] = [
+        cloneDeep<FacetMemberInterface>(DISEASE_FACET),
+        cloneDeep<FacetMemberInterface>(PHENOTYPE_FACET),
+        cloneDeep<FacetMemberInterface>(INTERPRO_FACET)
+    ];
     private readonly nonPolymerFacet: FacetMemberInterface[] = [
         cloneDeep<FacetMemberInterface>(CHEM_COMP_FACET)
     ];
@@ -59,11 +64,18 @@ class SequenceGroupFacetStore implements FacetStoreInterface{
     getFacetService(service: Service|"all"): FacetMemberInterface[] {
         switch (service){
             case Service.Text:
-                return this.entryFacet.concat(this.instanceFacet).concat(this.entityFacet);
+                return this.entryFacet
+                    .concat(this.instanceFacet)
+                    .concat(this.entityFacet)
+                    .concat(this.uniprotFacet);
             case Service.TextChem:
                 return this.nonPolymerFacet;
             case "all":
-                return this.entryFacet.concat(this.instanceFacet).concat(this.entityFacet).concat(this.nonPolymerFacet);
+                return this.entryFacet
+                    .concat(this.instanceFacet)
+                    .concat(this.entityFacet)
+                    .concat(this.nonPolymerFacet)
+                    .concat(this.uniprotFacet);
             default:
                 return [];
         }

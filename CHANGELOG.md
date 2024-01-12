@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.10] - 2024-01-12
+### Improvement
+- Added new UniProt histograms: `DISEASE_FACET`, `PHENOTYPE_FACET` and `INTERPRO_FACET`
+
 ## [6.0.9] - 2024-01-10
 ### Improvement
 - `plot` package exposes `RcsbRequestContextManager`
