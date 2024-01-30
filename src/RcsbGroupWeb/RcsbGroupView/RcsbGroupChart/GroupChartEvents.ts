@@ -104,20 +104,22 @@ export namespace GroupChartEvents {
     }
 
     function formatRange(chart: RcsbChartInterface, datum:ChartDataValueInterface):Range|DateRange {
+        const from = formatValue((parseFloat(datum.x.toString()))-(chart.chartConfig?.histogramBinIncrement ?? 0)*0.5, chart.contentType);
+        const to = formatValue((parseFloat(datum.x.toString()))+(chart.chartConfig?.histogramBinIncrement ?? 0)*0.5, chart.contentType)
         switch (chart.contentType) {
             case "date":
                 return  {
-                    from: formatValue((parseFloat(datum.x.toString()))-(chart.chartConfig?.histogramBinIncrement ?? 0)*0.5, chart.contentType) as string,
-                    to: formatValue((parseFloat(datum.x.toString()))+(chart.chartConfig?.histogramBinIncrement ?? 0)*0.5, chart.contentType) as string,
+                    from: from as string,
+                    to: to as string,
                     include_lower: true,
-                    include_upper: false
+                    include_upper: from == to
                 }
             default:
                 return  {
-                    from: formatValue((parseFloat(datum.x.toString()))-(chart.chartConfig?.histogramBinIncrement ?? 0)*0.5, chart.contentType) as number,
-                    to: formatValue((parseFloat(datum.x.toString()))+(chart.chartConfig?.histogramBinIncrement ?? 0)*0.5, chart.contentType) as number,
+                    from: from as number,
+                    to: to as number,
                     include_lower: true,
-                    include_upper: false
+                    include_upper: from == to
                 }
         }
     }

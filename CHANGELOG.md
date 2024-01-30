@@ -2,6 +2,16 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.11] - 2024-01-30
+### Display
+- Chimeric histogram changed to Taxonomy Sources
+
+### Bug fix
+- Histogram ranges bounds included when ranges converge
+ 
+### Dependency update
+- rcsb-charts v0.2.22
+
 ## [6.0.10] - 2024-01-12
 ### Improvement
 - Added new UniProt histograms: `DISEASE_FACET`, `PHENOTYPE_FACET` and `INTERPRO_FACET`

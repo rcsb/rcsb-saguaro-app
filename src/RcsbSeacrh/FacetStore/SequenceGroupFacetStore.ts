@@ -20,7 +20,7 @@ import {
     ECOD_FACET,
     ENZYME_CLASS_FACET,
     GO_FUNCTION_FACET, GO_PROCESS_FACET, GO_COMPONENT_FACET,
-    METHODOLOGY_FACET, CHIMERIC_FACET, DISEASE_FACET, INTERPRO_FACET, PHENOTYPE_FACET
+    METHODOLOGY_FACET, TAXONOMY_COUNT_FACET, DISEASE_FACET, INTERPRO_FACET, PHENOTYPE_FACET
 } from "./SingleFacets";
 import {cloneDeep} from "lodash";
 
@@ -46,7 +46,7 @@ class SequenceGroupFacetStore implements FacetStoreInterface{
         cloneDeep<FacetMemberInterface>(GO_FUNCTION_FACET),
         cloneDeep<FacetMemberInterface>(GO_PROCESS_FACET),
         cloneDeep<FacetMemberInterface>(GO_COMPONENT_FACET),
-        cloneDeep<FacetMemberInterface>(CHIMERIC_FACET)
+        cloneDeep<FacetMemberInterface>(TAXONOMY_COUNT_FACET)
     ];
     private readonly uniprotFacet: FacetMemberInterface[] = [
         cloneDeep<FacetMemberInterface>(DISEASE_FACET),

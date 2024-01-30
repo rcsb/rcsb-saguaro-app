@@ -1,11 +1,9 @@
 import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {AggregationType, Operator, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {AggregationType, Service, Type} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {ChartDataValueInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
 import {GroupChartMap} from "../../RcsbGroupWeb/RcsbGroupView/RcsbGroupChart/GroupChartTools";
-import {BucketDataType} from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
-import {buildAttributeQuery} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryTools";
 
 export const EXPERIMENTAL_METHOD_FACET: FacetMemberInterface = {
     id: "method",
@@ -33,10 +31,6 @@ export const RESOLUTION_FACET: FacetMemberInterface = {
     contentType: "number",
     chartType: ChartType.histogram,
     chartConfig: {
-        tickIncrement: {
-            origin: 0.5,
-            increment: 0.5
-        },
         tickFormat:{
             domAxis: (t: number|string)=>{
                 if(parseInt(t.toString()) == 5)
@@ -89,65 +83,37 @@ export const METHODOLOGY_FACET: FacetMemberInterface = {
     }
 };
 
-export const CHIMERIC_FACET: FacetMemberInterface = {
-    id: "chimeric",
-    title: "Biological Source",
-    attributeName: "CHIMERIC_FACET",
-    attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourcePartCount.path,
-    chartType: ChartType.barplot,
-    contentType: "string",
-    facetConfig: {
-        facetTransform: (buckets)=>{
-            const out: BucketDataType[] = [];
-            const  wt = buckets.find(b=>b.label == 1)
-            if(wt)
-                out.push({
-                    label: "Non-chimeric",
-                    population: wt.population
-                });
-            const synthetic = buckets.find(b=>b.label == 0)
-            if(synthetic)
-                out.push({
-                    label: "Synthetic",
-                    population: synthetic.population
-                });
-            const chimeric = buckets.filter(b=> parseInt(b.label.toString()) > 1);
-            if(chimeric?.length > 0)
-                out.push({
-                    label: "Chimeric",
-                    population: chimeric.reduce((c,p)=>c+p.population,0)
-                });
-            return out;
+export const TAXONOMY_COUNT_FACET: FacetMemberInterface = {
+    id: "taxonomy_count",
+    title: "Number of Source Taxonomies",
+    attributeName: "TAXONOMY_COUNT_FACET",
+    attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourceTaxonomyCount.path,
+    chartType: ChartType.histogram,
+    contentType: "number",
+    chartConfig: {
+        histogramBinIncrement: 0,
+        tickFormat:{
+            domAxis: (t: number|string)=>{
+                if(t.toString().includes('.'))
+                    return '';
+                return t.toString();
+            }
         },
-        bucketClickSearchQuery: (datum, data, e) => {
-            if(datum.x == "Non-chimeric")
-                return buildAttributeQuery({
-                    attribute: CHIMERIC_FACET.attribute,
-                    value: 1,
-                    operator: Operator.Equals,
-                    service: Service.Text
-                });
-            else if(datum.x == "Synthetic")
-                return buildAttributeQuery({
-                    attribute: CHIMERIC_FACET.attribute,
-                    value: 0,
-                    operator: Operator.Equals,
-                    service: Service.Text
-                });
-            else
-                return buildAttributeQuery({
-                    attribute: CHIMERIC_FACET.attribute,
-                    value: 1,
-                    operator: Operator.Greater,
-                    service: Service.Text
-                });
+        chartDisplayConfig: {
+            constHeight: 225
+        },
+        domainMinValue: 0,
+        axisLabel: "Taxonomy count",
+        tooltipText: (d: ChartDataValueInterface<GroupChartMap.ChartObjectIdType>)=>{
+            return `Taxonomy count ${d.x}`;
         }
     },
     facet: {
-        name: "CHIMERIC_FACET",
-        aggregation_type: AggregationType.Terms,
-        attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourcePartCount.path,
-        min_interval_population: 1
+        name: "TAXONOMY_COUNT_FACET",
+        aggregation_type: AggregationType.Histogram,
+        attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourceTaxonomyCount.path,
+        min_interval_population: 1,
+        interval: 1
     }
 };
 
@@ -730,7 +696,7 @@ export const SearchFacets = {
     GO_COMPONENT_FACET,
     LIGAND_OF_INTEREST_FACET,
     METHODOLOGY_FACET,
-    CHIMERIC_FACET,
+    CHIMERIC_FACET: TAXONOMY_COUNT_FACET,
     DISEASE_FACET,
     INTERPRO_FACET,
     PHENOTYPE_FACET
