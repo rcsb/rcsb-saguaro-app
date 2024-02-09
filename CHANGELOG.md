@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.12] - 2024-02-09
+### Dependency update
+- rcsb-api-tools v4.1.14
+
 ## [6.0.11] - 2024-01-30
 ### Display
 - Chimeric histogram changed to Taxonomy Sources
