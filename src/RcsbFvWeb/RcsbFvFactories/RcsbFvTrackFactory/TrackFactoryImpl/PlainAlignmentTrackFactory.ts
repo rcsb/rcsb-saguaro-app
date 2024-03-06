@@ -8,7 +8,7 @@ import {
 } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
-    AlignedRegion,
+    AlignedRegions,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
@@ -41,7 +41,7 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
     public async getTrack(
         alignmentRequestContext: AlignmentRequestContextType,
         targetAlignment: TargetAlignment,
-        alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>,
+        alignedRegionToTrackElementList?: (region:AlignedRegions, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>,
         alignmentColor?:RcsbFvColorGradient
     ): Promise<RcsbFvRowConfigInterface> {
 
@@ -85,7 +85,7 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
 
         alignmentQueryContext: AlignmentRequestContextType,
         targetAlignment: TargetAlignment,
-        alignedRegionToTrackElementList: (region:AlignedRegion,alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
+        alignedRegionToTrackElementList: (region:AlignedRegions,alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
 
     ): {alignedBlocks: Array<RcsbFvTrackDataElementInterface>; mismatchData: Array<RcsbFvTrackDataElementInterface>; sequenceData: Array<RcsbFvTrackDataElementInterface>;} {
 
@@ -139,7 +139,7 @@ export class PlainAlignmentTrackFactory implements TrackFactoryInterface<[Alignm
         return {alignedBlocks, mismatchData, sequenceData};
     }
 
-    public alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface):  Array<RcsbFvTrackDataElementInterface>{
+    public alignedRegionToTrackElementList(region: AlignedRegions, alignmentContext: AlignmentContextInterface):  Array<RcsbFvTrackDataElementInterface>{
         let openBegin = false;
         if (region.target_begin != 1)
             openBegin = true;

@@ -1,8 +1,8 @@
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
+    SequenceAlignments,
+    SequenceAnnotations,
     SequenceReference,
-    Source
+    AnnotationReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -22,7 +22,7 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
         const instanceId: string | undefined = buildConfig.instanceId;
         assertDefined(instanceId)
-        const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot];
+        const source: Array<AnnotationReference> = [AnnotationReference.PdbEntity, AnnotationReference.PdbInstance, AnnotationReference.Uniprot];
 
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: instanceId,
@@ -30,7 +30,7 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
             to: SequenceReference.Uniprot,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             sequenceTrackFactory: new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator(),new InstanceSequenceTrackTitleFactory(this.getPolymerEntityInstanceTranslator()))
         });
@@ -38,13 +38,13 @@ export class RcsbFvInstance extends RcsbFvAbstractModule {
         const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
-            annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
-            annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
+            annotationGenerator: (ann)=>(new Promise<SequenceAnnotations[]>((r)=>(r(buriedResidues(ann))))),
+            annotationFilter: (ann)=>(new Promise<SequenceAnnotations[]>((r)=>(r(buriedResiduesFilter(ann))))),
             sources:source,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();

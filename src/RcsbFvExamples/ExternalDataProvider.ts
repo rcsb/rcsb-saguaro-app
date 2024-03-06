@@ -1,5 +1,5 @@
 import {
-    AlignmentResponse,
+    SequenceAlignments,
     SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {buildDataProviderFv} from "../RcsbFvWeb/RcsbFvBuilder";
@@ -844,13 +844,13 @@ type AlignmentType = typeof alignment;
 
 class RcsbStructuralAlignmentProvider implements AlignmentCollectorInterface {
 
-    private alignmentResponse: AlignmentResponse | undefined = undefined;
+    private alignmentResponse: SequenceAlignments | undefined = undefined;
     private readonly alignment: AlignmentType;
     constructor(alignment: AlignmentType) {
         this.alignment = alignment;
     }
 
-    private async data(): Promise<AlignmentResponse> {
+    private async data(): Promise<SequenceAlignments> {
         if(this.alignmentResponse)
             return this.alignmentResponse;
         return new Promise((resolve)=>{
@@ -861,7 +861,7 @@ class RcsbStructuralAlignmentProvider implements AlignmentCollectorInterface {
         });
     }
 
-    async collect(requestConfig: AlignmentCollectConfig, filter?: Array<string>): Promise<AlignmentResponse> {
+    async collect(requestConfig: AlignmentCollectConfig, filter?: Array<string>): Promise<SequenceAlignments> {
         return new Promise(async (resolve)=>{
             resolve(await this.data());
         });
@@ -878,7 +878,7 @@ class RcsbStructuralAlignmentProvider implements AlignmentCollectorInterface {
             resolve(Math.max(...ends))
         })
     }
-    async getAlignment(): Promise<AlignmentResponse> {
+    async getAlignment(): Promise<SequenceAlignments> {
         return new Promise(async (resolve)=>{
             resolve(this.data());
         });
@@ -886,9 +886,9 @@ class RcsbStructuralAlignmentProvider implements AlignmentCollectorInterface {
 
 }
 
-async function alignmentTransform(alignment: AlignmentType): Promise<AlignmentResponse> {
+async function alignmentTransform(alignment: AlignmentType): Promise<SequenceAlignments> {
     const alignmentRef = mergeAlignments(alignment.results);
-    const out: AlignmentResponse = alignmentRef.buildAlignments();
+    const out: SequenceAlignments = alignmentRef.buildAlignments();
     const instance_ids = out.target_alignment?.map(ta=>ta?.target_id);
     assertElementListDefined(instance_ids);
     const seqs = await rcsbRequestCtxManager.getInstanceSequences(instance_ids);

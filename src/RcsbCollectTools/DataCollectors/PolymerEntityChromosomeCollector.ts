@@ -1,4 +1,4 @@
-import {AlignmentResponse, QueryAlignmentArgs, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAlignments, QueryAlignmentArgs, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class PolymerEntityChromosomeCollector {
@@ -24,7 +24,7 @@ export class PolymerEntityChromosomeCollector {
         return entityMap;
     }
 
-    private async entityChromosomes(entityId: string): Promise<AlignmentResponse>{
+    private async entityChromosomes(entityId: string): Promise<SequenceAlignments>{
         const request: QueryAlignmentArgs = {
             from: SequenceReference.PdbEntity,
             to: SequenceReference.NcbiGenome,

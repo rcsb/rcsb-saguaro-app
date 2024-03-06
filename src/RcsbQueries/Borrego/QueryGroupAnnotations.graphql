@@ -1,10 +1,9 @@
-query QueryGroupAnnotations($group: GroupReference!, $groupId: String!, $sources:[Source], $filters: [FilterInput], $histogram:Boolean){
+query QueryGroupAnnotations($group: GroupReference!, $groupId: String!, $sources:[AnnotationReference!]!, $filters: [AnnotationFilterInput!]){
     group_annotations(
         group:$group
         groupId:$groupId
         sources:$sources
         filters:$filters
-        histogram:$histogram
     ){
         source
         target_id

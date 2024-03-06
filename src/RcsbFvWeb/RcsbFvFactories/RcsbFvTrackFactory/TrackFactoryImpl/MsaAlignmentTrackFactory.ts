@@ -2,7 +2,7 @@ import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConf
 
 import {TrackFactoryInterface} from "../TrackFactoryInterface";
 import {AlignmentRequestContextType} from "./AlignmentTrackFactory";
-import {AnnotationFeatures, TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAnnotations, TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PositionalScoreAlignmentTrackFactory} from "./PositionalScoreAlignmentTrackFactory";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {PlainObservedAlignmentTrackFactory} from "./PlainObservedAlignmentTrackFactory";
@@ -25,7 +25,7 @@ export class MsaAlignmentTrackFactory implements TrackFactoryInterface<[Alignmen
             return this.positionalScoreAlignmentTrackFactory.getTrack(alignmentQueryContext,targetAlignment);
     }
 
-    public async prepareFeatures(unObservedRegions: Array<AnnotationFeatures>, positionalScores: Array<AnnotationFeatures>): Promise<void>{
+    public async prepareFeatures(unObservedRegions: Array<SequenceAnnotations>, positionalScores: Array<SequenceAnnotations>): Promise<void>{
         await this.observedAlignmentTrackFactory.prepareFeatures(unObservedRegions);
         await this.positionalScoreAlignmentTrackFactory.prepareFeatures(positionalScores);
     }

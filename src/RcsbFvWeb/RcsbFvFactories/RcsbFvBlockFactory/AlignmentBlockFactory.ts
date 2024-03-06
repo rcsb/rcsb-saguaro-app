@@ -1,5 +1,5 @@
 import {
-    AlignmentResponse,
+    SequenceAlignments,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
@@ -7,20 +7,20 @@ import {AlignmentRequestContextType} from "../RcsbFvTrackFactory/TrackFactoryImp
 import {BlockFactoryInterface} from "./BlockFactoryInterface";
 import {TrackFactoryInterface} from "../RcsbFvTrackFactory/TrackFactoryInterface";
 
-export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment, AlignmentResponse, number]> {
+export class AlignmentBlockFactory implements BlockFactoryInterface<[AlignmentRequestContextType, SequenceAlignments],[AlignmentRequestContextType, TargetAlignment, SequenceAlignments, number]> {
 
     readonly trackFactory: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>;
-    readonly trackConfigModifier?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse, indexResponse: number) => Promise<Partial<RcsbFvRowConfigInterface>>;
+    readonly trackConfigModifier?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: SequenceAlignments, indexResponse: number) => Promise<Partial<RcsbFvRowConfigInterface>>;
 
     constructor(
         alignmentTrackFactory: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>,
-        trackModifier?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse, indexResponse: number) => Promise<Partial<RcsbFvRowConfigInterface>>
+        trackModifier?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: SequenceAlignments, indexResponse: number) => Promise<Partial<RcsbFvRowConfigInterface>>
     ) {
         this.trackFactory = alignmentTrackFactory;
         this.trackConfigModifier = trackModifier;
     }
 
-    async getBlock(alignmentRequestContext: AlignmentRequestContextType, alignmentData: AlignmentResponse): Promise<RcsbFvRowConfigInterface[]> {
+    async getBlock(alignmentRequestContext: AlignmentRequestContextType, alignmentData: SequenceAlignments): Promise<RcsbFvRowConfigInterface[]> {
         alignmentRequestContext = {...alignmentRequestContext, querySequence: alignmentData.query_sequence ?? undefined};
         if(!alignmentData.target_alignment)
             return [];

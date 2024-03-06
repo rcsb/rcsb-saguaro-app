@@ -1,7 +1,7 @@
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
-    AlignmentResponse,
-    AnnotationFeatures
+    SequenceAlignments,
+    SequenceAnnotations
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     PlainAlignmentTrackFactory
@@ -13,7 +13,7 @@ export class RcsbFvDataProvider extends RcsbFvAbstractModule {
         if(this.buildConfig.additionalConfig?.dataProvider?.alignments) {
             this.alignmentCollector = this.buildConfig.additionalConfig.dataProvider.alignments.collector;
 
-            const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect({
+            const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect({
                 ...this.buildConfig.additionalConfig?.dataProvider?.alignments.context
             }, this.buildConfig.additionalConfig?.alignmentFilter);
 
@@ -28,7 +28,7 @@ export class RcsbFvDataProvider extends RcsbFvAbstractModule {
         if(this.buildConfig.additionalConfig?.dataProvider?.annotations){
             this.annotationCollector = this.buildConfig.additionalConfig.dataProvider.annotations.collector
 
-            const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect({
+            const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect({
                 ...this.buildConfig.additionalConfig.dataProvider.annotations.context
             });
 

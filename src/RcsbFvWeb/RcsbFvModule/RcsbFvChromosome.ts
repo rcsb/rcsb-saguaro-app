@@ -8,8 +8,8 @@ import { RcsbFvRowConfigInterface } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvCo
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
-    AlignedRegion,
-    AlignmentResponse,
+    AlignedRegions,
+    SequenceAlignments,
     Coverage,
     SequenceReference,
     TargetAlignment
@@ -53,7 +53,7 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
                     a.target_alignment?.forEach(ta => {
                         if(!ta)
                             return;
-                        const orientation = ta.orientation;
+                        const orientation = 1; //ta.orientation;
                         if(!orientation)
                             return;
                         ta.aligned_regions?.forEach(r => {
@@ -140,7 +140,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 from: SequenceReference.PdbEntity,
                 to: SequenceReference.NcbiGenome,
             }, async (e)=>{
-                const ar: AlignmentResponse = e as AlignmentResponse
+                const ar: SequenceAlignments = e as SequenceAlignments
                 await this.collectPdbWorkerResults(ar, pdbEntityId, chrId);
             });
         });
@@ -155,7 +155,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein);
     }
 
-    private async collectPdbWorkerResults(ar: AlignmentResponse, pdbEntityId: string, chrId?: string): Promise<void>{
+    private async collectPdbWorkerResults(ar: SequenceAlignments, pdbEntityId: string, chrId?: string): Promise<void>{
          assertElementListDefined(ar.target_alignment);
          const exonTracks: Array<RcsbFvRowConfigInterface> = this.collectExons(
             ar.target_alignment,
@@ -313,7 +313,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 to: to,
                 range: range
             }, async (e)=>{
-                const ar: AlignmentResponse = e as AlignmentResponse
+                const ar: SequenceAlignments = e as SequenceAlignments
                 if(typeof index === "number")
                     await this.collectChromosomeWorkerResults(index,to,ar,false);
             });
@@ -326,14 +326,14 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                     to: to,
                     range: [i*this.batchSize, (i+1)*this.batchSize]
                 }, async (e)=>{
-                    const ar: AlignmentResponse = e as AlignmentResponse
+                    const ar: SequenceAlignments = e as SequenceAlignments
                     await this.collectChromosomeWorkerResults(i,to,ar,false);
                 });
             }
         }
     }
 
-    private async collectChromosomeWorkerResults(index: number, reference: SequenceReference, alignment: AlignmentResponse, forcePlot: boolean): Promise<void>{
+    private async collectChromosomeWorkerResults(index: number, reference: SequenceReference, alignment: SequenceAlignments, forcePlot: boolean): Promise<void>{
         this.completeTasks++;
         const e = this.targetAlignmentList.get(reference);
         assertDefined(e);
@@ -395,23 +395,23 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         const endMember: "query_end"|"target_end" = member === "query" ? "query_end" : "target_end";
         const ar = targetAlignment.aligned_regions;
         assertElementListDefined(ar);
-        assertDefined(targetAlignment.target_id), assertDefined(targetAlignment.orientation);
+        assertDefined(targetAlignment.target_id); //, assertDefined(targetAlignment.orientation);
         const out: RcsbFvTrackDataAnnotationInterface = {
             begin: Math.min(ar[0][beginMember],ar[ar.length-1][endMember]),
             end: Math.max(ar[0][beginMember],ar[ar.length-1][endMember]),
             gaps: [],
             description:[targetAlignment.target_id],
-            openBegin: targetAlignment.orientation < 0,
-            openEnd: targetAlignment.orientation > 0
+            // openBegin: targetAlignment.orientation < 0,
+            // openEnd: targetAlignment.orientation > 0
         };
-        if(targetAlignment.orientation>0) {
+        if(true){//targetAlignment.orientation>0) {
             if(member == "query" && ar[ar.length-1][endMember] > this.maxRange)
                 this.maxRange = ar[ar.length-1][endMember];
             if(member == "query" && ar[0][beginMember] < this.minRange)
                 this.minRange = ar[0][beginMember];
             ar.forEach((currentExon,n) => {
                 if((n+1)<ar.length){
-                    const nextExon: AlignedRegion = ar[n+1];
+                    const nextExon: AlignedRegions = ar[n+1];
                     let beginGap: number = currentExon[endMember];
                     let endGap: number = nextExon[beginMember];
                     const exonShift: number[] = currentExon.exon_shift ? currentExon.exon_shift.map(e=>{
@@ -471,13 +471,13 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 }
             });
         }else{
-            if(member == "query" && ar[0][beginMember]>this.maxRange)
+            /*if(member == "query" && ar[0][beginMember]>this.maxRange)
                 this.maxRange = ar[0][beginMember];
             if(member == "query" && ar[ar.length-1][endMember] < this.minRange)
                 this.minRange = ar[ar.length-1][endMember];
             ar.reverse().forEach((currentExon,n) => {
                 if((n+1)<ar.length) {
-                    const nextExon: AlignedRegion = ar[n + 1];
+                    const nextExon: AlignedRegions = ar[n + 1];
                     let beginGap: number = currentExon[beginMember];
                     let endGap: number = nextExon[endMember];
                     const exonShift: number[] = nextExon.exon_shift ? nextExon.exon_shift.map(e=>{
@@ -536,7 +536,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                         isConnected: true
                     });
                 }
-            });
+            });*/
         }
         return out;
     }

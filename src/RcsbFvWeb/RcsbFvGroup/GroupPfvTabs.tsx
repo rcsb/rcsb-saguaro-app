@@ -1,10 +1,10 @@
 import React from "react";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
-import {
+/*import {
     FieldName,
     OperationType,
-    Source,
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+    AnnotationReference,
+} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";*/
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
@@ -133,12 +133,12 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                             page:{first:0,after: "0"},
                             ...this.props.additionalConfig,
                             alignmentFilter: this.props.searchQuery ?  this.filterEntities : undefined,
-                            filters: this.props.searchQuery ? [{
+                            /*filters: this.props.searchQuery ? [{
                                 source: Source.PdbInstance,
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
                                 values: this.filterInstances
-                            }] : undefined
+                            }] : undefined*/
                         }
                    )
                 );
@@ -155,7 +155,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                             page:{first:0,after: "0"},
                             ...this.props.additionalConfig,
                             alignmentFilter: this.props.searchQuery ? this.filterEntities : undefined,
-                            filters: this.props.searchQuery ? [{
+                            /*filters: this.props.searchQuery ? [{
                                 source: Source.PdbInstance,
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
@@ -165,7 +165,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
                                 values: this.filterEntities
-                            }] : undefined
+                            }] : undefined*/
                         }
                     )
                 );

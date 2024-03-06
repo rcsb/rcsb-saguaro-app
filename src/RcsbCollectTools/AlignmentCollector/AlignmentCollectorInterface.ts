@@ -1,5 +1,5 @@
 import {
-    AlignmentResponse,
+    SequenceAlignments,
     QueryAlignmentArgs, SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
@@ -31,9 +31,9 @@ export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & Collect
 
 export interface AlignmentCollectorInterface {
     getTargets():Promise<Array<string>>;
-    getAlignment():Promise<AlignmentResponse>;
+    getAlignment():Promise<SequenceAlignments>;
     getAlignmentLength(): Promise<number>;
     collect(requestConfig: AlignmentCollectConfig,
             filter?:Array<string>,
-    ): Promise<AlignmentResponse>;
+    ): Promise<SequenceAlignments>;
 }

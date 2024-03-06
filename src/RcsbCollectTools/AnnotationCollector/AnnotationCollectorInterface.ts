@@ -1,5 +1,5 @@
 import {
-    AnnotationFeatures,
+    SequenceAnnotations,
     Feature,
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs
@@ -22,11 +22,11 @@ export interface CommonAnnotationInterface {
     rcsbContext?:Partial<PolymerEntityInstanceInterface>;
     annotationProcessing?: AnnotationProcessingInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
-    annotationGenerator?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
-    annotationFilter?(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>>;
-    titleSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
-    trackTitle?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
-    typeSuffix?(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>;
+    annotationGenerator?(annotations: Array<SequenceAnnotations>): Promise<Array<SequenceAnnotations>>;
+    annotationFilter?(annotations: Array<SequenceAnnotations>): Promise<Array<SequenceAnnotations>>;
+    titleSuffix?(ann: SequenceAnnotations, d: Feature): Promise<string|undefined>;
+    trackTitle?(ann: SequenceAnnotations, d: Feature): Promise<string|undefined>;
+    typeSuffix?(ann: SequenceAnnotations, d: Feature): Promise<string|undefined>;
 }
 
 export interface AnnotationsCollectConfig extends QueryAnnotationsArgs, CommonAnnotationInterface {
@@ -38,7 +38,7 @@ export interface CollectGroupAnnotationsInterface extends QueryGroup_Annotations
 export type AnnotationRequestContext = Partial<AnnotationsCollectConfig & CollectGroupAnnotationsInterface>;
 
 export interface AnnotationCollectorInterface {
-    collect(requestConfig: AnnotationsCollectConfig | CollectGroupAnnotationsInterface): Promise<Array<AnnotationFeatures>>;
-    getAnnotationFeatures(): Promise<Array<AnnotationFeatures>>;
+    collect(requestConfig: AnnotationsCollectConfig | CollectGroupAnnotationsInterface): Promise<Array<SequenceAnnotations>>;
+    getAnnotationFeatures(): Promise<Array<SequenceAnnotations>>;
     getFeatures(): Promise<Array<Feature>>;
 }

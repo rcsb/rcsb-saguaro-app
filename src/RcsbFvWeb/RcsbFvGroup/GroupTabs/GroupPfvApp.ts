@@ -12,7 +12,7 @@ import {
     GroupReference,
     OperationType,
     SequenceReference,
-    Source,
+    AnnotationReference,
     Type
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
@@ -93,14 +93,14 @@ export namespace GroupPfvApp {
                 field: FieldName.Type,
                 values: [Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
                 operation: OperationType.Equals,
-                source: Source.PdbInstance
+                source: AnnotationReference.PdbInstance
             },{
                 field: FieldName.Type,
                 values:[Type.Pfam],
                 operation: OperationType.Equals,
-                source: Source.PdbEntity
+                source: AnnotationReference.PdbEntity
             }],
-            sources: [Source.PdbInstance, Source.PdbEntity],
+            sources: [AnnotationReference.PdbInstance, AnnotationReference.PdbEntity],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
             externalTrackBuilder: groupExternalTrackBuilder()
         };
@@ -125,9 +125,9 @@ export namespace GroupPfvApp {
                 field: FieldName.Type,
                 values: [Type.BindingSite],
                 operation: OperationType.Equals,
-                source: Source.PdbInstance
+                source: AnnotationReference.PdbInstance
             }],
-            sources: [Source.PdbInstance],
+            sources: [AnnotationReference.PdbInstance],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
             externalTrackBuilder:  alignmentGlobalLigandBindingSite()
         }
@@ -159,7 +159,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
             annotationTracks.forEach((at,type)=>{
                 const N: number | undefined = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite) || type.includes(Type.Pfam)) ? targets.get(type) : nTargets;
                 at.forEach((ann,positionKey)=>{
-                    if(ann.source != Source.PdbInterface)
+                    if(ann.source != AnnotationReference.PdbInterface)
                         ann.value = Math.ceil(1000*(ann.value as number) / (N ?? 1))/1000;
                 });
             });

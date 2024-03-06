@@ -5,7 +5,7 @@ import {
 import { RcsbFvDisplayTypes } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import { RcsbFvTrackDataElementInterface } from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {
-    AlignedRegion,
+    AlignedRegions,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
@@ -36,7 +36,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         this.trackTitleFactory = trackTitleFactory ?? new AlignmentTrackTitleFactory(entityInstanceTranslator);
     }
 
-    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
+    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignedRegionToTrackElementList?: (region:AlignedRegions, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>): Promise<RcsbFvRowConfigInterface> {
         const {alignedBlocks, mismatchData, sequenceData} = this.getAlignmentTrackConfiguration(alignmentRequestContext, targetAlignment, alignedRegionToTrackElementList ?? this.alignedRegionToTrackElementList.bind(this));
         const sequenceDisplay: RcsbFvDisplayConfigInterface = {
             displayType: RcsbFvDisplayTypes.SEQUENCE,
@@ -71,7 +71,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
 
         alignmentQueryContext: AlignmentRequestContextType,
         targetAlignment: TargetAlignment,
-        alignedRegionToTrackElementList: (region:AlignedRegion,alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
+        alignedRegionToTrackElementList: (region:AlignedRegions,alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
 
     ): {alignedBlocks: Array<RcsbFvTrackDataElementInterface>; mismatchData: Array<RcsbFvTrackDataElementInterface>; sequenceData: Array<RcsbFvTrackDataElementInterface>;} {
 
@@ -126,7 +126,7 @@ export class AlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRe
         return {alignedBlocks, mismatchData, sequenceData};
     }
 
-    public alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface):  Array<RcsbFvTrackDataElementInterface>{
+    public alignedRegionToTrackElementList(region: AlignedRegions, alignmentContext: AlignmentContextInterface):  Array<RcsbFvTrackDataElementInterface>{
         let openBegin = false;
         if (region.target_begin != 1)
             openBegin = true;

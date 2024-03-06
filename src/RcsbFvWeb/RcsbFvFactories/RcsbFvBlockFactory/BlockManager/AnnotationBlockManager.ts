@@ -1,6 +1,6 @@
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
-import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAnnotations, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConfig} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConfig";
 import {PolymerEntityInstanceTranslate} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {AnnotationRequestContext} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
@@ -10,7 +10,7 @@ import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/An
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 
-export class AnnotationBlockManager implements BlockManagerInterface<[AnnotationRequestContext,AnnotationFeatures[]]>{
+export class AnnotationBlockManager implements BlockManagerInterface<[AnnotationRequestContext,SequenceAnnotations[]]>{
 
     private readonly rcsbAnnotationConfig: RcsbAnnotationConfig;
     private readonly annotationTracks: Map<string, TrackManagerInterface> = new Map<string, TrackManagerInterface>();
@@ -27,7 +27,7 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         this.polymerEntityInstanceTranslator = polymerEntityInstanceTranslator;
     }
 
-    public async setData(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
+    public async setData(requestConfig: AnnotationRequestContext, data: Array<SequenceAnnotations>): Promise<void>{
         await this.processAnnotations(requestConfig, data);
         this.mergeTracks();
     }
@@ -52,7 +52,7 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         ].flat();
     }
 
-    private async processAnnotations(requestConfig: AnnotationRequestContext, data: Array<AnnotationFeatures>): Promise<void>{
+    private async processAnnotations(requestConfig: AnnotationRequestContext, data: Array<SequenceAnnotations>): Promise<void>{
         await Promise.all(data.map<Promise<void>[]>(ann=>{
                 return ann.features?.map<Promise<void>>(async feature=>{
                     if(feature)
@@ -63,7 +63,7 @@ export class AnnotationBlockManager implements BlockManagerInterface<[Annotation
         requestConfig.annotationProcessing?.computeAnnotationValue?.(this.annotationTracks);
     }
 
-    private async addFeature(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<void> {
+    private async addFeature(requestConfig: AnnotationRequestContext, ann: SequenceAnnotations, feature: Feature): Promise<void> {
         if(feature.type && this.rcsbAnnotationConfig.getConfig(feature.type)?.ignore)
             return;
 

@@ -1,7 +1,7 @@
 import {cloneDeep} from "lodash";
 import {
-    AlignedRegion,
-    AlignmentResponse,
+    AlignedRegions,
+    SequenceAlignments,
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 type AlignmentRefType = (number|undefined)[];
@@ -49,7 +49,7 @@ export class AlignmentReference {
         this.addRef(id,alignment,target);
     }
 
-    public buildAlignments(): AlignmentResponse {
+    public buildAlignments(): SequenceAlignments {
         return buildAlignments(this.refId, this.alignmentRefMap, this.memberRefList);
     }
 
@@ -115,8 +115,8 @@ export class AlignmentReference {
 
 }
 
-function buildAlignments(refId:string, alignmentRefMap: AlignmentRefType, alignmentMembers: AlignmentMemberType[]): AlignmentResponse {
-    const out: AlignmentResponse = {};
+function buildAlignments(refId:string, alignmentRefMap: AlignmentRefType, alignmentMembers: AlignmentMemberType[]): SequenceAlignments {
+    const out: SequenceAlignments = {};
     out.target_alignment = [];
     out.target_alignment.push({
         aligned_regions: buildRegions(alignmentRefMap),
@@ -131,8 +131,8 @@ function buildAlignments(refId:string, alignmentRefMap: AlignmentRefType, alignm
     return out;
 }
 
-function buildRegions(alignment:AlignmentRefType): AlignedRegion[] {
-    const out: AlignedRegion[] = [];
+function buildRegions(alignment:AlignmentRefType): AlignedRegions[] {
+    const out: AlignedRegions[] = [];
     let begIndex = 0;
     let begPos = 0;
     alignment.forEach((v,n)=>{

@@ -1,14 +1,10 @@
-query QueryGroupAlignment($group: GroupReference!, $groupId: String!, $filter: [String], $first: Int!, $after: String){
+query QueryGroupAlignment($group: GroupReference!, $groupId: String!, $filter: [String!]){
     group_alignment(
         group: $group
         groupId: $groupId
         filter: $filter
     ){
-        alignment_length
-        alignment_logo{
-            symbol
-            value
-        }
+
         query_sequence
         target_alignment_subset(first: $first, after: $after) {
             pageInfo{

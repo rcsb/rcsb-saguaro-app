@@ -4,9 +4,9 @@ import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/Rcs
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {Logo} from "./Logo";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
-import {Assertions} from "../Helpers/Assertions";
-import assertElementListDefined = Assertions.assertElementListDefined;
+import {SequenceAlignments, SequenceAnnotations} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+// import {Assertions} from "../Helpers/Assertions";
+// import assertElementListDefined = Assertions.assertElementListDefined;
 import {GroupGapLessTransformer} from "../Groups/GroupGapLessTransformer";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
@@ -29,40 +29,40 @@ export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
                 resolve();
             });
         },
-        processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
+        processAlignmentAndFeatures(data: { annotations: Array<SequenceAnnotations>, alignments: SequenceAlignments }): Promise<void> {
             return new Promise((resolve)=>{
                 resolve();
             });
         },
-        filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
+        filterFeatures(data:{annotations: Array<SequenceAnnotations>}): Promise<Array<SequenceAnnotations>> {
             gapLessTransformer.gapLessFeatures(data.annotations);
             data.annotations.forEach(ann=>{
                 ann.features = ann.features?.filter(f=>(f?.name != "automated matches"));
             })
-            return new Promise<Array<AnnotationFeatures>>((resolve)=>{
+            return new Promise<Array<SequenceAnnotations>>((resolve)=>{
                 resolve(data.annotations);
             });
         },
-        filterAlignments(data: {alignments:AlignmentResponse;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<AlignmentResponse> {
+        filterAlignments(data: {alignments:SequenceAlignments;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<SequenceAlignments> {
             gapLessTransformer.gapLessAlignments(data.alignments);
             processAlignments(data.alignments);
-            return new Promise<AlignmentResponse>((resolve)=>{
+            return new Promise<SequenceAlignments>((resolve)=>{
                 resolve(data.alignments);
             });
         }
     };
 
-    function processAlignments(alignment: AlignmentResponse){
+    function processAlignments(alignment: SequenceAlignments){
         if(querySequenceLogo.length > 0) {
             return;
         }
-        if(alignment.alignment_length && alignment.alignment_logo && alignment.alignment_length != alignment.alignment_logo?.length)
+        /*if(alignment.alignment_length && alignment.alignment_logo && alignment.alignment_length != alignment.alignment_logo?.length)
             throw new Error("ERROR Alignment length and logo should match");
 
         alignment.alignment_logo?.forEach(al=>{
             assertElementListDefined(al);
             querySequenceLogo.push(new Logo<aaType>(al));
-        });
+        });*/
         const sequenceRowData = querySequenceLogo.map((s,n)=>{
             const nFreq: number = 5;
             const maxFreqList: Array<number> = s.frequency().filter(f=>f.symbol!="-").slice(0,nFreq).map(f=>Math.trunc(f.value*100)/100);

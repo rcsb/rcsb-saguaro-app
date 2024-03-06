@@ -1,8 +1,8 @@
 import {
-    AlignmentResponse,
-    AnnotationFeatures, Feature,
+    SequenceAlignments,
+    SequenceAnnotations, Feature,
     SequenceReference,
-    Source
+    AnnotationReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -25,19 +25,19 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
             to: SequenceReference.Uniprot,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
         const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: buildConfig.entityId,
             reference: SequenceReference.PdbEntity,
-            sources: buildConfig.additionalConfig?.sources ?? [Source.PdbEntity, Source.Uniprot],
+            sources: buildConfig.additionalConfig?.sources ?? [AnnotationReference.PdbEntity, AnnotationReference.Uniprot],
             titleSuffix: this.titleSuffix.bind(this),
             filters: buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
@@ -53,10 +53,10 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
             [this.referenceTrack].concat(this.alignmentTracks).concat(this.annotationTracks);
     }
 
-    private async titleSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined>{
+    private async titleSuffix(ann: SequenceAnnotations, d: Feature): Promise<string|undefined>{
         if(!ann.target_id)
             return;
-        if( this.polymerEntityInstance != null && ann.source === Source.PdbInstance){
+        if( this.polymerEntityInstance != null && ann.source === AnnotationReference.PdbInstance){
             const labelAsymId: string = ann.target_id.split(TagDelimiter.instance)[1];
             const authAsymId: string | undefined = this.polymerEntityInstance.translateAsymToAuth(labelAsymId);
             return labelAsymId === authAsymId ? labelAsymId : labelAsymId+"[auth "+authAsymId+"]";

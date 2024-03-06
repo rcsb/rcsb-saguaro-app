@@ -2,7 +2,7 @@ import {AlignmentCollectConfig, AlignmentCollectorInterface} from "./AlignmentCo
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {Subject} from "rxjs";
 import {
-    AlignmentResponse,
+    SequenceAlignments,
     TargetAlignment
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
@@ -15,17 +15,17 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
 
     readonly rcsbFvQuery: RcsbClient = rcsbClient;
     private readonly targetsSubject: Subject<Array<string>> = new Subject<Array<string>>();
-    private alignmentResponse: AlignmentResponse;
-    private readonly alignmentResponseSubject: Subject<AlignmentResponse> = new Subject<AlignmentResponse>();
+    private alignmentResponse: SequenceAlignments;
+    private readonly alignmentResponseSubject: Subject<SequenceAlignments> = new Subject<SequenceAlignments>();
     private readonly alignmentLengthSubject: Subject<number> = new Subject<number>();
 
     public async collect(
         requestConfig: AlignmentCollectConfig,
         filter?: Array<string>
-    ): Promise<AlignmentResponse> {
+    ): Promise<SequenceAlignments> {
         this.requestStatus = "pending";
         this.alignmentResponse = await this.requestAlignment(requestConfig);
-        const targetAlignment: (TargetAlignment | null | undefined)[] | undefined = this.alignmentResponse?.target_alignment ?? this.alignmentResponse?.target_alignment_subset?.edges?.map(e=>e?.node);
+        const targetAlignment: (TargetAlignment|undefined|null)[] | null | undefined = this.alignmentResponse?.target_alignment ?? this.alignmentResponse?.target_alignment;
         if(targetAlignment) {
             assertElementListDefined(targetAlignment);
             this.alignmentResponse.target_alignment = !filter ? targetAlignment : targetAlignment?.filter(ta => filter.includes(ta?.target_id ?? "not-included"));
@@ -47,12 +47,12 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         });
     }
 
-    public async getAlignment():Promise<AlignmentResponse> {
-        return new Promise<AlignmentResponse>((resolve,reject)=>{
+    public async getAlignment():Promise<SequenceAlignments> {
+        return new Promise<SequenceAlignments>((resolve,reject)=>{
             if(this.requestStatus === "complete"){
                 resolve(this.alignmentResponse);
             }else{
-                ObservableHelper.oneTimeSubscription<AlignmentResponse>(resolve, this.alignmentResponseSubject);
+                ObservableHelper.oneTimeSubscription<SequenceAlignments>(resolve, this.alignmentResponseSubject);
             }
         });
     }
@@ -60,24 +60,24 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
     public getAlignmentLength(): Promise<number>{
         return new Promise<number>((resolve,reject)=>{
             if(this.requestStatus === "complete"){
-                resolve((this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length) ?? -1);
+                resolve(this.alignmentResponse.query_sequence?.length ?? -1);
             }else{
                 ObservableHelper.oneTimeSubscription<number>(resolve, this.alignmentLengthSubject);
             }
         });
     }
 
-    public async requestAlignment(requestConfig: AlignmentCollectConfig): Promise<AlignmentResponse>{
+    public async requestAlignment(requestConfig: AlignmentCollectConfig): Promise<SequenceAlignments>{
         this.requestStatus = "pending";
 
-        if(requestConfig.queryId) {
+        if(requestConfig.queryId && requestConfig.from && requestConfig.to) {
             return await this.rcsbFvQuery.requestAlignment({
                 queryId: requestConfig.queryId,
                 from: requestConfig.from,
                 to: requestConfig.to
             });
         } else {
-            if(requestConfig.group && requestConfig.page) {
+            if(requestConfig.group && requestConfig.groupId && requestConfig.page) {
                 return await this.rcsbFvQuery.requestGroupAlignment({
                     group: requestConfig.group,
                     groupId: requestConfig.groupId,
@@ -98,7 +98,7 @@ export class AlignmentCollector implements AlignmentCollectorInterface {
         assertElementListDefined(targetIds);
         this.targetsSubject.next(targetIds);
         this.alignmentResponseSubject.next(this.alignmentResponse);
-        this.alignmentLengthSubject.next((this.alignmentResponse.query_sequence?.length ?? this.alignmentResponse.alignment_length) ?? -1);
+        this.alignmentLengthSubject.next(this.alignmentResponse.query_sequence?.length ?? -1);
         console.info("Alignment Processing Complete");
     }
 

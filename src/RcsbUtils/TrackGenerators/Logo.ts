@@ -1,8 +1,9 @@
-import {AlignmentLogo} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+// import {AlignmentLogo} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Assertions} from "../Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;
 
+type AlignmentLogo = any;
 export class Logo<T extends string>  {
 
     private readonly symbols: {[key in T]:number} = Object();

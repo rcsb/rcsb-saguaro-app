@@ -1,39 +1,10 @@
-query QueryGroupAlignmentNoLogo($group: GroupReference!, $groupId: String!, $filter: [String], $first: Int!, $after: String){
+query QueryGroupAlignmentNoLogo($group: GroupReference!, $groupId: String!, $filter: [String!]){
     group_alignment(
         group: $group
         groupId: $groupId
         filter: $filter
     ){
-        alignment_length
         query_sequence
-        target_alignment_subset(first: $first, after: $after) {
-            pageInfo{
-                startCursor
-                endCursor
-                hasNextPage
-                hasPreviousPage
-            }
-            edges{
-                node{
-                    target_id
-                    orientation
-                    target_sequence
-                    coverage {
-                        query_coverage
-                        query_length
-                        target_coverage
-                        target_length
-                    }
-                    aligned_regions {
-                        query_begin
-                        query_end
-                        target_begin
-                        target_end
-                        exon_shift
-                    }
-                }
-                cursor
-            }
-        }
+
     }
 }

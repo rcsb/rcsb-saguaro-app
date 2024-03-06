@@ -4,7 +4,7 @@ import {
 } from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Feature, FeaturePosition, SequenceReference, AnnotationReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate, AlignmentContextInterface} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
@@ -51,7 +51,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         return this.valueRange;
     }
 
-    public addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void {
+    public addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: AnnotationReference, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void {
         assertElementListDefined(ann.feature.feature_positions);
         computeFeatureGaps(ann.feature.feature_positions).forEach(p => {
             if(p.beg_seq_id != null) {
@@ -87,7 +87,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         return Array.from(this.trackElementMap.values());
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance?:string): RcsbFvTrackDataAnnotationInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:AnnotationReference, provenance?:string): RcsbFvTrackDataAnnotationInterface{
         let title:string = this.annotationConfig?.title ?? this.type;
         let value: number | undefined = undefined;
         if(this.isNumericalDisplay(this.type)) {
@@ -111,7 +111,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
                 this.valueRange.min = value
         }
 
-        const sourceId: string = source == Source.PdbInstance && this.entityInstanceTranslator != null ?
+        const sourceId: string = source == AnnotationReference.PdbInstance && this.entityInstanceTranslator != null ?
             TagDelimiter.parseInstance(targetId).entryId + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(TagDelimiter.parseInstance(targetId).instanceId) : targetId;
 
         assertDefined(p.beg_seq_id);
@@ -136,7 +136,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         };
     }
 
-    private addRange(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, p: FeaturePositionGaps, rangeKey: number[], annotationProcessing?:AnnotationProcessingInterface): void{
+    private addRange(reference: SequenceReference | undefined, queryId: string, source: AnnotationReference, targetId:string, d: Feature, p: FeaturePositionGaps, rangeKey: number[], annotationProcessing?:AnnotationProcessingInterface): void{
         const key: string = rangeKey.join(":");
         if (!this.trackElementMap.has(key)) {
             const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source??undefined);

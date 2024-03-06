@@ -1,18 +1,18 @@
-import {AnnotationFeatures, Feature, Source, Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAnnotations, Feature, AnnotationReference, Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {cloneDeep} from "lodash";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 
-export function buriedResidues(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
+export function buriedResidues(annotations: Array<SequenceAnnotations>): Array<SequenceAnnotations> {
     const accThr: number = 6;
-    let buriedResidues:AnnotationFeatures = {};
+    let buriedResidues:SequenceAnnotations = {};
     let nBuried: number = 0;
     mainloop:
         for(const ann of annotations){
-            if(ann.source === Source.PdbInstance){
+            if(ann.source === AnnotationReference.PdbInstance){
                 for(const f of ann.features ?? []){
                     if(f?.type === Type.Asa){
-                        buriedResidues = cloneDeep<AnnotationFeatures>(ann);
-                        buriedResidues.source = Source.PdbInstance;
+                        buriedResidues = cloneDeep<SequenceAnnotations>(ann);
+                        buriedResidues.source = AnnotationReference.PdbInstance;
                         const feature:Feature = cloneDeep<Feature>(f);
                         feature.type = FeatureType.BuriedResidues;
                         feature.name = "Unbound chain core residues";
@@ -38,7 +38,7 @@ export function buriedResidues(annotations: Array<AnnotationFeatures>): Array<An
     return nBuried > 0 && buriedResidues ? [buriedResidues] : [];
 }
 
-export function buriedResiduesFilter(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
+export function buriedResiduesFilter(annotations: Array<SequenceAnnotations>): Array<SequenceAnnotations> {
     return cloneDeep(annotations).map(ann=>{
         ann.features = ann.features?.filter(f=>(f?.type!==Type.Asa));
         return ann;

@@ -1,10 +1,10 @@
 import {RcsbAnnotationConstants} from "../../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceReference, AnnotationReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export namespace TrackUtils {
 
-    export function getProvenanceConfigFormTarget(targetId: string, targetSource: SequenceReference|Source): {name:string;color:string;} {
+    export function getProvenanceConfigFormTarget(targetId: string, targetSource: SequenceReference|AnnotationReference): {name:string;color:string;} {
         if(TagDelimiter.isRcsbId(targetId))
             return {
                 name: RcsbAnnotationConstants.provenanceName.pdb,
@@ -22,7 +22,7 @@ export namespace TrackUtils {
             }
     }
 
-    export function transformSourceFromTarget(targetId: string, source: SequenceReference|Source): string {
+    export function transformSourceFromTarget(targetId: string, source: SequenceReference|AnnotationReference): string {
         if(TagDelimiter.isModel(targetId) && source.includes("PDB_"))
             return source.replace("PDB_","CSM ");
         else

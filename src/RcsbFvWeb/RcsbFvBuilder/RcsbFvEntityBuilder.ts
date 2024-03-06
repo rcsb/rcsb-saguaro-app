@@ -1,6 +1,6 @@
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbFvEntity} from "../RcsbFvModule/RcsbFvEntity";
-import {FieldName, FilterInput, OperationType, Source, Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {FieldName, AnnotationFilterInput, OperationType, AnnotationReference, Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAdditionalConfig} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
@@ -41,7 +41,7 @@ export class RcsbFvEntityBuilder {
                                         ...additionalConfig({
                                             field:FieldName.TargetId,
                                             operation:OperationType.Contains,
-                                            source:Source.PdbInstance,
+                                            source:AnnotationReference.PdbInstance,
                                             values:[pdbId+TagDelimiter.instance]
                                         })
                                     }
@@ -87,16 +87,16 @@ export class RcsbFvEntityBuilder {
 
 }
 
-function additionalConfig(f?: FilterInput): RcsbFvAdditionalConfig{
-    const filters: Array<FilterInput> = [{
+function additionalConfig(f?: AnnotationFilterInput): RcsbFvAdditionalConfig{
+    const filters: Array<AnnotationFilterInput> = [{
         field: FieldName.Type,
         operation:OperationType.Equals,
-        source:Source.PdbInstance,
+        source:AnnotationReference.PdbInstance,
         values:[Type.UnobservedResidueXyz,Type.UnobservedAtomXyz,Type.MaQaMetricLocalTypeOther,Type.MaQaMetricLocalTypePlddt]
     }];
     if(f) filters.push(f);
     return {
-        sources:[Source.PdbEntity,Source.PdbInstance],
+        sources:[AnnotationReference.PdbEntity,AnnotationReference.PdbInstance],
         filters:filters
     };
 }
