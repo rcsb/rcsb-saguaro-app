@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.0.14] - 2024-04-02
+### Dependency update
+- rcsb-charts v0.2.23
+- audit fix
+
 ## [6.0.13] - 2024-03-06
 ### Dependency update
 - rcsb-saguaro v3.0.7
