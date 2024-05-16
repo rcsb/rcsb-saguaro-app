@@ -88,6 +88,7 @@
   ],
   "instance_order": [
     "MA_QA_METRIC_LOCAL_TYPE_PLDDT",
+    "UNMODELED",
     "SECONDARY_STRUCTURE",
     "UNOBSERVED",
     "ZERO_OCCUPANCY_RESIDUE_XYZ",
@@ -122,6 +123,14 @@
     "DISORDER_BINDING"
   ],
   "config": [{
+    "type": "UNMODELED",
+    "display": "block-area",
+    "color": {
+      "colors": ["#BBB", "#999"],
+      "thresholds": [0.999]
+    },
+    "title": "UNMODELED"
+  },{
     "type": "TRANSIT_PEPTIDE",
     "color": "#189f3e",
     "display": "block",

@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.1.0] - 2024-05-16
+### New feature
+- New track builder `UnmodeledTrackBuilder` that merges unmodeled tracks from instances
+
 ## [6.0.14] - 2024-04-02
 ### Dependency update
 - rcsb-charts v0.2.23

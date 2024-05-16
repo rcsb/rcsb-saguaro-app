@@ -13,8 +13,12 @@ import {CollectAlignmentInterface} from "../../RcsbCollectTools/AlignmentCollect
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {RcsbFvBoardConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {addUnmodeledTrackBuilder, UnmodeledTrackBuilder} from "../../RcsbUtils/TrackGenerators/UnmodeledTrackBuilder";
 
 export class RcsbFvEntity extends RcsbFvAbstractModule {
+
+    private readonly unmodeledTrackBuilder = new UnmodeledTrackBuilder();
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
@@ -35,7 +39,13 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
             titleSuffix: this.titleSuffix.bind(this),
             filters: buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
-            externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
+            rcsbContext:{
+                entityId: buildConfig.entityId
+            },
+            externalTrackBuilder: addUnmodeledTrackBuilder(
+                this.unmodeledTrackBuilder,
+                buildConfig.additionalConfig?.externalTrackBuilder
+            )
         };
         const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
@@ -43,6 +53,13 @@ export class RcsbFvEntity extends RcsbFvAbstractModule {
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
         this.boardConfigData.includeAxis = true;
         return void 0;
+    }
+
+    protected async getBoardConfig(): Promise<RcsbFvBoardConfigInterface> {
+        return {
+            ... this.boardConfigData,
+            tooltipGenerator: this.unmodeledTrackBuilder.getTooltip()
+        };
     }
 
     protected concatAlignmentAndAnnotationTracks(): void {

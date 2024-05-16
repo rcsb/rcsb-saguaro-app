@@ -86,7 +86,8 @@ const server = {
     },
     devServer: {
         compress: true,
-        port: 9000,
+        allowedHosts: "all",
+        port: 9000
     },
     plugins: Object.keys(entries).map(key=>new HtmlWebpackPlugin({
         filename:`${key}.html`,

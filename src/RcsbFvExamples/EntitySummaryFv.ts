@@ -1,5 +1,9 @@
 import {buildEntitySummaryFv} from "../RcsbFvWeb/RcsbFvBuilder";
+import {getJsonFromUrl, onLoad} from "./utils/events";
 
-buildEntitySummaryFv("pfv", "select", "AF_AFQ8WZ42F1_1").then((module)=>{
-    console.log(module)
+onLoad(()=>{
+    const args: {entityId:string} = getJsonFromUrl().entityId ? getJsonFromUrl() : {entityId:"3HBX_1"};
+    buildEntitySummaryFv("pfv", "select", args.entityId).then((module)=>{
+        console.log(module)
+    });
 });
