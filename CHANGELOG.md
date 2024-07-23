@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.1.1] - 2024-07-23
+### Improvement
+- Group carousel resolution single decimal point 
+
 ## [6.1.0] - 2024-05-16
 ### New feature
 - New track builder `UnmodeledTrackBuilder` that merges unmodeled tracks from instances

@@ -60,7 +60,9 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
                     <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Organism: </strong>{this.props.item.taxNames.join(", ")}</div>
                     <div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}} title={this.props.item.experimentalMethod}><strong>Experimental Method: </strong>{this.props.item.experimentalMethod ?? NA}</div>
                     {
-                        (<div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Resolution: </strong>{this.props.item.resolution ?  `${this.props.item.resolution} Å` : NA}</div>)
+                        (<div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}>
+                            <strong>Resolution: </strong>{this.props.item.resolution ?  `${formatRes(this.props.item.resolution)} Å` : NA}
+                        </div>)
                     }
                     {
                         this.props.item.molecularWeight ? (<div style={{textOverflow:"ellipsis",whiteSpace:"nowrap",overflow:"hidden"}}><strong>Molecular Weight: </strong>{`${this.props.item.molecularWeight} kDa`}</div>) : null
@@ -69,6 +71,10 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
             </div>
         );
     }
+}
+
+function formatRes(x: number): number {
+    return Math.round(x*10) / 10;
 }
 
 function memberImgUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvenanceId): string{
