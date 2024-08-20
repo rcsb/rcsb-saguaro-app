@@ -1,6 +1,5 @@
 import {buildGroup} from "../RcsbGroupWeb/RcsbGroupBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {rcsbRequestCtxManager} from "../RcsbRequest/RcsbRequestContextManager";
 import {
     CATH_FACET, DISEASE_FACET,
     GO_COMPONENT_FACET,
@@ -8,11 +7,8 @@ import {
     GO_PROCESS_FACET, INTERPRO_FACET, PHENOTYPE_FACET, RELEASE_DATE_FACET, RESOLUTION_FACET, TAXONOMY_COUNT_FACET
 } from "../RcsbSeacrh/FacetStore/SingleFacets";
 
-const groupId = "O14744";
+const groupId = "P01112";
 
-rcsbRequestCtxManager.initializeArchesClient({
-    uri:"http://132.249.213.75/rcsbsearch/v2/query"
-});
 
 // buildGroupContent("select", GroupProvenanceId.ProvenanceSequenceIdentity, groupId);
 
@@ -39,6 +35,7 @@ buildGroup("pfv_3", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, undef
 buildGroup("pfv_2", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, undefined, [
     GO_PROCESS_FACET.attributeName,
     GO_COMPONENT_FACET.attributeName,
-    GO_FUNCTION_FACET.attributeName
+    GO_FUNCTION_FACET.attributeName,
+    PHENOTYPE_FACET.attributeName
 ]).then((m)=>{
 });
