@@ -2,6 +2,16 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.0] - 2024-08-20
+### Minor Refactor
+- `labelList` is no loger an attribute of `RcsbChartInterface`. 
+The logic behind this attribute has been moved to `rcsb-search-tools` package. 
+Multi-faceting search data will contain a `labelPath` list indicating the facets labels
+
+### Dependency update
+- rcsb-search-tools v0.0.14
+
+
 ## [6.1.1] - 2024-07-23
 ### Improvement
 - Group carousel resolution single decimal point 

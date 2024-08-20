@@ -127,24 +127,27 @@ export const CHIMERIC_FACET: FacetMemberInterface = {
     chartType: ChartType.barplot,
     contentType: "string",
     facetConfig: {
-        facetTransform: (buckets)=>{
+        facetTransform: (bucket)=>{
             const out: BucketDataType[] = [];
-            const  wt = buckets.find(b=>b.label == 1)
+            const  wt = bucket.find(b=>b.label == 1)
             if(wt)
                 out.push({
                     label: "Non-chimeric",
+                    labelPath: ["Non-chimeric"],
                     population: wt.population
                 });
-            const synthetic = buckets.find(b=>b.label == 0)
+            const synthetic = bucket.find(b=>b.label == 0)
             if(synthetic)
                 out.push({
                     label: "Synthetic",
+                    labelPath: ["Synthetic"],
                     population: synthetic.population
                 });
-            const chimeric = buckets.filter(b=> parseInt(b.label.toString()) > 1);
+            const chimeric = bucket.filter(b=> parseInt(b.label.toString()) > 1);
             if(chimeric?.length > 0)
                 out.push({
                     label: "Chimeric",
+                    labelPath: ["Chimeric"],
                     population: chimeric.reduce((c,p)=>c+p.population,0)
                 });
             return out;
@@ -518,12 +521,15 @@ export const ENZYME_CLASS_FACET: FacetMemberInterface = {
 export const GO_FUNCTION_FACET: FacetMemberInterface = {
     id: "go_function_class",
     title: "GO Molecular Function",
-    attributeName: "GO_FUNCTION_FACET",
+    attributeName: `GO_FUNCTION_FACET/${RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path}`,
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
         mostPopulatedGroups: 10
+    },
+    facetConfig:{
+        facetTransform: goFacetTransform
     },
     facet: {
         filter: {
@@ -565,12 +571,15 @@ export const GO_FUNCTION_FACET: FacetMemberInterface = {
 export const GO_PROCESS_FACET: FacetMemberInterface = {
     id: "go_process_class",
     title: "GO Biological Process",
-    attributeName: "GO_PROCESS_FACET",
+    attributeName: `GO_PROCESS_FACET/${RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path}`,
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
         mostPopulatedGroups: 10
+    },
+    facetConfig:{
+      facetTransform: goFacetTransform
     },
     facet: {
         filter: {
@@ -612,12 +621,15 @@ export const GO_PROCESS_FACET: FacetMemberInterface = {
 export const GO_COMPONENT_FACET: FacetMemberInterface = {
     id: "go_component_class",
     title: "GO Cellular Component",
-    attributeName: "GO_COMPONENT_FACET",
+    attributeName: `GO_COMPONENT_FACET/${RcsbSearchMetadata.RcsbPolymerEntityAnnotation.AnnotationLineage.Name.path}`,
     attribute: RcsbSearchMetadata.RcsbPolymerEntityAnnotation.Name.path,
     contentType: "string",
     chartType: ChartType.barplot,
     chartConfig: {
         mostPopulatedGroups: 10
+    },
+    facetConfig:{
+        facetTransform: goFacetTransform
     },
     facet: {
         filter: {
@@ -766,3 +778,11 @@ export const SearchFacets = {
     INTERPRO_FACET,
     PHENOTYPE_FACET
 };
+
+
+function goFacetTransform(bucket: BucketDataType[], facetConfig?: FacetMemberInterface["facetConfig"]){
+    return bucket.map(d=>({
+        ...d,
+        label: d.labelPath[0]
+    }));
+}

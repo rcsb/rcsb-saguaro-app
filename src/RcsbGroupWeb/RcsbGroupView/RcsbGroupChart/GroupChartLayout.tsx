@@ -60,7 +60,7 @@ function chartCell(chartNode:JSX.Element, title?: string, chartDisplayConfig?:Pa
 }
 
 function histogramChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Element {
-    return (<div id={`chart:${chart[0].labelList ? chart[0].labelList.join("-") + chart[0].attribute : chart[0].attribute}`} >
+    return (<div id={`chart:${chart[0].attributeName}`} >
         <HistogramChartComponent
             data={chart.map(c=>c.data)}
             chartConfig={chart[0].chartConfig}
@@ -70,7 +70,7 @@ function histogramChart(attributeName: string, chart: RcsbChartInterface[]): JSX
 }
 
 function barChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Element {
-    return (<div id={`chart:${chart[0].labelList ? chart[0].labelList.join("-") + chart[0].attribute : chart[0].attribute}`} >
+    return (<div id={`chart:${chart[0].attributeName}`} >
         <BarChartComponent
             data={chart.map(c=>c.data)}
             chartConfig={chart[0].chartConfig}

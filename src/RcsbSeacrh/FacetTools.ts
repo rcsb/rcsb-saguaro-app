@@ -20,7 +20,6 @@ import {getBucketsFromFacets} from "@rcsb/rcsb-search-tools/lib/SearchParseTools
 
 export type SearchFilter = {attribute:RcsbSearchAttributeType;value:AttributeTextQueryParameters['value'];operator:AttributeTextQueryParameters["operator"];service:Service.Text|Service.TextChem};
 export interface RcsbChartInterface<T=any> extends Omit<FacetMemberInterface, "id"|"facet">{
-    labelList?: string[];
     data: ChartObjectInterface<T>[];
     filters?:SearchFilter[];
 }
@@ -37,10 +36,9 @@ export class FacetTools {
             const chart= FacetTools.getFacetChartTypeFromAttribute(facetMembers, bucket.name);
             out.push({
                 ...chart,
-                labelList: [],
                 attributeName: bucket.name,
                 attribute: facet.attribute,
-                data: applyChartConfigToData(bucket.data, facet?.facetConfig),
+                data: applyChartConfigToData(bucket, facet?.facetConfig),
                 filters: FacetTools.getFacetFiltersFromName(facetMembers, bucket.name),
                 contentType: facet.contentType
             });
@@ -125,19 +123,20 @@ export class FacetTools {
     }
 }
 
-function applyChartConfigToData(data: BucketDataType[], facetConfig?: FacetMemberInterface["facetConfig"]): BucketDataType[] {
+function applyChartConfigToData(bucket: SearchBucketFacetType, facetConfig?: FacetMemberInterface["facetConfig"]): BucketDataType[] {
     if(facetConfig?.mergeDomainMaxValue)
-        return mergeDomainMaxValue(data, facetConfig.mergeDomainMaxValue)
+        return mergeDomainMaxValue(bucket.data, facetConfig.mergeDomainMaxValue)
     if(facetConfig?.facetTransform)
-        return facetConfig.facetTransform(data)
-    return data;
+       return  facetConfig.facetTransform(bucket.data)
+    return bucket.data;
 }
 
 function mergeDomainMaxValue(data: BucketDataType[], domMaxValue: number): BucketDataType[] {
     const n = data.filter(d=> parseFloat(d.label.toString()) >= domMaxValue).reduce((prev, curr)=>prev+curr.population,0);
     return n > 0 ? data.filter(d=> parseFloat(d.label.toString()) < domMaxValue).concat({
         population: n,
-        label: domMaxValue
+        label: domMaxValue,
+        labelPath: [domMaxValue.toString()]
     }) : data;
 }
 
