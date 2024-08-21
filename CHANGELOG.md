@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.1] - 2024-08-20
+### Configuration
+- New ligand binding sites annotations
+
 ## [6.2.0] - 2024-08-20
 ### Minor Refactor
 - `labelList` is no loger an attribute of `RcsbChartInterface`. 

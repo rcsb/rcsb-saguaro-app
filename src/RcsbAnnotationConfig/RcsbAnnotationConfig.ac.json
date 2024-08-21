@@ -104,7 +104,9 @@
     "MOGUL_BOND_OUTLIER",
     "STEREO_OUTLIER",
     "CIS_PEPTIDE",
-    "BINDING_SITE",
+    "LIGAND_INTERACTION",
+    "LIGAND_COVALENT_LINKAGE",
+    "LIGAND_METAL_COORDINATION_LINKAGE",
     "ASA_UNBOUND",
     "ASA_BOUND",
     "BURIAL_FRACTION",
@@ -291,6 +293,28 @@
     "display": "pin",
     "color": "#984657",
     "title": "BINDING SITE",
+    "key": "name",
+    "addToType":["feature_id"],
+    "ignore": true
+  },{
+    "type": "LIGAND_INTERACTION",
+    "display": "pin",
+    "color": "#984657",
+    "title": "BINDING SITE",
+    "key": "name",
+    "addToType":["feature_id"]
+  },{
+    "type": "LIGAND_COVALENT_LINKAGE",
+    "display": "pin",
+    "color": "#984657",
+    "title": "COVALENT LINKAGE",
+    "key": "name",
+    "addToType":["feature_id"]
+  },{
+    "type": "LIGAND_METAL_COORDINATION_LINKAGE",
+    "display": "pin",
+    "color": "#984657",
+    "title": "METAL COORDINATION",
     "key": "name",
     "addToType":["feature_id"]
   },{
