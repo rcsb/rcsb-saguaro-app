@@ -5,7 +5,7 @@ import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQue
 import {GroupChartAdditionalProperties, LayoutConfigInterface} from "./GroupChartAdditionalProperties";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
-import classes from "../../../scss/bootstrap-group-display.module.scss";
+import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {SearchQueryComponentFactory} from "../RcsbGroupSeacrhQuery/RcsbGroupSeacrhQueryComponent";
 
 interface RcsbGroupChartInterface {

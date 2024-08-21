@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.2] - 2024-08-21
+### Dependency update
+- rcsb-saguaro v3.0.9
+- rcsb-api-tools v4.3.0
+- rcsb-charts v0.2.24
+- audit fix
+- Multiple dependencies have been updated
+
 ## [6.2.1] - 2024-08-20
 ### Configuration
 - New ligand binding sites annotations

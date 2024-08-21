@@ -1,7 +1,7 @@
 import React from "react";
 import {RcsbTabs} from "../RcsbFvWeb/RcsbFvComponents/RcsbTabs";
 import {createRoot} from "react-dom/client";
-import classes from "../scss/bootstrap-fv-display.module.scss";
+import * as classes from "../scss/bootstrap-fv-display.module.scss";
 import {ItemComponent} from "./Components/ItemComponent";
 
 export type UiComponentType<T extends {}> = {

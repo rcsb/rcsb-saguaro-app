@@ -1,7 +1,7 @@
 import React from "react";
 import {ChartMapType, GroupChartLayout} from "../RcsbGroupChart/GroupChartLayout";
 import {ResidueChartInterface, ResidueChartTools as RCT} from "./ResidueChartTools/ResidueChartTools";
-import classes from "../../../scss/bootstrap-group-display.module.scss";
+import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 import {ChartDisplayConfigInterface} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 
@@ -14,7 +14,7 @@ export class RcsbResidueChartComponent extends React.Component <ResidueChartInte
 
     render(): JSX.Element {
         if (this.state?.layout?.flat().filter((e) => (this.state?.chartMap?.get(e)))) {
-            return (<div className={classes.bootstrapComponentScope}>
+            return (<div className={classes.bootstrapGroupComponentScope}>
                 <GroupChartLayout
                     layout={this.state.layout}
                     chartMap={this.state.chartMap}

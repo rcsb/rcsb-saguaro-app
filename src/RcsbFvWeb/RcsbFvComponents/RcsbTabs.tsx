@@ -1,6 +1,6 @@
 import React from "react";
 import {Tab, Tabs} from "react-bootstrap";
-import classes from "../../scss/bootstrap-fv-display.module.scss";
+import * as classes from "../../scss/bootstrap-fv-display.module.scss";
 import uniqid from "uniqid";
 
 export interface RcsbTabsInterface<T extends string> {

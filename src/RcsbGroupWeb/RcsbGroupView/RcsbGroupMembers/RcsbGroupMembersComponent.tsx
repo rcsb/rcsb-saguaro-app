@@ -1,6 +1,6 @@
 import React from "react";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import classes from "../../../scss/bootstrap-group-display.module.scss";
+import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {GroupMembersGrid} from "./GroupMembersGrid";
 import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
