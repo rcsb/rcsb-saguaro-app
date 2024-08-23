@@ -90,24 +90,56 @@ export const TAXONOMY_COUNT_FACET: FacetMemberInterface = {
     title: "Number of Source Taxonomies",
     attributeName: "TAXONOMY_COUNT_FACET",
     attribute: RcsbSearchMetadata.RcsbPolymerEntity.RcsbSourceTaxonomyCount.path,
-    chartType: ChartType.histogram,
-    contentType: "number",
-    chartConfig: {
-        histogramBinIncrement: 0,
-        tickFormat:{
-            domAxis: (t: number|string)=>{
-                if(t.toString().includes('.'))
-                    return '';
-                return t.toString();
-            }
+    chartType: ChartType.barplot,
+    contentType: "string",
+    facetConfig: {
+        facetTransform: (bucket)=>{
+            const out: BucketDataType[] = [];
+            const  wt = bucket.find(b=> parseInt(b.label.toString()) == 1)
+            if(wt)
+                out.push({
+                    label: "Single",
+                    labelPath: ["Single"],
+                    population: wt.population
+                });
+            const synthetic = bucket.find(b=> parseInt(b.label.toString()) == 0)
+            if(synthetic)
+                out.push({
+                    label: "None",
+                    labelPath: ["None"],
+                    population: synthetic.population
+                });
+            const chimeric = bucket.filter(b=> parseInt(b.label.toString()) > 1);
+            if(chimeric?.length > 0)
+                out.push({
+                    label: "Multiple",
+                    labelPath: ["Multiple"],
+                    population: chimeric.reduce((c,p)=>c+p.population,0)
+                });
+            return out;
         },
-        chartDisplayConfig: {
-            constHeight: 225
-        },
-        domainMinValue: 0,
-        axisLabel: "Taxonomy count",
-        tooltipText: (d: ChartDataValueInterface<GroupChartMap.ChartObjectIdType>)=>{
-            return `Taxonomy count ${d.x}`;
+        bucketClickSearchQuery: (datum, data, e) => {
+            if(datum.x == "Single")
+                return buildAttributeQuery({
+                    attribute: TAXONOMY_COUNT_FACET.attribute,
+                    value: 1,
+                    operator: Operator.Equals,
+                    service: Service.Text
+                });
+            else if(datum.x == "None")
+                return buildAttributeQuery({
+                    attribute: TAXONOMY_COUNT_FACET.attribute,
+                    value: 0,
+                    operator: Operator.Equals,
+                    service: Service.Text
+                });
+            else
+                return buildAttributeQuery({
+                    attribute: TAXONOMY_COUNT_FACET.attribute,
+                    value: 1,
+                    operator: Operator.Greater,
+                    service: Service.Text
+                });
         }
     },
     facet: {

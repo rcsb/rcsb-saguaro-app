@@ -7,9 +7,11 @@ export class MountableComponent {
     private root: Root;
 
     constructor(element: HTMLElement) {
-        if(!MountableComponent.ROOT.has(element.id))
-            MountableComponent.ROOT.set(element.id, createRoot(element));
-        this.root = MountableComponent.ROOT.get(element.id) ?? createRoot(element);
+        if(MountableComponent.ROOT.has(element.id)){
+            MountableComponent.ROOT.get(element.id)?.unmount();
+        }
+        this.root = createRoot(element);
+        MountableComponent.ROOT.set(element.id, this.root);
     }
 
     render(node: ReactNode): void {

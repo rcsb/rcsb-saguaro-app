@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.4] - 2024-08-23
+### Configuration
+- Source taxonomy histogram to barchart 
+- Old `METAL_COORDINATION` features ignored
+### Bug fix
+- `MountableComponent` bug fix
+
 ## [6.2.3] - 2024-08-22
 ### Improvement
 - Avoid creating duplicated components in `MountableComponent`

@@ -630,7 +630,8 @@
     "type": "METAL_COORDINATION",
     "display": "bond",
     "color": "#aaaada",
-    "title": "METAL COORDINATION"
+    "title": "METAL COORDINATION",
+    "ignore": true
   },{
     "type": "COVALENT_BOND",
     "display": "bond",
