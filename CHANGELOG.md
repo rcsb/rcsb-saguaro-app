@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.5] - 2024-08-23
+### Dependency update
+- audit fix
+
 ## [6.2.4] - 2024-08-23
 ### Configuration
 - Source taxonomy histogram to barchart 
