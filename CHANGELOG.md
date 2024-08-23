@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.3] - 2024-08-22
+### Improvement
+- Avoid creating duplicated components in `MountableComponent`
+
 ## [6.2.2] - 2024-08-21
 ### Dependency update
 - rcsb-saguaro v3.0.9

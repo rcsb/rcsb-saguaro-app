@@ -3,12 +3,13 @@ import {ReactNode} from "react";
 
 export class MountableComponent {
 
-    private readonly element: HTMLElement;
+    private static readonly ROOT = new Map<string, Root>()
     private root: Root;
 
     constructor(element: HTMLElement) {
-        this.element = element;
-        this.root = createRoot(this.element);
+        if(!MountableComponent.ROOT.has(element.id))
+            MountableComponent.ROOT.set(element.id, createRoot(element));
+        this.root = MountableComponent.ROOT.get(element.id) ?? createRoot(element);
     }
 
     render(node: ReactNode): void {
