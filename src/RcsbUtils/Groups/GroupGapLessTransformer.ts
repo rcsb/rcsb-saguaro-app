@@ -1,4 +1,4 @@
-import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAlignments, SequenceAnnotations} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Logo} from "../TrackGenerators/Logo";
 import {Assertions} from "../Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
@@ -7,7 +7,7 @@ export class GroupGapLessTransformer {
 
     private readonly gapLessReference: number[] = [];
     private refLength: number;
-    private processAlignments(alignment: AlignmentResponse): void {
+    private processAlignments(alignment: SequenceAlignments): void {
         if(this.gapLessReference.length > 0 || !alignment.alignment_logo)
             return;
 
@@ -30,29 +30,21 @@ export class GroupGapLessTransformer {
         this.refLength = newIndex - 1;
     }
 
-    public gapLessAlignments(alignments:AlignmentResponse): void {
+    public gapLessAlignments(alignments:SequenceAlignments): void {
         this.processAlignments(alignments)
         if(this.gapLessReference.length == 0)
             return;
-        if(alignments.target_alignment)
-            alignments.target_alignment?.forEach(ta=>{
-                ta?.aligned_regions?.forEach(region=>{
-                    if(region?.query_begin) region.query_begin = this.gapLessReference[region.query_begin];
-                    if(region?.query_end) region.query_end = this.gapLessReference[region.query_end];
-                });
+        alignments.target_alignments?.forEach(ta=>{
+            ta?.aligned_regions?.forEach(region=>{
+                if(region?.query_begin) region.query_begin = this.gapLessReference[region.query_begin];
+                if(region?.query_end) region.query_end = this.gapLessReference[region.query_end];
             });
-        else
-            alignments.target_alignment_subset?.edges?.forEach(edge=>{
-                edge?.node?.aligned_regions?.forEach(region=>{
-                    if(region?.query_begin) region.query_begin = this.gapLessReference[region.query_begin];
-                    if(region?.query_end) region.query_end = this.gapLessReference[region.query_end];
-                });
-            });
+        });
         alignments.alignment_logo = alignments.alignment_logo?.filter((al,n)=>this.gapLessReference[n+1]!=-1);
         if(alignments.alignment_length) alignments.alignment_length = this.refLength;
     }
 
-    public gapLessFeatures(annotations: Array<AnnotationFeatures>): void {
+    public gapLessFeatures(annotations: Array<SequenceAnnotations>): void {
         if(this.gapLessReference.length == 0)
             return;
         annotations.forEach(ann=>{

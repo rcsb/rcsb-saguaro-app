@@ -6,7 +6,7 @@ import {
 
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
-import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAlignments, SequenceAnnotations} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {groupExternalTrackBuilder} from "./GroupExternalTrackBuilder";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {Assertions} from "../Helpers/Assertions";
@@ -39,26 +39,26 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
                 });
             await groupTrackBuilder.addTo?.(tracks);
         },
-        async processAlignmentAndFeatures(data: { annotations: Array<AnnotationFeatures>, alignments: AlignmentResponse }): Promise<void> {
+        async processAlignmentAndFeatures(data: { annotations: Array<SequenceAnnotations>, alignments: SequenceAlignments }): Promise<void> {
             await groupTrackBuilder.processAlignmentAndFeatures?.(data);
             processFeatures(data.annotations);
         },
-        async filterFeatures(data:{annotations: Array<AnnotationFeatures>}): Promise<Array<AnnotationFeatures>> {
-            const annotations: Array<AnnotationFeatures> = await groupTrackBuilder.filterFeatures?.(data) ?? [];
+        async filterFeatures(data:{annotations: Array<SequenceAnnotations>}): Promise<Array<SequenceAnnotations>> {
+            const annotations: Array<SequenceAnnotations> = await groupTrackBuilder.filterFeatures?.(data) ?? [];
             annotations.forEach(ann=>{
                 ann.features = ann.features?.filter(f=> f ? f.name?.includes("ligand") : false);
             })
-            return new Promise<Array<AnnotationFeatures>>((resolve => {
+            return new Promise<Array<SequenceAnnotations>>((resolve => {
                 resolve(annotations);
             }));
         },
-        filterAlignments(data: {alignments:AlignmentResponse;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<AlignmentResponse> {
+        filterAlignments(data: {alignments:SequenceAlignments;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<SequenceAlignments> {
             assertDefined(groupTrackBuilder.filterAlignments);
             return groupTrackBuilder.filterAlignments(data);
         }
     };
 
-    function processFeatures(annotations: Array<AnnotationFeatures>){
+    function processFeatures(annotations: Array<SequenceAnnotations>){
         // position > ligand name
         const ligandMap: Map<string,Set<string>> = new Map<string, Set<string>>();
         annotations.forEach(ann => {

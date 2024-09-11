@@ -1,12 +1,12 @@
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
+    SequenceAlignments,
+    SequenceAnnotations,
     FieldName,
     GroupReference,
     OperationType,
     SequenceReference,
-    Source,
-    Type
+    AnnotationReference,
+    FeaturesType
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -37,12 +37,12 @@ export class RcsbFvUniprotAlignment extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
-        const alignmentFeatures: AnnotationFeatures[] = await collectFeatures(buildConfig.upAcc);
+        const alignmentFeatures: SequenceAnnotations[] = await collectFeatures(buildConfig.upAcc);
         await trackFactory.prepareFeatures(
-            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.UnobservedResidueXyz)})),
-            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==Type.MaQaMetricLocalTypePlddt)}))
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==FeaturesType.UnobservedResidueXyz)})),
+            alignmentFeatures.map(af=>({...af, feature:af.features?.filter(f=>f?.type==FeaturesType.MaQaMetricLocalTypePlddt)}))
         );
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
@@ -51,11 +51,11 @@ export class RcsbFvUniprotAlignment extends RcsbFvAbstractModule {
         const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: buildConfig.upAcc,
             reference: SequenceReference.Uniprot,
-            sources:[Source.Uniprot],
-            annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
+            sources: [AnnotationReference.Uniprot],
+            annotationProcessing: buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
@@ -73,16 +73,16 @@ export class RcsbFvUniprotAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectFeatures(upAcc: string): Promise<Array<AnnotationFeatures>> {
+async function collectFeatures(upAcc: string): Promise<Array<SequenceAnnotations>> {
     return await rcsbClient.requestRcsbPdbAnnotations({
         queryId: upAcc,
         reference: SequenceReference.Uniprot,
-        sources: [Source.PdbInstance],
+        sources: [AnnotationReference.PdbInstance],
         filters: [{
-            source:Source.PdbInstance,
+            source:AnnotationReference.PdbInstance,
             operation: OperationType.Equals,
             field:FieldName.Type,
-            values:[Type.UnobservedResidueXyz,Type.MaQaMetricLocalTypePlddt]
+            values:[FeaturesType.UnobservedResidueXyz,FeaturesType.MaQaMetricLocalTypePlddt]
         }]
     });
 }

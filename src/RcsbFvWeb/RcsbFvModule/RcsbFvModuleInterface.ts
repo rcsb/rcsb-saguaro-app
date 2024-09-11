@@ -4,12 +4,12 @@ import {
 } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {RcsbFv} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFv";
 import {
-    AlignmentResponse,
-    Feature,
-    FilterInput,
+    SequenceAlignments,
+    Features,
+    AnnotationFilterInput,
     GroupReference,
     SequenceReference,
-    Source, TargetAlignment
+    AnnotationReference, TargetAlignments
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate} from "../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {
@@ -32,8 +32,8 @@ import {
 
 export type RcsbContextType = Partial<{entryId:string;entityId:string;asymId:string;authId:string;upAcc:string;chrId:string;targetId:string;queryId:string;operatorIds:Array<string>;}>;
 export interface RcsbFvAdditionalConfig{
-    sources?: Array<Source>;
-    filters?:Array<FilterInput>;
+    sources?: Array<AnnotationReference>;
+    filters?:Array<AnnotationFilterInput>;
     alignmentFilter?:Array<string>;
     hideAlignments?: boolean;
     bottomAlignments?: boolean;
@@ -41,11 +41,11 @@ export interface RcsbFvAdditionalConfig{
     sequencePrefix?:string;
     annotationProcessing?: AnnotationProcessingInterface;
     externalTrackBuilder?: ExternalTrackBuilderInterface;
-    page?:{first:number,after:string};
+    page?:{first:number,after:number};
     excludeLogo?: boolean;
     rcsbContext?:RcsbContextType;
     trackConfigModifier?:{
-        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignment, alignmentResponse: AlignmentResponse, alignmentIndex: number) => Promise<Partial<RcsbFvRowConfigInterface>>,
+        alignment?: (alignmentContext: AlignmentRequestContextType, targetAlignment: TargetAlignments, alignmentResponse: SequenceAlignments, alignmentIndex: number) => Promise<Partial<RcsbFvRowConfigInterface>>,
         annotations?: (trackManager: TrackManagerInterface) => Promise<Partial<RcsbFvRowConfigInterface>>
     };
     externalUiComponents?: {
@@ -60,7 +60,7 @@ export interface RcsbModuleDataProviderInterface {
         collector: AlignmentCollectorInterface;
         context: AlignmentCollectConfig;
         trackFactories?:{
-            alignmentTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>,
+            alignmentTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignments]>,
             sequenceTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, string]>
         }
     };
@@ -77,7 +77,7 @@ export interface RcsbFvModuleBuildInterface {
     queryId?: string;
     from?:SequenceReference;
     to?:SequenceReference;
-    sources?:Array<Source>;
+    sources?:Array<AnnotationReference>;
     entityId?: string;
     instanceId?: string;
     upAcc?:string;
@@ -104,8 +104,8 @@ export interface RcsbFvModulePublicInterface<
     M extends {[k:string]:any;} = {}
 > {
     getTargets(): Promise<Array<string>>;
-    getAlignmentResponse():Promise<AlignmentResponse>;
-    getFeatures(): Promise<Array<Feature>>;
+    getAlignmentResponse():Promise<SequenceAlignments>;
+    getFeatures(): Promise<Array<Features>>;
     getAnnotationConfigData(): Promise<Array<RcsbFvRowConfigInterface<P,S,R,M>>>;
     getFv(): RcsbFv<P,S,R,M>;
     wait(): Promise<void>;

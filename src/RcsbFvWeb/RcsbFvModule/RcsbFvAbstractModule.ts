@@ -12,9 +12,9 @@ import {
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {RcsbFvModuleBuildInterface, RcsbFvModuleInterface} from "./RcsbFvModuleInterface";
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
-    Feature, TargetAlignment
+    SequenceAlignments,
+    SequenceAnnotations,
+    Features, TargetAlignments
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {ComponentsManager} from "../RcsbFvComponents/ComponentsManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
@@ -100,11 +100,11 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
         return await this.alignmentCollector.getTargets();
     }
 
-    public async getAlignmentResponse():Promise<AlignmentResponse> {
+    public async getAlignmentResponse():Promise<SequenceAlignments> {
         return await this.alignmentCollector.getAlignment();
     }
 
-    public async getFeatures(): Promise<Array<Feature>>{
+    public async getFeatures(): Promise<Array<Features>>{
         //return (await this.annotationCollector.getAnnotationFeatures()).map(af=>af.features).flat();
         return await this.annotationCollector.getFeatures();
     }
@@ -132,25 +132,25 @@ export abstract class RcsbFvAbstractModule implements RcsbFvModuleInterface{
 
     protected async buildAlignmentTracks(
         alignmentRequestContext: AlignmentRequestContextType,
-        alignmentResponse: AlignmentResponse,
+        alignmentResponse: SequenceAlignments,
         trackFactories?:{
-            alignmentTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>,
+            alignmentTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignments]>,
             sequenceTrackFactory?: TrackFactoryInterface<[AlignmentRequestContextType, string]>
         }
     ): Promise<void>{
         const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = trackFactories?.sequenceTrackFactory ?? new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
         if(alignmentResponse.query_sequence)
             this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
-        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, AlignmentResponse],[AlignmentRequestContextType, TargetAlignment, AlignmentResponse, number]> = new AlignmentBlockFactory(
+        const alignmentBlockFactory: BlockFactoryInterface<[AlignmentRequestContextType, SequenceAlignments],[AlignmentRequestContextType, TargetAlignments, SequenceAlignments, number]> = new AlignmentBlockFactory(
             trackFactories?.alignmentTrackFactory ?? new AlignmentTrackFactory(this.getPolymerEntityInstanceTranslator()),
             this.buildConfig.additionalConfig?.trackConfigModifier?.alignment
         );
         this.alignmentTracks = await alignmentBlockFactory.getBlock(alignmentRequestContext,alignmentResponse);
     }
 
-    protected async buildAnnotationsTrack(annotationsRequestContext: AnnotationRequestContext, annotationsFeatures: AnnotationFeatures[], annotationConfigMap?: AnnotationConfigInterface): Promise<void> {
+    protected async buildAnnotationsTrack(annotationsRequestContext: AnnotationRequestContext, annotationsFeatures: SequenceAnnotations[], annotationConfigMap?: AnnotationConfigInterface): Promise<void> {
         const defaultAnnotationConfigMap: AnnotationConfigInterface = annotationConfigMap ?? acm as unknown as AnnotationConfigInterface;
-        const annotationsBlockFactory: BlockFactoryInterface<[AnnotationRequestContext, AnnotationFeatures[]],[TrackManagerInterface]> = new AnnotationsBlockFactory(
+        const annotationsBlockFactory: BlockFactoryInterface<[AnnotationRequestContext, SequenceAnnotations[]],[TrackManagerInterface]> = new AnnotationsBlockFactory(
             new AnnotationBlockManager(
                 new AnnotationTrackManagerFactory(),
                 new RcsbAnnotationConfig(defaultAnnotationConfigMap),

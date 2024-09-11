@@ -1,5 +1,5 @@
 import * as acm from "./RcsbAnnotationConfig.ac.json";
-import {AnnotationFeatures, Feature} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAnnotations, Features} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {RcsbFvColorGradient} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {AnnotationConfigInterface, RcsbAnnotationConfigInterface} from "./AnnotationConfigInterface";
@@ -16,7 +16,7 @@ export interface RcsbMergedTypesInterface {
     display: RcsbFvDisplayTypes;
 }
 
-interface DynamicKeyAnnotationInterface extends Feature{
+interface DynamicKeyAnnotationInterface extends Features{
     [key: string]: any;
 }
 
@@ -65,7 +65,7 @@ export class RcsbAnnotationConfig {
     }
 
     //TODO refactor how title and type are defined. Can this be split in two different methods ?
-    public async getAnnotationType(requestConfig: AnnotationRequestContext, ann: AnnotationFeatures, feature: Feature): Promise<string>{
+    public async getAnnotationType(requestConfig: AnnotationRequestContext, ann: SequenceAnnotations, feature: Features): Promise<string>{
         const trackTitle: string | undefined = typeof requestConfig.trackTitle === "function" ? (await requestConfig.trackTitle(ann,feature)) : undefined;
         const titleSuffix: string | undefined = typeof requestConfig.titleSuffix === "function" ? (await requestConfig.titleSuffix(ann,feature)) : undefined;
         const typeSuffix: string | undefined = typeof requestConfig.typeSuffix === "function" ? (await requestConfig.typeSuffix(ann,feature)) : undefined;

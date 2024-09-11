@@ -2,10 +2,10 @@ import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataMa
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 
 import {
-    AlignedRegion,
-    AnnotationFeatures,
-    TargetAlignment,
-    Type
+    AlignedRegions,
+    SequenceAnnotations,
+    TargetAlignments,
+    FeaturesType
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignmentContextInterface,
@@ -26,7 +26,7 @@ import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {RcsbFvTrackDataAnnotationInterface} from "../RcsbFvTrackDataAnnotationInterface";
 
-export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
+export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignments]>{
 
     private alignmentTrackFactory: PlainAlignmentTrackFactory;
     private positionalScores: Map<string,Map<number,number>> = new Map<string, Map<number,number>>();
@@ -39,8 +39,8 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
 
     public async getTrack(
         alignmentRequestContext: AlignmentRequestContextType,
-        targetAlignment: TargetAlignment,
-        alignedRegionToTrackElementList?: (region:AlignedRegion, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
+        targetAlignment: TargetAlignments,
+        alignedRegionToTrackElementList?: (region:AlignedRegions, alignmentContext: AlignmentContextInterface)=>Array<RcsbFvTrackDataElementInterface>
     ): Promise<RcsbFvRowConfigInterface> {
         return this.alignmentTrackFactory.getTrack(
             alignmentRequestContext,
@@ -54,12 +54,12 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
 
     }
 
-    public async prepareFeatures(positionalScores: Array<AnnotationFeatures>): Promise<void>{
+    public async prepareFeatures(positionalScores: Array<SequenceAnnotations>): Promise<void>{
         await this.collectFeatureEntryProperties(positionalScores);
         this.prepareFeaturesAlignmentMap(positionalScores);
     }
 
-    private async collectFeatureEntryProperties(unObservedRegions: Array<AnnotationFeatures>): Promise<void>{
+    private async collectFeatureEntryProperties(unObservedRegions: Array<SequenceAnnotations>): Promise<void>{
         const entryIds: string[] = Operator.uniqueValues<string>(unObservedRegions.map(uor=>{
             assertDefined(uor.target_id);
             return uor.target_id.split(TagDelimiter.instance)[0];
@@ -75,7 +75,7 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         });
     }
 
-    private prepareFeaturesAlignmentMap(positionalScores: Array<AnnotationFeatures>){
+    private prepareFeaturesAlignmentMap(positionalScores: Array<SequenceAnnotations>){
         const instancePositionalScores: Map<string,Map<number,number>> = new Map<string, Map<number,number>>();
         positionalScores.forEach(ps=> {
             if(!ps.target_id)
@@ -112,7 +112,7 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
         this.positionalScores = entityPositionalScore;
     }
 
-    private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
+    private alignedRegionToTrackElementList(region: AlignedRegions, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
         if(!this.positionalScores.has(alignmentContext.targetId) || this.positionalScores.get(alignmentContext.targetId)?.size == 0)
             return this.alignmentTrackFactory.alignedRegionToTrackElementList(region, alignmentContext);
         const outRegions: Array<RcsbFvTrackDataAnnotationInterface> = [];
@@ -129,7 +129,7 @@ export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterfa
                     source: TrackUtils.transformSourceFromTarget(alignmentContext.targetId,alignmentContext.to),
                     provenanceName: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).name,
                     provenanceColor: TrackUtils.getProvenanceConfigFormTarget(alignmentContext.targetId,alignmentContext.to).color,
-                    type: Type.MaQaMetricLocalTypeOther,
+                    type: FeaturesType.MaQaMetricLocalTypeOther,
                 }, alignmentContext))
             });
         }

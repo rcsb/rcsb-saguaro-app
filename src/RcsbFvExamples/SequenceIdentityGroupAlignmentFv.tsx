@@ -23,7 +23,7 @@ buildSequenceIdentityAlignmentFv("pfv", "5_30", undefined, {
     },
     page:{
         first:200,
-        after:"0"
+        after:0
     },
     externalTrackBuilder:{
         filterAlignments: (data)=>{

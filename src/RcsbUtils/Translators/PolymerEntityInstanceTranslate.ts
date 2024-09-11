@@ -1,6 +1,6 @@
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
-import {SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceReference, AnnotationReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {
     RcsbFvTrackDataAnnotationInterface
@@ -10,7 +10,7 @@ export interface AlignmentContextInterface {
     queryId: string;
     targetId: string;
     from: SequenceReference | undefined;
-    to: SequenceReference|Source|undefined;
+    to: SequenceReference|AnnotationReference|undefined;
     targetSequenceLength?: number;
     querySequenceLength?: number;
 }
@@ -90,7 +90,7 @@ export class PolymerEntityInstanceTranslate{
         const authResIds: string[] | undefined = this.instanceAuthResIds.get(asymId);
         if(!authResIds)
             return out;
-        if( reference === SequenceReference.PdbInstance || (reference === SequenceReference.PdbEntity && source === Source.PdbInstance) ) {
+        if( reference === SequenceReference.PdbInstance || (reference === SequenceReference.PdbEntity && source === AnnotationReference.PdbInstance) ) {
             const x:string = authResIds[e.begin-1];
             if (typeof e.end === "number" && authResIds[e.end-1] != x){
                 out.beginName = x;
@@ -98,7 +98,7 @@ export class PolymerEntityInstanceTranslate{
             }else if(typeof e.end != "number" || authResIds[e.end-1] == x){
                 out.beginName = x;
             }
-        }else if( source === Source.PdbInstance  && e.oriBegin){
+        }else if( source === AnnotationReference.PdbInstance  && e.oriBegin){
             const x:string = authResIds[e.oriBegin-1];
             if(typeof e.oriEnd === "number" && authResIds[e.oriEnd-1] != x){
                 out.oriBeginName = x;

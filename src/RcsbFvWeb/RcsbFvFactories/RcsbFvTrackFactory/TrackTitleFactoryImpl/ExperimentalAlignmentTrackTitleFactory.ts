@@ -1,6 +1,6 @@
 import {RcsbFvLink} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {TrackTitleFactoryInterface} from "../TrackTitleFactoryInterface";
-import {SequenceReference, TargetAlignment} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceReference, TargetAlignments} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {AlignmentRequestContextType} from "../TrackFactoryImpl/AlignmentTrackFactory";
 import resource from "../../../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../../../RcsbAnnotationConfig/RcsbAnnotationConstants";
@@ -9,7 +9,7 @@ import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
-export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignment]> {
+export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactoryInterface<[AlignmentRequestContextType,TargetAlignments]> {
 
     private readonly entityInstanceTranslator: PolymerEntityInstanceTranslate | undefined = undefined;
 
@@ -17,7 +17,7 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
         this.entityInstanceTranslator = entityInstanceTranslator;
     }
 
-    public async getTrackTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string | RcsbFvLink> {
+    public async getTrackTitle(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignments): Promise<string | RcsbFvLink> {
         let rowTitle: string | RcsbFvLink;
         assertDefined(targetAlignment.target_id);
         if(alignmentQueryContext.excludeAlignmentLinks){
@@ -58,11 +58,11 @@ export class ExperimentalAlignmentTrackTitleFactory implements TrackTitleFactory
         return rowTitle;
     }
 
-    public async getTrackTitlePrefix(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string> {
+    public async getTrackTitlePrefix(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignments): Promise<string> {
         return alignmentQueryContext.to && !alignmentQueryContext.to.includes("PDB")? alignmentQueryContext.to.replace("_", " ") + " " + TagDelimiter.alignmentTitle : "";
     }
 
-    public async getTrackTitleFlagColor(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<string> {
+    public async getTrackTitleFlagColor(alignmentQueryContext: AlignmentRequestContextType, targetAlignment: TargetAlignments): Promise<string> {
         if(alignmentQueryContext.to === SequenceReference.Uniprot)
             return RcsbAnnotationConstants.provenanceColorCode.external;
         return RcsbAnnotationConstants.provenanceColorCode.rcsbPdb;

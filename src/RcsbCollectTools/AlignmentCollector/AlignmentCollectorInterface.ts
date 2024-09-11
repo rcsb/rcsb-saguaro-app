@@ -1,6 +1,6 @@
 import {
-    AlignmentResponse,
-    QueryAlignmentArgs, SequenceReference
+    SequenceAlignments,
+    QueryAlignmentsArgs, SequenceReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbQueryGroupAlignmentArguments} from "../../RcsbGraphQL/RcsbQueryAlignment";
 import {ExternalTrackBuilderInterface} from "../FeatureTools/ExternalTrackBuilderInterface";
@@ -15,7 +15,7 @@ interface CommonAlignmentInterface {
 }
 
 type QueryAlignmentArgsTypes = {
-    [K in keyof QueryAlignmentArgs]: NonNullable<QueryAlignmentArgs[K]>
+    [K in keyof QueryAlignmentsArgs]: NonNullable<QueryAlignmentsArgs[K]>
 }
 export interface CollectAlignmentInterface extends QueryAlignmentArgsTypes, CommonAlignmentInterface {
 
@@ -31,9 +31,9 @@ export type AlignmentCollectConfig = Partial<CollectAlignmentInterface & Collect
 
 export interface AlignmentCollectorInterface {
     getTargets():Promise<Array<string>>;
-    getAlignment():Promise<AlignmentResponse>;
+    getAlignment():Promise<SequenceAlignments>;
     getAlignmentLength(): Promise<number>;
     collect(requestConfig: AlignmentCollectConfig,
             filter?:Array<string>,
-    ): Promise<AlignmentResponse>;
+    ): Promise<SequenceAlignments>;
 }

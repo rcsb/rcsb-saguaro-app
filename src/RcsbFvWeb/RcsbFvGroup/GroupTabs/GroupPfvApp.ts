@@ -7,13 +7,13 @@ import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {groupExternalTrackBuilder} from "../../../RcsbUtils/TrackGenerators/GroupExternalTrackBuilder";
 import {RcsbFvGroupBuilder} from "../../RcsbFvBuilder/RcsbFvGroupBuilder";
 import {
-    Feature,
+    Features,
     FieldName,
     GroupReference,
     OperationType,
     SequenceReference,
-    Source,
-    Type
+    AnnotationReference,
+    FeaturesType
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AnnotationProcessingInterface
@@ -58,7 +58,7 @@ export namespace GroupPfvApp {
                     component: PaginationItemComponent,
                     props:{
                         count:entityCount,
-                        after: additionalConfig?.page?.after ?? "0",
+                        after: additionalConfig?.page?.after ?? 0,
                         first: additionalConfig?.page?.first ?? 50,
                         stateChange:(state:PaginationItemState,prevState:PaginationItemState)=>{
                             paginationCallback(
@@ -70,7 +70,7 @@ export namespace GroupPfvApp {
                                     ...additionalConfig,
                                     page:{
                                         first:state.first,
-                                        after:state.after.toString()
+                                        after:state.after
                                     },
                                     excludeLogo: true
                                 }
@@ -91,16 +91,16 @@ export namespace GroupPfvApp {
             ...additionalConfig,
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
-                values: [Type.HelixP, Type.Sheet, Type.Cath, Type.Scop],
+                values: [FeaturesType.HelixP, FeaturesType.Sheet, FeaturesType.Cath, FeaturesType.Scop],
                 operation: OperationType.Equals,
-                source: Source.PdbInstance
+                source: AnnotationReference.PdbInstance
             },{
                 field: FieldName.Type,
-                values:[Type.Pfam],
+                values:[FeaturesType.Pfam],
                 operation: OperationType.Equals,
-                source: Source.PdbEntity
+                source: AnnotationReference.PdbEntity
             }],
-            sources: [Source.PdbInstance, Source.PdbEntity],
+            sources: [AnnotationReference.PdbInstance, AnnotationReference.PdbEntity],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
             externalTrackBuilder: groupExternalTrackBuilder()
         };
@@ -123,11 +123,11 @@ export namespace GroupPfvApp {
             ...additionalConfig,
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
-                values: [Type.BindingSite],
+                values: [FeaturesType.BindingSite],
                 operation: OperationType.Equals,
-                source: Source.PdbInstance
+                source: AnnotationReference.PdbInstance
             }],
-            sources: [Source.PdbInstance],
+            sources: [AnnotationReference.PdbInstance],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
             externalTrackBuilder:  alignmentGlobalLigandBindingSite()
         }
@@ -146,7 +146,7 @@ export namespace GroupPfvApp {
 function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProcessingInterface {
     const targets: Map<string,number> = new Map<string,number>();
     return {
-        getAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Feature; p: FeaturePositionGaps}) => {
+        getAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Features; p: FeaturePositionGaps}) => {
             if (!targets.has(feature.type)) {
                 if(feature.d.value)
                     targets.set(feature.type, feature.d.value);
@@ -157,9 +157,9 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
         },
         computeAnnotationValue: (annotationTracks: Map<string, TrackManagerInterface>) => {
             annotationTracks.forEach((at,type)=>{
-                const N: number | undefined = (type.includes(Type.Cath) || type.includes(Type.Scop) || type.includes(Type.BindingSite) || type.includes(Type.Pfam)) ? targets.get(type) : nTargets;
+                const N: number | undefined = (type.includes(FeaturesType.Cath) || type.includes(FeaturesType.Scop) || type.includes(FeaturesType.BindingSite) || type.includes(FeaturesType.Pfam)) ? targets.get(type) : nTargets;
                 at.forEach((ann,positionKey)=>{
-                    if(ann.source != Source.PdbInterface)
+                    if(ann.source != AnnotationReference.PdbInterface)
                         ann.value = Math.ceil(1000*(ann.value as number) / (N ?? 1))/1000;
                 });
             });

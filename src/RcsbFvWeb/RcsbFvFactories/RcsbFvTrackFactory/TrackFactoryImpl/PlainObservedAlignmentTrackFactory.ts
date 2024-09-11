@@ -2,9 +2,9 @@ import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConf
 import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 
 import {
-    AlignedRegion,
-    AnnotationFeatures,
-    TargetAlignment
+    AlignedRegions,
+    SequenceAnnotations,
+    TargetAlignments
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     PolymerEntityInstanceTranslate,
@@ -23,7 +23,7 @@ import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
-export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignment]>{
+export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignments]>{
 
     private alignmentTrackFactory: PlainAlignmentTrackFactory;
     private unObservedResidues: Map<string,Array<number>> = new Map<string, Array<number>>();
@@ -35,16 +35,16 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
         this.alignmentTrackFactory = new PlainAlignmentTrackFactory(entityInstanceTranslator);
     }
 
-    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignment): Promise<RcsbFvRowConfigInterface> {
+    public async getTrack(alignmentRequestContext: AlignmentRequestContextType, targetAlignment: TargetAlignments): Promise<RcsbFvRowConfigInterface> {
         return this.alignmentTrackFactory.getTrack(alignmentRequestContext, targetAlignment, this.alignedRegionToTrackElementList.bind(this));
     }
 
-    public async prepareFeatures(unObservedRegions: Array<AnnotationFeatures>): Promise<void>{
+    public async prepareFeatures(unObservedRegions: Array<SequenceAnnotations>): Promise<void>{
         await this.collectFeatureEntryProperties(unObservedRegions);
         this.prepareFeaturesAlignmentMap(unObservedRegions);
     }
 
-    private async collectFeatureEntryProperties(unObservedRegions: Array<AnnotationFeatures>): Promise<void>{
+    private async collectFeatureEntryProperties(unObservedRegions: Array<SequenceAnnotations>): Promise<void>{
         const entryIds: string[] = Operator.uniqueValues<string>(unObservedRegions.map(uor=>{
             assertDefined(uor.target_id);
             return uor.target_id.split(TagDelimiter.instance)[0]
@@ -61,7 +61,7 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
         });
     }
 
-    private prepareFeaturesAlignmentMap(unObservedRegions: Array<AnnotationFeatures>){
+    private prepareFeaturesAlignmentMap(unObservedRegions: Array<SequenceAnnotations>){
         const uoInstanceFeatureMap: Map<string,Set<number>> = new Map<string, Set<number>>();
         unObservedRegions.forEach(ur=> {
             if(!ur.target_id)
@@ -101,7 +101,7 @@ export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface
         })
     }
 
-    private alignedRegionToTrackElementList(region: AlignedRegion, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
+    private alignedRegionToTrackElementList(region: AlignedRegions, alignmentContext: AlignmentContextInterface): Array<RcsbFvTrackDataElementInterface>{
         if(!this.unObservedResidues.has(alignmentContext.targetId) || this.unObservedResidues.get(alignmentContext.targetId)?.length == 0)
             return this.alignmentTrackFactory.alignedRegionToTrackElementList(region, alignmentContext);
         const unModelledSet: Set<number> =  new Set(this.unObservedResidues.get(alignmentContext.targetId));

@@ -8,11 +8,11 @@ import { RcsbFvRowConfigInterface } from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvCo
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {
-    AlignedRegion,
-    AlignmentResponse,
+    AlignedRegions,
+    SequenceAlignments,
     Coverage,
     SequenceReference,
-    TargetAlignment
+    TargetAlignments
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -44,13 +44,13 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
                     from: reference,
                     to: SequenceReference.NcbiGenome
                 });
-            })).then(alignments => {
+            })).then((alignments: SequenceAlignments[]) => {
                 const out: RcsbFvTrackData = new RcsbFvTrackData();
                 alignments.forEach((a,n) => {
                     if(a.query_sequence == null)
                         return;
                     const sequence: Array<string> = a.query_sequence.split("");
-                    a.target_alignment?.forEach(ta => {
+                    a.target_alignments?.forEach(ta => {
                         if(!ta)
                             return;
                         const orientation = ta.orientation;
@@ -87,10 +87,10 @@ function sequenceDisplayDynamicUpdate( reference:SequenceReference, ranges: Map<
 //TODO This class needs a lot of improvements
 //TODO this Module is not collecting alignments through AlignmentCollector
 export class RcsbFvChromosome extends RcsbFvAbstractModule {
-    private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignment>>> = new Map<SequenceReference, Array<Array<TargetAlignment>>>([
-        [SequenceReference.NcbiProtein, new Array<Array<TargetAlignment>>()],
-        [SequenceReference.Uniprot, new Array<Array<TargetAlignment>>()],
-        [SequenceReference.PdbEntity, new Array<Array<TargetAlignment>>()]
+    private readonly targetAlignmentList: Map<SequenceReference,Array<Array<TargetAlignments>>> = new Map<SequenceReference, Array<Array<TargetAlignments>>>([
+        [SequenceReference.NcbiProtein, new Array<Array<TargetAlignments>>()],
+        [SequenceReference.Uniprot, new Array<Array<TargetAlignments>>()],
+        [SequenceReference.PdbEntity, new Array<Array<TargetAlignments>>()]
     ]);
 
     private maxRange: number = 0;
@@ -126,11 +126,11 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 from: SequenceReference.PdbEntity,
                 to: to
             });
-        })).then(result=>{
+        })).then((result: SequenceAlignments[])=>{
             result.forEach(a=>{
                 if(!a)
                     return;
-                a.target_alignment?.forEach(ta=>{
+                a.target_alignments?.forEach(ta=>{
                     if(ta?.target_id && ta?.coverage)
                         this.targetCoverages.set(ta.target_id, ta.coverage);
                 });
@@ -140,7 +140,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 from: SequenceReference.PdbEntity,
                 to: SequenceReference.NcbiGenome,
             }, async (e)=>{
-                const ar: AlignmentResponse = e as AlignmentResponse
+                const ar: SequenceAlignments = e as SequenceAlignments
                 await this.collectPdbWorkerResults(ar, pdbEntityId, chrId);
             });
         });
@@ -155,10 +155,10 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         this.collectChromosomeAlignments(chrId, SequenceReference.NcbiProtein);
     }
 
-    private async collectPdbWorkerResults(ar: AlignmentResponse, pdbEntityId: string, chrId?: string): Promise<void>{
-         assertElementListDefined(ar.target_alignment);
+    private async collectPdbWorkerResults(ar: SequenceAlignments, pdbEntityId: string, chrId?: string): Promise<void>{
+         assertElementListDefined(ar.target_alignments);
          const exonTracks: Array<RcsbFvRowConfigInterface> = this.collectExons(
-            ar.target_alignment,
+            ar.target_alignments,
             "target",
             RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
             RcsbAnnotationConstants.provenanceColorCode.rcsbPdb,
@@ -313,7 +313,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 to: to,
                 range: range
             }, async (e)=>{
-                const ar: AlignmentResponse = e as AlignmentResponse
+                const ar: SequenceAlignments = e as SequenceAlignments
                 if(typeof index === "number")
                     await this.collectChromosomeWorkerResults(index,to,ar,false);
             });
@@ -326,19 +326,19 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                     to: to,
                     range: [i*this.batchSize, (i+1)*this.batchSize]
                 }, async (e)=>{
-                    const ar: AlignmentResponse = e as AlignmentResponse
+                    const ar: SequenceAlignments = e as SequenceAlignments
                     await this.collectChromosomeWorkerResults(i,to,ar,false);
                 });
             }
         }
     }
 
-    private async collectChromosomeWorkerResults(index: number, reference: SequenceReference, alignment: AlignmentResponse, forcePlot: boolean): Promise<void>{
+    private async collectChromosomeWorkerResults(index: number, reference: SequenceReference, alignment: SequenceAlignments, forcePlot: boolean): Promise<void>{
         this.completeTasks++;
         const e = this.targetAlignmentList.get(reference);
         assertDefined(e);
-        assertElementListDefined(alignment.target_alignment);
-        e[index] = alignment.target_alignment;
+        assertElementListDefined(alignment.target_alignments);
+        e[index] = alignment.target_alignments;
         console.log("Completed "+Math.floor(this.completeTasks/this.nTasks*100)+"%");
         if(forcePlot){
             await this.plot();
@@ -349,7 +349,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         }
     }
 
-    private collectExons(targetAlignmentList: Array<TargetAlignment>, member: "query"|"target", blockColor: string, flagTitleColor: string, reference: SequenceReference, chrId?: string): Array<RcsbFvRowConfigInterface> {
+    private collectExons(targetAlignmentList: Array<TargetAlignments>, member: "query"|"target", blockColor: string, flagTitleColor: string, reference: SequenceReference, chrId?: string): Array<RcsbFvRowConfigInterface> {
         const exonTrackList: Array<{data:RcsbFvTrackData;id:string;}> = new Array<{data:RcsbFvTrackData;id:string;}>();
         targetAlignmentList.forEach((targetAlignment,i) => {
             if(!targetAlignment.target_id)
@@ -390,7 +390,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
         });
     }
 
-    private normalizeTargetAlignment(targetAlignment: TargetAlignment, member: "query"|"target"): RcsbFvTrackDataElementInterface {
+    private normalizeTargetAlignment(targetAlignment: TargetAlignments, member: "query"|"target"): RcsbFvTrackDataElementInterface {
         const beginMember: "query_begin"|"target_begin" = member === "query" ? "query_begin" : "target_begin";
         const endMember: "query_end"|"target_end" = member === "query" ? "query_end" : "target_end";
         const ar = targetAlignment.aligned_regions;
@@ -411,7 +411,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 this.minRange = ar[0][beginMember];
             ar.forEach((currentExon,n) => {
                 if((n+1)<ar.length){
-                    const nextExon: AlignedRegion = ar[n+1];
+                    const nextExon: AlignedRegions = ar[n+1];
                     let beginGap: number = currentExon[endMember];
                     let endGap: number = nextExon[beginMember];
                     const exonShift: number[] = currentExon.exon_shift ? currentExon.exon_shift.map(e=>{
@@ -477,7 +477,7 @@ export class RcsbFvChromosome extends RcsbFvAbstractModule {
                 this.minRange = ar[ar.length-1][endMember];
             ar.reverse().forEach((currentExon,n) => {
                 if((n+1)<ar.length) {
-                    const nextExon: AlignedRegion = ar[n + 1];
+                    const nextExon: AlignedRegions = ar[n + 1];
                     let beginGap: number = currentExon[beginMember];
                     let endGap: number = nextExon[endMember];
                     const exonShift: number[] = nextExon.exon_shift ? nextExon.exon_shift.map(e=>{

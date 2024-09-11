@@ -1,15 +1,15 @@
-import {Type} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {FeaturesType} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 const BURIAL_FRACTION: "BURIAL_FRACTION" = "BURIAL_FRACTION";
 const BURIED_RESIDUES: "BURIED_RESIDUES" = "BURIED_RESIDUES";
 const ExtendedTypes = {
-    BurialFraction: <Type>BURIAL_FRACTION,
-    BuriedResidues: <Type>BURIED_RESIDUES
+    BurialFraction: <FeaturesType>BURIAL_FRACTION,
+    BuriedResidues: <FeaturesType>BURIED_RESIDUES
 };
 
-type MergedType = typeof Type & typeof ExtendedTypes;
+type MergedType = typeof FeaturesType & typeof ExtendedTypes;
 const MergedType: MergedType = {
-    ...Type,
+    ...FeaturesType,
     ...ExtendedTypes
 };
 

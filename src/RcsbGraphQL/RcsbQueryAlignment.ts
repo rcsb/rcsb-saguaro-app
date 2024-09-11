@@ -1,7 +1,7 @@
 import {
-    AlignmentResponse,
-    QueryAlignmentArgs,
-    QueryGroup_AlignmentArgs
+    SequenceAlignments,
+    QueryAlignmentsArgs,
+    QueryGroup_AlignmentsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import queryAlignment from "../RcsbQueries/Borrego/QueryAlignments.graphql";
 import queryGroupAlignment from "../RcsbQueries/Borrego/QueryGroupAlignments.graphql";
@@ -10,21 +10,21 @@ import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 
 interface AlignmentResponseInterface{
-    alignment: AlignmentResponse;
+    alignments: SequenceAlignments;
 }
 
 interface GroupAlignmentResponseInterface{
-    group_alignment: AlignmentResponse;
+    group_alignments: SequenceAlignments;
 }
 
-export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse>{
+export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignmentsArgs,SequenceAlignments>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse> {
+    public async request(requestConfig: QueryAlignmentsArgs): Promise<SequenceAlignments> {
         try {
-            const result: AlignmentResponseInterface = await this.getClient().request<QueryAlignmentArgs,AlignmentResponseInterface>({
+            const result: AlignmentResponseInterface = await this.getClient().request<QueryAlignmentsArgs,AlignmentResponseInterface>({
                     queryId: requestConfig.queryId,
                     from: requestConfig.from,
                     to: requestConfig.to,
@@ -32,7 +32,7 @@ export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignment
                 },
                 queryAlignment
             );
-            return result.alignment;
+            return result.alignments;
         } catch (error) {
             console.error(error);
             throw error;
@@ -41,19 +41,19 @@ export class RcsbQueryAlignment implements RcsbCoreQueryInterface<QueryAlignment
 }
 
 
-export type RcsbQueryGroupAlignmentArguments = QueryGroup_AlignmentArgs & {page:{first:number, after:string}; excludeLogo?: boolean;};
-export class RcsbQueryGroupAlignment implements RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments, AlignmentResponse>{
+export type RcsbQueryGroupAlignmentArguments = QueryGroup_AlignmentsArgs & {page:{first:number, after:number}; excludeLogo?: boolean;};
+export class RcsbQueryGroupAlignment implements RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments, SequenceAlignments>{
     readonly getClient: ()=>GraphQLRequest;
     constructor(getClient:()=>GraphQLRequest){
         this.getClient = getClient;
     }
-    public async request(requestConfig: RcsbQueryGroupAlignmentArguments): Promise<AlignmentResponse> {
+    public async request(requestConfig: RcsbQueryGroupAlignmentArguments): Promise<SequenceAlignments> {
         try {
-            const result: GroupAlignmentResponseInterface = await this.getClient().request<QueryGroup_AlignmentArgs & {first:number, after:string}, GroupAlignmentResponseInterface>(
+            const result: GroupAlignmentResponseInterface = await this.getClient().request<QueryGroup_AlignmentsArgs & {first:number, after:number}, GroupAlignmentResponseInterface>(
                 {group: requestConfig.group, groupId: requestConfig.groupId, filter:requestConfig.filter, first: requestConfig.page.first, after: requestConfig.page.after},
                 requestConfig.excludeLogo ? queryGroupAlignmentNoLogo : queryGroupAlignment
             );
-            return result.group_alignment;
+            return result.group_alignments;
         } catch (error) {
             console.error(error);
             throw error;

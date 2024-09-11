@@ -1,9 +1,9 @@
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
-    Feature,
+    SequenceAlignments,
+    SequenceAnnotations,
+    Features,
     SequenceReference,
-    Source
+    AnnotationReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbContextType, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -38,7 +38,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         const instanceId: string | undefined = buildConfig.instanceId;
         assertDefined(instanceId);
         this.instanceId = instanceId;
-        const source: Array<Source> = [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface];
+        const source: Array<AnnotationReference> = [AnnotationReference.PdbEntity, AnnotationReference.PdbInstance, AnnotationReference.Uniprot, AnnotationReference.PdbInterface];
 
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: instanceId,
@@ -46,7 +46,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             to: SequenceReference.Uniprot,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             sequenceTrackFactory: new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator(),new InstanceSequenceTrackTitleFactory(this.getPolymerEntityInstanceTranslator()))
         });
@@ -63,7 +63,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
             rcsbContext: buildConfig.additionalConfig?.rcsbContext,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();
@@ -80,15 +80,15 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 this.alignmentTracks.concat(this.annotationTracks);
     }
 
-    private async typeSuffix(ann: AnnotationFeatures, d: Feature): Promise<string|undefined> {
-        if(ann.source === Source.PdbInterface && ann.target_identifiers?.interface_id) {
+    private async typeSuffix(ann: SequenceAnnotations, d: Features): Promise<string|undefined> {
+        if(ann.source === AnnotationReference.PdbInterface && ann.target_identifiers?.interface_id) {
             return ann.target_identifiers.interface_id + "|" + ann.target_identifiers.interface_partner_index;
         }
     }
 
-    private titleSuffix(rcsbContext?: RcsbContextType): ((ann: AnnotationFeatures, d: Feature)=>Promise<string|undefined>) {
-        return (async (ann: AnnotationFeatures, d: Feature) => {
-            if (ann.source === Source.PdbInterface) {
+    private titleSuffix(rcsbContext?: RcsbContextType): ((ann: SequenceAnnotations, d: Features)=>Promise<string|undefined>) {
+        return (async (ann: SequenceAnnotations, d: Features) => {
+            if (ann.source === AnnotationReference.PdbInterface) {
                 if(!ann.target_id)
                     return "";
                 const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
@@ -114,18 +114,18 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
         });
     }
 
-    private async trackTitle(ann: AnnotationFeatures, d: Feature): Promise<string|undefined> {
-        if (ann.source === Source.PdbInterface && d.type === FeatureType.BurialFraction) {
+    private async trackTitle(ann: SequenceAnnotations, d: Features): Promise<string|undefined> {
+        if (ann.source === AnnotationReference.PdbInterface && d.type === FeatureType.BurialFraction) {
             return "BINDING CHAIN ";
         }
     }
 }
 
-export function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
-    const buried: Array<AnnotationFeatures> = buriedResidues(annotations);
-    const burial: Array<AnnotationFeatures> = burialFraction(annotations);
-    return new Promise<Array<AnnotationFeatures>>(resolve => {
-        const out:Array<AnnotationFeatures> = new Array<AnnotationFeatures>();
+export function interfaceAnnotations(annotations: Array<SequenceAnnotations>): Promise<Array<SequenceAnnotations>> {
+    const buried: Array<SequenceAnnotations> = buriedResidues(annotations);
+    const burial: Array<SequenceAnnotations> = burialFraction(annotations);
+    return new Promise<Array<SequenceAnnotations>>(resolve => {
+        const out:Array<SequenceAnnotations> = new Array<SequenceAnnotations>();
         if(buried && buried.length > 0)
             out.push(...buried);
         if(burial && burial.length > 0)
@@ -134,8 +134,8 @@ export function interfaceAnnotations(annotations: Array<AnnotationFeatures>): Pr
     })
 }
 
-export function filter(ann: Array<AnnotationFeatures>): Promise<Array<AnnotationFeatures>> {
-    return new Promise<Array<AnnotationFeatures>>(resolve => {
+export function filter(ann: Array<SequenceAnnotations>): Promise<Array<SequenceAnnotations>> {
+    return new Promise<Array<SequenceAnnotations>>(resolve => {
         resolve(burialFractionFilter(buriedResiduesFilter(ann)));
     })
 }

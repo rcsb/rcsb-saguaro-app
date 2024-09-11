@@ -10,7 +10,7 @@
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "noUnusedLocals": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,

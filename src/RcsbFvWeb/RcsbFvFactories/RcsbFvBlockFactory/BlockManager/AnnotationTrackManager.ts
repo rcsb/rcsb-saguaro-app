@@ -4,7 +4,7 @@ import {
 } from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {Feature, FeaturePosition, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Features, FeaturesFeaturePositions, SequenceReference, AnnotationReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceTranslate, AlignmentContextInterface} from "../../../../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import {AnnotationProcessingInterface, IncreaseAnnotationValueType} from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
@@ -16,7 +16,7 @@ import assertDefined = Assertions.assertDefined;
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {RcsbFvTrackDataAnnotationInterface} from "../../RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
 
-export interface FeaturePositionGaps extends FeaturePosition {
+export interface FeaturePositionGaps extends FeaturesFeaturePositions {
     gaps?: Array<RcsbFvTrackDataElementGapInterface>;
 }
 
@@ -51,7 +51,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         return this.valueRange;
     }
 
-    public addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void {
+    public addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: AnnotationReference, targetId:string, feature: Features}, annotationProcessing?:AnnotationProcessingInterface): void {
         assertElementListDefined(ann.feature.feature_positions);
         computeFeatureGaps(ann.feature.feature_positions).forEach(p => {
             if(p.beg_seq_id != null) {
@@ -87,7 +87,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         return Array.from(this.trackElementMap.values());
     }
 
-    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Feature, targetId: string, source:Source, provenance?:string): RcsbFvTrackDataAnnotationInterface{
+    private buildRcsbFvTrackDataElement(p: FeaturePositionGaps, d: Features, targetId: string, source:AnnotationReference, provenance?:string): RcsbFvTrackDataAnnotationInterface{
         let title:string = this.annotationConfig?.title ?? this.type;
         let value: number | undefined = undefined;
         if(this.isNumericalDisplay(this.type)) {
@@ -111,7 +111,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
                 this.valueRange.min = value
         }
 
-        const sourceId: string = source == Source.PdbInstance && this.entityInstanceTranslator != null ?
+        const sourceId: string = source == AnnotationReference.PdbInstance && this.entityInstanceTranslator != null ?
             TagDelimiter.parseInstance(targetId).entryId + TagDelimiter.instance + this.entityInstanceTranslator.translateAsymToAuth(TagDelimiter.parseInstance(targetId).instanceId) : targetId;
 
         assertDefined(p.beg_seq_id);
@@ -136,7 +136,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         };
     }
 
-    private addRange(reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, d: Feature, p: FeaturePositionGaps, rangeKey: number[], annotationProcessing?:AnnotationProcessingInterface): void{
+    private addRange(reference: SequenceReference | undefined, queryId: string, source: AnnotationReference, targetId:string, d: Features, p: FeaturePositionGaps, rangeKey: number[], annotationProcessing?:AnnotationProcessingInterface): void{
         const key: string = rangeKey.join(":");
         if (!this.trackElementMap.has(key)) {
             const a: RcsbFvTrackDataElementInterface = this.buildRcsbFvTrackDataElement(p,d,targetId,source,d.provenance_source??undefined);
@@ -177,7 +177,7 @@ class AnnotationTrackManager implements TrackManagerInterface {
         }
     }
 
-    private transformToNumerical(targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Feature, p:FeaturePositionGaps, getAnnotationValue?:IncreaseAnnotationValueType): void{
+    private transformToNumerical(targetId:string, rangeKey: Array<number>, key: string,a: RcsbFvTrackDataElementInterface, d: Features, p:FeaturePositionGaps, getAnnotationValue?:IncreaseAnnotationValueType): void{
         if(typeof getAnnotationValue === "function")
             a.value =  getAnnotationValue({type:this.type,targetId:targetId,positionKey:key,d:d,p:p});
         a.begin = rangeKey[0];
@@ -235,13 +235,13 @@ class AnnotationTrackManager implements TrackManagerInterface {
     }
 }
 
-function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<FeaturePositionGaps>{
-    const rangeIdMap: Map<String,Array<FeaturePosition>> = new Map<String, Array<FeaturePosition>>();
+function computeFeatureGaps(featurePositions: Array<FeaturesFeaturePositions>): Array<FeaturePositionGaps>{
+    const rangeIdMap: Map<String,Array<FeaturesFeaturePositions>> = new Map<String, Array<FeaturesFeaturePositions>>();
     const out: Array<FeaturePositionGaps> = new Array<FeaturePositionGaps>();
     featurePositions.forEach(fp=>{
         if(fp.range_id != null){
             if(!rangeIdMap.has(fp.range_id))
-                rangeIdMap.set(fp.range_id, new Array<FeaturePosition>());
+                rangeIdMap.set(fp.range_id, new Array<FeaturesFeaturePositions>());
             rangeIdMap.get(fp.range_id)?.push(fp);
         }else{
             out.push(fp)
@@ -251,7 +251,7 @@ function computeFeatureGaps(featurePositions: Array<FeaturePosition>): Array<Fea
         if(fpList.length ==1){
             out.push(fpList[0])
         }else{
-            const sorted: Array<FeaturePosition> = fpList.sort((a,b)=>{
+            const sorted: Array<FeaturesFeaturePositions> = fpList.sort((a,b)=>{
                 if(a.beg_seq_id && b.beg_seq_id)
                     return a.beg_seq_id-b.beg_seq_id;
                 return Number.MAX_SAFE_INTEGER;

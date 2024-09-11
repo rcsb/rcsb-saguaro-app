@@ -1,31 +1,47 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+# This file was generated. Do not edit manually.
 
 schema {
     query: Query
+    subscription: Subscription
 }
 
-type AdditionalProperty {
+"Indicates an Input Object is a OneOf Input Object."
+directive @oneOf on INPUT_OBJECT
+
+type AlignedRegions {
+    "List of genomic indexes that are needed to complete the last nucleotide codon of a genome-protein sequence alignment"
+    exon_shift: [Int]
     """
 
-    The additional property name.
+    Query sequence start position
 
     Examples:
-    PARENT_COMP_ID, CATH_NAME, PARTNER_BOND_DISTANCE
+    null, null
     """
-    property_name: PropertyName
-    property_value: [ObjectScalar]
-}
-
-type AlignedRegion {
-    "List of genomic indexes that are needed to complete the last nucleotide triad of a genome-protein sequence alignment"
-    exon_shift: [Int]
-    "Query sequence start position"
     query_begin: Int!
-    "Query sequence end position"
+    """
+
+    Query sequence end position
+
+    Examples:
+    null, null
+    """
     query_end: Int!
-    "Target sequence start position"
+    """
+
+    Target sequence start position
+
+    Examples:
+    null, null
+    """
     target_begin: Int!
-    "Target sequence start position"
+    """
+
+    Target sequence start position
+
+    Examples:
+    null, null
+    """
     target_end: Int!
 }
 
@@ -34,50 +50,77 @@ type AlignmentLogo {
     value: Int
 }
 
-type AlignmentResponse {
-    "Length of the alignment"
-    alignment_length: Int
-    alignment_logo: [[AlignmentLogo]]
-    "Full sequence of the query"
-    query_sequence: String
-    "JSON schema that describes the different alignments between the query sequence and targets"
-    target_alignment: [TargetAlignment]
-    "Multiple sequence alignment of group members."
-    target_alignment_subset(after: String, first: Int!): TargetAlignmentConnection
-}
-
-type AnnotationFeatures {
-    "List of positional features"
-    features: [Feature]
-    "Enumerated value that identifies the provenance type of the positional features"
-    source: Source
-    "Database source entry identifier associated to the positional features"
-    target_id: String
-    target_identifiers: TargetIdentifiers
-}
-
 type Coverage {
-    "Percentage of the query sequence covered byt the alignment"
-    query_coverage: Int
-    "Length of the full query sequence"
-    query_length: Int
-    "Percentage of the target sequence covered byt the alignment"
-    target_coverage: Int
-    "Length of the full target sequence"
-    target_length: Int
+    """
+
+    Fraction of the query sequence covered by the alignment
+
+    Examples:
+    null, null
+    """
+    query_coverage: Float!
+    """
+
+    Length of the full query sequence
+
+    Examples:
+    null, null
+    """
+    query_length: Int!
+    """
+
+    Fraction of the target sequence covered by the alignment
+
+    Examples:
+    null, null
+    """
+    target_coverage: Float!
+    """
+
+    Length of the full target sequence
+
+    Examples:
+    null, null
+    """
+    target_length: Int!
 }
 
-type Feature {
-    additional_properties: [AdditionalProperty]
-    "Free-form text describing the feature"
+type Features {
+    "Attribute/Value list"
+    additional_properties: [FeaturesAdditionalProperties]
+    """
+
+    Free-form text describing the feature
+
+    Examples:
+    Software generated binding site for ligand entity 2 component HEM instance C chain A
+    """
     description: String
-    "Identifier of the feature"
+    """
+
+    Identifier of the feature
+
+    Examples:
+    HELX_P11, AC1
+    """
     feature_id: String
-    " List of documents that describes the location of the feature"
-    feature_positions: [FeaturePosition]
-    "Name associated to the feature"
+    "List of documents that describes the location of the feature"
+    feature_positions: [FeaturesFeaturePositions]
+    """
+
+    Name associated to the feature
+
+    Examples:
+    ligand HEM
+    """
     name: String
-    "Original database or software name used to obtain the feature"
+    """
+
+    Original database or software name used to obtain the feature
+
+    Examples:
+    PDB, UNIPROT
+    """
     provenance_source: String
     """
 
@@ -86,140 +129,311 @@ type Feature {
     Examples:
     ASA_UNBOUND, BINDING_SITE, mutation, artifact, CATH, SCOP
     """
-    type: Type
-    "Numerical value associated with the feature"
+    type: FeaturesType
+    """
+
+    Numerical value associated with the feature
+
+    Examples:
+    null, null
+    """
     value: Float
 }
 
-type FeaturePosition {
-    "Index at which this segment of the feature begins on the original provenance_source. When reference and source point to the same reference system this file will be null"
+type FeaturesAdditionalProperties {
+    """
+
+    The additional property name.
+
+    Examples:
+    PARENT_COMP_ID, CATH_NAME, PARTNER_BOND_DISTANCE
+    """
+    property_name: FeaturesAdditionalPropertiesPropertyName
+    property_value: [ObjectScalar]
+}
+
+type FeaturesFeaturePositions {
+    """
+
+    Index at which this segment of the feature begins on the original provenance_source. When reference and source point to the same reference system this file will be null
+
+    Examples:
+    null, null
+    """
     beg_ori_id: Int
-    "Index at which this segment of the feature begins"
+    """
+
+    Index at which this segment of the feature begins
+
+    Examples:
+    null, null
+    """
     beg_seq_id: Int
-    "Index at which this segment of the feature ends on the original provenance_source. If the positional feature maps to a single residue this field will be null. When reference and source point to the same reference system this file will be null"
+    """
+
+    Index at which this segment of the feature ends on the original provenance_source. If the positional feature maps to a single residue this field will be null. When reference and source point to the same reference system this file will be null
+
+    Examples:
+    null, null
+    """
     end_ori_id: Int
-    "Index at which this segment of the feature ends. If the positional feature maps to a single residue this field will be null"
+    """
+
+    Index at which this segment of the feature ends. If the positional feature maps to a single residue this field will be null
+
+    Examples:
+    null, null
+    """
     end_seq_id: Int
-    "Flag that indicates the feature begins before the feature index begin"
+    """
+
+    Flag that indicates the feature begins before the feature index begin
+
+    Examples:
+    null, null
+    """
     open_begin: Boolean
-    "Flag that indicates the feature end after the feature index end"
+    """
+
+    Flag that indicates the feature end after the feature index end
+
+    Examples:
+    null, null
+    """
     open_end: Boolean
-    "Fragment identifier that groups a set of ranges resulting from gaps"
+    """
+
+    Fragment identifier that groups a set of ranges resulting from gaps
+
+    Examples:
+    range-1, range-2
+    """
     range_id: String
-    "The value for the feature at this region"
+    """
+
+    The value for the feature at this region
+
+    Examples:
+    null, null, null
+    """
     value: Float
     "The value(s) for the feature at this region"
     values: [Float]
 }
 
-"Information about pagination in a connection."
-type PageInfo {
-    "When paginating forwards, the cursor to continue."
-    endCursor: String
-    "When paginating forwards, are there more items?"
-    hasNextPage: Boolean!
-    "When paginating backwards, are there more items?"
-    hasPreviousPage: Boolean!
-    "When paginating backwards, the cursor to continue."
-    startCursor: String
-}
-
 "Query root"
 type Query {
     "Get sequence alignments"
-    alignment(
+    alignments(
         "Query sequence database"
-        from: SequenceReference,
+        from: SequenceReference!,
         "Database sequence identifier"
         queryId: String!,
-        "Optional integer list (2-tuple) to filter the alignments to a particular region"
-        range: [Int],
+        "Optional integer list (2-tuple) to filter alignments to a particular region"
+        range: [Int!],
         "Target Sequence database"
-        to: SequenceReference
-    ): AlignmentResponse
-    "Get positional features"
+        to: SequenceReference!
+    ): SequenceAlignments
+    "Get sequence annotations"
     annotations(
-        "Optional list of filters that can be used to select what annotations will be retrieved"
-        filters: [FilterInput],
-        "Database entry for whom the annotations will be requested"
+        "Optional annotation filter by type or target identifier"
+        filters: [AnnotationFilterInput!],
+        "Database sequence identifier"
         queryId: String!,
-        "Optional integer list (2-tuple) to filter annotations that fall in a particular region"
-        range: [Int],
-        "Query database"
-        reference: SequenceReference,
+        "Optional integer list (2-tuple) to filter annotations to a particular region"
+        range: [Int!],
+        "Query sequence database"
+        reference: SequenceReference!,
         "List defining the annotation collections to be requested"
-        sources: [Source]
-    ): [AnnotationFeatures]
-    "Get group sequence alignments"
-    group_alignment(
-        "List of allowed PDB entities"
-        filter: [String],
-        "Group Type"
+        sources: [AnnotationReference]!
+    ): [SequenceAnnotations]
+    "Get group alignments"
+    group_alignments(
+        "Optional string list of allowed group member identifiers"
+        filter: [String!],
+        "Target Sequence database"
         group: GroupReference!,
-        "Group Id"
-        groupId: String
-    ): AlignmentResponse
-    "Get group positional features"
+        "Database group identifier"
+        groupId: String!
+    ): SequenceAlignments
+    "Get group annotations"
     group_annotations(
-        "Optional list of filters that can be used to select what annotations will be retrieved"
-        filters: [FilterInput],
-        "Group Type"
+        "Optional annotation filter by type or target identifier"
+        filters: [AnnotationFilterInput!],
+        "Query sequence database"
         group: GroupReference!,
-        "Group Id"
+        "Database sequence identifier"
         groupId: String!,
         "List defining the annotation collections to be requested"
-        histogram: Boolean,
+        sources: [AnnotationReference]!
+    ): [SequenceAnnotations]
+    "Get a positional summary of group annotations"
+    group_annotations_summary(
+        "Optional annotation filter by type or target identifier"
+        filters: [AnnotationFilterInput!],
+        "Query sequence database"
+        group: GroupReference!,
+        "Database sequence identifier"
+        groupId: String!,
         "List defining the annotation collections to be requested"
-        sources: [Source]
-    ): [AnnotationFeatures]
+        sources: [AnnotationReference]!
+    ): [SequenceAnnotations]
 }
 
-type TargetAlignment {
-    "Aligned region"
-    aligned_regions: [AlignedRegion]
-    "Alignment scores"
-    coverage: Coverage
-    "integer that identifies the DNA strand of genome alignments (1 positive strand / -1 negative strand)"
-    orientation: Int
-    "Database identifier of the target"
+type SequenceAlignments {
+    alignment_length: Int
+    alignment_logo: [[AlignmentLogo]]
+    query_sequence: String
+    "Multiple sequence alignment of group members."
+    target_alignments(first: Int, offset: Int): [TargetAlignments]
+}
+
+type SequenceAnnotations {
+    "List of positional features"
+    features: [Features]
+    source: AnnotationReference
+    """
+
+    Database identifier associated to the annotation
+
+    Examples:
+    101M_1, 2UZI.C, P01112
+    """
     target_id: String
-    "Full sequence of the target"
+    target_identifiers: TargetIdentifiers
+}
+
+"Subscription root"
+type Subscription {
+    "Get sequence alignments"
+    alignments_subscription(
+        "Query sequence database"
+        from: SequenceReference!,
+        "Database sequence identifier"
+        queryId: String!,
+        "Optional integer list (2-tuple) to filter alignments to a particular region"
+        range: [Int!],
+        "Target Sequence database"
+        to: SequenceReference!
+    ): TargetAlignments
+    "Get sequence annotations"
+    annotations_subscription(
+        "Optional annotation filter by type or target identifier"
+        filters: [AnnotationFilterInput!],
+        "Database sequence identifier"
+        queryId: String!,
+        "Optional integer list (2-tuple) to filter annotations to a particular region"
+        range: [Int!],
+        "Query sequence database"
+        reference: SequenceReference!,
+        "List defining the annotation collections to be requested"
+        sources: [AnnotationReference]!
+    ): SequenceAnnotations
+    "Get group alignments"
+    group_alignments_subscription(
+        "Optional string list of allowed group member identifiers"
+        filter: [String!],
+        "Target Sequence database"
+        group: GroupReference!,
+        "Database group identifier"
+        groupId: String!
+    ): TargetAlignments
+    "Get group annotations"
+    group_annotations_subscription(
+        "Optional annotation filter by type or target identifier"
+        filters: [AnnotationFilterInput!],
+        "Query sequence database"
+        group: GroupReference!,
+        "Database sequence identifier"
+        groupId: String!,
+        "List defining the annotation collections to be requested"
+        sources: [AnnotationReference]!
+    ): SequenceAnnotations
+}
+
+type TargetAlignments {
+    aligned_regions: [AlignedRegions]
+    coverage: Coverage
+    orientation: Int
+    target_id: String
     target_sequence: String
 }
 
-"A connection to a list of items."
-type TargetAlignmentConnection {
-    "a list of edges"
-    edges: [TargetAlignmentEdge]
-    "details about this specific page"
-    pageInfo: PageInfo!
-}
-
-"An edge in a connection"
-type TargetAlignmentEdge {
-    "cursor marks a unique position or index into the connection"
-    cursor: String!
-    "The item at the end of the edge"
-    node: TargetAlignment
-}
-
 type TargetIdentifiers {
+    """
+
+    This item references an assembly in core_assembly
+
+    Examples:
+    1, 2
+    """
     assembly_id: String
+    """
+
+    This item references an instance in core_polymer_entity_instance
+
+    Examples:
+    A, B, 1, 2
+    """
     asym_id: String
+    """
+
+    This item references an entity in core_polymer_entity
+
+    Examples:
+    1, 2
+    """
     entity_id: String
+    """
+
+    This item references an entry in core_entry
+
+    Examples:
+    101M, 1ACB
+    """
     entry_id: String
+    """
+
+    This item references an interface in core_interface
+
+    Examples:
+    1, 2
+    """
     interface_id: String
+    """
+
+    This item references a partner of an interface in core_interface
+
+    Examples:
+    null, null
+    """
     interface_partner_index: Int
+    """
+
+    Database identifier associated to the annotation
+
+    Examples:
+    101M_1, 2UZI.C, P01112
+    """
     target_id: String
+    """
+
+    This item references a UniProt document in core_uniprot
+
+    Examples:
+    P01112
+    """
     uniprot_id: String
 }
 
-enum GroupReference {
-    matching_uniprot_accession
-    sequence_identity
+enum AnnotationReference {
+    PDB_ENTITY
+    PDB_INSTANCE
+    PDB_INTERFACE
+    UNIPROT
 }
 
-enum PropertyName {
+enum FeaturesAdditionalPropertiesPropertyName {
     CARD_MODEL_DESCRIPTION
     CARD_MODEL_ORGANISM
     CATH_DOMAIN_ID
@@ -250,25 +464,11 @@ enum PropertyName {
     SHEET_SENSE
     STRAIN_ID
     SUBTYPE
+    TARGET_ID
     WILD_TYPE
 }
 
-enum SequenceReference {
-    NCBI_GENOME
-    NCBI_PROTEIN
-    PDB_ENTITY
-    PDB_INSTANCE
-    UNIPROT
-}
-
-enum Source {
-    PDB_ENTITY
-    PDB_INSTANCE
-    PDB_INTERFACE
-    UNIPROT
-}
-
-enum Type {
+enum FeaturesType {
     ACTIVE_SITE
     ANGLE_OUTLIER
     ARTIFACT
@@ -315,6 +515,9 @@ enum Type {
     INITIATOR_METHIONINE
     INTRAMEMBRANE_REGION
     IONIC_INTERACTION
+    LIGAND_COVALENT_LINKAGE
+    LIGAND_INTERACTION
+    LIGAND_METAL_COORDINATION_LINKAGE
     LIPID_MOIETY_BINDING_REGION
     MA_QA_METRIC_LOCAL_TYPE_CONTACT_PROBABILITY
     MA_QA_METRIC_LOCAL_TYPE_DISTANCE
@@ -388,25 +591,35 @@ enum Type {
     ZINC_FINGER_REGION
 }
 
-enum fieldName {
-    target_id
-    type
+enum FieldName {
+    TARGET_ID
+    TYPE
 }
 
-enum operationType {
-    contains
-    equals
+enum GroupReference {
+    MATCHING_UNIPROT_ACCESSION
+    SEQUENCE_IDENTITY
+}
+
+enum OperationType {
+    CONTAINS
+    EQUALS
+}
+
+enum SequenceReference {
+    NCBI_GENOME
+    NCBI_PROTEIN
+    PDB_ENTITY
+    PDB_INSTANCE
+    UNIPROT
 }
 
 "Built-in scalar for dynamic values"
 scalar ObjectScalar
 
-"Use SPQR's SchemaPrinter to remove this from SDL"
-scalar UNREPRESENTABLE
-
-input FilterInput {
-    field: fieldName
-    operation: operationType
-    source: Source
-    values: [String]
+input AnnotationFilterInput {
+    field: FieldName!
+    operation: OperationType!
+    source: AnnotationReference
+    values: [String!]!
 }

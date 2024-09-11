@@ -1,10 +1,10 @@
-query QueryGroupAnnotations(
+query QueryGroupAnnotationsSummary(
     $group: GroupReference!,
     $groupId: String!,
     $sources: [AnnotationReference!]!,
     $filters: [AnnotationFilterInput!]
 ){
-    group_annotations(
+    group_annotations_summary(
         group:$group
         groupId:$groupId
         sources:$sources

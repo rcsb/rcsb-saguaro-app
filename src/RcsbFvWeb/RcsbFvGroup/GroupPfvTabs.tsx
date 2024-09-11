@@ -3,7 +3,7 @@ import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModu
 import {
     FieldName,
     OperationType,
-    Source,
+    AnnotationReference,
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
@@ -114,7 +114,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                         this.props.groupId,
                         this.entityCount ?? 0,
                         {
-                            page:{first:50, after:"0"},
+                            page:{first:50, after: 0},
                             ...this.props.additionalConfig,
                             alignmentFilter: this.filterEntities
                         }
@@ -130,14 +130,14 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                         this.props.groupId,
                         this.filterInstances?.length ?? 0,
                         {
-                            page:{first:0,after: "0"},
+                            page:{first:1, after:0},
                             ...this.props.additionalConfig,
                             alignmentFilter: this.props.searchQuery ?  this.filterEntities : undefined,
                             filters: this.props.searchQuery ? [{
-                                source: Source.PdbInstance,
+                                source: AnnotationReference.PdbInstance,
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
-                                values: this.filterInstances
+                                values: this.filterInstances ?? []
                             }] : undefined
                         }
                    )
@@ -152,19 +152,19 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
                         this.props.groupId,
                         this.filterInstances?.length ?? 0,
                         {
-                            page:{first:0,after: "0"},
+                            page:{first:1,after: 0},
                             ...this.props.additionalConfig,
                             alignmentFilter: this.props.searchQuery ? this.filterEntities : undefined,
                             filters: this.props.searchQuery ? [{
-                                source: Source.PdbInstance,
+                                source: AnnotationReference.PdbInstance,
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
-                                values: this.filterInstances
+                                values: this.filterInstances ?? []
                             },{
-                                source: Source.PdbEntity,
+                                source: AnnotationReference.PdbEntity,
                                 field: FieldName.TargetId,
                                 operation: OperationType.Equals,
-                                values: this.filterEntities
+                                values: this.filterEntities ?? []
                             }] : undefined
                         }
                     )

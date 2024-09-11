@@ -7,7 +7,7 @@ import {
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
-import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAlignments, SequenceAnnotations} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
 import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
@@ -34,7 +34,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
         if(alignmentResponse.query_sequence)
             this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
@@ -42,12 +42,12 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
         const annotationsRequestContext: CollectGroupAnnotationsInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
-            sources:buildConfig.additionalConfig?.sources,
+            sources:buildConfig.additionalConfig?.sources ?? [],
             filters:buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
 
         return void 0;

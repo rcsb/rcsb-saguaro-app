@@ -1,4 +1,4 @@
-import {AlignmentResponse, QueryAlignmentArgs, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAlignments, QueryAlignmentsArgs, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class PolymerEntityChromosomeCollector {
@@ -7,11 +7,11 @@ export class PolymerEntityChromosomeCollector {
 
     public async collect( entityIds: Array<string>): Promise<Map<string, Array<string>>> {
         const entityMap: Map<string, Array<string>> = new Map<string, Array<string>>();
-        const result = await Promise.all(entityIds.map(e=>{
+        const result: SequenceAlignments[] = await Promise.all(entityIds.map(e=>{
             return this.entityChromosomes(e);
         }));
         result.forEach((alignment,n)=>{
-            alignment.target_alignment?.forEach(ta=>{
+            alignment.target_alignments?.forEach(ta=>{
                 if((ta?.aligned_regions?.length ?? 0)>0){
                     if(!entityMap.has(entityIds[n]))
                         entityMap.set(entityIds[n],new Array<string>());
@@ -24,8 +24,8 @@ export class PolymerEntityChromosomeCollector {
         return entityMap;
     }
 
-    private async entityChromosomes(entityId: string): Promise<AlignmentResponse>{
-        const request: QueryAlignmentArgs = {
+    private async entityChromosomes(entityId: string): Promise<SequenceAlignments>{
+        const request: QueryAlignmentsArgs = {
             from: SequenceReference.PdbEntity,
             to: SequenceReference.NcbiGenome,
             queryId: entityId

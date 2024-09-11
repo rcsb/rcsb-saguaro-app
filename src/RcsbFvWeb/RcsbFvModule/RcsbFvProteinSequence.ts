@@ -1,7 +1,7 @@
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
-    Source
+    SequenceAlignments,
+    SequenceAnnotations,
+    AnnotationReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -14,9 +14,12 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
 
     protected async protectedBuild(): Promise<void> {
         const buildConfig: RcsbFvModuleBuildInterface = this.buildConfig;
+        if(!buildConfig.from || !buildConfig.to)
+            return;
+
         const queryId: string | undefined = buildConfig.queryId;
         assertDefined(queryId);
-        const source: Array<Source> = buildConfig.sources ?? [Source.Uniprot];
+        const source: Array<AnnotationReference> = buildConfig.sources ?? [AnnotationReference.Uniprot];
         const alignmentRequestContext: CollectAlignmentInterface = {
             queryId: queryId,
             from: buildConfig.from,
@@ -24,7 +27,7 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
             dynamicDisplay:true,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
         const annotationsRequestContext: AnnotationsCollectConfig = {
@@ -34,7 +37,7 @@ export class RcsbFvProteinSequence extends RcsbFvAbstractModule {
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();

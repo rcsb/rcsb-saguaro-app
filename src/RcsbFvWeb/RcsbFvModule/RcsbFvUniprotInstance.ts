@@ -1,11 +1,11 @@
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
+    SequenceAlignments,
+    SequenceAnnotations,
     FieldName,
-    FilterInput,
+    AnnotationFilterInput,
     OperationType,
     SequenceReference,
-    Source
+    AnnotationReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvAbstractModule} from "./RcsbFvAbstractModule";
 import {RcsbFvAdditionalConfig, RcsbFvModuleBuildInterface} from "./RcsbFvModuleInterface";
@@ -24,18 +24,18 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
         const instanceId: string | undefined = buildConfig.instanceId;
         const additionalConfig:RcsbFvAdditionalConfig | undefined = buildConfig.additionalConfig;
         assertDefined(entityId), assertDefined(instanceId), assertDefined(upAcc);
-        let sources: Array<Source> = [Source.Uniprot, Source.PdbEntity, Source.PdbInstance];
+        let sources: Array<AnnotationReference> = [AnnotationReference.Uniprot, AnnotationReference.PdbEntity, AnnotationReference.PdbInstance];
         if(additionalConfig != null && additionalConfig.sources!=null && additionalConfig.sources.length>0)
             sources = additionalConfig.sources;
-        let filters:Array<FilterInput> = [{
+        let filters:Array<AnnotationFilterInput> = [{
             field:FieldName.TargetId,
             operation:OperationType.Equals,
-            source: Source.PdbEntity,
+            source: AnnotationReference.PdbEntity,
             values:[entityId]
         },{
             field:FieldName.TargetId,
             operation:OperationType.Contains,
-            source:Source.PdbInstance,
+            source:AnnotationReference.PdbInstance,
             values:[instanceId]
         }];
         if(additionalConfig != null && additionalConfig.filters!=null && additionalConfig.filters.length>0)
@@ -48,7 +48,7 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             excludeFirstRowLink: true,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const alignmentResponse: AlignmentResponse = await this.alignmentCollector.collect(alignmentRequestContext, [instanceId]);
+        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, [instanceId]);
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse);
 
         const annotationsRequestContext: AnnotationsCollectConfig = {
@@ -56,12 +56,12 @@ export class RcsbFvUniprotInstance extends RcsbFvAbstractModule {
             reference: SequenceReference.Uniprot,
             sources:sources,
             filters:filters,
-            annotationGenerator: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResidues(ann))))),
-            annotationFilter: (ann)=>(new Promise<AnnotationFeatures[]>((r)=>(r(buriedResiduesFilter(ann))))),
+            annotationGenerator: (ann)=>(new Promise<SequenceAnnotations[]>((r)=>(r(buriedResidues(ann))))),
+            annotationFilter: (ann)=>(new Promise<SequenceAnnotations[]>((r)=>(r(buriedResiduesFilter(ann))))),
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
-        const annotationsFeatures: AnnotationFeatures[] = await this.annotationCollector.collect(annotationsRequestContext);
+        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures);
 
         this.boardConfigData.length = await this.alignmentCollector.getAlignmentLength();

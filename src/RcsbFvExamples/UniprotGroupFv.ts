@@ -1,8 +1,8 @@
 import {buildGroupFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+// import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 
-const query: SearchQuery = {
+/* const query: SearchQuery = {
     "query": {
         "type": "group",
         "nodes": [
@@ -66,8 +66,8 @@ const query: SearchQuery = {
             "experimental"
         ]
     }
-}
+}*/
 
-//buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "Q8WZ42");
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P69905", query);
-//buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30");
+// buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "Q8WZ42");
+// buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P69905", query);
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "10000_30");

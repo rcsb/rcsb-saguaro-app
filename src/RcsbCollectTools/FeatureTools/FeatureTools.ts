@@ -5,7 +5,7 @@ import {
 import resource from "../../RcsbServerConfig/web.resources.json";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {ExternalTrackBuilderInterface} from "./ExternalTrackBuilderInterface";
-import {AlignmentResponse, AnnotationFeatures} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAnnotations, SequenceAlignments} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceInterface} from "../DataCollectors/PolymerEntityInstancesCollector";
 import {
     RcsbFvTrackDataAnnotationInterface
@@ -66,16 +66,16 @@ export class FeatureTools {
                 await builderB?.addTo?.(tracks);
             },
             async processAlignmentAndFeatures(data: {
-                annotations: Array<AnnotationFeatures>,
-                alignments: AlignmentResponse
+                annotations: Array<SequenceAnnotations>,
+                alignments: SequenceAlignments
             }): Promise<void> {
                 await builderA.processAlignmentAndFeatures?.(data);
                 await builderB?.processAlignmentAndFeatures?.(data);
             },
             async filterFeatures(data: {
-                annotations: Array<AnnotationFeatures>;
+                annotations: Array<SequenceAnnotations>;
                 rcsbContext?:Partial<PolymerEntityInstanceInterface>;
-            }): Promise<Array<AnnotationFeatures>> {
+            }): Promise<Array<SequenceAnnotations>> {
                 let annotations = data.annotations;
                 const rcsbContext = data.rcsbContext;
                 if(builderA.filterFeatures) annotations = await builderA.filterFeatures({annotations, rcsbContext});
@@ -83,9 +83,9 @@ export class FeatureTools {
                 return annotations;
             },
             async filterAlignments(data: {
-                alignments: AlignmentResponse;
+                alignments: SequenceAlignments;
                 rcsbContext?: Partial<PolymerEntityInstanceInterface>;
-            }): Promise<AlignmentResponse> {
+            }): Promise<SequenceAlignments> {
                 let alignments = data.alignments;
                 const rcsbContext = data.rcsbContext;
                 if(builderA.filterAlignments) alignments = await builderA.filterAlignments({alignments, rcsbContext});

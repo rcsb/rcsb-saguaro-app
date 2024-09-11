@@ -53,7 +53,7 @@ export class RcsbFvGroupAlignmentBuilder {
             ...additionalConfig,
             page:{
                 first:50,
-                after:"0",
+                after:0,
                 ...additionalConfig?.page
             },
             alignmentFilter:filterEntities,
@@ -94,7 +94,7 @@ export class RcsbFvGroupAlignmentBuilder {
             component: PaginationItemComponent,
             props:{
                 count:entityCount,
-                after: additionalConfig?.page?.after ?? "0",
+                after: additionalConfig?.page?.after ?? 0,
                 first: additionalConfig?.page?.first ?? 50,
                 stateChange:(state:PaginationItemState,prevState:PaginationItemState)=>{
                     switch (groupProvenance){
@@ -108,7 +108,7 @@ export class RcsbFvGroupAlignmentBuilder {
                                     ...additionalConfig,
                                     page:{
                                         first:state.first,
-                                        after:state.after.toString()
+                                        after:state.after
                                     },
                                     excludeLogo: true
                                 }
@@ -124,7 +124,7 @@ export class RcsbFvGroupAlignmentBuilder {
                                     ...additionalConfig,
                                     page:{
                                         first:state.first,
-                                        after:state.after.toString()
+                                        after:state.after
                                     }
                                 }
                             )

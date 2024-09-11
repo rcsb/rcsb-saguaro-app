@@ -1,6 +1,6 @@
 import {RcsbFvTrackDataElementInterface} from "@rcsb/rcsb-saguaro/lib/RcsbDataManager/RcsbDataManager";
 import {RcsbAnnotationConfigInterface} from "../../../../RcsbAnnotationConfig/AnnotationConfigInterface";
-import {Feature, SequenceReference, Source} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {Features, SequenceReference, AnnotationReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AnnotationProcessingInterface
 } from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
@@ -14,7 +14,7 @@ export interface TrackManagerInterface {
     getId(): string;
     getConfig(): RcsbAnnotationConfigInterface | undefined;
     getRange(): {min:number;max:number};
-    addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: Source, targetId:string, feature: Feature}, annotationProcessing?:AnnotationProcessingInterface): void;
+    addFeature(ann:{reference: SequenceReference | undefined, queryId: string, source: AnnotationReference, targetId:string, feature: Features}, annotationProcessing?:AnnotationProcessingInterface): void;
     size(): number;
     forEach(f:(ann:RcsbFvTrackDataAnnotationInterface, loc:string)=>void): void;
     addAll(trackElementsMap: TrackManagerInterface, color?: string ): void;

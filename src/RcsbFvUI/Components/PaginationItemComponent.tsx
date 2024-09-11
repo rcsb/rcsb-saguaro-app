@@ -7,7 +7,7 @@ export interface PaginationItemState {
 
 export interface PaginationItemProps {
     count:number;
-    after:string;
+    after:number;
     first:number;
     stateChange(state:PaginationItemState,prevState:PaginationItemState):void;
 }
@@ -15,7 +15,7 @@ export interface PaginationItemProps {
 export class PaginationItemComponent extends AbstractMenuItemComponent<PaginationItemProps,PaginationItemState>{
 
     readonly state:PaginationItemState = {
-        after: parseInt(this.props.after),
+        after: this.props.after,
         first: this.props.first > this.props.count ? this.props.count : this.props.first
     }
 

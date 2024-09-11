@@ -1,9 +1,9 @@
 import {
-    AnnotationFeatures,
-    Feature,
-    FeaturePosition,
-    Source,
-    Type
+    SequenceAnnotations,
+    Features,
+    FeaturesFeaturePositions,
+    AnnotationReference,
+    FeaturesType
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 import {range} from "lodash";
@@ -20,9 +20,9 @@ export function addUnmodeledTrackBuilder(
     externalTrackBuilder?: ExternalTrackBuilderInterface
 ): ExternalTrackBuilderInterface {
     const trackBuilder = async (data: {
-        annotations: Array<AnnotationFeatures>;
+        annotations: Array<SequenceAnnotations>;
         rcsbContext?: Partial<PolymerEntityInstanceInterface>
-    }): Promise<Array<AnnotationFeatures>> => {
+    }): Promise<Array<SequenceAnnotations>> => {
         return [
             ... await externalTrackBuilder?.filterFeatures?.(data) ?? [],
             ... await unmodeledTrackBuilder.filterFeatures(data)
@@ -44,9 +44,9 @@ export class UnmodeledTrackBuilder {
 
     private readonly unmodeledDescription: Map<string,[number,number]> = new Map();
     public async filterFeatures(data: {
-        annotations: Array<AnnotationFeatures>;
+        annotations: Array<SequenceAnnotations>;
         rcsbContext?: Partial<PolymerEntityInstanceInterface>;
-    }): Promise<Array<AnnotationFeatures>> {
+    }): Promise<Array<SequenceAnnotations>> {
         if (!data.rcsbContext)
             return data.annotations;
         return [
@@ -59,19 +59,19 @@ export class UnmodeledTrackBuilder {
         return new UnobservedToolTip(this.unmodeledDescription);
     }
 
-    private async buildUnobserved(annotations: Array<AnnotationFeatures>, rcsbContext: Partial<PolymerEntityInstanceInterface>): Promise<Array<AnnotationFeatures>> {
+    private async buildUnobserved(annotations: Array<SequenceAnnotations>, rcsbContext: Partial<PolymerEntityInstanceInterface>): Promise<Array<SequenceAnnotations>> {
         const nInstances = (await rcsbRequestCtxManager.getEntityProperties(rcsbContext.entityId ?? "none"))[0].instances.length;
         const featurePositions = Array.from(annotations.filter(
             ann => ann.features?.filter(
-                f => f?.type == Type.UnobservedResidueXyz
+                f => f?.type == FeaturesType.UnobservedResidueXyz
             )?.length ?? 0 > 0
         ).map(
             ann => ann.features?.filter(
-                (f): f is Feature => f?.type == Type.UnobservedResidueXyz
+                (f): f is Features => f?.type == FeaturesType.UnobservedResidueXyz
             ) ?? []
         ).flat().map(
             feature => feature.feature_positions?.filter(
-                (p): p is FeaturePosition => typeof p != "undefined"
+                (p): p is FeaturesFeaturePositions => typeof p != "undefined"
             ) ?? []
         ).flat().map(
             p => p.beg_seq_id && p.end_seq_id ? range(p.beg_seq_id,p.end_seq_id+1) : []
@@ -86,10 +86,10 @@ export class UnmodeledTrackBuilder {
             }
         });
         return [{
-            source: Source.PdbEntity,
+            source: AnnotationReference.PdbEntity,
             target_id: rcsbContext.entityId,
             features: [{
-                type: UNMODELED as Type,
+                type: UNMODELED as FeaturesType,
                 feature_positions: featurePositions
             }]
         }]
@@ -111,7 +111,7 @@ class UnobservedToolTip implements RcsbFvTooltipInterface {
     }
 
     showTooltipDescription(d: RcsbFvTrackDataAnnotationInterface): HTMLElement | undefined {
-        if(d.title == UNMODELED as Type)
+        if(d.title == UNMODELED as FeaturesType)
             return this.overloadTooltipDescription(d);
         return this.regularTooltip.showTooltipDescription(d);
     }
@@ -127,12 +127,12 @@ class UnobservedToolTip implements RcsbFvTooltipInterface {
 
 }
 
-function filterUnobserved(annotations: Array<AnnotationFeatures>): Array<AnnotationFeatures> {
+function filterUnobserved(annotations: Array<SequenceAnnotations>): Array<SequenceAnnotations> {
     return annotations.map(ann=>{
         return {
             ...ann,
             features: ann.features?.filter(
-                f=> f?.type != Type.UnobservedResidueXyz && f?.type != Type.UnobservedAtomXyz
+                f=> f?.type != FeaturesType.UnobservedResidueXyz && f?.type != FeaturesType.UnobservedAtomXyz
             )
         }
     });

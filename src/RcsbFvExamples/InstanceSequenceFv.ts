@@ -1,9 +1,9 @@
 import {RcsbFvRowConfigInterface} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
-    Type
+    SequenceAlignments,
+    SequenceAnnotations,
+    FeaturesType
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
@@ -36,12 +36,12 @@ function externalTrackBuilder(){
         }]
     };
     return {
-        processAlignmentAndFeatures(data: { annotations?: Array<AnnotationFeatures>; alignments?: AlignmentResponse }): Promise<void> {
+        processAlignmentAndFeatures(data: { annotations?: Array<SequenceAnnotations>; alignments?: SequenceAlignments }): Promise<void> {
             return new Promise<void>(resolve => {
                 myComputedTrack.trackData = [];
                 data.annotations?.forEach(a=>{
                     a.features?.forEach(f=>{
-                        if(f!=null && f.type === Type.RegionOfInterest){
+                        if(f!=null && f.type === FeaturesType.RegionOfInterest){
                             if(f.feature_positions)
                                 myComputedTrack.trackData?.push( ...f.feature_positions?.map(p=>({
                                     begin:p?.beg_seq_id ?? 0,
@@ -62,8 +62,8 @@ function externalTrackBuilder(){
                 resolve(void 0);
             })
         },
-        filterFeatures(data: {annotations: Array<AnnotationFeatures>; rcsbContext:Partial<PolymerEntityInstanceInterface>}): Promise<Array<AnnotationFeatures>> {
-            return new Promise<Array<AnnotationFeatures>>(resolve => {
+        filterFeatures(data: {annotations: Array<SequenceAnnotations>; rcsbContext:Partial<PolymerEntityInstanceInterface>}): Promise<Array<SequenceAnnotations>> {
+            return new Promise<Array<SequenceAnnotations>>(resolve => {
                 resolve(data.annotations);
             })
         }

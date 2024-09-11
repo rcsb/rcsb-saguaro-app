@@ -1,9 +1,9 @@
-import {RcsbQueryAnnotations, RcsbQueryGroupAnnotations} from "./RcsbQueryAnnotations";
+import {RcsbQueryAnnotations, RcsbQueryGroupAnnotations, RcsbQueryGroupAnnotationsSumary} from "./RcsbQueryAnnotations";
 import {RcsbQueryAlignment, RcsbQueryGroupAlignment, RcsbQueryGroupAlignmentArguments} from "./RcsbQueryAlignment";
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
-    QueryAlignmentArgs,
+    SequenceAlignments,
+    SequenceAnnotations,
+    QueryAlignmentsArgs,
     QueryAnnotationsArgs, QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
@@ -34,10 +34,11 @@ import {RcsbQueryMultipleInstanceSequences} from "./RcsbQueryMultipleInstanceSeq
 //TODO Implement a cache to store requests and avoid duplication
 class RcsbClientClass {
 
-    private readonly rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<AnnotationFeatures>> ;
-    private readonly rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<AnnotationFeatures>>;
-    private readonly rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentArgs,AlignmentResponse>;
-    private readonly rcsbQueryGroupAlignment: RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments,AlignmentResponse>;
+    private readonly rcsbQueryAnnotations: RcsbCoreQueryInterface<QueryAnnotationsArgs,Array<SequenceAnnotations>> ;
+    private readonly rcsbQueryGroupAnnotationsSummary: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<SequenceAnnotations>>;
+    private readonly rcsbQueryGroupAnnotations: RcsbCoreQueryInterface<QueryGroup_AnnotationsArgs,Array<SequenceAnnotations>>;
+    private readonly rcsbQueryAlignment: RcsbCoreQueryInterface<QueryAlignmentsArgs,SequenceAlignments>;
+    private readonly rcsbQueryGroupAlignment: RcsbCoreQueryInterface<RcsbQueryGroupAlignmentArguments,SequenceAlignments>;
     private readonly rcsbQueryEntityInstances: RcsbCoreQueryInterface<QueryEntryArgs,CoreEntry>;
     private readonly rcsbQueryMutipleEntityInstances: RcsbCoreQueryInterface<QueryPolymer_EntitiesArgs,Array<CorePolymerEntity>>;
     private readonly rcsbQueryEntryProperties: RcsbCoreQueryInterface<QueryEntriesArgs,Array<CoreEntry>>;
@@ -48,6 +49,7 @@ class RcsbClientClass {
 
     constructor(get:{borrego: ()=>GraphQLRequest, yosemite: ()=>GraphQLRequest}){
         this.rcsbQueryAnnotations = new RcsbQueryAnnotations(get.borrego);
+        this.rcsbQueryGroupAnnotationsSummary = new RcsbQueryGroupAnnotationsSumary(get.borrego);
         this.rcsbQueryGroupAnnotations = new RcsbQueryGroupAnnotations(get.borrego);
         this.rcsbQueryAlignment = new RcsbQueryAlignment(get.borrego);
         this.rcsbQueryGroupAlignment = new RcsbQueryGroupAlignment(get.borrego);
@@ -60,19 +62,23 @@ class RcsbClientClass {
         this.rcsbQueryMultipleInstanceSequences = new RcsbQueryMultipleInstanceSequences(get.yosemite);
     }
 
-    public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<AnnotationFeatures>>{
+    public async requestRcsbPdbAnnotations(requestConfig: QueryAnnotationsArgs): Promise<Array<SequenceAnnotations>>{
         return await this.rcsbQueryAnnotations.request(requestConfig);
     }
 
-    public async requestRcsbPdbGroupAnnotations(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<AnnotationFeatures>>{
+    public async requestRcsbPdbGroupAnnotationsSummary(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<SequenceAnnotations>>{
+        return await this.rcsbQueryGroupAnnotationsSummary.request(requestConfig);
+    }
+
+    public async requestRcsbPdbGroupAnnotations(requestConfig: QueryGroup_AnnotationsArgs): Promise<Array<SequenceAnnotations>>{
         return await this.rcsbQueryGroupAnnotations.request(requestConfig);
     }
 
-    public async requestAlignment(requestConfig: QueryAlignmentArgs): Promise<AlignmentResponse>{
+    public async requestAlignment(requestConfig: QueryAlignmentsArgs): Promise<SequenceAlignments>{
         return await this.rcsbQueryAlignment.request(requestConfig);
     }
 
-    public async requestGroupAlignment(requestConfig: RcsbQueryGroupAlignmentArguments): Promise<AlignmentResponse>{
+    public async requestGroupAlignment(requestConfig: RcsbQueryGroupAlignmentArguments): Promise<SequenceAlignments>{
         return await this.rcsbQueryGroupAlignment.request(requestConfig);
     }
 

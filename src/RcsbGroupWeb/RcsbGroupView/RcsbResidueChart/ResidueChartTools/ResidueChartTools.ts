@@ -5,10 +5,10 @@ import {
     AnnotationsCollectConfig
 } from "../../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {
-    AlignmentResponse,
-    AnnotationFeatures,
+    SequenceAlignments,
+    SequenceAnnotations,
     SequenceReference,
-    Source
+    AnnotationReference
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {filter, interfaceAnnotations} from "../../../../RcsbFvWeb/RcsbFvModule/RcsbFvInterface";
 import {
@@ -81,19 +81,19 @@ export namespace ResidueChartTools {
             from: SequenceReference.PdbInstance,
             to: SequenceReference.PdbInstance
         };
-        const alignmentResponse: AlignmentResponse = await alignmentCollector.collect(alignmentRequestContext);
+        const alignmentResponse: SequenceAlignments = await alignmentCollector.collect(alignmentRequestContext);
 
         const annotationsRequestContext: AnnotationsCollectConfig = {
             queryId: instanceId,
             reference: SequenceReference.PdbInstance,
-            sources: [Source.PdbEntity, Source.PdbInstance, Source.Uniprot, Source.PdbInterface],
+            sources: [AnnotationReference.PdbEntity, AnnotationReference.PdbInstance, AnnotationReference.Uniprot, AnnotationReference.PdbInterface],
             annotationGenerator: interfaceAnnotations,
             annotationFilter: filter
         };
         return await getCharts(annotationsRequestContext, await annotationCollector.collect(annotationsRequestContext),alignmentResponse.query_sequence?.length ?? -1);
     }
 
-    async function getCharts(annotationRequestContext: AnnotationRequestContext, annotations: Array<AnnotationFeatures>, numberResidues:number): Promise<RcsbChartInterface[]> {
+    async function getCharts(annotationRequestContext: AnnotationRequestContext, annotations: Array<SequenceAnnotations>, numberResidues:number): Promise<RcsbChartInterface[]> {
         return processAnnotations({
             annotations,
             annotationBlockManager: new AnnotationBlockManager(
@@ -109,9 +109,9 @@ export namespace ResidueChartTools {
     }
 
     async function processAnnotations(config: {
-        annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext, AnnotationFeatures[]]>,
+        annotationBlockManager: BlockManagerInterface<[AnnotationRequestContext, SequenceAnnotations[]]>,
         annotationRequestContext: AnnotationRequestContext,
-        annotations: Array<AnnotationFeatures>,
+        annotations: Array<SequenceAnnotations>,
         trackBlockFactory: TrackBlockFactoryInterface<{blockType:string}>,
         residueDistributionFactory: ResidueDistributionFactoryInterface<[string,number]>,
         distributionChartFactory: DistributionChartFactoryInterface,
