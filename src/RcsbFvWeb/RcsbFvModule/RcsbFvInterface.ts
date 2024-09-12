@@ -93,7 +93,7 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                     return "";
                 const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
                 const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
-                const chPair: [string, string] | undefined = interfaceTranslate.getInstances(ann.target_id);
+                const chPair: [string, string] | undefined = interfaceTranslate.getInstances(ann.target_id.split(":")[0]);
                 if(!chPair)
                     return "";
                 const asym: string = chPair[0] == chain ? chPair[1] : chPair[0];
