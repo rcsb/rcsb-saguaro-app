@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.2.6] - 2024-09-12
+### Dependency update
+- audit fix
+
 ## [6.2.5] - 2024-08-23
 ### Dependency update
 - audit fix
