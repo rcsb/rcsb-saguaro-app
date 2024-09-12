@@ -33,6 +33,7 @@ export interface AnnotationsCollectConfig extends QueryAnnotationsArgs, CommonAn
 }
 
 export interface CollectGroupAnnotationsInterface extends QueryGroup_AnnotationsArgs, CommonAnnotationInterface {
+    isSummary: boolean;
 }
 
 export type AnnotationRequestContext = Partial<AnnotationsCollectConfig & CollectGroupAnnotationsInterface>;

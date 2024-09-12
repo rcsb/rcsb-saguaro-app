@@ -129,7 +129,8 @@ export namespace GroupPfvApp {
             }],
             sources: [AnnotationReference.PdbInstance],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-            externalTrackBuilder:  alignmentGlobalLigandBindingSite()
+            externalTrackBuilder:  alignmentGlobalLigandBindingSite(),
+            isAnnotationsGroupSummary: false
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
@@ -144,23 +145,29 @@ export namespace GroupPfvApp {
 }
 
 function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProcessingInterface {
-    const targets: Map<string,number> = new Map<string,number>();
+    const targetValues: Map<string,number> = new Map<string, number>();
+    const targetSet: Map<string,Set<String>> = new Map<string, Set<string>>();
     return {
         getAnnotationValue: (feature: { type: string; targetId: string; positionKey: string; d: Features; p: FeaturePositionGaps}) => {
-            if (!targets.has(feature.type)) {
-                if(feature.d.value)
-                    targets.set(feature.type, feature.d.value);
-                return feature.p.values?.[0] ?? 0;
-            }else{
-                return feature.p.values?.[0] ?? 0;
-            }
+            if(!targetValues.has(feature.type))
+                targetValues.set(feature.type, 0);
+            if(!targetSet.has(feature.type))
+                targetSet.set(feature.type, new Set());
+            if(feature.type === "SCOP:Prokaryotic (50S subunit)")
+                console.log(feature)
+            if( typeof feature.d.value === "number")
+                targetValues.set(feature.type, feature.d.value ?? 0);
+            else
+                targetSet.get(feature.type)?.add(feature.targetId);
+            return feature.p.values?.[0] ?? 1;
         },
         computeAnnotationValue: (annotationTracks: Map<string, TrackManagerInterface>) => {
-            annotationTracks.forEach((at,type)=>{
-                const N: number | undefined = (type.includes(FeaturesType.Cath) || type.includes(FeaturesType.Scop) || type.includes(FeaturesType.BindingSite) || type.includes(FeaturesType.Pfam)) ? targets.get(type) : nTargets;
-                at.forEach((ann,positionKey)=>{
+            annotationTracks.forEach((at,type)=> {
+                const isType =  (type.includes(FeaturesType.Cath) || type.includes(FeaturesType.Scop) || type.includes(FeaturesType.BindingSite) || type.includes(FeaturesType.Pfam));
+                const N = isType ? (targetValues.get(type) != 0 ? targetValues.get(type) : targetSet.get(type)?.size) : nTargets;
+                at.forEach((ann,positionKey)=> {
                     if(ann.source != AnnotationReference.PdbInterface)
-                        ann.value = Math.ceil(1000*(ann.value as number) / (N ?? 1))/1000;
+                        ann.value = Math.round(100*(ann.value as number) / (N ?? 1))/100;
                 });
             });
         }

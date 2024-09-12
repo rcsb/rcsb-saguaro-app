@@ -62,7 +62,7 @@ export class RcsbFvTooltip implements RcsbFvTooltipInterface {
         if(d.description == null || d.description.length == 0)
             return undefined;
         const tooltipDescriptionDiv = document.createElement<"div">("div");
-        d.description.forEach(des=>{
+        d.description.slice(0,2).forEach(des=>{
             const desDiv = document.createElement<"div">("div");
             desDiv.append(des);
             tooltipDescriptionDiv.append(desDiv);

@@ -42,6 +42,7 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
         const annotationsRequestContext: CollectGroupAnnotationsInterface = {
             group: buildConfig.group,
             groupId: buildConfig.groupId,
+            isSummary: typeof buildConfig.additionalConfig?.isAnnotationsGroupSummary === "boolean" ? buildConfig.additionalConfig.isAnnotationsGroupSummary : true,
             sources:buildConfig.additionalConfig?.sources ?? [],
             filters:buildConfig.additionalConfig?.filters,
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,

@@ -120,6 +120,7 @@ async function collectFeatures(annotationsContext: {groupId: string; targetList:
         groupId: annotationsContext.groupId,
         group: GroupReference.SequenceIdentity,
         sources: [AnnotationReference.PdbInstance],
+        isSummary: false,
         filters: [{
             source:AnnotationReference.PdbInstance,
             operation: OperationType.Equals,

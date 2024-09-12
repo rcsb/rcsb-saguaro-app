@@ -65,32 +65,31 @@ export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterfac
             ann.features?.forEach(d => {
                 if(d)
                     d.feature_positions?.forEach(p=>{
-                        if(p?.beg_seq_id)
-                            p.values?.forEach((v,n)=>{
-                                const key: string = (p.beg_seq_id as number+n).toString();
-                                if(!ligandMap.has(key))
-                                    ligandMap.set(key, new Set<string>());
-                                else if(d.name && !ligandMap.get(key)?.has(d.name))
-                                    ligandMap.get(key)?.add(d.name)
-                                else
-                                    return;
-                                const bs = bindingSiteMap.get(key);
-                                if(!bs){
-                                    bindingSiteMap.set(key,{
-                                        begin: p.beg_seq_id as number+n,
-                                        type: trackName,
-                                        value: 1
-                                    })
-                                    if(max == 0)
-                                        max = 1;
-                                }else{
-                                    if(bs){
-                                        (bs.value as number) += 1;
-                                        if((bs.value as number) > max)
-                                            max = (bs.value as number);
-                                    }
+                        if(p?.beg_seq_id){
+                            const key: string = (p.beg_seq_id).toString();
+                            if(!ligandMap.has(key))
+                                ligandMap.set(key, new Set<string>());
+                            else if(d.name && !ligandMap.get(key)?.has(d.name))
+                                ligandMap.get(key)?.add(d.name)
+                            else
+                                return;
+                            const bs = bindingSiteMap.get(key);
+                            if(!bs){
+                                bindingSiteMap.set(key,{
+                                    begin: p.beg_seq_id,
+                                    type: trackName,
+                                    value: 1
+                                })
+                                if(max == 0)
+                                    max = 1;
+                            }else{
+                                if(bs){
+                                    (bs.value as number) += 1;
+                                    if((bs.value as number) > max)
+                                        max = (bs.value as number);
                                 }
-                            });
+                            }
+                        }
                     });
             });
         });

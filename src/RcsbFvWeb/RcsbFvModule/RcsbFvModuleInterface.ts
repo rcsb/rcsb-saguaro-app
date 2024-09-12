@@ -53,6 +53,7 @@ export interface RcsbFvAdditionalConfig{
         replace?: UiComponentType<any>[];
     };
     dataProvider?: RcsbModuleDataProviderInterface;
+    isAnnotationsGroupSummary?: boolean;
 }
 
 export interface RcsbModuleDataProviderInterface {

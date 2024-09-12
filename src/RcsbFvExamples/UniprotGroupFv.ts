@@ -70,4 +70,4 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 
 // buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "Q8WZ42");
 // buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P69905", query);
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "10000_30");
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "10_30");

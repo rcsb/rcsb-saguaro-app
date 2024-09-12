@@ -58,12 +58,20 @@ export class AnnotationCollector implements AnnotationCollectorInterface{
 
     private async requestAnnotations(requestConfig: AnnotationRequestContext): Promise<Array<SequenceAnnotations>> {
         if(requestConfig.group && requestConfig.groupId && requestConfig.sources)
-            return await this.rcsbFvQuery.requestRcsbPdbGroupAnnotations({
-                group: requestConfig.group,
-                groupId: requestConfig.groupId,
-                sources: requestConfig.sources,
-                filters: requestConfig.filters
-            });
+            if(requestConfig.isSummary)
+                return await this.rcsbFvQuery.requestRcsbPdbGroupAnnotationsSummary({
+                    group: requestConfig.group,
+                    groupId: requestConfig.groupId,
+                    sources: requestConfig.sources,
+                    filters: requestConfig.filters
+                });
+            else
+                return await this.rcsbFvQuery.requestRcsbPdbGroupAnnotations({
+                    group: requestConfig.group,
+                    groupId: requestConfig.groupId,
+                    sources: requestConfig.sources,
+                    filters: requestConfig.filters
+                });
         else if(requestConfig.queryId && requestConfig.reference && requestConfig.sources)
             return await this.rcsbFvQuery.requestRcsbPdbAnnotations({
                 queryId: requestConfig.queryId,
