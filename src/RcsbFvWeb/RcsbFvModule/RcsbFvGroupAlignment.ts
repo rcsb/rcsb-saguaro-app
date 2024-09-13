@@ -9,7 +9,7 @@ import {
     GroupReference,
     OperationType,
     AnnotationReference,
-    FeaturesType
+    FeaturesType, QueryGroup_AnnotationsArgs
 } from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     MsaAlignmentTrackFactory
@@ -25,8 +25,7 @@ import {Operator} from "../../RcsbUtils/Helpers/Operator";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
-    AnnotationCollectorInterface,
-    CollectGroupAnnotationsInterface
+    AnnotationCollectorInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
@@ -94,7 +93,11 @@ async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInt
     const alignmentResponse: SequenceAlignments = await rcsbClient.requestGroupAlignment({
         group: alignmentRequestContext.group,
         groupId: alignmentRequestContext.groupId,
-        page: alignmentRequestContext.page
+        page: {
+            first: alignmentRequestContext.page.first,
+            after: alignmentRequestContext.page.after + alignmentRequestContext.page.first
+        },
+        excludeLogo: true
     });
     const targetList: string[] = uniqueTargetList(alignmentResponse);
     if(alignmentRequestContext.groupId) {
@@ -115,15 +118,18 @@ function uniqueTargetList(alignmentResponse: SequenceAlignments): string[] {
 }
 
 async function collectFeatures(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}, annotationCollector: AnnotationCollectorInterface): Promise<Array<SequenceAnnotations>> {
-    return await annotationCollector.collect(buildGroupAnnotationQuery(annotationsContext));
+    return await annotationCollector.collect({
+        ...buildGroupAnnotationQuery(annotationsContext),
+        isSummary: false,
+        externalTrackBuilder: annotationsContext.externalTrackBuilder
+    });
 }
 
-function buildGroupAnnotationQuery(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}): CollectGroupAnnotationsInterface {
+function buildGroupAnnotationQuery(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}): QueryGroup_AnnotationsArgs {
     return  {
         groupId: annotationsContext.groupId,
         group: GroupReference.SequenceIdentity,
         sources: [AnnotationReference.PdbInstance],
-        isSummary: false,
         filters: [{
             source:AnnotationReference.PdbInstance,
             operation: OperationType.Equals,
@@ -134,7 +140,6 @@ function buildGroupAnnotationQuery(annotationsContext: {groupId: string; targetL
             operation: OperationType.Contains,
             field:FieldName.TargetId,
             values:annotationsContext.targetList
-        }],
-        externalTrackBuilder: annotationsContext.externalTrackBuilder
+        }]
     }
 }
