@@ -49,7 +49,6 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         };
 
-        collectNextPage(alignmentRequestContext, this.alignmentCollector, this.annotationCollector).then(()=>console.log("Next page ready"));
 
         const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
 
@@ -70,6 +69,8 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
         });
+
+        collectNextPage(alignmentRequestContext, this.alignmentCollector, this.annotationCollector).then(()=>console.log("Next page ready"));
 
         return void 0;
     }
