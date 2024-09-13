@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "6.2.5-dev-js-seqcoord.2",
+  "version": "6.2.5-dev-js-seqcoord.3",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/app.js",
   "files": [
@@ -101,7 +101,7 @@
     "string-to-color": "^2.2.2"
   },
   "peerDependencies": {
-    "@rcsb/rcsb-api-tools": "^5.0.0-dev-js-seqcoord.1",
+    "@rcsb/rcsb-api-tools": "^5.0.0-dev-js-seqcoord.2",
     "boxicons": "^2.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

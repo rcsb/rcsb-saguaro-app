@@ -89,16 +89,17 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
     private titleSuffix(rcsbContext?: RcsbContextType): ((ann: SequenceAnnotations, d: Features)=>Promise<string|undefined>) {
         return (async (ann: SequenceAnnotations, d: Features) => {
             if (ann.source === AnnotationReference.PdbInterface) {
-                if(!ann.target_id)
+                if(!ann.target_id || !ann.target_identifiers)
                     return "";
                 const interfaceTranslate = await rcsbRequestCtxManager.getInterfaceToInstance(ann.target_id);
                 const chain: string = this.instanceId.split(TagDelimiter.instance)[1];
-                const chPair: [string, string] | undefined = interfaceTranslate.getInstances(ann.target_id.split(":")[0]);
+                const interfaceId: string = TagDelimiter.getInterfaceId(ann.target_identifiers);
+                const chPair: [string, string] | undefined = interfaceTranslate.getInstances(interfaceId);
                 if(!chPair)
                     return "";
                 const asym: string = chPair[0] == chain ? chPair[1] : chPair[0];
                 const auth: string | undefined = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
-                const operators: [Array<Array<string>>, Array<Array<string>>] | undefined = interfaceTranslate.getOperatorIds(ann.target_id);
+                const operators: [Array<Array<string>>, Array<Array<string>>] | undefined = interfaceTranslate.getOperatorIds(interfaceId);
                 let partnerOperator: string = "";
                 if(operators && ann.target_identifiers?.interface_partner_index && rcsbContext && Array.isArray(rcsbContext.operatorIds)){
                     const opIndex: number = operators[ann.target_identifiers.interface_partner_index].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
