@@ -24,21 +24,23 @@ export namespace RcsbRequestTools {
         if(!Array.isArray(ids))
             ids = [ids];
         const missing = ids.filter(id=>!map.has(id));
-        const collectorPromise = collector.collect({[collectorKey]:missing} as DataCollectorArgsType<K>);
-        missing.forEach(id=>{
-            map.set(
-                id,
-                new Promise((resolve, reject) => {
-                    collectorPromise.then(t=>{
-                        const d = t.find(t=>propertyKey(t)==id);
-                        if(d)
-                            resolve(d);
-                        else
-                            reject(`${id} not available`);
+        if(missing.length > 0){
+            const collectorPromise = collector.collect({[collectorKey]:missing} as DataCollectorArgsType<K>);
+            missing.forEach(id=>{
+                map.set(
+                    id,
+                    new Promise((resolve, reject) => {
+                        collectorPromise.then(t=>{
+                            const d = t.find(t=>propertyKey(t)==id);
+                            if(d)
+                                resolve(d);
+                            else
+                                reject(`${id} not available`);
+                        })
                     })
-                })
-            )
-        });
+                )
+            });
+        }
         return Promise.all(ids.map(i=>map.get(i)).filter((x): x is Promise<T> => typeof x !== undefined));
     }
 
