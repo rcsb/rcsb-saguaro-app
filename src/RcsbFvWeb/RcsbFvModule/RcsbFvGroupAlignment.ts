@@ -127,8 +127,8 @@ async function collectFeatures(annotationsContext: {groupId: string; targetList:
 
 function buildGroupAnnotationQuery(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}): QueryGroup_AnnotationsArgs {
     return  {
-        groupId: annotationsContext.groupId,
         group: GroupReference.SequenceIdentity,
+        groupId: annotationsContext.groupId,
         sources: [AnnotationReference.PdbInstance],
         filters: [{
             source:AnnotationReference.PdbInstance,
