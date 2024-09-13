@@ -90,7 +90,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 }
 
 async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface, annotationCollector: AnnotationCollectorInterface): Promise<void> {
-    const alignmentResponse: SequenceAlignments = await rcsbClient.requestGroupAlignment({
+    let alignmentResponse: SequenceAlignments = await rcsbClient.requestGroupAlignment({
         group: alignmentRequestContext.group,
         groupId: alignmentRequestContext.groupId,
         page: {
@@ -99,6 +99,9 @@ async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInt
         },
         excludeLogo: true
     });
+    alignmentResponse = (await alignmentRequestContext.externalTrackBuilder?.filterAlignments?.({
+        alignments: alignmentResponse
+    })) ?? alignmentResponse;
     const targetList: string[] = uniqueTargetList(alignmentResponse);
     if(alignmentRequestContext.groupId) {
         const alignmentFeatures: SequenceAnnotations[] = await rcsbClient.requestRcsbPdbGroupAnnotations(buildGroupAnnotationQuery({
