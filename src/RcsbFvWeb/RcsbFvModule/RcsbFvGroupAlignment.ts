@@ -28,6 +28,7 @@ import {
     AnnotationCollectorInterface,
     CollectGroupAnnotationsInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -90,20 +91,17 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 }
 
 async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface, annotationCollector: AnnotationCollectorInterface): Promise<void> {
-    const alignmentResponse: SequenceAlignments = await alignmentCollector.collect({
-        ...alignmentRequestContext,
-        excludeLogo: true,
-        page: {
-            first: alignmentRequestContext.page.first,
-            after: alignmentRequestContext.page.after + alignmentRequestContext.page.first
-        }
-    })
+    const alignmentResponse: SequenceAlignments = await rcsbClient.requestGroupAlignment({
+        group: alignmentRequestContext.group,
+        groupId: alignmentRequestContext.groupId,
+        page: alignmentRequestContext.page
+    });
     const targetList: string[] = uniqueTargetList(alignmentResponse);
     if(alignmentRequestContext.groupId) {
-        const alignmentFeatures: SequenceAnnotations[] = await collectFeatures({
+        const alignmentFeatures: SequenceAnnotations[] = await rcsbClient.requestRcsbPdbGroupAnnotations(buildGroupAnnotationQuery({
             groupId: alignmentRequestContext.groupId,
             targetList
-        }, annotationCollector);
+        }));
         const featureTargetList = Operator.uniqueValues<string>(alignmentFeatures.map(af=>TagDelimiter.parseInstance(af.target_id ?? "").entryId));
         Operator.arrayChunk(featureTargetList,100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
     }
@@ -117,7 +115,11 @@ function uniqueTargetList(alignmentResponse: SequenceAlignments): string[] {
 }
 
 async function collectFeatures(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}, annotationCollector: AnnotationCollectorInterface): Promise<Array<SequenceAnnotations>> {
-    const annotationsRequestContext: CollectGroupAnnotationsInterface = {
+    return await annotationCollector.collect(buildGroupAnnotationQuery(annotationsContext));
+}
+
+function buildGroupAnnotationQuery(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}): CollectGroupAnnotationsInterface {
+    return  {
         groupId: annotationsContext.groupId,
         group: GroupReference.SequenceIdentity,
         sources: [AnnotationReference.PdbInstance],
@@ -135,5 +137,4 @@ async function collectFeatures(annotationsContext: {groupId: string; targetList:
         }],
         externalTrackBuilder: annotationsContext.externalTrackBuilder
     }
-    return await annotationCollector.collect(annotationsRequestContext);
 }
