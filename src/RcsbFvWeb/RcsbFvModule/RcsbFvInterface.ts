@@ -101,13 +101,14 @@ export class RcsbFvInterface extends RcsbFvAbstractModule {
                 const auth: string | undefined = (await rcsbRequestCtxManager.getEntityToInstance(this.instanceId.split(TagDelimiter.instance)[0])).translateAsymToAuth(asym);
                 const operators: [Array<Array<string>>, Array<Array<string>>] | undefined = interfaceTranslate.getOperatorIds(interfaceId);
                 let partnerOperator: string = "";
-                if(operators && ann.target_identifiers?.interface_partner_index && rcsbContext && Array.isArray(rcsbContext.operatorIds)){
-                    const opIndex: number = operators[ann.target_identifiers.interface_partner_index].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
+                const partner_idx =  ann.target_identifiers?.interface_partner_index;
+                if(operators && typeof partner_idx == "number" && rcsbContext && Array.isArray(rcsbContext.operatorIds)){
+                    const opIndex: number = operators[partner_idx].map(o=>o.join("-")).indexOf(rcsbContext.operatorIds.join("-"));
                     if(opIndex < 0) {
                         console.error(`Operator Id ${rcsbContext.operatorIds.join("-")} not found in [[${operators[0]}],[${operators[1]}]]`);
                         console.error(ann.target_identifiers);
                     } else {
-                        partnerOperator = TagDelimiter.operatorComposition + operators[1 - ann.target_identifiers.interface_partner_index][opIndex].join(TagDelimiter.operatorComposition);
+                        partnerOperator = TagDelimiter.operatorComposition + operators[1 - partner_idx][opIndex].join(TagDelimiter.operatorComposition);
                     }
                 }
                 return (asym == auth ? asym : `${asym}[auth ${auth}]`)+partnerOperator;
