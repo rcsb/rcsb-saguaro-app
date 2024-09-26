@@ -47,7 +47,6 @@ class RcsbFvContextManager {
 function buildRcsbFvSingleViewer(elementId: string, boardConfig?: Partial<RcsbFvBoardConfigInterface>): RcsbFv{
     const config: RcsbFvBoardConfigInterface =  {
         rowTitleWidth: 190,
-        trackWidth: 900,
         tooltipGenerator: new RcsbFvTooltip(),
         ...boardConfig
     };

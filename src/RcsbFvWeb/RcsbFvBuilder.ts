@@ -31,7 +31,7 @@ export function buildMultipleAlignmentSequenceFv(elementFvId: string, elementSel
     return RcsbFvUniprotBuilder.buildUniprotMultipleEntitySequenceFv(elementFvId, elementSelectId, upAcc, config, additionalConfig);
 }
 
-export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): Promise<RcsbFvModulePublicInterface> {
+export function buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
     return RcsbFvEntityBuilder.buildEntitySummaryFv(elementFvId, elementSelectId, entityId);
 }
 
