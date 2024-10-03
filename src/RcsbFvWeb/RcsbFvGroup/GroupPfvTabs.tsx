@@ -13,6 +13,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums
 import {SelectionInterface} from "@rcsb/rcsb-saguaro/lib/RcsbBoard/RcsbSelection";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
 import {GroupPfvApp as GPA} from "./GroupTabs/GroupPfvApp";
+import {asyncScheduler} from "rxjs";
 
 const ALIGNMENT: "alignment" = "alignment";
 const STRUCTURAL_FEATURES: "structural-features" = "structural-features";
@@ -97,10 +98,13 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
     }
 
     private async onSelect(tabKey: TabKey): Promise<void> {
-        if(!this.featureViewers.has(tabKey))
-            await this.renderPositionalFeatureViewer(tabKey);
-        this.syncPositionAndHighlight(tabKey);
-        this.currentTab= tabKey;
+        asyncScheduler.schedule(async ()=>{
+            if(!this.featureViewers.has(tabKey))
+                await this.renderPositionalFeatureViewer(tabKey);
+            this.syncPositionAndHighlight(tabKey);
+            this.currentTab= tabKey;
+        }, 10)
+
     }
 
     private async renderPositionalFeatureViewer(tabKey: TabKey): Promise<void> {
