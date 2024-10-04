@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.2] - 2024-10-04
+### Dependency update
+- rcsb-saguaro v3.1.4
+
 ## [6.3.1] - 2024-10-03
 ### Bug fix
 - Group Fv tab bug fix
