@@ -2,6 +2,28 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.2] - 2024-10-04
+### Dependency update
+- rcsb-saguaro v3.1.4
+
+## [6.3.1] - 2024-10-03
+### Bug fix
+- Group Fv tab bug fix
+
+### Dependency update
+- rcsb-saguaro v3.1.1
+
+## [6.3.0] - 2024-09-26
+### Configuration
+- Default `trackWidth` config was removed. The track length will be defined based on the root container
+
+### Dependency update
+- rcsb-saguaro v3.1.0
+
+## [6.2.6] - 2024-09-12
+### Dependency update
+- audit fix
+
 ## [6.2.5] - 2024-08-23
 ### Dependency update
 - audit fix

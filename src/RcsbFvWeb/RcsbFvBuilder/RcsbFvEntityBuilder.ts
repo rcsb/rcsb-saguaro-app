@@ -9,7 +9,7 @@ import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 
 export class RcsbFvEntityBuilder {
 
-    static async buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string): Promise<RcsbFvModulePublicInterface> {
+    static async buildEntitySummaryFv(elementFvId: string, elementSelectId:string, entityId:string, additionalConfig?:RcsbFvAdditionalConfig): Promise<RcsbFvModulePublicInterface> {
 
         return new Promise<RcsbFvModulePublicInterface>((resolve, reject)=>{
             const pdbId:string = TagDelimiter.parseEntity(entityId).entryId;
@@ -23,7 +23,8 @@ export class RcsbFvEntityBuilder {
                         elementSelectId: elementSelectId,
                         additionalConfig:{
                             rcsbContext:TagDelimiter.parseEntity(entityId),
-                            ...additionalConfig()
+                            ...customAdditionalConfig(),
+                            ...additionalConfig
                         },
                         resolve:resolve
                     }
@@ -38,7 +39,7 @@ export class RcsbFvEntityBuilder {
                             } else {
                                 await RcsbFvUniprotBuilder.buildUniprotEntityFv(elementFvId, t, entityId, {
                                         alignmentFilter: [entityId],
-                                        ...additionalConfig({
+                                        ...customAdditionalConfig({
                                             field:FieldName.TargetId,
                                             operation:OperationType.Contains,
                                             source:AnnotationReference.PdbInstance,
@@ -64,7 +65,7 @@ export class RcsbFvEntityBuilder {
                 entityId: entityId,
                 additionalConfig: {
                     rcsbContext:TagDelimiter.parseEntity(entityId),
-                    ...additionalConfig()
+                    ...customAdditionalConfig()
                 },
                 resolve:resolve
             });
@@ -87,7 +88,7 @@ export class RcsbFvEntityBuilder {
 
 }
 
-function additionalConfig(f?: AnnotationFilterInput): RcsbFvAdditionalConfig{
+function customAdditionalConfig(f?: AnnotationFilterInput): RcsbFvAdditionalConfig{
     const filters: Array<AnnotationFilterInput> = [{
         field: FieldName.Type,
         operation: OperationType.Equals,
