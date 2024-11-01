@@ -14,7 +14,6 @@ export class RcsbFvPairwiseAlignment extends RcsbFvAbstractModule {
         const pab: PairwiseAlignmentBuilder = new PairwiseAlignmentBuilder(buildConfig.psa);
         const config: RcsbFvBoardConfigInterface = {
             rowTitleWidth: 120,
-            trackWidth: 800,
             length: pab.getLength(),
             includeAxis: !buildConfig.psa.pairwiseView,
             ...buildConfig.additionalConfig?.boardConfig

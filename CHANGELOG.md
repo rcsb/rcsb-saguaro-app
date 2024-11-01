@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.3] - 2024-11-01
+### Configuration
+- Default `trackWidth` removed from `RcsbFvPairwiseAlignment`.
+
 ## [6.3.2] - 2024-10-04
 ### Dependency update
 - rcsb-saguaro v3.1.4
