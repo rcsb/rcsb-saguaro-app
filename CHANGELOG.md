@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.5] - 2025-01-14
+### Bug fix
+- Try to fix empty artifact
+
 ## [6.3.4] - 2025-01-14
 ### Configuration
 - Suppress new validation data
