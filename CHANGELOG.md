@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.4] - 2025-01-14
+### Configuration
+- Suppress new validation data
+
 ## [6.3.3] - 2024-11-01
 ### Configuration
 - Default `trackWidth` removed from `RcsbFvPairwiseAlignment`.
