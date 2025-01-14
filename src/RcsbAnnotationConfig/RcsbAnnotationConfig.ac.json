@@ -700,5 +700,56 @@
       "thresholds": [50,70,90]
     },
     "title": "pLDDT"
+  },{
+    "type": "RSCC",
+    "ignore": true
+  },{
+    "type": "RSRZ",
+    "ignore": true
+  },{
+    "type": "RSR",
+    "ignore": true
+  },{
+    "type": "OWAB",
+    "ignore": true
+  },{
+    "type": "Q_SCORE",
+    "ignore": true
+  },{
+    "type": "BOND_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "ANGLE_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "CHIRAL_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "PLANE_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "CLASHES",
+    "ignore": true
+  },{
+    "type": "SYMM_CLASHES",
+    "ignore": true
+  },{
+    "type": "MOGUL_BOND_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "MOGUL_ANGLE_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "MOGUL_TORSION_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "MOGUL_RING_OUTLIERS",
+    "ignore": true
+  },{
+    "type": "NATOMS_EDS",
+    "ignore": true
+  },{
+    "type": "AVERAGE_OCCUPANCY",
+    "ignore": true
   }]
 }
