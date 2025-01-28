@@ -96,6 +96,8 @@
     "RAMACHANDRAN_OUTLIER",
     "ANGLE_OUTLIER",
     "BOND_OUTLIER",
+    "PLANE_OUTLIERS",
+    "CHIRAL_OUTLIERS",
     "ROTAMER_OUTLIER",
     "RSRZ_OUTLIER",
     "RSCC_OUTLIER",
@@ -103,6 +105,21 @@
     "MOGUL_ANGLE_OUTLIER",
     "MOGUL_BOND_OUTLIER",
     "STEREO_OUTLIER",
+    "NATOMS_EDS",
+    "OWAB",
+    "AVERAGE_OCCUPANCY",
+    "CLASHES",
+    "SYMM_CLASHES",
+    "ANGLE_OUTLIERS",
+    "BOND_OUTLIERS",
+    "MOGUL_BOND_OUTLIERS",
+    "MOGUL_ANGLE_OUTLIERS",
+    "MOGUL_TORSION_OUTLIERS",
+    "MOGUL_RING_OUTLIERS",
+    "RSRZ",
+    "RSR",
+    "RSCC",
+    "Q_SCORE",
     "CIS_PEPTIDE",
     "LIGAND_INTERACTION",
     "LIGAND_COVALENT_LINKAGE",
@@ -702,54 +719,118 @@
     "title": "pLDDT"
   },{
     "type": "RSCC",
-    "ignore": true
+    "display": "block-area",
+    "color": {
+      "colors": "#9867c5",
+      "thresholds": [0.00001,0.2,0.4,0.6,0.8]
+    },
+    "title": "RSCC"
   },{
     "type": "RSRZ",
-    "ignore": true
+    "display": "area",
+    "height": 45,
+    "color": {
+      "thresholds":[0],
+      "colors":["#AA8484","#84AA84"]
+    },
+    "title": "RSRZ"
   },{
     "type": "RSR",
-    "ignore": true
+    "display": "block-area",
+    "color": {
+      "colors": "#a35a3f",
+      "thresholds": [0.00001,0.1,0.2,0.3,0.4,0.6,0.8]
+    },
+    "title": "RSR"
   },{
     "type": "OWAB",
-    "ignore": true
+    "display": "area",
+    "color": "#af5a33",
+    "height": 45,
+    "title": "OCC WEIGHT AVG"
   },{
     "type": "Q_SCORE",
-    "ignore": true
+    "display": "area",
+    "height": 45,
+    "color": {
+      "thresholds":[0],
+      "colors":["#8484AA","#CA9Aa4"]
+    },
+
+    "title": "Q-SCORE"
   },{
     "type": "BOND_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#33aa33",
+    "height": 45,
+    "title": "BOND OUTLIERS"
   },{
     "type": "ANGLE_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#aa33aa",
+    "height": 45,
+    "title": "ANGLE OUTLIERS"
   },{
     "type": "CHIRAL_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#1a33ca",
+    "height": 45,
+    "title": "CHIRAL OUTLIERS"
   },{
     "type": "PLANE_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#ca1a33",
+    "height": 45,
+    "title": "PLANE OUTLIERS"
   },{
     "type": "CLASHES",
-    "ignore": true
+    "display": "area",
+    "color": "#cc33cc",
+    "height": 45,
+    "title": "ATOMIC CLASHES"
   },{
     "type": "SYMM_CLASHES",
-    "ignore": true
+    "display": "area",
+    "color": "#33cccc",
+    "height": 45,
+    "title": "SYMM CLASHES"
   },{
     "type": "MOGUL_BOND_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#4a8a33",
+    "height": 45,
+    "title": "MOGUL BOND OUTLIERS"
   },{
     "type": "MOGUL_ANGLE_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#4a338a",
+    "height": 45,
+    "title": "MOGUL ANGLE OUTLIERS"
   },{
     "type": "MOGUL_TORSION_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#833a44",
+    "height": 45,
+    "title": "MOGUL TORSION OUTLIERS"
   },{
     "type": "MOGUL_RING_OUTLIERS",
-    "ignore": true
+    "display": "area",
+    "color": "#713a8a",
+    "height": 45,
+    "title": "MOGUL RING OUTLIERS"
   },{
     "type": "NATOMS_EDS",
-    "ignore": true
+    "display": "area",
+    "color": "#daa520",
+    "height": 45,
+    "title": "EDS ATOMS"
   },{
     "type": "AVERAGE_OCCUPANCY",
-    "ignore": true
+    "display": "block-area",
+    "color": {
+      "colors": "#ace1af",
+      "thresholds": [0.00001,0.2,0.4,0.6,0.8]
+    },
+    "title": "AVERAGE OCCUPANCY"
   }]
 }

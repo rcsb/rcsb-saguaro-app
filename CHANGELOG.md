@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.6] - 2025-01-28
+### Configuration
+- New validation features
+
 ## [6.3.5] - 2025-01-14
 ### Bug fix
 - Try to fix empty artifact
