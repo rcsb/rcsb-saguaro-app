@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.7] - 2025-01-29
+### Configuration
+- Track name config
+
 ## [6.3.6] - 2025-01-28
 ### Configuration
 - New validation features

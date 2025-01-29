@@ -747,7 +747,7 @@
     "display": "area",
     "color": "#af5a33",
     "height": 45,
-    "title": "OCC WEIGHT AVG"
+    "title": "OCC WT AVG B"
   },{
     "type": "Q_SCORE",
     "display": "area",
