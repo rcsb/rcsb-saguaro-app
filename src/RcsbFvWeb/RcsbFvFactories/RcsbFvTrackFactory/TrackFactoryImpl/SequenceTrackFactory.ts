@@ -36,7 +36,7 @@ export class SequenceTrackFactory implements TrackFactoryInterface<[AlignmentReq
         const queryId = alignmentQueryContext.queryId ?? alignmentQueryContext.groupId;
         assertDefined(queryId);
         return {
-            trackId: "mainSequenceTrack_" + alignmentQueryContext.queryId ?? alignmentQueryContext.groupId,
+            trackId: "mainSequenceTrack_" + (alignmentQueryContext.queryId ?? alignmentQueryContext.groupId),
             displayType: RcsbFvDisplayTypes.SEQUENCE,
             trackColor: "#F9F9F9",
             displayColor: "#000000",

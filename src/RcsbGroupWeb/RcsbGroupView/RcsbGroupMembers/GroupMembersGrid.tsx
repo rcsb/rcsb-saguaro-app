@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
 import {
@@ -36,7 +36,7 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
         itemList: []
     }
 
-    render():JSX.Element {
+    render(): ReactNode {
         if(this.state.itemList.length >0){
             return (
                     <Container fluid={"md"}>

@@ -1,6 +1,6 @@
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import React from "react";
+import React, {ReactNode} from "react";
 import {Subscription} from "rxjs";
 import {actionIcon} from "../RcsbGroupMembers/Components/Slider";
 import {
@@ -23,7 +23,7 @@ interface RcsbGroupQuerySearchComponentState {
 
 export class SearchQueryComponentFactory {
     private static unique = true;
-    public static getGroupSearchComponent(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): JSX.Element {
+    public static getGroupSearchComponent(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): ReactNode {
         if(SearchQueryComponentFactory.unique){
             SearchQueryComponentFactory.unique = false;
             return <RcsbGroupSearchQueryComponent
@@ -53,7 +53,7 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
         SQCM.setConfig({...this.props});
     }
 
-    render():JSX.Element {
+    render(): ReactNode {
         return (
             <Draggable>
                 <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 700px)", width:120, top:"50%"}}>

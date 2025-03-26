@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 
 import {buildSequenceIdentityAlignmentFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {DataContainer, DataContainerReader} from "../RcsbUtils/Helpers/DataContainer";
@@ -7,7 +7,7 @@ import {RcsbFvModulePublicInterface} from "../RcsbFvWeb/RcsbFvModule/RcsbFvModul
 const fvContainer: DataContainer<RcsbFvModulePublicInterface> = new DataContainer<RcsbFvModulePublicInterface>();
 class UiComponent extends React.Component<{text:string;fvContainer:DataContainerReader<RcsbFvModulePublicInterface>;},{}> {
 
-    public render():JSX.Element {
+    public render(): ReactNode {
         return (<div onClick={()=>{
             this.props.fvContainer.get()?.getFv().setSelection({elements:{begin:10,end:50},mode:"select"});
         }}>{this.props.text}</div>);

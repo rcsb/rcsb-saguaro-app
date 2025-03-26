@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {
     FieldName,
@@ -38,7 +38,7 @@ export class GroupPfvTabs extends React.Component <SequenceTabInterface> {
         super(props);
     }
 
-    render(): JSX.Element {
+    render(): ReactNode {
         const additionalComponent = {
             additionalComponent: this.props.groupProvenanceId === GroupProvenanceId.ProvenanceMatchingUniprotAccession ? <div id={ALIGNMENT+RcsbTabs.SELECT_SUFFIX} style={{height:38}}/> : undefined
         };

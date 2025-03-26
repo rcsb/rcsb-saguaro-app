@@ -11,6 +11,7 @@ import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface
 import {RcsbFvInterface} from "../RcsbFvModule/RcsbFvInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {ReactNode} from "react";
 
 export interface InstanceSequenceOnchangeInterface extends PolymerEntityInstanceInterface {
 
@@ -24,7 +25,7 @@ export interface InstanceSequenceConfig {
     onChangeCallback?:(x: InstanceSequenceOnchangeInterface, module:RcsbFvModulePublicInterface)=>void;
     filterInstances?: Set<string>;
     displayAuthId?: boolean;
-    selectButtonOptionProps?: (props: SelectOptionProps)=>JSX.Element;
+    selectButtonOptionProps?: (props: SelectOptionProps)=>ReactNode;
     module?: InstanceModuleType;
 }
 

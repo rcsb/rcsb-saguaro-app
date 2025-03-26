@@ -1,4 +1,5 @@
 import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
+import {ReactNode} from "react";
 
 export interface PaginationItemState {
     after:number;
@@ -19,7 +20,7 @@ export class PaginationItemComponent extends AbstractMenuItemComponent<Paginatio
         first: this.props.first > this.props.count ? this.props.count : this.props.first
     }
 
-    render(): JSX.Element {
+    render(): ReactNode {
         return (
             <>
                 <div

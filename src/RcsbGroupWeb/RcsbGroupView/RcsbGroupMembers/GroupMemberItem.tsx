@@ -1,9 +1,9 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import resource from "../../../RcsbServerConfig/web.resources.json";
 import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
-import BxCube from "boxicons/svg/solid/bxs-cube.svg";
+import BxCube from "./icons/bxs-cube.svg";
 
 interface GroupMemberItemInterface {
     item: ItemFeaturesInterface;
@@ -108,7 +108,7 @@ function hasGroup3D(groupProvenanceId: GroupProvenanceId){
 
 }
 
-function imageIcon(ei: ItemFeaturesInterface): JSX.Element {
+function imageIcon(ei: ItemFeaturesInterface): ReactNode {
     const isExperimental = ei.structureDeterminationMethodology === StructureDeterminationMethodology.Experimental;
     return (
         <div style={{
