@@ -2,6 +2,26 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.7] - 2025-01-29
+### Configuration
+- Track name config
+
+## [6.3.6] - 2025-01-28
+### Configuration
+- New validation features
+
+## [6.3.5] - 2025-01-14
+### Bug fix
+- Try to fix empty artifact
+
+## [6.3.4] - 2025-01-14
+### Configuration
+- Suppress new validation data
+
+## [6.3.3] - 2024-11-01
+### Configuration
+- Default `trackWidth` removed from `RcsbFvPairwiseAlignment`.
+
 ## [6.3.2] - 2024-10-04
 ### Dependency update
 - rcsb-saguaro v3.1.4
