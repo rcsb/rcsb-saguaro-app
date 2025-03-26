@@ -20,6 +20,7 @@
     "copyYosemiteQueries": "ncp src/RcsbQueries/Yosemite lib/RcsbQueries/Yosemite && ncp src/RcsbQueries/Yosemite lib/commonjs/RcsbQueries/Yosemite",
     "copyConfig": "ncp lib/commonjs/RcsbServerConfig/ServerConfig.js build/config.js",
     "copyCss": "ncp src/scss lib/scss && ncp src/scss lib/commonjs/scss",
+    "copyIcons": "ncp src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/icons lib/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/icons && ncp src/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/icons lib/commonjs/RcsbGroupWeb/RcsbGroupView/RcsbGroupMembers/icons",
     "build-tsc": "tsc",
     "build-commonjs": "tsc --build tsconfig.commonjs.json",
     "clean": "del-cli lib && del-cli build",
