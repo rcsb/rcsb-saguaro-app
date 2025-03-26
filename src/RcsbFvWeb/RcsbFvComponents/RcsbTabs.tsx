@@ -1,10 +1,10 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Tab, Tabs} from "react-bootstrap";
 import * as classes from "../../scss/bootstrap-fv-display.module.scss";
 import uniqid from "uniqid";
 
 export interface RcsbTabsInterface<T extends string> {
-    tabList: Array<{key:T; title:string; additionalComponent?:JSX.Element;}>;
+    tabList: Array<{key:T; title:string; additionalComponent?:ReactNode;}>;
     default: T;
 
     id: string;
@@ -20,7 +20,7 @@ export class RcsbTabs<T extends string> extends React.Component <RcsbTabsInterfa
         super(props);
     }
 
-    render(): JSX.Element {
+    render():ReactNode {
         return (<div className={classes.bootstrapFvComponentScope}>
             <Tabs
                 id={this.props.id}

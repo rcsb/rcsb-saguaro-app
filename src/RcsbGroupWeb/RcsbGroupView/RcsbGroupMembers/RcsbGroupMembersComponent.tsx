@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
 import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {GroupMembersGrid} from "./GroupMembersGrid";
@@ -41,7 +41,7 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
         super(props);
     }
 
-    render(): JSX.Element{
+    render(): ReactNode {
         if(this.state.nPages>0)
             return (
                 <div id={this.groupMembersDiv} style={{minHeight:627}} className={`${classes.bootstrapGroupComponentScope}`}>

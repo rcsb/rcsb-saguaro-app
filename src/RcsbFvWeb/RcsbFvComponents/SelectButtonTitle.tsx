@@ -1,8 +1,8 @@
-import React from "react";
+import React, {ReactNode} from "react";
 
 export class SelectButtonTitle  extends React.Component <{title:string}> {
 
-    render(): JSX.Element {
+    render(): ReactNode {
         return (<div style={{marginLeft:20}}>{this.props.title}</div>);
     }
 }

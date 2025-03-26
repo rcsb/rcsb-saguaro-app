@@ -5,13 +5,14 @@ import {
 import {LoaderSpinner} from "./LoaderSpinner";
 import {createRoot, Root} from "react-dom/client";
 import {SelectButtonManager} from "./SelectButtonManager";
+import {ReactNode} from "react";
 
 export interface SelectButtonConfigInterface {
     addTitle?: boolean;
     defaultValue?: string|undefined|null;
     width?: number;
     dropdownTitle?: string;
-    optionProps?: (props: SelectOptionProps)=>JSX.Element;
+    optionProps?: (props: SelectOptionProps)=>ReactNode;
     isAdditionalButton?: boolean;
 }
 export class ComponentsManager {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
@@ -28,7 +28,7 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
         await this.updateState();
     }
 
-    render(): JSX.Element {
+    render(): ReactNode {
         if( this.state?.layout && this.state?.chartMap && (this.state?.layout?.filter((e)=>(this.state?.chartMap?.get(e))) ?? []).length > 0) {
             return (<div className={classes.bootstrapGroupComponentScope}>
                 {SearchQueryComponentFactory.getGroupSearchComponent(this.props.groupProvenanceId, this.props.groupId, this.props.searchQuery)}

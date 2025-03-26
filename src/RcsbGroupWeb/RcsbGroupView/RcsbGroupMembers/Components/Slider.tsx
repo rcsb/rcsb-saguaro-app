@@ -15,7 +15,7 @@ export interface SliderInterface {
 
 export class Slider extends React.Component<SliderInterface> {
 
-    render():JSX.Element {
+    render(): ReactNode {
         return (
             <div className={"border"}>
                 <Container fluid={"md"}>
@@ -40,7 +40,7 @@ export class Slider extends React.Component<SliderInterface> {
 
 }
 
-export function actionIcon(action:SlideAction): JSX.Element{
+export function actionIcon(action:SlideAction): ReactNode {
     return(<span style={{cursor:"pointer"}} className={"h1 user-select-none"}>
         { action == "prev" ?   "❮" : "❯" }
     </span>);

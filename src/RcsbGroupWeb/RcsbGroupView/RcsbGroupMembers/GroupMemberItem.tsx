@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import resource from "../../../RcsbServerConfig/web.resources.json";
 import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
@@ -108,7 +108,7 @@ function hasGroup3D(groupProvenanceId: GroupProvenanceId){
 
 }
 
-function imageIcon(ei: ItemFeaturesInterface): JSX.Element {
+function imageIcon(ei: ItemFeaturesInterface): ReactNode {
     const isExperimental = ei.structureDeterminationMethodology === StructureDeterminationMethodology.Experimental;
     return (
         <div style={{

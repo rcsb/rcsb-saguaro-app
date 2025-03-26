@@ -1,6 +1,7 @@
 import {Collapse} from "react-bootstrap";
 import {AbstractMenuItemComponent} from "../AbstractMenuItemComponent";
 import {ItemComponent} from "./ItemComponent";
+import {ReactNode} from "react";
 
 interface FilterItemProps {
     elements:string[];
@@ -22,7 +23,7 @@ export class FilterItemComponent extends AbstractMenuItemComponent<FilterItemPro
         collapseIn:false,
     }
 
-    render():JSX.Element {
+    render(): ReactNode {
         return (<>
             <ItemComponent onClick={()=>this.setState({collapseIn:!this.state.collapseIn})} >FILTER</ItemComponent>
             <Collapse in={this.state.collapseIn}>

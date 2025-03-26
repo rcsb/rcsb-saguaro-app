@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
@@ -25,7 +25,7 @@ export class RcsbStatsChartComponent extends React.Component <RcsbStatsChartInte
         await this.updateState();
     }
 
-    render(): JSX.Element{
+    render(): ReactNode {
         if(this.state?.facets)
             return (<div className={classes.bootstrapGroupComponentScope}>
                     <GroupChartLayout

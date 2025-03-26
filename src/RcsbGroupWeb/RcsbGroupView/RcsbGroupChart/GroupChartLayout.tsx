@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Col, Container, Row} from "react-bootstrap";
 import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
 
@@ -19,7 +19,7 @@ export interface RcsbChartLayoutInterface {
 
 export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,{}> {
 
-    render():JSX.Element {
+    render(): ReactNode {
         return (
             <Container fluid={"md"}>
                 <Row>
@@ -33,10 +33,10 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
         );
     }
 
-    private renderCell(attr: string): JSX.Element {
+    private renderCell(attr: string): ReactNode {
         const chart: RcsbChartInterface[] | undefined = this.props.chartMap.get(attr);
         if(chart && chart.filter(ch=>ch.data.length > 0).length > 0){
-            const node: JSX.Element = chart[0].chartType == ChartType.histogram ? histogramChart(attr, chart) : barChart(attr, chart);
+            const node: ReactNode = chart[0].chartType == ChartType.histogram ? histogramChart(attr, chart) : barChart(attr, chart);
             return chartCell(node,chart[0].title, chart[0].chartConfig?.chartDisplayConfig);
         }
         return <></>;
@@ -44,7 +44,7 @@ export class GroupChartLayout extends React.Component <RcsbChartLayoutInterface,
 
 }
 
-function chartCell(chartNode:JSX.Element, title?: string, chartDisplayConfig?:Partial<ChartDisplayConfigInterface>): JSX.Element{
+function chartCell(chartNode: ReactNode, title?: string, chartDisplayConfig?:Partial<ChartDisplayConfigInterface>): ReactNode {
     return(<Col key={`${title}_${uniqid()}`}>
         <Row className={"mb-md-5"}>
             <Col md={12}>
@@ -59,7 +59,7 @@ function chartCell(chartNode:JSX.Element, title?: string, chartDisplayConfig?:Pa
     </Col>);
 }
 
-function histogramChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Element {
+function histogramChart(attributeName: string, chart: RcsbChartInterface[]): ReactNode {
     return (<div id={`chart:${chart[0].attributeName}`} >
         <HistogramChartComponent
             data={chart.map(c=>c.data)}
@@ -69,7 +69,7 @@ function histogramChart(attributeName: string, chart: RcsbChartInterface[]): JSX
     </div>);
 }
 
-function barChart(attributeName: string, chart: RcsbChartInterface[]): JSX.Element {
+function barChart(attributeName: string, chart: RcsbChartInterface[]): ReactNode {
     return (<div id={`chart:${chart[0].attributeName}`} >
         <BarChartComponent
             data={chart.map(c=>c.data)}

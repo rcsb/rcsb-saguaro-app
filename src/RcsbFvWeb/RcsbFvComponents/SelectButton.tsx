@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import Select, {components} from 'react-select';
 import {SingleValueProps} from "react-select";
 import {OptionProps} from "react-select";
@@ -22,7 +22,7 @@ interface SelectButtonInterface {
     defaultValue?: string|undefined|null;
     width?:number;
     dropdownTitle?:string;
-    optionProps?: (props: SelectOptionProps)=>JSX.Element;
+    optionProps?: (props: SelectOptionProps)=>ReactNode;
     isAdditionalButton?: boolean;
 }
 
@@ -77,33 +77,34 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
         this.defaultValue = null;
     }
 
-    render():JSX.Element {
+    render():ReactNode {
         return (<div>
             {this.selectRender()}
         </div>);
 
     }
 
-    private selectRender():JSX.Element {
+    private selectRender():ReactNode {
         this.currentOption = this.getSelectOpt();
         return(<div>
             <div style={{display:"inline-block"}}>{this.selectButtonRender(this.currentOption.selectOpt, this.currentOption.index)}</div>
         </div>);
     }
 
-    private selectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
+    private selectButtonRender(defaultValue: SelectOptionInterface, index: number):ReactNode {
         return (<div id={this.props.elementId+SelectButton.BUTTON_CONTAINER_DIV_SUFFIX}>
             {this.innerSelectButtonRender(defaultValue, index)}
         </div>);
     }
 
-    private innerSelectButtonRender(defaultValue: SelectOptionInterface, index: number):JSX.Element {
-        const SingleValue:(props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>JSX.Element = (props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>) => {
+    private innerSelectButtonRender(defaultValue: SelectOptionInterface, index: number):ReactNode {
+        const SingleValueNode = components.Option as React.FC<{children: ReactNode}>;
+        const SingleValue:(props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>ReactNode = (props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
-                <components.SingleValue {...props}>
+                <SingleValueNode {...props}>
                     {label}
-                </components.SingleValue>
+                </SingleValueNode>
             )
         };
         let options: OptionsOrGroups<OptionPropsInterface,GroupOptionPropsInterface>;
@@ -122,7 +123,8 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                 }))
             }))
         }
-        const title: JSX.Element = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : <></>;
+        const title: ReactNode = typeof this.props.dropdownTitle === "string" ? <div style={{color:"grey",fontWeight:"bold",fontSize:12}}>{this.props.dropdownTitle}</div> : <></>;
+        const OptionNode = components.Option as React.FC<{children: ReactNode}>;
         return(
             <div style={{display:"inline-block"}}>
                 {title}
@@ -133,8 +135,8 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                         onChange={this.change.bind(this)}
                         styles={this.configStyle()}
                         components={{ SingleValue, Option: this.props.optionProps ? (props)=>{
-                                return this.props.optionProps?.({...props,children:<components.Option {...props} children={props.children}/>}) ?? <></>;
-                            } : ((props)=>(<components.Option {...props} children={props.children}/>)) }}
+                                return this.props.optionProps?.({...props,children:<OptionNode {...props} children={props.children}/>}) ?? <></>;
+                            } : ((props)=>(<OptionNode {...props} children={props.children}/>)) }}
                         defaultValue={{...defaultValue,value:index}}
                     />
                 </div>

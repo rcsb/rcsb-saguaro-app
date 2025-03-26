@@ -37,9 +37,8 @@ import {
 } from "../RcsbCollectTools/DataCollectors/DataCollectorInterface";
 import {RcsbRequestTools as RRT} from "./RcsbRequestTools";
 import {rcsbRequestClient} from "./RcsbRequestClient";
-import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest, RequestConfig} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
 import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
-import {RequestConfig as GraphqlRequestInit} from "graphql-request/build/esm/types";
 import {Assertions} from "../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {
@@ -198,11 +197,11 @@ class RcsbRequestContextManager {
         );
     }
 
-    public initializeBorregoClient(config: {api?:string, requestConfig?:GraphqlRequestInit}): void {
+    public initializeBorregoClient(config: {api?:string, requestConfig?:RequestConfig}): void {
         rcsbRequestClient.borrego = new GraphQLRequest(config.api ?? "1d-coordinates", config.requestConfig);
     }
 
-    public initializeYosemiteClient(config: {api?:string, requestConfig?:GraphqlRequestInit}): void {
+    public initializeYosemiteClient(config: {api?:string, requestConfig?:RequestConfig}): void {
         rcsbRequestClient.yosemite = new GraphQLRequest(config.api ?? "data-api", config.requestConfig);
     }
 

@@ -4,10 +4,11 @@ import {HistogramChartDataProvider} from "@rcsb/rcsb-charts/lib/RcsbChartDataPro
 import {
     ChartJsHistogramComponent
 } from "@rcsb/rcsb-charts/lib/RcsbChartImplementations/ChatJsImplementations/ChartJsHistogramComponent";
+import {ReactNode} from "react";
 
 export class HistogramChartComponent extends AbstractChartComponent {
 
-    render(): JSX.Element {
+    render(): ReactNode {
         return (<ChartComponent
             data={this.state.data.map(d=>d.map(d=>({...d, label: (parseFloat(d.label.toString()) + (this.props.chartConfig?.histogramBinIncrement ?? 0)*0.5)})))}
             chartComponentImplementation={ChartJsHistogramComponent}
