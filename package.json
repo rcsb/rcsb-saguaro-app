@@ -92,7 +92,7 @@
   },
   "dependencies": {
     "@rcsb/rcsb-charts": "^0.2.24",
-    "@rcsb/rcsb-saguaro": "3.1.6-react-downgrade.0",
+    "@rcsb/rcsb-saguaro": "^3.1.6-react-downgrade.1",
     "@rcsb/rcsb-search-tools": "^0.0.14",
     "ideogram": "^1.47.0",
     "react-bootstrap": "^2.10.4",
