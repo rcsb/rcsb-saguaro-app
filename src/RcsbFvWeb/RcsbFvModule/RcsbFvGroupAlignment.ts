@@ -15,19 +15,16 @@ import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {
-    AlignmentCollectorInterface,
     CollectGroupAlignmentInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
 import {Operator} from "../../RcsbUtils/Helpers/Operator";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools/ExternalTrackBuilderInterface";
 import {
     AnnotationCollectorInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
-import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -54,7 +51,7 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
         const trackFactory: MsaAlignmentTrackFactory = new MsaAlignmentTrackFactory(this.getPolymerEntityInstanceTranslator());
 
-        const targetList: string[] = uniqueTargetList(alignmentResponse);
+        const targetList: string[] = await uniqueTargetList(alignmentResponse);
         const alignmentFeatures: SequenceAnnotations[] = await collectFeatures({
             groupId: buildConfig.groupId,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder,
@@ -69,8 +66,6 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         await this.buildAlignmentTracks(alignmentRequestContext, alignmentResponse, {
             alignmentTrackFactory: trackFactory
         });
-
-        collectNextPage(alignmentRequestContext, this.alignmentCollector, this.annotationCollector).then(()=>console.log("Next page ready"));
 
         return void 0;
     }
@@ -89,32 +84,13 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
 }
 
-async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface, annotationCollector: AnnotationCollectorInterface): Promise<void> {
-    const alignmentResponse: SequenceAlignments = await rcsbClient.requestGroupAlignment({
-        group: alignmentRequestContext.group,
-        groupId: alignmentRequestContext.groupId,
-        page: {
-            first: alignmentRequestContext.page.first,
-            after: alignmentRequestContext.page.after + alignmentRequestContext.page.first
-        },
-        excludeLogo: true
-    });
-    const targetList: string[] = uniqueTargetList(alignmentResponse);
-    if(alignmentRequestContext.groupId) {
-        const alignmentFeatures: SequenceAnnotations[] = await rcsbClient.requestRcsbPdbGroupAnnotations(buildGroupAnnotationQuery({
-            groupId: alignmentRequestContext.groupId,
-            targetList
-        }));
-        const featureTargetList = Operator.uniqueValues<string>(alignmentFeatures.map(af=>TagDelimiter.parseInstance(af.target_id ?? "").entryId));
-        Operator.arrayChunk(featureTargetList,100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
-    }
-}
-
-function uniqueTargetList(alignmentResponse: SequenceAlignments): string[] {
-    return Operator.uniqueValues<string>(alignmentResponse.target_alignments?.map(ta=>{
+async function uniqueTargetList(alignmentResponse: SequenceAlignments): Promise<string[]> {
+    const entityIds: string[] =  Operator.uniqueValues<string>(alignmentResponse.target_alignments?.map(ta=>{
         assertDefined(ta?.target_id);
-        return TagDelimiter.parseEntity(ta.target_id).entryId
+        return ta.target_id
     }) ?? []);
+    const instanceIds = (await rcsbRequestCtxManager.getEntityProperties(entityIds)).map(e=>e.rcsbId);
+    return Operator.uniqueValues<string>(instanceIds ?? []);
 }
 
 async function collectFeatures(annotationsContext: {groupId: string; targetList: string[]; externalTrackBuilder?: ExternalTrackBuilderInterface;}, annotationCollector: AnnotationCollectorInterface): Promise<Array<SequenceAnnotations>> {
@@ -137,7 +113,7 @@ function buildGroupAnnotationQuery(annotationsContext: {groupId: string; targetL
             values:[FeaturesType.UnobservedResidueXyz,FeaturesType.MaQaMetricLocalTypePlddt]
         },{
             source:AnnotationReference.PdbInstance,
-            operation: OperationType.Contains,
+            operation: OperationType.Equals,
             field:FieldName.TargetId,
             values:annotationsContext.targetList
         }]
