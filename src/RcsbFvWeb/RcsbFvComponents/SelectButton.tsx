@@ -98,7 +98,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
     }
 
     private innerSelectButtonRender(defaultValue: SelectOptionInterface, index: number):ReactNode {
-        const SingleValueNode = components.Option as React.FC<{children: ReactNode}>;
+        const SingleValueNode = components.SingleValue as React.FC<{children: ReactNode}>;
         const SingleValue:(props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>)=>ReactNode = (props:SingleValueProps<OptionPropsInterface,false,GroupOptionPropsInterface>) => {
             const label: string = typeof props.data.shortLabel === "string" ? props.data.shortLabel : props.data.label;
             return (
