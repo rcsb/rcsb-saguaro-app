@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "6.3.7-dev-js-seqcoord.15",
+  "version": "6.3.7-dev-js-seqcoord.18",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/app.js",
   "files": [
@@ -90,8 +90,8 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@rcsb/rcsb-charts": "^0.2.26",
-    "@rcsb/rcsb-saguaro": "^3.1.6",
+    "@rcsb/rcsb-charts": "^0.2.27",
+    "@rcsb/rcsb-saguaro": "^3.1.7",
     "@rcsb/rcsb-search-tools": "^0.0.14",
     "ideogram": "^1.50.0",
     "react-bootstrap": "^2.10.9",

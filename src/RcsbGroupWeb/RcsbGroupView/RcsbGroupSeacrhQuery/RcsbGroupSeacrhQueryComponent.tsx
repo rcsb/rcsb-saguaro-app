@@ -1,6 +1,6 @@
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import React, {ReactNode} from "react";
+import React, {ReactNode, RefObject} from "react";
 import {Subscription} from "rxjs";
 import {actionIcon} from "../RcsbGroupMembers/Components/Slider";
 import {
@@ -43,6 +43,7 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
     private readonly URL_STATE_PARAMETER_NAME: "searchQueryState" = "searchQueryState";
     private readonly URL_REQUEST_PARAMETER_NAME: "request" = "request";
     private subscription: Subscription;
+    private readonly draggableNodeRef: RefObject<any>  = React.createRef();
 
     readonly state: RcsbGroupQuerySearchComponentState = {
         index:0,
@@ -55,8 +56,8 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
 
     render(): ReactNode {
         return (
-            <Draggable>
-                <div className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 700px)", width:120, top:"50%"}}>
+            <Draggable nodeRef={this.draggableNodeRef}>
+                <div ref={this.draggableNodeRef} className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 700px)", width:120, top:"50%"}}>
                     <div className={"border px-1 pt-1 shadow bg-white"}>
                         <div className={"text-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
                             Query History
