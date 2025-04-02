@@ -1,4 +1,4 @@
-import {buildGroup} from "../RcsbGroupWeb/RcsbGroupBuilder";
+import {buildGroup, buildGroupMembers} from "../RcsbGroupWeb/RcsbGroupBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {
     CATH_FACET, DISEASE_FACET,
@@ -12,7 +12,7 @@ const groupId = "P01112";
 
 // buildGroupContent("select", GroupProvenanceId.ProvenanceSequenceIdentity, groupId);
 
-// buildGroupMembers("carousel", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, 1, 1)
+buildGroupMembers("carousel", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, 1, 1)
 
 buildGroup("pfv", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, undefined, [
     TAXONOMY_COUNT_FACET.attributeName,

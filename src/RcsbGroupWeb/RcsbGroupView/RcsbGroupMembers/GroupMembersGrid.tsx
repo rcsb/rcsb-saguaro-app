@@ -24,6 +24,8 @@ interface GroupMembersGridInterface {
     index:number;
     nRows: number;
     nColumns: number;
+    minHeight: number;
+    setMinHeight: (h:number)=>void;
 }
 
 interface GroupMembersGridState {
@@ -54,6 +56,8 @@ export class GroupMembersGrid extends React.Component <GroupMembersGridInterface
                                                             groupId={this.props.groupId}
                                                             groupProvenanceId={this.props.groupProvenanceId}
                                                             searchQuery={ this.props.searchQuery }
+                                                            minHeight={ this.props.minHeight }
+                                                            setMinHeight={ this.props.setMinHeight }
                                                         />
                                                     </Col>
                                                 );

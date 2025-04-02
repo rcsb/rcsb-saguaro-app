@@ -24,6 +24,7 @@ interface RcsbGroupMembersInterface {
 interface RcsbGroupMembersState {
     nPages: number;
     selectedIndex: number;
+    minHeight: number;
     searchQuery?: SearchQuery;
 }
 
@@ -32,7 +33,8 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
     readonly state: RcsbGroupMembersState = {
         nPages: 0,
         selectedIndex: 0,
-        searchQuery: this.props.searchQuery
+        searchQuery: this.props.searchQuery,
+        minHeight: 458
     }
 
     readonly groupMembersDiv: string = "groupMembersDiv";
@@ -53,6 +55,8 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
                             nColumns={this.props.nColumns}
                             index={this.state.selectedIndex}
                             searchQuery={this.state.searchQuery}
+                            minHeight={ this.state.minHeight }
+                            setMinHeight={ this.setMinHeight.bind(this) }
                         />
                     </Slider>
                 </div>
@@ -113,6 +117,11 @@ export class RcsbGroupMembersComponent extends React.Component <RcsbGroupMembers
                 break;
         }
     }
+
+    private setMinHeight(minHeight: number) {
+        this.setState({minHeight:minHeight});
+    }
+
 }
 
 export async function searchRequest(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?: SearchQuery): Promise<QueryResult|null> {

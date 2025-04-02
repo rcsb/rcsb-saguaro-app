@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, RefObject} from "react";
 import resource from "../../../RcsbServerConfig/web.resources.json";
 import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
 import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
@@ -10,6 +10,8 @@ interface GroupMemberItemInterface {
     groupId: string;
     groupProvenanceId: GroupProvenanceId;
     searchQuery?: SearchQuery;
+    minHeight: number;
+    setMinHeight: (h:number)=>void;
 }
 
 export interface ItemFeaturesInterface {
@@ -34,13 +36,14 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
         height: 15,
         viewBox: "0 0 24 24"
     }
+    private readonly imgNode: RefObject<any>  = React.createRef();
 
     render() {
         return (
             <div>
-                <div style={{position: "relative", minHeight: 358}}>
+                <div ref={this.imgNode} style={{position: "relative", minHeight: this.props.minHeight}}>
                     {imageIcon(this.props.item)}
-                    <img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}}/>
+                    <img src={memberImgUrl(this.props.item, this.props.groupProvenanceId)}  alt={"image"} style={{width:"100%"}} onLoad={this.minHeight.bind(this)} />
                 </div>
                 <div className={"bg-light border-top p-md-4"}>
                     {
@@ -71,6 +74,12 @@ export class GroupMemberItem extends React.Component<GroupMemberItemInterface,{}
             </div>
         );
     }
+
+    minHeight() {
+        if(this.props.minHeight !== this.imgNode.current.offsetHeight)
+            this.props.setMinHeight(this.imgNode.current.offsetHeight);
+    }
+
 }
 
 function formatRes(x: number): number {
