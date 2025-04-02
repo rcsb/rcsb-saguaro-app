@@ -43,7 +43,7 @@ export namespace GroupPfvApp {
                 }
                 // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
                 const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
-                    getReferenceFromGroupProvenance(groupProvenanceId),
+                    getReferenceFromGroupProvenance(groupProvenanceId) as GroupReference,
                     groupId,
                     SequenceReference.PdbEntity,
                     SequenceReference.Uniprot
@@ -106,7 +106,7 @@ export namespace GroupPfvApp {
         };
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
-            getReferenceFromGroupProvenance(groupProvenanceId),
+            getReferenceFromGroupProvenance(groupProvenanceId) as GroupReference,
             groupId,
             SequenceReference.PdbEntity,
             SequenceReference.Uniprot
@@ -134,7 +134,7 @@ export namespace GroupPfvApp {
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
-            getReferenceFromGroupProvenance(groupProvenanceId),
+            getReferenceFromGroupProvenance(groupProvenanceId) as GroupReference,
             groupId,
             SequenceReference.PdbEntity,
             SequenceReference.Uniprot
@@ -174,7 +174,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
     }
 }
 
-export function getReferenceFromGroupProvenance(groupProvenanceId: GroupProvenanceId): GroupReference {
+export function getReferenceFromGroupProvenance(groupProvenanceId: GroupProvenanceId): GroupReference | undefined  {
     switch (groupProvenanceId){
         case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
             throw `Undefined reference for provenance ${groupProvenanceId}`;

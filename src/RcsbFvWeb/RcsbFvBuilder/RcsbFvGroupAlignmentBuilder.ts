@@ -64,7 +64,7 @@ export class RcsbFvGroupAlignmentBuilder {
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
-            getReferenceFromGroupProvenance(groupProvenance),
+            getReferenceFromGroupProvenance(groupProvenance) as GroupReference,
             groupId,
             SequenceReference.PdbEntity,
             SequenceReference.Uniprot

@@ -15,7 +15,7 @@ export namespace GroupChartMap{
 
     export type ChartObjectIdType = "included"|"excluded";
     export async function getChartMap(groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery?:SearchQuery): Promise<ChartMapType>{
-        const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId);
+        const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId) as FacetStoreInterface;
         let facets: Array<BucketFacet> = [];
         for(const service of facetStore.getServices()){
             const groupQuery: SearchQueryType = SQT.searchGroupQuery(groupProvenanceId, groupId, service);
@@ -59,7 +59,7 @@ export namespace GroupChartMap{
     }
 
     async function subtractSearchQuery(chartData: Array<RcsbChartInterface>, groupProvenanceId: GroupProvenanceId, groupId: string, searchQuery:SearchQuery): Promise<{chartData: Array<RcsbChartInterface>;subData: Array<RcsbChartInterface> | undefined}>{
-        const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId);
+        const facetStore: FacetStoreInterface = SQT.getFacetStoreFromGroupProvenance(groupProvenanceId) as FacetStoreInterface;
         let subData: Array<RcsbChartInterface> | undefined;
         let partialFacets: Array<BucketFacet> = [];
         for (const service of facetStore.getServices()) {

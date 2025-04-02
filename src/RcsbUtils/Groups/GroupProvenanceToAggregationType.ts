@@ -9,4 +9,5 @@ export const groupProvenanceToReturnType: GroupProvenanceToReturnType = {
    [GroupProvenanceId.ProvenanceMatchingDepositGroupId]: ReturnType.Entry,
    [GroupProvenanceId.ProvenanceMatchingUniprotAccession]: ReturnType.PolymerEntity,
    [GroupProvenanceId.ProvenanceSequenceIdentity]: ReturnType.PolymerEntity,
+   [GroupProvenanceId.ProvenanceMatchingChemicalComponentId]: ReturnType.NonPolymerEntity
 };

@@ -29,7 +29,7 @@ import {uniprotGroupFacetStore} from "./FacetStore/UniprotGroupFacetStore";
 export namespace SearchQueryTools {
 
     export function searchGroupQuery(groupProvenance: GroupProvenanceId, groupId: string, service?: Service.Text | Service.TextChem): SearchQueryType {
-        const groupSearchAttr: GroupSearchAttribute = getSearchAttribute(groupProvenance);
+        const groupSearchAttr: GroupSearchAttribute = getSearchAttribute(groupProvenance) as GroupSearchAttribute;
         return buildAttributeQuery({
             attribute: groupSearchAttr.path,
             value: groupId,
@@ -114,7 +114,7 @@ export namespace SearchQueryTools {
         }
     }
 
-    export function getFacetStoreFromGroupProvenance(groupProvenanceId: GroupProvenanceId): FacetStoreInterface {
+    export function getFacetStoreFromGroupProvenance(groupProvenanceId: GroupProvenanceId): FacetStoreInterface | undefined {
         switch (groupProvenanceId) {
             case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
                 return depositionGroupFacetStore;
@@ -133,7 +133,7 @@ export namespace SearchQueryTools {
         (typeof RcsbSearchMetadata.RcsbEntryGroupMembership.GroupId) |
         (typeof RcsbSearchMetadata.RcsbPolymerEntityGroupMembership.GroupId);
 
-    function getSearchAttribute(groupProvenanceId: GroupProvenanceId): GroupSearchAttribute {
+    function getSearchAttribute(groupProvenanceId: GroupProvenanceId): GroupSearchAttribute | undefined {
         switch (groupProvenanceId) {
             case GroupProvenanceId.ProvenanceMatchingDepositGroupId:
                 return RcsbSearchMetadata.RcsbEntryGroupMembership.GroupId;

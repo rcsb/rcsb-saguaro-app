@@ -7,6 +7,7 @@ import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import {GroupChartMap as GDCM} from "./GroupChartTools";
 import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {SearchQueryComponentFactory} from "../RcsbGroupSeacrhQuery/RcsbGroupSeacrhQueryComponent";
+import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
 
 interface RcsbGroupChartInterface {
     groupProvenanceId: GroupProvenanceId;
@@ -43,7 +44,7 @@ export class RcsbGroupChartComponent extends React.Component <RcsbGroupChartInte
     }
 
     private async updateState(): Promise<void> {
-        const layout: string[] = this.props.facetLayoutGrid ?? SQT.getFacetStoreFromGroupProvenance(this.props.groupProvenanceId).facetLayoutGrid;
+        const layout: string[] = this.props.facetLayoutGrid ?? (SQT.getFacetStoreFromGroupProvenance(this.props.groupProvenanceId) as FacetStoreInterface).facetLayoutGrid;
         const chartMap: ChartMapType = await GDCM.getChartMap(this.props.groupProvenanceId,this.props.groupId,this.props.searchQuery);
         if(this.props.additionalProperties?.layoutConfig)
             applyLayoutConfig(layout, chartMap, this.props.additionalProperties?.layoutConfig);
