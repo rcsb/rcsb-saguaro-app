@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.10] - 2025-04-03
+### Bug Fix
+- Global Binding Site track counting bug fixed 
+
 ## [6.3.9] - 2025-04-03
 ### Configuration
 - Uniprot group view does not compute `sequence-variation` track

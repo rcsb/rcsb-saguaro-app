@@ -12,10 +12,20 @@ const query: SearchQuery = {
                 "type": "terminal",
                 "service": "text",
                 "parameters": {
-                    "attribute": "rcsb_entry_info.structure_determination_methodology",
+                    "attribute": "rcsb_entity_source_organism.ncbi_scientific_name",
                     "negation": false,
                     "operator": "exact_match",
-                    "value": "experimental"
+                    "value": "Mus musculus"
+                }
+            },
+            {
+                "type": "terminal",
+                "service": "text",
+                "parameters": {
+                    "attribute": "rcsb_polymer_entity.rcsb_polymer_name_combined.names",
+                    "negation": false,
+                    "operator": "exact_match",
+                    "value": "Tyrosine-protein kinase ABL1"
                 }
             },
             {
@@ -25,7 +35,7 @@ const query: SearchQuery = {
                     "attribute": "rcsb_polymer_entity_group_membership.group_id",
                     "negation": false,
                     "operator": "exact_match",
-                    "value": "1_30"
+                    "value": "2_30"
                 }
             }
         ]
@@ -39,5 +49,5 @@ const query: SearchQuery = {
     },
     "return_type": "polymer_entity"
 };
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "1_30", query);
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "2_30", query);
 //buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "P12694");

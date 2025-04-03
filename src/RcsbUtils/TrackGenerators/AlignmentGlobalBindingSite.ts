@@ -70,7 +70,7 @@ export function alignmentGlobalLigandBindingSite(groupProvenance:GroupProvenance
                             const key: string = (p.beg_seq_id).toString();
                             if(!ligandMap.has(key))
                                 ligandMap.set(key, new Set<string>());
-                            else if(d.name && !ligandMap.get(key)?.has(d.name))
+                            if(d.name && !ligandMap.get(key)?.has(d.name))
                                 ligandMap.get(key)?.add(d.name)
                             else
                                 return;
