@@ -14,12 +14,13 @@ import assertDefined = Assertions.assertDefined;
 import {
     RcsbFvTrackDataAnnotationInterface
 } from "../../RcsbFvWeb/RcsbFvFactories/RcsbFvTrackFactory/RcsbFvTrackDataAnnotationInterface";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 
-export function alignmentGlobalLigandBindingSite(): ExternalTrackBuilderInterface {
+export function alignmentGlobalLigandBindingSite(groupProvenance:GroupProvenanceId): ExternalTrackBuilderInterface {
     const trackName: string = "GLOBAL BINDING";
     const bindingSiteMap: Map<string,RcsbFvTrackDataAnnotationInterface> = new Map<string, RcsbFvTrackDataAnnotationInterface>();
     let max: number = 0;
-    const groupTrackBuilder: ExternalTrackBuilderInterface = groupExternalTrackBuilder();
+    const groupTrackBuilder: ExternalTrackBuilderInterface = groupExternalTrackBuilder(groupProvenance);
 
     return {
         async addTo(tracks: { annotationTracks: Array<RcsbFvRowConfigInterface>, alignmentTracks: Array<RcsbFvRowConfigInterface>}): Promise<void> {

@@ -6,11 +6,12 @@ import {Logo} from "./Logo";
 import {RcsbAnnotationConstants} from "../../RcsbAnnotationConfig/RcsbAnnotationConstants";
 import {SequenceAlignments, SequenceAnnotations} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {Assertions} from "../Helpers/Assertions";
-import assertElementListDefined = Assertions.assertElementListDefined;
 import {GroupGapLessTransformer} from "../Groups/GroupGapLessTransformer";
 import {PolymerEntityInstanceInterface} from "../../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
+import assertElementListDefined = Assertions.assertElementListDefined;
 
-export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
+export function groupExternalTrackBuilder(groupProvenance:GroupProvenanceId): ExternalTrackBuilderInterface {
 
     const seqName: string = "CONSENSUS SEQUENCE";
     const conservationName: string = "SEQUENCE VARIATION";
@@ -44,8 +45,10 @@ export function groupExternalTrackBuilder(): ExternalTrackBuilderInterface {
             });
         },
         filterAlignments(data: {alignments:SequenceAlignments;rcsbContext?:Partial<PolymerEntityInstanceInterface>;}): Promise<SequenceAlignments> {
-            gapLessTransformer.gapLessAlignments(data.alignments);
-            processAlignments(data.alignments);
+            if(groupProvenance === GroupProvenanceId.ProvenanceSequenceIdentity) {
+                gapLessTransformer.gapLessAlignments(data.alignments);
+                processAlignments(data.alignments);
+            }
             return new Promise<SequenceAlignments>((resolve)=>{
                 resolve(data.alignments);
             });

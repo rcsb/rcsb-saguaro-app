@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.9] - 2025-04-03
+### Configuration
+- Uniprot group view does not compute `sequence-variation` track
+
+### Bug Fix
+- Uniprot group view does not remove alignment gaps
+
 ## [6.3.8] - 2025-04-02
 ### Improvements
 - Group carouse dynamic `min-height` style

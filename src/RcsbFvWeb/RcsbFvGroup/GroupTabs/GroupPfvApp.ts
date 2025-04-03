@@ -1,19 +1,16 @@
-import {
-    RcsbFvAdditionalConfig,
-    RcsbFvModulePublicInterface
-} from "../../RcsbFvModule/RcsbFvModuleInterface";
+import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../../RcsbFvModule/RcsbFvModuleInterface";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {groupExternalTrackBuilder} from "../../../RcsbUtils/TrackGenerators/GroupExternalTrackBuilder";
 import {RcsbFvGroupBuilder} from "../../RcsbFvBuilder/RcsbFvGroupBuilder";
 import {
+    AnnotationReference,
     Features,
+    FeaturesType,
     FieldName,
     GroupReference,
     OperationType,
-    SequenceReference,
-    AnnotationReference,
-    FeaturesType
+    SequenceReference
 } from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AnnotationProcessingInterface
@@ -39,7 +36,7 @@ export namespace GroupPfvApp {
             default:
                 additionalConfig = {
                     ...additionalConfig,
-                    externalTrackBuilder: groupExternalTrackBuilder()
+                    externalTrackBuilder: groupExternalTrackBuilder(groupProvenanceId)
                 }
                 // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
                 const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
@@ -102,7 +99,7 @@ export namespace GroupPfvApp {
             }],
             sources: [AnnotationReference.PdbInstance, AnnotationReference.PdbEntity],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-            externalTrackBuilder: groupExternalTrackBuilder()
+            externalTrackBuilder: groupExternalTrackBuilder(groupProvenanceId)
         };
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
@@ -129,7 +126,7 @@ export namespace GroupPfvApp {
             }],
             sources: [AnnotationReference.PdbInstance],
             annotationProcessing: annotationPositionFrequencyProcessing(nTargets),
-            externalTrackBuilder:  alignmentGlobalLigandBindingSite(),
+            externalTrackBuilder:  alignmentGlobalLigandBindingSite(groupProvenanceId),
             isAnnotationsGroupSummary: false
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes

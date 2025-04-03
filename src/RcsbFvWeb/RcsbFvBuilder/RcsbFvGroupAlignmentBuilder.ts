@@ -57,10 +57,10 @@ export class RcsbFvGroupAlignmentBuilder {
                 ...additionalConfig?.page
             },
             alignmentFilter:filterEntities,
-            externalTrackBuilder: groupProvenance === GroupProvenanceId.ProvenanceSequenceIdentity ? FeatureTools.mergeTrackBuilders(
-                groupExternalTrackBuilder(),
+            externalTrackBuilder:  FeatureTools.mergeTrackBuilders(
+                groupExternalTrackBuilder(groupProvenance),
                 additionalConfig?.externalTrackBuilder
-            ) : additionalConfig?.externalTrackBuilder
+            )
         }
         // SequenceReference.PdbEntity && SequenceReference.Uniprot are needed to add row prefixes
         const pfvArgs:[GroupReference,string,SequenceReference, SequenceReference] = [
