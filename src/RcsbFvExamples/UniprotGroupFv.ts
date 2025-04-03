@@ -1,8 +1,8 @@
 import {buildGroupFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
-// import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 
-/* const query: SearchQuery = {
+const query: SearchQuery = {
     "query": {
         "type": "group",
         "nodes": [
@@ -16,7 +16,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
                             "attribute": "rcsb_polymer_entity_group_membership.group_id",
                             "negation": false,
                             "operator": "exact_match",
-                            "value": "P04585"
+                            "value": "A0A0S2T163"
                         }
                     },
                     {
@@ -27,7 +27,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
                             "operator": "in",
                             "negation": false,
                             "value": [
-                                "2WHH"
+                                "9NGH"
                             ]
                         }
                     }
@@ -41,7 +41,7 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
                     "attribute": "rcsb_polymer_entity_group_membership.group_id",
                     "negation": false,
                     "operator": "exact_match",
-                    "value": "P04585"
+                    "value": "A0A0S2T163"
                 }
             }
         ],
@@ -66,8 +66,8 @@ import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
             "experimental"
         ]
     }
-}*/
+}
 
-buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "A0A0S2T163");
+buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "A0A0S2T163", query);
 // buildGroupFv("pfv",GroupProvenanceId.ProvenanceMatchingUniprotAccession, "P69905", query);
 // buildGroupFv("pfv",GroupProvenanceId.ProvenanceSequenceIdentity, "10_30");
