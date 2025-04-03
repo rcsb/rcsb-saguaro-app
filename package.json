@@ -92,7 +92,7 @@
   "dependencies": {
     "@rcsb/rcsb-charts": "^0.2.27",
     "@rcsb/rcsb-saguaro": "^3.1.7",
-    "@rcsb/rcsb-search-tools": "^0.0.15-dev-js-seqcoord.1",
+    "@rcsb/rcsb-search-tools": "^0.0.15-dev-js-seqcoord.3",
     "ideogram": "^1.50.0",
     "react-bootstrap": "^2.10.9",
     "react-select": "^5.10.1",
@@ -100,7 +100,7 @@
     "string-to-color": "^2.2.2"
   },
   "peerDependencies": {
-    "@rcsb/rcsb-api-tools": "^5.0.0-dev-js-seqcoord.4",
+    "@rcsb/rcsb-api-tools": "^5.0.0-dev-js-seqcoord.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

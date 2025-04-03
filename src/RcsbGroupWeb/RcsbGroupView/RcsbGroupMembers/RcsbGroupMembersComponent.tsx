@@ -1,12 +1,12 @@
 import React, {ReactNode} from "react";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {GroupMembersGrid} from "./GroupMembersGrid";
-import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {QueryResult} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
-import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {SlideAction, Slider} from "./Components/Slider";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {
     SearchQueryContextManager as SQCM,
     SearchQueryContextManagerSubjectInterface

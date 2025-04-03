@@ -4,7 +4,7 @@ import {
     AttributeFacetType, BucketDataType,
     FilterFacetType
 } from "@rcsb/rcsb-search-tools/lib/SearchParseTools/SearchFacetInterface";
-import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchMetadata";
 import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 import {
     ChartDataColumnInterface,

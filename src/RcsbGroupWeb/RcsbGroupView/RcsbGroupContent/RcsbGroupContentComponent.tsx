@@ -1,6 +1,6 @@
 import React from "react";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 import {searchRequest} from "../RcsbGroupMembers/RcsbGroupMembersComponent";
 import {
     SearchQueryContextManager as SQCM,
@@ -15,7 +15,7 @@ import {
     RelevanceScoreRankingOption,
     ScoringStrategy,
     Service, SortDirection
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {Operator} from "../../../RcsbUtils/Helpers/Operator";
 
 interface RcsbGroupContentInterface extends RcsbGroupContentTextInterface {

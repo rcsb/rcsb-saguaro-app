@@ -4,7 +4,7 @@ import {RcsbFvGroupAnnotation} from "../RcsbFvModule/RcsbFvGroupAnnotation";
 import {
     GroupReference,
     SequenceReference
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvGroupAlignment} from "../RcsbFvModule/RcsbFvGroupAlignment";
 
 export class RcsbFvGroupBuilder {

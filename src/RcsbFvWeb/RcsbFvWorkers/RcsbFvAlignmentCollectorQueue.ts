@@ -1,5 +1,5 @@
 import {asyncScheduler} from "rxjs";
-import {QueryAlignmentsArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {QueryAlignmentsArgs} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 interface WorkerInterface {
     worker: Worker;

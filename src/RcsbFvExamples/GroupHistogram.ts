@@ -1,5 +1,5 @@
 import {buildGroup, buildGroupMembers} from "../RcsbGroupWeb/RcsbGroupBuilder";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {
     CATH_FACET, DISEASE_FACET,
     GO_COMPONENT_FACET,

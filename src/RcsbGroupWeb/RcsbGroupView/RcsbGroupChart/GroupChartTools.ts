@@ -1,10 +1,10 @@
 import {groupProvenanceToReturnType} from "../../../RcsbUtils/Groups/GroupProvenanceToAggregationType";
 import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
-import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchResultInterface";
 import {FacetTools, RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 import {cloneDeep} from "lodash";
 import {ChartMapType} from "./GroupChartLayout";
 import {GroupChartEvents as GDE} from "./GroupChartEvents";

@@ -6,16 +6,16 @@ import {
     Service,
     SortDirection,
     Type
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
-import {RcsbSearchAttributeType, RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
+import {RcsbSearchAttributeType, RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchMetadata";
 import {
     AttributeTextQueryParameters,
     ResultsContentType,
     SearchQuery
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 import {FacetStoreInterface} from "./FacetStore/FacetStoreInterface";
 import {cloneDeep} from 'lodash';
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 import {
     buildAttributeQuery,

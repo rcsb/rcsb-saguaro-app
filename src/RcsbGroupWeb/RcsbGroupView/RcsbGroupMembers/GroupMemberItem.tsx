@@ -1,8 +1,8 @@
 import React, {ReactNode, RefObject} from "react";
 import resource from "../../../RcsbServerConfig/web.resources.json";
-import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {GroupProvenanceId, StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 import BxCube from "./icons/bxs-cube.svg";
 
 interface GroupMemberItemInterface {

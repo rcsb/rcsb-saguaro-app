@@ -1,11 +1,11 @@
 import {
     ReturnType,
     Service
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {FacetMemberInterface} from "./FacetMemberInterface";
 import {FacetStoreInterface} from "./FacetStoreInterface";
 
-import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchMetadata";
 import {
     CATH_FACET, CHEM_COMP_FACET,
     RELEASE_DATE_FACET, ECOD_FACET, ENTITY_NAME_FACET,

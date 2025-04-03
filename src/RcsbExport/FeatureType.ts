@@ -1,4 +1,4 @@
-import {FeaturesType} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {FeaturesType} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 const BURIAL_FRACTION: "BURIAL_FRACTION" = "BURIAL_FRACTION";
 const BURIED_RESIDUES: "BURIED_RESIDUES" = "BURIED_RESIDUES";

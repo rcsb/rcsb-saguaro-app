@@ -3,11 +3,11 @@ import * as classes from "../../../scss/bootstrap-group-display.module.scss";
 import {ChartMapType, GroupChartLayout} from "./GroupChartLayout";
 import {FacetTools} from "../../../RcsbSeacrh/FacetTools";
 import {FacetStoreInterface} from "../../../RcsbSeacrh/FacetStore/FacetStoreInterface";
-import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {BucketFacet, QueryResult} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchResultInterface";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
-import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 
 interface RcsbStatsChartInterface {
     facetStore: FacetStoreInterface;

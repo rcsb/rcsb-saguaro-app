@@ -4,7 +4,7 @@ import {RcsbDistributionConfig} from "../../../../../RcsbAnnotationConfig/RcsbDi
 import {Operator} from "../../../../../RcsbUtils/Helpers/Operator";
 import {ChartObjectInterface, ChartType} from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
 import {ChartDataValueInterface} from "@rcsb/rcsb-charts/lib/RcsbChartDataProvider/ChartDataProviderInterface";
-import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchMetadata";
 
 export class DistributionChartFactory implements DistributionChartFactoryInterface {
 

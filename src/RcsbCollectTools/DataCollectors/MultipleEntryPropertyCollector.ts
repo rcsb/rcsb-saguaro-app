@@ -3,8 +3,8 @@ import {
     CoreEntry,
     CorePolymerEntity,
     QueryEntriesArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
-import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import assertElementListDefined = Assertions.assertElementListDefined;

@@ -8,7 +8,7 @@ import {RcsbFvCoreBuilder} from "./RcsbFvCoreBuilder";
 import {RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {rcsbRequestCtxManager} from "../../RcsbRequest/RcsbRequestContextManager";
 import {RcsbFvUniprotAlignment} from "../RcsbFvModule/RcsbFvUniprotAlignment";
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 
 export interface UniprotSequenceOnchangeInterface extends Partial<PolymerEntityInstanceInterface> {
     upAcc:string;

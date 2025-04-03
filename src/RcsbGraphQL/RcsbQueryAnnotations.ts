@@ -2,12 +2,12 @@ import {
     SequenceAnnotations,
     QueryAnnotationsArgs,
     QueryGroup_AnnotationsArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import queryAnnotations from "../RcsbQueries/Borrego/QueryAnnotations.graphql";
 import queryGroupAnnotationsSummary from "../RcsbQueries/Borrego/QueryGroupAnnotationsSummary.graphql";
 import queryGroupAnnotations from "../RcsbQueries/Borrego/QueryGroupAnnotations.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/GraphQLRequest";
 
 interface AnnotationsResultInterface {
     annotations: Array<SequenceAnnotations>;

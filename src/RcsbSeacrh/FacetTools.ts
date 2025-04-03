@@ -1,16 +1,16 @@
-import {BucketFacet} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {BucketFacet} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchResultInterface";
 import {FacetMemberInterface} from "./FacetStore/FacetMemberInterface";
 import {cloneDeep} from "lodash";
 import {
     AttributeTextQueryParameters,
     FilterFacet
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
+import {Service} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {
     ChartDisplayConfigInterface,
     ChartObjectInterface,
 } from "@rcsb/rcsb-charts/lib/RcsbChartComponent/ChartConfigInterface";
-import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
+import {RcsbSearchAttributeType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchMetadata";
 import {
     BucketDataType,
     FilterFacetType,

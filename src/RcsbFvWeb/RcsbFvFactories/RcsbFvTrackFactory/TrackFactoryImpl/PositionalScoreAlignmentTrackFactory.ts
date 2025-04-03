@@ -6,7 +6,7 @@ import {
     SequenceAnnotations,
     TargetAlignments,
     FeaturesType
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AlignmentContextInterface,
     PolymerEntityInstanceTranslate
@@ -23,7 +23,7 @@ import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextM
 import {EntryPropertyInterface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 import {RcsbFvTrackDataAnnotationInterface} from "../RcsbFvTrackDataAnnotationInterface";
 
 export class PositionalScoreAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignments]>{

@@ -5,7 +5,7 @@ import {
     SequenceAnnotations,
     QueryAlignmentsArgs,
     QueryAnnotationsArgs, QueryGroup_AnnotationsArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     CoreAssembly,
     CoreEntry,
@@ -19,7 +19,7 @@ import {
     QueryPolymer_EntitiesArgs,
     QueryPolymer_Entity_GroupArgs,
     QueryPolymer_Entity_InstancesArgs, CorePolymerEntityInstance
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbQueryEntryInstances} from "./RcsbQueryEntryInstances";
 import {RcsbQueryMultipleEntityInstances} from "./RcsbQueryMultipleEntityInstances";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";

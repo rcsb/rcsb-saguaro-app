@@ -3,8 +3,8 @@ import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
 import {
     CorePolymerEntityInstance,
     QueryPolymer_Entity_InstancesArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
-import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/GraphQLRequest";
 
 interface InstanceSequencesResult {
     polymer_entity_instances: CorePolymerEntityInstance[];

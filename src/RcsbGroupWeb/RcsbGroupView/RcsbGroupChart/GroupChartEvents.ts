@@ -1,6 +1,6 @@
 import {RcsbChartInterface} from "../../../RcsbSeacrh/FacetTools";
-import {DateRange, Range} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {DateRange, Range} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
+import {Operator, ReturnType, Service} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import React from "react";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
 import resource from "../../../RcsbServerConfig/web.resources.json";

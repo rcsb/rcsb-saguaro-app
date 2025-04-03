@@ -1,6 +1,6 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {CoreEntry, CorePolymerEntityInstance, QueryEntryArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
-import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {CoreEntry, CorePolymerEntityInstance, QueryEntryArgs} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {StructureDeterminationMethodology} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;
 import assertDefined = Assertions.assertDefined;

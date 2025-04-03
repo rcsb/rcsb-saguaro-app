@@ -2,7 +2,7 @@
 import * as configBorregoGraphQL from "../RcsbServerConfig/codegen.borrego.json";
 import * as configYosemiteGraphQL from "../RcsbServerConfig/codegen.yosemite.json";
 
-import {validateQueries} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Generator/GeneratorTools";
+import {validateQueries} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Generator/GeneratorTools";
 
 console.info("Testing DATA API");
 validateQueries(configYosemiteGraphQL.schema,configYosemiteGraphQL.documents).then(()=>{

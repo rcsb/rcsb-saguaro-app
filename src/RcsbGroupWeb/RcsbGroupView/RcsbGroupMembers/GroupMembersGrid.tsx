@@ -3,19 +3,19 @@ import {Col, Container, Row} from "react-bootstrap";
 import {GroupMemberItem, ItemFeaturesInterface} from "./GroupMemberItem";
 import {
     SearchQuery, SortOptionAttributes
-} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
-import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
+import {QueryResult} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchResultInterface";
 import {SearchQueryTools as SQT} from "../../../RcsbSeacrh/SearchQueryTools";
-import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchMetadata";
-import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {RcsbSearchMetadata} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchMetadata";
+import {ReturnType, SortDirection} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {
     EntryPropertyInterface
 } from "../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {rcsbRequestCtxManager} from "../../../RcsbRequest/RcsbRequestContextManager";
 import uniqid from "uniqid";
 import {PolymerEntityInterface} from "../../../RcsbCollectTools/DataCollectors/MultiplePolymerEntityCollector";
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 
 interface GroupMembersGridInterface {
     groupProvenanceId: GroupProvenanceId;

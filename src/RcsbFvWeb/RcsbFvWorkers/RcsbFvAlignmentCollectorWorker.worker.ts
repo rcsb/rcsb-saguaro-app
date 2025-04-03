@@ -1,5 +1,5 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {QueryAlignmentsArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {QueryAlignmentsArgs} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 const worker: Window & typeof globalThis = self;
 worker.onmessage = function(message: MessageEvent){

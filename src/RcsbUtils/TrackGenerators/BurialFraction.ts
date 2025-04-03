@@ -3,7 +3,7 @@ import {
     Features,
     FeaturesFeaturePositions,
     AnnotationReference
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {cloneDeep} from "lodash";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 

@@ -4,7 +4,7 @@ import {Subject} from "rxjs";
 import {
     SequenceAlignments,
     TargetAlignments
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {ObservableHelper} from "../../RcsbUtils/Helpers/ObservableHelper";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
 import assertElementListDefined = Assertions.assertElementListDefined;

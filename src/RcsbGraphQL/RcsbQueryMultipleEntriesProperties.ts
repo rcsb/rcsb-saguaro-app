@@ -1,7 +1,7 @@
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {CoreEntry, QueryEntriesArgs} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import query from "../RcsbQueries/Yosemite/QueryMultipleEntriesProperties.graphql";
-import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/GraphQLRequest";
 
 interface EntryInstancesResultInterface {
     entries: Array<CoreEntry>;

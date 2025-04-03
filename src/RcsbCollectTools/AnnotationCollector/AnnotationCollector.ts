@@ -1,6 +1,6 @@
 import {
     SequenceAnnotations, Features
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
 import {
     AnnotationRequestContext,

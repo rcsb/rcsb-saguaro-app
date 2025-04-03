@@ -10,7 +10,7 @@ import {RcsbFvDisplayTypes} from "@rcsb/rcsb-saguaro/lib/RcsbFv/RcsbFvConfig/Rcs
 import {
     AlignedRegions,
     TargetAlignments
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface

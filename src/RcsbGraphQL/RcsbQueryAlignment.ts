@@ -2,12 +2,12 @@ import {
     SequenceAlignments,
     QueryAlignmentsArgs,
     QueryGroup_AlignmentsArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import queryAlignment from "../RcsbQueries/Borrego/QueryAlignments.graphql";
 import queryGroupAlignment from "../RcsbQueries/Borrego/QueryGroupAlignments.graphql";
 import queryGroupAlignmentNoLogo from "../RcsbQueries/Borrego/QueryGroupAlignmentsNoLogo.graphql";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/GraphQLRequest";
 
 interface AlignmentResponseInterface{
     alignments: SequenceAlignments;

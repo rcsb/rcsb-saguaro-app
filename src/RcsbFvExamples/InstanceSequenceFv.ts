@@ -4,7 +4,7 @@ import {
     SequenceAlignments,
     SequenceAnnotations,
     FeaturesType
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 

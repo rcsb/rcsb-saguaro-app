@@ -2,7 +2,7 @@ import {
     RcsbFvAdditionalConfig,
     RcsbFvModulePublicInterface
 } from "../../RcsbFvModule/RcsbFvModuleInterface";
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
 import {RcsbFvUniprotBuilder} from "../../RcsbFvBuilder/RcsbFvUniprotBuilder";
 import {groupExternalTrackBuilder} from "../../../RcsbUtils/TrackGenerators/GroupExternalTrackBuilder";
 import {RcsbFvGroupBuilder} from "../../RcsbFvBuilder/RcsbFvGroupBuilder";
@@ -14,7 +14,7 @@ import {
     SequenceReference,
     AnnotationReference,
     FeaturesType
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     AnnotationProcessingInterface
 } from "../../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";

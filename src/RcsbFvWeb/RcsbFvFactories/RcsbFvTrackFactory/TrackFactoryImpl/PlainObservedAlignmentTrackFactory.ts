@@ -5,7 +5,7 @@ import {
     AlignedRegions,
     SequenceAnnotations,
     TargetAlignments
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface
@@ -21,7 +21,7 @@ import {rcsbRequestCtxManager} from "../../../../RcsbRequest/RcsbRequestContextM
 import {EntryPropertyInterface} from "../../../../RcsbCollectTools/DataCollectors/MultipleEntryPropertyCollector";
 import {Assertions} from "../../../../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 
 export class PlainObservedAlignmentTrackFactory implements TrackFactoryInterface<[AlignmentRequestContextType, TargetAlignments]>{
 

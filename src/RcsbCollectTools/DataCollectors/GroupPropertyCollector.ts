@@ -1,5 +1,5 @@
 import {rcsbClient, RcsbClient} from "../../RcsbGraphQL/RcsbClient";
-import {GroupPolymerEntity, QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+import {GroupPolymerEntity, QueryPolymer_Entity_GroupArgs} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
 
 export interface GroupPropertyInterface{
     groupName: string;

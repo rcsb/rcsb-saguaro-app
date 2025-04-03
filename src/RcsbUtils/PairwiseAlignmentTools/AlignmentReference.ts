@@ -2,7 +2,7 @@ import {cloneDeep} from "lodash";
 import {
     AlignedRegions,
     SequenceAlignments,
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 
 type AlignmentRefType = (number|undefined)[];
 type AlignmentMemberType = {

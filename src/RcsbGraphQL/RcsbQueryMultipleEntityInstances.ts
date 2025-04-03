@@ -2,9 +2,9 @@ import query from "../RcsbQueries/Yosemite/QueryMultipleEntityInstances.graphql"
 import {
     CorePolymerEntity,
     QueryPolymer_EntitiesArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {RcsbCoreQueryInterface} from "./RcsbCoreQueryInterface";
-import {GraphQLRequest} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
+import {GraphQLRequest} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/GraphQLRequest";
 
 interface EntryInstancesResultInterface {
     polymer_entities: Array<CorePolymerEntity>;

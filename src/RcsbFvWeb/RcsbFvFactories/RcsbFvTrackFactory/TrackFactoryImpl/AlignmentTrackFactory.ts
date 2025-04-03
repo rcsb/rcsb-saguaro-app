@@ -7,7 +7,7 @@ import { RcsbFvTrackDataElementInterface } from "@rcsb/rcsb-saguaro/lib/RcsbData
 import {
     AlignedRegions,
     TargetAlignments
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {
     PolymerEntityInstanceTranslate,
     AlignmentContextInterface

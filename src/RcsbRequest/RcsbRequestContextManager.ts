@@ -1,7 +1,7 @@
 import {PolymerEntityInstanceTranslate} from "../RcsbUtils/Translators/PolymerEntityInstanceTranslate";
 import {EntryAssemblyTranslate} from "../RcsbUtils/Translators/EntryAssemblyTranslate";
 import {GroupPropertiesProvider} from "../RcsbUtils/Groups/GroupPropertiesProvider";
-import {QueryResult} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchResultInterface";
+import {QueryResult} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchResultInterface";
 import {InterfaceInstanceTranslate} from "../RcsbUtils/Translators/InterfaceInstanceTranslate";
 import {AssemblyInterfacesTranslate} from "../RcsbUtils/Translators/AssemblyInterfacesTranslate";
 import {
@@ -13,7 +13,7 @@ import {PolymerEntityChromosomeTranslate} from "../RcsbUtils/Translators/Polymer
 import {PolymerEntityChromosomeCollector} from "../RcsbCollectTools/DataCollectors/PolymerEntityChromosomeCollector";
 import {
     QueryPolymer_Entity_GroupArgs
-} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Yosemite/GqlTypes";
+} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Yosemite/GqlTypes";
 import {GroupMemberCollector} from "../RcsbCollectTools/DataCollectors/GroupMemberCollector";
 import {
     EntryPropertyInterface,
@@ -22,7 +22,7 @@ import {
 import {Operator} from "../RcsbUtils/Helpers/Operator";
 import {searchRequestProperty} from "../RcsbSeacrh/SearchRequestProperty";
 import {FacetType} from "../RcsbSeacrh/FacetStore/FacetMemberInterface";
-import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {sha1} from "object-hash";
 import {
     InterfaceInstanceCollector,
@@ -31,14 +31,14 @@ import {
 import {
     AssemblyInterfacesCollector
 } from "../RcsbCollectTools/DataCollectors/AssemblyInterfacesCollector";
-import {ResultsContentType, SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {ResultsContentType, SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 import {
     MultipleDocumentPropertyCollectorInterface
 } from "../RcsbCollectTools/DataCollectors/DataCollectorInterface";
 import {RcsbRequestTools as RRT} from "./RcsbRequestTools";
 import {rcsbRequestClient} from "./RcsbRequestClient";
-import {GraphQLRequest, RequestConfig} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/GraphQLRequest";
-import {SearchRequest} from "@rcsb/rcsb-api-tools/build/RcsbSearch/SearchRequest";
+import {GraphQLRequest, RequestConfig} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/GraphQLRequest";
+import {SearchRequest} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/SearchRequest";
 import {Assertions} from "../RcsbUtils/Helpers/Assertions";
 import assertDefined = Assertions.assertDefined;
 import {
@@ -49,7 +49,7 @@ import {
 import { InstanceSequenceInterface,
     MultipleInstanceSequencesCollector
 } from "../RcsbCollectTools/DataCollectors/MultipleInstanceSequencesCollector";
-import {TagDelimiter} from "@rcsb/rcsb-api-tools/build/RcsbUtils/TagDelimiter";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 import {SearchQueryType} from "@rcsb/rcsb-search-tools/lib/SearchQueryTools/SearchQueryInterfaces";
 
 class RcsbRequestContextManager {

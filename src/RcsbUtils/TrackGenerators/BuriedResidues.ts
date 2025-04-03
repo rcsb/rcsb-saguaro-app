@@ -1,4 +1,4 @@
-import {SequenceAnnotations, Features, AnnotationReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {SequenceAnnotations, Features, AnnotationReference} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {cloneDeep} from "lodash";
 import {FeatureType} from "../../RcsbExport/FeatureType";
 

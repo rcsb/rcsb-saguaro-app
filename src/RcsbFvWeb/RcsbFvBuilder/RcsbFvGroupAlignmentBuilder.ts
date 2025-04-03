@@ -1,14 +1,14 @@
-import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/build/RcsbDw/Types/DwEnums";
-import {SearchQuery} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchQueryInterface";
+import {GroupProvenanceId} from "@rcsb/rcsb-api-tools/lib/RcsbDw/Types/DwEnums";
+import {SearchQuery} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchQueryInterface";
 import {RcsbFvAdditionalConfig, RcsbFvModulePublicInterface} from "../RcsbFvModule/RcsbFvModuleInterface";
 import {searchRequestProperty} from "../../RcsbSeacrh/SearchRequestProperty";
 import {SearchQueryTools as SQT} from "../../RcsbSeacrh/SearchQueryTools";
-import {ReturnType} from "@rcsb/rcsb-api-tools/build/RcsbSearch/Types/SearchEnums";
+import {ReturnType} from "@rcsb/rcsb-api-tools/lib/RcsbSearch/Types/SearchEnums";
 import {getReferenceFromGroupProvenance} from "../RcsbFvGroup/GroupTabs/GroupPfvApp";
 import {ActionMethods} from "../../RcsbFvUI/Helper/ActionMethods";
 import {RcsbFvUniprotBuilder} from "./RcsbFvUniprotBuilder";
 import {groupExternalTrackBuilder} from "../../RcsbUtils/TrackGenerators/GroupExternalTrackBuilder";
-import {GroupReference, SequenceReference} from "@rcsb/rcsb-api-tools/build/RcsbGraphQL/Types/Borrego/GqlTypes";
+import {GroupReference, SequenceReference} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {RcsbFvGroupBuilder} from "./RcsbFvGroupBuilder";
 import {GroupPfvUI, UiComponentType} from "../../RcsbFvUI/GroupPfvUI";
 import {
