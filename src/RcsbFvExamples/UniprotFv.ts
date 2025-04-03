@@ -1,6 +1,6 @@
 import {buildMultipleAlignmentSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 
-buildMultipleAlignmentSequenceFv("pfv","select", "P01112",{}, {
+buildMultipleAlignmentSequenceFv("pfv","select", "A0A0S2T163",{}, {
     boardConfig:{
         selectionChangeCallback:(s)=>{
             console.log(">", s)
