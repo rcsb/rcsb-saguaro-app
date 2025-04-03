@@ -2,6 +2,18 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.8] - 2025-04-02
+### Improvements
+- Group carouse dynamic `min-height` style
+- Local icons
+- Group alignment filter by `instance-id`
+
+### Dependency update
+- rcsb-api-tools v5.0.0
+- rcsb-search-tools v0.0.15
+- audit fix
+- Updated all dependencies
+
 ## [6.3.7] - 2025-01-29
 ### Configuration
 - Track name config
