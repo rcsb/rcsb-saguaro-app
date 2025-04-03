@@ -1,6 +1,6 @@
 {
   "name": "@rcsb/rcsb-saguaro-app",
-  "version": "6.3.7-dev-js-seqcoord.21",
+  "version": "6.3.7-dev-js-seqcoord.22",
   "description": "RCSB 1D Saguaro Web App",
   "main": "build/app.js",
   "files": [
@@ -97,12 +97,10 @@
     "react-bootstrap": "^2.10.9",
     "react-select": "^5.10.1",
     "rxjs": "^7.8.2",
-    "string-to-color": "^2.2.2"
-  },
-  "peerDependencies": {
+    "string-to-color": "^2.2.2",
     "@rcsb/rcsb-api-tools": "^5.0.0-dev-js-seqcoord.6",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "bugs": {
     "url": "https://github.com/rcsb/rcsb-saguaro-app/issues"
