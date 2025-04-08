@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.3.11] - 2025-04-08
+### Improvements
+- Next page caching for `group-alignments` view
+- Concurrent alignments and annotations for `group-annotations` view
+
 ## [6.3.10] - 2025-04-03
 ### Bug Fix
 - Global Binding Site track counting bug fixed 

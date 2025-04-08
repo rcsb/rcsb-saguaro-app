@@ -15,6 +15,7 @@ import {
     MsaAlignmentTrackFactory
 } from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/MsaAlignmentTrackFactory";
 import {
+    AlignmentCollectorInterface,
     CollectGroupAlignmentInterface
 } from "../../RcsbCollectTools/AlignmentCollector/AlignmentCollectorInterface";
 import {Assertions} from "../../RcsbUtils/Helpers/Assertions";
@@ -25,6 +26,8 @@ import {ExternalTrackBuilderInterface} from "../../RcsbCollectTools/FeatureTools
 import {
     AnnotationCollectorInterface
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
+import {rcsbClient} from "../../RcsbGraphQL/RcsbClient";
+import {TagDelimiter} from "@rcsb/rcsb-api-tools/lib/RcsbUtils/TagDelimiter";
 
 export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
 
@@ -67,6 +70,8 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
             alignmentTrackFactory: trackFactory
         });
 
+        collectNextPage(alignmentRequestContext, this.alignmentCollector, this.annotationCollector).then(()=>console.log("Next page ready"));
+
         return void 0;
     }
 
@@ -82,6 +87,27 @@ export class RcsbFvGroupAlignment extends RcsbFvAbstractModule {
         }
     }
 
+}
+
+async function collectNextPage(alignmentRequestContext: CollectGroupAlignmentInterface, alignmentCollector: AlignmentCollectorInterface, annotationCollector: AnnotationCollectorInterface): Promise<void> {
+    const alignmentResponse: SequenceAlignments = await rcsbClient.requestGroupAlignment({
+        group: alignmentRequestContext.group,
+        groupId: alignmentRequestContext.groupId,
+        page: {
+            first: alignmentRequestContext.page.first,
+            after: alignmentRequestContext.page.after + alignmentRequestContext.page.first
+        },
+        excludeLogo: true
+    });
+    const targetList: string[] = await uniqueTargetList(alignmentResponse);
+    if(alignmentRequestContext.groupId) {
+        const alignmentFeatures: SequenceAnnotations[] = await rcsbClient.requestRcsbPdbGroupAnnotations(buildGroupAnnotationQuery({
+            groupId: alignmentRequestContext.groupId,
+            targetList
+        }));
+        const featureTargetList = Operator.uniqueValues<string>(alignmentFeatures.map(af=>TagDelimiter.parseInstance(af.target_id ?? "").entryId));
+        Operator.arrayChunk(featureTargetList,100).forEach(ids => rcsbRequestCtxManager.getEntryProperties(ids));
+    }
 }
 
 async function uniqueTargetList(alignmentResponse: SequenceAlignments): Promise<string[]> {

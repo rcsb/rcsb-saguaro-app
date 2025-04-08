@@ -7,7 +7,6 @@ import {
 } from "../../RcsbCollectTools/AnnotationCollector/AnnotationCollectorInterface";
 import {AnnotationConfigInterface} from "../../RcsbAnnotationConfig/AnnotationConfigInterface";
 import * as acm from "../../RcsbAnnotationConfig/GroupAnnotationConfig.ac.json";
-import {SequenceAlignments, SequenceAnnotations} from "@rcsb/rcsb-api-tools/lib/RcsbGraphQL/Types/Borrego/GqlTypes";
 import {TrackFactoryInterface} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryInterface";
 import {AlignmentRequestContextType} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/AlignmentTrackFactory";
 import {SequenceTrackFactory} from "../RcsbFvFactories/RcsbFvTrackFactory/TrackFactoryImpl/SequenceTrackFactory";
@@ -34,10 +33,6 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             sequencePrefix: buildConfig.additionalConfig?.sequencePrefix ?? "",
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const alignmentResponse: SequenceAlignments = await this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter);
-        const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
-        if(alignmentResponse.query_sequence)
-            this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
 
         const annotationsRequestContext: CollectGroupAnnotationsInterface = {
             group: buildConfig.group,
@@ -48,7 +43,15 @@ export class RcsbFvGroupAnnotation extends RcsbFvAbstractModule {
             annotationProcessing:buildConfig.additionalConfig?.annotationProcessing,
             externalTrackBuilder: buildConfig.additionalConfig?.externalTrackBuilder
         }
-        const annotationsFeatures: SequenceAnnotations[] = await this.annotationCollector.collect(annotationsRequestContext);
+
+        const [alignmentResponse, annotationsFeatures] = await Promise.all([
+            this.alignmentCollector.collect(alignmentRequestContext, buildConfig.additionalConfig?.alignmentFilter),
+            this.annotationCollector.collect(annotationsRequestContext)
+        ])
+
+        const sequenceTrackFactory:TrackFactoryInterface<[AlignmentRequestContextType, string]> = new SequenceTrackFactory(this.getPolymerEntityInstanceTranslator())
+        if(alignmentResponse.query_sequence)
+            this.referenceTrack = await sequenceTrackFactory.getTrack(alignmentRequestContext,alignmentResponse.query_sequence);
         await this.buildAnnotationsTrack(annotationsRequestContext,annotationsFeatures,annotationConfigMap);
 
         return void 0;
