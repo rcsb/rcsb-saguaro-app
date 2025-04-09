@@ -1,4 +1,4 @@
 {
-  "schema": "https://sequence-coordinates.rcsb.org/graphql",
+  "schema": "https://seqcoordinates.ihm.k8s.rcsb.org/graphql",
   "documents": "src/RcsbQueries/Borrego/Query*.graphql"
 }
