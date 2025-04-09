@@ -51,7 +51,7 @@ export class MultipleEntryPropertyCollector {
                 .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>(),
             instanceToOperator: MultipleEntryPropertyCollector.instanceToOperator(r),
             entityToPrd: r.polymer_entities?.filter((pe): pe is CorePolymerEntity => typeof pe != "undefined").map( pe=> [pe?.rcsb_id ?? "", pe?.entity_poly?.rcsb_prd_id ?? ""]).reduce((map, pair)=>map.set(pair[0],pair[1]), new Map<string,string>()) ?? new Map(),
-            representativeModel: r.rcsb_entry_info.representative_model ?? 0
+            representativeModel: r.rcsb_entry_info.representative_model ?? 1
         };
     }
 
