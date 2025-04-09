@@ -26,6 +26,7 @@ query QueryEntryInstance($entry_id: String!){
                             resolution_combined
                             molecular_weight
                             structure_determination_methodology
+                            representative_model
                         }
                     }
                 }

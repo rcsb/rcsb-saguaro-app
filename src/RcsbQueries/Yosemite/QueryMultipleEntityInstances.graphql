@@ -21,6 +21,7 @@ query QueryMultipleEntityInstances($entity_ids: [String!]!){
                 }
                 entry {
                     rcsb_entry_info{
+                        representative_model
                         experimental_method
                         resolution_combined
                         structure_determination_methodology

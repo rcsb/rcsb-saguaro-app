@@ -38,6 +38,7 @@ query multiple_entries_properties($entry_ids: [String!]!){
             resolution_combined
             molecular_weight
             structure_determination_methodology
+            representative_model
         }
         struct {
             title
