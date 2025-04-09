@@ -23,6 +23,7 @@ export interface EntryPropertyInterface {
     nonPolymerEntityToInstance: Map<string,Array<string>>;
     instanceToOperator: Map<string,Map<string,Array<string>>>;
     entityToPrd: Map<string,string>;
+    representativeModel: number;
 }
 
 export class MultipleEntryPropertyCollector {
@@ -49,7 +50,8 @@ export class MultipleEntryPropertyCollector {
             nonPolymerEntityToInstance: r.nonpolymer_entities?.map(pe=>([pe?.rcsb_id, pe?.nonpolymer_entity_instances?.map(pei=>pei?.rcsb_id)] as [string,string[]]))
                 .reduce((r:Map<string, string[]>,x:[string, string[]])=>r.set(x[0],x[1]),new Map<string, string[]>()) ?? new Map<string, string[]>(),
             instanceToOperator: MultipleEntryPropertyCollector.instanceToOperator(r),
-            entityToPrd: r.polymer_entities?.filter((pe): pe is CorePolymerEntity => typeof pe != "undefined").map( pe=> [pe?.rcsb_id ?? "", pe?.entity_poly?.rcsb_prd_id ?? ""]).reduce((map, pair)=>map.set(pair[0],pair[1]), new Map<string,string>()) ?? new Map()
+            entityToPrd: r.polymer_entities?.filter((pe): pe is CorePolymerEntity => typeof pe != "undefined").map( pe=> [pe?.rcsb_id ?? "", pe?.entity_poly?.rcsb_prd_id ?? ""]).reduce((map, pair)=>map.set(pair[0],pair[1]), new Map<string,string>()) ?? new Map(),
+            representativeModel: r.rcsb_entry_info.representative_model ?? 0
         };
     }
 
