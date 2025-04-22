@@ -118,7 +118,8 @@ function hasGroup3D(groupProvenanceId: GroupProvenanceId){
 }
 
 function imageIcon(ei: ItemFeaturesInterface): ReactNode {
-    const isExperimental = ei.structureDeterminationMethodology === StructureDeterminationMethodology.Experimental;
+    const isExperimental = ei.structureDeterminationMethodology === StructureDeterminationMethodology.Experimental || ei.structureDeterminationMethodology === StructureDeterminationMethodology.Integrative;
+    const isIntegrative = ei.structureDeterminationMethodology === StructureDeterminationMethodology.Integrative;
     return (
         <div style={{
             position: "absolute",
@@ -140,7 +141,7 @@ function imageIcon(ei: ItemFeaturesInterface): ReactNode {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)"
-                }} className={`fa ${isExperimental ? "fa-flask" : "fa-desktop"}`}/>
+                }} className={`fa ${isExperimental ? (isIntegrative ? "fa-puzzle-piece" : "fa-flask") : "fa-desktop"}`}/>
             </div>
         </div>
     );
