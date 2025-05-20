@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.0] - 2025-05-20
+### Improvements
+- IHM support
+
+### Dependency update
+- rcsb-api-tools v5.1.0
+
 ## [6.3.11] - 2025-04-08
 ### Improvements
 - Next page caching for `group-alignments` view
