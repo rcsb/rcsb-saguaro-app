@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.1] - 2025-05-20
+### Dependency update
+- rcsb-api-tools v5.1.1
+
 ## [6.4.0] - 2025-05-20
 ### Improvements
 - IHM support
