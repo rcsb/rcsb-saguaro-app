@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.2] - 2025-06-12
+### Configuration
+- Protein names prioritizes `pdbx_description`
+
 ## [6.4.1] - 2025-05-20
 ### Dependency update
 - rcsb-api-tools v5.1.1

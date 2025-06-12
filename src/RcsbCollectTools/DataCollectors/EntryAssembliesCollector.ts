@@ -66,7 +66,7 @@ export class EntryAssembliesCollector {
                 asymId: o.asym_id,
                 authId: o.auth_asym_id,
                 authResId: o.auth_to_entity_poly_seq_mapping,
-                name: (instance.polymer_entity?.rcsb_polymer_entity?.rcsb_polymer_name_combined?.names?.join(", ") ?? instance.polymer_entity?.rcsb_polymer_entity?.pdbx_description) ?? "NA",
+                name: (instance.polymer_entity?.rcsb_polymer_entity?.pdbx_description ?? instance.polymer_entity?.rcsb_polymer_entity?.rcsb_polymer_name_combined?.names?.join(", ")) ?? "NA",
                 taxNames:Array.from(taxIds),
                 experimentalMethod: instance.polymer_entity?.entry?.rcsb_entry_info.experimental_method ?? "NA",
                 resolution: instance.polymer_entity?.entry?.rcsb_entry_info.resolution_combined?.[0] ?? undefined,
