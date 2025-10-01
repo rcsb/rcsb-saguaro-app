@@ -65,6 +65,9 @@ export class RcsbFvTooltip implements RcsbFvTooltipInterface {
         d.description.slice(0,2).forEach(des=>{
             const desDiv = document.createElement<"div">("div");
             desDiv.append(des);
+            desDiv.style.whiteSpace = "nowrap";
+            desDiv.style.textOverflow = "ellipsis";
+            desDiv.style.overflow = "hidden";
             tooltipDescriptionDiv.append(desDiv);
         });
         return tooltipDescriptionDiv;

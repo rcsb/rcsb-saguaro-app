@@ -2,6 +2,15 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.3] - 2025-10-01
+### Bug fix
+- Description tooltip overflow fixed
+
+### Dependency update
+- rcsb-saguaro v3.1.9
+- audit fix
+- Updated all dependencies
+
 ## [6.4.2] - 2025-06-12
 ### Configuration
 - Protein names prioritizes `pdbx_description`
