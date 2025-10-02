@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.4] - 2025-10-02
+
+### Dependency update
+- rcsb-saguaro v3.1.10
+
+### Bug fix
+- package-lock version bug
+
 ## [6.4.3] - 2025-10-01
 ### Bug fix
 - Description tooltip overflow fixed
