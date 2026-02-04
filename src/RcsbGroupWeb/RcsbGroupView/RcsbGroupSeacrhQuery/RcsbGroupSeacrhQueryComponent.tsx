@@ -61,7 +61,7 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
     render(): ReactNode {
         return (
             <Draggable nodeRef={this.draggableNodeRef}>
-                <div ref={this.draggableNodeRef} className={"position-fixed"} style={{visibility: this.state.visibility, zIndex:1024, left:"10%", width:124, top:"50%"}}>
+                <div ref={this.draggableNodeRef} className={"position-fixed"} style={{visibility: this.state.visibility, zIndex:1024, left:"15px", width:124, top:"50%"}}>
                     <div className={classes.queryHistoryBorder}>
                         <div className={"border px-1 pt-1 shadow bg-white"}>
                             <div className={"text-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>

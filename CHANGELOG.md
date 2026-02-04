@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.6] - 2026-02-04
+
+## Configuration
+- Query History initial position window left
+
 ## [6.4.5] - 2026-02-04
 
 ## Improvements
