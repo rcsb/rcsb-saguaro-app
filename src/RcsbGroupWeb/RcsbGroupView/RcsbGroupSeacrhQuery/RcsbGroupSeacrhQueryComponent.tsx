@@ -10,6 +10,8 @@ import {
 import {UrlTools} from "../../../RcsbUtils/Helpers/UrlTools";
 import Draggable from 'react-draggable';
 
+import * as classes from "../../../scss/bootstrap-group-display.module.scss";
+
 interface RcsbGroupQuerySearchComponentInterface {
     groupProvenanceId: GroupProvenanceId;
     groupId: string;
@@ -19,6 +21,7 @@ interface RcsbGroupQuerySearchComponentInterface {
 interface RcsbGroupQuerySearchComponentState {
     index: number;
     searchQueryList: (SearchQuery|undefined)[];
+    visibility: "hidden" | "visible";
 }
 
 export class SearchQueryComponentFactory {
@@ -47,7 +50,8 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
 
     readonly state: RcsbGroupQuerySearchComponentState = {
         index:0,
-        searchQueryList: [ this.props.searchQuery ]
+        searchQueryList: [ this.props.searchQuery ],
+        visibility: "hidden"
     };
     constructor(props: RcsbGroupQuerySearchComponentInterface) {
         super(props);
@@ -57,15 +61,17 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
     render(): ReactNode {
         return (
             <Draggable nodeRef={this.draggableNodeRef}>
-                <div ref={this.draggableNodeRef} className={"position-fixed"} style={{zIndex:1024, left:"calc(50% - 700px)", width:120, top:"50%"}}>
-                    <div className={"border px-1 pt-1 shadow bg-white"}>
-                        <div className={"text-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
-                            Query History
-                        </div>
-                        <div className={"d-flex flex-row"} style={{height:30}} >
-                            <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</div>
-                            <div className={"text-center text-nowrap flex-grow-1 my-auto"}>{this.state.index+1} / {this.state.searchQueryList.length}</div>
-                            <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</div>
+                <div ref={this.draggableNodeRef} className={"position-fixed"} style={{visibility: this.state.visibility, zIndex:1024, left:"10%", width:124, top:"50%"}}>
+                    <div className={classes.queryHistoryBorder}>
+                        <div className={"border px-1 pt-1 shadow bg-white"}>
+                            <div className={"text-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
+                                Query History
+                            </div>
+                            <div className={"d-flex flex-row"} style={{height:30}} >
+                                <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</div>
+                                <div className={"text-center text-nowrap flex-grow-1 my-auto"}>{this.state.index+1} / {this.state.searchQueryList.length}</div>
+                                <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,6 +115,7 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
     private addSearchQuery(o:SearchQueryContextManagerSubjectInterface): void {
         if(!o.searchQuery)
             return;
+        this.setState({visibility: "visible"});
         if(o.searchQuery && o.attributeName != this.COMPONENT_NAME)
             this.setState(
                 {searchQueryList:[...this.state.searchQueryList.slice(0,this.state.index+1), o.searchQuery], index:this.state.searchQueryList.slice(0,this.state.index+1).length},

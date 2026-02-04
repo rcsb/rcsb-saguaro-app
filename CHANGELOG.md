@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.5] - 2026-02-04
+
+## Improvements
+- Query History component will be visible when the first histogram selection is made
+- Query History component will display a grey shadow on mouse over
+
 ## [6.4.4] - 2025-10-02
 
 ### Dependency update
