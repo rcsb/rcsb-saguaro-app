@@ -750,11 +750,10 @@
     "title": "OCC WT AVG B"
   },{
     "type": "Q_SCORE",
-    "display": "area",
-    "height": 45,
+    "display": "block-area",
     "color": {
-      "thresholds":[0],
-      "colors":["#8484AA","#CA9Aa4"]
+      "thresholds":[0, 0.25, 0.5, 0.6, 0.8, 1],
+      "colors":["#FF3399","#990000", "#AAAAAA", "#99AAAA", "#66BBBB","#00FFFF", "#00FFFF"]
     },
 
     "title": "Q-SCORE"

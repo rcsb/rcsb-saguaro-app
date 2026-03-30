@@ -2,6 +2,14 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.7] - 2026-03-30
+
+## Configuration
+- Q-SCORE style and color changed
+
+### Dependency update
+- rcsb-saguaro v3.1.12
+
 ## [6.4.6] - 2026-02-04
 
 ## Configuration
