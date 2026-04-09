@@ -2,6 +2,12 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.4.8] - 2026-04-09
+
+## Configuration
+- Group history component 
+- Group members component
+
 ## [6.4.7] - 2026-03-30
 
 ## Configuration

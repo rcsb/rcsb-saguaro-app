@@ -20,9 +20,9 @@ export class Slider extends React.Component<SliderInterface> {
             <div className={"border"}>
                 <Container fluid={"md"}>
                     <Row className={"bg-secondary text-white"} style={{height:50}}>
-                        <Col md={1} className={"text-md-end my-auto"} onClick={()=>{this.slide("prev")}}>{actionIcon("prev")}</Col>
+                        <Col md={2} className={"text-md-start my-auto"} onClick={()=>{this.slide("prev")}}>{actionIcon("prev")}</Col>
                         <Col className={"text-md-center my-auto"}>Member {this.displayNumber(this.props.currentPage)} of {this.displayNumber(this.props.pages)}</Col>
-                        <Col md={1} className={"text-md-start my-auto"} onClick={()=>{this.slide("next")}}>{actionIcon("next")}</Col>
+                        <Col md={2} className={"text-md-end my-auto"} onClick={()=>{this.slide("next")}}>{actionIcon("next")}</Col>
                     </Row>
                 </Container>
                 <div>{this.props.children}</div>

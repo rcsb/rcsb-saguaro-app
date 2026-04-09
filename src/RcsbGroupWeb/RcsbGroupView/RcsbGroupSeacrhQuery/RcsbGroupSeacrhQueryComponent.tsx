@@ -67,7 +67,7 @@ class RcsbGroupSearchQueryComponent extends React.Component<RcsbGroupQuerySearch
                             <div className={"text-center py-2 bg-secondary bg-gradient text-white"} style={{cursor:"grab"}}>
                                 Query History
                             </div>
-                            <div className={"d-flex flex-row"} style={{height:30}} >
+                            <div className={"d-flex flex-row"} >
                                 <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(-1)}>{actionIcon("prev")}</div>
                                 <div className={"text-center text-nowrap flex-grow-1 my-auto"}>{this.state.index+1} / {this.state.searchQueryList.length}</div>
                                 <div className={"text-center my-auto"} onClick={()=>this.browseSearchQuery(+1)}>{actionIcon("next")}</div>
