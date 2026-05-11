@@ -24,7 +24,7 @@ export class RcsbQueryMultipleInstanceSequences  implements RcsbCoreQueryInterfa
             return result.polymer_entity_instances;
         }catch (error) {
             console.error(error);
-            throw new Error(error);
+            throw new Error(error instanceof Error ? error.message : String(error));
         }
     }
 

@@ -132,7 +132,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                     <Select<OptionPropsInterface,false,GroupOptionPropsInterface>
                         options={options}
                         isSearchable={false}
-                        onChange={this.change.bind(this)}
+                        onChange={(option) => { if(option) this.change(option); }}
                         styles={this.configStyle()}
                         components={{ SingleValue, Option: this.props.optionProps ? (props)=>{
                                 return this.props.optionProps?.({...props,children:<OptionNode {...props} children={props.children}/>}) ?? <></>;
@@ -146,7 +146,7 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
 
     private configStyle(): StylesConfig<OptionPropsInterface,false,GroupOptionPropsInterface> {
         return {
-            control: (base: CSSObjectWithLabel) => ({
+            control: (base) => ({
                 ...base,
                 width: this.props.width ?? 120,
                 border: '1px solid #ddd',
@@ -155,11 +155,11 @@ export class SelectButton extends React.Component <SelectButtonInterface, Select
                     border: '1px solid #ddd',
                 }
 
-            }),
-            menu: (base: CSSObjectWithLabel) => ({
+            }) as CSSObjectWithLabel,
+            menu: (base) => ({
                 ...base,
                 width:500
-            }),
+            }) as CSSObjectWithLabel,
             option: (base: CSSObjectWithLabel)=>({
                 ...base
             })

@@ -11,6 +11,8 @@
     "strictFunctionTypes": true,
     "module": "esnext",
     "esModuleInterop": true,
+    "strictPropertyInitialization": false,
+    "ignoreDeprecations": "6.0",
     "moduleResolution": "node",
     "importHelpers": true,
     "noEmitHelpers": true,

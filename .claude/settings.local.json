@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(node -p \"require\\('./node_modules/typescript/package.json'\\).version\")",
+      "Bash(node -p \"require\\('/Users/joan/devel/rcsb-saguaro-app/node_modules/@types/node/package.json'\\).version\")"
+    ]
+  }
+}

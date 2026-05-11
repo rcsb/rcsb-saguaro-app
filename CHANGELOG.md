@@ -2,6 +2,13 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.5.0] - 2026-04-09
+
+### Dependency update
+- rcsb-saguaro v3.2.0
+- audit fix
+- Updated all dependencies
+
 ## [6.4.8] - 2026-04-09
 
 ## Configuration
