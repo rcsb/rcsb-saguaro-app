@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.6.0] - 2026-07-01
+### Improvements
+- Group Ligands histogram
+
 ## [6.5.0] - 2026-05-11
 
 ### Dependency update
@@ -11,13 +15,13 @@
 
 ## [6.4.8] - 2026-04-09
 
-## Configuration
+### Configuration
 - Group history component 
 - Group members component
 
 ## [6.4.7] - 2026-03-30
 
-## Configuration
+### Configuration
 - Q-SCORE style and color changed
 
 ### Dependency update
@@ -25,12 +29,12 @@
 
 ## [6.4.6] - 2026-02-04
 
-## Configuration
+### Configuration
 - Query History initial position window left
 
 ## [6.4.5] - 2026-02-04
 
-## Improvements
+### Improvements
 - Query History component will be visible when the first histogram selection is made
 - Query History component will display a grey shadow on mouse over
 

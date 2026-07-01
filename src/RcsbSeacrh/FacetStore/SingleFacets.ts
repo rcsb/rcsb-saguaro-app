@@ -521,6 +521,24 @@ export const CHEM_COMP_FACET: FacetMemberInterface = {
     }
 }
 
+export const LIGAND_COMP_ID: FacetMemberInterface = {
+    id: "ligand_comp",
+    title: "Ligands",
+    attributeName: "LIGAND_COMP_FACET",
+    attribute: RcsbSearchMetadata.RcsbLigandNeighbors.LigandCompId.path,
+    contentType: "string",
+    chartType: ChartType.barplot,
+    chartConfig: {
+        mostPopulatedGroups: 10
+    },
+    facet: {
+        name: "LIGAND_COMP_FACET",
+        aggregation_type: AggregationType.Terms,
+        attribute: RcsbSearchMetadata.RcsbLigandNeighbors.LigandCompId.path,
+        min_interval_population: 1
+    }
+}
+
 export const ENZYME_CLASS_FACET: FacetMemberInterface = {
     id: "enzyme_class",
     title: "Enzyme Classification",

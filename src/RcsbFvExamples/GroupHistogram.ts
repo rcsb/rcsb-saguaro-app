@@ -4,7 +4,8 @@ import {
     CATH_FACET, DISEASE_FACET,
     GO_COMPONENT_FACET,
     GO_FUNCTION_FACET,
-    GO_PROCESS_FACET, INTERPRO_FACET, PHENOTYPE_FACET, RELEASE_DATE_FACET, RESOLUTION_FACET, TAXONOMY_COUNT_FACET
+    GO_PROCESS_FACET, INTERPRO_FACET, PHENOTYPE_FACET, RELEASE_DATE_FACET, RESOLUTION_FACET, TAXONOMY_COUNT_FACET,
+    LIGAND_COMP_ID
 } from "../RcsbSeacrh/FacetStore/SingleFacets";
 
 const groupId = "P01112";
@@ -36,6 +37,7 @@ buildGroup("pfv_2", GroupProvenanceId.ProvenanceSequenceIdentity, groupId, undef
     GO_PROCESS_FACET.attributeName,
     GO_COMPONENT_FACET.attributeName,
     GO_FUNCTION_FACET.attributeName,
-    PHENOTYPE_FACET.attributeName
+    PHENOTYPE_FACET.attributeName,
+    LIGAND_COMP_ID.attributeName
 ]).then((m)=>{
 });
