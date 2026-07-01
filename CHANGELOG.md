@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.6.1] - 2026-07-01
+### Improvements
+- Exposed Ligands facet in SearchFacets
+
 ## [6.6.0] - 2026-07-01
 ### Improvements
 - Group Ligands histogram

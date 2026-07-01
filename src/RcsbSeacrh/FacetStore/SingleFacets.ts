@@ -826,7 +826,8 @@ export const SearchFacets = {
     CHIMERIC_FACET,
     DISEASE_FACET,
     INTERPRO_FACET,
-    PHENOTYPE_FACET
+    PHENOTYPE_FACET,
+    LIGAND_COMP_ID
 };
 
 
