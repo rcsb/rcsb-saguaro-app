@@ -15,7 +15,7 @@
     "display": "block-area",
     "transformToNumerical": true
   },{
-    "type": "BINDING_SITE",
+    "type": "LIGAND_INTERACTION",
     "color": {
       "colors": "#984657",
       "thresholds": [0.25,0.5,0.75]

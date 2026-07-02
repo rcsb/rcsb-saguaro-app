@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.7.0] - 2026-07-02
+### Bug Fix
+- BINDING_SITE type replaced by LIGAND_INTERACTION
+ 
 ## [6.6.1] - 2026-07-01
 ### Improvements
 - Exposed Ligands facet in SearchFacets

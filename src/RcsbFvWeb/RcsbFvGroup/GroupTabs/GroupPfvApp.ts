@@ -120,7 +120,7 @@ export namespace GroupPfvApp {
             ...additionalConfig,
             filters: [...(additionalConfig?.filters ?? []), {
                 field: FieldName.Type,
-                values: [FeaturesType.BindingSite],
+                values: [FeaturesType.LigandInteraction],
                 operation: OperationType.Equals,
                 source: AnnotationReference.PdbInstance
             }],
@@ -160,7 +160,7 @@ function annotationPositionFrequencyProcessing(nTargets: number): AnnotationProc
         },
         computeAnnotationValue: (annotationTracks: Map<string, TrackManagerInterface>) => {
             annotationTracks.forEach((at,type)=> {
-                const isType =  (type.includes(FeaturesType.Cath) || type.includes(FeaturesType.Scop) || type.includes(FeaturesType.BindingSite) || type.includes(FeaturesType.Pfam));
+                const isType =  (type.includes(FeaturesType.Cath) || type.includes(FeaturesType.Scop) || type.includes(FeaturesType.LigandInteraction) || type.includes(FeaturesType.Pfam));
                 const N = isType ? (targetValues.get(type) != 0 ? targetValues.get(type) : targetSet.get(type)?.size) : nTargets;
                 at.forEach((ann,positionKey)=> {
                     if(ann.source != AnnotationReference.PdbInterface)
