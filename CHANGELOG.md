@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.8.0] - 2026-08-26
+### Bug Fix
+- RcsbQueryInterfaceInstances requests interfaces by batches
+
 ## [6.7.0] - 2026-07-02
 ### Bug Fix
 - BINDING_SITE type replaced by LIGAND_INTERACTION
