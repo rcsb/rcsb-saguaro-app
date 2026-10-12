@@ -131,12 +131,222 @@
     "DISULFIDE_BRIDGE",
     "COVALENT_BOND",
     "METAL_COORDINATION",
-    "HYDROGEN_BOND"
+    "HYDROGEN_BOND",
+    "DISULFIDE_BRIDGE_",
+    "TERMINAL_AMIDATION",
+    "ACETAMIDATION",
+    "ACETAMIDOMETHYLATION",
+    "ACETYLATION",
+    "ADP_RIBOSE",
+    "ADP_RIBOSYLATION",
+    "ADP_RIBOXANATION",
+    "ALANYLATION",
+    "ALLYSINE",
+    "AMINATION",
+    "AMINO_ACID",
+    "AM_PYLATION",
+    "ARACHIDOYLATION",
+    "ARCHAEOL",
+    "ARGINYLATION",
+    "ARSENYLATION",
+    "ASPARAGINYLATION",
+    "ASPARTYLATION",
+    "BACILLITHIOLATION",
+    "BENZOYLATION",
+    "BENZYLATION",
+    "BETA_AMINO_ACID",
+    "BETA_HYDROXYBUTYRYLATION",
+    "BETA_LYSYLATION",
+    "BETA_MERCAPTOETHANOL",
+    "BIOTIN",
+    "BIOTINYLATION",
+    "BROMINATION",
+    "BUTYRYLATION",
+    "CARBAMOYLATION",
+    "CARBOHYDRATE",
+    "CARBOXYETHYLATION",
+    "CARBOXYLATION",
+    "CARBOXYMETHYLATION",
+    "CHLORINATION",
+    "CHOLESTERYLATION",
+    "CHROMOPHORE_CHROMOPHORE_LIKE",
+    "CITRULLINATION",
+    "CM_PYLATION",
+    "COVALENT_CHEMICAL_MODIFICATION",
+    "COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_BASE",
+    "COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_PHOSPHATE",
+    "COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_SUGAR",
+    "COVALENT_RESIDUE_MODIFICATION",
+    "CROSSLINKER",
+    "CROTONYLATION",
+    "CYANATION",
+    "CYSTEINYLATION",
+    "C_GM_PYLATION",
+    "C_MANNOSYLATION",
+    "DEAMIDATION",
+    "DECANOYLATION",
+    "DECARBOXYLATION",
+    "DEHYDROAMINO_ACID",
+    "DEHYDROCOELENTERAZINATION",
+    "DEHYDROGENATION",
+    "DEHYDROXYLATION",
+    "DEOXIDATION",
+    "DEOXYHYPUSINE",
+    "DIACYLGLYCEROL",
+    "DIHYDROXYACETONATION",
+    "DIMETHYLAMINATION",
+    "DIPHOSPHORYLATION",
+    "DIPHTHAMIDE",
+    "DIPYRROMETHANE_METHYLATION",
+    "DOPAMINYLATION",
+    "D_ALANYLATION",
+    "D_ARGINYLATION",
+    "D_ASPARAGINYLATION",
+    "D_ASPARTYLATION",
+    "D_CYSTEINYLATION",
+    "D_GLUTAMINYLATION",
+    "D_GLUTAMYLATION",
+    "D_HISTIDINYLATION",
+    "D_ISOLEUCYLATION",
+    "D_LACTATE",
+    "D_LEUCYLATION",
+    "D_LYSYLATION",
+    "D_METHIONYLATION",
+    "D_PHENYLALANYLATION",
+    "D_PROLYLATION",
+    "D_SERYLATION",
+    "D_THREONINYLATION",
+    "D_TRYPTOPHANYLATION",
+    "D_TYROSINATION",
+    "D_VALYLATION",
+    "ETHYLATION",
+    "ETHYLSULFANYLATION",
+    "FARNESYLATION",
+    "FLAVIN",
+    "FLUORINATION",
+    "FORMYLATION",
+    "GERANYLGERANYLATION",
+    "GLUTAMINYLATION",
+    "GLUTAMYLATION",
+    "GLUTARYLATION",
+    "GLUTATHIONYLATION",
+    "GLYCEROPHOSPHORYLATION",
+    "GLYCERYLPHOSPHORYLETHANOLAMINATION",
+    "GLYCYLATION",
+    "GM_PYLATION",
+    "HEME_HEME_LIKE",
+    "HEPTANOYLATION",
+    "HEXANOYLATION",
+    "HISTAMINYLATION",
+    "HISTIDINYLATION",
+    "HYDROGENATION",
+    "HYDROPEROXYLATION",
+    "HYDROXYAMINATION",
+    "HYDROXYETHYLATION",
+    "HYDROXYLATION",
+    "HYDROXYMETHYLATION",
+    "HYDROXYSULFANYLATION",
+    "HYPUSINE",
+    "IODINATION",
+    "ISOBUTYRYLATION",
+    "ISOLEUCYLATION",
+    "LACTOYLATION",
+    "LAURYLATION",
+    "LEUCYLATION",
+    "LIPID_LIPID_LIKE",
+    "LIPOYLATION",
+    "LYSYLATION",
+    "L_LACTATE",
+    "MALONYLATION",
+    "METHACRYLATION",
+    "METHIONYLATION",
+    "METHOXYLATION",
+    "METHYLAMINATION",
+    "METHYLATION",
+    "METHYLSULFANYLATION",
+    "METHYLSULFATION",
+    "MYRISTOYLATION",
+    "NAMED_PROTEIN_MODIFICATION",
+    "NITRATION",
+    "NITROSYLATION",
+    "NON_STANDARD_AMINO_ACID",
+    "NON_STANDARD_LINKAGE",
+    "NON_STANDARD_RESIDUE",
+    "NORADRENYLATION",
+    "NORLEUCINE",
+    "NORVALINE",
+    "NUCLEOTIDE_MONOPHOSPHATE",
+    "N_6_BENZOYLLYSINE",
+    "N_6_ISONICOTINYLLYSINE",
+    "N_6_METHACRYLLYSINE",
+    "N_GLYCOSYLATION",
+    "N_METHYLCARBAMOYLATION",
+    "N_PYRUVIC_ACID_2_IMINYLATION",
+    "OCTANOYLATION",
+    "OLEOYLATION",
+    "ORNITHINE",
+    "OXIDATION",
+    "O_GLYCOSYLATION",
+    "PALMITOLEOYLATION",
+    "PALMITOYLATION",
+    "PENTADECANOYLATION",
+    "PENTANOYLATION",
+    "PHENYLALANYLATION",
+    "PHOSPHATIDYLETHANOLAMINE_AMIDATION",
+    "PHOSPHOENOLPYRUVATE",
+    "PHOSPHORYLATION",
+    "PROLYLATION",
+    "PROPIONYLATION",
+    "PYRIDOXAL_PHOSPHATE",
+    "PYRROLIDONE_CARBOXYLIC_ACID",
+    "PYRUVIC_ACID",
+    "RETINOYLATION",
+    "SELANYLATION",
+    "SELENOMETHIONINE",
+    "SEROTONYLATION",
+    "SERYLATION",
+    "STEAROYLATION",
+    "STEREOISOMERISATION",
+    "SUCCINAMIDE_RING",
+    "SUCCINATION",
+    "SUCCINYLATION",
+    "SULFANYLMETHYLATION",
+    "SULFATION",
+    "SULFHYDRATION",
+    "S_GLYCOSYLATION",
+    "TERMINAL_ACETYLATION",
+    "TERT_BUTYLATION",
+    "TERT_BUTYLOXYCARBONYLATION",
+    "THREONINYLATION",
+    "THYROXINE",
+    "TRIIODOTHYRONINE",
+    "TRIPHOSPHORYLATION",
+    "TRYPTOPHANYLATION",
+    "TYROSINATION",
+    "UM_PYLATION",
+    "VALYLATION",
+    "_2_3_DICARBOXYPROPYLATION",
+    "_2_AMINOADIPYLATION",
+    "_2_AMINOETHYLPHOSPHORYLATION",
+    "_2_CHOLINEPHOSPHORYLATION",
+    "_2_HYDROXYISOBUTYRYLATION",
+    "_2_OXOBUTANOIC_ACID",
+    "_2_OXO_5_5_DIMETHYLHEXANOYLATION",
+    "_3_AMINOPROPYL_5_ADENOSYL_PHOSPHONO_AMIDATION",
+    "_3_OXOALANINE",
+    "_3_PHENYLLACTIC_ACID",
+    "_3_R_3_HYDROXYBUTYRYLATION",
+    "_4_PHOSPHOPANTETHEINE",
+    "_12_HYDROXYFARNESYLATION",
+    "_12_OXOMYRISTOYLATION",
+    "_12_R_HYDROXYMYRISTOYLATION",
+    "_14_HYDROXY_10_13_DIOXO_7_HEPTADECENOIC_ACID"
   ],
   "entity_order": [
     "ARTIFACT",
     "MUTATION",
     "MODIFIED_MONOMER",
+    "NON_STANDARD_MONOMER",
     "HYDROPATHY",
     "DISORDER",
     "DISORDER_BINDING"
@@ -831,5 +1041,1055 @@
       "thresholds": [0.00001,0.2,0.4,0.6,0.8]
     },
     "title": "AVERAGE OCCUPANCY"
+  },{
+    "type": "NON_STANDARD_MONOMER",
+    "display": "pin",
+    "color": "#63339a",
+    "title": "NON STD RESIDUE"
+  },{
+    "type": "DISULFIDE_BRIDGE_",
+    "display": "bond",
+    "color": "#7a635a",
+    "title": "DISULFIDE BRIDGE"
+  },{
+    "type": "TERMINAL_AMIDATION",
+    "display": "bond",
+    "color": "#9a534a",
+    "title": "TERMINAL AMIDATION"
+  },{
+    "type": "ACETAMIDATION",
+    "display": "bond",
+    "color": "#8c3f3f",
+    "title": "ACETAMIDATION"
+  },{
+    "type": "ACETAMIDOMETHYLATION",
+    "display": "bond",
+    "color": "#3556a5",
+    "title": "ACETAMIDOMETHYLATION"
+  },{
+    "type": "ACETYLATION",
+    "display": "bond",
+    "color": "#7fbf26",
+    "title": "ACETYLATION"
+  },{
+    "type": "ADP_RIBOSE",
+    "display": "bond",
+    "color": "#d861c9",
+    "title": "ADP-RIBOSE"
+  },{
+    "type": "ADP_RIBOSYLATION",
+    "display": "bond",
+    "color": "#2d8c7c",
+    "title": "ADP-RIBOSYLATION"
+  },{
+    "type": "ADP_RIBOXANATION",
+    "display": "bond",
+    "color": "#a56821",
+    "title": "ADP-RIBOXANATION"
+  },{
+    "type": "ALANYLATION",
+    "display": "bond",
+    "color": "#7056bf",
+    "title": "ALANYLATION"
+  },{
+    "type": "ALLYSINE",
+    "display": "bond",
+    "color": "#4cd846",
+    "title": "ALLYSINE"
+  },{
+    "type": "AMINATION",
+    "display": "bond",
+    "color": "#8c1c41",
+    "title": "AMINATION"
+  },{
+    "type": "AMINO_ACID",
+    "display": "bond",
+    "color": "#4a83a5",
+    "title": "AMINO ACID"
+  },{
+    "type": "AM_PYLATION",
+    "display": "bond",
+    "color": "#b4bf3e",
+    "title": "AMPYLATION"
+  },{
+    "type": "ARACHIDOYLATION",
+    "display": "bond",
+    "color": "#b42bd8",
+    "title": "ARACHIDOYLATION"
+  },{
+    "type": "ARCHAEOL",
+    "display": "bond",
+    "color": "#3f8c65",
+    "title": "ARCHAEOL"
+  },{
+    "type": "ARGINYLATION",
+    "display": "bond",
+    "color": "#a54c35",
+    "title": "ARGINYLATION"
+  },{
+    "type": "ARSENYLATION",
+    "display": "bond",
+    "color": "#2633bf",
+    "title": "ARSENYLATION"
+  },{
+    "type": "ASPARAGINYLATION",
+    "display": "bond",
+    "color": "#8ed861",
+    "title": "ASPARAGINYLATION"
+  },{
+    "type": "ASPARTYLATION",
+    "display": "bond",
+    "color": "#8c2d6c",
+    "title": "ASPARTYLATION"
+  },{
+    "type": "BACILLITHIOLATION",
+    "display": "bond",
+    "color": "#21a0a5",
+    "title": "BACILLITHIOLATION"
+  },{
+    "type": "BENZOYLATION",
+    "display": "bond",
+    "color": "#bfa456",
+    "title": "BENZOYLATION"
+  },{
+    "type": "BENZYLATION",
+    "display": "bond",
+    "color": "#8946d8",
+    "title": "BENZYLATION"
+  },{
+    "type": "BETA_AMINO_ACID",
+    "display": "bond",
+    "color": "#1c8c2e",
+    "title": "BETA-AMINO ACID"
+  },{
+    "type": "BETA_HYDROXYBUTYRYLATION",
+    "display": "bond",
+    "color": "#a54a56",
+    "title": "BETA-HYDROXYBUTYRYLATION"
+  },{
+    "type": "BETA_LYSYLATION",
+    "display": "bond",
+    "color": "#3e74bf",
+    "title": "BETA-LYSYLATION"
+  },{
+    "type": "BETA_MERCAPTOETHANOL",
+    "display": "bond",
+    "color": "#a6d82b",
+    "title": "BETA-MERCAPTOETHANOL"
+  },{
+    "type": "BIOTIN",
+    "display": "bond",
+    "color": "#8c3f8c",
+    "title": "BIOTIN"
+  },{
+    "type": "BIOTINYLATION",
+    "display": "bond",
+    "color": "#35a584",
+    "title": "BIOTINYLATION"
+  },{
+    "type": "BROMINATION",
+    "display": "bond",
+    "color": "#bf6526",
+    "title": "BROMINATION"
+  },{
+    "type": "BUTYRYLATION",
+    "display": "bond",
+    "color": "#7061d8",
+    "title": "BUTYRYLATION"
+  },{
+    "type": "CARBAMOYLATION",
+    "display": "bond",
+    "color": "#3d8c2d",
+    "title": "CARBAMOYLATION"
+  },{
+    "type": "CARBOHYDRATE",
+    "display": "bond",
+    "color": "#a5215e",
+    "title": "CARBOHYDRATE"
+  },{
+    "type": "CARBOXYETHYLATION",
+    "display": "bond",
+    "color": "#56a5bf",
+    "title": "CARBOXYETHYLATION"
+  },{
+    "type": "CARBOXYLATION",
+    "display": "bond",
+    "color": "#d8d246",
+    "title": "CARBOXYLATION"
+  },{
+    "type": "CARBOXYMETHYLATION",
+    "display": "bond",
+    "color": "#661c8c",
+    "title": "CARBOXYMETHYLATION"
+  },{
+    "type": "CHLORINATION",
+    "display": "bond",
+    "color": "#4aa56c",
+    "title": "CHLORINATION"
+  },{
+    "type": "CHOLESTERYLATION",
+    "display": "bond",
+    "color": "#bf483e",
+    "title": "CHOLESTERYLATION"
+  },{
+    "type": "CHROMOPHORE_CHROMOPHORE_LIKE",
+    "display": "bond",
+    "color": "#2b50d8",
+    "title": "CHROMOPHORE/CHROMOPHORE-LIKE"
+  },{
+    "type": "CITRULLINATION",
+    "display": "bond",
+    "color": "#668c3f",
+    "title": "CITRULLINATION"
+  },{
+    "type": "CM_PYLATION",
+    "display": "bond",
+    "color": "#a5358e",
+    "title": "CMPYLATION"
+  },{
+    "type": "COVALENT_CHEMICAL_MODIFICATION",
+    "display": "bond",
+    "color": "#26bfb1",
+    "title": "COVALENT CHEMICAL MODIFICATION"
+  },{
+    "type": "COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_BASE",
+    "display": "bond",
+    "color": "#d8ab61",
+    "title": "COVALENT MODIFICATION OF A NUCLEOTIDE BASE"
+  },{
+    "type": "COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_PHOSPHATE",
+    "display": "bond",
+    "color": "#4c2d8c",
+    "title": "COVALENT MODIFICATION OF A NUCLEOTIDE PHOSPHATE"
+  },{
+    "type": "COVALENT_MODIFICATION_OF_A_NUCLEOTIDE_SUGAR",
+    "display": "bond",
+    "color": "#21a525",
+    "title": "COVALENT MODIFICATION OF A NUCLEOTIDE SUGAR"
+  },{
+    "type": "COVALENT_RESIDUE_MODIFICATION",
+    "display": "bond",
+    "color": "#bf5670",
+    "title": "COVALENT RESIDUE MODIFICATION"
+  },{
+    "type": "CROSSLINKER",
+    "display": "bond",
+    "color": "#4696d8",
+    "title": "CROSSLINKER"
+  },{
+    "type": "CROTONYLATION",
+    "display": "bond",
+    "color": "#7a8c1c",
+    "title": "CROTONYLATION"
+  },{
+    "type": "CYANATION",
+    "display": "bond",
+    "color": "#994aa5",
+    "title": "CYANATION"
+  },{
+    "type": "CYSTEINYLATION",
+    "display": "bond",
+    "color": "#3ebf88",
+    "title": "CYSTEINYLATION"
+  },{
+    "type": "C_GM_PYLATION",
+    "display": "bond",
+    "color": "#d85c2b",
+    "title": "CGMPYLATION"
+  },{
+    "type": "C_MANNOSYLATION",
+    "display": "bond",
+    "color": "#3f3f8c",
+    "title": "C-MANNOSYLATION"
+  },{
+    "type": "DEAMIDATION",
+    "display": "bond",
+    "color": "#57a535",
+    "title": "DEAMIDATION"
+  },{
+    "type": "DECANOYLATION",
+    "display": "bond",
+    "color": "#bf2680",
+    "title": "DECANOYLATION"
+  },{
+    "type": "DECARBOXYLATION",
+    "display": "bond",
+    "color": "#61cad8",
+    "title": "DECARBOXYLATION"
+  },{
+    "type": "DEHYDROAMINO_ACID",
+    "display": "bond",
+    "color": "#8c7b2d",
+    "title": "DEHYDROAMINO ACID"
+  },{
+    "type": "DEHYDROCOELENTERAZINATION",
+    "display": "bond",
+    "color": "#6821a5",
+    "title": "DEHYDROCOELENTERAZINATION"
+  },{
+    "type": "DEHYDROGENATION",
+    "display": "bond",
+    "color": "#56bf6f",
+    "title": "DEHYDROGENATION"
+  },{
+    "type": "DEHYDROXYLATION",
+    "display": "bond",
+    "color": "#d8464d",
+    "title": "DEHYDROXYLATION"
+  },{
+    "type": "DEOXIDATION",
+    "display": "bond",
+    "color": "#1c428c",
+    "title": "DEOXIDATION"
+  },{
+    "type": "DEOXYHYPUSINE",
+    "display": "bond",
+    "color": "#84a54a",
+    "title": "DEOXYHYPUSINE"
+  },{
+    "type": "DIACYLGLYCEROL",
+    "display": "bond",
+    "color": "#bf3eb5",
+    "title": "DIACYLGLYCEROL"
+  },{
+    "type": "DIHYDROXYACETONATION",
+    "display": "bond",
+    "color": "#2bd8b3",
+    "title": "DIHYDROXYACETONATION"
+  },{
+    "type": "DIMETHYLAMINATION",
+    "display": "bond",
+    "color": "#8c653f",
+    "title": "DIMETHYLAMINATION"
+  },{
+    "type": "DIPHOSPHORYLATION",
+    "display": "bond",
+    "color": "#4c35a5",
+    "title": "DIPHOSPHORYLATION"
+  },{
+    "type": "DIPHTHAMIDE",
+    "display": "bond",
+    "color": "#34bf26",
+    "title": "DIPHTHAMIDE"
+  },{
+    "type": "DIPYRROMETHANE_METHYLATION",
+    "display": "bond",
+    "color": "#d8618f",
+    "title": "DIPYRROMETHANE METHYLATION"
+  },{
+    "type": "DOPAMINYLATION",
+    "display": "bond",
+    "color": "#2d6d8c",
+    "title": "DOPAMINYLATION"
+  },{
+    "type": "D_ALANYLATION",
+    "display": "bond",
+    "color": "#a1a521",
+    "title": "D-ALANYLATION"
+  },{
+    "type": "D_ARGINYLATION",
+    "display": "bond",
+    "color": "#a456bf",
+    "title": "D-ARGINYLATION"
+  },{
+    "type": "D_ASPARAGINYLATION",
+    "display": "bond",
+    "color": "#46d888",
+    "title": "D-ASPARAGINYLATION"
+  },{
+    "type": "D_ASPARTYLATION",
+    "display": "bond",
+    "color": "#8c2d1c",
+    "title": "D-ASPARTYLATION"
+  },{
+    "type": "D_CYSTEINYLATION",
+    "display": "bond",
+    "color": "#4a56a5",
+    "title": "D-CYSTEINYLATION"
+  },{
+    "type": "D_GLUTAMINYLATION",
+    "display": "bond",
+    "color": "#75bf3e",
+    "title": "D-GLUTAMINYLATION"
+  },{
+    "type": "D_GLUTAMYLATION",
+    "display": "bond",
+    "color": "#d82ba7",
+    "title": "D-GLUTAMYLATION"
+  },{
+    "type": "D_HISTIDINYLATION",
+    "display": "bond",
+    "color": "#3f8c8b",
+    "title": "D-HISTIDINYLATION"
+  },{
+    "type": "D_ISOLEUCYLATION",
+    "display": "bond",
+    "color": "#a58435",
+    "title": "D-ISOLEUCYLATION"
+  },{
+    "type": "D_LACTATE",
+    "display": "bond",
+    "color": "#6426bf",
+    "title": "D-LACTATE"
+  },{
+    "type": "D_LEUCYLATION",
+    "display": "bond",
+    "color": "#61d86f",
+    "title": "D-LEUCYLATION"
+  },{
+    "type": "D_LYSYLATION",
+    "display": "bond",
+    "color": "#8c2d3e",
+    "title": "D-LYSYLATION"
+  },{
+    "type": "D_METHIONYLATION",
+    "display": "bond",
+    "color": "#215fa5",
+    "title": "D-METHIONYLATION"
+  },{
+    "type": "D_PHENYLALANYLATION",
+    "display": "bond",
+    "color": "#a6bf56",
+    "title": "D-PHENYLALANYLATION"
+  },{
+    "type": "D_PROLYLATION",
+    "display": "bond",
+    "color": "#d146d8",
+    "title": "D-PROLYLATION"
+  },{
+    "type": "D_SERYLATION",
+    "display": "bond",
+    "color": "#1c8c65",
+    "title": "D-SERYLATION"
+  },{
+    "type": "D_THREONINYLATION",
+    "display": "bond",
+    "color": "#a56b4a",
+    "title": "D-THREONINYLATION"
+  },{
+    "type": "D_TRYPTOPHANYLATION",
+    "display": "bond",
+    "color": "#473ebf",
+    "title": "D-TRYPTOPHANYLATION"
+  },{
+    "type": "D_TYROSINATION",
+    "display": "bond",
+    "color": "#51d82b",
+    "title": "D-TYROSINATION"
+  },{
+    "type": "D_VALYLATION",
+    "display": "bond",
+    "color": "#8c3f66",
+    "title": "D-VALYLATION"
+  },{
+    "type": "ETHYLATION",
+    "display": "bond",
+    "color": "#358fa5",
+    "title": "ETHYLATION"
+  },{
+    "type": "ETHYLSULFANYLATION",
+    "display": "bond",
+    "color": "#bfb026",
+    "title": "ETHYLSULFANYLATION"
+  },{
+    "type": "FARNESYLATION",
+    "display": "bond",
+    "color": "#aa61d8",
+    "title": "FARNESYLATION"
+  },{
+    "type": "FLAVIN",
+    "display": "bond",
+    "color": "#2d8c4c",
+    "title": "FLAVIN"
+  },{
+    "type": "FLUORINATION",
+    "display": "bond",
+    "color": "#a52521",
+    "title": "FLUORINATION"
+  },{
+    "type": "FORMYLATION",
+    "display": "bond",
+    "color": "#5671bf",
+    "title": "FORMYLATION"
+  },{
+    "type": "GERANYLGERANYLATION",
+    "display": "bond",
+    "color": "#97d846",
+    "title": "GERANYLGERANYLATION"
+  },{
+    "type": "GLUTAMINYLATION",
+    "display": "bond",
+    "color": "#8c1c7a",
+    "title": "GLUTAMINYLATION"
+  },{
+    "type": "GLUTAMYLATION",
+    "display": "bond",
+    "color": "#4aa599",
+    "title": "GLUTAMYLATION"
+  },{
+    "type": "GLUTARYLATION",
+    "display": "bond",
+    "color": "#bf873e",
+    "title": "GLUTARYLATION"
+  },{
+    "type": "GLUTATHIONYLATION",
+    "display": "bond",
+    "color": "#5b2bd8",
+    "title": "GLUTATHIONYLATION"
+  },{
+    "type": "GLYCEROPHOSPHORYLATION",
+    "display": "bond",
+    "color": "#408c3f",
+    "title": "GLYCEROPHOSPHORYLATION"
+  },{
+    "type": "GLYCERYLPHOSPHORYLETHANOLAMINATION",
+    "display": "bond",
+    "color": "#a53557",
+    "title": "GLYCERYLPHOSPHORYLETHANOLAMINATION"
+  },{
+    "type": "GLYCYLATION",
+    "display": "bond",
+    "color": "#2681bf",
+    "title": "GLYCYLATION"
+  },{
+    "type": "GM_PYLATION",
+    "display": "bond",
+    "color": "#cbd861",
+    "title": "GMPYLATION"
+  },{
+    "type": "HEME_HEME_LIKE",
+    "display": "bond",
+    "color": "#7b2d8c",
+    "title": "HEME/HEME-LIKE"
+  },{
+    "type": "HEPTANOYLATION",
+    "display": "bond",
+    "color": "#21a567",
+    "title": "HEPTANOYLATION"
+  },{
+    "type": "HEXANOYLATION",
+    "display": "bond",
+    "color": "#bf6e56",
+    "title": "HEXANOYLATION"
+  },{
+    "type": "HISTAMINYLATION",
+    "display": "bond",
+    "color": "#464ed8",
+    "title": "HISTAMINYLATION"
+  },{
+    "type": "HISTIDINYLATION",
+    "display": "bond",
+    "color": "#428c1c",
+    "title": "HISTIDINYLATION"
+  },{
+    "type": "HYDROGENATION",
+    "display": "bond",
+    "color": "#a54a84",
+    "title": "HYDROGENATION"
+  },{
+    "type": "HYDROPEROXYLATION",
+    "display": "bond",
+    "color": "#3eb6bf",
+    "title": "HYDROPEROXYLATION"
+  },{
+    "type": "HYDROXYAMINATION",
+    "display": "bond",
+    "color": "#d8b22b",
+    "title": "HYDROXYAMINATION"
+  },{
+    "type": "HYDROXYETHYLATION",
+    "display": "bond",
+    "color": "#643f8c",
+    "title": "HYDROXYETHYLATION"
+  },{
+    "type": "HYDROXYLATION",
+    "display": "bond",
+    "color": "#35a54b",
+    "title": "HYDROXYLATION"
+  },{
+    "type": "HYDROXYMETHYLATION",
+    "display": "bond",
+    "color": "#bf2635",
+    "title": "HYDROXYMETHYLATION"
+  },{
+    "type": "HYDROXYSULFANYLATION",
+    "display": "bond",
+    "color": "#618fd8",
+    "title": "HYDROXYSULFANYLATION"
+  },{
+    "type": "HYPUSINE",
+    "display": "bond",
+    "color": "#6e8c2d",
+    "title": "HYPUSINE"
+  },{
+    "type": "IODINATION",
+    "display": "bond",
+    "color": "#a521a2",
+    "title": "IODINATION"
+  },{
+    "type": "ISOBUTYRYLATION",
+    "display": "bond",
+    "color": "#56bfa3",
+    "title": "ISOBUTYRYLATION"
+  },{
+    "type": "ISOLEUCYLATION",
+    "display": "bond",
+    "color": "#d88746",
+    "title": "ISOLEUCYLATION"
+  },{
+    "type": "LACTOYLATION",
+    "display": "bond",
+    "color": "#2d1c8c",
+    "title": "LACTOYLATION"
+  },{
+    "type": "LAURYLATION",
+    "display": "bond",
+    "color": "#57a54a",
+    "title": "LAURYLATION"
+  },{
+    "type": "LEUCYLATION",
+    "display": "bond",
+    "color": "#bf3e75",
+    "title": "LEUCYLATION"
+  },{
+    "type": "LIPID_LIPID_LIKE",
+    "display": "bond",
+    "color": "#2ba8d8",
+    "title": "LIPID/LIPID-LIKE"
+  },{
+    "type": "LIPOYLATION",
+    "display": "bond",
+    "color": "#8c8b3f",
+    "title": "LIPOYLATION"
+  },{
+    "type": "LYSYLATION",
+    "display": "bond",
+    "color": "#8335a5",
+    "title": "LYSYLATION"
+  },{
+    "type": "L_LACTATE",
+    "display": "bond",
+    "color": "#26bf63",
+    "title": "L-LACTATE"
+  },{
+    "type": "MALONYLATION",
+    "display": "bond",
+    "color": "#d86e61",
+    "title": "MALONYLATION"
+  },{
+    "type": "METHACRYLATION",
+    "display": "bond",
+    "color": "#2d3e8c",
+    "title": "METHACRYLATION"
+  },{
+    "type": "METHIONYLATION",
+    "display": "bond",
+    "color": "#60a521",
+    "title": "METHIONYLATION"
+  },{
+    "type": "METHOXYLATION",
+    "display": "bond",
+    "color": "#bf56a6",
+    "title": "METHOXYLATION"
+  },{
+    "type": "METHYLAMINATION",
+    "display": "bond",
+    "color": "#46d8d0",
+    "title": "METHYLAMINATION"
+  },{
+    "type": "METHYLATION",
+    "display": "bond",
+    "color": "#8c641c",
+    "title": "METHYLATION"
+  },{
+    "type": "METHYLSULFANYLATION",
+    "display": "bond",
+    "color": "#6b4aa5",
+    "title": "METHYLSULFANYLATION"
+  },{
+    "type": "METHYLSULFATION",
+    "display": "bond",
+    "color": "#3ebf46",
+    "title": "METHYLSULFATION"
+  },{
+    "type": "MYRISTOYLATION",
+    "display": "bond",
+    "color": "#d82b52",
+    "title": "MYRISTOYLATION"
+  },{
+    "type": "NAMED_PROTEIN_MODIFICATION",
+    "display": "bond",
+    "color": "#3f668c",
+    "title": "NAMED PROTEIN MODIFICATION"
+  },{
+    "type": "NITRATION",
+    "display": "bond",
+    "color": "#90a535",
+    "title": "NITRATION"
+  },{
+    "type": "NITROSYLATION",
+    "display": "bond",
+    "color": "#af26bf",
+    "title": "NITROSYLATION"
+  },{
+    "type": "NON_STANDARD_AMINO_ACID",
+    "display": "bond",
+    "color": "#61d8a9",
+    "title": "NON STANDARD AMINO ACID"
+  },{
+    "type": "NON_STANDARD_LINKAGE",
+    "display": "bond",
+    "color": "#8c4b2d",
+    "title": "NON STANDARD LINKAGE"
+  },{
+    "type": "NON_STANDARD_RESIDUE",
+    "display": "bond",
+    "color": "#2421a5",
+    "title": "NON STANDARD RESIDUE"
+  },{
+    "type": "NORADRENYLATION",
+    "display": "bond",
+    "color": "#72bf56",
+    "title": "NORADRENYLATION"
+  },{
+    "type": "NORLEUCINE",
+    "display": "bond",
+    "color": "#d84698",
+    "title": "NORLEUCINE"
+  },{
+    "type": "NORVALINE",
+    "display": "bond",
+    "color": "#1c7b8c",
+    "title": "NORVALINE"
+  },{
+    "type": "NUCLEOTIDE_MONOPHOSPHATE",
+    "display": "bond",
+    "color": "#a5984a",
+    "title": "NUCLEOTIDE MONOPHOSPHATE"
+  },{
+    "type": "N_6_BENZOYLLYSINE",
+    "display": "bond",
+    "color": "#873ebf",
+    "title": "N6-BENZOYLLYSINE"
+  },{
+    "type": "N_6_ISONICOTINYLLYSINE",
+    "display": "bond",
+    "color": "#2bd85a",
+    "title": "N6-ISONICOTINYLLYSINE"
+  },{
+    "type": "N_6_METHACRYLLYSINE",
+    "display": "bond",
+    "color": "#8c3f40",
+    "title": "N6-METHACRYLLYSINE"
+  },{
+    "type": "N_GLYCOSYLATION",
+    "display": "bond",
+    "color": "#3558a5",
+    "title": "N-GLYCOSYLATION"
+  },{
+    "type": "N_METHYLCARBAMOYLATION",
+    "display": "bond",
+    "color": "#82bf26",
+    "title": "N-METHYLCARBAMOYLATION"
+  },{
+    "type": "N_PYRUVIC_ACID_2_IMINYLATION",
+    "display": "bond",
+    "color": "#d861cc",
+    "title": "N-PYRUVIC ACID 2-IMINYLATION"
+  },{
+    "type": "OCTANOYLATION",
+    "display": "bond",
+    "color": "#2d8c7a",
+    "title": "OCTANOYLATION"
+  },{
+    "type": "OLEOYLATION",
+    "display": "bond",
+    "color": "#a56621",
+    "title": "OLEOYLATION"
+  },{
+    "type": "ORNITHINE",
+    "display": "bond",
+    "color": "#6e56bf",
+    "title": "ORNITHINE"
+  },{
+    "type": "OXIDATION",
+    "display": "bond",
+    "color": "#4fd846",
+    "title": "OXIDATION"
+  },{
+    "type": "O_GLYCOSYLATION",
+    "display": "bond",
+    "color": "#8c1c43",
+    "title": "O-GLYCOSYLATION"
+  },{
+    "type": "PALMITOLEOYLATION",
+    "display": "bond",
+    "color": "#4a85a5",
+    "title": "PALMITOLEOYLATION"
+  },{
+    "type": "PALMITOYLATION",
+    "display": "bond",
+    "color": "#b7bf3e",
+    "title": "PALMITOYLATION"
+  },{
+    "type": "PENTADECANOYLATION",
+    "display": "bond",
+    "color": "#b12bd8",
+    "title": "PENTADECANOYLATION"
+  },{
+    "type": "PENTANOYLATION",
+    "display": "bond",
+    "color": "#3f8c64",
+    "title": "PENTANOYLATION"
+  },{
+    "type": "PHENYLALANYLATION",
+    "display": "bond",
+    "color": "#a54a35",
+    "title": "PHENYLALANYLATION"
+  },{
+    "type": "PHOSPHATIDYLETHANOLAMINE_AMIDATION",
+    "display": "bond",
+    "color": "#2636bf",
+    "title": "PHOSPHATIDYLETHANOLAMINE AMIDATION"
+  },{
+    "type": "PHOSPHOENOLPYRUVATE",
+    "display": "bond",
+    "color": "#90d861",
+    "title": "PHOSPHOENOLPYRUVATE"
+  },{
+    "type": "PHOSPHORYLATION",
+    "display": "bond",
+    "color": "#8c2d6e",
+    "title": "PHOSPHORYLATION"
+  },{
+    "type": "PROLYLATION",
+    "display": "bond",
+    "color": "#21a2a5",
+    "title": "PROLYLATION"
+  },{
+    "type": "PROPIONYLATION",
+    "display": "bond",
+    "color": "#bfa256",
+    "title": "PROPIONYLATION"
+  },{
+    "type": "PYRIDOXAL_PHOSPHATE",
+    "display": "bond",
+    "color": "#8646d8",
+    "title": "PYRIDOXAL PHOSPHATE"
+  },{
+    "type": "PYRROLIDONE_CARBOXYLIC_ACID",
+    "display": "bond",
+    "color": "#1c8c2c",
+    "title": "PYRROLIDONE CARBOXYLIC ACID"
+  },{
+    "type": "PYRUVIC_ACID",
+    "display": "bond",
+    "color": "#a54a57",
+    "title": "PYRUVIC ACID"
+  },{
+    "type": "RETINOYLATION",
+    "display": "bond",
+    "color": "#3e76bf",
+    "title": "RETINOYLATION"
+  },{
+    "type": "SELANYLATION",
+    "display": "bond",
+    "color": "#a9d82b",
+    "title": "SELANYLATION"
+  },{
+    "type": "SELENOMETHIONINE",
+    "display": "bond",
+    "color": "#8a3f8c",
+    "title": "SELENOMETHIONINE"
+  },{
+    "type": "SEROTONYLATION",
+    "display": "bond",
+    "color": "#35a582",
+    "title": "SEROTONYLATION"
+  },{
+    "type": "SERYLATION",
+    "display": "bond",
+    "color": "#bf6226",
+    "title": "SERYLATION"
+  },{
+    "type": "STEAROYLATION",
+    "display": "bond",
+    "color": "#6d61d8",
+    "title": "STEAROYLATION"
+  },{
+    "type": "STEREOISOMERISATION",
+    "display": "bond",
+    "color": "#3f8c2d",
+    "title": "STEREOISOMERISATION"
+  },{
+    "type": "SUCCINAMIDE_RING",
+    "display": "bond",
+    "color": "#a52160",
+    "title": "SUCCINAMIDE RING"
+  },{
+    "type": "SUCCINATION",
+    "display": "bond",
+    "color": "#56a7bf",
+    "title": "SUCCINATION"
+  },{
+    "type": "SUCCINYLATION",
+    "display": "bond",
+    "color": "#d8cf46",
+    "title": "SUCCINYLATION"
+  },{
+    "type": "SULFANYLMETHYLATION",
+    "display": "bond",
+    "color": "#641c8c",
+    "title": "SULFANYLMETHYLATION"
+  },{
+    "type": "SULFATION",
+    "display": "bond",
+    "color": "#4aa56a",
+    "title": "SULFATION"
+  },{
+    "type": "SULFHYDRATION",
+    "display": "bond",
+    "color": "#bf453e",
+    "title": "SULFHYDRATION"
+  },{
+    "type": "S_GLYCOSYLATION",
+    "display": "bond",
+    "color": "#2b53d8",
+    "title": "S-GLYCOSYLATION"
+  },{
+    "type": "TERMINAL_ACETYLATION",
+    "display": "bond",
+    "color": "#678c3f",
+    "title": "TERMINAL ACETYLATION"
+  },{
+    "type": "TERT_BUTYLATION",
+    "display": "bond",
+    "color": "#a53591",
+    "title": "TERT-BUTYLATION"
+  },{
+    "type": "TERT_BUTYLOXYCARBONYLATION",
+    "display": "bond",
+    "color": "#26bfae",
+    "title": "TERT-BUTYLOXYCARBONYLATION"
+  },{
+    "type": "THREONINYLATION",
+    "display": "bond",
+    "color": "#d8a961",
+    "title": "THREONINYLATION"
+  },{
+    "type": "THYROXINE",
+    "display": "bond",
+    "color": "#4a2d8c",
+    "title": "THYROXINE"
+  },{
+    "type": "TRIIODOTHYRONINE",
+    "display": "bond",
+    "color": "#21a523",
+    "title": "TRIIODOTHYRONINE"
+  },{
+    "type": "TRIPHOSPHORYLATION",
+    "display": "bond",
+    "color": "#bf5672",
+    "title": "TRIPHOSPHORYLATION"
+  },{
+    "type": "TRYPTOPHANYLATION",
+    "display": "bond",
+    "color": "#4699d8",
+    "title": "TRYPTOPHANYLATION"
+  },{
+    "type": "TYROSINATION",
+    "display": "bond",
+    "color": "#7c8c1c",
+    "title": "TYROSINATION"
+  },{
+    "type": "UM_PYLATION",
+    "display": "bond",
+    "color": "#984aa5",
+    "title": "UMPYLATION"
+  },{
+    "type": "VALYLATION",
+    "display": "bond",
+    "color": "#3ebf86",
+    "title": "VALYLATION"
+  },{
+    "type": "_2_3_DICARBOXYPROPYLATION",
+    "display": "bond",
+    "color": "#d8592b",
+    "title": "2,3-DICARBOXYPROPYLATION"
+  },{
+    "type": "_2_AMINOADIPYLATION",
+    "display": "bond",
+    "color": "#3f418c",
+    "title": "2-AMINOADIPYLATION"
+  },{
+    "type": "_2_AMINOETHYLPHOSPHORYLATION",
+    "display": "bond",
+    "color": "#59a535",
+    "title": "2-AMINOETHYLPHOSPHORYLATION"
+  },{
+    "type": "_2_CHOLINEPHOSPHORYLATION",
+    "display": "bond",
+    "color": "#bf2683",
+    "title": "2-CHOLINEPHOSPHORYLATION"
+  },{
+    "type": "_2_HYDROXYISOBUTYRYLATION",
+    "display": "bond",
+    "color": "#61ccd8",
+    "title": "2-HYDROXYISOBUTYRYLATION"
+  },{
+    "type": "_2_OXOBUTANOIC_ACID",
+    "display": "bond",
+    "color": "#8c7a2d",
+    "title": "2-OXOBUTANOIC ACID"
+  },{
+    "type": "_2_OXO_5_5_DIMETHYLHEXANOYLATION",
+    "display": "bond",
+    "color": "#6521a5",
+    "title": "2-OXO-5,5-DIMETHYLHEXANOYLATION"
+  },{
+    "type": "_3_AMINOPROPYL_5_ADENOSYL_PHOSPHONO_AMIDATION",
+    "display": "bond",
+    "color": "#56bf6d",
+    "title": "3-AMINOPROPYL-5'-ADENOSYL PHOSPHONO AMIDATION"
+  },{
+    "type": "_3_OXOALANINE",
+    "display": "bond",
+    "color": "#d84650",
+    "title": "3-OXOALANINE"
+  },{
+    "type": "_3_PHENYLLACTIC_ACID",
+    "display": "bond",
+    "color": "#1c448c",
+    "title": "3-PHENYLLACTIC ACID"
+  },{
+    "type": "_3_R_3_HYDROXYBUTYRYLATION",
+    "display": "bond",
+    "color": "#85a54a",
+    "title": "(3R)-3-HYDROXYBUTYRYLATION"
+  },{
+    "type": "_4_PHOSPHOPANTETHEINE",
+    "display": "bond",
+    "color": "#bf3eb7",
+    "title": "4'-PHOSPHOPANTETHEINE"
+  },{
+    "type": "_12_HYDROXYFARNESYLATION",
+    "display": "bond",
+    "color": "#2bd8b0",
+    "title": "12-HYDROXYFARNESYLATION"
+  },{
+    "type": "_12_OXOMYRISTOYLATION",
+    "display": "bond",
+    "color": "#8c633f",
+    "title": "12-OXOMYRISTOYLATION"
+  },{
+    "type": "_12_R_HYDROXYMYRISTOYLATION",
+    "display": "bond",
+    "color": "#4a35a5",
+    "title": "(12R)-HYDROXYMYRISTOYLATION"
+  },{
+    "type": "_14_HYDROXY_10_13_DIOXO_7_HEPTADECENOIC_ACID",
+    "display": "bond",
+    "color": "#37bf26",
+    "title": "14-HYDROXY-10,13-DIOXO-7-HEPTADECENOIC ACID"
   }]
 }

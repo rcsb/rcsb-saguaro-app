@@ -8,8 +8,10 @@ import {
 import {buildInstanceSequenceFv} from "../RcsbFvWeb/RcsbFvBuilder";
 import {PolymerEntityInstanceInterface} from "../RcsbCollectTools/DataCollectors/PolymerEntityInstancesCollector";
 
+// import {rcsbRequestCtxManager} from "../RcsbRequest/RcsbRequestContextManager";
+// rcsbRequestCtxManager.initializeBorregoClient({api:"http://localhost:8080/graphql"});
 
-buildInstanceSequenceFv("pfv", "select", "8PDU", {
+buildInstanceSequenceFv("pfv", "select", getJsonFromUrl()?.pdbId ?? "1TTK", {
     module:"interface",
     onChangeCallback: (r)=>{
         console.log(r);
@@ -20,6 +22,17 @@ buildInstanceSequenceFv("pfv", "select", "8PDU", {
 }).then((module)=>{
     console.log(module);
 });
+
+function getJsonFromUrl() {
+    const url = location.search;
+    var query = url.substring(1);
+    var result: any = {};
+    query.split("&").forEach(function(part) {
+        var item = part.split("=");
+        result[item[0]] = decodeURIComponent(item[1]);
+    });
+    return result;
+}
 
 function externalTrackBuilder(){
     let myComputedTrack: RcsbFvRowConfigInterface = {

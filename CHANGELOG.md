@@ -2,6 +2,11 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.8.1] - 2026-10-12
+### Dependency update
+- rcsb-api-tools v5.2.1
+- rcsb-search-tools v0.0.17
+
 ## [6.8.0] - 2026-08-26
 ### Bug Fix
 - RcsbQueryInterfaceInstances requests interfaces by batches
