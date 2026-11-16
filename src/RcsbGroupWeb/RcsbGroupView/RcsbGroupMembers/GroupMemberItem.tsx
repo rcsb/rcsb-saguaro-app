@@ -86,10 +86,23 @@ function formatRes(x: number): number {
     return Math.round(x*10) / 10;
 }
 
+/**
+ * CDN sub-directory (relative to resource.rcsb_cdn.url) holding the images of an entry:
+ * 'csm/af/' for AlphaFold CSMs (AF_...), 'csm/ma/' for ModelArchive CSMs (MA_...), 'pdb/' otherwise.
+ * Keep in sync with getStructureImageDir in rcsb-sierra src/utils.js
+ */
+function structureImageDir(entryId: string): string {
+    const idUc = entryId.toUpperCase();
+    if(idUc.startsWith("AF_")) return "csm/af/";
+    if(idUc.startsWith("MA_")) return "csm/ma/";
+    return "pdb/";
+}
+
 function memberImgUrl(ei: ItemFeaturesInterface, groupProvenanceId: GroupProvenanceId): string{
+    const prefix = resource.rcsb_cdn.url + structureImageDir(ei.entryId) + ei.entryId.toLowerCase();
     if(groupProvenanceId === GroupProvenanceId.ProvenanceMatchingDepositGroupId)
-        return resource.rcsb_cdn.url + ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() + "/" + ei.entryId.toLowerCase() + "_model-1.jpeg";
-    return resource.rcsb_cdn.url + (ei.entityId && TagDelimiter.isRcsbId(ei.entityId) ? ei.entryId.toLowerCase().substring(1, 3) + "/" + ei.entryId.toLowerCase() : "") + "/" + ei.entryId.toLowerCase() + "_chain-" + ei.asymId + ".jpeg";
+        return prefix + "_model-1.jpeg";
+    return prefix + "_chain-" + ei.asymId + ".jpeg";
 }
 
 function alignment1d3dUrl(groupId: string, searchQuery?: SearchQuery){
