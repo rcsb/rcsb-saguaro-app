@@ -2,6 +2,10 @@
 
 [Semantic Versioning](https://semver.org/)
 
+## [6.8.2] - 2026-11-16
+### Configuration
+- Group images URL
+
 ## [6.8.1] - 2026-10-12
 ### Dependency update
 - rcsb-api-tools v5.2.1
